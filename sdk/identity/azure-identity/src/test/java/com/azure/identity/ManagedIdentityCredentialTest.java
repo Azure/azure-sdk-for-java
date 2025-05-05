@@ -20,7 +20,6 @@ import org.mockito.MockedConstruction;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
@@ -43,28 +42,6 @@ public class ManagedIdentityCredentialTest {
         assertEquals("foo", credential.getClientId());
     }
 
-    @Test
-    public void testImdsProbeTimeout() {
-        HttpClient client = TestUtils.getMockHttpClient(Duration.ofSeconds(2), getMockResponse(200, "token"));
-
-        String endpoint = "http://localhost";
-        String secret = "secret";
-
-        Configuration configuration
-                = TestUtils.createTestConfiguration(new TestConfigurationSource().put("MSI_ENDPOINT", endpoint) // This must stay to signal we are in an app service context
-                .put("MSI_SECRET", secret)
-                .put("IDENTITY_ENDPOINT", endpoint)
-                .put("IDENTITY_HEADER", secret));
-
-        IdentityClientOptions options
-                = new IdentityClientOptions().setChained(true).setHttpClient(client).setConfiguration(configuration);
-        ManagedIdentityCredential cred = new ManagedIdentityCredential("clientId", null, null, options);
-        StepVerifier.create(cred.getToken(new TokenRequestContext().addScopes("https://management.azure.com")))
-                .expectErrorMatches(t -> {
-                    return (t instanceof CredentialUnavailableException) && t.getMessage().contains("Connection to IMDS endpoint cannot be established");
-                })
-                .verify();
-    }
 
     @ParameterizedTest
     @ValueSource(booleans = { true, false })

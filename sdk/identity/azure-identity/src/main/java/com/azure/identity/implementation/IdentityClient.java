@@ -6,12 +6,8 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.identity.CredentialUnavailableException;
@@ -48,6 +44,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.Proxy.Type;
@@ -922,18 +919,27 @@ public class IdentityClient extends IdentityClientBase {
     }
 
     private Mono<Boolean> checkIMDSAvailable(String endpoint) {
-        URL url = null;
-        try {
-            url = getUrl(endpoint + "?api-version=2018-02-01");
-        } catch (MalformedURLException e) {
-            return Mono.error(e);
-        }
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        HttpClient client = getPipeline().getHttpClient();
-        return client.send(request, new Context("azure-response-timeout", Duration.ofSeconds(1)))
-            .onErrorMap(t -> new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
-                + "Connection to IMDS endpoint cannot be established, " + t.getMessage() + ".", t))
-            .flatMap(response -> Mono.just(true));
+        return Mono.fromCallable(() -> {
+            HttpURLConnection connection = null;
+            URL url = getUrl(endpoint + "?api-version=2018-02-01");
+
+            try {
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setConnectTimeout(1000);
+                connection.connect();
+            } catch (Exception e) {
+                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                        new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
+                                + "Connection to IMDS endpoint cannot be established, " + e.getMessage() + ".", e));
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+
+            return true;
+        });
     }
 
     private static Proxy proxyOptionsToJavaNetProxy(ProxyOptions options) {
