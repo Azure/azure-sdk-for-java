@@ -3,11 +3,11 @@
 
 package io.clientcore.annotation.processor.utils;
 
-import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.ast.type.PrimitiveType;
+import com.github.javaparser.ast.type.VoidType;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.implementation.TypeUtil;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
@@ -151,38 +151,39 @@ public final class TypeConverter {
     public static com.github.javaparser.ast.type.Type getAstType(TypeMirror returnType) {
         switch (returnType.getKind()) {
             case VOID:
-                return StaticJavaParser.parseType("void");
+                return new VoidType();
 
             case BOOLEAN:
-                return StaticJavaParser.parseType("boolean");
+                return PrimitiveType.booleanType();
 
             case BYTE:
-                return StaticJavaParser.parseType("byte");
+                return PrimitiveType.byteType();
 
             case SHORT:
-                return StaticJavaParser.parseType("short");
+                return PrimitiveType.shortType();
 
             case INT:
-                return StaticJavaParser.parseType("int");
+                return PrimitiveType.intType();
 
             case LONG:
-                return StaticJavaParser.parseType("long");
+                return PrimitiveType.longType();
 
             case CHAR:
-                return StaticJavaParser.parseType("char");
+                return PrimitiveType.charType();
 
             case FLOAT:
-                return StaticJavaParser.parseType("float");
+                return PrimitiveType.floatType();
 
             case DOUBLE:
-                return StaticJavaParser.parseType("double");
+                return PrimitiveType.doubleType();
 
             case ARRAY:
                 if (returnType instanceof ArrayType) {
                     ArrayType arrayType = (ArrayType) returnType;
-                    return StaticJavaParser.parseType(getAstType(arrayType.getComponentType()).toString() + "[]");
+                    return new com.github.javaparser.ast.type.ArrayType(getAstType(arrayType.getComponentType()));
                 } else {
-                    return StaticJavaParser.parseType("Object[]"); // Fallback
+                    // Fallback to Object[] when uncertain.
+                    return new com.github.javaparser.ast.type.ArrayType(createObjectType());
                 }
             case DECLARED:
                 // converting DeclaredType to ClassOrInterfaceType with type arguments
@@ -202,12 +203,19 @@ public final class TypeConverter {
                     }
                     return astType;
                 } else {
-                    return StaticJavaParser.parseType("Object"); // Fallback
+                    return createObjectType();
                 }
 
             default:
                 throw new IllegalArgumentException("Unsupported return type: " + returnType);
         }
+    }
+
+    // Create this in a method as the constructor used is deprecated.
+    // It's fine for this use but isn't always safe otherwise.
+    @SuppressWarnings("deprecation")
+    private static ClassOrInterfaceType createObjectType() {
+        return new ClassOrInterfaceType("Object");
     }
 
     static java.lang.reflect.Type handleArrayType(TypeMirror type) {
@@ -220,24 +228,30 @@ public final class TypeConverter {
     }
 
     static java.lang.reflect.Type handleDeclaredType(TypeMirror declaredType) {
-        if (declaredType instanceof ClassOrInterfaceType) {
-            ClassOrInterfaceType classType = (ClassOrInterfaceType) declaredType;
+        if (declaredType instanceof DeclaredType) {
+            DeclaredType classType = (DeclaredType) declaredType;
 
             // Ensure type arguments exist before accessing them
-            if (classType.getTypeArguments().isPresent()) {
-                NodeList<com.github.javaparser.ast.type.Type> typeArguments = classType.getTypeArguments().get();
-
-                if (!typeArguments.isEmpty()) {
-                    com.github.javaparser.ast.type.Type innerType = typeArguments.get(0); // First generic type (e.g., List<Foo> or Foo<String>)
-                    return TypeUtil.createParameterizedType(innerType.toString().getClass());
-                } else {
-                    // No generic type on this RestResponse subtype, so we go up to parent
-                    return TypeConverter.toReflectType(declaredType);
-                }
-
+            List<? extends TypeMirror> typeArguments = classType.getTypeArguments();
+            if (!typeArguments.isEmpty()) {
+                // First generic type (e.g., List<Foo> or Foo<String>)
+                return TypeConverter.toReflectType(typeArguments.get(0));
+            } else {
+                return tryLoadClass(classType.toString());
             }
+
         }
         return Object.class; // Fallback
+    }
+
+    private static Type tryLoadClass(String className) {
+        try {
+            return Class.forName(className, true, TypeConverter.class.getClassLoader());
+        } catch (ClassNotFoundException ex) {
+            // Couldn't load the class, likely from the package we're attempting to process.
+            // Fallback to Object in this case.
+            return Object.class;
+        }
     }
 
     // Private constructor

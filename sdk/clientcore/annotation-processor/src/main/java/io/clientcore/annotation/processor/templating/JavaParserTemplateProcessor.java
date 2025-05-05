@@ -13,10 +13,11 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
-import com.github.javaparser.ast.expr.ArrayInitializerExpr;
 import com.github.javaparser.ast.expr.Name;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.expr.UnaryExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
@@ -30,6 +31,7 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.utils.UriEscapers;
@@ -45,6 +47,7 @@ import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -52,6 +55,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import static io.clientcore.annotation.processor.utils.ResponseHandler.generateResponseHandling;
@@ -92,6 +96,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     }
 
     private final CompilationUnit compilationUnit = new CompilationUnit();
+    private final Map<String, String> httpHeaderNameConstantsToAdd = new TreeMap<>(String::compareToIgnoreCase);
     private ClassOrInterfaceDeclaration classBuilder;
 
     @Override
@@ -147,6 +152,19 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 configureInternalMethod(classBuilder.addMethod(method.getMethodName(), Modifier.Keyword.PUBLIC), method,
                     processingEnv);
             }
+        }
+
+        List<FieldDeclaration> headerConstants = new ArrayList<>();
+        for (Map.Entry<String, String> e : httpHeaderNameConstantsToAdd.entrySet()) {
+            headerConstants.add(new FieldDeclaration()
+                .setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL)
+                .addVariable(new VariableDeclarator().setType("HttpHeaderName")
+                    .setName(e.getKey())
+                    .setInitializer("HttpHeaderName.fromString(\"" + e.getValue() + "\")")));
+        }
+
+        if (!headerConstants.isEmpty()) {
+            classBuilder.getMembers().addAll(0, headerConstants);
         }
     }
 
@@ -214,12 +232,10 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     // Helper methods
     private void configureInternalMethod(MethodDeclaration internalMethod, HttpRequestContext method,
         ProcessingEnvironment processingEnv) {
-        // TODO (alzimmer): For now throw @SuppressWarnings({"unchecked", "cast"}) on generated methods while we
+        // TODO (alzimmer): For now throw @SuppressWarnings("cast") on generated methods while we
         //  improve / fix the generated code to no longer need it.
         internalMethod.setName(method.getMethodName())
-            .addAnnotation(new SingleMemberAnnotationExpr(new Name("SuppressWarnings"),
-                new ArrayInitializerExpr(
-                    new NodeList<>(new StringLiteralExpr("unchecked"), new StringLiteralExpr("cast")))))
+            .addAnnotation(new SingleMemberAnnotationExpr(new Name("SuppressWarnings"), new StringLiteralExpr("cast")))
             .addMarkerAnnotation(Override.class)
             .setType(TypeConverter.getAstType(method.getMethodReturnType()));
 
@@ -509,9 +525,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                     .append(valueExpression)
                     .append("));");
             } else {
-                addHeader.append("httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString(\"")
-                    .append(headerKey)
-                    .append("\"), ")
+                String headerNameConstant = headerKey.replace('-', '_').toUpperCase(Locale.US);
+                httpHeaderNameConstantsToAdd.put(headerNameConstant, headerKey);
+                addHeader.append("httpRequest.getHeaders().add(new HttpHeader(")
+                    .append(headerNameConstant)
+                    .append(", ")
                     .append(valueExpression)
                     .append("));");
             }
@@ -560,8 +578,16 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
         body.addStatement(StaticJavaParser.parseStatement("boolean expectedResponse = " + expectedResponseCheck));
 
-        body.tryAddImportToParentCompilationUnit(RuntimeException.class);
-        body.addStatement(StaticJavaParser.parseStatement("if (!expectedResponse) {"
-            + " throw new RuntimeException(\"Unexpected response code: \" + responseCode); }"));
+        body.tryAddImportToParentCompilationUnit(HttpResponseException.class);
+        BlockStmt ifBlock = new BlockStmt();
+        ifBlock.addStatement(
+            StaticJavaParser.parseStatement("String errorMessage = networkResponse.getValue().toString();"));
+        ifBlock.addStatement(StaticJavaParser.parseStatement("networkResponse.close();"));
+        ifBlock.addStatement(
+            StaticJavaParser.parseStatement("throw new HttpResponseException(errorMessage, networkResponse, null);"));
+        IfStmt ifStmt = new IfStmt()
+            .setCondition(new UnaryExpr(new NameExpr("expectedResponse"), UnaryExpr.Operator.LOGICAL_COMPLEMENT))
+            .setThenStmt(ifBlock);
+        body.addStatement(ifStmt);
     }
 }
