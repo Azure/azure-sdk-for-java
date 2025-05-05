@@ -45,6 +45,7 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -298,7 +299,6 @@ public class ServiceApiTests extends BlobTestBase {
         for (int i = 0; i < numContainers; i++) {
             containers.add(primaryBlobServiceClient.createBlobContainer(generateContainerName()));
         }
-
         // when: "Consume results by page, then should still have paging functionality""
         assertDoesNotThrow(
             () -> primaryBlobServiceClient

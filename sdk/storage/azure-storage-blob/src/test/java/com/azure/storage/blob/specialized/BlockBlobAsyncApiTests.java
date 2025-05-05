@@ -2526,10 +2526,13 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
         Mono<Response<BlockBlobItem>> response = sourceBlob.upload(DATA.getDefaultFlux(), null).flatMap(r -> {
             String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
                 new BlobContainerSasPermission().setReadPermission(true)));
-            BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
-                .setSourceRequestConditions(requestConditions);
+
             return blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true)
-                .then(blockBlobAsyncClient.uploadFromUrlWithResponse(options));
+                .flatMap(r2 -> {
+                    BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+                        .setSourceRequestConditions(requestConditions);
+                    return blockBlobAsyncClient.uploadFromUrlWithResponse(options);
+                });
         });
 
         StepVerifier.create(response).verifyErrorSatisfies(r -> {
