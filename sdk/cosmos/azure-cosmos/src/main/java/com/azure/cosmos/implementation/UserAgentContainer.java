@@ -40,14 +40,13 @@ public class UserAgentContainer {
             return;
         }
 
-        this.userAgent = this.userAgent.concat("|F");
         int value = 0;
 
         for (UserAgentFeatureFlags userAgentFeatureFlag : userAgentFeatureFlags) {
             value += userAgentFeatureFlag.getValue();
         }
 
-        this.userAgent = this.userAgent.concat(String.valueOf(value));
+        this.userAgent = this.userAgent + "|F" + value;
     }
 
     public void setSuffix(String suffix) {
