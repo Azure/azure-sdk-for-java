@@ -166,8 +166,8 @@ public class HttpFaultInjectingTests {
     private HttpClient getFaultInjectingWrappedHttpClient() {
         switch (ENVIRONMENT.getHttpClientType()) {
             case NETTY:
-                return HttpClient.createDefault(new HttpClientOptions().readTimeout(Duration.ofSeconds(4))
-                    .responseTimeout(Duration.ofSeconds(4))
+                return HttpClient.createDefault(new HttpClientOptions().readTimeout(Duration.ofSeconds(5))
+                    .responseTimeout(Duration.ofSeconds(5))
                     .setHttpClientProvider(NettyAsyncHttpClientProvider.class));
 
             case OK_HTTP:
