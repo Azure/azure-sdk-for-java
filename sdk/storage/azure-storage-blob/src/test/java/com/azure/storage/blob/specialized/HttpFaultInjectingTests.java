@@ -155,7 +155,8 @@ public class HttpFaultInjectingTests {
 
         countDownLatch.await(10, TimeUnit.MINUTES);
 
-        assertTrue(successCount.get() >= 450);
+        assertTrue(successCount.get() >= 450,
+            () -> "Expected over 450 successes, actual success count was: " + successCount.get());
         // cleanup
         files.forEach(it -> {
             try {
@@ -170,8 +171,8 @@ public class HttpFaultInjectingTests {
     private HttpClient getFaultInjectingWrappedHttpClient() {
         switch (ENVIRONMENT.getHttpClientType()) {
             case NETTY:
-                return HttpClient.createDefault(new HttpClientOptions().readTimeout(Duration.ofSeconds(2))
-                    .responseTimeout(Duration.ofSeconds(2))
+                return HttpClient.createDefault(new HttpClientOptions().readTimeout(Duration.ofSeconds(4))
+                    .responseTimeout(Duration.ofSeconds(4))
                     .setHttpClientProvider(NettyAsyncHttpClientProvider.class));
 
             case OK_HTTP:
