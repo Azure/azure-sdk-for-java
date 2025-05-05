@@ -4,6 +4,7 @@
 package com.azure.core.test.http;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -136,6 +137,15 @@ public class TestProxyPlaybackClient implements HttpClient {
         int retries = 0;
         while (true) {
             try {
+                String message = "Sending request to test proxy. RecordingID " + xRecordingId
+                    + " request: " + request.getUrl();
+                for(HttpHeader entry : request.getHeaders()) {
+                    message += " " + entry.getName() + ": " + entry.getValue();
+                }
+                if (request.getBody() != null) {
+                    message += " body: " + request.getBodyAsBinaryData().toString();
+                }
+                LOGGER.verbose(message);
                 HttpResponse response = client.sendSync(request, Context.NONE);
                 if (response.getStatusCode() / 100 != 2) {
                     String body = response.getBodyAsString().block();
