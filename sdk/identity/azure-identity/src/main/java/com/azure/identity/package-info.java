@@ -243,7 +243,7 @@
  *       <td>{@link com.azure.identity.ClientAssertionCredential}</td>
  *       <td>This credential authenticates a service principal using a signed client assertion.
  *       It allows clients to prove their identity to Microsoft Entra ID without requiring them to disclose their
- *       credentials (such as a  and password). Further, it is recommended to read
+ *       credentials (such as a username and password). Further, it is recommended to read
  *       {@link com.azure.identity.ClientAssertionCredential ClientAssertionCredential JavaDocs} for more
  *       information about the credential usage.</td>
  *     </tr>
@@ -267,10 +267,8 @@
  * username and password to authenticate with Azure resources. In Azure, user credential authentication can be used to
  * authenticate with <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>.</p>
  *
- * <p>The Azure Identity library supports user credentials based authentication via
- * {@link com.azure.identity.InteractiveBrowserCredential} and {@link com.azure.identity.DeviceCodeCredential}.
- * For more information refer to the
- * <a href="https://aka.ms/azsdk/java/identity/usercredential/docs">user credential authentication documentation</a>.
+ * <p>The Azure Identity library supports user credentials-based authentication via
+ * several credentials. For more information, see <a href="https://aka.ms/azsdk/java/identity/usercredential/docs">user credential authentication documentation</a>.
  * </p>
  *
  * <p><strong>Sample: Construct InteractiveBrowserCredential</strong></p>
