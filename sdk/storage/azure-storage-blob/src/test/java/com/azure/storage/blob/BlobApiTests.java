@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
@@ -12,6 +13,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.ProgressListener;
@@ -41,6 +43,7 @@ import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
+import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
@@ -3070,6 +3073,39 @@ public class BlobApiTests extends BlobTestBase {
         BlobClient aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl()).audience(audience).buildClient();
 
         assertTrue(aadBlob.exists());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    @LiveOnly
+    public void copyFromUriSourceBearerTokenFileSource() throws IOException {
+        BlobServiceClient blobServiceClient = getOAuthServiceClient();
+        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
+        containerClient.create();
+
+        byte[] data = getRandomByteArray(Constants.KB);
+
+        // Create destination blob
+        BlockBlobClient destBlob = containerClient.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        // Set up source URL with bearer token
+        String shareName = generateContainerName();
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
+
+        BlobCopyFromUrlOptions blobCopyFromUrlOptions = new BlobCopyFromUrlOptions(sourceUrl);
+        blobCopyFromUrlOptions.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        blobCopyFromUrlOptions.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+
+        // Append block from URL with bearer token
+        destBlob.copyFromUrlWithResponse(blobCopyFromUrlOptions, null, Context.NONE);
+
+        // Validate data was appended correctly
+        ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
+        destBlob.downloadStream(downloadedData);
+        TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
+
+        //cleanup
+        deleteFileShareWithoutDependency(shareName);
     }
 
 }

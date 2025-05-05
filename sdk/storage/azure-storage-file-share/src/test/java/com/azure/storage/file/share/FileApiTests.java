@@ -6,6 +6,7 @@ package com.azure.storage.file.share;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -22,6 +23,7 @@ import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockPartialResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ModeCopyMode;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.ClearRange;
@@ -50,17 +52,21 @@ import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
+import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
+import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
+import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
@@ -84,6 +90,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -3226,5 +3234,113 @@ class FileApiTests extends FileShareTestBase {
         //cleanup
         leaseClient.releaseLease();
         premiumShareClient.delete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void createGetSymbolicLink() throws UnsupportedEncodingException {
+        // Arrange
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
+
+        ShareFileClient source = premiumShareClient.getFileClient(generatePathName());
+        source.create(1024);
+        ShareDirectoryClient directory = premiumShareClient.getRootDirectoryClient();
+        ShareFileClient symlink = directory.getFileClient(generatePathName());
+
+        Map<String, String> metadata = Collections.singletonMap("key", "value");
+        String owner = "345";
+        String group = "123";
+        OffsetDateTime fileCreatedOn = OffsetDateTime.of(2024, 10, 15, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime fileLastWrittenOn = OffsetDateTime.of(2025, 5, 2, 0, 0, 0, 0, ZoneOffset.UTC);
+
+        ShareFileCreateSymbolicLinkOptions options
+            = new ShareFileCreateSymbolicLinkOptions(source.getFileUrl()).setMetadata(metadata)
+                .setFileCreationTime(fileCreatedOn)
+                .setFileLastWriteTime(fileLastWrittenOn)
+                .setOwner(owner)
+                .setGroup(group);
+
+        // Act
+        Response<ShareFileInfo> response = symlink.createSymbolicLinkWithResponse(options, null, null);
+
+        // Assert
+        assertEquals(NfsFileType.SYM_LINK, response.getValue().getPosixProperties().getFileType());
+        assertEquals(owner, response.getValue().getPosixProperties().getOwner());
+        assertEquals(group, response.getValue().getPosixProperties().getGroup());
+        assertEquals(fileCreatedOn, response.getValue().getSmbProperties().getFileCreationTime());
+        assertEquals(fileLastWrittenOn, response.getValue().getSmbProperties().getFileLastWriteTime());
+
+        assertNull(response.getValue().getSmbProperties().getNtfsFileAttributes());
+        assertNull(response.getValue().getSmbProperties().getFilePermissionKey());
+
+        assertNotNull(response.getValue().getSmbProperties().getFileId());
+        assertNotNull(response.getValue().getSmbProperties().getParentId());
+
+        // Act
+        Response<ShareFileSymbolicLinkInfo> getSymLinkResponse = symlink.getSymbolicLinkWithResponse(null, null);
+
+        // Assert
+        assertNotNull(getSymLinkResponse.getValue().getETag());
+        assertNotNull(getSymLinkResponse.getValue().getLastModified().toString());
+
+        if (getTestMode() != TestMode.PLAYBACK) {
+            assertEquals(source.getFileUrl(),
+                URLDecoder.decode(getSymLinkResponse.getValue().getLinkText(), StandardCharsets.UTF_8.toString()));
+        } else {
+            assertTrue(URLDecoder.decode(getSymLinkResponse.getValue().getLinkText(), StandardCharsets.UTF_8.toString())
+                .contains(source.getFilePath()));
+        }
+
+        premiumShareClient.delete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    public void createGetSymbolicLinkError() {
+        // Arrange
+        String shareName = generateShareName();
+        ShareClient premiumShareClient = getPremiumNFSShareClient(shareName);
+
+        ShareDirectoryClient directory = premiumShareClient.getDirectoryClient(generatePathName());
+        ShareFileClient source = directory.getFileClient(generatePathName());
+        ShareFileClient symlink = directory.getFileClient(generatePathName());
+
+        ShareStorageException exception1
+            = assertThrows(ShareStorageException.class, () -> symlink.createSymbolicLink(source.getFileUrl()));
+        assertEquals(ShareErrorCode.PARENT_NOT_FOUND, exception1.getErrorCode());
+
+        ShareStorageException exception2 = assertThrows(ShareStorageException.class, symlink::getSymbolicLink);
+        assertEquals(ShareErrorCode.PARENT_NOT_FOUND, exception2.getErrorCode());
+
+        // Cleanup
+        premiumShareClient.delete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void createGetSymbolicLinkOAuth() {
+        // Arrange
+        ShareServiceClient oauthServiceClient
+            = getOAuthPremiumServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+        ShareClient shareClient = oauthServiceClient
+            .createShareWithResponse(shareName, new ShareCreateOptions().setProtocols(enabledProtocol), null, null)
+            .getValue();
+
+        ShareDirectoryClient directory = shareClient.getDirectoryClient(generatePathName());
+        directory.create();
+
+        ShareFileClient source = directory.getFileClient(generatePathName());
+        source.create(1024);
+        ShareFileClient symlink = directory.getFileClient(generatePathName());
+
+        // Act
+        FileShareTestHelper.assertResponseStatusCode(symlink.createSymbolicLinkWithResponse(
+            new ShareFileCreateSymbolicLinkOptions(source.getFileUrl()), null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(symlink.getSymbolicLinkWithResponse(null, null), 200);
+
+        // Cleanup
+        shareClient.delete();
     }
 }
