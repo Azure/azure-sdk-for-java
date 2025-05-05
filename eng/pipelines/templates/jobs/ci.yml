@@ -251,9 +251,11 @@ jobs:
         parameters:
           UseV2: true
 
-  #     - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
-  #       parameters:
-  #         Artifacts: ${{ parameters.Artifacts }}
+      - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
+        parameters:
+          PackageInfoFiles:
+            - ${{ each artifact in parameters.ReleaseArtifacts }}:
+              - $(Build.ArtifactStagingDirectory)/packages/PackageInfo/${{artifact.name}}.json
 
   #     - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
