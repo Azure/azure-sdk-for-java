@@ -555,7 +555,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             String userAgentSuffix = this.connectionPolicy.getUserAgentSuffix();
 
-            if (userAgentSuffix != null && userAgentSuffix.length() > 0) {
+            if (userAgentSuffix != null && !userAgentSuffix.isEmpty()) {
                 userAgentContainer.setSuffix(userAgentSuffix);
             }
 
@@ -567,21 +567,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
 
-            // Accumulate cross-region availability client-side opt-ins for additional context in user agent.
-            EnumSet<UserAgentFeatureFlags> userAgentFeatureFlags = EnumSet.allOf(UserAgentFeatureFlags.class);
-
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManager);
             this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
                 = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.globalEndpointManager, isPerPartitionAutomaticFailoverEnabled);
-
-            if (!this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
-                userAgentFeatureFlags.remove(UserAgentFeatureFlags.PerPartitionAutomaticFailover);
-            }
-
-            if (!this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig().isPartitionLevelCircuitBreakerEnabled()) {
-                userAgentFeatureFlags.remove(UserAgentFeatureFlags.PerPartitionCircuitBreaker);
-            }
 
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
             this.cachedCosmosAsyncClientSnapshot = new AtomicReference<>();
@@ -786,7 +775,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 (ConsistencyLevel.SESSION != effectiveConsistencyLevel && !sessionCapturingOverrideEnabled);
             this.sessionContainer.setDisableSessionCapturing(updatedDisableSessionCapturing);
 
-            this.addUserAgentSuffix(userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
+            this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
