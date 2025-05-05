@@ -167,7 +167,8 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
     protected boolean handleResponse(ChannelHandlerContext ctx, Object o) throws ProxyConnectException {
         if (o instanceof HttpResponse) {
             if (status != null) {
-                throw LOGGER.throwableAtWarning().log("Received too many responses for a request", RuntimeException::new);
+                throw LOGGER.throwableAtWarning()
+                    .log("Received too many responses for a request", RuntimeException::new);
             }
 
             HttpResponse response = (HttpResponse) o;
@@ -258,8 +259,13 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
             String receivedValue = authenticationInfoPieces.get(name);
 
             if (!receivedValue.equalsIgnoreCase(sentValue)) {
-                throw LOGGER.logThrowableAsError(new IllegalStateException(
-                    String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", name)
+                    .addKeyValue("sent", sentValue)
+                    .addKeyValue("received", receivedValue)
+                    .log(
+                        "Property sent in 'Proxy-Authentication-Info' header doesn't match the value sent in the 'Proxy-Authorization' header",
+                        IllegalStateException::new);
             }
         }
     }

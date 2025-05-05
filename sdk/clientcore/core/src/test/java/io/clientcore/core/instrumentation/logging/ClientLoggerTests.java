@@ -322,8 +322,8 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         IllegalStateException illegalStateException = createIllegalStateException(exceptionMessage);
 
-        assertInstanceOf(IllegalStateException.class,
-            setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsError(illegalStateException));
+        assertInstanceOf(IllegalStateException.class, setupLogLevelAndGetLogger(logLevelToConfigure).throwableAtError()
+            .log(exceptionMessage, (m, __) -> createIllegalStateException(m)));
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage));
@@ -339,10 +339,10 @@ public class ClientLoggerTests {
     public void logCheckedExceptionAsError(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
-        IOException ioException = createIOException(exceptionMessage);
 
-        assertInstanceOf(IOException.class,
-            setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsError(ioException));
+        IOException ioException
+            = assertInstanceOf(IOException.class, setupLogLevelAndGetLogger(logLevelToConfigure).throwableAtError()
+                .log(exceptionMessage, (m, c) -> createIOException(m)));
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage));

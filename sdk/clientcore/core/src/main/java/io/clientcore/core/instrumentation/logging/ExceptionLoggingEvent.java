@@ -82,6 +82,19 @@ public class ExceptionLoggingEvent {
      * Logs the exception with the provided short message.
      * The full exception message is enriched with the context of the log event.
      *
+     * @param throwableFactory Factory method to create the exception using message augmented with additional context
+     *                         and the cause of the exception.
+     * @param <T> The type of the exception to be created.
+     * @return The created exception.
+     */
+    public <T extends Throwable> T log(BiFunction<String, Throwable, T> throwableFactory) {
+        return logImpl(null, throwableFactory.apply(log.getExceptionMessageWithContext(null, null), null));
+    }
+
+    /**
+     * Logs the exception with the provided short message.
+     * The full exception message is enriched with the context of the log event.
+     *
      * @param shortMessage The short message to log.
      * @param throwableFactory Factory method to create the exception using message augmented with additional context
      *                         and the cause of the exception.

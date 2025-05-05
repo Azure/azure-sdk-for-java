@@ -59,7 +59,7 @@ public abstract class CoreException extends RuntimeException {
      * @param isRetryable whether the exception is retryable. When in doubt, set to {@code true}.
      * @return the {@link CoreException} that was created
      */
-    static CoreException from(String message, Throwable cause, boolean isRetryable) {
+    public static CoreException from(String message, Throwable cause, boolean isRetryable) {
         String updatedMessage = message;
         Throwable updatedCause = cause;
         if (cause instanceof CoreException) {

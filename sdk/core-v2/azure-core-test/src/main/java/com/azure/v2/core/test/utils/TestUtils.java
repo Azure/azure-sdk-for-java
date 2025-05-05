@@ -129,7 +129,7 @@ public final class TestUtils {
         try {
             return url.toURI();
         } catch (URISyntaxException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(ex));
+            throw LOGGER.throwableAtError().log(ex, IllegalStateException::new);
         }
     }
 

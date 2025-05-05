@@ -83,7 +83,7 @@ public class ClientLoggerJavaDocCodeSnippets {
         try {
             upload(resource);
         } catch (IOException ex) {
-            throw logger.logThrowableAsError(ex);
+            throw logger.throwableAtError().log(ex, CoreException::from);
         }
         // END: io.clientcore.core.instrumentation.logging.clientlogger.error
 

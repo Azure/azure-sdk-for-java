@@ -70,8 +70,8 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
     @Override
     public PollResponse<T> poll(PollingContext<T> context, Type pollResponseType) {
-        throw LOGGER
-            .logThrowableAsError(new IllegalStateException("StatusCheckPollingStrategy doesn't support polling"));
+        throw LOGGER.throwableAtError()
+            .log("StatusCheckPollingStrategy doesn't support polling", IllegalStateException::new);
     }
 
     @Override

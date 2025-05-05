@@ -236,7 +236,8 @@ public final class ProxyAuthenticator implements Authenticator {
                     .addKeyValue("sentValue", sentValue)
                     .addKeyValue("receivedValue", receivedValue)
                     .log(
-                        "Received 'Proxy-Authentication-Info' does not match value sent in the 'Proxy-Authorization' header.", IllegalStateException::new);
+                        "Received 'Proxy-Authentication-Info' does not match value sent in the 'Proxy-Authorization' header.",
+                        IllegalStateException::new);
             }
         }
     }

@@ -168,9 +168,10 @@ public class HttpPipelineBuilder {
         } else if (order == HttpPipelinePosition.AFTER_INSTRUMENTATION) {
             afterInstrumentation.add(policy);
         } else {
-            String exceptionMessage
-                = String.format("%s policy has unexpected position '%s'.", policy.getClass().getCanonicalName(), order);
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(exceptionMessage));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("policyType", policy.getClass().getCanonicalName())
+                .addKeyValue("position", order.getValue())
+                .log("Policy has unexpected position.", IllegalArgumentException::new);
         }
 
         return this;

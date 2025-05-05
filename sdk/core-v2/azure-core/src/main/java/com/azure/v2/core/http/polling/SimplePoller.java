@@ -6,6 +6,7 @@ package com.azure.v2.core.http.polling;
 import com.azure.v2.core.implementation.polling.PollContextRequiredException;
 import com.azure.v2.core.implementation.polling.PollingUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -92,7 +93,7 @@ final class SimplePoller<T, U> implements Poller<T, U> {
         try {
             pollingSemaphore.acquire();
         } catch (InterruptedException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
 
         try {

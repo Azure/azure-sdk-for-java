@@ -99,21 +99,6 @@ public class ClientLogger {
     }
 
     /**
-     * Logs the {@link Throwable} at the error level and returns it to be thrown.
-     * <p>
-     * This API covers the cases where a checked exception type needs to be thrown and logged.
-     *
-     * @param throwable Throwable to be logged and returned.
-     * @param <T> Type of the Throwable being logged.
-     * @return The passed {@link Throwable}.
-     * @throws NullPointerException If {@code throwable} is {@code null}.
-     */
-    public <T extends Throwable> T logThrowableAsError(T throwable) {
-        LoggingEvent.create(logger, LogLevel.ERROR, globalContext).setThrowable(throwable).log();
-        return throwable;
-    }
-
-    /**
      * Determines if the app or environment logger support logging at the given log level.
      *
      * @param logLevel Logging level for the log message.

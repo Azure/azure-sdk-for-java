@@ -13,6 +13,7 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.utils.CoreUtils;
@@ -112,8 +113,8 @@ public final class PollingUtils {
                 if (intermediatePollResponse.getStatus().equals(statusToWaitFor) || isWaitForStatus) {
                     return intermediatePollResponse;
                 } else {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(
-                        new TimeoutException("Polling didn't complete before the timeout period.")));
+                    throw LOGGER.throwableAtError()
+                        .log("Polling didn't complete before the timeout period.", CoreException::from);
                 }
             }
 
@@ -140,7 +141,7 @@ public final class PollingUtils {
                 if (isWaitForStatus) {
                     return intermediatePollResponse;
                 }
-                throw LOGGER.logThrowableAsError(new RuntimeException(e));
+                throw LOGGER.throwableAtError().log(e, CoreException::from);
             }
         }
 

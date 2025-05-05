@@ -15,6 +15,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonSerializer;
@@ -176,17 +177,15 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
             return new PollResponse<>(status,
                 PollingUtils.deserializeResponse(responseBody, serializer, pollResponseType), retryAfter);
-        } catch (Exception e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
     }
 
     @Override
     public U getResult(PollingContext<T> pollingContext, Type resultType) {
         if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {
-            throw LOGGER.logThrowableAsError(new RuntimeException("Long-running operation failed."));
+            throw LOGGER.throwableAtError().log("Long-running operation failed.", CoreException::from);
         } else if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
-            throw LOGGER.logThrowableAsError(new RuntimeException("Long-running operation cancelled."));
+            throw LOGGER.throwableAtError().log("Long-running operation cancelled.", CoreException::from);
         }
 
         String finalGetUrl;
@@ -197,7 +196,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
         } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)) {
             finalGetUrl = pollingContext.getData(PollingConstants.LOCATION);
         } else {
-            throw LOGGER.logThrowableAsError(new RuntimeException("Cannot get final result"));
+            throw LOGGER.throwableAtError().log("Cannot get final result", CoreException::from);
         }
 
         if (finalGetUrl == null) {
@@ -212,8 +211,6 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             BinaryData responseBody = response.getValue();
             return PollingUtils.deserializeResponse(responseBody, serializer, resultType);
-        } catch (Exception e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
     }
 

@@ -35,10 +35,10 @@ public final class SliceInputStream extends InputStream {
     public SliceInputStream(InputStream inputStream, long position, long count) {
         this.innerStream = Objects.requireNonNull(inputStream, "'inputStream' cannot be null");
         if (position < 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'position' cannot be negative"));
+            throw LOGGER.throwableAtError().log("'position' cannot be negative", IllegalArgumentException::new);
         }
         if (count < 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'count' cannot be negative"));
+            throw LOGGER.throwableAtError().log("'count' cannot be negative", IllegalArgumentException::new);
         }
         this.startOfSlice = position;
         this.endOfSlice = position + count;
@@ -129,7 +129,7 @@ public final class SliceInputStream extends InputStream {
         try {
             ensureInWindow();
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
         innerStream.mark(readlimit);
         mark = innerPosition;

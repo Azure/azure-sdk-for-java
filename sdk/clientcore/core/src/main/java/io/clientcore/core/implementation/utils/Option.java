@@ -77,7 +77,7 @@ public final class Option<T> {
      */
     public T getValue() {
         if (!this.isInitialized) {
-            throw LOGGER.logThrowableAsError(new NoSuchElementException("No value initialized"));
+            throw LOGGER.throwableAtError().log("No value initialized", (m, __) -> new NoSuchElementException(m));
         }
         return this.value;
     }

@@ -62,7 +62,7 @@ public class KeyCredentialPolicy extends HttpCredentialPolicy {
         Objects.requireNonNull(name, "'name' cannot be null.");
 
         if (name.isEmpty()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be empty.", IllegalArgumentException::new);
         }
 
         return HttpHeaderName.fromString(name);
