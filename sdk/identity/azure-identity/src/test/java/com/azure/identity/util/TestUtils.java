@@ -156,30 +156,18 @@ public final class TestUtils {
      * @param delay If specified, throw a {@code RuntimeException} after the specified delay.
      * @return A mock HttpClient that returns the provided responses.
      */
-    public static HttpClient getMockHttpClient(Duration delay, HttpResponse... responses) {
+    public static HttpClient getMockHttpClient(HttpResponse... responses) {
         return new HttpClient() {
             int index = 0;
 
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
-                if (delay != null) {
-                    try {
-                        Thread.sleep(delay.toMillis());
-                        throw new InterruptedException("Simulated delay");
-                    } catch (InterruptedException e) {
-                        return Mono.error(e);
-                    }
-                }
                 if (index >= responses.length) {
                     throw new IllegalStateException("No more responses available");
                 }
                 return Mono.just(responses[index++]);
             }
         };
-    }
-
-    public static HttpClient getMockHttpClient(HttpResponse... responses) {
-        return getMockHttpClient(null, responses);
     }
 
     /**
