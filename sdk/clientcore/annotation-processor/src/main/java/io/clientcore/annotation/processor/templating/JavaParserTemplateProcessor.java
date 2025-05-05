@@ -14,10 +14,8 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.Name;
-import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
-import com.github.javaparser.ast.expr.UnaryExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
@@ -31,7 +29,6 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.utils.UriEscapers;
@@ -547,47 +544,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     private void finalizeHttpRequest(BlockStmt body, TypeMirror returnTypeName, HttpRequestContext method,
         boolean serializationFormatSet) {
         body.tryAddImportToParentCompilationUnit(Response.class);
-
-        Statement statement = StaticJavaParser
-            .parseStatement("Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);");
-        statement.setLineComment("\n Send the request through the httpPipeline");
-        body.addStatement(statement);
-
-        if (!method.getExpectedStatusCodes().isEmpty()) {
-            validateResponseStatus(body, method);
-        }
-
         generateResponseHandling(body, returnTypeName, method, serializationFormatSet);
-    }
-
-    private void validateResponseStatus(BlockStmt body, HttpRequestContext method) {
-        if (method.getExpectedStatusCodes().isEmpty()) {
-            return;
-        }
-
-        body.addStatement(StaticJavaParser.parseStatement("int responseCode = networkResponse.getStatusCode();"));
-        String expectedResponseCheck;
-        if (method.getExpectedStatusCodes().size() == 1) {
-            expectedResponseCheck = "responseCode == " + method.getExpectedStatusCodes().get(0) + ";";
-        } else {
-            String statusCodes = method.getExpectedStatusCodes()
-                .stream()
-                .map(code -> "responseCode == " + code)
-                .collect(Collectors.joining(" || "));
-            expectedResponseCheck = "(" + statusCodes + ");";
-        }
-        body.addStatement(StaticJavaParser.parseStatement("boolean expectedResponse = " + expectedResponseCheck));
-
-        body.tryAddImportToParentCompilationUnit(HttpResponseException.class);
-        BlockStmt ifBlock = new BlockStmt();
-        ifBlock.addStatement(
-            StaticJavaParser.parseStatement("String errorMessage = networkResponse.getValue().toString();"));
-        ifBlock.addStatement(StaticJavaParser.parseStatement("networkResponse.close();"));
-        ifBlock.addStatement(
-            StaticJavaParser.parseStatement("throw new HttpResponseException(errorMessage, networkResponse, null);"));
-        IfStmt ifStmt = new IfStmt()
-            .setCondition(new UnaryExpr(new NameExpr("expectedResponse"), UnaryExpr.Operator.LOGICAL_COMPLEMENT))
-            .setThenStmt(ifBlock);
-        body.addStatement(ifStmt);
     }
 }
