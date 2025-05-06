@@ -657,7 +657,7 @@ public final class ConfigurationClient {
                 return new Response<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
                     httpResponse.getHeaders(), null);
             }
-            throw LOGGER.logThrowableAsError(ex);
+            throw ex;
         }
     }
 
