@@ -284,6 +284,7 @@ def get_and_update_service_from_api_specs(
     api_specs_file: str,
     spec: str,
     service: str = None,
+    truncate_service=False,
 ):
     SPECIAL_SPEC = {"resources"}
     if spec in SPECIAL_SPEC:
@@ -299,6 +300,15 @@ def get_and_update_service_from_api_specs(
             service = api_spec.get("service")
         if not service:
             service = spec
+            # remove "Microsoft.##" segment
+            service = re.sub(r"/Microsoft\.[^/]+", "", service)
+            service = valid_service(service)
+            # truncate length of service to 32, as this is the maximum length for package name in Java repository
+            if truncate_service:
+                max_length = 32
+                if len(service) > max_length:
+                    logging.warning(f'[VALIDATE] service name truncated from "{service}" to "{service[:max_length]}"')
+                    service = service[:max_length]
     service = valid_service(service)
 
     if service != spec:
