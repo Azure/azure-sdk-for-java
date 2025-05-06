@@ -41,6 +41,7 @@ import com.azure.spring.cloud.feature.management.targeting.TargetingContext;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 import com.azure.spring.cloud.feature.management.targeting.TargetingFilterContext;
+import com.azure.spring.cloud.feature.management.telemetry.TelemetryPublisher;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -63,6 +64,8 @@ public class FeatureManager {
     private final TargetingContextAccessor contextAccessor;
 
     private final TargetingEvaluationOptions evaluationOptions;
+    
+    private final TelemetryPublisher telemetryPublisher;
 
     /**
      * Used to evaluate the enabled state of a feature and/or get the assigned variant of a feature, if any.
@@ -75,12 +78,13 @@ public class FeatureManager {
      */
     FeatureManager(ApplicationContext context, FeatureManagementProperties featureManagementConfigurations,
         FeatureManagementConfigProperties properties, TargetingContextAccessor contextAccessor,
-        TargetingEvaluationOptions evaluationOptions) {
+        TargetingEvaluationOptions evaluationOptions, TelemetryPublisher telemetryPublisher) {
         this.context = context;
         this.featureManagementConfigurations = featureManagementConfigurations;
         this.properties = properties;
         this.contextAccessor = contextAccessor;
         this.evaluationOptions = evaluationOptions;
+        this.telemetryPublisher = telemetryPublisher;
     }
 
     /**
@@ -181,7 +185,13 @@ public class FeatureManager {
 
     private Mono<EvaluationEvent> checkFeature(String featureName, Object featureContext)
         throws FilterNotFoundException {
-        Feature featureFlag = featureManagementConfigurations.getFeatureFlags().stream()
+        List<Feature> featureFlags = featureManagementConfigurations.getFeatureFlags();
+        
+        if (featureFlags == null) {
+            return Mono.just(new EvaluationEvent(null));
+        }
+        
+        Feature featureFlag = featureFlags.stream()
             .filter(feature -> feature.getId().equals(featureName)).findAny().orElse(null);
 
         EvaluationEvent event = new EvaluationEvent(featureFlag);
@@ -193,14 +203,23 @@ public class FeatureManager {
 
         if (!featureFlag.isEnabled()) {
             this.assignDefaultDisabledReason(event);
+            event.setEnabled(false);
+            if (telemetryPublisher != null && featureFlag.getTelemetry().isEnabled()) {
+                telemetryPublisher.publishTelemetry(event);
+            }
 
             // If a feature flag is disabled and override can't enable it
-            return Mono.just(event.setEnabled(false));
+            return Mono.just(event);
         }
 
         Mono<EvaluationEvent> result = this.checkFeatureFilters(event, featureContext);
 
         result = assignAllocation(result);
+        result = result.doOnSuccess(resultEvent -> {
+            if (telemetryPublisher != null && featureFlag.getTelemetry().isEnabled()) {
+                telemetryPublisher.publishTelemetry(resultEvent);
+            } 
+        });
         return result;
     }
 

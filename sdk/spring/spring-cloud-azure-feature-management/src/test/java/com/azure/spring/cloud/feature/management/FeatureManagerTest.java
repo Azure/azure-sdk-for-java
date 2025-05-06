@@ -30,9 +30,12 @@ import com.azure.spring.cloud.feature.management.filters.TimeWindowFilter;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.management.models.Conditions;
+import com.azure.spring.cloud.feature.management.models.EvaluationEvent;
 import com.azure.spring.cloud.feature.management.models.Feature;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
+import com.azure.spring.cloud.feature.management.models.Telemetry;
+import com.azure.spring.cloud.feature.management.telemetry.TelemetryPublisher;
 
 /**
  * Unit tests for FeatureManager.
@@ -51,12 +54,15 @@ public class FeatureManagerTest {
     @Mock
     private FeatureManagementProperties featureManagementPropertiesMock;
 
+    @Mock
+    private TelemetryPublisher telemetryPublisher;
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
         when(properties.isFailFast()).thenReturn(true);
 
-        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null, null);
+        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null, null, telemetryPublisher);
     }
 
     @AfterEach
@@ -209,6 +215,36 @@ public class FeatureManagerTest {
         when(context.getBean(Mockito.matches("TimeWindowFilter"))).thenReturn(new TimeWindowFilter());
 
         assertTrue(featureManager.isEnabled("Alpha"));
+    }
+
+    @Test
+    public void telemetryPublisherCalledWhenFeatureEnabledWithTelemetry() {
+        List<Feature> features = List.of(new Feature().setId("EnabledFeatureWithTelemetry").setEnabled(true)
+            .setTelemetry(new Telemetry().setEnabled(true)));
+        when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
+
+        assertTrue(featureManager.isEnabled("EnabledFeatureWithTelemetry"));
+        verify(telemetryPublisher, times(1)).publishTelemetry(Mockito.any(EvaluationEvent.class));
+    }
+
+    @Test
+    public void telemetryPublisherNotCalledWhenTelemetryDisabled() {
+        List<Feature> features = List.of(new Feature().setId("FeatureWithTelemetryDisabled").setEnabled(true)
+            .setTelemetry(new Telemetry().setEnabled(false)));
+        when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
+
+        assertTrue(featureManager.isEnabled("FeatureWithTelemetryDisabled"));
+        verify(telemetryPublisher, times(0)).publishTelemetry(Mockito.any(EvaluationEvent.class));
+    }
+
+    @Test
+    public void telemetryPublisherCalledWhenFeatureDisabledWithTelemetry() {
+        List<Feature> features = List.of(new Feature().setId("DisabledFeatureWithTelemetry").setEnabled(false)
+            .setTelemetry(new Telemetry().setEnabled(true)));
+        when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
+
+        assertFalse(featureManager.isEnabled("DisabledFeatureWithTelemetry"));
+        verify(telemetryPublisher, times(1)).publishTelemetry(Mockito.any(EvaluationEvent.class));
     }
 
     class AlwaysOnFilter implements FeatureFilter {

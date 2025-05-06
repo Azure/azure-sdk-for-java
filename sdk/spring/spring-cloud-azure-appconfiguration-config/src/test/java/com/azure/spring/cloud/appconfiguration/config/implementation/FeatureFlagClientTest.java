@@ -4,7 +4,6 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.E_TAG;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_ID;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_REFERENCE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.DEFAULT_ROLLOUT_PERCENTAGE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_LABEL;
@@ -17,6 +16,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -184,13 +184,49 @@ public class FeatureFlagClientTest {
     @Test
     public void testFeatureFlagTelemetry() {
         Feature feature = FeatureFlagClient.createFeature(TELEMETRY_FEATURE, TEST_ENDPOINT);
-
-        String featureFlagId = "yON6V7DTGfVgOKfnPtue_2hS-CFVV5ecv-dcjqCFQt4";
         String featureFlagReference = String.format("%s/kv/%s", TEST_ENDPOINT, ".appconfig.featureflag/Delta");
 
-        assertEquals(featureFlagId, feature.getTelemetry().getMetadata().get(FEATURE_FLAG_ID));
         assertEquals(featureFlagReference, feature.getTelemetry().getMetadata().get(FEATURE_FLAG_REFERENCE));
         assertEquals(TEST_E_TAG, feature.getTelemetry().getMetadata().get(E_TAG));
     }
 
+    @Test
+    public void testAllocationIdInTelemetry() {
+        Feature feature = FeatureFlagClient.createFeature(TELEMETRY_FEATURE, TEST_ENDPOINT);
+
+        assertEquals("wz4oTwm3SjARe1SrmzT7", feature.getTelemetry().getMetadata().get("AllocationId"));
+
+        feature = FeatureFlagClient.createFeature(ALL_FEATURE, TEST_ENDPOINT);
+        assertNull(feature.getTelemetry());
+    }
+
+    @Test
+    public void testAllocationIdWithDifferentSeed() {
+        FeatureFlagConfigurationSetting featureFlag = createItemFeatureFlag(
+            ".appconfig.featureflag/", "TestFeature",
+            "{\"allocation\":{\"seed\":\"newSeed\"},\"telemetry\":{\"enabled\":true}}", FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+
+        Feature feature = FeatureFlagClient.createFeature(featureFlag, TEST_ENDPOINT);
+        assertEquals("RkxUK5CoaOaNWBjc55Mi", feature.getTelemetry().getMetadata().get("AllocationId"));
+    }
+
+    @Test
+    public void testAllocationIdWithVariants() {
+        String flagValue = "{\"allocation\": { \"percentile\": [{\"variant\": \"Off\", \"from\": 0, \"to\": 50}, {\"variant\": \"On\", \"from\": 50, \"to\": 100}], \"default_when_enabled\": \"Off2\", \"default_when_disabled\": \"Off\" }, \"telemetry\": {\"enabled\": true}}";
+        FeatureFlagConfigurationSetting featureFlag = createItemFeatureFlag(
+            ".appconfig.featureflag/", "TestFeature", flagValue, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+
+        Feature feature = FeatureFlagClient.createFeature(featureFlag, TEST_ENDPOINT);
+        assertEquals("wGzzPy4qGy92SHnMtSvY", feature.getTelemetry().getMetadata().get("AllocationId"));
+    }
+
+    @Test
+    public void testAllocationIdWithEmptyAllocation() {
+        FeatureFlagConfigurationSetting featureFlag = createItemFeatureFlag(
+            ".appconfig.featureflag/", "TestFeature",
+            "{\"allocation\":{},\"telemetry\":{\"enabled\":true}}}", FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+
+        Feature feature = FeatureFlagClient.createFeature(featureFlag, TEST_ENDPOINT);
+        assertNull(feature.getTelemetry().getMetadata().get("AllocationId"));
+    }
 }

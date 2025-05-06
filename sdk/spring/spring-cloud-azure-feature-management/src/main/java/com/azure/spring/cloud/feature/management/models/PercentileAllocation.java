@@ -60,10 +60,14 @@ public class PercentileAllocation {
      * in the feature flag configuration.
      * 
      * @param variant the variant name to assign for this percentile range
+     * @return the updated PercentileAllocation instance for method chaining
      */
-    public void setVariant(String variant) {
+    public PercentileAllocation setVariant(String variant) {
         this.variant = variant;
-    }    /**
+        return this;
+    }
+
+    /**
      * Gets the lower bound of the percentage range for this variant allocation.
      * This represents the starting point of the percentile range where users will be
      * assigned to this variant. The value is inclusive and typically between 0.0 and 100.0.
@@ -81,10 +85,15 @@ public class PercentileAllocation {
      * and less than the 'to' value.
      * 
      * @param from the lower bound percentage value to set for this allocation
+     * @return the updated PercentileAllocation instance for method chaining
      */
-    public void setFrom(Double from) {
+    public PercentileAllocation setFrom(Double from) {
         this.from = from;
-    }    /**
+        return this;
+    }
+
+
+    /**
      * Gets the upper bound of the percentage range for this variant allocation.
      * <p>
      * This value is exclusive (users with computed hash values strictly less than this value will be assigned to this variant),
@@ -107,9 +116,11 @@ public class PercentileAllocation {
      * </p>
      * 
      * @param to the upper bound percentage value to set for this allocation
+     * @return the updated PercentileAllocation instance for method chaining
      */
-    public void setTo(Double to) {
+    public PercentileAllocation setTo(Double to) {
         this.to = to;
+        return this;
     }
 
 }

@@ -21,6 +21,8 @@ import com.azure.spring.cloud.feature.management.implementation.FeatureManagemen
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
+import com.azure.spring.cloud.feature.management.telemetry.LoggerTelemetryPublisher;
+import com.azure.spring.cloud.feature.management.telemetry.TelemetryPublisher;
 
 /**
  * Configuration for setting up FeatureManager
@@ -41,7 +43,7 @@ class FeatureManagementConfiguration implements ApplicationContextAware {
      */
     @Bean
     FeatureManager featureManager(FeatureManagementProperties featureManagementConfigurations,
-        FeatureManagementConfigProperties properties,
+        FeatureManagementConfigProperties properties, TelemetryPublisher telemetryPublisher,
         ObjectProvider<TargetingContextAccessor> contextAccessorProvider,
         ObjectProvider<TargetingEvaluationOptions> evaluationOptionsProvider) {
 
@@ -50,7 +52,7 @@ class FeatureManagementConfiguration implements ApplicationContextAware {
             .getIfAvailable(() -> new TargetingEvaluationOptions());
 
         return new FeatureManager(appContext, featureManagementConfigurations, properties, contextAccessor,
-            evaluationOptions);
+            evaluationOptions, telemetryPublisher);
     }
 
     @Override
@@ -76,5 +78,11 @@ class FeatureManagementConfiguration implements ApplicationContextAware {
     @ConditionalOnBean(TargetingContextAccessor.class)
     public TargetingFilter targettingFilter(TargetingContextAccessor context) {
         return new TargetingFilter(context, new TargetingEvaluationOptions().setIgnoreCase(true));
+    }
+    
+    @Bean
+    @ConditionalOnMissingBean(TelemetryPublisher.class)
+    public TelemetryPublisher telemetryPublisher() {
+        return new LoggerTelemetryPublisher();
     }
 }

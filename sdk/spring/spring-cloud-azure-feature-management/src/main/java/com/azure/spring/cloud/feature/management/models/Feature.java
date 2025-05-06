@@ -67,6 +67,14 @@ public class Feature {
      */
     @JsonProperty("variants")
     private List<VariantReference> variants;
+    
+    /**
+     * The telemetry configuration for this feature flag.
+     * Controls whether events related to this feature are logged
+     * and what additional metadata is included.
+     */
+    @JsonProperty("telemetry")
+    private Telemetry telemetry = new Telemetry();
 
     /**
      * Gets the unique identifier of this feature flag.
@@ -152,7 +160,7 @@ public class Feature {
         this.conditions = conditions;
         return this;
     }
-  
+
     /**
      * Gets the allocation strategy for this feature flag when using variants.
      * The allocation defines how users or requests are assigned to specific variants
@@ -200,4 +208,29 @@ public class Feature {
         this.variants = variants;
         return this;
     }
+
+    /**
+     * Gets the telemetry configuration for this feature flag.
+     * The telemetry configuration controls whether events related to this 
+     * feature flag should be logged and what additional metadata should be included.
+     * 
+     * @return the telemetry configuration for this feature flag
+     */
+    public Telemetry getTelemetry() {
+        return telemetry;
+    }
+
+    /**
+     * Sets the telemetry configuration for this feature flag.
+     * This controls whether events related to this feature flag 
+     * should be logged and what additional metadata should be included.
+     * 
+     * @param telemetry the telemetry configuration to set for this feature flag
+     * @return the updated Feature instance for method chaining
+     */
+    public Feature setTelemetry(Telemetry telemetry) {
+        this.telemetry = telemetry;
+        return this;
+    }
+
 }

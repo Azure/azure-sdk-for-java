@@ -90,6 +90,12 @@
       <version>1.15.11</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.5.18</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

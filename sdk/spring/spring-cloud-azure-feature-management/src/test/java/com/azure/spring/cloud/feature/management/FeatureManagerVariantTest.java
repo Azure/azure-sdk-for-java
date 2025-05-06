@@ -57,7 +57,7 @@ public class FeatureManagerVariantTest {
         when(properties.isFailFast()).thenReturn(true);
 
         featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, contextAccessorMock,
-            null);
+            null, null);
     }
 
     @AfterEach
@@ -80,7 +80,7 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void noAssigner() {
-        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null, null);
+        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null, null, null);
         List<Feature> features = List.of(new Feature().setId("No Assigner").setVariants(createVariants()));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
