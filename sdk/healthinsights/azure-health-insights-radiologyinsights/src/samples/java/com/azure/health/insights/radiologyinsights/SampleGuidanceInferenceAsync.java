@@ -62,7 +62,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.function.Predicate;
 
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document
+ * The SampleGuidanceInferenceAsync class processes a sample radiology document
  * with the Radiology Insights service. It will initialize an asynchronous
  * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the
  * results and display the Guidance extracted by the Radiology Insights service.
