@@ -44,9 +44,6 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec
  * This class handles authorizing requests being sent through a proxy that requires authentication.
  */
 public final class Netty4HttpProxyHandler extends ProxyHandler {
-    static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' "
-        + "header doesn't match the value sent in the 'Proxy-Authorization' header. Sent: %s, received: %s.";
-
     private static final String PROXY_AUTHENTICATION_INFO = "Proxy-Authentication-Info";
     private static final HttpHeaderName PROXY_AUTHENTICATION_INFO_NAME
         = HttpHeaderName.fromString(PROXY_AUTHENTICATION_INFO);
@@ -264,7 +261,7 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
                     .addKeyValue("sent", sentValue)
                     .addKeyValue("received", receivedValue)
                     .log(
-                        "Property sent in 'Proxy-Authentication-Info' header doesn't match the value sent in the 'Proxy-Authorization' header",
+                        "Property received in the 'Proxy-Authentication-Info' header doesn't match the value sent in the 'Proxy-Authorization' header",
                         IllegalStateException::new);
             }
         }

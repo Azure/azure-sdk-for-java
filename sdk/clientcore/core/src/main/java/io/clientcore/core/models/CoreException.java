@@ -20,7 +20,7 @@ import java.io.UncheckedIOException;
  */
 public abstract class CoreException extends RuntimeException {
     /**
-     * Translates a {@link Throwable} into a {@link CoreException}.
+     * Creates a new {@link CoreException} with the specified message.
      *
      * @param message the exception message
      * @return the {@link CoreException} that was created
