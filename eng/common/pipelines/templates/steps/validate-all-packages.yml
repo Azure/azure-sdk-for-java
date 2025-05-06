@@ -49,7 +49,7 @@ steps:
           scriptType: pscore
           scriptLocation: inlineScript
           inlineScript: |
-            $(Build.SourcesDirectory)/eng/common/scripts/Validate-All-Packages2.ps1 `
+            $(Build.SourcesDirectory)/eng/common/scripts/Validate-All-PackagesV2.ps1 `
               -PackageInfoFiles ('${{ convertToJson(parameters.PackageInfoFiles) }}'.Replace("\", "\\").Replace("\\", "/") | ConvertFrom-Json -NoEnumerate) `
               -ArtifactPath ${{ parameters.ArtifactPath }} `
               -RepoRoot $(Build.SourcesDirectory) `
