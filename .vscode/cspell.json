@@ -1371,6 +1371,13 @@
         "gcch",
         "updation" // current typo in a swagger
       ]
+    },
+    {
+      "filename": "sdk/keyvault-v2/README.md",
+      "words": [
+        "FIPS",
+        "mhsm"
+      ]
     }
   ],
   "allowCompoundWords": true
