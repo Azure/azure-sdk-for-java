@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.Response;
-import io.clientcore.core.models.binarydata.BinaryData;
-
 /**
  * This class is exactly the same as {@link HttpPipelinePolicy} but exists to provide a standard parent class for all
  * credential policies and to differentiate them from other forms of {@link HttpPipelinePolicy}s.
