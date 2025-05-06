@@ -111,11 +111,6 @@ public final class TestInterfaceClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100", expectedStatusCodes = { 200 })
         byte[] getByteArray(@HostParam("uri") String uri);
 
-        // Service 2
-        @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/{numberOfBytes}", expectedStatusCodes = { 200 })
-        byte[] getByteArray(@HostParam("scheme") String scheme, @HostParam("hostName") String hostName,
-            @PathParam(value = "numberOfBytes", encoded = true) int numberOfBytes);
-
         // Service 3
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100", expectedStatusCodes = { 200 })
         void getNothing(@HostParam("uri") String uri);
@@ -349,10 +344,6 @@ public final class TestInterfaceClientImpl {
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
         HttpBinJSON putByteArray(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "get", expectedStatusCodes = { 200 })
-        HttpBinJSON get(@HostParam("scheme") String scheme, @HostParam("hostPart1") String hostPart1,
-            @HostParam("hostPart2") String hostPart2);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "status/200")
         void getStatus200(@HostParam("uri") String uri);

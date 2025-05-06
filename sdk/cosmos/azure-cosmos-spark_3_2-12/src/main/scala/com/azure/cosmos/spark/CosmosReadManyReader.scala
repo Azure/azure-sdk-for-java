@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosException
+import com.azure.cosmos.{CosmosException, ReadConsistencyStrategy}
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
@@ -47,7 +47,7 @@ private[spark] class CosmosReadManyReader(
           CosmosClientCache(
             CosmosClientConfiguration(
               effectiveUserConfig,
-              useEventualConsistency = readConfig.forceEventualConsistency,
+              readConsistencyStrategy = readConfig.readConsistencyStrategy,
               sparkEnvironmentInfo),
             None,
             calledFrom)),
@@ -96,7 +96,7 @@ private[spark] class CosmosReadManyReader(
         Some(CosmosClientCache(
           CosmosClientConfiguration(
             effectiveUserConfig,
-            useEventualConsistency = readConfig.forceEventualConsistency,
+            readConsistencyStrategy = readConfig.readConsistencyStrategy,
             sparkEnvironmentInfo),
           None,
           calledFrom

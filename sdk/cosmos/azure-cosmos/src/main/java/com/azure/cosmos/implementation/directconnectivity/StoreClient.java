@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
@@ -206,11 +207,13 @@ public class StoreClient implements IStoreClient {
 
     private void updateResponseHeader(RxDocumentServiceRequest request, Map<String, String> headers) {
         String requestConsistencyLevel = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
-
+        String requestReadConsistencyStrategy = request.getHeaders().get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
         boolean sessionConsistency =
-                this.serviceConfigurationReader.getDefaultConsistencyLevel() == ConsistencyLevel.SESSION ||
-                        (!Strings.isNullOrEmpty(requestConsistencyLevel)
-                                && Strings.areEqualIgnoreCase(requestConsistencyLevel, ConsistencyLevel.SESSION.toString()));
+                this.serviceConfigurationReader.getDefaultConsistencyLevel() == ConsistencyLevel.SESSION
+                        || (!Strings.isNullOrEmpty(requestConsistencyLevel)
+                                && Strings.areEqualIgnoreCase(requestConsistencyLevel, ConsistencyLevel.SESSION.toString()))
+                        || (!Strings.isNullOrEmpty(requestReadConsistencyStrategy)
+                                && Strings.areEqualIgnoreCase(requestReadConsistencyStrategy, ReadConsistencyStrategy.SESSION.toString()));
 
         long storeLSN = this.getLSN(headers);
         if (storeLSN == -1) {

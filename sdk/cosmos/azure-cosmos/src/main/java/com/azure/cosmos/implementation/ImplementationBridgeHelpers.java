@@ -20,12 +20,13 @@ import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.CosmosOperationPolicy;
+import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.CosmosRequestContext;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -59,6 +60,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
+import com.azure.cosmos.models.CosmosOperationDetails;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -69,7 +71,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
-import com.azure.cosmos.models.CosmosOperationDetails;
 import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -159,6 +160,10 @@ public class ImplementationBridgeHelpers {
             void setRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder, boolean isRegionScopedSessionCapturingEnabled);
 
             boolean getRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder);
+
+            void setPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder, boolean isPerPartitionAutomaticFailoverEnabled);
+
+            boolean getPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder);
         }
     }
 
@@ -1808,6 +1813,40 @@ public class ImplementationBridgeHelpers {
 
             void setItemObjectMapper(CosmosItemSerializer serializer, ObjectMapper mapper);
             ObjectMapper getItemObjectMapper(CosmosItemSerializer serializer);
+        }
+    }
+
+    public static final class ReadConsistencyStrategyHelper {
+        private static final AtomicReference<ReadConsistencyStrategyAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean readConsistencyStrategyClassLoaded = new AtomicBoolean(false);
+
+        private ReadConsistencyStrategyHelper() {}
+
+        public static void setReadConsistencyStrategyAccessor(final ReadConsistencyStrategyAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("ReadConsistencyStrategyAccessor already initialized!");
+            } else {
+                logger.debug("Setting ReadConsistencyStrategyAccessor...");
+                readConsistencyStrategyClassLoaded.set(true);
+            }
+        }
+
+        public static ReadConsistencyStrategyAccessor getReadConsistencyStrategyAccessor() {
+            if (!readConsistencyStrategyClassLoaded.get()) {
+                logger.debug("Initializing ReadConsistencyStrategyAccessor...");
+                initializeAllAccessors();
+            }
+
+            ReadConsistencyStrategyAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("ReadConsistencyStrategyAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface ReadConsistencyStrategyAccessor {
+            ReadConsistencyStrategy createFromServiceSerializedFormat(String serviceSerializedFormat);
         }
     }
 }

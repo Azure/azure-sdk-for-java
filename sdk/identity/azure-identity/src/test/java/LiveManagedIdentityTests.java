@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class LiveManagedIdentityTests {
+    private static final ClientLogger LOGGER = new ClientLogger(LiveManagedIdentityTests.class);
 
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
@@ -67,9 +68,9 @@ public class LiveManagedIdentityTests {
     @Timeout(value = 15, unit = TimeUnit.MINUTES)
     @Retry(maxRetries = 3)
     public void testManagedIdentityAksDeployment() {
-        System.out.println("Environment: " + System.getenv("IDENTITY_ENVIRONMENT"));
+        LOGGER.log(LogLevel.INFORMATIONAL, () -> "Environment: " + System.getenv("IDENTITY_ENVIRONMENT"));
         String os = System.getProperty("os.name");
-        System.out.println("OS: " + os);
+        LOGGER.log(LogLevel.INFORMATIONAL, () -> "OS: " + os);
         //Setup Env
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
@@ -82,6 +83,7 @@ public class LiveManagedIdentityTests {
         assertTrue(podOutput.contains(podName), "Pod name not found in the output");
 
         String output = runCommand(kubectlPath, "exec", "-it", podName, "--", "java", "-jar", "/identity-test.jar");
+
         assertTrue(output.contains("Successfully retrieved managed identity tokens"),
             "Failed to get response from AKS");
     }
@@ -93,9 +95,9 @@ public class LiveManagedIdentityTests {
     @Timeout(value = 15, unit = TimeUnit.MINUTES)
     @Retry(maxRetries = 3)
     public void testManagedIdentityVmDeployment() {
-        System.out.println("Environment: " + System.getenv("IDENTITY_ENVIRONMENT"));
+        LOGGER.log(LogLevel.INFORMATIONAL, () -> "Environment: " + System.getenv("IDENTITY_ENVIRONMENT"));
         String os = System.getProperty("os.name");
-        System.out.println("OS: " + os);
+        LOGGER.log(LogLevel.INFORMATIONAL, () -> "OS: " + os);
         //Setup Env
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
@@ -128,7 +130,7 @@ public class LiveManagedIdentityTests {
             storageAcccountName, sasToken);
         String script = String.format("curl \'%s\' -o ./testfile.jar && java -jar ./testfile.jar", vmBlob);
 
-        System.out.println("Script: " + script);
+        LOGGER.log(LogLevel.INFORMATIONAL, () -> "Script: " + script);
 
         String output = runCommand(azPath, "vm", "run-command", "invoke", "-n", vmName, "-g", resourceGroup,
             "--command-id", "RunShellScript", "--scripts", script);
@@ -163,7 +165,7 @@ public class LiveManagedIdentityTests {
             for (String arg : args) {
                 command.append(arg).append(" ");
             }
-            System.out.println("Running command: " + command);
+            LOGGER.log(LogLevel.INFORMATIONAL, () -> "Running command: " + command);
             ProcessBuilder processBuilder = new ProcessBuilder(args);
             processBuilder.redirectErrorStream(true);
             Process process = processBuilder.start();
@@ -176,7 +178,7 @@ public class LiveManagedIdentityTests {
                     output.append(line).append(System.lineSeparator());
                 }
             }
-            System.out.println("Output:" + System.lineSeparator() + output);
+            LOGGER.log(LogLevel.INFORMATIONAL, () -> "Output:" + System.lineSeparator() + output);
             return output.toString();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

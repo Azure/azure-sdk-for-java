@@ -232,6 +232,7 @@ public class RxDocumentClientImplTest {
             this.permissionFeedMock,
             this.connectionPolicyMock,
             this.consistencyLevelMock,
+            null,
             this.configsMock,
             this.cosmosAuthorizationTokenResolverMock,
             this.azureKeyCredentialMock,
@@ -246,6 +247,7 @@ public class RxDocumentClientImplTest {
             this.sessionRetryOptionsMock,
             this.containerProactiveInitConfigMock,
             this.defaultItemSerializer,
+            false,
             false);
 
         try {

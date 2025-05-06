@@ -8,10 +8,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundBuffer;
-import io.netty.channel.ChannelPipeline;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.FileRegion;
 import io.netty.handler.codec.http.LastHttpContent;
@@ -29,29 +27,24 @@ import java.util.concurrent.TimeoutException;
  * methods. This reduces the number of mutations that happen to the ChannelPipeline when sending a request.
  */
 public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler {
-    /**
-     * Name of this {@link ChannelHandler}, used to control positioning behaviors in a {@link ChannelPipeline}.
-     */
-    public static final String HANDLER_NAME = "ClientCore-Progress-And-Timeout-Handler";
-
     private final long writeTimeoutMillis;
     private final ProgressReporter progressReporter;
     private long lastWriteMillis;
     private long lastWriteProgress;
-    private boolean writeTrackingStarted;
+    private volatile boolean trackingWriteTimeout;
     private ScheduledFuture<?> writeTimeoutWatcher;
 
     private final long responseTimeoutMillis;
-    private boolean responseTrackingStarted;
+    private volatile boolean trackingResponseTimeout;
     private ScheduledFuture<?> responseTimeoutWatcher;
 
     private final long readTimeoutMillis;
     private long lastReadMillis;
     private boolean lastRead;
-    private boolean readTrackingStarted;
+    private volatile boolean trackingReadTimeout;
     private ScheduledFuture<?> readTimeoutWatcher;
 
-    private boolean closed;
+    private volatile boolean closed;
 
     /**
      * Constructs a channel that watches write, response, and reads and handles timing out the operation and tracking
@@ -80,6 +73,7 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
         disposeWriteTimeoutWatcher();
         disposeResponseTimeoutWatcher();
         disposeReadTimeoutWatcher();
+        closed = true;
     }
 
     ScheduledFuture<?> getWriteTimeoutWatcher() {
@@ -92,11 +86,11 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
      * Write tracking involves write timeout and progress reporting.
      */
     void startWriteTracking(ChannelHandlerContext ctx) {
-        writeTrackingStarted = true;
+        trackingWriteTimeout = true;
         if (ctx != null && writeTimeoutMillis > 0) {
             this.writeTimeoutWatcher = ctx.executor()
-                .scheduleAtFixedRate(() -> writeTimeoutRunnable(ctx), writeTimeoutMillis, writeTimeoutMillis,
-                    TimeUnit.MILLISECONDS);
+                .scheduleAtFixedRate(() -> writeTimeoutRunnable(ctx, trackingWriteTimeout), writeTimeoutMillis,
+                    writeTimeoutMillis, TimeUnit.MILLISECONDS);
         }
     }
 
@@ -104,13 +98,13 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
      * Ends write tracking.
      */
     void endWriteTracking() {
-        writeTrackingStarted = false;
+        trackingWriteTimeout = false;
         disposeWriteTimeoutWatcher();
     }
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        if (!writeTrackingStarted) {
+        if (!trackingWriteTimeout) {
             startWriteTracking(ctx);
         }
 
@@ -137,7 +131,12 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
         }
     }
 
-    void writeTimeoutRunnable(ChannelHandlerContext ctx) {
+    void writeTimeoutRunnable(ChannelHandlerContext ctx, boolean trackingWriteTimeout) {
+        // Write timeout tracking has been disabled before the method was called, exit.
+        if (!trackingWriteTimeout) {
+            return;
+        }
+
         // Channel has completed a write operation since the last time the timeout event fired.
         if ((writeTimeoutMillis - (System.currentTimeMillis() - lastWriteMillis)) > 0) {
             return;
@@ -167,6 +166,7 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
     }
 
     private void disposeWriteTimeoutWatcher() {
+        trackingWriteTimeout = false;
         if (writeTimeoutWatcher != null && !writeTimeoutWatcher.isDone()) {
             writeTimeoutWatcher.cancel(false);
             writeTimeoutWatcher = null;
@@ -183,10 +183,11 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
      * Response timeout is overridable on a per-request basis.
      */
     void startResponseTracking(ChannelHandlerContext ctx) {
-        responseTrackingStarted = true;
+        trackingResponseTimeout = true;
         if (ctx != null && responseTimeoutMillis > 0) {
-            this.responseTimeoutWatcher
-                = ctx.executor().schedule(() -> responseTimedOut(ctx), responseTimeoutMillis, TimeUnit.MILLISECONDS);
+            this.responseTimeoutWatcher = ctx.executor()
+                .schedule(() -> responseTimedOut(ctx, trackingResponseTimeout), responseTimeoutMillis,
+                    TimeUnit.MILLISECONDS);
         }
     }
 
@@ -194,12 +195,12 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
      * Ends response tracking.
      */
     void endResponseTracking() {
-        responseTrackingStarted = false;
+        trackingResponseTimeout = false;
         disposeResponseTimeoutWatcher();
     }
 
-    void responseTimedOut(ChannelHandlerContext ctx) {
-        if (!closed) {
+    void responseTimedOut(ChannelHandlerContext ctx, boolean trackingResponseTimeout) {
+        if (!closed && trackingResponseTimeout) {
             disposeResponseTimeoutWatcher();
             ctx.fireExceptionCaught(
                 new TimeoutException("Channel response timed out after " + responseTimeoutMillis + " milliseconds."));
@@ -209,6 +210,7 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
     }
 
     private void disposeResponseTimeoutWatcher() {
+        trackingResponseTimeout = false;
         if (responseTimeoutWatcher != null && !responseTimeoutWatcher.isDone()) {
             responseTimeoutWatcher.cancel(false);
             responseTimeoutWatcher = null;
@@ -217,7 +219,7 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        if (responseTrackingStarted) {
+        if (trackingResponseTimeout) {
             endResponseTracking();
             startReadTracking(ctx);
         }
@@ -229,7 +231,7 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         this.lastReadMillis = System.currentTimeMillis();
-        if (lastRead && readTrackingStarted) {
+        if (lastRead && trackingReadTimeout) {
             endReadTracking();
         }
         ctx.fireChannelReadComplete();
@@ -243,11 +245,11 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
      * Starts read tracking.
      */
     void startReadTracking(ChannelHandlerContext ctx) {
-        readTrackingStarted = true;
+        trackingReadTimeout = true;
         if (ctx != null && readTimeoutMillis > 0) {
             this.readTimeoutWatcher = ctx.executor()
-                .scheduleAtFixedRate(() -> readTimeoutRunnable(ctx), readTimeoutMillis, readTimeoutMillis,
-                    TimeUnit.MILLISECONDS);
+                .scheduleAtFixedRate(() -> readTimeoutRunnable(ctx, trackingReadTimeout), readTimeoutMillis,
+                    readTimeoutMillis, TimeUnit.MILLISECONDS);
         }
     }
 
@@ -255,11 +257,16 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
      * Ends read tracking.
      */
     private void endReadTracking() {
-        readTrackingStarted = false;
+        trackingReadTimeout = false;
         disposeReadTimeoutWatcher();
     }
 
-    void readTimeoutRunnable(ChannelHandlerContext ctx) {
+    void readTimeoutRunnable(ChannelHandlerContext ctx, boolean trackingReadTimeout) {
+        // Read timeout tracking has been disabled before the method was called, exit.
+        if (!trackingReadTimeout) {
+            return;
+        }
+
         // Channel has completed a read operation since the last time the timeout event fired.
         if ((readTimeoutMillis - (System.currentTimeMillis() - lastReadMillis)) > 0) {
             return;
@@ -276,6 +283,7 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
     }
 
     private void disposeReadTimeoutWatcher() {
+        trackingReadTimeout = false;
         if (readTimeoutWatcher != null && !readTimeoutWatcher.isDone()) {
             readTimeoutWatcher.cancel(false);
             readTimeoutWatcher = null;
