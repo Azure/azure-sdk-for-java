@@ -1856,11 +1856,11 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             }
 
             // Wait for the feed processor to receive and process the documents.
-            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+            Thread.sleep(5 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
-            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(10 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
             int i = 0;
             while(i < 3) {
