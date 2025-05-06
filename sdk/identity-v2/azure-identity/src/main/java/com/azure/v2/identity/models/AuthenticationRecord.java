@@ -118,7 +118,7 @@ public final class AuthenticationRecord {
             writer.writeStringField("clientId", clientId);
             writer.writeEndObject();
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
     }
 
@@ -156,7 +156,7 @@ public final class AuthenticationRecord {
                 return new AuthenticationRecord(authority, homeAccountId, username, tenantId, clientId);
             });
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
     }
 }

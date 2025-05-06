@@ -72,17 +72,17 @@ public class ClientAssertionCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception ignored) {
+        } catch (RuntimeException ignored) {
         }
 
         try {
             AccessToken token = confidentialClient.authenticate(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return token;
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             LoggingUtil.logTokenError(LOGGER, request, e);
             // wrap the exception in a RuntimeException to avoid checked exception problems.
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
     }
 }

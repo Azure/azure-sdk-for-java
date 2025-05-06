@@ -64,16 +64,16 @@ public class OnBehalfOfCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
         }
 
         try {
             AccessToken token = confidentialClient.authenticateWithOBO(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return token;
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             LoggingUtil.logTokenError(LOGGER, request, e);
-            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
+            throw LOGGER.throwableAtError().log(e, CredentialAuthenticationException::new);
         }
     }
 

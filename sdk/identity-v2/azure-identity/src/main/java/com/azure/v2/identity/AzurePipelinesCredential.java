@@ -76,15 +76,15 @@ public class AzurePipelinesCredential implements TokenCredential {
                         }
                         message
                             += "For troubleshooting information see https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot.";
-                        throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(message));
+                        throw LOGGER.throwableAtError().log(message, CredentialAuthenticationException::new);
                     }
                     try (JsonReader reader = JsonReader.fromString(responseBody)) {
                         return OidcTokenResponse.fromJson(reader).getOidcToken();
                     }
                 }
             } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(
-                    new CredentialAuthenticationException("Failed to get the client assertion token", e));
+                throw LOGGER.throwableAtError()
+                    .log("Failed to get the client assertion token", e, CredentialAuthenticationException::new);
             }
         });
         this.confidentialClient = new ConfidentialClient(confidentialClientOptions);
@@ -98,16 +98,16 @@ public class AzurePipelinesCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception ignored) {
+        } catch (RuntimeException ignored) {
         }
 
         try {
             AccessToken token = confidentialClient.authenticate(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return token;
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             LoggingUtil.logTokenError(LOGGER, request, e);
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
     }
 }

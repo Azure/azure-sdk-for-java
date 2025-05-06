@@ -87,7 +87,7 @@ public class AzureToolkitCredential implements TokenCredential {
             if (cachedToken.get() != null) {
                 return publicClient.authenticateWithPublicClientCache(request, cachedToken.get().getAccount());
             }
-        } catch (Exception ex) {
+        } catch (RuntimeException ex) {
         }
 
         try {
@@ -95,12 +95,12 @@ public class AzureToolkitCredential implements TokenCredential {
             cachedToken.set(msalToken);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return msalToken;
-        } catch (Exception ex) {
+        } catch (RuntimeException ex) {
             LoggingUtil.logTokenError(LOGGER, request, ex);
             if (publicClient.getClientOptions().isChained()) {
-                throw LOGGER.logThrowableAsError(new CredentialUnavailableException(ex.getMessage(), ex));
+                throw LOGGER.throwableAtError().log(ex, CredentialUnavailableException::new);
             }
-            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(ex.getMessage(), ex));
+            throw LOGGER.throwableAtError().log(ex, CredentialAuthenticationException::new);
         }
     }
 }
