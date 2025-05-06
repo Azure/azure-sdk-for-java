@@ -1142,8 +1142,7 @@ public final class PhoneNumbersClient {
                 .setPhoneNumberType(phoneNumbersBrowseRequest.getPhoneNumberType())
                 .setAssignmentType(phoneNumbersBrowseRequest.getAssignmentType())
                 .setCapabilities(capabilitiesRequest)
-                .setPhoneNumberPrefixes(phoneNumbersBrowseRequest.getPhoneNumberPrefixes())
-                .setCountryCode(phoneNumbersBrowseRequest.getCountryCode());
+                .setPhoneNumberPrefixes(phoneNumbersBrowseRequest.getPhoneNumberPrefixes());
         return internalBrowseRequest;
     }
 }

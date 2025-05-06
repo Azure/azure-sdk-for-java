@@ -89,6 +89,7 @@ directive:
       $["properties"]["capabilities"].readOnly = true;
       $["properties"]["error"].readOnly = true;
       $["properties"]["errorCode"].readOnly = true;
+      $["properties"]["isAgreementToNotResellRequired"].readOnly = true;
 ```
 
 ### Rename PhoneNumberOperation to PhoneNumberRawOperation
@@ -259,18 +260,6 @@ directive:
     $["format"] = "";
 ```
 
-## Directives to add the countryCode to the PhoneNumbersBrowseRequest
-``` yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumbersBrowseRequest.properties
-    transform: >
-      $.countryCode = {
-        "type": "string",
-        "description": "The ISO 3166-2 country code, e.g. US.",
-        "x-ms-mutability": ["read", "create", "update"]
-      }
-```
 ### Rename AvailablePhoneNumberStatus to PhoneNumberAvailabilityStatus
 ```yaml
 directive:
@@ -278,4 +267,17 @@ directive:
   where: $.definitions.AvailablePhoneNumber.properties.status.x-ms-enum
   transform: >
     $["name"] = "PhoneNumberAvailabilityStatus";
+```
+
+### Add readonly attribute to AvailablePhoneNumber properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.AvailablePhoneNumber
+    transform: >
+      $["properties"]["assignmentType"].readOnly = true;
+      $["properties"]["capabilities"].readOnly = true;
+      $["properties"]["countryCode"].readOnly = true;
+      $["properties"]["phoneNumberType"].readOnly = true;
+      $["properties"]["status"].readOnly = true;
 ```

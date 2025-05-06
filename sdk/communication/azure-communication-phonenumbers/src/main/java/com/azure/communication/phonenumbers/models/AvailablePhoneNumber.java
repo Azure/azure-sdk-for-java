@@ -4,7 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Represents a phone number available in inventory.
  */
-@Fluent
+@Immutable
 public final class AvailablePhoneNumber implements JsonSerializable<AvailablePhoneNumber> {
     /*
      * The id of the phone number.
@@ -91,17 +91,6 @@ public final class AvailablePhoneNumber implements JsonSerializable<AvailablePho
     }
 
     /**
-     * Set the countryCode property: The ISO 3166-2 country code, e.g. US.
-     * 
-     * @param countryCode the countryCode value to set.
-     * @return the AvailablePhoneNumber object itself.
-     */
-    public AvailablePhoneNumber setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-        return this;
-    }
-
-    /**
      * Get the phoneNumber property: The phone number in E.164 format, e.g. +11234567890.
      * 
      * @return the phoneNumber value.
@@ -120,17 +109,6 @@ public final class AvailablePhoneNumber implements JsonSerializable<AvailablePho
     }
 
     /**
-     * Set the capabilities property: Capabilities of a phone number.
-     * 
-     * @param capabilities the capabilities value to set.
-     * @return the AvailablePhoneNumber object itself.
-     */
-    public AvailablePhoneNumber setCapabilities(PhoneNumberCapabilities capabilities) {
-        this.capabilities = capabilities;
-        return this;
-    }
-
-    /**
      * Get the phoneNumberType property: Represents the number type of the offering.
      * 
      * @return the phoneNumberType value.
@@ -140,34 +118,12 @@ public final class AvailablePhoneNumber implements JsonSerializable<AvailablePho
     }
 
     /**
-     * Set the phoneNumberType property: Represents the number type of the offering.
-     * 
-     * @param phoneNumberType the phoneNumberType value to set.
-     * @return the AvailablePhoneNumber object itself.
-     */
-    public AvailablePhoneNumber setPhoneNumberType(PhoneNumberType phoneNumberType) {
-        this.phoneNumberType = phoneNumberType;
-        return this;
-    }
-
-    /**
      * Get the assignmentType property: Represents the assignment type of the offering. Also known as the use case.
      * 
      * @return the assignmentType value.
      */
     public PhoneNumberAssignmentType getAssignmentType() {
         return this.assignmentType;
-    }
-
-    /**
-     * Set the assignmentType property: Represents the assignment type of the offering. Also known as the use case.
-     * 
-     * @param assignmentType the assignmentType value to set.
-     * @return the AvailablePhoneNumber object itself.
-     */
-    public AvailablePhoneNumber setAssignmentType(PhoneNumberAssignmentType assignmentType) {
-        this.assignmentType = assignmentType;
-        return this;
     }
 
     /**
@@ -215,12 +171,6 @@ public final class AvailablePhoneNumber implements JsonSerializable<AvailablePho
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("countryCode", this.countryCode);
-        jsonWriter.writeJsonField("capabilities", this.capabilities);
-        jsonWriter.writeStringField("phoneNumberType",
-            this.phoneNumberType == null ? null : this.phoneNumberType.toString());
-        jsonWriter.writeStringField("assignmentType",
-            this.assignmentType == null ? null : this.assignmentType.toString());
         return jsonWriter.writeEndObject();
     }
 

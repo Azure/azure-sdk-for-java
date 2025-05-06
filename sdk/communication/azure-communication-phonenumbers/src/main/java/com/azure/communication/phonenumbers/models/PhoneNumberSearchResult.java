@@ -4,7 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * The result of a phone number search operation.
  */
-@Fluent
+@Immutable
 public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumberSearchResult> {
     /*
      * The search id.
@@ -150,18 +150,6 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
     }
 
     /**
-     * Set the isAgreementToNotResellRequired property: Indicates if do not resell agreement is required. If true, the
-     * phone numbers cannot be acquired unless the customer provides explicit agreement to not resell them.
-     * 
-     * @param isAgreementToNotResellRequired the isAgreementToNotResellRequired value to set.
-     * @return the PhoneNumberSearchResult object itself.
-     */
-    public PhoneNumberSearchResult setIsAgreementToNotResellRequired(Boolean isAgreementToNotResellRequired) {
-        this.isAgreementToNotResellRequired = isAgreementToNotResellRequired;
-        return this;
-    }
-
-    /**
      * Get the errorCode property: The error code of the search.
      * 
      * @return the errorCode value.
@@ -185,7 +173,6 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeBooleanField("isAgreementToNotResellRequired", this.isAgreementToNotResellRequired);
         return jsonWriter.writeEndObject();
     }
 

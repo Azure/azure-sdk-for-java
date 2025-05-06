@@ -1114,8 +1114,7 @@ public final class PhoneNumbersAsyncClient {
             = new PhoneNumbersBrowseRequest().setPhoneNumberType(phoneNumbersBrowseRequest.getPhoneNumberType())
                 .setCapabilities(capabilitiesRequest)
                 .setAssignmentType(phoneNumbersBrowseRequest.getAssignmentType())
-                .setPhoneNumberPrefixes(phoneNumbersBrowseRequest.getPhoneNumberPrefixes())
-                .setCountryCode(phoneNumbersBrowseRequest.getCountryCode());
+                .setPhoneNumberPrefixes(phoneNumbersBrowseRequest.getPhoneNumberPrefixes());
         return internalBrowseRequest;
     }
 }
