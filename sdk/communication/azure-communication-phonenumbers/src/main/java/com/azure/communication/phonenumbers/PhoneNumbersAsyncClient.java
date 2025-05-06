@@ -252,8 +252,7 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersBrowseResult> browseAvailableNumbers(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
-        return client.browseAvailableNumbersAsync(phoneNumbersBrowseRequest.getCountryCode(),
-            mapBrowseRequest(phoneNumbersBrowseRequest));
+        return client.browseAvailableNumbersAsync(phoneNumbersBrowseRequest.getCountryCode(), phoneNumbersBrowseRequest);
     }
 
     /**
@@ -270,8 +269,7 @@ public final class PhoneNumbersAsyncClient {
     public Mono<Response<PhoneNumbersBrowseResult>>
         browseAvailableNumbersWithResponse(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
-        return client.browseAvailableNumbersWithResponseAsync(phoneNumbersBrowseRequest.getCountryCode(),
-            mapBrowseRequest(phoneNumbersBrowseRequest));
+        return client.browseAvailableNumbersWithResponseAsync(phoneNumbersBrowseRequest.getCountryCode(),phoneNumbersBrowseRequest);
     }
 
     /**
@@ -1098,23 +1096,5 @@ public final class PhoneNumbersAsyncClient {
             }
         }
         return phoneNumbersMap;
-    }
-
-    private static PhoneNumbersBrowseRequest mapBrowseRequest(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
-        PhoneNumberBrowseCapabilitiesRequest capabilitiesRequest = new PhoneNumberBrowseCapabilitiesRequest();
-        if (phoneNumbersBrowseRequest.getCapabilities() != null) {
-            if (phoneNumbersBrowseRequest.getCapabilities().getCalling() != null) {
-                capabilitiesRequest.setCalling(phoneNumbersBrowseRequest.getCapabilities().getCalling());
-            }
-            if (phoneNumbersBrowseRequest.getCapabilities().getSms() != null) {
-                capabilitiesRequest.setSms(phoneNumbersBrowseRequest.getCapabilities().getSms());
-            }
-        }
-        PhoneNumbersBrowseRequest internalBrowseRequest
-            = new PhoneNumbersBrowseRequest().setPhoneNumberType(phoneNumbersBrowseRequest.getPhoneNumberType())
-                .setCapabilities(capabilitiesRequest)
-                .setAssignmentType(phoneNumbersBrowseRequest.getAssignmentType())
-                .setPhoneNumberPrefixes(phoneNumbersBrowseRequest.getPhoneNumberPrefixes());
-        return internalBrowseRequest;
     }
 }

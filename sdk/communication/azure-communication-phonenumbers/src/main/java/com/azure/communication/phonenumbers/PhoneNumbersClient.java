@@ -11,8 +11,7 @@ import java.util.UUID;
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumberBrowseCapabilitiesRequest;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersBrowseRequest;
+import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
 import com.azure.communication.phonenumbers.models.BrowsePhoneNumbersOptions;
@@ -28,7 +27,6 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
-import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchaseReservationResult;
@@ -245,8 +243,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PhoneNumbersBrowseResult browseAvailableNumbers(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
-        return client.browseAvailableNumbers(phoneNumbersBrowseRequest.getCountryCode(),
-            mapBrowseRequest(phoneNumbersBrowseRequest));
+        return client.browseAvailableNumbers(phoneNumbersBrowseRequest.getCountryCode(),phoneNumbersBrowseRequest);
     }
 
     /**
@@ -265,8 +262,7 @@ public final class PhoneNumbersClient {
         browseAvailableNumbersWithResponse(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest, Context context) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
 
-        return client.browseAvailableNumbersWithResponse(phoneNumbersBrowseRequest.getCountryCode(),
-            mapBrowseRequest(phoneNumbersBrowseRequest), context);
+        return client.browseAvailableNumbersWithResponse(phoneNumbersBrowseRequest.getCountryCode(),phoneNumbersBrowseRequest, context);
     }
 
     /**
@@ -1125,24 +1121,5 @@ public final class PhoneNumbersClient {
             }
         }
         return phoneNumbersMap;
-    }
-
-    private static PhoneNumbersBrowseRequest mapBrowseRequest(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
-        PhoneNumberBrowseCapabilitiesRequest capabilitiesRequest = new PhoneNumberBrowseCapabilitiesRequest();
-        if (phoneNumbersBrowseRequest.getCapabilities() != null) {
-            if (phoneNumbersBrowseRequest.getCapabilities().getCalling() != null) {
-                capabilitiesRequest.setCalling(phoneNumbersBrowseRequest.getCapabilities().getCalling());
-            }
-            if (phoneNumbersBrowseRequest.getCapabilities().getSms() != null) {
-                capabilitiesRequest.setSms(phoneNumbersBrowseRequest.getCapabilities().getSms());
-            }
-        }
-        PhoneNumbersBrowseRequest internalBrowseRequest
-            = new com.azure.communication.phonenumbers.implementation.models.PhoneNumbersBrowseRequest()
-                .setPhoneNumberType(phoneNumbersBrowseRequest.getPhoneNumberType())
-                .setAssignmentType(phoneNumbersBrowseRequest.getAssignmentType())
-                .setCapabilities(capabilitiesRequest)
-                .setPhoneNumberPrefixes(phoneNumbersBrowseRequest.getPhoneNumberPrefixes());
-        return internalBrowseRequest;
     }
 }

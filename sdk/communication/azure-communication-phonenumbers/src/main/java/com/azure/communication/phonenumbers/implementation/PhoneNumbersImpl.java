@@ -13,7 +13,6 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCou
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberLocalities;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberRawOperation;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersBrowseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersGetOperationResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
@@ -24,6 +23,7 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersRe
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.implementation.models.PurchasedPhoneNumbers;
+import com.azure.communication.phonenumbers.models.BrowsePhoneNumbersOptions;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
@@ -119,7 +119,7 @@ public final class PhoneNumbersImpl {
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<PhoneNumbersBrowseResult>> browseAvailableNumbers(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("countryCode") String countryCode,
-            @BodyParam("application/json") PhoneNumbersBrowseRequest phoneNumbersBrowseRequest,
+            @BodyParam("application/json") BrowsePhoneNumbersOptions phoneNumbersBrowseRequest,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/availablePhoneNumbers/countries/{countryCode}/localities")
@@ -707,7 +707,7 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumbersBrowseResult>> browseAvailableNumbersWithResponseAsync(String countryCode,
-        PhoneNumbersBrowseRequest phoneNumbersBrowseRequest) {
+        BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.browseAvailableNumbers(this.client.getEndpoint(),
             this.client.getApiVersion(), countryCode, phoneNumbersBrowseRequest, accept, context));
@@ -731,7 +731,7 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumbersBrowseResult>> browseAvailableNumbersWithResponseAsync(String countryCode,
-        PhoneNumbersBrowseRequest phoneNumbersBrowseRequest, Context context) {
+        BrowsePhoneNumbersOptions phoneNumbersBrowseRequest, Context context) {
         final String accept = "application/json";
         return service.browseAvailableNumbers(this.client.getEndpoint(), this.client.getApiVersion(), countryCode,
             phoneNumbersBrowseRequest, accept, context);
@@ -753,7 +753,7 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersBrowseResult> browseAvailableNumbersAsync(String countryCode,
-        PhoneNumbersBrowseRequest phoneNumbersBrowseRequest) {
+        BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
         return browseAvailableNumbersWithResponseAsync(countryCode, phoneNumbersBrowseRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -775,7 +775,7 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersBrowseResult> browseAvailableNumbersAsync(String countryCode,
-        PhoneNumbersBrowseRequest phoneNumbersBrowseRequest, Context context) {
+        BrowsePhoneNumbersOptions phoneNumbersBrowseRequest, Context context) {
         return browseAvailableNumbersWithResponseAsync(countryCode, phoneNumbersBrowseRequest, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -797,7 +797,7 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PhoneNumbersBrowseResult> browseAvailableNumbersWithResponse(String countryCode,
-        PhoneNumbersBrowseRequest phoneNumbersBrowseRequest, Context context) {
+        BrowsePhoneNumbersOptions phoneNumbersBrowseRequest, Context context) {
         return browseAvailableNumbersWithResponseAsync(countryCode, phoneNumbersBrowseRequest, context).block();
     }
 
@@ -817,7 +817,7 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PhoneNumbersBrowseResult browseAvailableNumbers(String countryCode,
-        PhoneNumbersBrowseRequest phoneNumbersBrowseRequest) {
+        BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
         return browseAvailableNumbersWithResponse(countryCode, phoneNumbersBrowseRequest, Context.NONE).getValue();
     }
 
