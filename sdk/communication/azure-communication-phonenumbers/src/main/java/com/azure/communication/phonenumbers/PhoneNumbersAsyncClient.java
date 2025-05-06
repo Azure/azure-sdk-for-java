@@ -10,7 +10,6 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPu
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberRawOperation;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersBrowseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReservationPurchaseRequest;
@@ -252,7 +251,8 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersBrowseResult> browseAvailableNumbers(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
-        return client.browseAvailableNumbersAsync(phoneNumbersBrowseRequest.getCountryCode(), phoneNumbersBrowseRequest);
+        return client.browseAvailableNumbersAsync(phoneNumbersBrowseRequest.getCountryCode(),
+            phoneNumbersBrowseRequest);
     }
 
     /**
@@ -269,7 +269,8 @@ public final class PhoneNumbersAsyncClient {
     public Mono<Response<PhoneNumbersBrowseResult>>
         browseAvailableNumbersWithResponse(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
-        return client.browseAvailableNumbersWithResponseAsync(phoneNumbersBrowseRequest.getCountryCode(),phoneNumbersBrowseRequest);
+        return client.browseAvailableNumbersWithResponseAsync(phoneNumbersBrowseRequest.getCountryCode(),
+            phoneNumbersBrowseRequest);
     }
 
     /**

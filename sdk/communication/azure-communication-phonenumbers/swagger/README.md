@@ -25,9 +25,10 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 ``` yaml
 tag: package-phonenumber-2025-04-01
 use: '@autorest/java@4.1.29'
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/de9cb12d2840ca0915849ce6a3bf8c956a32c022/specification/communication/data-plane/PhoneNumbers/readme.md
+require: 
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/de9cb12d2840ca0915849ce6a3bf8c956a32c022/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
-custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,PhoneNumberSearchResultError,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorInformationOptions,OperatorNumberType,PhoneNumbersReservation,AvailablePhoneNumber,AvailablePhoneNumberCost,AvailablePhoneNumberError,PhoneNumbersBrowseRequest,PhoneNumbersPhoneNumberAvailabilityStatus,PhoneNumbersBrowseResult,PhoneNumbersReservationStatus
+custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,PhoneNumberSearchResultError,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorInformationOptions,OperatorNumberType,PhoneNumbersReservation,AvailablePhoneNumber,AvailablePhoneNumberCost,AvailablePhoneNumberError,PhoneNumbersBrowseRequest,PhoneNumberAvailabilityStatus,PhoneNumbersBrowseResult,BrowsePhoneNumbersOptions,PhoneNumbersReservationStatus
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -39,6 +40,7 @@ service-interface-as-public: true
 sync-methods: all
 context-client-method-parameter: true
 stream-style-serialization: true
+customization-class: src/main/java/PhoneNumbersCustomization.java
 ```
 ### Set remove-empty-child-schemas
 ```yaml
@@ -282,15 +284,6 @@ directive:
       $["properties"]["status"].readOnly = true;
 ```
 
-### Replace type from AvailablePhoneNumberError to ResponseError
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.AvailablePhoneNumber.properties.error
-    transform: >
-      $.type = "object";
-      $.$ref = "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/main/specification/common-types/data-plane/v1/types.json#/definitions/ErrorResponse";
-```
 
 ### Replace type from PhoneNumberBrowseCapabilities to PhoneNumberCapabilties
 ```yaml
@@ -299,8 +292,21 @@ directive:
     where: $.definitions.PhoneNumbersBrowseRequest.properties.capabilities
     transform: >
       $.type = "object";
-      $.$ref = "#/definitions/PhoneNumberCapabilitiesRequest";
+      $.$ref = "#/definitions/PhoneNumberCapabilities";
 ```
+
+## Directives to add the countryCode to the PhoneNumbersBrowseRequest
+ ``` yaml
+ directive:
+   - from: swagger-document
+     where: $.definitions.PhoneNumbersBrowseRequest.properties
+     transform: >
+       $.countryCode = {
+         "type": "string",
+         "description": "The ISO 3166-2 country code, e.g. US.",
+         "x-ms-mutability": ["read", "create", "update"]
+       }
+ ```
 
 ### Rename from PhoneNumbersBrowseRequest to BrowsePhoneNumbersOptions
 ``` yaml

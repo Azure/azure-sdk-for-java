@@ -243,7 +243,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PhoneNumbersBrowseResult browseAvailableNumbers(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
-        return client.browseAvailableNumbers(phoneNumbersBrowseRequest.getCountryCode(),phoneNumbersBrowseRequest);
+        return client.browseAvailableNumbers(phoneNumbersBrowseRequest.getCountryCode(), phoneNumbersBrowseRequest);
     }
 
     /**
@@ -262,7 +262,8 @@ public final class PhoneNumbersClient {
         browseAvailableNumbersWithResponse(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest, Context context) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
 
-        return client.browseAvailableNumbersWithResponse(phoneNumbersBrowseRequest.getCountryCode(),phoneNumbersBrowseRequest, context);
+        return client.browseAvailableNumbersWithResponse(phoneNumbersBrowseRequest.getCountryCode(),
+            phoneNumbersBrowseRequest, context);
     }
 
     /**
