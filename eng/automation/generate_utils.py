@@ -284,9 +284,10 @@ def get_and_update_service_from_api_specs(
     api_specs_file: str,
     spec: str,
     service: str = None,
+    truncate_service: bool = False,
 ):
-    SPECIAL_SPEC = {"resources"}
-    if spec in SPECIAL_SPEC:
+    special_spec = {"resources"}
+    if spec in special_spec:
         if not service:
             service = spec
         return valid_service(service)
@@ -299,6 +300,15 @@ def get_and_update_service_from_api_specs(
             service = api_spec.get("service")
         if not service:
             service = spec
+            # remove segment contains ".", e.g. "Microsoft.KubernetesConfiguration", "Astronomer.Astro"
+            service = re.sub(r"/[^/]+(\.[^/]+)+", "", service)
+            # truncate length of service to 32, as this is the maximum length for package name in Java repository
+            if truncate_service:
+                service = valid_service(service)
+                max_length = 32
+                if len(service) > max_length:
+                    logging.warning(f'[VALIDATE] service name truncated from "{service}" to "{service[:max_length]}"')
+                    service = service[:max_length]
     service = valid_service(service)
 
     if service != spec:
