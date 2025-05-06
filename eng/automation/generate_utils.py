@@ -284,7 +284,7 @@ def get_and_update_service_from_api_specs(
     api_specs_file: str,
     spec: str,
     service: str = None,
-    truncate_service=False,
+    truncate_service: bool = False,
 ):
     special_spec = {"resources"}
     if spec in special_spec:
