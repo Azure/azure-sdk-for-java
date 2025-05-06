@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.ReadConsistencyStrategy
 import com.azure.cosmos.implementation.TestConfigurations
 import org.apache.spark.sql.types.{StringType, StructField}
 
@@ -31,7 +32,7 @@ class CosmosTableSchemaInferrerITest
           val schema = Loan(
             List[Option[CosmosClientCacheItem]](
               Some(CosmosClientCache(
-                CosmosClientConfiguration(config, true, ""),
+                CosmosClientConfiguration(config, ReadConsistencyStrategy.EVENTUAL, ""),
                 None,
                 "CosmosTableSchemaInferrerITest.inferSchema"
               ))
@@ -68,7 +69,7 @@ class CosmosTableSchemaInferrerITest
     val schema = Loan(
       List[Option[CosmosClientCacheItem]](
         Some(CosmosClientCache(
-          CosmosClientConfiguration(config, true, ""),
+          CosmosClientConfiguration(config, ReadConsistencyStrategy.EVENTUAL, ""),
           None,
           "CosmosTableSchemaInferrerITest.inferSchema"
         ))

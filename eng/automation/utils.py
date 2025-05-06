@@ -41,7 +41,7 @@ def add_module_to_default_profile(pom: str, module: str) -> Tuple[bool, str]:
     for profile in re.finditer(r"<profile>[\s\S]*?</profile>", pom):
         profile_value = profile.group()
         if re.search(r"<id>default</id>", profile_value):
-            if len(re.findall("<modules>", profile_value)) > 1:
+            if len(re.findall(r"<modules>", profile_value)) > 1:
                 logging.error("[POM][Profile][Skip] find more than one <modules> in <profile> default")
                 return (False, "")
             modules = re.search(r"<modules>[\s\S]*</modules>", profile_value)
@@ -61,7 +61,7 @@ def add_module_to_pom(pom: str, module: str) -> Tuple[bool, str]:
         logging.info("[POM][Skip] pom already has module {0}".format(module))
         return (True, pom)
 
-    if len(re.findall("<modules>", pom)) > 1:
+    if len(re.findall(r"<modules>", pom)) > 1:
         if pom.find("<profiles>") >= 0:
             return add_module_to_default_profile(pom, module)
         logging.error("[POM][Skip] find more than one <modules> in pom")
@@ -164,7 +164,7 @@ def update_service_files_for_new_lib(sdk_root: str, service: str, group: str, mo
                 )
 
             ci_yml_str = yaml.dump(ci_yml, width=sys.maxsize, sort_keys=False, Dumper=ListIndentDumper)
-            ci_yml_str = re.sub("(\n\S)", r"\n\1", ci_yml_str)
+            ci_yml_str = re.sub(r"(\n\S)", r"\n\1", ci_yml_str)
 
             with open(ci_yml_file, "w") as fout:
                 fout.write(CI_HEADER)
@@ -310,7 +310,7 @@ def set_or_increase_version(
 ) -> Tuple[str, str]:
     version_file = os.path.join(sdk_root, "eng/versioning/version_client.txt")
     project = "{0}:{1}".format(group, module)
-    version_pattern = "(\d+)\.(\d+)\.(\d+)(-beta\.\d+)?"
+    version_pattern = r"(\d+)\.(\d+)\.(\d+)(-beta\.\d+)?"
     version_format = "{0}.{1}.{2}{3}"
     default_version = version if version else DEFAULT_VERSION
 

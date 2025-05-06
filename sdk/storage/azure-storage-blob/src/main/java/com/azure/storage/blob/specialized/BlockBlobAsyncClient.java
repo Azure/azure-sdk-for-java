@@ -588,8 +588,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
                 sourceRequestConditions.getIfNoneMatch(), sourceRequestConditions.getTagsConditions(), null,
                 options.getContentMd5(), ModelHelper.tagsToString(options.getTags()),
-                options.isCopySourceBlobProperties(), sourceAuth, options.getCopySourceTagsMode(), options.getHeaders(),
-                getCustomerProvidedKey(), encryptionScope, context)
+                options.isCopySourceBlobProperties(), sourceAuth, options.getCopySourceTagsMode(),
+                options.getSourceShareTokenIntent(), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
+                context)
             .map(rb -> {
                 BlockBlobsPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -885,8 +886,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 options.getSourceUrl(), sourceRange.toHeaderValue(), options.getSourceContentMd5(), null, null,
                 options.getLeaseId(), sourceRequestConditions.getIfModifiedSince(),
                 sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
-                sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(), encryptionScope,
-                context);
+                sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, options.getSourceShareTokenIntent(),
+                getCustomerProvidedKey(), encryptionScope, context);
     }
 
     /**

@@ -49,18 +49,15 @@ public class HostEdgeCase1ServiceImpl implements HostEdgeCase1Service {
         // Create the HttpRequest.
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url + "/bytes/" + numberOfBytes);
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                String errorMessage = networkResponse.getValue().toString();
+                throw new HttpResponseException(errorMessage, networkResponse, null);
+            }
+            BinaryData responseBody = networkResponse.getValue();
+            return responseBody != null ? responseBody.toBytes() : null;
         }
-        BinaryData responseBody = networkResponse.getValue();
-        byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
-        return responseBodyBytes;
     }
 }
