@@ -227,6 +227,7 @@
     <module>sdk/streamanalytics</module>
     <module>sdk/subscription</module>
     <module>sdk/support</module>
+    <module>sdk/sustainabilityservices</module>
     <module>sdk/synapse</module>
     <module>sdk/tables</module>
     <module>sdk/template</module>
