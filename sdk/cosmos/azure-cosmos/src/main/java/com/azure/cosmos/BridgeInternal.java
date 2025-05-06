@@ -622,5 +622,6 @@ public final class BridgeInternal {
         CosmosContainerProactiveInitConfig.initialize();
         SessionRetryOptions.initialize();
         CosmosItemSerializer.initialize();
+        ReadConsistencyStrategy.initialize();
     }
 }
