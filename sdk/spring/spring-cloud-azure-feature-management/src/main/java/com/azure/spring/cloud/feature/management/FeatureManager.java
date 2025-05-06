@@ -185,7 +185,13 @@ public class FeatureManager {
 
     private Mono<EvaluationEvent> checkFeature(String featureName, Object featureContext)
         throws FilterNotFoundException {
-        Feature featureFlag = featureManagementConfigurations.getFeatureFlags().stream()
+        List<Feature> featureFlags = featureManagementConfigurations.getFeatureFlags();
+        
+        if (featureFlags == null) {
+            return Mono.just(new EvaluationEvent(null));
+        }
+        
+        Feature featureFlag = featureFlags.stream()
             .filter(feature -> feature.getId().equals(featureName)).findAny().orElse(null);
 
         EvaluationEvent event = new EvaluationEvent(featureFlag);

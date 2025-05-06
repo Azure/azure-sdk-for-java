@@ -5,11 +5,11 @@ package com.azure.spring.cloud.feature.management.implementation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
+
+import com.azure.spring.cloud.feature.management.models.Feature;
 
 public class FeatureManagementPropertiesTest {
     
@@ -17,13 +17,13 @@ public class FeatureManagementPropertiesTest {
     @Test
     public void setFeatureFlagsTest() {
         FeatureManagementProperties properties = new FeatureManagementProperties();
-        List<Map<String, Object>> featureFlags = new ArrayList<>();
+        List<Feature> featureFlags = new ArrayList<>();
         properties.setFeatureFlags(featureFlags);
         assertEquals(0, properties.getFeatureFlags().size());
         
-        Map<String, Object> alphaFeatureFlag = new HashMap<String, Object>();
-        alphaFeatureFlag.put("id", "alpha");
-        alphaFeatureFlag.put("enabled", true);
+        Feature alphaFeatureFlag = new Feature();
+        alphaFeatureFlag.setId("alpha");
+        alphaFeatureFlag.setEnabled(true);
         featureFlags.add(alphaFeatureFlag);
         properties.setFeatureFlags(featureFlags);
         assertEquals(1, properties.getFeatureFlags().size());
