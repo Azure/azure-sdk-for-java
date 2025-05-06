@@ -3,8 +3,8 @@
 ## 12.27.0-beta.1 (2025-05-06)
 
 ### Features Added
-- Added support for service version 2025-07-05.
 - Added the `ShareFileClient.CreateSymbolicLink()`, `.CreateSymbolicLinkAsync()`, `.GetSymbolicLink()`, and `.GetSymbolicLinkAsync()` APIs.
+- Added support for service version 2025-07-05.
 
 ## 12.26.0 (2025-03-11)
 
