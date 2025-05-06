@@ -37,7 +37,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public ConfigurationClient createAsyncConfigurationClientWithPipeline() {
 
         String connectionString = getConnectionString();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.pipeline.instantiation
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .addPolicy(new AddHeadersPolicy(new HttpHeaders()))
             .build();
@@ -46,7 +46,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             .endpoint("https://dummy.azure.net/")
             .connectionString(connectionString)
             .buildClient();
-        // END: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
+        // END: com.azure.v2.data.applicationconfig.configurationclient.pipeline.instantiation
         return configurationClient;
     }
 
@@ -58,11 +58,11 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public ConfigurationClient createSyncConfigurationClient() {
         String connectionString = getConnectionString();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.instantiation
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.instantiation
         ConfigurationClient configurationClient = new ConfigurationClientBuilder()
             .connectionString(connectionString)
             .buildClient();
-        // END: com.azure.data.applicationconfig.configurationclient.instantiation
+        // END: com.azure.v2.data.applicationconfig.configurationclient.instantiation
         return configurationClient;
     }
 
@@ -71,29 +71,29 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void addConfigurationSetting() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#String-String-String
+        // BEGIN: com.azure.v2.data.appconfiguration.ConfigurationClient.addConfigurationSetting#String-String-String
         ConfigurationSetting result = configurationClient
             .addConfigurationSetting("prodDBConnection", "westUS", "db_connection");
         System.out.printf("Key: %s, Label: %s, Value: %s", result.getKey(), result.getLabel(), result.getValue());
-        // END: com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#String-String-String
+        // END: com.azure.v2.data.appconfiguration.ConfigurationClient.addConfigurationSetting#String-String-String
 
         /**
          Generates code sample for using
          {@link ConfigurationClient#addConfigurationSetting(ConfigurationSetting)}
          */
-        // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting
+        // BEGIN: com.azure.v2.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting
         ConfigurationSetting setting = configurationClient.addConfigurationSetting(new ConfigurationSetting()
             .setKey("prodDBConnection")
             .setLabel("westUS")
             .setValue("db_connection"));
         System.out.printf("Key: %s, Label: %s, Value: %s", setting.getKey(), setting.getLabel(), setting.getValue());
-        // END: com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting
+        // END: com.azure.v2.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting
 
         /**
           Generates code sample for using
          {@link ConfigurationClient#addConfigurationSettingWithResponse(ConfigurationSetting, Context)}
          */
-        // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSettingWithResponse#ConfigurationSetting-Context
+        // BEGIN: com.azure.v2.data.appconfiguration.ConfigurationClient.addConfigurationSettingWithResponse#ConfigurationSetting-Context
         Response<ConfigurationSetting> responseResultSetting = configurationClient
             .addConfigurationSettingWithResponse(new ConfigurationSetting()
                     .setKey("prodDBConnection")
@@ -103,7 +103,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationSetting resultSetting = responseResultSetting.getValue();
         System.out.printf("Key: %s, Label: %s, Value: %s", resultSetting.getKey(), resultSetting.getLabel(),
             resultSetting.getValue());
-        // END: com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSettingWithResponse#ConfigurationSetting-Context
+        // END: com.azure.v2.data.appconfiguration.ConfigurationClient.addConfigurationSettingWithResponse#ConfigurationSetting-Context
     }
 
     /**
@@ -111,7 +111,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void setConfigurationSetting() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#String-String-String
+        // BEGIN: com.azure.v2.data.appconfiguration.ConfigurationClient.setConfigurationSetting#String-String-String
         ConfigurationSetting result = configurationClient
             .setConfigurationSetting("prodDBConnection", "westUS", "db_connection");
         System.out.printf("Key: %s, Label: %s, Value: %s", result.getKey(), result.getLabel(), result.getValue());
@@ -119,9 +119,9 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // Update the value of the setting to "updated_db_connection".
         result = configurationClient.setConfigurationSetting("prodDBConnection", "westUS", "updated_db_connection");
         System.out.printf("Key: %s, Label: %s, Value: %s", result.getKey(), result.getLabel(), result.getValue());
-        // END: com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#String-String-String
+        // END: com.azure.v2.data.appconfiguration.ConfigurationClient.setConfigurationSetting#String-String-String
 
-        // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting
+        // BEGIN: com.azure.v2.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting
         ConfigurationSetting setting = configurationClient.setConfigurationSetting(new ConfigurationSetting()
             .setKey("prodDBConnection")
             .setLabel("westUS")
@@ -134,13 +134,13 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             .setLabel("westUS")
             .setValue("updated_db_connection"));
         System.out.printf("Key: %s, Label: %s, Value: %s", setting.getKey(), setting.getLabel(), setting.getValue());
-        // END: com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting
+        // END: com.azure.v2.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting
 
         /**
          * Generates code sample for using
          * {@link ConfigurationClient#setConfigurationSettingWithResponse(ConfigurationSetting, boolean, Context)}
          */
-        // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context
+        // BEGIN: com.azure.v2.data.appconfiguration.ConfigurationClient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context
         // Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection"
         Response<ConfigurationSetting> responseSetting = configurationClient.setConfigurationSettingWithResponse(
             new ConfigurationSetting()
@@ -161,7 +161,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             RequestContext.builder().putMetadata(key2, value2).build());
         ConfigurationSetting updatedSetting = responseSetting.getValue();
         System.out.printf("Key: %s, Value: %s", updatedSetting.getKey(), updatedSetting.getValue());
-        // END: com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context
+        // END: com.azure.v2.data.appconfiguration.ConfigurationClient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context
     }
 
     /**
@@ -170,32 +170,32 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public void getConfigurationSetting() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
 
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.getConfigurationSetting#string-string
         ConfigurationSetting resultNoDateTime = configurationClient.getConfigurationSetting("prodDBConnection", "westUS");
         System.out.printf("Key: %s, Value: %s", resultNoDateTime.getKey(), resultNoDateTime.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string
+        // END: com.azure.v2.data.applicationconfig.configurationclient.getConfigurationSetting#string-string
 
     /**
      * Generates code sample for using {@link ConfigurationClient#getConfigurationSetting(String, String, OffsetDateTime)}
      */
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime
         ConfigurationSetting result =
             configurationClient.getConfigurationSetting("prodDBConnection", "westUS", null);
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime
+        // END: com.azure.v2.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime
 
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting
         ConfigurationSetting setting = configurationClient.getConfigurationSetting(new ConfigurationSetting()
             .setKey("prodDBConnection")
             .setLabel("westUS"));
         System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting
+        // END: com.azure.v2.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting
 
     /**
       * Generates code sample for using {@link ConfigurationClient#getConfigurationSettingWithResponse(
       * ConfigurationSetting, OffsetDateTime, boolean, Context)}
      */
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean-Context
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean-Context
         // Retrieve the setting with the key-label "prodDBConnection"-"westUS".
         Response<ConfigurationSetting> responseResultSetting = configurationClient.getConfigurationSettingWithResponse(
             new ConfigurationSetting()
@@ -206,7 +206,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             RequestContext.builder().putMetadata(key1, value1).build());
         System.out.printf("Key: %s, Value: %s", responseResultSetting.getValue().getKey(),
             responseResultSetting.getValue().getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean-Context
+        // END: com.azure.v2.data.applicationconfig.configurationclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean-Context
     }
 
     /**
@@ -214,23 +214,23 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void deleteConfigurationSetting() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string
         ConfigurationSetting result = configurationClient.deleteConfigurationSetting("prodDBConnection", "westUS");
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string
+        // END: com.azure.v2.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string
 
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting
         ConfigurationSetting setting = configurationClient.deleteConfigurationSetting(new ConfigurationSetting()
             .setKey("prodDBConnection")
             .setLabel("westUS"));
         System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting
+        // END: com.azure.v2.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting
 
         /**
          * Generates code sample for using
          * {@link ConfigurationClient#deleteConfigurationSettingWithResponse(ConfigurationSetting, Context)}
          */
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context
         Response<ConfigurationSetting> responseSetting = configurationClient.deleteConfigurationSettingWithResponse(
             new ConfigurationSetting()
                 .setKey("prodDBConnection")
@@ -239,7 +239,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             RequestContext.builder().putMetadata(key2, value2).build());
         System.out.printf(
             "Key: %s, Value: %s", responseSetting.getValue().getKey(), responseSetting.getValue().getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context
+        // END: com.azure.v2.data.applicationconfig.configurationclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context
     }
 
     /**
@@ -247,23 +247,23 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void lockSettingsCodeSnippet() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean
         ConfigurationSetting result = configurationClient.setReadOnly("prodDBConnection", "westUS", true);
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean
+        // END: com.azure.v2.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean
 
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean
         ConfigurationSetting setting = configurationClient.setReadOnly(new ConfigurationSetting()
             .setKey("prodDBConnection")
             .setLabel("westUS"),
             true);
         System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean
+        // END: com.azure.v2.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean
 
         /**
          * Generates code sample for using {@link ConfigurationClient#setReadOnlyWithResponse(ConfigurationSetting, Boolean, Context)}
          */
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context
         ConfigurationSetting resultSetting = configurationClient.setReadOnlyWithResponse(new ConfigurationSetting()
                 .setKey("prodDBConnection")
                 .setLabel("westUS"),
@@ -271,7 +271,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
                 RequestContext.none())
             .getValue();
         System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context
+        // END: com.azure.v2.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context
     }
 
     /**
@@ -279,31 +279,31 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void unlockSettingsCodeSnippet() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean-clearReadOnly
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean-clearReadOnly
         ConfigurationSetting result = configurationClient.setReadOnly("prodDBConnection", "westUS", false);
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean-clearReadOnly
+        // END: com.azure.v2.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean-clearReadOnly
 
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly
         ConfigurationSetting setting = configurationClient.setReadOnly(new ConfigurationSetting()
             .setKey("prodDBConnection")
             .setLabel("westUS"),
             false);
         System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly
+        // END: com.azure.v2.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly
 
         /**
          * Generates code sample for using
          * {@link ConfigurationClient#setReadOnlyWithResponse(ConfigurationSetting, Boolean, Context)}
          */
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-Context-ClearReadOnly
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-Context-ClearReadOnly
         Response<ConfigurationSetting> responseSetting = configurationClient
             .setConfigurationSettingWithResponse(
                 new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false,
                 RequestContext.builder().putMetadata(key2, value2).build());
         System.out.printf("Key: %s, Value: %s", responseSetting.getValue().getKey(),
             responseSetting.getValue().getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-Context-ClearReadOnly
+        // END: com.azure.v2.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-Context-ClearReadOnly
     }
 
     /**
@@ -311,12 +311,12 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void listConfigurationSettings() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector
         SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
         configurationClient.listConfigurationSettings(settingSelector).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
         });
-        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector
+        // END: com.azure.v2.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector
     }
 
     /**
@@ -324,13 +324,13 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void listConfigurationSettingsContext() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context
         SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
         RequestContext ctx = RequestContext.builder().putMetadata(key2, value2).build();
         configurationClient.listConfigurationSettings(settingSelector, ctx).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
         });
-        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context
+        // END: com.azure.v2.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context
     }
 
 //    /**
@@ -338,12 +338,12 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //     */
 //    public void listConfigurationSettingsForSnapshot() {
 //        ConfigurationClient configurationClient = createSyncConfigurationClient();
-//        // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshot
+//        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshot
 //        String snapshotName = "{snapshotName}";
 //        configurationClient.listConfigurationSettingsForSnapshot(snapshotName).forEach(setting -> {
 //            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
 //        });
-//        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshot
+//        // END: com.azure.v2.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshot
 //    }
 //
 //    /**
@@ -351,13 +351,13 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //     */
 //    public void listConfigurationSettingsForSnapshotMaxOverload() {
 //        ConfigurationClient configurationClient = createSyncConfigurationClient();
-//        // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload
+//        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload
 //        String snapshotName = "{snapshotName}";
 //        List<SettingFields> fields = Arrays.asList(SettingFields.KEY);
 //        Context ctx = new Context(key2, value2);
 //        configurationClient.listConfigurationSettingsForSnapshot(snapshotName, fields, ctx)
 //            .forEach(setting -> System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
-//        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload
+//        // END: com.azure.v2.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload
 //    }
 
     /**
@@ -365,7 +365,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void listRevisions() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.listRevisions#settingSelector
         SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
         configurationClient.listRevisions(settingSelector).streamByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
@@ -374,7 +374,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
                 System.out.printf("Response value is %d %n", value);
             });
         });
-        // END: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector
+        // END: com.azure.v2.data.applicationconfig.configurationclient.listRevisions#settingSelector
     }
 
     /**
@@ -382,13 +382,13 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void listRevisionsContext() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context
+        // BEGIN: com.azure.v2.data.applicationconfig.configurationclient.listRevisions#settingSelector-context
         SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
         RequestContext ctx = RequestContext.builder().putMetadata(key2, value2).build();
         configurationClient.listRevisions(settingSelector, ctx).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
         });
-        // END: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context
+        // END: com.azure.v2.data.applicationconfig.configurationclient.listRevisions#settingSelector-context
     }
 //
 //    /**
@@ -396,7 +396,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //     */
 //    public void beginCreateSnapshotMaxOverload() {
 //        ConfigurationClient client = createSyncConfigurationClient();
-//        // BEGIN: com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotMaxOverload
+//        // BEGIN: com.azure.v2.data.appconfiguration.configurationclient.beginCreateSnapshotMaxOverload
 //        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
 //        // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
 //        filters.add(new ConfigurationSettingsFilter("{keyName}"));
@@ -411,7 +411,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //        ConfigurationSnapshot snapshot = poller.getFinalResult();
 //
 //        System.out.printf("Snapshot name=%s is created at %s%n", snapshot.getName(), snapshot.getCreatedAt());
-//        // END: com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotMaxOverload
+//        // END: com.azure.v2.data.appconfiguration.configurationclient.beginCreateSnapshotMaxOverload
 //    }
 //
 //    /**
@@ -419,12 +419,12 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //     */
 //    public void getSnapshotByName() {
 //        ConfigurationClient client = createSyncConfigurationClient();
-//        // BEGIN: com.azure.data.appconfiguration.configurationclient.getSnapshotByName
+//        // BEGIN: com.azure.v2.data.appconfiguration.configurationclient.getSnapshotByName
 //        String snapshotName = "{snapshotName}";
 //        ConfigurationSnapshot getSnapshot = client.getSnapshot(snapshotName);
 //        System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
 //            getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
-//        // END: com.azure.data.appconfiguration.configurationclient.getSnapshotByName
+//        // END: com.azure.v2.data.appconfiguration.configurationclient.getSnapshotByName
 //    }
 //
 //    /**
@@ -432,7 +432,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //     */
 //    public void getSnapshotByNameMaxOverload() {
 //        ConfigurationClient client = createSyncConfigurationClient();
-//        // BEGIN: com.azure.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload
+//        // BEGIN: com.azure.v2.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload
 //        String snapshotName = "{snapshotName}";
 //        Context ctx = new Context(key2, value2);
 //        ConfigurationSnapshot getSnapshot = client.getSnapshotWithResponse(
@@ -448,7 +448,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //        for (ConfigurationSettingsFilter filter : filters) {
 //            System.out.printf("Snapshot filter key=%s, label=%s.%n", filter.getKey(), filter.getLabel());
 //        }
-//        // END: com.azure.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload
+//        // END: com.azure.v2.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload
 //    }
 //
 //    /**
@@ -456,12 +456,12 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //     */
 //    public void archiveSnapshotByName() {
 //        ConfigurationClient client = createSyncConfigurationClient();
-//        // BEGIN: com.azure.data.appconfiguration.configurationclient.archiveSnapshotByName
+//        // BEGIN: com.azure.v2.data.appconfiguration.configurationclient.archiveSnapshotByName
 //        String snapshotName = "{snapshotName}";
 //        ConfigurationSnapshot archivedSnapshot = client.archiveSnapshot(snapshotName);
 //        System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
 //            archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
-//        // END: com.azure.data.appconfiguration.configurationclient.archiveSnapshotByName
+//        // END: com.azure.v2.data.appconfiguration.configurationclient.archiveSnapshotByName
 //    }
 //
 //    /**
@@ -470,7 +470,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //    public void archiveSnapshotByNameMaxOverload() {
 //        ConfigurationClient client = createSyncConfigurationClient();
 //
-//        // BEGIN: com.azure.data.appconfiguration.configurationclient.archiveSnapshotByNameMaxOverload
+//        // BEGIN: com.azure.v2.data.appconfiguration.configurationclient.archiveSnapshotByNameMaxOverload
 //        String snapshotName = "{snapshotName}";
 //        MatchConditions matchConditions = new MatchConditions().setIfMatch("{etag}");
 //        Context ctx = new Context(key2, value2);
@@ -479,7 +479,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //            .getValue();
 //        System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
 //            archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
-//        // END: com.azure.data.appconfiguration.configurationclient.archiveSnapshotByNameMaxOverload
+//        // END: com.azure.v2.data.appconfiguration.configurationclient.archiveSnapshotByNameMaxOverload
 //    }
 //
 //    /**
@@ -487,12 +487,12 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //     */
 //    public void recoverSnapshotByName() {
 //        ConfigurationClient client = createSyncConfigurationClient();
-//        // BEGIN: com.azure.data.appconfiguration.configurationclient.recoverSnapshotByName
+//        // BEGIN: com.azure.v2.data.appconfiguration.configurationclient.recoverSnapshotByName
 //        String snapshotName = "{snapshotName}";
 //        ConfigurationSnapshot recoveredSnapshot = client.recoverSnapshot(snapshotName);
 //        System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
 //            recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
-//        // END: com.azure.data.appconfiguration.configurationclient.recoverSnapshotByName
+//        // END: com.azure.v2.data.appconfiguration.configurationclient.recoverSnapshotByName
 //    }
 //
 //    /**
@@ -502,7 +502,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //        ConfigurationClient client = createSyncConfigurationClient();
 //
 //
-//        // BEGIN: com.azure.data.appconfiguration.configurationclient.recoverSnapshotMaxOverload
+//        // BEGIN: com.azure.v2.data.appconfiguration.configurationclient.recoverSnapshotMaxOverload
 //        String snapshotName = "{snapshotName}";
 //        MatchConditions matchConditions = new MatchConditions().setIfMatch("{etag}");
 //        Context ctx = new Context(key2, value2);
@@ -511,7 +511,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //            .getValue();
 //        System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
 //            recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
-//        // END: com.azure.data.appconfiguration.configurationclient.recoverSnapshotMaxOverload
+//        // END: com.azure.v2.data.appconfiguration.configurationclient.recoverSnapshotMaxOverload
 //    }
 //
 //    /**
@@ -519,14 +519,14 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //     */
 //    public void listSnapshots() {
 //        ConfigurationClient client = createSyncConfigurationClient();
-//        // BEGIN: com.azure.data.appconfiguration.configurationclient.listSnapshots
+//        // BEGIN: com.azure.v2.data.appconfiguration.configurationclient.listSnapshots
 //        String snapshotNameFilter = "{snapshotNamePrefix}*";
 //        client.listSnapshots(new SnapshotSelector().setNameFilter(snapshotNameFilter))
 //            .forEach(snapshotResult -> {
 //                System.out.printf("Listed Snapshot name = %s is created at %s, snapshot status is %s.%n",
 //                    snapshotResult.getName(), snapshotResult.getCreatedAt(), snapshotResult.getStatus());
 //            });
-//        // END: com.azure.data.appconfiguration.configurationclient.listSnapshots
+//        // END: com.azure.v2.data.appconfiguration.configurationclient.listSnapshots
 //    }
 //
 //    /**
@@ -534,7 +534,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //     */
 //    public void listSnapshotsMaxOverload() {
 //        ConfigurationClient client = createSyncConfigurationClient();
-//        // BEGIN: com.azure.data.appconfiguration.configurationclient.listSnapshotsMaxOverload
+//        // BEGIN: com.azure.v2.data.appconfiguration.configurationclient.listSnapshotsMaxOverload
 //        String snapshotNameFilter = "{snapshotNamePrefix}*";
 //        Context ctx = new Context(key2, value2);
 //
@@ -543,39 +543,39 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //                System.out.printf("Listed Snapshot name = %s is created at %s, snapshot status is %s.%n",
 //                    snapshotResult.getName(), snapshotResult.getCreatedAt(), snapshotResult.getStatus());
 //            });
-//        // END: com.azure.data.appconfiguration.configurationclient.listSnapshotsMaxOverload
+//        // END: com.azure.v2.data.appconfiguration.configurationclient.listSnapshotsMaxOverload
 //    }
 
     /**
      * Code snippets for {@link ConfigurationClient#listLabels()}
      */
     public void listAllLabels() {
-        // BEGIN: com.azure.data.appconfiguration.configurationclient.listAllLabels
+        // BEGIN: com.azure.v2.data.appconfiguration.configurationclient.listAllLabels
         client.listLabels()
             .forEach(label -> {
                 System.out.println("label name = " + label.getName());
             });
-        // END: com.azure.data.appconfiguration.configurationclient.listAllLabels
+        // END: com.azure.v2.data.appconfiguration.configurationclient.listAllLabels
     }
 
     /**
      * Code snippets for {@link ConfigurationClient#listLabels(SettingLabelSelector)}
      */
     public void listLabels() {
-        // BEGIN: com.azure.data.appconfiguration.configurationclient.listLabels
+        // BEGIN: com.azure.v2.data.appconfiguration.configurationclient.listLabels
         String labelNameFilter = "{labelNamePrefix}*";
         client.listLabels(new SettingLabelSelector().setNameFilter(labelNameFilter))
                 .forEach(label -> {
                     System.out.println("label name = " + label.getName());
                 });
-        // END: com.azure.data.appconfiguration.configurationclient.listLabels
+        // END: com.azure.v2.data.appconfiguration.configurationclient.listLabels
     }
 
     /**
 //     * Code snippets for {@link ConfigurationClient#listLabels(SettingLabelSelector, Context)}
      */
     public void listLabelsMaxOverload() {
-        // BEGIN: com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload
+        // BEGIN: com.azure.v2.data.appconfiguration.configurationclient.listLabelsMaxOverload
         String labelNameFilter = "{labelNamePrefix}*";
         RequestContext ctx = RequestContext.builder().putMetadata(key2, value2).build();
 
@@ -583,7 +583,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
                 .forEach(label -> {
                     System.out.println("label name = " + label.getName());
                 });
-        // END: com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload
+        // END: com.azure.v2.data.appconfiguration.configurationclient.listLabelsMaxOverload
     }
 
     /**

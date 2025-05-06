@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
+public class ThinClientE2ETest {
     @Test(groups = {"thinclient"})
     public void testThinClientDocumentPointOperations() {
         CosmosAsyncClient client = null;
@@ -38,12 +38,14 @@ public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
                 .consistencyLevel(ConsistencyLevel.SESSION)
                 .buildAsyncClient();
 
-            CosmosAsyncContainer container = client.getDatabase("updatedd-thin-client-test-db").getContainer("thin-client-test-container-1");
+            CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
+            String idName = "id";
+            String partitionKeyName = "partitionKey";
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode doc = mapper.createObjectNode();
             String idValue = UUID.randomUUID().toString();
-            doc.put("id", idValue);
-            doc.put("pk", idValue);
+            doc.put(idName, idValue);
+            doc.put(partitionKeyName, idValue);
 
             // create
             CosmosItemResponse<ObjectNode> createResponse = container.createItem(doc).block();
@@ -57,8 +59,8 @@ public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
 
             ObjectNode doc2 = mapper.createObjectNode();
             String idValue2 = UUID.randomUUID().toString();
-            doc2.put("id", idValue2);
-            doc2.put("pk", idValue);
+            doc2.put(idName, idValue2);
+            doc2.put(partitionKeyName, idValue);
 
             // replace
             CosmosItemResponse<ObjectNode> replaceResponse = container.replaceItem(doc2, idValue, new PartitionKey(idValue)).block();
@@ -67,12 +69,12 @@ public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
             CosmosItemResponse<ObjectNode> readAfterReplaceResponse = container.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
             assertThat(readAfterReplaceResponse.getStatusCode()).isEqualTo(200);
             ObjectNode replacedItemFromRead = readAfterReplaceResponse.getItem();
-            assertThat(replacedItemFromRead.get("id").asText()).isEqualTo(idValue2);
-            assertThat(replacedItemFromRead.get("pk").asText()).isEqualTo(idValue);
+            assertThat(replacedItemFromRead.get(idName).asText()).isEqualTo(idValue2);
+            assertThat(replacedItemFromRead.get(partitionKeyName).asText()).isEqualTo(idValue);
 
             ObjectNode doc3 = mapper.createObjectNode();
-            doc3.put("id", idValue2);
-            doc3.put("pk", idValue);
+            doc3.put(idName, idValue2);
+            doc3.put(partitionKeyName, idValue);
             doc3.put("newField", "newValue");
 
             // upsert
@@ -81,8 +83,8 @@ public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
             assertThat(upsertResponse.getRequestCharge()).isGreaterThan(0.0);
             CosmosItemResponse<ObjectNode> readAfterUpsertResponse = container.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
             ObjectNode upsertedItemFromRead = readAfterUpsertResponse.getItem();
-            assertThat(upsertedItemFromRead.get("id").asText()).isEqualTo(idValue2);
-            assertThat(upsertedItemFromRead.get("pk").asText()).isEqualTo(idValue);
+            assertThat(upsertedItemFromRead.get(idName).asText()).isEqualTo(idValue2);
+            assertThat(upsertedItemFromRead.get(partitionKeyName).asText()).isEqualTo(idValue);
             assertThat(upsertedItemFromRead.get("newField").asText()).isEqualTo("newValue");
 
             // patch
@@ -94,8 +96,8 @@ public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
             assertThat(patchResponse.getRequestCharge()).isGreaterThan(0.0);
             CosmosItemResponse<ObjectNode> readAfterPatchResponse = container.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
             ObjectNode patchedItemFromRead = readAfterPatchResponse.getItem();
-            assertThat(patchedItemFromRead.get("id").asText()).isEqualTo(idValue2);
-            assertThat(patchedItemFromRead.get("pk").asText()).isEqualTo(idValue);
+            assertThat(patchedItemFromRead.get(idName).asText()).isEqualTo(idValue2);
+            assertThat(patchedItemFromRead.get(partitionKeyName).asText()).isEqualTo(idValue);
             assertThat(patchedItemFromRead.get("newField").asText()).isEqualTo("patchedNewField");
             assertThat(patchedItemFromRead.get("anotherNewField").asText()).isEqualTo("anotherNewValue");
 

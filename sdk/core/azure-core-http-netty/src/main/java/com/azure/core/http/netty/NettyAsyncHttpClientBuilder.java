@@ -174,17 +174,34 @@ public class NettyAsyncHttpClientBuilder {
     public com.azure.core.http.HttpClient build() {
         HttpClient nettyHttpClient;
 
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+
+        ProxyOptions buildProxyOptions
+            = proxyOptions == null ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
+
+        /*
+         * Only configure the custom authorization challenge handler and challenge holder when using an authenticated
+         * HTTP proxy. All other proxying such as SOCKS4, SOCKS5, and anonymous HTTP will use Netty's built-in handlers.
+         */
+        boolean useCustomProxyHandler = shouldUseCustomProxyHandler(buildProxyOptions);
+        AuthorizationChallengeHandler handler = useCustomProxyHandler
+            ? new AuthorizationChallengeHandler(buildProxyOptions.getUsername(), buildProxyOptions.getPassword())
+            : null;
+        AtomicReference<ChallengeHolder> proxyChallengeHolder = useCustomProxyHandler ? new AtomicReference<>() : null;
+
         // Used to track if the builder set the DefaultAddressResolverGroup. If it did, when proxying it allows the
         // no-op address resolver to be set.
-        boolean addressResolverWasSetByBuilder = false;
         if (this.baseHttpClient != null) {
             nettyHttpClient = baseHttpClient;
         } else if (this.connectionProvider != null) {
-            nettyHttpClient = HttpClient.create(this.connectionProvider).resolver(DefaultAddressResolverGroup.INSTANCE);
-            addressResolverWasSetByBuilder = true;
+            nettyHttpClient = HttpClient.create(this.connectionProvider);
         } else {
-            nettyHttpClient = HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE);
-            addressResolverWasSetByBuilder = true;
+            nettyHttpClient = HttpClient.create();
+        }
+
+        if (proxyOptions == null) {
+            nettyHttpClient = nettyHttpClient.resolver(DefaultAddressResolverGroup.INSTANCE);
         }
 
         long writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis();
@@ -212,22 +229,6 @@ public class NettyAsyncHttpClientBuilder {
             // with a basic one that isn't as useful in troubleshooting scenarios.
             nettyHttpClient.wiretap(enableWiretap);
         }
-
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-
-        ProxyOptions buildProxyOptions
-            = proxyOptions == null ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
-
-        /*
-         * Only configure the custom authorization challenge handler and challenge holder when using an authenticated
-         * HTTP proxy. All other proxying such as SOCKS4, SOCKS5, and anonymous HTTP will use Netty's built-in handlers.
-         */
-        boolean useCustomProxyHandler = shouldUseCustomProxyHandler(buildProxyOptions);
-        AuthorizationChallengeHandler handler = useCustomProxyHandler
-            ? new AuthorizationChallengeHandler(buildProxyOptions.getUsername(), buildProxyOptions.getPassword())
-            : null;
-        AtomicReference<ChallengeHolder> proxyChallengeHolder = useCustomProxyHandler ? new AtomicReference<>() : null;
 
         boolean addProxyHandler = false;
 
@@ -257,6 +258,12 @@ public class NettyAsyncHttpClientBuilder {
                                     handler, proxyChallengeHolder));
                     }
                 });
+
+                AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
+                if (resolver == null) {
+                    // This mimics behaviors seen when Reactor Netty proxying is used.
+                    nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
+                }
             } else {
                 nettyHttpClient
                     = nettyHttpClient.proxy(proxy -> proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
@@ -264,12 +271,6 @@ public class NettyAsyncHttpClientBuilder {
                         .username(buildProxyOptions.getUsername())
                         .password(ignored -> buildProxyOptions.getPassword())
                         .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
-            }
-
-            AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
-            if (resolver == null || addressResolverWasSetByBuilder) {
-                // This mimics behaviors seen when Reactor Netty proxying is used.
-                nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
             }
         }
 

@@ -18,6 +18,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.CosmosOperationPolicy;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -196,6 +197,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final URI serviceEndpoint;
     private final ConnectionPolicy connectionPolicy;
     private final ConsistencyLevel consistencyLevel;
+    private final ReadConsistencyStrategy readConsistencyStrategy;
     private final BaseAuthorizationTokenProvider authorizationTokenProvider;
     private final UserAgentContainer userAgentContainer;
     private final boolean hasAuthKeyResourceToken;
@@ -269,6 +271,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 List<Permission> permissionFeed,
                                 ConnectionPolicy connectionPolicy,
                                 ConsistencyLevel consistencyLevel,
+                                ReadConsistencyStrategy readConsistencyStrategy,
                                 Configs configs,
                                 CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver,
                                 AzureKeyCredential credential,
@@ -291,6 +294,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 permissionFeed,
                 connectionPolicy,
                 consistencyLevel,
+                readConsistencyStrategy,
                 configs,
                 credential,
                 null,
@@ -316,6 +320,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 List<Permission> permissionFeed,
                                 ConnectionPolicy connectionPolicy,
                                 ConsistencyLevel consistencyLevel,
+                                ReadConsistencyStrategy readConsistencyStrategy,
                                 Configs configs,
                                 CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver,
                                 AzureKeyCredential credential,
@@ -340,6 +345,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 permissionFeed,
                 connectionPolicy,
                 consistencyLevel,
+                readConsistencyStrategy,
                 configs,
                 credential,
                 tokenCredential,
@@ -366,6 +372,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 List<Permission> permissionFeed,
                                 ConnectionPolicy connectionPolicy,
                                 ConsistencyLevel consistencyLevel,
+                                ReadConsistencyStrategy readConsistencyStrategy,
                                 Configs configs,
                                 AzureKeyCredential credential,
                                 TokenCredential tokenCredential,
@@ -387,6 +394,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 masterKeyOrResourceToken,
                 connectionPolicy,
                 consistencyLevel,
+                readConsistencyStrategy,
                 configs,
                 credential,
                 tokenCredential,
@@ -450,6 +458,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          String masterKeyOrResourceToken,
                          ConnectionPolicy connectionPolicy,
                          ConsistencyLevel consistencyLevel,
+                         ReadConsistencyStrategy readConsistencyStrategy,
                          Configs configs,
                          AzureKeyCredential credential,
                          TokenCredential tokenCredential,
@@ -479,7 +488,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.diagnosticsClientConfig.withClientMap(clientMap);
 
         this.diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(connectionSharingAcrossClientsEnabled);
-        this.diagnosticsClientConfig.withConsistency(consistencyLevel);
+        this.diagnosticsClientConfig.withConsistency(consistencyLevel).withReadConsistencyStrategy(readConsistencyStrategy);
         this.throughputControlEnabled = new AtomicBoolean(false);
         this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
         this.diagnosticsClientConfig.withEndToEndOperationLatencyPolicy(cosmosEndToEndOperationLatencyPolicyConfig);
@@ -488,8 +497,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         logger.info(
             "Initializing DocumentClient [{}] with"
-                + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}]",
-            this.clientId, serviceEndpoint, connectionPolicy, consistencyLevel);
+                + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], readConsistencyStrategy [{}]",
+            this.clientId, serviceEndpoint, connectionPolicy, consistencyLevel, readConsistencyStrategy);
 
         try {
             this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
@@ -544,10 +553,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.diagnosticsClientConfig.withSessionRetryOptions(sessionRetryOptions);
 
             this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
-            boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
+            boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel
+                && ReadConsistencyStrategy.SESSION != readConsistencyStrategy
+                && !sessionCapturingOverrideEnabled);
             this.sessionCapturingDisabled = disableSessionCapturing;
 
             this.consistencyLevel = consistencyLevel;
+            this.readConsistencyStrategy = readConsistencyStrategy;
 
             this.userAgentContainer = new UserAgentContainer();
 
@@ -752,12 +764,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             clientTelemetry.init().thenEmpty((publisher) -> {
                 logger.warn(
                     "Initialized DocumentClient [{}] with machineId[{}]"
-                        + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}]",
+                        + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], readConsistencyStrategy [{}]",
                     clientId,
                     ClientTelemetry.getMachineId(diagnosticsClientConfig),
                     serviceEndpoint,
                     connectionPolicy,
-                    consistencyLevel);
+                    consistencyLevel,
+                    readConsistencyStrategy);
             }).subscribe();
             if (this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
                 this.storeModel = this.gatewayProxy;
@@ -769,7 +782,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 ? consistencyLevel
                 : this.getDefaultConsistencyLevelOfAccount();
             boolean updatedDisableSessionCapturing =
-                (ConsistencyLevel.SESSION != effectiveConsistencyLevel && !sessionCapturingOverrideEnabled);
+                (ConsistencyLevel.SESSION != effectiveConsistencyLevel
+                    && readConsistencyStrategy != ReadConsistencyStrategy.SESSION
+                    && !sessionCapturingOverrideEnabled);
             this.sessionContainer.setDisableSessionCapturing(updatedDisableSessionCapturing);
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
@@ -917,6 +932,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
+    }
+
+    @Override
+    public ReadConsistencyStrategy getReadConsistencyStrategy() {
+        return readConsistencyStrategy;
     }
 
     @Override
@@ -1652,6 +1672,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
+    public void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
+        if (this.connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
+            logger.warn(
+                "ReadConsistencyStrategy {} defined in Gateway mode. "
+                    + "This version of the SDK only supports ReadConsistencyStrategy in DIRECT mode. "
+                    + "This setting will be ignored.",
+                readConsistencyStrategyName);
+        }
+    }
+
     private Map<String, String> getRequestHeaders(RequestOptions options, ResourceType resourceType, OperationType operationType) {
         Map<String, String> headers = new HashMap<>();
 
@@ -1661,6 +1691,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (consistencyLevel != null) {
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
+        }
+
+        if (readConsistencyStrategy != null
+            && readConsistencyStrategy != ReadConsistencyStrategy.DEFAULT
+            && resourceType == ResourceType.Document
+            && operationType.isReadOnlyOperation()) {
+
+            String readConsistencyStrategyName = readConsistencyStrategy.toString();
+            this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyName);
         }
 
         if (options == null) {
@@ -1696,6 +1736,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (options.getIfNoneMatchETag() != null) {
             headers.put(HttpConstants.HttpHeaders.IF_NONE_MATCH, options.getIfNoneMatchETag());
+        }
+
+        if (options.getReadConsistencyStrategy() != null
+            && options.getReadConsistencyStrategy() != ReadConsistencyStrategy.DEFAULT
+            && resourceType == ResourceType.Document
+            && operationType.isReadOnlyOperation()) {
+
+            String readConsistencyStrategyName = options.getReadConsistencyStrategy().toString();
+            this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            headers.put(
+                HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                readConsistencyStrategyName);
         }
 
         if (options.getConsistencyLevel() != null) {
