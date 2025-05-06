@@ -2206,6 +2206,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
 
         createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        for (InternalObjectNode current : createdDocuments) {
+            try {
+                logger.info("CREATED {}", OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(current));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
