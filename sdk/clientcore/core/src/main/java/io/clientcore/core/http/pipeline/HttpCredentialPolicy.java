@@ -17,17 +17,6 @@ public abstract class HttpCredentialPolicy implements HttpPipelinePolicy {
     public HttpCredentialPolicy() {
     }
 
-    /**
-     * Applies the credential to the request.
-     *
-     * @param httpRequest The HTTP request to apply the credential to.
-     * @param next The next policy in the pipeline.
-     * @return The response from the next policy in the pipeline.
-     * @throws IllegalStateException If the request is not using the HTTPS scheme.
-     */
-    @Override
-    public abstract Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next);
-
     @Override
     public final HttpPipelinePosition getPipelinePosition() {
         return HttpPipelinePosition.AUTHENTICATION;
