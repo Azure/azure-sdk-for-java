@@ -220,7 +220,7 @@ public final class AuthenticateChallengeParser {
 
         throw LOGGER.throwableAtError()
             .addKeyValue("challenge", challenge)
-            .log("Challenge ad both token68 and auth-params.", IllegalArgumentException::new);
+            .log("Challenge had both token68 and auth-params.", IllegalArgumentException::new);
     }
 
     boolean next() {
