@@ -124,7 +124,7 @@ public class ClientLoggerTests {
 
         IOException ioException = assertThrows(IOException.class, () -> {
             throw setupLogLevelAndGetLogger(logLevelToConfigure).throwableAtWarning()
-                .log(exceptionMessage, (m, __) -> createIOException(m));
+                .log(exceptionMessage, ClientLoggerTests::createIOException);
         });
 
         String logValues = byteArraySteamToString(logCaptureStream);
@@ -144,7 +144,7 @@ public class ClientLoggerTests {
 
         IOException ioException = assertThrows(IOException.class, () -> {
             throw setupLogLevelAndGetLogger(logLevelToConfigure).throwableAtWarning()
-                .log(exceptionMessage, (m, __) -> createIOException(m));
+                .log(exceptionMessage, ClientLoggerTests::createIOException);
         });
 
         String logValues = byteArraySteamToString(logCaptureStream);
@@ -212,7 +212,10 @@ public class ClientLoggerTests {
             .addKeyValue("linkName", 1)
             .log(cause, CoreException::from);
 
-        Map<String, Object> exceptionMessageMap = fromJson(coreException.getMessage());
+        String[] messageComponents = coreException.getMessage().split(";");
+        assertEquals(2, messageComponents.length);
+        assertEquals(cause.getMessage(), messageComponents[0].trim());
+        Map<String, Object> exceptionMessageMap = fromJson(messageComponents[1]);
         assertEquals("foo", exceptionMessageMap.get("connectionId"));
         assertEquals(1, exceptionMessageMap.get("linkName"));
         assertEquals("java.net.UnknownHostException", exceptionMessageMap.get("cause.type"));
@@ -323,7 +326,7 @@ public class ClientLoggerTests {
         IllegalStateException illegalStateException = createIllegalStateException(exceptionMessage);
 
         assertInstanceOf(IllegalStateException.class, setupLogLevelAndGetLogger(logLevelToConfigure).throwableAtError()
-            .log(exceptionMessage, (m, __) -> createIllegalStateException(m)));
+            .log(exceptionMessage, ClientLoggerTests::createIllegalStateException));
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage));
@@ -342,7 +345,7 @@ public class ClientLoggerTests {
 
         IOException ioException
             = assertInstanceOf(IOException.class, setupLogLevelAndGetLogger(logLevelToConfigure).throwableAtError()
-                .log(exceptionMessage, (m, c) -> createIOException(m)));
+                .log(exceptionMessage, ClientLoggerTests::createIOException));
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage));
@@ -1267,8 +1270,8 @@ public class ClientLoggerTests {
     }
 
     static class ExceptionWithDisabledStackTrace extends RuntimeException {
-        ExceptionWithDisabledStackTrace(String message, Throwable cause) {
-            super(message, cause, true, false);
+        ExceptionWithDisabledStackTrace(String message) {
+            super(message, null, true, false);
         }
     }
 }

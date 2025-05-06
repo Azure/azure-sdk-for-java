@@ -68,12 +68,12 @@ public class AzurePowerShellCredential implements TokenCredential {
             AccessToken accessToken = devToolslClient.authenticateWithAzurePowerShell(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
-        } catch (Exception ex) {
+        } catch (RuntimeException ex) {
             LoggingUtil.logTokenError(LOGGER, request, ex);
             if (devToolslClient.getClientOptions().isChained()) {
-                throw LOGGER.logThrowableAsError(new CredentialUnavailableException(ex.getMessage(), ex));
+                throw LOGGER.throwableAtError().log(ex, CredentialUnavailableException::new);
             }
-            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(ex.getMessage(), ex));
+            throw LOGGER.throwableAtError().log(ex, CredentialAuthenticationException::new);
         }
     }
 }

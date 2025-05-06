@@ -135,16 +135,13 @@ public final class GeoPosition implements JsonSerializable<GeoPosition> {
 
             case 2:
                 if (altitude == null) {
-                    throw LOGGER.throwableAtError()
-                        .log("Index out of range: " + index, (m, c) -> new IndexOutOfBoundsException(m));
+                    throw LOGGER.throwableAtError().log("Index out of range: " + index, IndexOutOfBoundsException::new);
                 }
 
                 return altitude;
 
             default:
-                throw LOGGER.throwableAtError()
-                    .log("Index out of range: " + index,
-                        (m, c) -> new IndexOutOfBoundsException("Index out of range: " + index));
+                throw LOGGER.throwableAtError().log("Index out of range: " + index, IndexOutOfBoundsException::new);
         }
     }
 

@@ -211,8 +211,7 @@ public final class PagedIterable<T> implements Iterable<T> {
         @Override
         public E next() {
             if (!hasNext()) {
-                throw LOGGER.throwableAtError()
-                    .log("Iterator contains no more elements.", (m, __) -> new NoSuchElementException(m));
+                throw LOGGER.throwableAtError().log("Iterator contains no more elements.", NoSuchElementException::new);
             }
 
             return getNext();

@@ -61,8 +61,9 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
             cacheAccessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
             return true;
         } catch (Throwable t) {
-            throw LOGGER.logThrowableAsError(
-                new CredentialAuthenticationException("Shared token cache is unavailable in this environment.", t));
+            throw LOGGER.throwableAtError()
+                .log("Shared token cache is unavailable in this environment.", t,
+                    CredentialAuthenticationException::new);
         }
     }
 
@@ -89,7 +90,8 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
                 return persistenceSettingsBuilder.build();
             } catch (KeyRingAccessException e) {
                 if (!allowUnencryptedStorage) {
-                    throw LOGGER.logThrowableAsError(e);
+                    // not logging here, caller is logging everything
+                    throw e;
                 }
                 persistenceSettingsBuilder.setLinuxUseUnprotectedFileAsCacheStorage(true);
                 return persistenceSettingsBuilder.build();

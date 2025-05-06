@@ -7,6 +7,7 @@ import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static io.clientcore.core.annotations.MetadataProperties.FLUENT;
 
@@ -87,8 +88,8 @@ public class ExceptionLoggingEvent {
      * @param <T> The type of the exception to be created.
      * @return The created exception.
      */
-    public <T extends Throwable> T log(BiFunction<String, Throwable, T> throwableFactory) {
-        return logImpl(null, throwableFactory.apply(log.getExceptionMessageWithContext(null, null), null));
+    public <T extends Throwable> T log(Function<String, T> throwableFactory) {
+        return logImpl(null, throwableFactory.apply(log.getExceptionMessageWithContext(null, null)));
     }
 
     /**
@@ -101,9 +102,8 @@ public class ExceptionLoggingEvent {
      * @param <T> The type of the exception to be created.
      * @return The created exception.
      */
-    public <T extends Throwable> T log(String shortMessage, BiFunction<String, Throwable, T> throwableFactory) {
-        return logImpl(shortMessage,
-            throwableFactory.apply(log.getExceptionMessageWithContext(shortMessage, null), null));
+    public <T extends Throwable> T log(String shortMessage, Function<String, T> throwableFactory) {
+        return logImpl(shortMessage, throwableFactory.apply(log.getExceptionMessageWithContext(shortMessage, null)));
     }
 
     /**
@@ -117,7 +117,8 @@ public class ExceptionLoggingEvent {
      * @return The created exception.
      */
     public <T extends Throwable> T log(Throwable cause, BiFunction<String, Throwable, T> throwableFactory) {
-        return logImpl(null, throwableFactory.apply(log.getExceptionMessageWithContext(null, cause), cause));
+        return logImpl(null,
+            throwableFactory.apply(log.getExceptionMessageWithContext(cause.getMessage(), cause), cause));
     }
 
     /**

@@ -220,7 +220,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
                 try {
                     Thread.sleep(millis);
                 } catch (InterruptedException ie) {
-                    throw logger.throwableAtError().log((msg, ex) -> CoreException.from(msg, ie, false));
+                    throw logger.throwableAtError().log(ie, (m, c) -> CoreException.from(m, c, false));
                 }
             }
 

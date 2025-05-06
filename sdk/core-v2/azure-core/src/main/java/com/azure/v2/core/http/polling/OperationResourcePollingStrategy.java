@@ -166,8 +166,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             .addKeyValue("operationLocationHeaderName", operationLocationHeaderName.getValue())
             .addKeyValue("operationLocationHeaderValue",
                 operationLocationHeader == null ? null : operationLocationHeader.getValue())
-            .log("Operation failed or cancelled",
-                (message, cause) -> new HttpResponseException(message, response, cause));
+            .log("Operation failed or cancelled", message -> new HttpResponseException(message, response, null));
     }
 
     @Override

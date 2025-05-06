@@ -63,8 +63,7 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType), retryAfter);
         } else {
             throw LOGGER.throwableAtError()
-                .log("Operation failed or cancelled",
-                    (message, __) -> new HttpResponseException(message, response, null));
+                .log("Operation failed or cancelled", message -> new HttpResponseException(message, response, null));
         }
     }
 

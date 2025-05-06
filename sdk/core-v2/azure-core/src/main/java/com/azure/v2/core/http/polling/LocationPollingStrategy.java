@@ -146,7 +146,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
             .addKeyValue("http.response.status_code", response.getStatusCode())
             .addKeyValue("http.response.header.location", locationHeader == null ? null : locationHeader.getValue())
             .addKeyValue("http.response.body.content", serializeResponse(response.getValue(), serializer).toString())
-            .log("Operation failed or cancelled", (message, __) -> new HttpResponseException(message, response, null));
+            .log("Operation failed or cancelled", message -> new HttpResponseException(message, response, null));
     }
 
     @Override

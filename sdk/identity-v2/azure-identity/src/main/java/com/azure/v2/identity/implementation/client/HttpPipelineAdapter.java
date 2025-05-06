@@ -16,6 +16,7 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 
@@ -112,7 +113,7 @@ class HttpPipelineAdapter implements IHttpClient {
                 }
             }
         } catch (IOException e) {
-            CLIENT_LOGGER.logThrowableAsWarning(e);
+            CLIENT_LOGGER.throwableAtWarning().log(e, CoreException::from);
         }
     }
 

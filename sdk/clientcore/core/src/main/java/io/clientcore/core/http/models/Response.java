@@ -83,7 +83,7 @@ public class Response<T> implements Closeable {
             try {
                 ((Closeable) value).close();
             } catch (IOException e) {
-                throw LOGGER.throwableAtError().log((msg, cause) -> CoreException.from(msg, e, false));
+                throw LOGGER.throwableAtError().log(e, (msg, cause) -> CoreException.from(msg, cause, false));
             }
         }
     }
