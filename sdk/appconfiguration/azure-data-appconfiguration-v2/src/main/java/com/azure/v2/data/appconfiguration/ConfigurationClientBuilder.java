@@ -302,8 +302,8 @@ public final class ConfigurationClientBuilder
     private AzureAppConfigurationClientImpl buildInnerClient() {
         // Manual changes start
         if (isNullOrEmpty(connectionString) && isNullOrEmpty(endpoint)) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'connectionString' or 'endpoint' cannot be null."));
+            throw LOGGER.throwableAtError()
+                .log("'connectionString' or 'endpoint' cannot be null.", IllegalArgumentException::new);
         }
 
         if (!isNullOrEmpty(connectionString) && isNullOrEmpty(endpoint)) {
@@ -346,8 +346,8 @@ public final class ConfigurationClientBuilder
         } else if (connectionStringCredentials != null) {
             policies.add(new ConfigurationCredentialsPolicy(connectionStringCredentials));
         } else {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("Missing credential information while building a client."));
+            throw LOGGER.throwableAtError()
+                .log("Missing credential information while building a client.", IllegalArgumentException::new);
         }
         // Manual changes end
 

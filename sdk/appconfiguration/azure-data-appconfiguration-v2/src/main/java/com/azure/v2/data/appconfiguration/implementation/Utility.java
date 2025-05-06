@@ -121,17 +121,16 @@ public class Utility {
     public static PagedResponse<ConfigurationSetting> handleNotModifiedErrorToValidResponse(HttpResponseException error,
         ClientLogger logger) {
         Response<BinaryData> httpResponse = error.getResponse();
-        if (httpResponse == null) {
-            throw logger.logThrowableAsError(error);
+        if (httpResponse != null) {
+            String continuationToken = parseNextLink(httpResponse.getHeaders().getValue(HttpHeaderName.LINK));
+            if (httpResponse.getStatusCode() == 304) {
+                return new PagedResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                    httpResponse.getHeaders(), null, continuationToken, null, null, null, null);
+            }
         }
 
-        String continuationToken = parseNextLink(httpResponse.getHeaders().getValue(HttpHeaderName.LINK));
-        if (httpResponse.getStatusCode() == 304) {
-            return new PagedResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
-                httpResponse.getHeaders(), null, continuationToken, null, null, null, null);
-        }
-
-        throw logger.logThrowableAsError(error);
+        logger.atError().setThrowable(error).log();
+        throw error;
     }
 
     // Get the ETag from a list

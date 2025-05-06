@@ -58,13 +58,7 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
                 continue;
             }
 
-            final SyncToken syncToken;
-            try {
-                syncToken = SyncToken.createSyncToken(syncTokenString);
-            } catch (Exception ex) {
-                logger.logThrowableAsWarning(ex);
-                continue;
-            }
+            final SyncToken syncToken = SyncToken.createSyncToken(syncTokenString);
 
             final String tokenId = syncToken.getId();
             // If the value is not thread safe and must be updated inside the method with a remapping function
