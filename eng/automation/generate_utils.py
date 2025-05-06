@@ -158,7 +158,7 @@ def generate_changelog_and_breaking_change(
 
 
 def update_changelog(changelog_file, changelog):
-    version_pattern = "^## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((.*?)\)"
+    version_pattern = r"^## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((.*?)\)"
     with open(changelog_file, "r") as fin:
         old_changelog = fin.read()
 
@@ -175,8 +175,8 @@ def update_changelog(changelog_file, changelog):
 
     first_version_part = old_changelog[: first_version.end() + second_version.start()]
     # remove text starting from the first '###' (usually the block '### Features Added')
-    first_version_part = re.sub("\n###.*", "\n", first_version_part, flags=re.S)
-    first_version_part = re.sub("\s+$", "", first_version_part)
+    first_version_part = re.sub(r"\n###.*", "\n", first_version_part, flags=re.S)
+    first_version_part = re.sub(r"\s+$", "", first_version_part)
 
     first_version_part += "\n\n"
     if changelog.strip() != "":
@@ -252,7 +252,7 @@ def get_version(
 
 
 def valid_service(service: str):
-    return re.sub("[^a-z0-9_]", "", service.lower())
+    return re.sub(r"[^a-z0-9_]", "", service.lower())
 
 
 def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
