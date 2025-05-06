@@ -245,7 +245,7 @@ jobs:
         parameters:
           PackageInfoFiles:
             - ${{ each artifact in parameters.ReleaseArtifacts }}:
-              - $(Build.ArtifactStagingDirectory)/packages/PackageInfo/${{artifact.name}}.json
+              - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
 
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
         parameters:
@@ -255,7 +255,7 @@ jobs:
         parameters:
           PackageInfoFiles:
             - ${{ each artifact in parameters.ReleaseArtifacts }}:
-              - $(Build.ArtifactStagingDirectory)/packages/PackageInfo/${{artifact.name}}.json
+              - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
 
   #     - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
