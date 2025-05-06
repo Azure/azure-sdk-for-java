@@ -16,7 +16,6 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersRe
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumberBrowseCapabilitiesRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchaseReservationResponse;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
