@@ -110,11 +110,11 @@ if ($ServiceDirectories) {
     if ($result) {
       $hasError = $true
     }
+    Reset-Repository
   }
 } else {
   Write-Host "The service directory list was empty for this PR, no TypeSpec files to regenerate"
 }
-Reset-Repository
 if ($hasError) {
   exit 1
 }

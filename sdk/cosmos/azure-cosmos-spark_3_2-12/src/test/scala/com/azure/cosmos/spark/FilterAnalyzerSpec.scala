@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.ReadConsistencyStrategy
 import com.azure.cosmos.models.{CosmosParameterizedQuery, DedicatedGatewayRequestOptions, SparkModelBridgeInternal}
 import org.apache.spark.sql.sources.{AlwaysFalse, AlwaysTrue, EqualTo, Filter, In, IsNotNull, IsNull, StringContains, StringEndsWith, StringStartsWith}
 import org.assertj.core.api.Assertions.assertThat
@@ -15,7 +16,7 @@ class FilterAnalyzerSpec extends UnitSpec {
   //scalastyle:off magic.number
   private[this] val readConfigWithoutCustomQuery =
     new CosmosReadConfig(
-      true,
+      ReadConsistencyStrategy.EVENTUAL,
       SchemaConversionModes.Relaxed,
       100,
       Queues.XS_BUFFER_SIZE,
@@ -30,7 +31,7 @@ class FilterAnalyzerSpec extends UnitSpec {
     List.empty[String],
     List.empty[Any]))
   private[this] val readConfigWithCustomQuery = new CosmosReadConfig(
-    true,
+    ReadConsistencyStrategy.EVENTUAL,
     SchemaConversionModes.Relaxed,
     100,
     Queues.XS_BUFFER_SIZE,
@@ -245,7 +246,7 @@ class FilterAnalyzerSpec extends UnitSpec {
   "_itemIdentity filter" should "be parsed into readMany list when readManyFiltering is enabled" in {
     val readConfigWithReadManyFilterEnabled =
       new CosmosReadConfig(
-        true,
+        ReadConsistencyStrategy.EVENTUAL,
         SchemaConversionModes.Relaxed,
         100,
         Queues.XS_BUFFER_SIZE,
