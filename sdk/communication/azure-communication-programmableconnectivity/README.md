@@ -8,8 +8,11 @@ This package contains Microsoft Azure ProgrammableConnectivity client library.
 
 Various documentation is available to help you get started
 
-- [API reference documentation][docs]
-- [Product documentation][product_documentation]
+- [Source code](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/Azure.Communication.ProgrammableConnectivity/src) 
+- Package (NuGet): `https://www.nuget.org/packages/Azure.Communication.ProgrammableConnectivity` 
+- [API reference documentation](https://azure.github.io/azure-sdk-for-java) 
+- [APC Product documentation](https://learn.microsoft.com/en-us/products/programmable-connectivity)
+
 
 ## Getting started
 
@@ -39,6 +42,68 @@ Various documentation is available to help you get started
 ## Examples
 
 ```java com.azure.communication.programmableconnectivity.readme
+// Initialize the Programmable Connectivity client
+// Create a client using DefaultAzureCredential
+String endpoint = "https://your-resource-name.communication.azure.com";
+
+// Example 1: Verify device location
+DeviceLocationClient deviceLocationClient = new ProgrammableConnectivityClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint(endpoint)
+    .buildDeviceLocationClient();
+
+// Prepare device information for verification
+LocationDevice deviceInfo = new LocationDevice()
+    .setNetworkAccessIdentifier("user@example.com")
+    .setPhoneNumber("+12065550100")
+    .setIpv4Address(new Ipv4Address("192.0.2.10", 8080));
+
+// Create verification content with location coordinates
+DeviceLocationVerificationContent verificationContent = new DeviceLocationVerificationContent(
+    new NetworkIdentifier("ipv4", "192.0.2.10"), // Type and value
+    47.6062,                                     // Latitude
+    -122.3321,                                   // Longitude
+    50,                                          // Accuracy in meters
+    deviceInfo
+);
+
+// Perform the verification
+String correlationId = "my-correlation-id-123";
+DeviceLocationVerificationResult result = deviceLocationClient.verify(correlationId, verificationContent);
+System.out.println("Verification result: " + result.isVerificationResult());
+
+// Example 2: Retrieve device network information
+DeviceNetworkClient deviceNetworkClient = new ProgrammableConnectivityClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint(endpoint)
+    .buildDeviceNetworkClient();
+
+// Retrieve network information using an IPv4 address
+NetworkRetrievalResult networkInfo = deviceNetworkClient.retrieve(
+    "correlation-id-456",
+    new NetworkIdentifier("ipv4", "203.0.113.45")
+);
+
+// Access network information
+System.out.println("Network code: " + networkInfo.getNetworkCode());
+
+// Example 3: Retrieve SIM Swap information
+SimSwapClient simSwapClient = new ProgrammableConnectivityClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint(endpoint)
+    .buildSimSwapClient();
+
+// Create the request content with network identifier and phone number
+SimSwapRetrievalContent simSwapContent = new SimSwapRetrievalContent(
+    new NetworkIdentifier("ipv4", "192.0.2.10"))
+    .setPhoneNumber("+12065550199");
+
+// Perform SIM swap information retrieval
+String simSwapCorrelationId = "sim-swap-correlation-123";
+SimSwapRetrievalResult simSwapResult = simSwapClient.retrieve(simSwapCorrelationId, simSwapContent);
+
+// Process the SIM swap information
+System.out.println("SIM swap date: " + simSwapResult.getDate());
 ```
 
 ### Service API versions
