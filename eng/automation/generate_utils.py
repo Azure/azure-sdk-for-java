@@ -286,8 +286,8 @@ def get_and_update_service_from_api_specs(
     service: str = None,
     truncate_service=False,
 ):
-    SPECIAL_SPEC = {"resources"}
-    if spec in SPECIAL_SPEC:
+    special_spec = {"resources"}
+    if spec in special_spec:
         if not service:
             service = spec
         return valid_service(service)
