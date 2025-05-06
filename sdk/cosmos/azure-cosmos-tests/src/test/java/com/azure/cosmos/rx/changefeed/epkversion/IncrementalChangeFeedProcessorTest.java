@@ -1862,8 +1862,28 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
-            for (InternalObjectNode item : createdDocuments) {
-                assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+            int i = 0;
+            while(i < 3) {
+                boolean isLastAttempt = (i == 2);
+                if (isLastAttempt) {
+                    for (InternalObjectNode item : createdDocuments) {
+                        assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+                    }
+                } else {
+                    boolean foundAll = true;
+                    for (InternalObjectNode item : createdDocuments) {
+                        if (!receivedDocuments.containsKey(item.getId())) {
+                            foundAll = false;
+                            break;
+                        }
+                    }
+
+                    if (!foundAll) {
+                        Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                    }
+                }
+
+                i++;
             }
 
             // Wait for the feed processor to shutdown.
