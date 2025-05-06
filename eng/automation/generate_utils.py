@@ -302,9 +302,9 @@ def get_and_update_service_from_api_specs(
             service = spec
             # remove segment contains ".", e.g. "Microsoft.KubernetesConfiguration", "Astronomer.Astro"
             service = re.sub(r"/[^/]+(\.[^/]+)+", "", service)
-            service = valid_service(service)
             # truncate length of service to 32, as this is the maximum length for package name in Java repository
             if truncate_service:
+                service = valid_service(service)
                 max_length = 32
                 if len(service) > max_length:
                     logging.warning(f'[VALIDATE] service name truncated from "{service}" to "{service[:max_length]}"')
