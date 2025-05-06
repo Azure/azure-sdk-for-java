@@ -318,7 +318,11 @@ public final class LoggingEvent {
 
         if (logger != null && logger.canLogAtLevel(LogLevel.VERBOSE)) {
             StringBuilder stackTrace = new StringBuilder();
-            DefaultLogger.appendThrowable(stackTrace, throwable);
+            if (throwable.getStackTrace().length > 0) {
+                DefaultLogger.appendThrowable(stackTrace, throwable);
+            } else {
+                stackTrace.append("stacktrace disabled");
+            }
             addKeyValue(EXCEPTION_STACKTRACE_KEY, stackTrace.toString());
         }
     }

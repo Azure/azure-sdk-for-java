@@ -274,7 +274,7 @@ public class ClientLoggerTests {
         expectedMessage.put("connectionId", "foo");
         expectedMessage.put("linkName", 1);
         expectedMessage.put("exception.type", exception.getClass().getCanonicalName());
-        expectedMessage.put("exception.stacktrace", stackTraceToString(exception));
+        expectedMessage.put("exception.stacktrace", "stacktrace disabled");
 
         String logValues = byteArraySteamToString(logCaptureStream);
 
