@@ -172,9 +172,10 @@ function IsApiviewStatusCheckRequired($packageInfo)
 function ProcessPackage($packageInfo)
 {
     $packages = @{}
-    if ($FindArtifactForApiReviewFnV2 -and (Test-Path "Function:$FindArtifactForApiReviewFnV2"))
+    if ($FindArtifactForApiReviewFn -and (Test-Path "Function:$FindArtifactForApiReviewFn"))
     {
-        $packages = &$FindArtifactForApiReviewFnV2 $ArtifactPath $packageInfo
+        $pkgArtifactName = $packageInfo.ArtifactName ?? $packageInfo.Name
+        $packages = &$FindArtifactForApiReviewFn $ArtifactPath $pkgArtifactName $packageInfo
     }
     else
     {

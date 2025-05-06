@@ -205,7 +205,7 @@ foreach ($packageInfoFile in $PackageInfoFiles)
     # If there's a groupId that means this is Java and pkgName = GroupId+ArtifactName
     # but the VerifyAPIReview requires GroupId:ArtifactName
     if ($packageInfo.PSObject.Members.Name -contains "Group") {
-        $groupId = $pkgInfo.Group
+        $groupId = $packageInfo.Group
         if ($groupId) {
             $fullPackageName = "$($groupId):$($packageInfo.ArtifactName)"
         }

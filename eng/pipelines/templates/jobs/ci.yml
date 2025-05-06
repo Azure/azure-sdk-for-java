@@ -248,8 +248,6 @@ jobs:
               - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
 
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
-        parameters:
-          UseV2: true
 
       - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
         parameters:

@@ -482,7 +482,7 @@ function Get-java-GithubIoDocIndex()
 
 # function is used to filter packages to submit to API view tool
 # Function pointer name: FindArtifactForApiReviewFn
-function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
+function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName, $packageInfo = $null)
 {
   # skip spark packages
   if ($pkgName.Contains("-spark")) {
@@ -493,15 +493,21 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
     return $null
   }
 
-  # Find all source jar files in given artifact directory
-  # Filter for package in "com.azure*" groupId.
-  $artifactPath = Join-Path $artifactDir "com.azure*" $pkgName
-  Write-Host "Checking for source jar in artifact path $($artifactPath)"
-  $files = @(Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
-  # And filter for packages in "io.clientcore*" groupId.
-  # (Is there a way to pass more information here to know the explicit groupId?)
-  $artifactPath = Join-Path $artifactDir "io.clientcore*" $pkgName
-  $files += @(Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
+  if ($packageInfo) {
+    $artifactPath = Join-Path $artifactDir $packageInfo.Group $packageInfo.ArtifactName
+    $files += @(Get-ChildItem "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
+  } else {
+    # Find all source jar files in given artifact directory
+    # Filter for package in "com.azure*" groupId.
+    $artifactPath = Join-Path $artifactDir "com.azure*" $pkgName
+    Write-Host "Checking for source jar in artifact path $($artifactPath)"
+    $files = @(Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
+    # And filter for packages in "io.clientcore*" groupId.
+    # (Is there a way to pass more information here to know the explicit groupId?)
+    $artifactPath = Join-Path $artifactDir "io.clientcore*" $pkgName
+    $files += @(Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
+  }
+
   if (!$files)
   {
     Write-Host "$($artifactPath) does not have any package"
@@ -520,45 +526,6 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
 
   return $packages
 }
-
-# function is used to filter packages to submit to API view tool
-# Function pointer name: FindArtifactForApiReviewFnV2
-function Find-java-Artifacts-For-ApireviewV2($artifactDir, $packageInfo)
-{
-  # skip spark packages
-  if ($packageInfo.ArtifactName.Contains("-spark")) {
-    return $null
-  }
-  # skip azure-cosmos-test package because it needs to be released
-  if ($packageInfo.ArtifactName.Contains("azure-cosmos-test")) {
-    return $null
-  }
-
-  $artifactPath = Join-Path $artifactDir $packageInfo.Group $packageInfo.ArtifactName
-  $files += @(Get-ChildItem "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
-  if (!$files)
-  {
-    Write-Host "$($artifactPath) does not have any sources.jar files"
-    return $null
-  }
-  elseif($files.Count -ne 1)
-  {
-    Write-Host "$($artifactPath) should contain only one (1) published sources.jar package"
-    Write-Host "No of Packages $($files.Count)"
-    Write-Host "sources.jar files:"
-    foreach ($file in $files) {
-      Write-Host "  $($file.Name)"
-    }
-    return $null
-  }
-
-  $packages = @{
-    $files[0].Name = $files[0].FullName
-  }
-
-  return $packages
-}
-
 
 function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $ReplaceLatestEntryTitle=$true, $BuildType = "client", $GroupId = "com.azure", $PackageProperties)
 {
