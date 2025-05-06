@@ -80,9 +80,9 @@ public class StorageActionsManagerTests extends TestProxyTestBase {
         StorageTask storageTask = null;
         try {
             String taskName = "task" + randomPadding();
+            // @embedmeStart
             Map<String, String> operationMap = new LinkedHashMap<>();
             operationMap.put("tier", "Hot");
-            // @embedmeStart
             storageTask = storageActionsManager.storageTasks()
                 .define(taskName)
                 .withRegion(REGION)
