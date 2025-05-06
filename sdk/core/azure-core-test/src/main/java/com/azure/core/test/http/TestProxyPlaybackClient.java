@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.RecordFilePayload;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
@@ -30,6 +31,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -285,6 +287,9 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public void addMatcherRequests(List<TestProxyRequestMatcher> matchers) {
         if (isPlayingBack()) {
+            if (matchers.isEmpty()) {
+                matchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Connect")));
+            }
             List<HttpRequest> matcherRequests = getMatcherRequests(matchers, proxyUrl);
             if (skipRecordingRequestBody) {
                 matcherRequests.add(TestProxyUtils.setCompareBodiesMatcher());

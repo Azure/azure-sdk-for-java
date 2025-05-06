@@ -476,8 +476,11 @@ public class TestProxyUtils {
                     break;
 
                 case BODILESS:
-                    matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS.getName();
-                    request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/setmatcher");
+//                    matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS.getName();
+                    CustomMatcher fakeBodilessMatcher  = new CustomMatcher().setComparingBodies(false);
+                    String fakeRequestBody = createCustomMatcherRequestBody(fakeBodilessMatcher);
+                    matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName();
+                    request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/setmatcher").setBody(fakeRequestBody);
                     break;
 
                 case CUSTOM:
