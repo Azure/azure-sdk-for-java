@@ -37,8 +37,8 @@ public final class CertificateUtil {
         Pattern pattern = Pattern.compile("(?s)-----BEGIN PRIVATE KEY-----.*-----END PRIVATE KEY-----");
         Matcher matcher = pattern.matcher(new String(pem, StandardCharsets.UTF_8));
         if (!matcher.find()) {
-            throw LOGGER.throwableAtError()
-                .log("Certificate file provided is not a valid PEM file.", IllegalArgumentException::new);
+            throw LOGGER.logThrowableAsError(
+                new IllegalArgumentException("Certificate file provided is not a valid PEM file."));
         }
         String base64 = matcher.group()
             .replace("-----BEGIN PRIVATE KEY-----", "")
@@ -51,7 +51,7 @@ public final class CertificateUtil {
             KeyFactory kf = KeyFactory.getInstance("RSA");
             return kf.generatePrivate(spec);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw LOGGER.throwableAtError().log(e, IllegalStateException::new);
+            throw LOGGER.logThrowableAsError(new IllegalStateException(e));
         }
     }
 
@@ -71,14 +71,13 @@ public final class CertificateUtil {
                 InputStream stream = new ByteArrayInputStream(matcher.group().getBytes(StandardCharsets.UTF_8));
                 x509CertificateList.add((X509Certificate) factory.generateCertificate(stream));
             } catch (CertificateException e) {
-                throw LOGGER.throwableAtError().log(e, IllegalStateException::new);
+                throw LOGGER.logThrowableAsError(new IllegalStateException(e));
             }
         }
 
         if (x509CertificateList.size() == 0) {
-            throw LOGGER.throwableAtError()
-                .log("PEM certificate provided does not contain -----BEGIN CERTIFICATE-----END CERTIFICATE----- block",
-                    IllegalArgumentException::new);
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                "PEM certificate provided does not contain -----BEGIN CERTIFICATE-----END CERTIFICATE----- block"));
         }
 
         return x509CertificateList;

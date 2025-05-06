@@ -219,9 +219,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         loadFallbackValuesFromEnvironment();
 
         if (managedIdentityClientId != null && managedIdentityResourceId != null) {
-            throw LOGGER.throwableAtError()
-                .log("Only one of managedIdentityClientId and managedIdentityResourceId can be specified.",
-                    IllegalStateException::new);
+            throw LOGGER.logThrowableAsError(new IllegalStateException(
+                "Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
         }
         return new DefaultAzureCredential(getCredentialsChain());
     }

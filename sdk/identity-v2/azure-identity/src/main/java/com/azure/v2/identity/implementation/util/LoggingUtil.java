@@ -3,6 +3,7 @@
 
 package com.azure.v2.identity.implementation.util;
 
+import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
@@ -41,6 +42,18 @@ public final class LoggingUtil {
     }
 
     private LoggingUtil() {
+    }
+
+    /**
+     * Logs {@link CredentialUnavailableException} as ERROR.
+     *
+     * @param logger the logger to be used for logging
+     * @param exception the cred unavailable exception
+     * @return the logged exception
+     */
+    public static CredentialUnavailableException logCredentialUnavailableException(ClientLogger logger,
+        CredentialUnavailableException exception) {
+        throw logger.logThrowableAsError(exception);
     }
 
     /**

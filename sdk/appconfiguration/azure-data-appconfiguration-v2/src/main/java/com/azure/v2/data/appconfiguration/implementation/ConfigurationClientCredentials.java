@@ -101,7 +101,7 @@ public class ConfigurationClientCredentials {
             headers.set(HttpHeaderName.AUTHORIZATION, "HMAC-SHA256 Credential=" + credentials.id()
                 + "&SignedHeaders=Host;Date;x-ms-content-sha256&Signature=" + signature);
         } catch (GeneralSecurityException e) {
-            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
+            throw LOGGER.logThrowableAsError(new RuntimeException(e));
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

@@ -13,7 +13,6 @@ import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
@@ -113,7 +112,7 @@ public class AzureToolkitCacheAccessor {
                     throw new CredentialUnavailableException("IntelliJCredential => Refresh Token not found.");
                 });
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.atLevel(LogLevel.VERBOSE).log("IntelliJCredential => Refresh Token not found: " + e.getMessage());
             return null;
         }

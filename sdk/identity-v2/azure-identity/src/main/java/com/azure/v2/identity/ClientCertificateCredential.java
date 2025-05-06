@@ -101,16 +101,16 @@ public class ClientCertificateCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
         }
 
         try {
             AccessToken token = confidentialClient.authenticate(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return token;
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, request, e);
-            throw LOGGER.throwableAtError().log(e, CredentialAuthenticationException::new);
+            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
         }
     }
 }

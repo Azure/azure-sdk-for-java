@@ -81,7 +81,7 @@ public class AuthorizationCodeCredentialBuilder
         try {
             this.publicClientOptions.setRedirectUri(new URI(redirectUrl));
         } catch (URISyntaxException e) {
-            throw LOGGER.throwableAtError().log(e, IllegalArgumentException::new);
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(e));
         }
         return this;
     }

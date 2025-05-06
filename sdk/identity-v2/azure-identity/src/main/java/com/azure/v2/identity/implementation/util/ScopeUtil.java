@@ -3,8 +3,6 @@
 
 package com.azure.v2.identity.implementation.util;
 
-import io.clientcore.core.instrumentation.logging.ClientLogger;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -50,18 +48,14 @@ public final class ScopeUtil {
     /**
      * Validate the format of the input scope.
      * @param scope the scope input
-     * @param logger the logger to log the error
      * @throws IllegalArgumentException if a scope with invalid format is provided.
      */
-    public static void validateScope(String scope, ClientLogger logger) {
+    public static void validateScope(String scope) {
         boolean isScopeMatch = SCOPE_PATTERN.matcher(scope).matches();
 
         if (!isScopeMatch) {
-            throw logger.throwableAtError()
-                .log(
-                    "The specified scope is not in expected format."
-                        + " Only alphanumeric characters, '.', '-', ':', and '/' are allowed",
-                    IllegalArgumentException::new);
+            throw new IllegalArgumentException("The specified scope is not in expected format."
+                + " Only alphanumeric characters, '.', '-', ':', and '/' are allowed");
         }
     }
 

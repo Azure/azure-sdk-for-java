@@ -168,10 +168,9 @@ public class ClientCertificateCredentialBuilder
 
         if (confidentialClientOptions.getCertificateBytes() != null
             && confidentialClientOptions.getCertificatePath() != null) {
-            throw LOGGER.throwableAtWarning()
-                .log("Both certificate input stream and "
-                    + "certificate path/bytes are provided in ClientCertificateCredentialBuilder. Only one of them should "
-                    + "be provided.", IllegalArgumentException::new);
+            throw LOGGER.logThrowableAsWarning(new IllegalArgumentException("Both certificate input stream and "
+                + "certificate path/bytes are provided in ClientCertificateCredentialBuilder. Only one of them should "
+                + "be provided."));
         }
         return new ClientCertificateCredential(confidentialClientOptions);
     }

@@ -105,7 +105,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
                         writer.writeUntypedField(name, jsonValue);
                     }
                 } catch (IOException e) {
-                    throw LOGGER.throwableAtError().log(e, RuntimeException::new);
+                    throw LOGGER.logThrowableAsError(new RuntimeException(e));
                 }
             }
             // Remaining known properties we are not processed yet after 'parsedProperties'.
@@ -118,8 +118,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
             newValue = outputStream.toString(StandardCharsets.UTF_8.name());
             outputStream.close();
         } catch (IOException exception) {
-            LOGGER.throwableAtError()
-                .log("Can't parse Feature Flag configuration setting value.", exception, IllegalArgumentException::new);
+            LOGGER.logThrowableAsError(
+                new IllegalArgumentException("Can't parse Feature Flag configuration setting value.", exception));
         }
 
         super.setValue(newValue);
@@ -361,11 +361,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
 
     private void checkValid() {
         if (!isValidFeatureFlagValue) {
-            throw LOGGER.throwableAtError()
-                .log(
-                    "The content of the " + super.getValue()
-                        + " property do not represent a valid feature flag configuration setting.",
-                    IllegalArgumentException::new);
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("The content of the " + super.getValue()
+                + " property do not represent a valid feature flag configuration setting."));
         }
     }
 
@@ -486,7 +483,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
             });
         } catch (IOException e) {
             isValidFeatureFlagValue = false;
-            throw LOGGER.throwableAtError().log(e, IllegalArgumentException::new);
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(e));
         }
     }
 }

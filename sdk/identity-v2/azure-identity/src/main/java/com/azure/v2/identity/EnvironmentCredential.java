@@ -146,13 +146,10 @@ public class EnvironmentCredential implements TokenCredential {
     @Override
     public AccessToken getToken(TokenRequestContext request) {
         if (tokenCredential == null) {
-            throw LOGGER.throwableAtError()
-                .log(
-                    "EnvironmentCredential authentication unavailable."
-                        + " Environment variables are not fully configured."
-                        + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
-                        + " https://aka.ms/azsdk/java/identity/environmentcredential/troubleshoot",
-                    CredentialUnavailableException::new);
+            throw LOGGER.logThrowableAsError(new CredentialUnavailableException(
+                "EnvironmentCredential authentication unavailable." + " Environment variables are not fully configured."
+                    + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
+                    + " https://aka.ms/azsdk/java/identity/environmentcredential/troubleshoot"));
         } else {
             return tokenCredential.getToken(request);
         }

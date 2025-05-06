@@ -72,7 +72,7 @@ public class ChainedTokenCredential implements TokenCredential {
                 logTokenMessage("Azure Identity => Returning token from cached credential {}",
                     selectedCredential.get());
                 return accessToken;
-            } catch (RuntimeException e) {
+            } catch (Exception e) {
                 handleException(e, selectedCredential.get(), exceptions,
                     "Azure Identity => Cached credential {} is unavailable.", selectedCredential.get());
             }
@@ -84,23 +84,23 @@ public class ChainedTokenCredential implements TokenCredential {
                     selectedCredential.set(credential);
                     return accessToken;
 
-                } catch (RuntimeException e) {
+                } catch (Exception e) {
                     handleException(e, credential, exceptions,
                         "Azure Identity => Attempted credential {} is unavailable.", credential);
                 }
             }
         }
 
-        String lastMessage = exceptions.get(exceptions.size() - 1).getMessage();
+        CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
         for (int z = exceptions.size() - 2; z >= 0; z--) {
             CredentialUnavailableException current = exceptions.get(z);
-            lastMessage = current.getMessage() + "\r\n" + lastMessage
+            last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage()
                 + (z == 0
                     ? "To mitigate this issue, please refer to the troubleshooting guidelines here at "
                         + "https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot"
-                    : "");
+                    : ""));
         }
-        throw LOGGER.throwableAtError().log(lastMessage, CredentialUnavailableException::new);
+        throw LOGGER.logThrowableAsError(last);
     }
 
     private void logTokenMessage(String format, TokenCredential selectedCredential) {
@@ -116,8 +116,8 @@ public class ChainedTokenCredential implements TokenCredential {
     private void handleException(Exception e, TokenCredential selectedCredential,
         List<CredentialUnavailableException> exceptions, String logMessage, TokenCredential selectedCredential1) {
         if (e.getClass() != CredentialUnavailableException.class) {
-            throw LOGGER.throwableAtError()
-                .log(getCredUnavailableMessage(selectedCredential, e), e, CredentialAuthenticationException::new);
+            throw LOGGER.logThrowableAsError(
+                new CredentialAuthenticationException(getCredUnavailableMessage(selectedCredential, e), e));
         } else {
             if (e instanceof CredentialUnavailableException) {
                 exceptions.add((CredentialUnavailableException) e);

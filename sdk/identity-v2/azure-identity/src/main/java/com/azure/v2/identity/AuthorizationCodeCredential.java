@@ -96,9 +96,9 @@ public class AuthorizationCodeCredential implements TokenCredential {
             cache.updateCache(accessToken, publicClientOptions, request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, request, e);
-            throw LOGGER.throwableAtError().log(e, CredentialAuthenticationException::new);
+            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
         }
     }
 }

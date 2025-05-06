@@ -100,11 +100,10 @@ public final class ConfigurationSettingDeserializationHelper {
                 return setting;
             }
         } catch (Exception exception) {
-            throw LOGGER.throwableAtError()
-                .log(
-                    "The setting is neither a 'FeatureFlagConfigurationSetting' nor "
-                        + "'SecretReferenceConfigurationSetting', return the setting as 'ConfigurationSetting'. ",
-                    exception, RuntimeException::new);
+            throw LOGGER.logThrowableAsError(
+                new RuntimeException("The setting is neither a 'FeatureFlagConfigurationSetting' nor "
+                    + "'SecretReferenceConfigurationSetting', return the setting as 'ConfigurationSetting'. "
+                    + "Error: ", exception));
         }
     }
 
@@ -122,7 +121,7 @@ public final class ConfigurationSettingDeserializationHelper {
         try (JsonReader jsonReader = JsonReader.fromString(valueInJson)) {
             return getFeatureFlagPropertyValue(jsonReader);
         } catch (IOException e) {
-            throw LOGGER.throwableAtError().log(e, IllegalStateException::new);
+            throw LOGGER.logThrowableAsError(new IllegalStateException(e));
         }
     }
 
@@ -146,7 +145,7 @@ public final class ConfigurationSettingDeserializationHelper {
                 return new SecretReferenceConfigurationSetting(key, secretId);
             });
         } catch (IOException e) {
-            throw LOGGER.throwableAtError().log(e, IllegalStateException::new);
+            throw LOGGER.logThrowableAsError(new IllegalStateException(e));
         }
     }
 

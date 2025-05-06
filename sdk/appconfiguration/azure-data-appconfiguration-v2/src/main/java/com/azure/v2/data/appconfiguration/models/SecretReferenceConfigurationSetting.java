@@ -112,7 +112,7 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
                         writer.writeUntypedField(name, jsonValue);
                     }
                 } catch (IOException e) {
-                    throw LOGGER.throwableAtError().log(e, RuntimeException::new);
+                    throw LOGGER.logThrowableAsError(new RuntimeException(e));
                 }
             }
 
@@ -126,9 +126,8 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
             newValue = outputStream.toString(StandardCharsets.UTF_8.name());
             outputStream.close();
         } catch (IOException exception) {
-            LOGGER.throwableAtError()
-                .log("Can't parse Secret Reference configuration setting value.", exception,
-                    IllegalArgumentException::new);
+            LOGGER.logThrowableAsError(
+                new IllegalArgumentException("Can't parse Secret Reference configuration setting value.", exception));
         }
 
         super.setValue(newValue);
@@ -202,11 +201,8 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
 
     private void checkValid() {
         if (!isValidSecretReferenceValue) {
-            throw LOGGER.throwableAtError()
-                .log(
-                    "The content of the " + super.getValue()
-                        + " property do not represent a valid secret reference configuration setting.",
-                    IllegalArgumentException::new);
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("The content of the " + super.getValue()
+                + " property do not represent a valid secret reference configuration setting."));
         }
     }
 
@@ -243,7 +239,7 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
             });
         } catch (IOException e) {
             isValidSecretReferenceValue = false;
-            throw LOGGER.throwableAtError().log(e, IllegalArgumentException::new);
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(e));
         }
     }
 }
