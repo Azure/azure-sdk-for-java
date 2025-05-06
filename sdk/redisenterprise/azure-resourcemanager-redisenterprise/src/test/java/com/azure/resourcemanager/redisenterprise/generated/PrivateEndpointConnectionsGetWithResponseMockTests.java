@@ -6,8 +6,8 @@ package com.azure.resourcemanager.redisenterprise.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.models.PrivateEndpointConnection;
@@ -22,22 +22,22 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"pcqeqx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ahzxctobgbk\",\"actionsRequired\":\"oizpostmgrcfbun\"},\"provisioningState\":\"Failed\"},\"id\":\"qjhhkxbpv\",\"name\":\"ymjhxxjyngudivkr\",\"type\":\"swbxqz\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"gylgqgitxmedjvcs\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"wwncwzzhxgk\",\"actionsRequired\":\"mgucna\"},\"provisioningState\":\"Succeeded\"},\"id\":\"eoellwptfdygp\",\"name\":\"qbuaceopzfqr\",\"type\":\"huaoppp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RedisEnterpriseManager manager = RedisEnterpriseManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("oellwp", "fdygpfqbuaceopz", "qrhhu", com.azure.core.util.Context.NONE)
+            .getWithResponse("hb", "xknalaulppg", "dtpnapnyiropuhp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ahzxctobgbk", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("oizpostmgrcfbun", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("wwncwzzhxgk", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("mgucna", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

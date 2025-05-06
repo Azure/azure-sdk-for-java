@@ -22,7 +22,29 @@ import java.util.Arrays;
 public final class DatabasesCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/
+     * RedisEnterpriseDatabasesNoClusterCacheCreate.json
+     */
+    /**
+     * Sample code: RedisEnterpriseDatabasesCreate No Cluster Cache.
+     * 
+     * @param manager Entry point to RedisEnterpriseManager.
+     */
+    public static void redisEnterpriseDatabasesCreateNoClusterCache(
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.databases()
+            .define("default")
+            .withExistingRedisEnterprise("rg1", "cache1")
+            .withClientProtocol(Protocol.ENCRYPTED)
+            .withPort(10000)
+            .withClusteringPolicy(ClusteringPolicy.NO_CLUSTER)
+            .withEvictionPolicy(EvictionPolicy.NO_EVICTION)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/
      * RedisEnterpriseDatabasesCreate.json
      */
     /**
@@ -50,7 +72,7 @@ public final class DatabasesCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/
      * RedisEnterpriseDatabasesCreateWithGeoReplication.json
      */
     /**

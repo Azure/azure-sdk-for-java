@@ -15,25 +15,19 @@ public final class AccessPolicyAssignmentListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessPolicyAssignmentList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"accessPolicyName\":\"ddtocjjxhvp\",\"user\":{\"objectId\":\"uexhdzx\"}},\"id\":\"bqe\",\"name\":\"jnxqbzvddntwn\",\"type\":\"eic\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"accessPolicyName\":\"pzaoqvuhr\",\"user\":{\"objectId\":\"f\"}},\"id\":\"cyddglmjthjqk\",\"name\":\"pyeicxm\",\"type\":\"ciwqvhk\"},{\"properties\":{\"provisioningState\":\"Creating\",\"accessPolicyName\":\"igdtopbob\",\"user\":{\"objectId\":\"ghmewuam\"}},\"id\":\"uhrzayvvt\",\"name\":\"gvdfgiotkftutq\",\"type\":\"ln\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"accessPolicyName\":\"fgugnxkrxdqmid\",\"user\":{\"objectId\":\"hzrvqd\"}},\"id\":\"abhjybi\",\"name\":\"ehoqfbowskan\",\"type\":\"ktzlcuiywg\"}],\"nextLink\":\"wgndrvynhzgpp\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"accessPolicyName\":\"xobnbdxkqpxok\",\"user\":{\"objectId\":\"ionpimexg\"}},\"id\":\"txgcpodgmaajr\",\"name\":\"vdjwzrlovm\",\"type\":\"lwhijcoejctbzaq\"}],\"nextLink\":\"sycbkbfk\"}")
             .toObject(AccessPolicyAssignmentList.class);
-        Assertions.assertEquals("ddtocjjxhvp", model.value().get(0).accessPolicyName());
-        Assertions.assertEquals("uexhdzx", model.value().get(0).user().objectId());
+        Assertions.assertEquals("xobnbdxkqpxok", model.value().get(0).accessPolicyName());
+        Assertions.assertEquals("ionpimexg", model.value().get(0).user().objectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessPolicyAssignmentList model = new AccessPolicyAssignmentList().withValue(Arrays.asList(
-            new AccessPolicyAssignmentInner().withAccessPolicyName("ddtocjjxhvp")
-                .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("uexhdzx")),
-            new AccessPolicyAssignmentInner().withAccessPolicyName("pzaoqvuhr")
-                .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("f")),
-            new AccessPolicyAssignmentInner().withAccessPolicyName("igdtopbob")
-                .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("ghmewuam")),
-            new AccessPolicyAssignmentInner().withAccessPolicyName("fgugnxkrxdqmid")
-                .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("hzrvqd"))));
+        AccessPolicyAssignmentList model = new AccessPolicyAssignmentList()
+            .withValue(Arrays.asList(new AccessPolicyAssignmentInner().withAccessPolicyName("xobnbdxkqpxok")
+                .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("ionpimexg"))));
         model = BinaryData.fromObject(model).toObject(AccessPolicyAssignmentList.class);
-        Assertions.assertEquals("ddtocjjxhvp", model.value().get(0).accessPolicyName());
-        Assertions.assertEquals("uexhdzx", model.value().get(0).user().objectId());
+        Assertions.assertEquals("xobnbdxkqpxok", model.value().get(0).accessPolicyName());
+        Assertions.assertEquals("ionpimexg", model.value().get(0).user().objectId());
     }
 }

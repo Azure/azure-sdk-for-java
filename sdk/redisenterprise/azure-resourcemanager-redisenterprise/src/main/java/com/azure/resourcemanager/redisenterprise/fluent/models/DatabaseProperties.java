@@ -51,8 +51,8 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
     private ResourceState resourceState;
 
     /*
-     * Clustering policy - default is OSSCluster. This property must be chosen at create time, and cannot be changed
-     * without deleting the database.
+     * Clustering policy - default is OSSCluster. This property can be updated only if the current value is NoCluster.
+     * If the value is OSSCluster or EnterpriseCluster, it cannot be updated without deleting the database.
      */
     private ClusteringPolicy clusteringPolicy;
 
@@ -162,8 +162,9 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
     }
 
     /**
-     * Get the clusteringPolicy property: Clustering policy - default is OSSCluster. This property must be chosen at
-     * create time, and cannot be changed without deleting the database.
+     * Get the clusteringPolicy property: Clustering policy - default is OSSCluster. This property can be updated only
+     * if the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it cannot be updated without
+     * deleting the database.
      * 
      * @return the clusteringPolicy value.
      */
@@ -172,8 +173,9 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
     }
 
     /**
-     * Set the clusteringPolicy property: Clustering policy - default is OSSCluster. This property must be chosen at
-     * create time, and cannot be changed without deleting the database.
+     * Set the clusteringPolicy property: Clustering policy - default is OSSCluster. This property can be updated only
+     * if the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it cannot be updated without
+     * deleting the database.
      * 
      * @param clusteringPolicy the clusteringPolicy value to set.
      * @return the DatabaseProperties object itself.
