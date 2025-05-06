@@ -52,7 +52,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -75,10 +74,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
 @SuppressWarnings("SameParameterValue")
-public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
+public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends TestSuiteBase {
     private static final int PHYSICAL_PARTITION_COUNT = 3;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private final static Logger logger = LoggerFactory.getLogger(FaultInjectionWithAvailabilityStrategyTests.class);
+    private final static Logger logger = LoggerFactory.getLogger(FaultInjectionWithAvailabilityStrategyTestsBase.class);
     private final static Integer NO_QUERY_PAGE_SUB_STATUS_CODE = 9999;
     private final static Duration ONE_SECOND_DURATION = Duration.ofSeconds(1);
     private final static Duration TWO_SECOND_DURATION = Duration.ofSeconds(2);
@@ -86,7 +85,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
     private final static String sameDocumentIdJustCreated = null;
 
-    private final static Boolean notSpecifiedWhetherIdempotentWriteRetriesAreEnabled = null;
+    protected final static Boolean notSpecifiedWhetherIdempotentWriteRetriesAreEnabled = null;
 
     private final static CosmosRegionSwitchHint noRegionSwitchHint = null;
     private final static  ThresholdBasedAvailabilityStrategy defaultAvailabilityStrategy = new ThresholdBasedAvailabilityStrategy();
@@ -830,52 +829,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         };
 
         return addBooleanFlagsToAllTestConfigs(testConfigs_readAfterCreation);
-    }
-
-    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAfterCreation")
-    public void readAfterCreation(
-        String testCaseId,
-        Duration endToEndTimeout,
-        ThresholdBasedAvailabilityStrategy availabilityStrategy,
-        CosmosRegionSwitchHint regionSwitchHint,
-        ConnectionMode connectionMode,
-        String readItemDocumentIdOverride,
-        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
-        BiConsumer<Integer, Integer> validateStatusCode,
-        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext,
-        boolean shouldInjectPreferredRegionsInClient) {
-
-        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readItemCallback = (params) ->
-            new CosmosResponseWrapper(params.container
-                .readItem(
-                    readItemDocumentIdOverride != null
-                        ? readItemDocumentIdOverride
-                        : params.idAndPkValuePair.getLeft(),
-                    new PartitionKey(params.idAndPkValuePair.getRight()),
-                    params.options,
-                    ObjectNode.class)
-                .block());
-
-        execute(
-            testCaseId,
-            endToEndTimeout,
-            availabilityStrategy,
-            regionSwitchHint,
-            null,
-            notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
-            ArrayUtils.toArray(FaultInjectionOperationType.READ_ITEM),
-            readItemCallback,
-            faultInjectionCallback,
-            validateStatusCode,
-            1,
-            ArrayUtils.toArray(validateDiagnosticsContext),
-            null,
-            null,
-            0,
-            0,
-            false,
-            connectionMode,
-            shouldInjectPreferredRegionsInClient);
     }
 
     @DataProvider(name = "testConfigs_writeAfterCreation")
@@ -2254,44 +2207,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         return addBooleanFlagsToAllTestConfigs(testConfigs_writeAfterCreation);
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_writeAfterCreation")
-    public void writeAfterCreation(
-        String testCaseId,
-        Duration endToEndTimeout,
-        ThresholdBasedAvailabilityStrategy availabilityStrategy,
-        CosmosRegionSwitchHint regionSwitchHint,
-        ConnectionMode connectionMode,
-        Duration customMinRetryTimeInLocalRegion,
-        Boolean nonIdempotentWriteRetriesEnabled,
-        FaultInjectionOperationType faultInjectionOperationType,
-        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> actionAfterInitialCreation,
-        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
-        BiConsumer<Integer, Integer> validateStatusCode,
-        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext,
-        boolean shouldInjectPreferredRegionsInClient) {
-
-        execute(
-            testCaseId,
-            endToEndTimeout,
-            availabilityStrategy,
-            regionSwitchHint,
-            customMinRetryTimeInLocalRegion,
-            nonIdempotentWriteRetriesEnabled,
-            ArrayUtils.toArray(faultInjectionOperationType),
-            actionAfterInitialCreation,
-            faultInjectionCallback,
-            validateStatusCode,
-            1,
-            ArrayUtils.toArray(validateDiagnosticsContext),
-            null,
-            null,
-            0,
-            0,
-            false,
-            connectionMode,
-            shouldInjectPreferredRegionsInClient);
-    }
-
     private CosmosResponseWrapper queryReturnsTotalRecordCountCore(
         String query,
         ItemOperationInvocationParameters params,
@@ -3420,47 +3335,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         return addBooleanFlagsToAllTestConfigs(testConfigs_queryAfterCreation);
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_queryAfterCreation")
-    public void queryAfterCreation(
-        String testCaseId,
-        Duration endToEndTimeout,
-        ThresholdBasedAvailabilityStrategy availabilityStrategy,
-        CosmosRegionSwitchHint regionSwitchHint,
-        ConnectionMode connectionMode,
-        Function<ItemOperationInvocationParameters, String> queryGenerator,
-        BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryExecution,
-        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
-        BiConsumer<Integer, Integer> validateStatusCode,
-        int expectedDiagnosticsContextCount,
-        Consumer<CosmosDiagnosticsContext>[] firstDiagnosticsContextValidations,
-        Consumer<CosmosDiagnosticsContext>[] otherDiagnosticsContextValidations,
-        Consumer<CosmosResponseWrapper> responseValidator,
-        int numberOfOtherDocumentsWithSameId,
-        int numberOfOtherDocumentsWithSamePk,
-        boolean shouldInjectPreferredRegionsInClient) {
-
-        execute(
-            testCaseId,
-            endToEndTimeout,
-            availabilityStrategy,
-            regionSwitchHint,
-            null,
-            notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
-            ArrayUtils.toArray(FaultInjectionOperationType.QUERY_ITEM),
-            (params) -> queryExecution.apply(queryGenerator.apply(params), params),
-            faultInjectionCallback,
-            validateStatusCode,
-            expectedDiagnosticsContextCount,
-            firstDiagnosticsContextValidations,
-            otherDiagnosticsContextValidations,
-            responseValidator,
-            numberOfOtherDocumentsWithSameId,
-            numberOfOtherDocumentsWithSamePk,
-            false,
-            connectionMode,
-            shouldInjectPreferredRegionsInClient);
-    }
-
     private CosmosResponseWrapper readManyCore(
         List<Pair<String, String>> tuples,
         ItemOperationInvocationParameters params
@@ -3996,48 +3870,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         return addBooleanFlagsToAllTestConfigs(testConfigs_readManyAfterCreation);
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readManyAfterCreation")
-    public void readManyAfterCreation(
-        String testCaseId,
-        Duration endToEndTimeout,
-        ThresholdBasedAvailabilityStrategy availabilityStrategy,
-        CosmosRegionSwitchHint regionSwitchHint,
-        Function<ItemOperationInvocationParameters, List<Pair<String, String>>> readManyTuples,
-        BiFunction<ItemOperationInvocationParameters, List<Pair<String, String>>, CosmosResponseWrapper> readManyOperation,
-        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
-        BiConsumer<Integer, Integer> validateStatusCode,
-        int expectedDiagnosticsContextCount,
-        Consumer<CosmosDiagnosticsContext>[] firstDiagnosticsContextValidations,
-        Consumer<CosmosDiagnosticsContext>[] otherDiagnosticsContextValidations,
-        Consumer<CosmosResponseWrapper> responseValidator,
-        int numberOfOtherDocumentsWithSameId,
-        int numberOfOtherDocumentsWithSamePk,
-        boolean shouldInjectPreferredRegionsInClient) {
 
-        execute(
-            testCaseId,
-            endToEndTimeout,
-            availabilityStrategy,
-            regionSwitchHint,
-            null,
-            notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
-            ArrayUtils.toArray(
-                FaultInjectionOperationType.QUERY_ITEM,
-                       FaultInjectionOperationType.READ_ITEM
-            ),
-            (params) -> readManyOperation.apply(params, readManyTuples.apply(params)),
-            faultInjectionCallback,
-            validateStatusCode,
-            expectedDiagnosticsContextCount,
-            firstDiagnosticsContextValidations,
-            otherDiagnosticsContextValidations,
-            responseValidator,
-            numberOfOtherDocumentsWithSameId,
-            numberOfOtherDocumentsWithSamePk,
-            false,
-            ConnectionMode.DIRECT,
-            shouldInjectPreferredRegionsInClient);
-    }
 
     private CosmosResponseWrapper readAllReturnsTotalRecordCountCore(
         String partitionKeyValue,
@@ -4778,46 +4611,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         return addBooleanFlagsToAllTestConfigs(testConfigs_readAllAfterCreation);
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAllAfterCreation")
-    public void readAllAfterCreation(
-        String testCaseId,
-        Duration endToEndTimeout,
-        ThresholdBasedAvailabilityStrategy availabilityStrategy,
-        CosmosRegionSwitchHint regionSwitchHint,
-        ConnectionMode connectionMode,
-        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readAllOperation,
-        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
-        BiConsumer<Integer, Integer> validateStatusCode,
-        int expectedDiagnosticsContextCount,
-        Consumer<CosmosDiagnosticsContext>[] firstDiagnosticsContextValidations,
-        Consumer<CosmosDiagnosticsContext>[] otherDiagnosticsContextValidations,
-        Consumer<CosmosResponseWrapper> responseValidator,
-        int numberOfOtherDocumentsWithSameId,
-        int numberOfOtherDocumentsWithSamePk,
-        boolean shouldInjectPreferredRegionsInClient) {
-
-        execute(
-            testCaseId,
-            endToEndTimeout,
-            availabilityStrategy,
-            regionSwitchHint,
-            null,
-            notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
-            ArrayUtils.toArray(FaultInjectionOperationType.QUERY_ITEM),
-            readAllOperation,
-            faultInjectionCallback,
-            validateStatusCode,
-            expectedDiagnosticsContextCount,
-            firstDiagnosticsContextValidations,
-            otherDiagnosticsContextValidations,
-            responseValidator,
-            numberOfOtherDocumentsWithSameId,
-            numberOfOtherDocumentsWithSamePk,
-            true,
-            connectionMode,
-            shouldInjectPreferredRegionsInClient);
-    }
-
     private static ObjectNode createTestItemAsJson(String id, String pkValue) {
         CosmosDiagnosticsTest.TestItem nextItemToBeCreated =
             new CosmosDiagnosticsTest.TestItem(id, pkValue);
@@ -5048,7 +4841,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         );
     }
 
-    private void execute(
+    protected void execute(
         String testCaseId,
         Duration endToEndTimeout,
         ThresholdBasedAvailabilityStrategy availabilityStrategy,
@@ -5371,61 +5164,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             assertThat(accountLevelLocationContext.serviceOrderedReadableRegions).isNotNull();
             assertThat(accountLevelLocationContext.serviceOrderedReadableRegions.size()).isGreaterThanOrEqualTo(1);
         }
-    }
-
-    private static class CosmosResponseWrapper {
-        private final CosmosDiagnosticsContext[] diagnosticsContexts;
-        private final Integer statusCode;
-        private final Integer subStatusCode;
-
-        private final Long totalRecordCount;
-
-        public CosmosResponseWrapper(CosmosItemResponse<?> itemResponse) {
-            if (itemResponse.getDiagnostics() != null &&
-                itemResponse.getDiagnostics().getDiagnosticsContext() != null) {
-                System.out.println(itemResponse.getDiagnostics());
-
-                this.diagnosticsContexts = ArrayUtils.toArray(itemResponse.getDiagnostics().getDiagnosticsContext());
-            } else {
-                this.diagnosticsContexts = null;
-            }
-
-            this.statusCode = itemResponse.getStatusCode();
-            this.subStatusCode = null;
-            this.totalRecordCount = itemResponse.getItem() != null ? 1L : 0L;
-        }
-
-        public CosmosResponseWrapper(CosmosDiagnosticsContext[] ctxs, int statusCode, Integer subStatusCode, Long totalRecordCount) {
-            this.diagnosticsContexts = ctxs;
-            this.statusCode = statusCode;
-            this.subStatusCode = subStatusCode;
-            this.totalRecordCount = totalRecordCount;
-        }
-
-        public CosmosDiagnosticsContext[] getDiagnosticsContexts() {
-            return this.diagnosticsContexts;
-        }
-
-        public Integer getStatusCode() {
-            return this.statusCode;
-        }
-
-        public Integer getSubStatusCode() {
-            return this.subStatusCode;
-        }
-
-        public Long getTotalRecordCount() {
-            return this.totalRecordCount;
-        }
-    }
-
-    private static class ItemOperationInvocationParameters {
-        public CosmosPatchItemRequestOptions options;
-        public CosmosAsyncContainer container;
-        public Pair<String, String> idAndPkValuePair;
-
-        public List<Pair<String, String>> otherDocumentIdAndPkValuePairs;
-        public Boolean nonIdempotentWriteRetriesEnabled;
     }
 
     private static class AccountLevelLocationContext {
