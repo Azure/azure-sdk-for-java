@@ -160,7 +160,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
         else:
             spec = match.group(1)
             spec = update_spec(spec, match.group(2))
-            service = get_and_update_service_from_api_specs(api_specs_file, spec, None, True)
+            service = get_and_update_service_from_api_specs(api_specs_file, spec, truncate_service=True)
 
             pre_suffix = SUFFIX
             suffix = get_suffix_from_api_specs(api_specs_file, spec)
