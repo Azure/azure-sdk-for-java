@@ -1723,7 +1723,8 @@ public class TestInterfaceServiceClientGenerationTests {
 
         assertNotNull(queryParams);
         assertEquals(1, queryParams.size());
-        assertTrue(json.uri().substring(json.uri().indexOf('?'), json.uri().length()).contains("some=value"));
+        assertTrue(json.uri().substring(json.uri().indexOf('?')).contains("some=value"),
+            "Expected URI query to contain 'some=value', but it didn't and was: " + json.uri());
     }
 
     @Test

@@ -13,7 +13,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
-import com.github.javaparser.ast.expr.BinaryExpr;
+import com.github.javaparser.ast.expr.BooleanLiteralExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.Name;
@@ -41,11 +41,11 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.utils.GeneratedCodeUtils;
 import io.clientcore.core.utils.UriBuilder;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -384,9 +384,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         uriBuilderParse.setLineComment(" Append the query parameters.");
         body.addStatement(uriBuilderParse);
 
-        boolean importUriEscapers = false;
-        boolean importCollectors = false;
-        boolean importArrays = false;
         for (Map.Entry<String, HttpRequestContext.QueryParameter> kvp : method.getQueryParams().entrySet()) {
             String key = kvp.getKey();
             HttpRequestContext.QueryParameter queryParameter = kvp.getValue();
@@ -402,88 +399,35 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 continue;
             }
 
-            boolean shouldEncode = queryParameter.shouldEncode();
-
+            Expression valueExpression;
             if (values.size() == 1) {
-                String valueExpr = values.get(0);
-                boolean isParam = method.getParameters().stream().anyMatch(p -> p.getName().equals(valueExpr));
-                String valueCode;
-                String keyExpr = isParam ? "UriEscapers.QUERY_ESCAPER.escape(\"" + key + "\")" : "\"" + key + "\"";
-
-                if (isParam && queryParameter.isMultiple()) {
-                    importUriEscapers = true;
-                    importCollectors = true;
-
-                    // List<String> parameter
-                    valueCode
-                        = valueExpr + ".stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList())";
-                    IfStmt ifStmt = new IfStmt().setCondition(
-                        new BinaryExpr(new NameExpr(valueExpr), new NullLiteralExpr(), BinaryExpr.Operator.NOT_EQUALS));
-                    ifStmt.setThenStmt(new BlockStmt()
-                        .addStatement(variableName + ".addQueryParameterValues(" + keyExpr + ", " + valueCode + ");"));
-                    body.addStatement(ifStmt);
-                } else if (isParam) {
-                    // Single parameter
-                    Optional<HttpRequestContext.MethodParameter> paramOpt = method.getParameters()
-                        .stream()
-                        .filter(parameter -> parameter.getName().equals(valueExpr))
-                        .findFirst();
-                    boolean isValueTypeString
-                        = paramOpt.isPresent() && "String".equals(paramOpt.get().getShortTypeName());
-                    if (shouldEncode && isValueTypeString) {
-                        importUriEscapers = true;
-                        valueCode = "UriEscapers.QUERY_ESCAPER.escape(" + valueExpr + ")";
-                        body.addStatement(variableName + ".addQueryParameter(" + keyExpr + ", " + valueCode + ");");
+                String value = values.get(0);
+                if (queryParameter.isStatic()) {
+                    // For static query parameters the value is a string constant, unless if doesn't have a value.
+                    if (value == null) {
+                        valueExpression = new NullLiteralExpr();
                     } else {
-                        // Non-string param: do NOT encode, just use as is
-                        valueCode = valueExpr;
-                        body.addStatement(
-                            variableName + ".addQueryParameter(" + keyExpr + ", String.valueOf(" + valueCode + "));");
+                        valueExpression = new StringLiteralExpr(value);
                     }
                 } else {
-                    // Static/literal value: do NOT escape key or value
-                    // If the value is an empty string, treat as "", if null, treat as null
-                    if (valueExpr == null) {
-                        body.addStatement(variableName + ".addQueryParameter(\"" + key + "\", null);");
-                    } else {
-                        valueCode = "\"" + valueExpr.replace("\"", "\\\"") + "\"";
-                        body.addStatement(variableName + ".addQueryParameter(\"" + key + "\", " + valueCode + ");");
-                    }
+                    // For non-static query parameters the value should be the name of the method parameter.
+                    valueExpression = StaticJavaParser.parseExpression(value);
                 }
             } else {
-                // Multiple values: always add as List<String>
-                String joinedValues = CodeGenUtils.toJavaArrayInitializer(values, true);
-                boolean isParam = values.stream()
-                    .allMatch(v -> method.getParameters().stream().anyMatch(p -> p.getName().equals(v)));
-                String keyExpr = isParam ? "UriEscapers.QUERY_ESCAPER.escape(\"" + key + "\")" : "\"" + key + "\"";
-
-                if (joinedValues.trim().isEmpty()) {
-                    // If joinedValues is empty, skip it.
-                    continue;
-                }
-
-                importArrays = true;
-                if (shouldEncode && isParam) {
-                    importUriEscapers = true;
-                    body.addStatement(
-                        variableName + ".addQueryParameterValues(" + keyExpr + ", Arrays.asList(" + joinedValues + ")"
-                            + ".stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList()));");
-                } else {
-                    // For static query params, do NOT escape key or value
-                    body.addStatement(variableName + ".addQueryParameterValues(" + keyExpr + ", Arrays.asList("
-                        + joinedValues + "));");
-                }
+                body.tryAddImportToParentCompilationUnit(Arrays.class);
+                valueExpression = StaticJavaParser
+                    .parseExpression("Arrays.asList(" + CodeGenUtils.toJavaArrayInitializer(values, true) + ")");
             }
-        }
 
-        if (importArrays) {
-            body.tryAddImportToParentCompilationUnit(Arrays.class);
-        }
-        if (importCollectors) {
-            body.tryAddImportToParentCompilationUnit(Collectors.class);
-        }
-        if (importUriEscapers) {
-            body.tryAddImportToParentCompilationUnit(UriEscapers.class);
+            body.tryAddImportToParentCompilationUnit(GeneratedCodeUtils.class);
+            MethodCallExpr addParameterCall
+                = new MethodCallExpr(new NameExpr("GeneratedCodeUtils"), "addQueryParameter")
+                    .addArgument(new NameExpr(variableName))
+                    .addArgument(new StringLiteralExpr(key))
+                    .addArgument(new BooleanLiteralExpr(!queryParameter.isStatic()))
+                    .addArgument(valueExpression)
+                    .addArgument(new BooleanLiteralExpr(queryParameter.shouldEncode()));
+            body.addStatement(new ExpressionStmt(addParameterCall));
         }
 
         body.addStatement(new ExpressionStmt(

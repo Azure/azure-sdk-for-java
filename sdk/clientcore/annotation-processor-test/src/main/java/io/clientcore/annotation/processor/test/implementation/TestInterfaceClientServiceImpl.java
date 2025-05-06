@@ -27,8 +27,8 @@ import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.utils.UriBuilder;
+import io.clientcore.core.utils.GeneratedCodeUtils;
 import java.lang.reflect.ParameterizedType;
-import java.util.stream.Collectors;
 import java.util.Arrays;
 
 /**
@@ -170,7 +170,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     public Response<Foo> getFoo(String key, String label, String syncToken) {
         // Append the query parameters.
         UriBuilder uri = UriBuilder.parse("kv/" + UriEscapers.PATH_ESCAPER.escape(key));
-        uri.addQueryParameter(UriEscapers.QUERY_ESCAPER.escape("label"), UriEscapers.QUERY_ESCAPER.escape(label));
+        GeneratedCodeUtils.addQueryParameter(uri, "label", true, label, true);
         // Create the HttpRequest.
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri.toString());
         if (syncToken != null) {
@@ -267,12 +267,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     public Response<List<Foo>> listFoo(String uri, List<String> tags, List<String> tags2, RequestContext requestContext) {
         // Append the query parameters.
         UriBuilder requestUri = UriBuilder.parse(uri + "/" + "foos");
-        if (tags != null) {
-            requestUri.addQueryParameterValues(UriEscapers.QUERY_ESCAPER.escape("tags"), tags.stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList()));
-        }
-        if (tags2 != null) {
-            requestUri.addQueryParameterValues(UriEscapers.QUERY_ESCAPER.escape("tags2"), tags2.stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList()));
-        }
+        GeneratedCodeUtils.addQueryParameter(requestUri, "tags", true, tags, true);
+        GeneratedCodeUtils.addQueryParameter(requestUri, "tags2", true, tags2, true);
         // Create the HttpRequest.
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri.toString());
         httpRequest.setContext(requestContext);
@@ -565,8 +561,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     public HttpBinJSON getAnything(String uri, String a, int b) {
         // Append the query parameters.
         UriBuilder requestUri = UriBuilder.parse(uri + "/" + "anything");
-        requestUri.addQueryParameter(UriEscapers.QUERY_ESCAPER.escape("a"), UriEscapers.QUERY_ESCAPER.escape(a));
-        requestUri.addQueryParameter(UriEscapers.QUERY_ESCAPER.escape("b"), String.valueOf(b));
+        GeneratedCodeUtils.addQueryParameter(requestUri, "a", true, a, true);
+        GeneratedCodeUtils.addQueryParameter(requestUri, "b", true, b, true);
         // Create the HttpRequest.
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri.toString());
         // Send the request through the httpPipeline
@@ -631,8 +627,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     public HttpBinJSON getAnythingWithEncoded(String uri, String a, int b) {
         // Append the query parameters.
         UriBuilder requestUri = UriBuilder.parse(uri + "/" + "anything");
-        requestUri.addQueryParameter(UriEscapers.QUERY_ESCAPER.escape("a"), String.valueOf(a));
-        requestUri.addQueryParameter(UriEscapers.QUERY_ESCAPER.escape("b"), String.valueOf(b));
+        GeneratedCodeUtils.addQueryParameter(requestUri, "a", true, a, false);
+        GeneratedCodeUtils.addQueryParameter(requestUri, "b", true, b, true);
         // Create the HttpRequest.
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri.toString());
         // Send the request through the httpPipeline
@@ -1031,9 +1027,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     public HttpBinJSON get1(String uri, String queryParam) {
         // Append the query parameters.
         UriBuilder requestUri = UriBuilder.parse(uri + "/" + "anything");
-        requestUri.addQueryParameter("constantParam1", "constantValue1");
-        requestUri.addQueryParameter("constantParam2", "constantValue2");
-        requestUri.addQueryParameter(UriEscapers.QUERY_ESCAPER.escape("variableParam"), UriEscapers.QUERY_ESCAPER.escape(queryParam));
+        GeneratedCodeUtils.addQueryParameter(requestUri, "constantParam1", false, "constantValue1", false);
+        GeneratedCodeUtils.addQueryParameter(requestUri, "constantParam2", false, "constantValue2", false);
+        GeneratedCodeUtils.addQueryParameter(requestUri, "variableParam", true, queryParam, true);
         // Create the HttpRequest.
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri.toString());
         // Send the request through the httpPipeline
@@ -1065,7 +1061,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     public HttpBinJSON get2(String uri, String queryParam) {
         // Append the query parameters.
         UriBuilder requestUri = UriBuilder.parse(uri + "/" + "anything");
-        requestUri.addQueryParameterValues("param", Arrays.asList("constantValue1", "constantValue2"));
+        GeneratedCodeUtils.addQueryParameter(requestUri, "param", false, Arrays.asList("constantValue1", "constantValue2"), false);
         // Create the HttpRequest.
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri.toString());
         // Send the request through the httpPipeline
@@ -1097,7 +1093,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     public HttpBinJSON get3(String uri, String queryParam) {
         // Append the query parameters.
         UriBuilder requestUri = UriBuilder.parse(uri + "/" + "anything");
-        requestUri.addQueryParameterValues("param", Arrays.asList("constantValue1,constantValue2", "constantValue3"));
+        GeneratedCodeUtils.addQueryParameter(requestUri, "param", false, Arrays.asList("constantValue1,constantValue2", "constantValue3"), false);
         // Create the HttpRequest.
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri.toString());
         // Send the request through the httpPipeline
@@ -1129,8 +1125,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     public HttpBinJSON get4(String uri) {
         // Append the query parameters.
         UriBuilder requestUri = UriBuilder.parse(uri + "/" + "anything");
-        requestUri.addQueryParameter("queryparamwithequalsandnovalue", "");
-        requestUri.addQueryParameter("queryparamwithnoequals", null);
+        GeneratedCodeUtils.addQueryParameter(requestUri, "queryparamwithequalsandnovalue", false, "", false);
+        GeneratedCodeUtils.addQueryParameter(requestUri, "queryparamwithnoequals", false, null, false);
         // Create the HttpRequest.
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri.toString());
         // Send the request through the httpPipeline
@@ -1162,7 +1158,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     public HttpBinJSON get5(String uri) {
         // Append the query parameters.
         UriBuilder requestUri = UriBuilder.parse(uri + "/" + "anything");
-        requestUri.addQueryParameter("constantParam1", "some=value");
+        GeneratedCodeUtils.addQueryParameter(requestUri, "constantParam1", false, "some=value", false);
         // Create the HttpRequest.
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri.toString());
         // Send the request through the httpPipeline
