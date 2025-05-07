@@ -119,7 +119,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.afterTest();
         }
 
-        assertThat(this.isCleanedUp.compareAndExchange(true, false)).isTrue();
+        assertThat(this.isCleanedUp.compareAndSet(true, false)).isTrue();
         assertThat(this.client).isNull();
         assertThat(this.meterRegistry).isNull();
 
