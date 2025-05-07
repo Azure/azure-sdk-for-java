@@ -552,6 +552,81 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 15,
                 15
             },
+            // RESPONSE_DELAY injected into first preferred region for CREATE_ITEM operation on GW Connection Mode
+            // injected into entire region
+            // Expectation is for the operation to see a success because of availability strategy but once circuit breaker
+            // has kicked in, to also see success from solely the second preferred region.
+            {
+                String.format("Test with faulty %s with GW Response Delay in the first preferred region and also availability strategy enabled.", FaultInjectionOperationType.CREATE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withResponseDelay(Duration.ofSeconds(60))
+                    .withFaultInjectionDuration(Duration.ofSeconds(50)),
+                this.buildGwResponseDelayFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_GATEWAY_MODE,
+                1,
+                15,
+                15
+            },
+            // Server injected 410s into first preferred region for READ_ITEM operation on Direct Connection Mode
+            // injected into entire region
+            // Expectation is for the operation to see a success because of availability strategy but once circuit breaker
+            // has kicked in, to also see success from solely the second preferred region.
+            {
+                String.format("Test with faulty %s with Server injected 410s in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(50)),
+                this.buildServerGeneratedGoneErrorFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // RESPONSE_DELAY injected into first preferred region for CREATE_ITEM operation on GW Connection Mode
+            // injected into entire region
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed when
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
+            {
+                String.format("Test with faulty %s with GW Response Delay in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withResponseDelay(Duration.ofSeconds(60))
+                    .withFaultInjectionDuration(Duration.ofSeconds(50)),
+                this.buildGwResponseDelayFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_GATEWAY_MODE,
+                1,
+                15,
+                15
+            },
+
             // RESPONSE_DELAY injected into first preferred region for QUERY_ITEM operation on GW Connection Mode
             // injected into entire region
             // Expectation is for the operation to hit OperationCancelledException and only to succeed when

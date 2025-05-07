@@ -396,22 +396,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             return false;
         }
 
-        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
-            = request.requestContext.getCrossRegionAvailabilityContext();
-
-        if (crossRegionAvailabilityContextForRequest == null) {
-            return false;
-        }
-
-        AvailabilityStrategyContext availabilityStrategyContext
-            = crossRegionAvailabilityContextForRequest.getAvailabilityStrategyContext();
-
-        if (availabilityStrategyContext != null) {
-            if (availabilityStrategyContext.isAvailabilityStrategyEnabled() && availabilityStrategyContext.isHedgedRequest()) {
-                return false;
-            }
-        }
-
         GlobalEndpointManager globalEndpointManager = this.globalEndpointManager;
 
         if (!globalEndpointManager.canUseMultipleWriteLocations(request)) {
