@@ -252,7 +252,7 @@ def main():
 
     readme = args["readme"]
     match = re.match(
-        "specification/([^/]+)/resource-manager/readme.md",
+        r"specification/([^/]+)/resource-manager/readme.md",
         readme,
         re.IGNORECASE,
     )

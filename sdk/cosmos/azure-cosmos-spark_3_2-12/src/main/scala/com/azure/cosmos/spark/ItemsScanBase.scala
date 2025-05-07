@@ -38,7 +38,7 @@ private[spark] abstract class ItemsScanBase(session: SparkSession,
 
   private val clientConfiguration = CosmosClientConfiguration.apply(
     config,
-    readConfig.forceEventualConsistency,
+    readConfig.readConsistencyStrategy,
     CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
   )
   private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)

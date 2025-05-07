@@ -4,7 +4,11 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
 import java.io.IOException;
 import java.io.InputStream;
@@ -437,8 +441,7 @@ public final class CoreUtils {
             return host;  // No parameters to append
         }
 
-        StringBuilder urlBuilder = new StringBuilder(host);
-        boolean hasExistingQuery = host.contains("?");
+        UriBuilder uriBuilder = UriBuilder.parse(host);
 
         // Process each key-value pair in the queryParams map
         for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
@@ -453,16 +456,14 @@ public final class CoreUtils {
             if (value instanceof List<?>) {
                 List<?> valueList = (List<?>) value;
                 for (Object item : valueList) {
-                    urlBuilder.append(hasExistingQuery ? "&" : "?").append(key).append("=").append(item.toString());
-                    hasExistingQuery = true; // Ensure subsequent parameters use '&'
+                    uriBuilder.addQueryParameter(key, String.valueOf(item));
                 }
             } else {
-                urlBuilder.append(hasExistingQuery ? "&" : "?").append(key).append("=").append(value.toString());
-                hasExistingQuery = true; // Ensure subsequent parameters use '&'
+                uriBuilder.addQueryParameter(key, String.valueOf(value));
             }
         }
 
-        return urlBuilder.toString();
+        return uriBuilder.toString();
     }
 
     /*
@@ -502,6 +503,35 @@ public final class CoreUtils {
         }
 
         return null;
+    }
+
+    /**
+     * Decodes the body of an {@link Response} into the type returned by the called API.
+     * @param data The BinaryData to decode.
+     * @param serializer The serializer to use.
+     * @param returnType The type of the ParameterizedType return value.
+     * @param <T> The decoded value type.
+     * @return The decoded value.
+     * @throws CoreException If the deserialization fails.
+     */
+    public static <T> T decodeNetworkResponse(BinaryData data, ObjectSerializer serializer,
+        ParameterizedType returnType) {
+        if (data == null) {
+            return null;
+        }
+        try {
+            if (List.class.isAssignableFrom((Class<?>) returnType.getRawType())) {
+                return serializer.deserializeFromBytes(data.toBytes(), returnType);
+            }
+            Type token = returnType.getRawType();
+            if (Response.class.isAssignableFrom((Class<?>) token)) {
+                token = returnType.getActualTypeArguments()[0];
+            }
+            return serializer.deserializeFromBytes(data.toBytes(), token);
+        } catch (IOException e) {
+            CoreException coreException = CoreException.from(e);
+            throw LOGGER.logThrowableAsError(CoreException.from(coreException));
+        }
     }
 
     private CoreUtils() {

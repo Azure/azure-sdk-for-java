@@ -38,6 +38,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -129,6 +130,37 @@ public class TestInterfaceGenerationTests {
         Class<? extends BinaryData> actualContentClazz = client.getLastHttpRequest().getBody().getClass();
 
         assertEquals(expectedContentClazz, actualContentClazz);
+    }
+
+    @Test
+    public void nullHeaderValueIsNotIncluded() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertNull(request.getHeaders().get(HttpHeaderName.CONTENT_TYPE));
+            return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
+        }).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        try (Response<Void> response
+            = testInterface.testMethod("https://somecloud.com", BinaryData.empty(), null, null)) {
+            assertEquals(200, response.getStatusCode());
+        }
+    }
+
+    @Test
+    public void nonNullHeaderValueIsIncluded() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertEquals(ContentType.APPLICATION_JSON, request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+            return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
+        }).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        try (Response<Void> response = testInterface.testMethod("https://somecloud.com", BinaryData.empty(), ContentType.APPLICATION_JSON, null)) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     @Test
