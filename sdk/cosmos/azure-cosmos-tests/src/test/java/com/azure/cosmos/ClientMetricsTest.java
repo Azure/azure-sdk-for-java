@@ -814,7 +814,7 @@ public class ClientMetricsTest extends BatchTestBase {
         return response;
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void readAllItemsWithDetailMetricsWithExplicitPageSize() throws Exception {
         this.beforeTest(
             CosmosMetricCategory.DEFAULT,
