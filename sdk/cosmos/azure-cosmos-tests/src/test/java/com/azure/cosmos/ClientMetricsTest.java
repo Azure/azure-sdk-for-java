@@ -168,20 +168,34 @@ public class ClientMetricsTest extends BatchTestBase {
 
     public void afterTest() {
         if (this.diagnosticsProvider != null) {
-            assertThat(this.diagnosticsProvider.getDiagnosticHandlerFailuresSnapshot())
-                .isEqualTo(this.diagnosticHandlerFailuresBaseline);
+            try {
+                assertThat(this.diagnosticsProvider.getDiagnosticHandlerFailuresSnapshot())
+                    .isEqualTo(this.diagnosticHandlerFailuresBaseline);
+            } catch (Exception error) {
+                logger.error(error.getMessage(), error);
+            }
+
+            this.diagnosticsProvider = null;
         }
         this.container = null;
         CosmosClient clientSnapshot = this.client;
         if (clientSnapshot != null) {
-            this.client.close();
+            try {
+                this.client.close();
+            } catch (Exception error) {
+                logger.error(error.getMessage(), error);
+            }
         }
         this.client = null;
 
         MeterRegistry meterRegistrySnapshot = this.meterRegistry;
         if (meterRegistrySnapshot != null) {
-            meterRegistrySnapshot.clear();
-            meterRegistrySnapshot.close();
+            try {
+                meterRegistrySnapshot.clear();
+                meterRegistrySnapshot.close();
+            } catch (Exception error) {
+                logger.error(error.getMessage(), error);
+            }
         }
         this.meterRegistry = null;
     }
