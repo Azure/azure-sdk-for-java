@@ -137,7 +137,6 @@ public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters
      */
     @Override
     public void validate() {
-        super.validate();
         if (values() != null) {
             values().forEach(e -> e.validate());
         }
