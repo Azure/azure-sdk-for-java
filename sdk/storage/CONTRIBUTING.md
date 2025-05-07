@@ -51,8 +51,10 @@ Merging Pull Requests (for project contributors with write access)
 
 
 >**Note:** If you are on `Windows`, enable paths longer than 260 characters by:   
-1.- Run this as Administrator on a command prompt:  
+1.- Run this as Administrator on a command prompt:
+<!--- cSpell:disable -->
 `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1` *(might need to type `yes` to override key if it already exists)*  
+<!--- cSpell:enable -->
 2.- Set up `git` by running:  `git config --system core.longpaths true`
 
 ### Building and Testing
@@ -72,7 +74,7 @@ mvn -f sdk/storage/pom.service.xml -Dgpg.skip -DskipTests clean install
 ### Compiling one project only
 
 ```
-mvn -f sdk/{root-projectForlderDir}/{specific-projectForlderDir}/pom.xml -Dgpg.skip clean install
+mvn -f sdk/{root-projectFolderDir}/{specific-projectFolderDir}/pom.xml -Dgpg.skip clean install
 
 //example: mvn -f sdk/storage/azure-storage-blob/pom.xml clean install
 ```
@@ -137,9 +139,9 @@ In README files this ends up being slightly different. Because the version tag i
 
 What if I've got something that, for whatever reason, shouldn't be updated? There's a tag for that.
 
-`<!-- {x-version-exempt;<groupId>:<artifactId>;reason for excemption} -->`
+`<!-- {x-version-exempt;<groupId>:<artifactId>;reason for exemption} -->`
 
-In theory, absence of an x-version-update tag would do the same thing but the tooling is still being developed and eventually there will be checkin blockers if xml has a version element with no tag.
+In theory, absence of an x-version-update tag would do the same thing but the tooling is still being developed and eventually there will be check-in blockers if xml has a version element with no tag.
 
 ### What does the process look like?
 
