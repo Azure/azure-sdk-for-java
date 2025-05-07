@@ -398,11 +398,10 @@ jobs:
         parameters:
           JdkVersion: ${{ parameters.JavaBuildVersion }}
 
-      - task: NodeTool@0
-        condition: and(succeededOrFailed(), ne(variables['Skip.SpellCheck'],'true'))
+      - task: UseNode@1
         inputs:
-          versionSpec: 20.x
-        displayName: Use Node.js 20.x
+          versionSpec: 22.x
+        displayName: Use Node.js 22.x
 
       - task: PowerShell@2
         displayName: Verify Code Generation for Pull Request
