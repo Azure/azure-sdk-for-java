@@ -246,7 +246,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
-      <version>1.11.3</version><!-- {x-version-update;cosmos_org.apache.avro:avro;external_dependency} -->
+      <version>1.11.4</version><!-- {x-version-update;cosmos_org.apache.avro:avro;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

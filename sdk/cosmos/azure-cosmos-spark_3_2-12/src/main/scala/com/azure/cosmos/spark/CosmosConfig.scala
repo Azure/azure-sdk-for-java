@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
-import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, spark}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ReadConsistencyStrategy, spark}
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.implementation.routing.LocationHelper
 import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings}
@@ -71,6 +71,7 @@ private[spark] object CosmosConfigNames {
   val ReadResponseContinuationTokenLimitInKb = "spark.cosmos.read.responseContinuationTokenLimitInKb"
   val ReadPrefetchBufferSize = "spark.cosmos.read.prefetchBufferSize"
   val ReadForceEventualConsistency = "spark.cosmos.read.forceEventualConsistency"
+  val ReadConsistencyStrategy = "spark.cosmos.read.consistencyStrategy"
   val ReadSchemaConversionMode = "spark.cosmos.read.schemaConversionMode"
   val ReadInferSchemaSamplingSize = "spark.cosmos.read.inferSchema.samplingSize"
   val ReadInferSchemaEnabled = "spark.cosmos.read.inferSchema.enabled"
@@ -173,6 +174,7 @@ private[spark] object CosmosConfigNames {
     AllowInvalidJsonWithDuplicateJsonProperties,
     ReadCustomQuery,
     ReadForceEventualConsistency,
+    ReadConsistencyStrategy,
     ReadSchemaConversionMode,
     ReadMaxItemCount,
     ReadResponseContinuationTokenLimitInKb,
@@ -909,7 +911,7 @@ private object CosmosAuthConfig {
     }
 }
 
-private case class CosmosReadConfig(forceEventualConsistency: Boolean,
+private case class CosmosReadConfig(readConsistencyStrategy: ReadConsistencyStrategy,
                                     schemaConversionMode: SchemaConversionMode,
                                     maxItemCount: Int,
                                     prefetchBufferSize: Int,
@@ -936,6 +938,14 @@ private object CosmosReadConfig {
     defaultValue = Some(true),
     parseFromStringFunction = value => value.toBoolean,
     helpMessage = "Makes the client use Eventual consistency for read operations")
+
+  private val ReadConsistencyStrategyOverride = CosmosConfigEntry[ReadConsistencyStrategy](key = CosmosConfigNames.ReadConsistencyStrategy,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = value => SparkBridgeImplementationInternal
+      .parseReadConsistencyStrategy(value)
+      .getOrElse(ReadConsistencyStrategy.DEFAULT),
+    helpMessage = "Makes the client use the specified read consistency strategy")
 
   private val JsonSchemaConversion = CosmosConfigEntry[SchemaConversionMode](
     key = CosmosConfigNames.ReadSchemaConversionMode,
@@ -1006,6 +1016,7 @@ private object CosmosReadConfig {
 
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
+    val readConsistencyStrategyOverride = CosmosConfigEntry.parse(cfg, ReadConsistencyStrategyOverride)
     val jsonSchemaConversionMode = CosmosConfigEntry.parse(cfg, JsonSchemaConversion)
     val customQuery = CosmosConfigEntry.parse(cfg, CustomQuery)
     val maxItemCount = CosmosConfigEntry.parse(cfg, MaxItemCount)
@@ -1026,8 +1037,18 @@ private object CosmosReadConfig {
     val runtimeFilteringEnabled = CosmosConfigEntry.parse(cfg, ReadRuntimeFilteringEnabled)
     val readManyFilteringConfig = CosmosReadManyFilteringConfig.parseCosmosReadManyFilterConfig(cfg)
 
+    val effectiveReadConsistencyStrategy = if (readConsistencyStrategyOverride.getOrElse(ReadConsistencyStrategy.DEFAULT) != ReadConsistencyStrategy.DEFAULT) {
+      readConsistencyStrategyOverride.get
+    } else {
+      if (forceEventualConsistency.getOrElse(true)) {
+        ReadConsistencyStrategy.EVENTUAL
+      } else {
+        ReadConsistencyStrategy.DEFAULT
+      }
+    }
+
     CosmosReadConfig(
-      forceEventualConsistency.get,
+      effectiveReadConsistencyStrategy,
       jsonSchemaConversionMode.get,
       maxItemCount.getOrElse(DefaultMaxItemCount),
       prefetchBufferSize.getOrElse(

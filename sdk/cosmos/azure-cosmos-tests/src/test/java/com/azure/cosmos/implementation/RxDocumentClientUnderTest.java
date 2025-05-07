@@ -47,6 +47,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                 masterKey,
                 connectionPolicy,
                 consistencyLevel,
+                null,
                 configs,
                 credential,
                 null,

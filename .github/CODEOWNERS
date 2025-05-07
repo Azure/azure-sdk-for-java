@@ -283,7 +283,7 @@
 /sdk/communication/azure-communication-common/         @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft
 
 # PRLabel: %Communication - Phone Numbers
-/sdk/communication/azure-communication-phonenumbers/   @miguhern @whisper6284 @RoyHerrod @danielav7
+/sdk/communication/azure-communication-phonenumbers/   @Arazan @whisper6284 @danielortega-msft @sofiar-msft
 
 # PRLabel: %Communication - SMS
 /sdk/communication/azure-communication-sms/            @DimaKolomiiets @gfeitosa-msft @besh2014 @phermanov-msft @ilyapaliakou-msft
@@ -442,6 +442,12 @@
 # ServiceLabel: %Digital Twins
 # ServiceOwners:                                     @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @barustum @jamdavi
 
+# PRLabel: %Durable Task Scheduler
+/sdk/durabletask/                                    @berndverst @kaibocai @torosent @RyanLettieri @philliphoff @cgillum
+
+# ServiceLabel: %Durable Task Scheduler
+# ServiceOwners:                                     @berndverst @kaibocai @torosent @RyanLettieri @philliphoff @cgillum
+
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                      @samvaity @billwert @srnagar @lmolkova
 
@@ -514,7 +520,7 @@
 
 # ServiceLabel: %KeyVault
 # AzureSdkOwners:                                    @vcolin7
-# ServiceOwners:                                     @jlichwa @jackrichins @vickm
+# ServiceOwners:                                     @cheathamb36 @chen-karen @lgonsoulin
 
 # ServiceLabel: %Kubernetes Configuration
 # ServiceOwners:                                     @NarayanThiru
@@ -780,10 +786,10 @@
 # ServiceOwners:                                     @azureSQLGitHub
 
 # PRLabel: %Storage
-/sdk/storage/                                        @ibrahimrabab @seanmcc-msft @ibrandes @kyleknap @alzimmermsft
+/sdk/storage/                                        @seanmcc-msft @ibrandes @kyleknap @alzimmermsft @gunjansingh-msft
 
 # ServiceLabel:  %Storage
-# AzureSdkOwners:                                    @ibrahimrabab @seanmcc-msft @ibrandes @kyleknap
+# AzureSdkOwners:                                    @seanmcc-msft @ibrandes @kyleknap @gunjansingh-msft
 # ServiceOwners:                                     @xgithubtriage
 
 # ServiceLabel:  %Storsimple

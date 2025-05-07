@@ -32,8 +32,7 @@ public final class OperationPropertiesTests {
             model.serviceSpecification().metricSpecifications().get(0).supportedTimeGrainTypes().get(0));
         Assertions.assertEquals("yoqpsoaccta",
             model.serviceSpecification().metricSpecifications().get(0).internalMetricName());
-        Assertions.assertEquals(false,
-            model.serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
+        Assertions.assertFalse(model.serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
         Assertions.assertEquals("j", model.serviceSpecification().metricSpecifications().get(0).sourceMdmAccount());
         Assertions.assertEquals("hbcryffdfdosyge",
             model.serviceSpecification().metricSpecifications().get(0).sourceMdmNamespace());
@@ -43,11 +42,11 @@ public final class OperationPropertiesTests {
             model.serviceSpecification().metricSpecifications().get(0).dimensions().get(0).displayName());
         Assertions.assertEquals("oginuvamiheognar",
             model.serviceSpecification().metricSpecifications().get(0).aggregationType());
-        Assertions.assertEquals(false, model.serviceSpecification().metricSpecifications().get(0).fillGapWithZero());
+        Assertions.assertFalse(model.serviceSpecification().metricSpecifications().get(0).fillGapWithZero());
         Assertions.assertEquals("heotusiv", model.serviceSpecification().metricSpecifications().get(0).category());
         Assertions.assertEquals("v",
             model.serviceSpecification().metricSpecifications().get(0).resourceIdDimensionNameOverride());
-        Assertions.assertEquals(false, model.serviceSpecification().metricSpecifications().get(0).isInternal());
+        Assertions.assertFalse(model.serviceSpecification().metricSpecifications().get(0).isInternal());
         Assertions.assertEquals("nwui", model.serviceSpecification().logSpecifications().get(0).name());
         Assertions.assertEquals("a", model.serviceSpecification().logSpecifications().get(0).displayName());
     }
@@ -149,8 +148,7 @@ public final class OperationPropertiesTests {
             model.serviceSpecification().metricSpecifications().get(0).supportedTimeGrainTypes().get(0));
         Assertions.assertEquals("yoqpsoaccta",
             model.serviceSpecification().metricSpecifications().get(0).internalMetricName());
-        Assertions.assertEquals(false,
-            model.serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
+        Assertions.assertFalse(model.serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
         Assertions.assertEquals("j", model.serviceSpecification().metricSpecifications().get(0).sourceMdmAccount());
         Assertions.assertEquals("hbcryffdfdosyge",
             model.serviceSpecification().metricSpecifications().get(0).sourceMdmNamespace());
@@ -160,11 +158,11 @@ public final class OperationPropertiesTests {
             model.serviceSpecification().metricSpecifications().get(0).dimensions().get(0).displayName());
         Assertions.assertEquals("oginuvamiheognar",
             model.serviceSpecification().metricSpecifications().get(0).aggregationType());
-        Assertions.assertEquals(false, model.serviceSpecification().metricSpecifications().get(0).fillGapWithZero());
+        Assertions.assertFalse(model.serviceSpecification().metricSpecifications().get(0).fillGapWithZero());
         Assertions.assertEquals("heotusiv", model.serviceSpecification().metricSpecifications().get(0).category());
         Assertions.assertEquals("v",
             model.serviceSpecification().metricSpecifications().get(0).resourceIdDimensionNameOverride());
-        Assertions.assertEquals(false, model.serviceSpecification().metricSpecifications().get(0).isInternal());
+        Assertions.assertFalse(model.serviceSpecification().metricSpecifications().get(0).isInternal());
         Assertions.assertEquals("nwui", model.serviceSpecification().logSpecifications().get(0).name());
         Assertions.assertEquals("a", model.serviceSpecification().logSpecifications().get(0).displayName());
     }

@@ -12,7 +12,7 @@ import com.azure.cosmos.implementation.routing.Range
 import com.azure.cosmos.models.{FeedRange, PartitionKey, PartitionKeyBuilder, PartitionKeyDefinition, PartitionKind, SparkModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ChangeFeedOffset, CosmosConstants, NormalizedRange}
-import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, SparkBridgeInternal}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, ReadConsistencyStrategy, SparkBridgeInternal}
 import com.fasterxml.jackson.databind.ObjectMapper
 
 import scala.collection.convert.ImplicitConversions.`list asScalaBuffer`
@@ -458,6 +458,13 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
         logError(s"Parsing spark max connections per endpoint failed. Using the default $DEFAULT_SPARK_MAX_CONNECTIONS_PER_ENDPOINT.", e)
         DEFAULT_SPARK_MAX_CONNECTIONS_PER_ENDPOINT
     }
+  }
+
+  def parseReadConsistencyStrategy(text: String): Option[ReadConsistencyStrategy] = {
+    Option.apply(ImplementationBridgeHelpers
+      .ReadConsistencyStrategyHelper
+      .getReadConsistencyStrategyAccessor
+      .createFromServiceSerializedFormat(text))
   }
 
   def getIoThreadCountPerCoreOverride: Int = {
