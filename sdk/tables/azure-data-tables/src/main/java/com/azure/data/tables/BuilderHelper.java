@@ -58,11 +58,11 @@ final class BuilderHelper {
     public static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
     static HttpPipeline buildPipeline(AzureNamedKeyCredential azureNamedKeyCredential,
-                                      AzureSasCredential azureSasCredential, TokenCredential tokenCredential, String sasToken, String endpoint,
-                                      RetryPolicy retryPolicy, RetryOptions retryOptions, HttpLogOptions logOptions, ClientOptions clientOptions,
-                                      HttpClient httpClient, List<HttpPipelinePolicy> perCallAdditionalPolicies,
-                                      List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration, ClientLogger logger,
-                                      boolean enableTenantDiscovery) {
+        AzureSasCredential azureSasCredential, TokenCredential tokenCredential, String sasToken, String endpoint,
+        RetryPolicy retryPolicy, RetryOptions retryOptions, HttpLogOptions logOptions, ClientOptions clientOptions,
+        HttpClient httpClient, List<HttpPipelinePolicy> perCallAdditionalPolicies,
+        List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration, ClientLogger logger,
+        boolean enableTenantDiscovery) {
         return buildPipeline(azureNamedKeyCredential, azureSasCredential, tokenCredential, sasToken, endpoint,
             retryPolicy, retryOptions, logOptions, clientOptions, httpClient, perCallAdditionalPolicies,
             perRetryAdditionalPolicies, configuration, logger, enableTenantDiscovery, null);
@@ -78,10 +78,10 @@ final class BuilderHelper {
         logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
 
         audience = (audience != null)
-                       ? audience
-                       : (TableUtils.isCosmosEndpoint(endpoint)
-                              ? TableAudience.AZURE_COSMOS_PUBLIC_CLOUD
-                              : TableAudience.AZURE_STORAGE_PUBLIC_CLOUD );
+            ? audience
+            : (TableUtils.isCosmosEndpoint(endpoint)
+                ? TableAudience.AZURE_COSMOS_PUBLIC_CLOUD
+                : TableAudience.AZURE_STORAGE_PUBLIC_CLOUD);
 
         if (retryPolicy != null && retryOptions != null) {
             throw logger.logExceptionAsWarning(

@@ -52,7 +52,6 @@ public class TableAudience extends ExpandableStringEnum<TableAudience> {
      */
     public static final TableAudience AZURE_COSMOS_US_GOVERNMENT = fromString("https://cosmos.azure.us");
 
-
     /**
      * @deprecated The audience is for the public.
      */

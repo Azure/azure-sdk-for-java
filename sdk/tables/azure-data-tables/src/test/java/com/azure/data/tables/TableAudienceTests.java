@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TableAudienceTests {
 
-
     // cosmos audience tests
 
     @Test
@@ -54,6 +53,5 @@ public class TableAudienceTests {
         audience = TableAudience.fromString("https://storage.azure.nz/.default");
         assertEquals("https://storage.azure.nz/.default", audience.getDefaultScope());
     }
-
 
 }
