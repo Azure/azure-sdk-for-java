@@ -768,6 +768,12 @@
           "regex": true,
           "code": "java\\.method\\.varargOverloadsOnlyDifferInVarargParameter",
           "old": "method com\\.azure\\.communication\\.email\\.models\\.EmailMessage com\\.azure\\.communication\\.email\\.models\\.EmailMessage::set(Cc|Bcc|To)Recipients.*"
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest::withType(java.lang.String)",
+          "justification": "The property is a constant, which should not be changed."
         }
       ]
     }
