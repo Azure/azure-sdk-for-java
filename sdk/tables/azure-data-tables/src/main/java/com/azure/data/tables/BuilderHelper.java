@@ -38,6 +38,7 @@ import com.azure.data.tables.implementation.StorageConstants;
 import com.azure.data.tables.implementation.TableBearerTokenChallengeAuthorizationPolicy;
 import com.azure.data.tables.implementation.TableUtils;
 import com.azure.data.tables.implementation.TablesConstants;
+import com.azure.data.tables.models.TableAudience;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,13 +58,30 @@ final class BuilderHelper {
     public static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
     static HttpPipeline buildPipeline(AzureNamedKeyCredential azureNamedKeyCredential,
+                                      AzureSasCredential azureSasCredential, TokenCredential tokenCredential, String sasToken, String endpoint,
+                                      RetryPolicy retryPolicy, RetryOptions retryOptions, HttpLogOptions logOptions, ClientOptions clientOptions,
+                                      HttpClient httpClient, List<HttpPipelinePolicy> perCallAdditionalPolicies,
+                                      List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration, ClientLogger logger,
+                                      boolean enableTenantDiscovery) {
+        return buildPipeline(azureNamedKeyCredential, azureSasCredential, tokenCredential, sasToken, endpoint,
+            retryPolicy, retryOptions, logOptions, clientOptions, httpClient, perCallAdditionalPolicies,
+            perRetryAdditionalPolicies, configuration, logger, enableTenantDiscovery, null);
+    }
+
+    static HttpPipeline buildPipeline(AzureNamedKeyCredential azureNamedKeyCredential,
         AzureSasCredential azureSasCredential, TokenCredential tokenCredential, String sasToken, String endpoint,
         RetryPolicy retryPolicy, RetryOptions retryOptions, HttpLogOptions logOptions, ClientOptions clientOptions,
         HttpClient httpClient, List<HttpPipelinePolicy> perCallAdditionalPolicies,
         List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration, ClientLogger logger,
-        boolean enableTenantDiscovery) {
+        boolean enableTenantDiscovery, TableAudience audience) {
         configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
+
+        audience = (audience != null)
+                       ? audience
+                       : (TableUtils.isCosmosEndpoint(endpoint)
+                              ? TableAudience.AZURE_COSMOS_PUBLIC_CLOUD
+                              : TableAudience.AZURE_STORAGE_PUBLIC_CLOUD );
 
         if (retryPolicy != null && retryOptions != null) {
             throw logger.logExceptionAsWarning(
@@ -115,7 +133,7 @@ final class BuilderHelper {
             credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
         } else if (tokenCredential != null) {
             credentialPolicy = new TableBearerTokenChallengeAuthorizationPolicy(tokenCredential, enableTenantDiscovery,
-                TableUtils.isCosmosEndpoint(endpoint) ? TablesConstants.COSMOS_SCOPE : StorageConstants.STORAGE_SCOPE);
+                audience.getDefaultScope());
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("A form of authentication is required to create a client. Use a builder's "

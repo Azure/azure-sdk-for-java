@@ -4,6 +4,9 @@ package com.azure.data.tables.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 /**
  * Defines the audience for the Azure Table service.
  * <p>
@@ -56,6 +59,22 @@ public class TableAudience extends ExpandableStringEnum<TableAudience> {
     @Deprecated
     public TableAudience() {
         // This constructor is deprecated and should not be used.
+    }
+
+    public String getDefaultScope() {
+        try {
+            URI uri = new URI(this.toString());
+            String scheme = uri.getScheme();
+            String host = uri.getHost();
+            if (scheme != null && host != null) {
+                return scheme + "://" + host + "/.default";
+            } else {
+                throw new IllegalArgumentException("Invalid scope: " + this.toString());
+            }
+        } catch (URISyntaxException e) {
+            // Handle the exception
+            throw new IllegalArgumentException("Invalid scope: " + this.toString());
+        }
     }
 
     /**
