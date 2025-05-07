@@ -20,11 +20,8 @@ public class CreateOrUpdateReservationOptions {
      * @param phoneNumbersToAdd The list of phone numbers to add to the reservation.
      * @param phoneNumbersToRemove The list of phone numbers to remove from the reservation.
      */
-    public CreateOrUpdateReservationOptions(String reservationId, List<AvailablePhoneNumber> phoneNumbersToAdd,
-        List<String> phoneNumbersToRemove) {
+    public CreateOrUpdateReservationOptions(String reservationId) {
         this.reservationId = reservationId;
-        this.phoneNumbersToAdd = phoneNumbersToAdd;
-        this.phoneNumbersToRemove = phoneNumbersToRemove;
     }
 
     /**

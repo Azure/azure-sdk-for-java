@@ -23,6 +23,7 @@ public class PhoneNumbersCustomization extends Customization {
 
     customizeAvailablePhoneNumber(models);
     customizePhoneNumbersReservation(models);
+    customizeBrowsePhoneNumbersOptions(models);
   }
 
   // Customizes the PhoneNumbersReservation class
@@ -106,6 +107,31 @@ public class PhoneNumbersCustomization extends Customization {
                 " return deserializedAvailablePhoneNumber; " +
                 " }); " +
                 " }"));
+      });
+    });
+  }
+
+  // Customizes the BrowsePhoneNumbersOptions class
+  private void customizeBrowsePhoneNumbersOptions(PackageCustomization models) {
+    models.getClass("BrowsePhoneNumbersOptions").customizeAst(ast -> {
+      ast.getClassByName("BrowsePhoneNumbersOptions").ifPresent(clazz -> {
+        // Remove the default constructor
+        clazz.getConstructors().forEach(constructor -> constructor.remove());
+        clazz.addConstructor(Modifier.Keyword.PRIVATE);
+        
+        // Add a new constructor with required parameters
+        clazz.addConstructor(Modifier.Keyword.PUBLIC)
+            .addParameter("String", "countryCode")
+            .addParameter("PhoneNumberType", "phoneNumberType")
+            .setBody(StaticJavaParser.parseBlock("{ "
+                + "this.countryCode = countryCode; "
+                + "this.phoneNumberType = phoneNumberType; "
+                + "}"))
+            .setJavadocComment(new Javadoc(
+                JavadocDescription
+                    .parseText("Creates an instance of BrowsePhoneNumbersOptions with required parameters."))
+                .addBlockTag("param", "countryCode The ISO 3166-2 country code, e.g., US.")
+                .addBlockTag("param", "phoneNumberType The type of phone number."));
       });
     });
   }

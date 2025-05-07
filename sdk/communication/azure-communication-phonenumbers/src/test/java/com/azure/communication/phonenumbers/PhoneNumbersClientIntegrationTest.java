@@ -484,8 +484,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberSucceeds(HttpClient httpClient) {
-        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("US")
-            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("US", PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
@@ -499,8 +498,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberWrongCountryCode(HttpClient httpClient) {
-        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("INVALID")
-            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("INVALID", PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
@@ -515,8 +513,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberSucceedsWithAAD(HttpClient httpClient) {
-        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("US")
-            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("US", PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
@@ -530,8 +527,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberWrongCountryCodeWithAAD(HttpClient httpClient) {
-        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("INVALID")
-            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("INVALID", PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
@@ -546,8 +542,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updatePhoneNumbersReservation(HttpClient httpClient) {
-        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("US")
-            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("US", PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
@@ -561,7 +556,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
-                .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null));
+                .createOrUpdateReservation(
+                    new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToAdd(numbersToAdd));
         assertEquals(reservationId, reservationResponse.getId().toString());
         assertNotNull(reservationResponse.getPhoneNumbers());
         assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
@@ -582,7 +578,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         numbersToRemove.add(result.getPhoneNumbers().get(0).getId());
 
         reservationResponse = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
-            .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, null, numbersToRemove));
+            .createOrUpdateReservation(
+                new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToRemove(numbersToRemove));
         assertEquals(reservationId, reservationResponse.getId().toString());
         assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
 
@@ -596,8 +593,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updatePhoneNumbersReservationWithAAD(HttpClient httpClient) {
-        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("US")
-            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("US", PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
@@ -610,7 +606,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
-                .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null));
+                .createOrUpdateReservation(
+                    new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToAdd(numbersToAdd));
 
         assertEquals(reservationId, reservationResponse.getId().toString());
         assertNotNull(reservationResponse.getPhoneNumbers());
@@ -632,7 +629,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         numbersToRemove.add(result.getPhoneNumbers().get(0).getId());
 
         reservationResponse = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
-            .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, null, numbersToRemove));
+            .createOrUpdateReservation(
+                new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToRemove(numbersToRemove));
         assertEquals(reservationId, reservationResponse.getId().toString());
         assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
 
@@ -646,8 +644,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void purchaseWithoutAgreementToNotResellFails(HttpClient httpClient) {
-        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("FR")
-            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("FR", PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
         PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers");
@@ -660,7 +657,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
-                .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null));
+                .createOrUpdateReservation(
+                    new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToAdd(numbersToAdd));
         assertThrows(RuntimeException.class,
             () -> client.beginReservationPurchase(reservationResponse.getId().toString()),
             "Missing agreement to not resell.");
@@ -669,8 +667,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void purchaseWithoutAgreementToNotResellFailsWithAAD(HttpClient httpClient) {
-        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("FR")
-            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("FR", PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
         PhoneNumbersClient client = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers");
@@ -683,7 +680,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
-                .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null));
+                .createOrUpdateReservation(
+                    new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToAdd(numbersToAdd));
 
         assertThrows(RuntimeException.class,
             () -> client.beginReservationPurchase(reservationResponse.getId().toString()),
