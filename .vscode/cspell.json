@@ -130,10 +130,6 @@
     "sdk/keyvault/azure-security-test-keyvault-jca/**",
     "sdk/keyvault/test-resources/test-resources.json",
     "sdk/keyvault/test-resources-jca/test-resources.json",
-    "sdk/keyvault-v2/azure-security-keyvault-administration/**",
-    "sdk/keyvault-v2/azure-security-keyvault-certificates/**",
-    "sdk/keyvault-v2/azure-security-keyvault-keys/**",
-    "sdk/keyvault-v2/azure-security-keyvault-secrets/**",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
     "sdk/formrecognizer/test-resources.json",
     "sdk/documentintelligence/azure-ai-documentintelligence/**",
@@ -1373,9 +1369,10 @@
       ]
     },
     {
-      "filename": "sdk/keyvault-v2/README.md",
+      "filename": "sdk/keyvault-v2/*",
       "words": [
         "FIPS",
+        "IMDS",
         "mhsm"
       ]
     }
