@@ -768,6 +768,38 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
+    <T> CosmosItemResponse verifyExists(CosmosContainer container, String id, PartitionKey pk, Class<T> clazz) {
+        CosmosItemResponse<T> response = null;
+        while (response == null) {
+            try {
+                CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+                if (client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.GATEWAY) {
+                    requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+                }
+
+                response = container.readItem(
+                    id,
+                    pk,
+                    requestOptions,
+                    clazz);
+
+                break;
+            } catch (CosmosException cosmosError) {
+                if (cosmosError.getStatusCode() != 404 || cosmosError.getSubStatusCode() != 0) {
+                    throw cosmosError;
+                }
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        return response;
+    }
+
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readAllItemsWithDetailMetricsWithExplicitPageSize() throws Exception {
         this.beforeTest(
@@ -775,8 +807,15 @@ public class ClientMetricsTest extends BatchTestBase {
             CosmosMetricCategory.OPERATION_DETAILS,
             CosmosMetricCategory.REQUEST_DETAILS);
         try {
-            InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+            String id = UUID.randomUUID().toString()
+            InternalObjectNode properties = getDocumentDefinition(id);
             container.createItem(properties);
+            verifyExists(
+                container,
+                id,
+                new PartitionKey(id),
+                InternalObjectNode.class
+            );
 
             CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 

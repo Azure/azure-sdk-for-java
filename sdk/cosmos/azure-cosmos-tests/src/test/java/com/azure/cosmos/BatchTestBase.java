@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.map.Unmodifiabl
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -100,6 +101,11 @@ public abstract class BatchTestBase extends TestSuiteBase {
         CosmosItemResponse<T> response = null;
         while (response == null) {
             try {
+                CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+                if (getConnectionPolicy().getConnectionMode() != ConnectionMode.GATEWAY) {
+                    requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+                }
+
                 response = container.readItem(
                     id,
                     pk,
