@@ -4,6 +4,7 @@ package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
+import com.azure.communication.phonenumbers.implementation.accesshelpers.PhoneNumbersReservationAccessHelper;
 import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
@@ -997,7 +998,8 @@ public final class PhoneNumbersAsyncClient {
             = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID().toString();
 
         Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
-        PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
+        PhoneNumbersReservation reservation = new PhoneNumbersReservation();
+        PhoneNumbersReservationAccessHelper.setPhoneNumbers(reservation, phoneNumbersMap);
         return client.createOrUpdateReservationAsync(UUID.fromString(reservationId), reservation);
     }
 
@@ -1022,7 +1024,8 @@ public final class PhoneNumbersAsyncClient {
             = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID().toString();
 
         Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
-        PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
+        PhoneNumbersReservation reservation = new PhoneNumbersReservation();
+        PhoneNumbersReservationAccessHelper.setPhoneNumbers(reservation, phoneNumbersMap);
         return client.createOrUpdateReservationWithResponseAsync(UUID.fromString(reservationId), reservation);
     }
 

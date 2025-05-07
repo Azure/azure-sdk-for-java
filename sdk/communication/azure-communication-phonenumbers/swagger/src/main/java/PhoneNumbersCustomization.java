@@ -21,9 +21,26 @@ public class PhoneNumbersCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
       PackageCustomization models = customization.getPackage("com.azure.communication.phonenumbers.models");
-      PackageCustomization implModels = customization.getPackage("com.azure.communication.phonenumbers.implementation.models");
 
       customizeAvailablePhoneNumber(models);
+      customizePhoneNumbersReservation(models);
+    }
+
+    // Customizes the PhoneNumbersReservation class
+    private void customizePhoneNumbersReservation(PackageCustomization models) {
+      models.getClass("PhoneNumbersReservation").customizeAst(ast -> {  
+      ast.getClassByName("PhoneNumbersReservation").ifPresent(clazz -> {
+        clazz.addMethod("setPhoneNumbers", Modifier.Keyword.PRIVATE)
+                    .setType("PhoneNumbersReservation")
+                    .addParameter("Map<String, AvailablePhoneNumber>", "phoneNumbers")
+                    .setBody(StaticJavaParser.parseBlock("{ this.phoneNumbers = phoneNumbers;\r\n" + //
+                                            "        return this; }"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText("Set the phoneNumbers property: The phone numbers in the reservation."))
+                    .addBlockTag("param", "phoneNumbers the phone numbers in the reservation.")
+                    .addBlockTag("return", "the PhoneNumbersReservation object itself."));
+
+      });
+      });
     }
 
     // Customizes the AvailablePhoneNumber class

@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
+import com.azure.communication.phonenumbers.implementation.accesshelpers.PhoneNumbersReservationAccessHelper;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
@@ -1034,12 +1035,11 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PhoneNumbersReservation createOrUpdateReservation(CreateOrUpdateReservationOptions request) {
-        String reservationId
-            = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID().toString();
-
+        Objects.requireNonNull(request.getReservationId(), "'reservationId' cannot be null.");
         Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
-        PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
-        return client.createOrUpdateReservation(UUID.fromString(reservationId), reservation);
+        PhoneNumbersReservation reservation = new PhoneNumbersReservation();
+        PhoneNumbersReservationAccessHelper.setPhoneNumbers(reservation, phoneNumbersMap);
+        return client.createOrUpdateReservation(UUID.fromString(request.getReservationId()), reservation);
     }
 
     /**
@@ -1068,11 +1068,12 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PhoneNumbersReservation>
         createOrUpdateReservationWithResponse(CreateOrUpdateReservationOptions request, Context context) {
-        String reservationId
-            = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID().toString();
+        Objects.requireNonNull(request.getReservationId(), "'reservationId' cannot be null.");
         Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
-        PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
-        return client.createOrUpdateReservationWithResponse(UUID.fromString(reservationId), reservation, context);
+        PhoneNumbersReservation reservation = new PhoneNumbersReservation();
+        PhoneNumbersReservationAccessHelper.setPhoneNumbers(reservation, phoneNumbersMap);
+        return client.createOrUpdateReservationWithResponse(UUID.fromString(request.getReservationId()), reservation,
+            context);
     }
 
     /**

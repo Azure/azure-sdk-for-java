@@ -28,7 +28,7 @@ use: '@autorest/java@4.1.29'
 require: 
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/de9cb12d2840ca0915849ce6a3bf8c956a32c022/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
-custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,PhoneNumberSearchResultError,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorInformationOptions,OperatorNumberType,PhoneNumbersReservation,AvailablePhoneNumber,AvailablePhoneNumberCost,AvailablePhoneNumberError,PhoneNumbersBrowseRequest,PhoneNumberAvailabilityStatus,PhoneNumbersBrowseResult,BrowsePhoneNumbersOptions,PhoneNumbersReservationStatus
+custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,PhoneNumberSearchResultError,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorInformationOptions,OperatorNumberType,PhoneNumbersReservation,AvailablePhoneNumber,AvailablePhoneNumberCost,PhoneNumberAvailabilityStatus,PhoneNumbersBrowseResult,BrowsePhoneNumbersOptions,PhoneNumbersReservationStatus
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -74,7 +74,6 @@ directive:
       $["properties"]["currencyCode"].readOnly = true;
       $["properties"]["billingFrequency"].readOnly = true;
 ```
-
 
 ### Add readonly attribute to PhoneNumberSearchResult properties
 ```yaml
@@ -284,6 +283,14 @@ directive:
       $["properties"]["status"].readOnly = true;
 ```
 
+### Add readonly attribute to PhoneNumbersReservation properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumbersReservation
+    transform: >
+      $["properties"]["phoneNumbers"].readOnly = true;
+```
 
 ### Replace type from PhoneNumberBrowseCapabilities to PhoneNumberCapabilties
 ```yaml
