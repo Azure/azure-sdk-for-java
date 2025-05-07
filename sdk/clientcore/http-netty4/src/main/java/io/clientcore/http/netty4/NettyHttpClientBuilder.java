@@ -302,14 +302,16 @@ public class NettyHttpClientBuilder {
         if (IS_EPOLL_AVAILABLE) {
             try {
                 return (EventLoopGroup) EPOLL_EVENT_LOOP_GROUP_CREATOR.invokeExact(threadFactory);
-            } catch (Throwable ignored) {
+            } catch (Throwable ex) {
+                LOGGER.atVerbose().setThrowable(ex).log("Failed to create an EpollEventLoopGroup.");
             }
         }
 
         if (IS_KQUEUE_AVAILABLE) {
             try {
                 return (EventLoopGroup) KQUEUE_EVENT_LOOP_GROUP_CREATOR.invokeExact(threadFactory);
-            } catch (Throwable ignored) {
+            } catch (Throwable ex) {
+                LOGGER.atVerbose().setThrowable(ex).log("Failed to create a KQueueEventLoopGroup.");
             }
         }
 
