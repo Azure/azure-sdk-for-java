@@ -60,6 +60,13 @@ public class TableAudience extends ExpandableStringEnum<TableAudience> {
         // This constructor is deprecated and should not be used.
     }
 
+    /**
+     * Gets the default scope for the audience.
+     * <p>
+     * The default scope is the audience URI string with "/.default" appended to it.
+     *
+     * @return The default scope for the audience as a string.
+     */
     public String getDefaultScope() {
         try {
             URI uri = new URI(this.toString());
