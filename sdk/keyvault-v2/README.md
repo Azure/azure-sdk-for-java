@@ -17,6 +17,7 @@ Documentation for this SDK can be found at [Azure Key Vault Java Documentation][
 
 To get started with a specific library, see the **README.md** file located in the library's project folder. You can find
 service libraries in the `/sdk/keyvault-v2/azure-security-keyvault-<subcomponent>` directory.
+
 - [Azure Key Vault Keys][azure_keyvault_keys_library] is a cloud service that enables you to safeguard and manage
   cryptographic keys.
 - [Azure Key Vault Certificates][azure_keyvault_certificates_library] is a cloud service that allows you to securely

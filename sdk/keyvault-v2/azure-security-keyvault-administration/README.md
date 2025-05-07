@@ -1,4 +1,5 @@
 # Azure Key Vault Administration client library for Java
+
 Azure Key Vault Managed HSM is a fully-managed, highly-available, single-tenant, standards-compliant cloud service that
 enables you to safeguard cryptographic keys for your cloud applications using FIPS 140-2 Level 3 validated HSMs.
 
@@ -10,6 +11,7 @@ key-level role-based access control (RBAC).
 ## Getting started
 
 ### Prerequisites
+
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
   - Here are details about [Java 8 client compatibility with Azure Certificate Authority][azure_ca]
 - An [Azure Subscription][azure_subscription].
@@ -21,6 +23,7 @@ key-level role-based access control (RBAC).
 ### Adding the package to your product
 
 #### Use the Azure SDK BOM
+
 Please include the `azure-sdk-bom` to your project to take dependency on the General Availability (GA) version of the
 library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number. To learn
 more about the BOM, see the [AZURE SDK BOM README][azure_sdk_bom].
@@ -51,10 +54,12 @@ and then include the direct dependency in the dependencies section without the v
 ```
 
 #### Use a direct dependency
+
 If you want to take dependency on a particular version of the library that is not present in the BOM, add the direct
 dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure.v2:azure-security-keyvault-administration;current})
+
 ```xml
 <dependency>
     <groupId>com.azure.v2</groupId>
@@ -62,9 +67,11 @@ dependency to your project as follows.
     <version>5.0.0-beta.1</version>
 </dependency>
 ```
+
 [//]: # ({x-version-update-end})
 
 ### Authenticate the client
+
 In order to interact with the Azure Key Vault service, you will need to create an instance of either the
 [`KeyVaultAccessControlClient`](#create-an-access-control-client) class, the
 [`KeyVaultBackupClient`](#create-a-backup-client) class, or the [`KeyVaultSettingsClient`](#create-a-settings-client)
@@ -77,6 +84,7 @@ You can find more information on different ways of authenticating and their corr
 [Azure Identity documentation][azure_identity].
 
 #### Create an access control client
+
 Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced
 **your-managed-hsm-endpoint** with the URL for your key vault or managed HSM, you can create the
 `KeyVaultAccessControlClient`:
@@ -89,6 +97,7 @@ KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessCont
 ```
 
 #### Create a backup client
+
 Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced
 **your-managed-hsm-endpoint** with the URL for your key vault or managed HSM, you can create the `KeyVaultBackupClient`:
 
@@ -100,6 +109,7 @@ KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
 ```
 
 #### Create a settings client
+
 Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced
 **your-managed-hsm-endpoint** with the URL for your key vault or managed HSM, you can create the
 `KeyVaultSettingsClient`:
@@ -112,22 +122,27 @@ KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
 ```
 
 ## Key concepts
+
 ### Key Vault Access Control Client
+
 The Key Vault Access Control Client performs the interactions with the Azure Key Vault or Managed HSM services for
 getting, setting, deleting, and listing role assignments, as well as listing role definitions. Once you've initialized a
 role assignment, you can interact with the primary resource types on the service.
 
 ### Role Definition
+
 A role definition is a collection of permissions. It defines the operations that can be performed, such as read, write,
 and delete. It can also define the operations that are excluded from allowed operations.
 
 Role definitions can be listed and specified as part of a role assignment.
 
 ### Role Assignment
+
 A role assignment is the association of a role definition to a service principal. They can be created, listed, fetched
 individually, and deleted.
 
 ### Key Vault Backup Client
+
 The Key Vault Backup Client provides operations for performing full key backups, full key restores, and selective key
 restores.
 
@@ -137,27 +152,34 @@ restores.
 > [generate a SAS token in Storage Explorer][portal_sas_token].
 
 ### Pre-Backup Operation
+
 A pre-backup operation represents a long-running operation that checks if it is possible to perform a full key backup.
 
 ### Backup Operation
+
 A backup operation represents a long-running operation for a full key backup.
 
 ### Pre-Restore Operation
+
 A pre-restore operation represents a long-running operation that checks if it is possible to perform a full key restore
 from a backup.
 
 ### Restore Operation
+
 A restore operation represents a long-running operation for both a full key and selective key restore.
 
 ### Key Vault Settings Client
+
 The Key Vault Settings client allows manipulation of an Azure Key Vault or Managed HSM account's settings, with
 operations such as: getting, updating, and listing.
 
 ## Access control operations
 
 ### Examples
+
 The following sections provide several code snippets covering some of the most common role-based access control tasks,
 including:
+
 - [List role definitions](#list-role-definitions)
 - [Create or update a role definition](#create-or-update-a-role-definition)
 - [Retrieve a role definition](#retrieve-a-role-definition)
@@ -167,6 +189,7 @@ including:
 - [Delete a role assignment](#delete-a-role-assignment)
 
 ##### List role definitions
+
 List the role definitions in the key vault or managed HSM by calling `listRoleDefinitions()`.
 
 ```java readme-sample-listRoleDefinitions
@@ -178,6 +201,7 @@ roleDefinitions.forEach(roleDefinition ->
 ```
 
 ##### Create or update a role definition
+
 Create or update a role definition. The following example shows how to create a role definition with a randomly
 generated name.
 
@@ -189,6 +213,7 @@ System.out.printf("Created role definition with randomly generated name '%s' and
 ```
 
 ##### Retrieve a role definition
+
 Get an existing role definition. To do this, the scope and 'name' property from an existing role definition are
 required.
 
@@ -202,6 +227,7 @@ System.out.printf("Retrieved role definition with name '%s' and role name '%s'.%
 ```
 
 ##### Delete a role definition
+
 Delete a role definition. To do this, the scope and 'name' property from an existing role definition are required.
 
 ```java readme-sample-deleteRoleDefinition
@@ -213,6 +239,7 @@ System.out.printf("Deleted role definition with name '%s'.%n", roleDefinitionNam
 ```
 
 ##### List role assignments
+
 List the role assignments in the key vault or managed HSM by calling `listRoleAssignments()`.
 
 ```java readme-sample-listRoleAssignments
@@ -224,6 +251,7 @@ roleAssignments.forEach(roleAssignment ->
 ```
 
 ##### Create a role assignment
+
 Create a role assignment. To do this, a role definition id and a service principal object id are required.
 
 A role definition id can be obtained from the 'id' property of one of the role definitions returned from
@@ -249,6 +277,7 @@ System.out.printf("Created role assignment with randomly generated name '%s' for
 ```
 
 ##### Retrieve a role assignment
+
 Get an existing role assignment. To do this, the 'name' property from an existing role assignment is required.
 
 ```java readme-sample-getRoleAssignment
@@ -258,7 +287,9 @@ KeyVaultRoleAssignment roleAssignment =
 
 System.out.printf("Retrieved role assignment with name '%s'.%n", roleAssignment.getName());
 ```
+
 ##### Delete a role assignment
+
 To remove a role assignment from a service principal, the role assignment must be deleted. To do this, the 'name'
 property from an existing role assignment is required.
 
@@ -273,12 +304,15 @@ System.out.printf("Deleted role assignment with name '%s'.%n", roleAssignmentNam
 ## Backup and restore operations
 
 ### Examples
+
 The following sections provide several code snippets covering some of the most common backup-related tasks, including:
+
 - [Backup a Key Vault](#backup-a-collection-of-keys)
 - [Restore a Key Vault](#restore-a-collection-of-keys)
 - [Restore a key](#selectively-restore-a-key)
 
 ##### Backup a collection of keys
+
 Back up an entire collection of keys using `beginBackup()`.
 
 ```java readme-sample-beginBackup
@@ -306,6 +340,7 @@ if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COM
 ```
 
 ##### Restore a collection of keys
+
 Restore an entire collection of keys from a backup using `beginRestore()`.
 
 ```java readme-sample-beginRestore
@@ -331,6 +366,7 @@ if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COM
 ```
 
 ##### Selectively restore a key
+
 Restore a specific key from a backup using `beginSelectiveRestore()`.
 
 ```java readme-sample-beginSelectiveKeyRestore
@@ -359,12 +395,15 @@ if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COM
 ## Settings operations
 
 ### Examples
+
 The following sections provide several code snippets covering some of the most common settings-related tasks, including:
+
 - [Listing settings](#get-all-settings)
 - [Retrieving a setting](#retrieve-a-specific-setting)
 - [Updating a setting](#update-a-specific-setting)
 
 ##### Get all settings
+
 List all the settings for an Azure Key Vault or Managed HSM account.
 
 ```java readme-sample-getSettings
@@ -376,6 +415,7 @@ for (KeyVaultSetting setting : getSettingsResult.getSettings()) {
 ```
 
 ##### Retrieve a specific setting
+
 Retrieve a specific setting.
 
 ```java readme-sample-getSetting
@@ -387,6 +427,7 @@ System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName()
 ```
 
 ##### Update a specific setting
+
 Update a specific setting.
 
 ```java readme-sample-updateSetting
@@ -398,16 +439,18 @@ System.out.printf("Updated setting '%s' to '%s'.%n", updatedSetting.getName(), u
 ```
 
 ## Troubleshooting
+
 See our [troubleshooting guide][troubleshooting_guide] for details on how to diagnose various failure scenarios.
 
 ### General
+
 Azure Key Vault clients raise exceptions. For example, if you try to retrieve a key after it is deleted a `404` error
 is returned, indicating the resource was not found. In the following snippet, the error is handled gracefully by
 catching the exception and displaying additional information about the error.
 
 ```java readme-sample-troubleshooting
 try {
-    keyVaultAccessControlClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, "<role-assginment-name>");
+    keyVaultAccessControlClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, "<role-assignment-name>");
 } catch (HttpResponseException e) {
     System.out.println(e.getMessage());
 }
@@ -427,23 +470,27 @@ better performance compared to the default SSL implementation within the JDK. Fo
 reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
+
 Several Azure Key Vault Java client library samples are available to you in the SDK's GitHub repository. These samples
 provide example code for additional scenarios commonly encountered while working with Azure Key Vault.
 
 ## Next steps samples
+
 Samples are explained in detail [here][samples_readme].
 
 ### Additional documentation
-For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
+
+For more extensive documentation on Azure Key Vault, see the [API reference documentation][azure_keyvault_rest].
 
 ## Contributing
+
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License
 Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For
-details, visit https://cla.microsoft.com.
+details, see the [Microsoft CLA][microsoft_cla].
 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate
 the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to
-do this once across all repos using our CLA.
+do this once across all repos using our [CLA][microsoft_cla].
 
 This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_code_of_conduct]. For more information
 see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.
@@ -460,13 +507,12 @@ For details on contributing to this repository, see the [contributing guide][con
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
 [administration_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-administration/src/samples/java/com/azure/v2/security/keyvault/administration
 [azkeyvault_docs]: https://learn.microsoft.com/azure/key-vault/
-[azkeyvault_rest]: https://learn.microsoft.com/rest/api/keyvault/
+[azure_keyvault_rest]: https://learn.microsoft.com/rest/api/keyvault/
 [azure_ca]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 [azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_keyvault]: https://learn.microsoft.com/azure/key-vault/general/overview
 [azure_keyvault_cli]: https://learn.microsoft.com/azure/key-vault/general/quick-create-cli
-[azure_keyvault_mhsm]: https://learn.microsoft.com/azure/key-vault/managed-hsm/overview
 [azure_keyvault_mhsm_cli]: https://learn.microsoft.com/azure/key-vault/managed-hsm/quick-create-cli
 [azure_keyvault_portal]: https://learn.microsoft.com/azure/key-vault/general/quick-create-portal
 [azure_subscription]: https://azure.microsoft.com/free/
@@ -476,6 +522,7 @@ For details on contributing to this repository, see the [contributing guide][con
 [http_clients_wiki]: https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [managed_identity]: https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+[microsoft_cla]: https://cla.microsoft.com
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-administration/src/samples/README.md
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
