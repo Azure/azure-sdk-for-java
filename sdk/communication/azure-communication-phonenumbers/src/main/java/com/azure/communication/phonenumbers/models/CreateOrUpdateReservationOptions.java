@@ -17,8 +17,6 @@ public class CreateOrUpdateReservationOptions {
      * Creates an instance of CreateOrUpdateReservationOptions class.
      * 
      * @param reservationId The reservation ID.
-     * @param phoneNumbersToAdd The list of phone numbers to add to the reservation.
-     * @param phoneNumbersToRemove The list of phone numbers to remove from the reservation.
      */
     public CreateOrUpdateReservationOptions(String reservationId) {
         this.reservationId = reservationId;
