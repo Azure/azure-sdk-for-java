@@ -24,6 +24,7 @@ public class PhoneNumbersCustomization extends Customization {
     customizeAvailablePhoneNumber(models);
     customizePhoneNumbersReservation(models);
     customizeBrowsePhoneNumbersOptions(models);
+    customizePhoneNumberSearchResult(models);
   }
 
   // Customizes the PhoneNumbersReservation class
@@ -118,7 +119,7 @@ public class PhoneNumbersCustomization extends Customization {
         // Remove the default constructor
         clazz.getConstructors().forEach(constructor -> constructor.remove());
         clazz.addConstructor(Modifier.Keyword.PRIVATE);
-        
+
         // Add a new constructor with required parameters
         clazz.addConstructor(Modifier.Keyword.PUBLIC)
             .addParameter("String", "countryCode")
@@ -135,4 +136,13 @@ public class PhoneNumbersCustomization extends Customization {
       });
     });
   }
+
+  // Customizes the PhoneNumberSearchResult class
+  private void customizePhoneNumberSearchResult(PackageCustomization models) {
+    models.getClass("PhoneNumberSearchResult").customizeAst(ast -> {
+        // Remove the specified import
+        ast.getImports().removeIf(importDeclaration ->
+            importDeclaration.getNameAsString().equals("com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchResultError"));
+    });
+}
 }
