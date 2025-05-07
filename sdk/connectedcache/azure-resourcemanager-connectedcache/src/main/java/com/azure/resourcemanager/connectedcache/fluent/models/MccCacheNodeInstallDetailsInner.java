@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.connectedcache.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
@@ -22,31 +23,37 @@ public final class MccCacheNodeInstallDetailsInner extends Resource {
     /*
      * Mcc cache node resource install script details.
      */
+    @Generated
     private CacheNodeInstallProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of MccCacheNodeInstallDetailsInner class.
      */
+    @Generated
     private MccCacheNodeInstallDetailsInner() {
     }
 
@@ -55,6 +62,7 @@ public final class MccCacheNodeInstallDetailsInner extends Resource {
      * 
      * @return the properties value.
      */
+    @Generated
     public CacheNodeInstallProperties properties() {
         return this.properties;
     }
@@ -64,6 +72,7 @@ public final class MccCacheNodeInstallDetailsInner extends Resource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -73,6 +82,7 @@ public final class MccCacheNodeInstallDetailsInner extends Resource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -83,6 +93,7 @@ public final class MccCacheNodeInstallDetailsInner extends Resource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -93,6 +104,7 @@ public final class MccCacheNodeInstallDetailsInner extends Resource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;

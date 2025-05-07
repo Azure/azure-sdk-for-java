@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class AgentProfile implements JsonSerializable<AgentProfile> {
      * The ID of the subnet which the Fleet hub node will join on startup. If this is not specified, a vnet and subnet
      * will be generated and used.
      */
+    @Generated
     private String subnetId;
 
     /*
      * The virtual machine size of the Fleet hub.
      */
+    @Generated
     private String vmSize;
 
     /**
      * Creates an instance of AgentProfile class.
      */
+    @Generated
     public AgentProfile() {
     }
 
@@ -39,6 +43,7 @@ public final class AgentProfile implements JsonSerializable<AgentProfile> {
      * 
      * @return the subnetId value.
      */
+    @Generated
     public String subnetId() {
         return this.subnetId;
     }
@@ -50,6 +55,7 @@ public final class AgentProfile implements JsonSerializable<AgentProfile> {
      * @param subnetId the subnetId value to set.
      * @return the AgentProfile object itself.
      */
+    @Generated
     public AgentProfile withSubnetId(String subnetId) {
         this.subnetId = subnetId;
         return this;
@@ -60,6 +66,7 @@ public final class AgentProfile implements JsonSerializable<AgentProfile> {
      * 
      * @return the vmSize value.
      */
+    @Generated
     public String vmSize() {
         return this.vmSize;
     }
@@ -70,6 +77,7 @@ public final class AgentProfile implements JsonSerializable<AgentProfile> {
      * @param vmSize the vmSize value to set.
      * @return the AgentProfile object itself.
      */
+    @Generated
     public AgentProfile withVmSize(String vmSize) {
         this.vmSize = vmSize;
         return this;

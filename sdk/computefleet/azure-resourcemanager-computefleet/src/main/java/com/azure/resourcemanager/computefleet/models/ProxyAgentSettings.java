@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,6 +22,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
      * Specifies whether ProxyAgent feature should be enabled on the virtual machine
      * or virtual machine scale set.
      */
+    @Generated
     private Boolean enabled;
 
     /*
@@ -29,17 +31,20 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
      * requests to host endpoints in Audit mode, while in Enforce mode it will enforce
      * access control. The default value is Enforce mode.
      */
+    @Generated
     private Mode mode;
 
     /*
      * Increase the value of this property allows user to reset the key used for
      * securing communication channel between guest and host.
      */
+    @Generated
     private Integer keyIncarnationId;
 
     /**
      * Creates an instance of ProxyAgentSettings class.
      */
+    @Generated
     public ProxyAgentSettings() {
     }
 
@@ -49,6 +54,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
      * 
      * @return the enabled value.
      */
+    @Generated
     public Boolean enabled() {
         return this.enabled;
     }
@@ -60,6 +66,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
      * @param enabled the enabled value to set.
      * @return the ProxyAgentSettings object itself.
      */
+    @Generated
     public ProxyAgentSettings withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -73,6 +80,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
      * 
      * @return the mode value.
      */
+    @Generated
     public Mode mode() {
         return this.mode;
     }
@@ -86,6 +94,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
      * @param mode the mode value to set.
      * @return the ProxyAgentSettings object itself.
      */
+    @Generated
     public ProxyAgentSettings withMode(Mode mode) {
         this.mode = mode;
         return this;
@@ -97,6 +106,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
      * 
      * @return the keyIncarnationId value.
      */
+    @Generated
     public Integer keyIncarnationId() {
         return this.keyIncarnationId;
     }
@@ -108,6 +118,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
      * @param keyIncarnationId the keyIncarnationId value to set.
      * @return the ProxyAgentSettings object itself.
      */
+    @Generated
     public ProxyAgentSettings withKeyIncarnationId(Integer keyIncarnationId) {
         this.keyIncarnationId = keyIncarnationId;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,17 +22,20 @@ public final class HighAvailabilitySoftwareConfiguration
     /*
      * The fencing client id.
      */
+    @Generated
     private String fencingClientId;
 
     /*
      * The fencing client id secret/password. The secret should never expire. This will be used pacemaker to start/stop
      * the cluster VMs.
      */
+    @Generated
     private String fencingClientPassword;
 
     /**
      * Creates an instance of HighAvailabilitySoftwareConfiguration class.
      */
+    @Generated
     public HighAvailabilitySoftwareConfiguration() {
     }
 
@@ -40,6 +44,7 @@ public final class HighAvailabilitySoftwareConfiguration
      * 
      * @return the fencingClientId value.
      */
+    @Generated
     public String fencingClientId() {
         return this.fencingClientId;
     }
@@ -50,6 +55,7 @@ public final class HighAvailabilitySoftwareConfiguration
      * @param fencingClientId the fencingClientId value to set.
      * @return the HighAvailabilitySoftwareConfiguration object itself.
      */
+    @Generated
     public HighAvailabilitySoftwareConfiguration withFencingClientId(String fencingClientId) {
         this.fencingClientId = fencingClientId;
         return this;
@@ -61,6 +67,7 @@ public final class HighAvailabilitySoftwareConfiguration
      * 
      * @return the fencingClientPassword value.
      */
+    @Generated
     public String fencingClientPassword() {
         return this.fencingClientPassword;
     }
@@ -72,6 +79,7 @@ public final class HighAvailabilitySoftwareConfiguration
      * @param fencingClientPassword the fencingClientPassword value to set.
      * @return the HighAvailabilitySoftwareConfiguration object itself.
      */
+    @Generated
     public HighAvailabilitySoftwareConfiguration withFencingClientPassword(String fencingClientPassword) {
         this.fencingClientPassword = fencingClientPassword;
         return this;

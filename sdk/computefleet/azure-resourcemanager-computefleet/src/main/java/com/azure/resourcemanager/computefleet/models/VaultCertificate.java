@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -32,6 +33,7 @@ public final class VaultCertificate implements JsonSerializable<VaultCertificate
      * or the [Azure Key Vault virtual machine extension for
      * Windows](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      */
+    @Generated
     private String certificateUrl;
 
     /*
@@ -43,11 +45,13 @@ public final class VaultCertificate implements JsonSerializable<VaultCertificate
      * &lt;UppercaseThumbprint&gt;.prv for private key. Both of these files are .pem
      * formatted.
      */
+    @Generated
     private String certificateStore;
 
     /**
      * Creates an instance of VaultCertificate class.
      */
+    @Generated
     public VaultCertificate() {
     }
 
@@ -68,6 +72,7 @@ public final class VaultCertificate implements JsonSerializable<VaultCertificate
      * 
      * @return the certificateUrl value.
      */
+    @Generated
     public String certificateUrl() {
         return this.certificateUrl;
     }
@@ -90,6 +95,7 @@ public final class VaultCertificate implements JsonSerializable<VaultCertificate
      * @param certificateUrl the certificateUrl value to set.
      * @return the VaultCertificate object itself.
      */
+    @Generated
     public VaultCertificate withCertificateUrl(String certificateUrl) {
         this.certificateUrl = certificateUrl;
         return this;
@@ -106,6 +112,7 @@ public final class VaultCertificate implements JsonSerializable<VaultCertificate
      * 
      * @return the certificateStore value.
      */
+    @Generated
     public String certificateStore() {
         return this.certificateStore;
     }
@@ -122,6 +129,7 @@ public final class VaultCertificate implements JsonSerializable<VaultCertificate
      * @param certificateStore the certificateStore value to set.
      * @return the VaultCertificate object itself.
      */
+    @Generated
     public VaultCertificate withCertificateStore(String certificateStore) {
         this.certificateStore = certificateStore;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.playwrighttesting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class AccountQuotaProperties implements JsonSerializable<AccountQuo
     /*
      * The Playwright service account quota resource free-trial properties.
      */
+    @Generated
     private AccountFreeTrialProperties freeTrial;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of AccountQuotaProperties class.
      */
+    @Generated
     private AccountQuotaProperties() {
     }
 
@@ -37,6 +41,7 @@ public final class AccountQuotaProperties implements JsonSerializable<AccountQuo
      * 
      * @return the freeTrial value.
      */
+    @Generated
     public AccountFreeTrialProperties freeTrial() {
         return this.freeTrial;
     }
@@ -46,6 +51,7 @@ public final class AccountQuotaProperties implements JsonSerializable<AccountQuo
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,6 +22,7 @@ public final class NodeImageSelection implements JsonSerializable<NodeImageSelec
     /*
      * The node image upgrade type.
      */
+    @Generated
     private NodeImageSelectionType type;
 
     /*
@@ -30,11 +32,13 @@ public final class NodeImageSelection implements JsonSerializable<NodeImageSelec
      * 'AKSUbuntu-1804gen2containerd-2023.02.12', not both). If the nodes belong to a family without a matching image
      * version in this field, they are not upgraded.
      */
+    @Generated
     private List<NodeImageVersion> customNodeImageVersions;
 
     /**
      * Creates an instance of NodeImageSelection class.
      */
+    @Generated
     public NodeImageSelection() {
     }
 
@@ -43,6 +47,7 @@ public final class NodeImageSelection implements JsonSerializable<NodeImageSelec
      * 
      * @return the type value.
      */
+    @Generated
     public NodeImageSelectionType type() {
         return this.type;
     }
@@ -53,6 +58,7 @@ public final class NodeImageSelection implements JsonSerializable<NodeImageSelec
      * @param type the type value to set.
      * @return the NodeImageSelection object itself.
      */
+    @Generated
     public NodeImageSelection withType(NodeImageSelectionType type) {
         this.type = type;
         return this;
@@ -67,6 +73,7 @@ public final class NodeImageSelection implements JsonSerializable<NodeImageSelec
      * 
      * @return the customNodeImageVersions value.
      */
+    @Generated
     public List<NodeImageVersion> customNodeImageVersions() {
         return this.customNodeImageVersions;
     }
@@ -81,6 +88,7 @@ public final class NodeImageSelection implements JsonSerializable<NodeImageSelec
      * @param customNodeImageVersions the customNodeImageVersions value to set.
      * @return the NodeImageSelection object itself.
      */
+    @Generated
     public NodeImageSelection withCustomNodeImageVersions(List<NodeImageVersion> customNodeImageVersions) {
         this.customNodeImageVersions = customNodeImageVersions;
         return this;

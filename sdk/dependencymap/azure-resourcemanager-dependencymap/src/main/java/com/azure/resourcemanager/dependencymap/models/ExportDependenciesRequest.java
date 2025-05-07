@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dependencymap.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class ExportDependenciesRequest implements JsonSerializable<ExportD
     /*
      * Machine arm id
      */
+    @Generated
     private String focusedMachineId;
 
     /*
      * Filters for ExportDependencies
      */
+    @Generated
     private DependencyMapVisualizationFilter filters;
 
     /**
      * Creates an instance of ExportDependenciesRequest class.
      */
+    @Generated
     public ExportDependenciesRequest() {
     }
 
@@ -38,6 +42,7 @@ public final class ExportDependenciesRequest implements JsonSerializable<ExportD
      * 
      * @return the focusedMachineId value.
      */
+    @Generated
     public String focusedMachineId() {
         return this.focusedMachineId;
     }
@@ -48,6 +53,7 @@ public final class ExportDependenciesRequest implements JsonSerializable<ExportD
      * @param focusedMachineId the focusedMachineId value to set.
      * @return the ExportDependenciesRequest object itself.
      */
+    @Generated
     public ExportDependenciesRequest withFocusedMachineId(String focusedMachineId) {
         this.focusedMachineId = focusedMachineId;
         return this;
@@ -58,6 +64,7 @@ public final class ExportDependenciesRequest implements JsonSerializable<ExportD
      * 
      * @return the filters value.
      */
+    @Generated
     public DependencyMapVisualizationFilter filters() {
         return this.filters;
     }
@@ -68,6 +75,7 @@ public final class ExportDependenciesRequest implements JsonSerializable<ExportD
      * @param filters the filters value to set.
      * @return the ExportDependenciesRequest object itself.
      */
+    @Generated
     public ExportDependenciesRequest withFilters(DependencyMapVisualizationFilter filters) {
         this.filters = filters;
         return this;

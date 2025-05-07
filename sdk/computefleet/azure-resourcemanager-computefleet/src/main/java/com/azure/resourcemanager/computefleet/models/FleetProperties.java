@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -23,51 +24,61 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * Configuration Options for Spot instances in Compute Fleet.
      */
+    @Generated
     private SpotPriorityProfile spotPriorityProfile;
 
     /*
      * Configuration Options for Regular instances in Compute Fleet.
      */
+    @Generated
     private RegularPriorityProfile regularPriorityProfile;
 
     /*
      * List of VM sizes supported for Compute Fleet
      */
+    @Generated
     private List<VmSizeProfile> vmSizesProfile;
 
     /*
      * Attribute based Fleet.
      */
+    @Generated
     private VMAttributes vmAttributes;
 
     /*
      * Represents the configuration for additional locations where Fleet resources may be deployed.
      */
+    @Generated
     private AdditionalLocationsProfile additionalLocationsProfile;
 
     /*
      * Compute Profile to use for running user's workloads.
      */
+    @Generated
     private ComputeProfile computeProfile;
 
     /*
      * Specifies the time at which the Compute Fleet is created.
      */
+    @Generated
     private OffsetDateTime timeCreated;
 
     /*
      * Specifies the ID which uniquely identifies a Compute Fleet.
      */
+    @Generated
     private String uniqueId;
 
     /**
      * Creates an instance of FleetProperties class.
      */
+    @Generated
     public FleetProperties() {
     }
 
@@ -76,6 +87,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -85,6 +97,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * 
      * @return the spotPriorityProfile value.
      */
+    @Generated
     public SpotPriorityProfile spotPriorityProfile() {
         return this.spotPriorityProfile;
     }
@@ -95,6 +108,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * @param spotPriorityProfile the spotPriorityProfile value to set.
      * @return the FleetProperties object itself.
      */
+    @Generated
     public FleetProperties withSpotPriorityProfile(SpotPriorityProfile spotPriorityProfile) {
         this.spotPriorityProfile = spotPriorityProfile;
         return this;
@@ -105,6 +119,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * 
      * @return the regularPriorityProfile value.
      */
+    @Generated
     public RegularPriorityProfile regularPriorityProfile() {
         return this.regularPriorityProfile;
     }
@@ -115,6 +130,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * @param regularPriorityProfile the regularPriorityProfile value to set.
      * @return the FleetProperties object itself.
      */
+    @Generated
     public FleetProperties withRegularPriorityProfile(RegularPriorityProfile regularPriorityProfile) {
         this.regularPriorityProfile = regularPriorityProfile;
         return this;
@@ -125,6 +141,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * 
      * @return the vmSizesProfile value.
      */
+    @Generated
     public List<VmSizeProfile> vmSizesProfile() {
         return this.vmSizesProfile;
     }
@@ -135,6 +152,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * @param vmSizesProfile the vmSizesProfile value to set.
      * @return the FleetProperties object itself.
      */
+    @Generated
     public FleetProperties withVmSizesProfile(List<VmSizeProfile> vmSizesProfile) {
         this.vmSizesProfile = vmSizesProfile;
         return this;
@@ -145,6 +163,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * 
      * @return the vmAttributes value.
      */
+    @Generated
     public VMAttributes vmAttributes() {
         return this.vmAttributes;
     }
@@ -155,6 +174,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * @param vmAttributes the vmAttributes value to set.
      * @return the FleetProperties object itself.
      */
+    @Generated
     public FleetProperties withVmAttributes(VMAttributes vmAttributes) {
         this.vmAttributes = vmAttributes;
         return this;
@@ -166,6 +186,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * 
      * @return the additionalLocationsProfile value.
      */
+    @Generated
     public AdditionalLocationsProfile additionalLocationsProfile() {
         return this.additionalLocationsProfile;
     }
@@ -177,6 +198,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * @param additionalLocationsProfile the additionalLocationsProfile value to set.
      * @return the FleetProperties object itself.
      */
+    @Generated
     public FleetProperties withAdditionalLocationsProfile(AdditionalLocationsProfile additionalLocationsProfile) {
         this.additionalLocationsProfile = additionalLocationsProfile;
         return this;
@@ -187,6 +209,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * 
      * @return the computeProfile value.
      */
+    @Generated
     public ComputeProfile computeProfile() {
         return this.computeProfile;
     }
@@ -197,6 +220,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * @param computeProfile the computeProfile value to set.
      * @return the FleetProperties object itself.
      */
+    @Generated
     public FleetProperties withComputeProfile(ComputeProfile computeProfile) {
         this.computeProfile = computeProfile;
         return this;
@@ -207,6 +231,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * 
      * @return the timeCreated value.
      */
+    @Generated
     public OffsetDateTime timeCreated() {
         return this.timeCreated;
     }
@@ -216,6 +241,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * 
      * @return the uniqueId value.
      */
+    @Generated
     public String uniqueId() {
         return this.uniqueId;
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -23,16 +24,19 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceListResult
     /*
      * The StandbyVirtualMachinePoolRuntimeViewResource items on this page
      */
+    @Generated
     private List<StandbyVirtualMachinePoolRuntimeViewResourceInner> value;
 
     /*
      * The link to the next page of items
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of StandbyVirtualMachinePoolRuntimeViewResourceListResult class.
      */
+    @Generated
     private StandbyVirtualMachinePoolRuntimeViewResourceListResult() {
     }
 
@@ -41,6 +45,7 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceListResult
      * 
      * @return the value value.
      */
+    @Generated
     public List<StandbyVirtualMachinePoolRuntimeViewResourceInner> value() {
         return this.value;
     }
@@ -50,6 +55,7 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceListResult
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String nextLink() {
         return this.nextLink;
     }

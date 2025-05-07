@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class UsernamePasswordCredentials implements JsonSerializable<Usern
     /*
      * The name of the secret containing the username.
      */
+    @Generated
     private String usernameSecretName;
 
     /*
      * The name of the secret containing the password.
      */
+    @Generated
     private String passwordSecretName;
 
     /**
      * Creates an instance of UsernamePasswordCredentials class.
      */
+    @Generated
     public UsernamePasswordCredentials() {
     }
 
@@ -38,6 +42,7 @@ public final class UsernamePasswordCredentials implements JsonSerializable<Usern
      * 
      * @return the usernameSecretName value.
      */
+    @Generated
     public String usernameSecretName() {
         return this.usernameSecretName;
     }
@@ -48,6 +53,7 @@ public final class UsernamePasswordCredentials implements JsonSerializable<Usern
      * @param usernameSecretName the usernameSecretName value to set.
      * @return the UsernamePasswordCredentials object itself.
      */
+    @Generated
     public UsernamePasswordCredentials withUsernameSecretName(String usernameSecretName) {
         this.usernameSecretName = usernameSecretName;
         return this;
@@ -58,6 +64,7 @@ public final class UsernamePasswordCredentials implements JsonSerializable<Usern
      * 
      * @return the passwordSecretName value.
      */
+    @Generated
     public String passwordSecretName() {
         return this.passwordSecretName;
     }
@@ -68,6 +75,7 @@ public final class UsernamePasswordCredentials implements JsonSerializable<Usern
      * @param passwordSecretName the passwordSecretName value to set.
      * @return the UsernamePasswordCredentials object itself.
      */
+    @Generated
     public UsernamePasswordCredentials withPasswordSecretName(String passwordSecretName) {
         this.passwordSecretName = passwordSecretName;
         return this;

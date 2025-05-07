@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -23,36 +24,43 @@ public final class OperationErrorDetails implements JsonSerializable<OperationEr
     /*
      * The error code of the operation
      */
+    @Generated
     private String errorCode;
 
     /*
      * The error details of the operation
      */
+    @Generated
     private String errorDetails;
 
     /*
      * The timestamp of the error occurence
      */
+    @Generated
     private OffsetDateTime timestamp;
 
     /*
      * The timestamp of the error occurence
      */
+    @Generated
     private OffsetDateTime timeStamp;
 
     /*
      * The compute operationid of the Start/Deallocate/Hibernate request
      */
+    @Generated
     private String azureOperationName;
 
     /*
      * The compute operationid of the Start/Deallocate/Hibernate request
      */
+    @Generated
     private String crpOperationId;
 
     /**
      * Creates an instance of OperationErrorDetails class.
      */
+    @Generated
     private OperationErrorDetails() {
     }
 
@@ -61,6 +69,7 @@ public final class OperationErrorDetails implements JsonSerializable<OperationEr
      * 
      * @return the errorCode value.
      */
+    @Generated
     public String errorCode() {
         return this.errorCode;
     }
@@ -70,6 +79,7 @@ public final class OperationErrorDetails implements JsonSerializable<OperationEr
      * 
      * @return the errorDetails value.
      */
+    @Generated
     public String errorDetails() {
         return this.errorDetails;
     }
@@ -79,6 +89,7 @@ public final class OperationErrorDetails implements JsonSerializable<OperationEr
      * 
      * @return the timestamp value.
      */
+    @Generated
     public OffsetDateTime timestamp() {
         return this.timestamp;
     }
@@ -88,6 +99,7 @@ public final class OperationErrorDetails implements JsonSerializable<OperationEr
      * 
      * @return the timeStamp value.
      */
+    @Generated
     public OffsetDateTime timeStamp() {
         return this.timeStamp;
     }
@@ -97,6 +109,7 @@ public final class OperationErrorDetails implements JsonSerializable<OperationEr
      * 
      * @return the azureOperationName value.
      */
+    @Generated
     public String azureOperationName() {
         return this.azureOperationName;
     }
@@ -106,6 +119,7 @@ public final class OperationErrorDetails implements JsonSerializable<OperationEr
      * 
      * @return the crpOperationId value.
      */
+    @Generated
     public String crpOperationId() {
         return this.crpOperationId;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.connectedcache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,266 +23,319 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
     /*
      * Cache node resource Azure fully qualified resource Id.
      */
+    @Generated
     private String fullyQualifiedResourceId;
 
     /*
      * Cache node resource customer resource GUID Id.
      */
+    @Generated
     private String customerId;
 
     /*
      * Cache node resource customer resource name.
      */
+    @Generated
     private String customerName;
 
     /*
      * Cache node resource Ip address.
      */
+    @Generated
     private String ipAddress;
 
     /*
      * Cache node resource customer index as string.
      */
+    @Generated
     private String customerIndex;
 
     /*
      * Cache node resource identifier of the cache node
      */
+    @Generated
     private String cacheNodeId;
 
     /*
      * Cache node resource name.
      */
+    @Generated
     private String cacheNodeName;
 
     /*
      * Cache node resource customer resource Asn (autonomous system number)
      */
+    @Generated
     private Integer customerAsn;
 
     /*
      * Cache node resource flag for indicating if cache node is enabled.
      */
+    @Generated
     private Boolean isEnabled;
 
     /*
      * Cache node resource maximum allowed egress in Mbps.
      */
+    @Generated
     private Integer maxAllowableEgressInMbps;
 
     /*
      * Cache node resource maximum allowed probability of egress.
      */
+    @Generated
     private Double maxAllowableProbability;
 
     /*
      * Cache node resource Azure XCid.
      */
+    @Generated
     private String xCid;
 
     /*
      * Cache node resource flag for determining if managed by enterprise as boolean.
      */
+    @Generated
     private Boolean isEnterpriseManaged;
 
     /*
      * Cache node resource create async operation Id.
      */
+    @Generated
     private String createAsyncOperationId;
 
     /*
      * Cache node resource deletion async operation Id.
      */
+    @Generated
     private String deleteAsyncOperationId;
 
     /*
      * Cache node resource customer resource client tenant Id of subscription.
      */
+    @Generated
     private String clientTenantId;
 
     /*
      * Cache node resource category.
      */
+    @Generated
     private String category;
 
     /*
      * Cache node resource release version.
      */
+    @Generated
     private Integer releaseVersion;
 
     /*
      * Cache node resource last sync timestamp.
      */
+    @Generated
     private OffsetDateTime lastSyncWithAzureTimestamp;
 
     /*
      * Cache node resource last backend updated timestamp.
      */
+    @Generated
     private OffsetDateTime lastUpdatedTimestamp;
 
     /*
      * Cache node resource attempts to sync with Azure.
      */
+    @Generated
     private Integer synchWithAzureAttemptsCount;
 
     /*
      * Cache node resource container configuration details.
      */
+    @Generated
     private String containerConfigurations;
 
     /*
      * Cache node resource comma separated values of Cidrs.
      */
+    @Generated
     private List<String> cidrCsv;
 
     /*
      * Cache node resource last Cidr Csv update timestamp
      */
+    @Generated
     private OffsetDateTime cidrCsvLastUpdateTime;
 
     /*
      * Cache node resource last Bgp Cidr Csv update timestamp
      */
+    @Generated
     private OffsetDateTime bgpCidrCsvLastUpdateTime;
 
     /*
      * Cache node resource last Bgp report timestamp.
      */
+    @Generated
     private OffsetDateTime bgpLastReportedTime;
 
     /*
      * Cache node resource Bgp review state string text in detail.
      */
+    @Generated
     private String bgpReviewStateText;
 
     /*
      * Cache node resource Bgp review state string text.
      */
+    @Generated
     private BgpReviewStateEnum bgpReviewState;
 
     /*
      * Cache node resource Bgp review feedback text.
      */
+    @Generated
     private String bgpReviewFeedback;
 
     /*
      * Cache node resource Bgp update count.
      */
+    @Generated
     private Integer bgpNumberOfTimesUpdated;
 
     /*
      * Cache node resource Bgp record count.
      */
+    @Generated
     private Integer bgpNumberOfRecords;
 
     /*
      * Cache node resource Bgp block count.
      */
+    @Generated
     private Integer bgpCidrBlocksCount;
 
     /*
      * Cache node resource total addressable space defined by Bgp and Cidr Csv blocks.
      */
+    @Generated
     private Integer bgpAddressSpace;
 
     /*
      * Cache node resource flag for determining if customer will be migrated.
      */
+    @Generated
     private Boolean shouldMigrate;
 
     /*
      * Cache node resource bytes truncated from Bgp output file.
      */
+    @Generated
     private Integer bgpFileBytesTruncated;
 
     /*
      * Cache node resource current Cidr range precedence selection type.
      */
+    @Generated
     private Integer cidrSelectionType;
 
     /*
      * Cache node resource flag for indicating the cache node resource is frozen (not selectable, not editable in UI).
      */
+    @Generated
     private Boolean isFrozen;
 
     /*
      * Cache node resource review process state as integer
      */
+    @Generated
     private Integer reviewState;
 
     /*
      * Cache node resource review state text.
      */
+    @Generated
     private String reviewStateText;
 
     /*
      * Cache node resource review feedback text.
      */
+    @Generated
     private String reviewFeedback;
 
     /*
      * Cache node resource configuration state.
      */
+    @Generated
     private ConfigurationState configurationState;
 
     /*
      * Cache node resource configuration state text.
      */
+    @Generated
     private String configurationStateText;
 
     /*
      * Cache node resource total addressable space defined by the Cidr Csv block.
      */
+    @Generated
     private Integer addressSpace;
 
     /*
      * Cache node resource Mcc container deployment worker connection count.
      */
+    @Generated
     private Integer workerConnections;
 
     /*
      * Cache node resource last updated Mcc container deployment worker connection count timestamp.
      */
+    @Generated
     private OffsetDateTime workerConnectionsLastUpdatedDateTime;
 
     /*
      * Cache node resource Mcc container configuration details re-sync trigger.
      */
+    @Generated
     private Integer containerResyncTrigger;
 
     /*
      * Cache node resource Mcc Container Id Uri.
      */
+    @Generated
     private String imageUri;
 
     /*
      * FQDN(fully qualified domain name) value of the mcc cache node
      */
+    @Generated
     private String fullyQualifiedDomainName;
 
     /*
      * Auto Update Ring Type which is slow or fast etc.
      */
+    @Generated
     private AutoUpdateRingType autoUpdateRingType;
 
     /*
      * Customer requested week of month for mcc install of auto update cycle
      */
+    @Generated
     private Integer autoUpdateRequestedWeek;
 
     /*
      * Customer requested day of week for mcc install of auto update cycle
      */
+    @Generated
     private Integer autoUpdateRequestedDay;
 
     /*
      * Customer requested time of the day for mcc install of auto update cycle, should be hh:mm
      */
+    @Generated
     private String autoUpdateRequestedTime;
 
     /**
      * Creates an instance of CacheNodeEntity class.
      */
+    @Generated
     public CacheNodeEntity() {
     }
 
@@ -290,6 +344,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the fullyQualifiedResourceId value.
      */
+    @Generated
     public String fullyQualifiedResourceId() {
         return this.fullyQualifiedResourceId;
     }
@@ -300,6 +355,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param fullyQualifiedResourceId the fullyQualifiedResourceId value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withFullyQualifiedResourceId(String fullyQualifiedResourceId) {
         this.fullyQualifiedResourceId = fullyQualifiedResourceId;
         return this;
@@ -310,6 +366,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the customerId value.
      */
+    @Generated
     public String customerId() {
         return this.customerId;
     }
@@ -319,6 +376,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the customerName value.
      */
+    @Generated
     public String customerName() {
         return this.customerName;
     }
@@ -329,6 +387,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param customerName the customerName value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withCustomerName(String customerName) {
         this.customerName = customerName;
         return this;
@@ -339,6 +398,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the ipAddress value.
      */
+    @Generated
     public String ipAddress() {
         return this.ipAddress;
     }
@@ -349,6 +409,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param ipAddress the ipAddress value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
         return this;
@@ -359,6 +420,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the customerIndex value.
      */
+    @Generated
     public String customerIndex() {
         return this.customerIndex;
     }
@@ -369,6 +431,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param customerIndex the customerIndex value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withCustomerIndex(String customerIndex) {
         this.customerIndex = customerIndex;
         return this;
@@ -379,6 +442,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the cacheNodeId value.
      */
+    @Generated
     public String cacheNodeId() {
         return this.cacheNodeId;
     }
@@ -389,6 +453,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param cacheNodeId the cacheNodeId value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withCacheNodeId(String cacheNodeId) {
         this.cacheNodeId = cacheNodeId;
         return this;
@@ -399,6 +464,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the cacheNodeName value.
      */
+    @Generated
     public String cacheNodeName() {
         return this.cacheNodeName;
     }
@@ -409,6 +475,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param cacheNodeName the cacheNodeName value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withCacheNodeName(String cacheNodeName) {
         this.cacheNodeName = cacheNodeName;
         return this;
@@ -419,6 +486,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the customerAsn value.
      */
+    @Generated
     public Integer customerAsn() {
         return this.customerAsn;
     }
@@ -429,6 +497,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param customerAsn the customerAsn value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withCustomerAsn(Integer customerAsn) {
         this.customerAsn = customerAsn;
         return this;
@@ -439,6 +508,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the isEnabled value.
      */
+    @Generated
     public Boolean isEnabled() {
         return this.isEnabled;
     }
@@ -449,6 +519,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param isEnabled the isEnabled value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withIsEnabled(Boolean isEnabled) {
         this.isEnabled = isEnabled;
         return this;
@@ -459,6 +530,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the maxAllowableEgressInMbps value.
      */
+    @Generated
     public Integer maxAllowableEgressInMbps() {
         return this.maxAllowableEgressInMbps;
     }
@@ -469,6 +541,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param maxAllowableEgressInMbps the maxAllowableEgressInMbps value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withMaxAllowableEgressInMbps(Integer maxAllowableEgressInMbps) {
         this.maxAllowableEgressInMbps = maxAllowableEgressInMbps;
         return this;
@@ -479,6 +552,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the maxAllowableProbability value.
      */
+    @Generated
     public Double maxAllowableProbability() {
         return this.maxAllowableProbability;
     }
@@ -488,6 +562,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the xCid value.
      */
+    @Generated
     public String xCid() {
         return this.xCid;
     }
@@ -498,6 +573,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the isEnterpriseManaged value.
      */
+    @Generated
     public Boolean isEnterpriseManaged() {
         return this.isEnterpriseManaged;
     }
@@ -509,6 +585,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param isEnterpriseManaged the isEnterpriseManaged value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withIsEnterpriseManaged(Boolean isEnterpriseManaged) {
         this.isEnterpriseManaged = isEnterpriseManaged;
         return this;
@@ -519,6 +596,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the createAsyncOperationId value.
      */
+    @Generated
     public String createAsyncOperationId() {
         return this.createAsyncOperationId;
     }
@@ -528,6 +606,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the deleteAsyncOperationId value.
      */
+    @Generated
     public String deleteAsyncOperationId() {
         return this.deleteAsyncOperationId;
     }
@@ -537,6 +616,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the clientTenantId value.
      */
+    @Generated
     public String clientTenantId() {
         return this.clientTenantId;
     }
@@ -546,6 +626,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the category value.
      */
+    @Generated
     public String category() {
         return this.category;
     }
@@ -555,6 +636,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the releaseVersion value.
      */
+    @Generated
     public Integer releaseVersion() {
         return this.releaseVersion;
     }
@@ -564,6 +646,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the lastSyncWithAzureTimestamp value.
      */
+    @Generated
     public OffsetDateTime lastSyncWithAzureTimestamp() {
         return this.lastSyncWithAzureTimestamp;
     }
@@ -573,6 +656,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the lastUpdatedTimestamp value.
      */
+    @Generated
     public OffsetDateTime lastUpdatedTimestamp() {
         return this.lastUpdatedTimestamp;
     }
@@ -582,6 +666,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the synchWithAzureAttemptsCount value.
      */
+    @Generated
     public Integer synchWithAzureAttemptsCount() {
         return this.synchWithAzureAttemptsCount;
     }
@@ -591,6 +676,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the containerConfigurations value.
      */
+    @Generated
     public String containerConfigurations() {
         return this.containerConfigurations;
     }
@@ -600,6 +686,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the cidrCsv value.
      */
+    @Generated
     public List<String> cidrCsv() {
         return this.cidrCsv;
     }
@@ -610,6 +697,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param cidrCsv the cidrCsv value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withCidrCsv(List<String> cidrCsv) {
         this.cidrCsv = cidrCsv;
         return this;
@@ -620,6 +708,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the cidrCsvLastUpdateTime value.
      */
+    @Generated
     public OffsetDateTime cidrCsvLastUpdateTime() {
         return this.cidrCsvLastUpdateTime;
     }
@@ -629,6 +718,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the bgpCidrCsvLastUpdateTime value.
      */
+    @Generated
     public OffsetDateTime bgpCidrCsvLastUpdateTime() {
         return this.bgpCidrCsvLastUpdateTime;
     }
@@ -638,6 +728,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the bgpLastReportedTime value.
      */
+    @Generated
     public OffsetDateTime bgpLastReportedTime() {
         return this.bgpLastReportedTime;
     }
@@ -647,6 +738,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the bgpReviewStateText value.
      */
+    @Generated
     public String bgpReviewStateText() {
         return this.bgpReviewStateText;
     }
@@ -656,6 +748,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the bgpReviewState value.
      */
+    @Generated
     public BgpReviewStateEnum bgpReviewState() {
         return this.bgpReviewState;
     }
@@ -665,6 +758,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the bgpReviewFeedback value.
      */
+    @Generated
     public String bgpReviewFeedback() {
         return this.bgpReviewFeedback;
     }
@@ -674,6 +768,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the bgpNumberOfTimesUpdated value.
      */
+    @Generated
     public Integer bgpNumberOfTimesUpdated() {
         return this.bgpNumberOfTimesUpdated;
     }
@@ -683,6 +778,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the bgpNumberOfRecords value.
      */
+    @Generated
     public Integer bgpNumberOfRecords() {
         return this.bgpNumberOfRecords;
     }
@@ -692,6 +788,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the bgpCidrBlocksCount value.
      */
+    @Generated
     public Integer bgpCidrBlocksCount() {
         return this.bgpCidrBlocksCount;
     }
@@ -701,6 +798,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the bgpAddressSpace value.
      */
+    @Generated
     public Integer bgpAddressSpace() {
         return this.bgpAddressSpace;
     }
@@ -710,6 +808,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the shouldMigrate value.
      */
+    @Generated
     public Boolean shouldMigrate() {
         return this.shouldMigrate;
     }
@@ -720,6 +819,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param shouldMigrate the shouldMigrate value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withShouldMigrate(Boolean shouldMigrate) {
         this.shouldMigrate = shouldMigrate;
         return this;
@@ -730,6 +830,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the bgpFileBytesTruncated value.
      */
+    @Generated
     public Integer bgpFileBytesTruncated() {
         return this.bgpFileBytesTruncated;
     }
@@ -739,6 +840,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the cidrSelectionType value.
      */
+    @Generated
     public Integer cidrSelectionType() {
         return this.cidrSelectionType;
     }
@@ -749,6 +851,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param cidrSelectionType the cidrSelectionType value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withCidrSelectionType(Integer cidrSelectionType) {
         this.cidrSelectionType = cidrSelectionType;
         return this;
@@ -760,6 +863,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the isFrozen value.
      */
+    @Generated
     public Boolean isFrozen() {
         return this.isFrozen;
     }
@@ -769,6 +873,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the reviewState value.
      */
+    @Generated
     public Integer reviewState() {
         return this.reviewState;
     }
@@ -778,6 +883,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the reviewStateText value.
      */
+    @Generated
     public String reviewStateText() {
         return this.reviewStateText;
     }
@@ -787,6 +893,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the reviewFeedback value.
      */
+    @Generated
     public String reviewFeedback() {
         return this.reviewFeedback;
     }
@@ -796,6 +903,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the configurationState value.
      */
+    @Generated
     public ConfigurationState configurationState() {
         return this.configurationState;
     }
@@ -805,6 +913,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the configurationStateText value.
      */
+    @Generated
     public String configurationStateText() {
         return this.configurationStateText;
     }
@@ -814,6 +923,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the addressSpace value.
      */
+    @Generated
     public Integer addressSpace() {
         return this.addressSpace;
     }
@@ -823,6 +933,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the workerConnections value.
      */
+    @Generated
     public Integer workerConnections() {
         return this.workerConnections;
     }
@@ -833,6 +944,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the workerConnectionsLastUpdatedDateTime value.
      */
+    @Generated
     public OffsetDateTime workerConnectionsLastUpdatedDateTime() {
         return this.workerConnectionsLastUpdatedDateTime;
     }
@@ -842,6 +954,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the containerResyncTrigger value.
      */
+    @Generated
     public Integer containerResyncTrigger() {
         return this.containerResyncTrigger;
     }
@@ -851,6 +964,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the imageUri value.
      */
+    @Generated
     public String imageUri() {
         return this.imageUri;
     }
@@ -860,6 +974,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the fullyQualifiedDomainName value.
      */
+    @Generated
     public String fullyQualifiedDomainName() {
         return this.fullyQualifiedDomainName;
     }
@@ -870,6 +985,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param fullyQualifiedDomainName the fullyQualifiedDomainName value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withFullyQualifiedDomainName(String fullyQualifiedDomainName) {
         this.fullyQualifiedDomainName = fullyQualifiedDomainName;
         return this;
@@ -880,6 +996,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the autoUpdateRingType value.
      */
+    @Generated
     public AutoUpdateRingType autoUpdateRingType() {
         return this.autoUpdateRingType;
     }
@@ -890,6 +1007,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param autoUpdateRingType the autoUpdateRingType value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withAutoUpdateRingType(AutoUpdateRingType autoUpdateRingType) {
         this.autoUpdateRingType = autoUpdateRingType;
         return this;
@@ -900,6 +1018,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the autoUpdateRequestedWeek value.
      */
+    @Generated
     public Integer autoUpdateRequestedWeek() {
         return this.autoUpdateRequestedWeek;
     }
@@ -910,6 +1029,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param autoUpdateRequestedWeek the autoUpdateRequestedWeek value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withAutoUpdateRequestedWeek(Integer autoUpdateRequestedWeek) {
         this.autoUpdateRequestedWeek = autoUpdateRequestedWeek;
         return this;
@@ -920,6 +1040,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the autoUpdateRequestedDay value.
      */
+    @Generated
     public Integer autoUpdateRequestedDay() {
         return this.autoUpdateRequestedDay;
     }
@@ -930,6 +1051,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param autoUpdateRequestedDay the autoUpdateRequestedDay value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withAutoUpdateRequestedDay(Integer autoUpdateRequestedDay) {
         this.autoUpdateRequestedDay = autoUpdateRequestedDay;
         return this;
@@ -941,6 +1063,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * 
      * @return the autoUpdateRequestedTime value.
      */
+    @Generated
     public String autoUpdateRequestedTime() {
         return this.autoUpdateRequestedTime;
     }
@@ -952,6 +1075,7 @@ public final class CacheNodeEntity implements JsonSerializable<CacheNodeEntity> 
      * @param autoUpdateRequestedTime the autoUpdateRequestedTime value to set.
      * @return the CacheNodeEntity object itself.
      */
+    @Generated
     public CacheNodeEntity withAutoUpdateRequestedTime(String autoUpdateRequestedTime) {
         this.autoUpdateRequestedTime = autoUpdateRequestedTime;
         return this;

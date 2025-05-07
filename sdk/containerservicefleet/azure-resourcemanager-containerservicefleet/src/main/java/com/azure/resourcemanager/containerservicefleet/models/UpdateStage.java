@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,22 +23,26 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
     /*
      * The name of the stage. Must be unique within the UpdateRun.
      */
+    @Generated
     private String name;
 
     /*
      * Defines the groups to be executed in parallel in this stage. Duplicate groups are not allowed. Min size: 1.
      */
+    @Generated
     private List<UpdateGroup> groups;
 
     /*
      * The time in seconds to wait at the end of this stage before starting the next one. Defaults to 0 seconds if
      * unspecified.
      */
+    @Generated
     private Integer afterStageWaitInSeconds;
 
     /**
      * Creates an instance of UpdateStage class.
      */
+    @Generated
     public UpdateStage() {
     }
 
@@ -46,6 +51,7 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -56,6 +62,7 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
      * @param name the name value to set.
      * @return the UpdateStage object itself.
      */
+    @Generated
     public UpdateStage withName(String name) {
         this.name = name;
         return this;
@@ -67,6 +74,7 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
      * 
      * @return the groups value.
      */
+    @Generated
     public List<UpdateGroup> groups() {
         return this.groups;
     }
@@ -78,6 +86,7 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
      * @param groups the groups value to set.
      * @return the UpdateStage object itself.
      */
+    @Generated
     public UpdateStage withGroups(List<UpdateGroup> groups) {
         this.groups = groups;
         return this;
@@ -89,6 +98,7 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
      * 
      * @return the afterStageWaitInSeconds value.
      */
+    @Generated
     public Integer afterStageWaitInSeconds() {
         return this.afterStageWaitInSeconds;
     }
@@ -100,6 +110,7 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
      * @param afterStageWaitInSeconds the afterStageWaitInSeconds value to set.
      * @return the UpdateStage object itself.
      */
+    @Generated
     public UpdateStage withAfterStageWaitInSeconds(Integer afterStageWaitInSeconds) {
         this.afterStageWaitInSeconds = afterStageWaitInSeconds;
         return this;

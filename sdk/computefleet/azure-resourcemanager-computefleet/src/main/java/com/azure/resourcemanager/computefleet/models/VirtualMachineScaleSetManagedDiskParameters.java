@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,22 +22,26 @@ public final class VirtualMachineScaleSetManagedDiskParameters
      * Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can
      * only be used with data disks, it cannot be used with OS Disk.
      */
+    @Generated
     private StorageAccountTypes storageAccountType;
 
     /*
      * Specifies the customer managed disk encryption set resource id for the managed
      * disk.
      */
+    @Generated
     private DiskEncryptionSetParameters diskEncryptionSet;
 
     /*
      * Specifies the security profile for the managed disk.
      */
+    @Generated
     private VMDiskSecurityProfile securityProfile;
 
     /**
      * Creates an instance of VirtualMachineScaleSetManagedDiskParameters class.
      */
+    @Generated
     public VirtualMachineScaleSetManagedDiskParameters() {
     }
 
@@ -47,6 +52,7 @@ public final class VirtualMachineScaleSetManagedDiskParameters
      * 
      * @return the storageAccountType value.
      */
+    @Generated
     public StorageAccountTypes storageAccountType() {
         return this.storageAccountType;
     }
@@ -59,6 +65,7 @@ public final class VirtualMachineScaleSetManagedDiskParameters
      * @param storageAccountType the storageAccountType value to set.
      * @return the VirtualMachineScaleSetManagedDiskParameters object itself.
      */
+    @Generated
     public VirtualMachineScaleSetManagedDiskParameters withStorageAccountType(StorageAccountTypes storageAccountType) {
         this.storageAccountType = storageAccountType;
         return this;
@@ -71,6 +78,7 @@ public final class VirtualMachineScaleSetManagedDiskParameters
      * 
      * @return the diskEncryptionSet value.
      */
+    @Generated
     public DiskEncryptionSetParameters diskEncryptionSet() {
         return this.diskEncryptionSet;
     }
@@ -83,6 +91,7 @@ public final class VirtualMachineScaleSetManagedDiskParameters
      * @param diskEncryptionSet the diskEncryptionSet value to set.
      * @return the VirtualMachineScaleSetManagedDiskParameters object itself.
      */
+    @Generated
     public VirtualMachineScaleSetManagedDiskParameters
         withDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet) {
         this.diskEncryptionSet = diskEncryptionSet;
@@ -94,6 +103,7 @@ public final class VirtualMachineScaleSetManagedDiskParameters
      * 
      * @return the securityProfile value.
      */
+    @Generated
     public VMDiskSecurityProfile securityProfile() {
         return this.securityProfile;
     }
@@ -104,6 +114,7 @@ public final class VirtualMachineScaleSetManagedDiskParameters
      * @param securityProfile the securityProfile value to set.
      * @return the VirtualMachineScaleSetManagedDiskParameters object itself.
      */
+    @Generated
     public VirtualMachineScaleSetManagedDiskParameters withSecurityProfile(VMDiskSecurityProfile securityProfile) {
         this.securityProfile = securityProfile;
         return this;

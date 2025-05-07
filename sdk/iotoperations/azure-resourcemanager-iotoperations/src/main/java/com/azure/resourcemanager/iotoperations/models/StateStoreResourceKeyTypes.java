@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class StateStoreResourceKeyTypes extends ExpandableStringEnum<State
     /**
      * Key type - pattern.
      */
+    @Generated
     public static final StateStoreResourceKeyTypes PATTERN = fromString("Pattern");
 
     /**
      * Key type - string.
      */
+    @Generated
     public static final StateStoreResourceKeyTypes STRING = fromString("String");
 
     /**
      * Key type - binary.
      */
+    @Generated
     public static final StateStoreResourceKeyTypes BINARY = fromString("Binary");
 
     /**
@@ -31,6 +35,7 @@ public final class StateStoreResourceKeyTypes extends ExpandableStringEnum<State
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public StateStoreResourceKeyTypes() {
     }
@@ -41,6 +46,7 @@ public final class StateStoreResourceKeyTypes extends ExpandableStringEnum<State
      * @param name a name to look for.
      * @return the corresponding StateStoreResourceKeyTypes.
      */
+    @Generated
     public static StateStoreResourceKeyTypes fromString(String name) {
         return fromString(name, StateStoreResourceKeyTypes.class);
     }
@@ -50,6 +56,7 @@ public final class StateStoreResourceKeyTypes extends ExpandableStringEnum<State
      * 
      * @return known StateStoreResourceKeyTypes values.
      */
+    @Generated
     public static Collection<StateStoreResourceKeyTypes> values() {
         return values(StateStoreResourceKeyTypes.class);
     }

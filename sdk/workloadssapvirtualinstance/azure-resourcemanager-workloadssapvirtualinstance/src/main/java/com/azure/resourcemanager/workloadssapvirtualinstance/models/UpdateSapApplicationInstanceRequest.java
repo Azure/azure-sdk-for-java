@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,11 +22,13 @@ public final class UpdateSapApplicationInstanceRequest
     /*
      * Gets or sets the Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /**
      * Creates an instance of UpdateSapApplicationInstanceRequest class.
      */
+    @Generated
     public UpdateSapApplicationInstanceRequest() {
     }
 
@@ -34,6 +37,7 @@ public final class UpdateSapApplicationInstanceRequest
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -44,6 +48,7 @@ public final class UpdateSapApplicationInstanceRequest
      * @param tags the tags value to set.
      * @return the UpdateSapApplicationInstanceRequest object itself.
      */
+    @Generated
     public UpdateSapApplicationInstanceRequest withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;

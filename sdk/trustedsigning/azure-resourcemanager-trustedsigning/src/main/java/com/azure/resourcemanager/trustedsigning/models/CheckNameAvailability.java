@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.trustedsigning.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class CheckNameAvailability implements JsonSerializable<CheckNameAv
     /*
      * Trusted signing account name.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of CheckNameAvailability class.
      */
+    @Generated
     public CheckNameAvailability() {
     }
 
@@ -33,6 +36,7 @@ public final class CheckNameAvailability implements JsonSerializable<CheckNameAv
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -43,6 +47,7 @@ public final class CheckNameAvailability implements JsonSerializable<CheckNameAv
      * @param name the name value to set.
      * @return the CheckNameAvailability object itself.
      */
+    @Generated
     public CheckNameAvailability withName(String name) {
         this.name = name;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class DiskSku implements JsonSerializable<DiskSku> {
     /*
      * Defines the disk sku name.
      */
+    @Generated
     private DiskSkuName name;
 
     /**
      * Creates an instance of DiskSku class.
      */
+    @Generated
     public DiskSku() {
     }
 
@@ -32,6 +35,7 @@ public final class DiskSku implements JsonSerializable<DiskSku> {
      * 
      * @return the name value.
      */
+    @Generated
     public DiskSkuName name() {
         return this.name;
     }
@@ -42,6 +46,7 @@ public final class DiskSku implements JsonSerializable<DiskSku> {
      * @param name the name value to set.
      * @return the DiskSku object itself.
      */
+    @Generated
     public DiskSku withName(DiskSkuName name) {
         this.name = name;
         return this;

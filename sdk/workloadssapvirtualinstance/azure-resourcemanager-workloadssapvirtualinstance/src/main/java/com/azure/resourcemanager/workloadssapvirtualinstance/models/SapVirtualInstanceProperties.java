@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
     /*
      * Defines the environment type - Production/Non Production.
      */
+    @Generated
     private SapEnvironmentType environment;
 
     /*
      * Defines the SAP Product type.
      */
+    @Generated
     private SapProductType sapProduct;
 
     /*
@@ -34,47 +37,56 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * extensions and the managed resource group storage account. This setting is currently applicable only to Storage
      * Account. Learn more here https://go.microsoft.com/fwlink/?linkid=2247228
      */
+    @Generated
     private ManagedResourcesNetworkAccessType managedResourcesNetworkAccessType;
 
     /*
      * Defines if the SAP system is being created using Azure Center for SAP solutions (ACSS) or if an existing SAP
      * system is being registered with ACSS
      */
+    @Generated
     private SapConfiguration configuration;
 
     /*
      * Managed resource group configuration
      */
+    @Generated
     private ManagedRGConfiguration managedResourceGroupConfiguration;
 
     /*
      * Defines the SAP Instance status.
      */
+    @Generated
     private SapVirtualInstanceStatus status;
 
     /*
      * Defines the health of SAP Instances.
      */
+    @Generated
     private SapHealthState health;
 
     /*
      * Defines the Virtual Instance for SAP state.
      */
+    @Generated
     private SapVirtualInstanceState state;
 
     /*
      * Defines the provisioning states.
      */
+    @Generated
     private SapVirtualInstanceProvisioningState provisioningState;
 
     /*
      * Indicates any errors on the Virtual Instance for SAP solutions resource.
      */
+    @Generated
     private SapVirtualInstanceError errors;
 
     /**
      * Creates an instance of SapVirtualInstanceProperties class.
      */
+    @Generated
     public SapVirtualInstanceProperties() {
     }
 
@@ -83,6 +95,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * 
      * @return the environment value.
      */
+    @Generated
     public SapEnvironmentType environment() {
         return this.environment;
     }
@@ -93,6 +106,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * @param environment the environment value to set.
      * @return the SapVirtualInstanceProperties object itself.
      */
+    @Generated
     public SapVirtualInstanceProperties withEnvironment(SapEnvironmentType environment) {
         this.environment = environment;
         return this;
@@ -103,6 +117,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * 
      * @return the sapProduct value.
      */
+    @Generated
     public SapProductType sapProduct() {
         return this.sapProduct;
     }
@@ -113,6 +128,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * @param sapProduct the sapProduct value to set.
      * @return the SapVirtualInstanceProperties object itself.
      */
+    @Generated
     public SapVirtualInstanceProperties withSapProduct(SapProductType sapProduct) {
         this.sapProduct = sapProduct;
         return this;
@@ -128,6 +144,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * 
      * @return the managedResourcesNetworkAccessType value.
      */
+    @Generated
     public ManagedResourcesNetworkAccessType managedResourcesNetworkAccessType() {
         return this.managedResourcesNetworkAccessType;
     }
@@ -143,6 +160,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * @param managedResourcesNetworkAccessType the managedResourcesNetworkAccessType value to set.
      * @return the SapVirtualInstanceProperties object itself.
      */
+    @Generated
     public SapVirtualInstanceProperties
         withManagedResourcesNetworkAccessType(ManagedResourcesNetworkAccessType managedResourcesNetworkAccessType) {
         this.managedResourcesNetworkAccessType = managedResourcesNetworkAccessType;
@@ -155,6 +173,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * 
      * @return the configuration value.
      */
+    @Generated
     public SapConfiguration configuration() {
         return this.configuration;
     }
@@ -166,6 +185,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * @param configuration the configuration value to set.
      * @return the SapVirtualInstanceProperties object itself.
      */
+    @Generated
     public SapVirtualInstanceProperties withConfiguration(SapConfiguration configuration) {
         this.configuration = configuration;
         return this;
@@ -176,6 +196,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * 
      * @return the managedResourceGroupConfiguration value.
      */
+    @Generated
     public ManagedRGConfiguration managedResourceGroupConfiguration() {
         return this.managedResourceGroupConfiguration;
     }
@@ -186,6 +207,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the SapVirtualInstanceProperties object itself.
      */
+    @Generated
     public SapVirtualInstanceProperties
         withManagedResourceGroupConfiguration(ManagedRGConfiguration managedResourceGroupConfiguration) {
         this.managedResourceGroupConfiguration = managedResourceGroupConfiguration;
@@ -197,6 +219,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * 
      * @return the status value.
      */
+    @Generated
     public SapVirtualInstanceStatus status() {
         return this.status;
     }
@@ -206,6 +229,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * 
      * @return the health value.
      */
+    @Generated
     public SapHealthState health() {
         return this.health;
     }
@@ -215,6 +239,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * 
      * @return the state value.
      */
+    @Generated
     public SapVirtualInstanceState state() {
         return this.state;
     }
@@ -224,6 +249,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public SapVirtualInstanceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -233,6 +259,7 @@ public final class SapVirtualInstanceProperties implements JsonSerializable<SapV
      * 
      * @return the errors value.
      */
+    @Generated
     public SapVirtualInstanceError errors() {
         return this.errors;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettings
      * Specifies the reboot setting for all AutomaticByPlatform patch installation
      * operations.
      */
+    @Generated
     private LinuxVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting;
 
     /*
      * Enables customer to schedule patching without accidental upgrades
      */
+    @Generated
     private Boolean bypassPlatformSafetyChecksOnUserSchedule;
 
     /**
      * Creates an instance of LinuxVMGuestPatchAutomaticByPlatformSettings class.
      */
+    @Generated
     public LinuxVMGuestPatchAutomaticByPlatformSettings() {
     }
 
@@ -41,6 +45,7 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettings
      * 
      * @return the rebootSetting value.
      */
+    @Generated
     public LinuxVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting() {
         return this.rebootSetting;
     }
@@ -52,6 +57,7 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettings
      * @param rebootSetting the rebootSetting value to set.
      * @return the LinuxVMGuestPatchAutomaticByPlatformSettings object itself.
      */
+    @Generated
     public LinuxVMGuestPatchAutomaticByPlatformSettings
         withRebootSetting(LinuxVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting) {
         this.rebootSetting = rebootSetting;
@@ -64,6 +70,7 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettings
      * 
      * @return the bypassPlatformSafetyChecksOnUserSchedule value.
      */
+    @Generated
     public Boolean bypassPlatformSafetyChecksOnUserSchedule() {
         return this.bypassPlatformSafetyChecksOnUserSchedule;
     }
@@ -75,6 +82,7 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettings
      * @param bypassPlatformSafetyChecksOnUserSchedule the bypassPlatformSafetyChecksOnUserSchedule value to set.
      * @return the LinuxVMGuestPatchAutomaticByPlatformSettings object itself.
      */
+    @Generated
     public LinuxVMGuestPatchAutomaticByPlatformSettings
         withBypassPlatformSafetyChecksOnUserSchedule(Boolean bypassPlatformSafetyChecksOnUserSchedule) {
         this.bypassPlatformSafetyChecksOnUserSchedule = bypassPlatformSafetyChecksOnUserSchedule;

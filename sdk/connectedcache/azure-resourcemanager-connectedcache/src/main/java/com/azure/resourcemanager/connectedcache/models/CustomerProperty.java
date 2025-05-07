@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.connectedcache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,46 +21,55 @@ public final class CustomerProperty implements JsonSerializable<CustomerProperty
     /*
      * The provisioned state of the resource
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * Mcc customer resource (customer entity).
      */
+    @Generated
     private CustomerEntity customer;
 
     /*
      * Mcc customer resource additional properties.
      */
+    @Generated
     private AdditionalCustomerProperties additionalCustomerProperties;
 
     /*
      * Mcc response status code.
      */
+    @Generated
     private String statusCode;
 
     /*
      * Mcc response status text as string for retrieving status details.
      */
+    @Generated
     private String statusText;
 
     /*
      * Mcc response status details for retrieving response inner details.
      */
+    @Generated
     private String statusDetails;
 
     /*
      * HTTP error status code.
      */
+    @Generated
     private String status;
 
     /*
      * Mcc response error details.
      */
+    @Generated
     private ManagementError error;
 
     /**
      * Creates an instance of CustomerProperty class.
      */
+    @Generated
     public CustomerProperty() {
     }
 
@@ -68,6 +78,7 @@ public final class CustomerProperty implements JsonSerializable<CustomerProperty
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -77,6 +88,7 @@ public final class CustomerProperty implements JsonSerializable<CustomerProperty
      * 
      * @return the customer value.
      */
+    @Generated
     public CustomerEntity customer() {
         return this.customer;
     }
@@ -87,6 +99,7 @@ public final class CustomerProperty implements JsonSerializable<CustomerProperty
      * @param customer the customer value to set.
      * @return the CustomerProperty object itself.
      */
+    @Generated
     public CustomerProperty withCustomer(CustomerEntity customer) {
         this.customer = customer;
         return this;
@@ -97,6 +110,7 @@ public final class CustomerProperty implements JsonSerializable<CustomerProperty
      * 
      * @return the additionalCustomerProperties value.
      */
+    @Generated
     public AdditionalCustomerProperties additionalCustomerProperties() {
         return this.additionalCustomerProperties;
     }
@@ -107,6 +121,7 @@ public final class CustomerProperty implements JsonSerializable<CustomerProperty
      * @param additionalCustomerProperties the additionalCustomerProperties value to set.
      * @return the CustomerProperty object itself.
      */
+    @Generated
     public CustomerProperty
         withAdditionalCustomerProperties(AdditionalCustomerProperties additionalCustomerProperties) {
         this.additionalCustomerProperties = additionalCustomerProperties;
@@ -118,6 +133,7 @@ public final class CustomerProperty implements JsonSerializable<CustomerProperty
      * 
      * @return the statusCode value.
      */
+    @Generated
     public String statusCode() {
         return this.statusCode;
     }
@@ -127,6 +143,7 @@ public final class CustomerProperty implements JsonSerializable<CustomerProperty
      * 
      * @return the statusText value.
      */
+    @Generated
     public String statusText() {
         return this.statusText;
     }
@@ -136,6 +153,7 @@ public final class CustomerProperty implements JsonSerializable<CustomerProperty
      * 
      * @return the statusDetails value.
      */
+    @Generated
     public String statusDetails() {
         return this.statusDetails;
     }
@@ -145,6 +163,7 @@ public final class CustomerProperty implements JsonSerializable<CustomerProperty
      * 
      * @return the status value.
      */
+    @Generated
     public String status() {
         return this.status;
     }
@@ -154,6 +173,7 @@ public final class CustomerProperty implements JsonSerializable<CustomerProperty
      * 
      * @return the error value.
      */
+    @Generated
     public ManagementError error() {
         return this.error;
     }

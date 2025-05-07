@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class SapAvailabilityZonePair implements JsonSerializable<SapAvaila
     /*
      * The zone A.
      */
+    @Generated
     private Long zoneA;
 
     /*
      * The zone B.
      */
+    @Generated
     private Long zoneB;
 
     /**
      * Creates an instance of SapAvailabilityZonePair class.
      */
+    @Generated
     private SapAvailabilityZonePair() {
     }
 
@@ -37,6 +41,7 @@ public final class SapAvailabilityZonePair implements JsonSerializable<SapAvaila
      * 
      * @return the zoneA value.
      */
+    @Generated
     public Long zoneA() {
         return this.zoneA;
     }
@@ -46,6 +51,7 @@ public final class SapAvailabilityZonePair implements JsonSerializable<SapAvaila
      * 
      * @return the zoneB value.
      */
+    @Generated
     public Long zoneB() {
         return this.zoneB;
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ResourceSkuRestrictionsType extends ExpandableStringEnum<Reso
     /**
      * SKU restricted by location.
      */
+    @Generated
     public static final ResourceSkuRestrictionsType LOCATION = fromString("Location");
 
     /**
      * SKU restricted by availability zone.
      */
+    @Generated
     public static final ResourceSkuRestrictionsType ZONE = fromString("Zone");
 
     /**
@@ -26,6 +29,7 @@ public final class ResourceSkuRestrictionsType extends ExpandableStringEnum<Reso
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ResourceSkuRestrictionsType() {
     }
@@ -36,6 +40,7 @@ public final class ResourceSkuRestrictionsType extends ExpandableStringEnum<Reso
      * @param name a name to look for.
      * @return the corresponding ResourceSkuRestrictionsType.
      */
+    @Generated
     public static ResourceSkuRestrictionsType fromString(String name) {
         return fromString(name, ResourceSkuRestrictionsType.class);
     }
@@ -45,6 +50,7 @@ public final class ResourceSkuRestrictionsType extends ExpandableStringEnum<Reso
      * 
      * @return known ResourceSkuRestrictionsType values.
      */
+    @Generated
     public static Collection<ResourceSkuRestrictionsType> values() {
         return values(ResourceSkuRestrictionsType.class);
     }

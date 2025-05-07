@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,6 +22,7 @@ public final class VirtualMachineScaleSetExtensionProfile
     /*
      * The virtual machine scale set child extension resources.
      */
+    @Generated
     private List<VirtualMachineScaleSetExtension> extensions;
 
     /*
@@ -29,11 +31,13 @@ public final class VirtualMachineScaleSetExtensionProfile
      * specified in ISO 8601 format. The default value is 90 minutes (PT1H30M).
      * Minimum api-version: 2020-06-01.
      */
+    @Generated
     private String extensionsTimeBudget;
 
     /**
      * Creates an instance of VirtualMachineScaleSetExtensionProfile class.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProfile() {
     }
 
@@ -42,6 +46,7 @@ public final class VirtualMachineScaleSetExtensionProfile
      * 
      * @return the extensions value.
      */
+    @Generated
     public List<VirtualMachineScaleSetExtension> extensions() {
         return this.extensions;
     }
@@ -52,6 +57,7 @@ public final class VirtualMachineScaleSetExtensionProfile
      * @param extensions the extensions value to set.
      * @return the VirtualMachineScaleSetExtensionProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProfile withExtensions(List<VirtualMachineScaleSetExtension> extensions) {
         this.extensions = extensions;
         return this;
@@ -65,6 +71,7 @@ public final class VirtualMachineScaleSetExtensionProfile
      * 
      * @return the extensionsTimeBudget value.
      */
+    @Generated
     public String extensionsTimeBudget() {
         return this.extensionsTimeBudget;
     }
@@ -78,6 +85,7 @@ public final class VirtualMachineScaleSetExtensionProfile
      * @param extensionsTimeBudget the extensionsTimeBudget value to set.
      * @return the VirtualMachineScaleSetExtensionProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProfile withExtensionsTimeBudget(String extensionsTimeBudget) {
         this.extensionsTimeBudget = extensionsTimeBudget;
         return this;

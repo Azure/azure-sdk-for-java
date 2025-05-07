@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class StandbyContainerGroupPoolForecastValues
     /*
      * Displays the predicted count of instances to be requested from the standby pool.
      */
+    @Generated
     private List<Long> instancesRequestedCount;
 
     /**
      * Creates an instance of StandbyContainerGroupPoolForecastValues class.
      */
+    @Generated
     private StandbyContainerGroupPoolForecastValues() {
     }
 
@@ -35,6 +38,7 @@ public final class StandbyContainerGroupPoolForecastValues
      * 
      * @return the instancesRequestedCount value.
      */
+    @Generated
     public List<Long> instancesRequestedCount() {
         return this.instancesRequestedCount;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class ManagedRGConfiguration implements JsonSerializable<ManagedRGC
     /*
      * Managed resource group name
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of ManagedRGConfiguration class.
      */
+    @Generated
     public ManagedRGConfiguration() {
     }
 
@@ -32,6 +35,7 @@ public final class ManagedRGConfiguration implements JsonSerializable<ManagedRGC
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -42,6 +46,7 @@ public final class ManagedRGConfiguration implements JsonSerializable<ManagedRGC
      * @param name the name value to set.
      * @return the ManagedRGConfiguration object itself.
      */
+    @Generated
     public ManagedRGConfiguration withName(String name) {
         this.name = name;
         return this;

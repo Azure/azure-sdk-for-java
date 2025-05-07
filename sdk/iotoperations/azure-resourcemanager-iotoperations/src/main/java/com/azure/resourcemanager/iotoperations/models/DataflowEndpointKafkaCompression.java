@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class DataflowEndpointKafkaCompression extends ExpandableStringEnum
     /**
      * NONE Option.
      */
+    @Generated
     public static final DataflowEndpointKafkaCompression NONE = fromString("None");
 
     /**
      * Gzip Option.
      */
+    @Generated
     public static final DataflowEndpointKafkaCompression GZIP = fromString("Gzip");
 
     /**
      * SNAPPY Option.
      */
+    @Generated
     public static final DataflowEndpointKafkaCompression SNAPPY = fromString("Snappy");
 
     /**
      * LZ4 Option.
      */
+    @Generated
     public static final DataflowEndpointKafkaCompression LZ4 = fromString("Lz4");
 
     /**
@@ -36,6 +41,7 @@ public final class DataflowEndpointKafkaCompression extends ExpandableStringEnum
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataflowEndpointKafkaCompression() {
     }
@@ -46,6 +52,7 @@ public final class DataflowEndpointKafkaCompression extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding DataflowEndpointKafkaCompression.
      */
+    @Generated
     public static DataflowEndpointKafkaCompression fromString(String name) {
         return fromString(name, DataflowEndpointKafkaCompression.class);
     }
@@ -55,6 +62,7 @@ public final class DataflowEndpointKafkaCompression extends ExpandableStringEnum
      * 
      * @return known DataflowEndpointKafkaCompression values.
      */
+    @Generated
     public static Collection<DataflowEndpointKafkaCompression> values() {
         return values(DataflowEndpointKafkaCompression.class);
     }

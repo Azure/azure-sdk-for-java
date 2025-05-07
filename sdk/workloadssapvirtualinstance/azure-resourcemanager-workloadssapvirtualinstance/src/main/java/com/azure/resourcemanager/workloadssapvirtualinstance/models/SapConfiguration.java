@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public class SapConfiguration implements JsonSerializable<SapConfiguration> {
     /*
      * The configuration type. Eg: Deployment/Discovery
      */
+    @Generated
     private SapConfigurationType configurationType = SapConfigurationType.fromString("SapConfiguration");
 
     /**
      * Creates an instance of SapConfiguration class.
      */
+    @Generated
     public SapConfiguration() {
     }
 
@@ -32,6 +35,7 @@ public class SapConfiguration implements JsonSerializable<SapConfiguration> {
      * 
      * @return the configurationType value.
      */
+    @Generated
     public SapConfigurationType configurationType() {
         return this.configurationType;
     }

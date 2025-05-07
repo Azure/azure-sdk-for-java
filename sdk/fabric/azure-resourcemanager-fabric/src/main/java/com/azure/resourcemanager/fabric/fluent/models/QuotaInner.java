@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.fabric.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -21,26 +22,31 @@ public final class QuotaInner implements JsonSerializable<QuotaInner> {
     /*
      * The name of the quota.
      */
+    @Generated
     private QuotaName name;
 
     /*
      * The unit of usage measurement.
      */
+    @Generated
     private String unit;
 
     /*
      * The current usage of the resource.
      */
+    @Generated
     private long currentValue;
 
     /*
      * The maximum permitted usage of the resource.
      */
+    @Generated
     private long limit;
 
     /**
      * Creates an instance of QuotaInner class.
      */
+    @Generated
     private QuotaInner() {
     }
 
@@ -49,6 +55,7 @@ public final class QuotaInner implements JsonSerializable<QuotaInner> {
      * 
      * @return the name value.
      */
+    @Generated
     public QuotaName name() {
         return this.name;
     }
@@ -58,6 +65,7 @@ public final class QuotaInner implements JsonSerializable<QuotaInner> {
      * 
      * @return the unit value.
      */
+    @Generated
     public String unit() {
         return this.unit;
     }
@@ -67,6 +75,7 @@ public final class QuotaInner implements JsonSerializable<QuotaInner> {
      * 
      * @return the currentValue value.
      */
+    @Generated
     public long currentValue() {
         return this.currentValue;
     }
@@ -76,6 +85,7 @@ public final class QuotaInner implements JsonSerializable<QuotaInner> {
      * 
      * @return the limit value.
      */
+    @Generated
     public long limit() {
         return this.limit;
     }

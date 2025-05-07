@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,16 +23,19 @@ public final class PublicCloudConnectorListResult implements JsonSerializable<Pu
     /*
      * The PublicCloudConnector items on this page
      */
+    @Generated
     private List<PublicCloudConnectorInner> value;
 
     /*
      * The link to the next page of items
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of PublicCloudConnectorListResult class.
      */
+    @Generated
     private PublicCloudConnectorListResult() {
     }
 
@@ -40,6 +44,7 @@ public final class PublicCloudConnectorListResult implements JsonSerializable<Pu
      * 
      * @return the value value.
      */
+    @Generated
     public List<PublicCloudConnectorInner> value() {
         return this.value;
     }
@@ -49,6 +54,7 @@ public final class PublicCloudConnectorListResult implements JsonSerializable<Pu
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String nextLink() {
         return this.nextLink;
     }

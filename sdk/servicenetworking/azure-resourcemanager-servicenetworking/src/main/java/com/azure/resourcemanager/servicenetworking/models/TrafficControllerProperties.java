@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,36 +21,43 @@ public final class TrafficControllerProperties implements JsonSerializable<Traff
     /*
      * Configuration Endpoints.
      */
+    @Generated
     private List<String> configurationEndpoints;
 
     /*
      * Frontends References List
      */
+    @Generated
     private List<ResourceId> frontends;
 
     /*
      * Associations References List
      */
+    @Generated
     private List<ResourceId> associations;
 
     /*
      * Security Policies References List
      */
+    @Generated
     private List<ResourceId> securityPolicies;
 
     /*
      * Security Policy Configuration
      */
+    @Generated
     private SecurityPolicyConfigurations securityPolicyConfigurations;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of TrafficControllerProperties class.
      */
+    @Generated
     public TrafficControllerProperties() {
     }
 
@@ -58,6 +66,7 @@ public final class TrafficControllerProperties implements JsonSerializable<Traff
      * 
      * @return the configurationEndpoints value.
      */
+    @Generated
     public List<String> configurationEndpoints() {
         return this.configurationEndpoints;
     }
@@ -67,6 +76,7 @@ public final class TrafficControllerProperties implements JsonSerializable<Traff
      * 
      * @return the frontends value.
      */
+    @Generated
     public List<ResourceId> frontends() {
         return this.frontends;
     }
@@ -76,6 +86,7 @@ public final class TrafficControllerProperties implements JsonSerializable<Traff
      * 
      * @return the associations value.
      */
+    @Generated
     public List<ResourceId> associations() {
         return this.associations;
     }
@@ -85,6 +96,7 @@ public final class TrafficControllerProperties implements JsonSerializable<Traff
      * 
      * @return the securityPolicies value.
      */
+    @Generated
     public List<ResourceId> securityPolicies() {
         return this.securityPolicies;
     }
@@ -94,6 +106,7 @@ public final class TrafficControllerProperties implements JsonSerializable<Traff
      * 
      * @return the securityPolicyConfigurations value.
      */
+    @Generated
     public SecurityPolicyConfigurations securityPolicyConfigurations() {
         return this.securityPolicyConfigurations;
     }
@@ -104,6 +117,7 @@ public final class TrafficControllerProperties implements JsonSerializable<Traff
      * @param securityPolicyConfigurations the securityPolicyConfigurations value to set.
      * @return the TrafficControllerProperties object itself.
      */
+    @Generated
     public TrafficControllerProperties
         withSecurityPolicyConfigurations(SecurityPolicyConfigurations securityPolicyConfigurations) {
         this.securityPolicyConfigurations = securityPolicyConfigurations;
@@ -115,6 +129,7 @@ public final class TrafficControllerProperties implements JsonSerializable<Traff
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

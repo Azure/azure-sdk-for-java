@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,16 +23,19 @@ public final class VaultSecretGroup implements JsonSerializable<VaultSecretGroup
      * The relative URL of the Key Vault containing all of the certificates in
      * VaultCertificates.
      */
+    @Generated
     private SubResource sourceVault;
 
     /*
      * The list of key vault references in SourceVault which contain certificates.
      */
+    @Generated
     private List<VaultCertificate> vaultCertificates;
 
     /**
      * Creates an instance of VaultSecretGroup class.
      */
+    @Generated
     public VaultSecretGroup() {
     }
 
@@ -41,6 +45,7 @@ public final class VaultSecretGroup implements JsonSerializable<VaultSecretGroup
      * 
      * @return the sourceVault value.
      */
+    @Generated
     public SubResource sourceVault() {
         return this.sourceVault;
     }
@@ -52,6 +57,7 @@ public final class VaultSecretGroup implements JsonSerializable<VaultSecretGroup
      * @param sourceVault the sourceVault value to set.
      * @return the VaultSecretGroup object itself.
      */
+    @Generated
     public VaultSecretGroup withSourceVault(SubResource sourceVault) {
         this.sourceVault = sourceVault;
         return this;
@@ -62,6 +68,7 @@ public final class VaultSecretGroup implements JsonSerializable<VaultSecretGroup
      * 
      * @return the vaultCertificates value.
      */
+    @Generated
     public List<VaultCertificate> vaultCertificates() {
         return this.vaultCertificates;
     }
@@ -72,6 +79,7 @@ public final class VaultSecretGroup implements JsonSerializable<VaultSecretGroup
      * @param vaultCertificates the vaultCertificates value to set.
      * @return the VaultSecretGroup object itself.
      */
+    @Generated
     public VaultSecretGroup withVaultCertificates(List<VaultCertificate> vaultCertificates) {
         this.vaultCertificates = vaultCertificates;
         return this;

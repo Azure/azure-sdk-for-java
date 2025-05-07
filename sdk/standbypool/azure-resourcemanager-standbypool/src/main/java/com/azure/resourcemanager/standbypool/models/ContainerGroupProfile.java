@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class ContainerGroupProfile implements JsonSerializable<ContainerGr
     /*
      * Specifies container group profile id of standby container groups.
      */
+    @Generated
     private String id;
 
     /*
      * Specifies revision of container group profile.
      */
+    @Generated
     private Long revision;
 
     /**
      * Creates an instance of ContainerGroupProfile class.
      */
+    @Generated
     public ContainerGroupProfile() {
     }
 
@@ -38,6 +42,7 @@ public final class ContainerGroupProfile implements JsonSerializable<ContainerGr
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }
@@ -48,6 +53,7 @@ public final class ContainerGroupProfile implements JsonSerializable<ContainerGr
      * @param id the id value to set.
      * @return the ContainerGroupProfile object itself.
      */
+    @Generated
     public ContainerGroupProfile withId(String id) {
         this.id = id;
         return this;
@@ -58,6 +64,7 @@ public final class ContainerGroupProfile implements JsonSerializable<ContainerGr
      * 
      * @return the revision value.
      */
+    @Generated
     public Long revision() {
         return this.revision;
     }
@@ -68,6 +75,7 @@ public final class ContainerGroupProfile implements JsonSerializable<ContainerGr
      * @param revision the revision value to set.
      * @return the ContainerGroupProfile object itself.
      */
+    @Generated
     public ContainerGroupProfile withRevision(Long revision) {
         this.revision = revision;
         return this;

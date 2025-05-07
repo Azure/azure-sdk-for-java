@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,22 +20,26 @@ public final class VaultSecret implements JsonSerializable<VaultSecret> {
     /*
      * The Azure resource ID of the Key Vault instance storing database authentication secrets.
      */
+    @Generated
     private String akvResourceId;
 
     /*
      * The path to the Key Vault secret storing the login name (aka user name, aka account name) for authentication to a
      * target.
      */
+    @Generated
     private String akvTargetUser;
 
     /*
      * The path to the Key Vault secret storing the password for authentication to a target.
      */
+    @Generated
     private String akvTargetPassword;
 
     /**
      * Creates an instance of VaultSecret class.
      */
+    @Generated
     public VaultSecret() {
     }
 
@@ -44,6 +49,7 @@ public final class VaultSecret implements JsonSerializable<VaultSecret> {
      * 
      * @return the akvResourceId value.
      */
+    @Generated
     public String akvResourceId() {
         return this.akvResourceId;
     }
@@ -55,6 +61,7 @@ public final class VaultSecret implements JsonSerializable<VaultSecret> {
      * @param akvResourceId the akvResourceId value to set.
      * @return the VaultSecret object itself.
      */
+    @Generated
     public VaultSecret withAkvResourceId(String akvResourceId) {
         this.akvResourceId = akvResourceId;
         return this;
@@ -66,6 +73,7 @@ public final class VaultSecret implements JsonSerializable<VaultSecret> {
      * 
      * @return the akvTargetUser value.
      */
+    @Generated
     public String akvTargetUser() {
         return this.akvTargetUser;
     }
@@ -77,6 +85,7 @@ public final class VaultSecret implements JsonSerializable<VaultSecret> {
      * @param akvTargetUser the akvTargetUser value to set.
      * @return the VaultSecret object itself.
      */
+    @Generated
     public VaultSecret withAkvTargetUser(String akvTargetUser) {
         this.akvTargetUser = akvTargetUser;
         return this;
@@ -88,6 +97,7 @@ public final class VaultSecret implements JsonSerializable<VaultSecret> {
      * 
      * @return the akvTargetPassword value.
      */
+    @Generated
     public String akvTargetPassword() {
         return this.akvTargetPassword;
     }
@@ -99,6 +109,7 @@ public final class VaultSecret implements JsonSerializable<VaultSecret> {
      * @param akvTargetPassword the akvTargetPassword value to set.
      * @return the VaultSecret object itself.
      */
+    @Generated
     public VaultSecret withAkvTargetPassword(String akvTargetPassword) {
         this.akvTargetPassword = akvTargetPassword;
         return this;

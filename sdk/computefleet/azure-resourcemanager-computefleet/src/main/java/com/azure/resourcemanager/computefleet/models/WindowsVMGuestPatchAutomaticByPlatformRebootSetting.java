@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,21 +16,25 @@ public final class WindowsVMGuestPatchAutomaticByPlatformRebootSetting
     /**
      * Unknown Reboot setting.
      */
+    @Generated
     public static final WindowsVMGuestPatchAutomaticByPlatformRebootSetting UNKNOWN = fromString("Unknown");
 
     /**
      * IfRequired Reboot setting.
      */
+    @Generated
     public static final WindowsVMGuestPatchAutomaticByPlatformRebootSetting IF_REQUIRED = fromString("IfRequired");
 
     /**
      * Never Reboot setting.
      */
+    @Generated
     public static final WindowsVMGuestPatchAutomaticByPlatformRebootSetting NEVER = fromString("Never");
 
     /**
      * Always Reboot setting.
      */
+    @Generated
     public static final WindowsVMGuestPatchAutomaticByPlatformRebootSetting ALWAYS = fromString("Always");
 
     /**
@@ -37,6 +42,7 @@ public final class WindowsVMGuestPatchAutomaticByPlatformRebootSetting
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public WindowsVMGuestPatchAutomaticByPlatformRebootSetting() {
     }
@@ -47,6 +53,7 @@ public final class WindowsVMGuestPatchAutomaticByPlatformRebootSetting
      * @param name a name to look for.
      * @return the corresponding WindowsVMGuestPatchAutomaticByPlatformRebootSetting.
      */
+    @Generated
     public static WindowsVMGuestPatchAutomaticByPlatformRebootSetting fromString(String name) {
         return fromString(name, WindowsVMGuestPatchAutomaticByPlatformRebootSetting.class);
     }
@@ -56,6 +63,7 @@ public final class WindowsVMGuestPatchAutomaticByPlatformRebootSetting
      * 
      * @return known WindowsVMGuestPatchAutomaticByPlatformRebootSetting values.
      */
+    @Generated
     public static Collection<WindowsVMGuestPatchAutomaticByPlatformRebootSetting> values() {
         return values(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.class);
     }

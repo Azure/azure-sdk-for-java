@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,86 +21,103 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
     /*
      * Application server Instance Number.
      */
+    @Generated
     private String instanceNo;
 
     /*
      * Application server Subnet.
      */
+    @Generated
     private String subnet;
 
     /*
      * Application server instance SAP hostname.
      */
+    @Generated
     private String hostname;
 
     /*
      * Application server instance SAP Kernel Version.
      */
+    @Generated
     private String kernelVersion;
 
     /*
      * Application server instance SAP Kernel Patch level.
      */
+    @Generated
     private String kernelPatch;
 
     /*
      * Application server instance SAP IP Address.
      */
+    @Generated
     private String ipAddress;
 
     /*
      * Application server instance gateway Port.
      */
+    @Generated
     private Long gatewayPort;
 
     /*
      * Application server instance ICM HTTP Port.
      */
+    @Generated
     private Long icmHttpPort;
 
     /*
      * Application server instance ICM HTTPS Port.
      */
+    @Generated
     private Long icmHttpsPort;
 
     /*
      * Application server instance dispatcher status.
      */
+    @Generated
     private String dispatcherStatus;
 
     /*
      * The Load Balancer details such as LoadBalancer ID attached to Application Server Virtual Machines
      */
+    @Generated
     private LoadBalancerDetails loadBalancerDetails;
 
     /*
      * The list of virtual machines.
      */
+    @Generated
     private List<ApplicationServerVmDetails> vmDetails;
 
     /*
      * Defines the SAP Instance status.
      */
+    @Generated
     private SapVirtualInstanceStatus status;
 
     /*
      * Defines the health of SAP Instances.
      */
+    @Generated
     private SapHealthState health;
 
     /*
      * Defines the provisioning states.
      */
+    @Generated
     private SapVirtualInstanceProvisioningState provisioningState;
 
     /*
      * Defines the Application Instance errors.
      */
+    @Generated
     private SapVirtualInstanceError errors;
 
     /**
      * Creates an instance of SapApplicationServerProperties class.
      */
+    @Generated
     public SapApplicationServerProperties() {
     }
 
@@ -108,6 +126,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the instanceNo value.
      */
+    @Generated
     public String instanceNo() {
         return this.instanceNo;
     }
@@ -117,6 +136,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the subnet value.
      */
+    @Generated
     public String subnet() {
         return this.subnet;
     }
@@ -126,6 +146,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the hostname value.
      */
+    @Generated
     public String hostname() {
         return this.hostname;
     }
@@ -135,6 +156,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the kernelVersion value.
      */
+    @Generated
     public String kernelVersion() {
         return this.kernelVersion;
     }
@@ -144,6 +166,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the kernelPatch value.
      */
+    @Generated
     public String kernelPatch() {
         return this.kernelPatch;
     }
@@ -153,6 +176,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the ipAddress value.
      */
+    @Generated
     public String ipAddress() {
         return this.ipAddress;
     }
@@ -162,6 +186,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the gatewayPort value.
      */
+    @Generated
     public Long gatewayPort() {
         return this.gatewayPort;
     }
@@ -171,6 +196,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the icmHttpPort value.
      */
+    @Generated
     public Long icmHttpPort() {
         return this.icmHttpPort;
     }
@@ -180,6 +206,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the icmHttpsPort value.
      */
+    @Generated
     public Long icmHttpsPort() {
         return this.icmHttpsPort;
     }
@@ -189,6 +216,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the dispatcherStatus value.
      */
+    @Generated
     public String dispatcherStatus() {
         return this.dispatcherStatus;
     }
@@ -199,6 +227,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the loadBalancerDetails value.
      */
+    @Generated
     public LoadBalancerDetails loadBalancerDetails() {
         return this.loadBalancerDetails;
     }
@@ -208,6 +237,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the vmDetails value.
      */
+    @Generated
     public List<ApplicationServerVmDetails> vmDetails() {
         return this.vmDetails;
     }
@@ -217,6 +247,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the status value.
      */
+    @Generated
     public SapVirtualInstanceStatus status() {
         return this.status;
     }
@@ -226,6 +257,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the health value.
      */
+    @Generated
     public SapHealthState health() {
         return this.health;
     }
@@ -235,6 +267,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public SapVirtualInstanceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -244,6 +277,7 @@ public final class SapApplicationServerProperties implements JsonSerializable<Sa
      * 
      * @return the errors value.
      */
+    @Generated
     public SapVirtualInstanceError errors() {
         return this.errors;
     }

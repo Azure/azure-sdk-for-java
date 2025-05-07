@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.connectedcache.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ProxyRequired extends ExpandableStringEnum<ProxyRequired> {
     /**
      * Proxy is not required in setup.
      */
+    @Generated
     public static final ProxyRequired NONE = fromString("None");
 
     /**
      * proxy is required in setup.
      */
+    @Generated
     public static final ProxyRequired REQUIRED = fromString("Required");
 
     /**
@@ -26,6 +29,7 @@ public final class ProxyRequired extends ExpandableStringEnum<ProxyRequired> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ProxyRequired() {
     }
@@ -36,6 +40,7 @@ public final class ProxyRequired extends ExpandableStringEnum<ProxyRequired> {
      * @param name a name to look for.
      * @return the corresponding ProxyRequired.
      */
+    @Generated
     public static ProxyRequired fromString(String name) {
         return fromString(name, ProxyRequired.class);
     }
@@ -45,6 +50,7 @@ public final class ProxyRequired extends ExpandableStringEnum<ProxyRequired> {
      * 
      * @return known ProxyRequired values.
      */
+    @Generated
     public static Collection<ProxyRequired> values() {
         return values(ProxyRequired.class);
     }

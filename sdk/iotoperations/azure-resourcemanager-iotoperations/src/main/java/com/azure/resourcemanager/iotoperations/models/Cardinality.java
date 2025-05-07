@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class Cardinality implements JsonSerializable<Cardinality> {
     /*
      * The backend broker desired properties
      */
+    @Generated
     private BackendChain backendChain;
 
     /*
      * The frontend desired properties
      */
+    @Generated
     private Frontend frontend;
 
     /**
      * Creates an instance of Cardinality class.
      */
+    @Generated
     public Cardinality() {
     }
 
@@ -38,6 +42,7 @@ public final class Cardinality implements JsonSerializable<Cardinality> {
      * 
      * @return the backendChain value.
      */
+    @Generated
     public BackendChain backendChain() {
         return this.backendChain;
     }
@@ -48,6 +53,7 @@ public final class Cardinality implements JsonSerializable<Cardinality> {
      * @param backendChain the backendChain value to set.
      * @return the Cardinality object itself.
      */
+    @Generated
     public Cardinality withBackendChain(BackendChain backendChain) {
         this.backendChain = backendChain;
         return this;
@@ -58,6 +64,7 @@ public final class Cardinality implements JsonSerializable<Cardinality> {
      * 
      * @return the frontend value.
      */
+    @Generated
     public Frontend frontend() {
         return this.frontend;
     }
@@ -68,6 +75,7 @@ public final class Cardinality implements JsonSerializable<Cardinality> {
      * @param frontend the frontend value to set.
      * @return the Cardinality object itself.
      */
+    @Generated
     public Cardinality withFrontend(Frontend frontend) {
         this.frontend = frontend;
         return this;

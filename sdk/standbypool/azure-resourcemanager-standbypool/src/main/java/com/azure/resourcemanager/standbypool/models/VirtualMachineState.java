@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class VirtualMachineState extends ExpandableStringEnum<VirtualMachi
     /**
      * The virtual machine is up and running.
      */
+    @Generated
     public static final VirtualMachineState RUNNING = fromString("Running");
 
     /**
      * The virtual machine has released the lease on the underlying hardware and is powered off.
      */
+    @Generated
     public static final VirtualMachineState DEALLOCATED = fromString("Deallocated");
 
     /**
@@ -26,6 +29,7 @@ public final class VirtualMachineState extends ExpandableStringEnum<VirtualMachi
      * VM are stored in the OS disk. When started again, applications and processes that were previously running in your
      * VM resume from the state prior to hibernation.
      */
+    @Generated
     public static final VirtualMachineState HIBERNATED = fromString("Hibernated");
 
     /**
@@ -33,6 +37,7 @@ public final class VirtualMachineState extends ExpandableStringEnum<VirtualMachi
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VirtualMachineState() {
     }
@@ -43,6 +48,7 @@ public final class VirtualMachineState extends ExpandableStringEnum<VirtualMachi
      * @param name a name to look for.
      * @return the corresponding VirtualMachineState.
      */
+    @Generated
     public static VirtualMachineState fromString(String name) {
         return fromString(name, VirtualMachineState.class);
     }
@@ -52,6 +58,7 @@ public final class VirtualMachineState extends ExpandableStringEnum<VirtualMachi
      * 
      * @return known VirtualMachineState values.
      */
+    @Generated
     public static Collection<VirtualMachineState> values() {
         return values(VirtualMachineState.class);
     }

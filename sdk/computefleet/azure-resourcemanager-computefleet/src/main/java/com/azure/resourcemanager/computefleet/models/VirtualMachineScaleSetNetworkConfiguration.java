@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class VirtualMachineScaleSetNetworkConfiguration
     /*
      * The network configuration name.
      */
+    @Generated
     private String name;
 
     /*
      * Describes a virtual machine scale set network profile's IP configuration.
      */
+    @Generated
     private VirtualMachineScaleSetNetworkConfigurationProperties properties;
 
     /**
      * Creates an instance of VirtualMachineScaleSetNetworkConfiguration class.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfiguration() {
     }
 
@@ -39,6 +43,7 @@ public final class VirtualMachineScaleSetNetworkConfiguration
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -49,6 +54,7 @@ public final class VirtualMachineScaleSetNetworkConfiguration
      * @param name the name value to set.
      * @return the VirtualMachineScaleSetNetworkConfiguration object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfiguration withName(String name) {
         this.name = name;
         return this;
@@ -59,6 +65,7 @@ public final class VirtualMachineScaleSetNetworkConfiguration
      * 
      * @return the properties value.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationProperties properties() {
         return this.properties;
     }
@@ -69,6 +76,7 @@ public final class VirtualMachineScaleSetNetworkConfiguration
      * @param properties the properties value to set.
      * @return the VirtualMachineScaleSetNetworkConfiguration object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfiguration
         withProperties(VirtualMachineScaleSetNetworkConfigurationProperties properties) {
         this.properties = properties;

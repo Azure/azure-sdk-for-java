@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,22 +21,26 @@ public final class ApplicationServerVmDetails implements JsonSerializable<Applic
     /*
      * Defines the type of application server VM.
      */
+    @Generated
     private ApplicationServerVirtualMachineType type;
 
     /*
      * The virtual machine id.
      */
+    @Generated
     private String virtualMachineId;
 
     /*
      * Storage details of all the Storage Accounts attached to the App Virtual Machine. For e.g. NFS on AFS Shared
      * Storage.
      */
+    @Generated
     private List<StorageInformation> storageDetails;
 
     /**
      * Creates an instance of ApplicationServerVmDetails class.
      */
+    @Generated
     private ApplicationServerVmDetails() {
     }
 
@@ -44,6 +49,7 @@ public final class ApplicationServerVmDetails implements JsonSerializable<Applic
      * 
      * @return the type value.
      */
+    @Generated
     public ApplicationServerVirtualMachineType type() {
         return this.type;
     }
@@ -53,6 +59,7 @@ public final class ApplicationServerVmDetails implements JsonSerializable<Applic
      * 
      * @return the virtualMachineId value.
      */
+    @Generated
     public String virtualMachineId() {
         return this.virtualMachineId;
     }
@@ -63,6 +70,7 @@ public final class ApplicationServerVmDetails implements JsonSerializable<Applic
      * 
      * @return the storageDetails value.
      */
+    @Generated
     public List<StorageInformation> storageDetails() {
         return this.storageDetails;
     }

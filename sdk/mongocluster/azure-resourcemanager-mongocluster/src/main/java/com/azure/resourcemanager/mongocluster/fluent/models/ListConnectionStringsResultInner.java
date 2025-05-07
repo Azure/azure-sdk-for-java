@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class ListConnectionStringsResultInner implements JsonSerializable<
     /*
      * An array that contains the connection strings for a mongo cluster.
      */
+    @Generated
     private List<ConnectionString> connectionStrings;
 
     /**
      * Creates an instance of ListConnectionStringsResultInner class.
      */
+    @Generated
     private ListConnectionStringsResultInner() {
     }
 
@@ -34,6 +37,7 @@ public final class ListConnectionStringsResultInner implements JsonSerializable<
      * 
      * @return the connectionStrings value.
      */
+    @Generated
     public List<ConnectionString> connectionStrings() {
         return this.connectionStrings;
     }

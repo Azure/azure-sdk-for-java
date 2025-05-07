@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,17 +21,20 @@ public final class SharedStorageResourceNames implements JsonSerializable<Shared
      * The full name of the shared storage account. If it is not provided, it will be defaulted to {SID}nfs{guid of 15
      * chars}.
      */
+    @Generated
     private String sharedStorageAccountName;
 
     /*
      * The full name of private end point for the shared storage account. If it is not provided, it will be defaulted to
      * {storageAccountName}_pe
      */
+    @Generated
     private String sharedStorageAccountPrivateEndPointName;
 
     /**
      * Creates an instance of SharedStorageResourceNames class.
      */
+    @Generated
     public SharedStorageResourceNames() {
     }
 
@@ -40,6 +44,7 @@ public final class SharedStorageResourceNames implements JsonSerializable<Shared
      * 
      * @return the sharedStorageAccountName value.
      */
+    @Generated
     public String sharedStorageAccountName() {
         return this.sharedStorageAccountName;
     }
@@ -51,6 +56,7 @@ public final class SharedStorageResourceNames implements JsonSerializable<Shared
      * @param sharedStorageAccountName the sharedStorageAccountName value to set.
      * @return the SharedStorageResourceNames object itself.
      */
+    @Generated
     public SharedStorageResourceNames withSharedStorageAccountName(String sharedStorageAccountName) {
         this.sharedStorageAccountName = sharedStorageAccountName;
         return this;
@@ -62,6 +68,7 @@ public final class SharedStorageResourceNames implements JsonSerializable<Shared
      * 
      * @return the sharedStorageAccountPrivateEndPointName value.
      */
+    @Generated
     public String sharedStorageAccountPrivateEndPointName() {
         return this.sharedStorageAccountPrivateEndPointName;
     }
@@ -73,6 +80,7 @@ public final class SharedStorageResourceNames implements JsonSerializable<Shared
      * @param sharedStorageAccountPrivateEndPointName the sharedStorageAccountPrivateEndPointName value to set.
      * @return the SharedStorageResourceNames object itself.
      */
+    @Generated
     public SharedStorageResourceNames
         withSharedStorageAccountPrivateEndPointName(String sharedStorageAccountPrivateEndPointName) {
         this.sharedStorageAccountPrivateEndPointName = sharedStorageAccountPrivateEndPointName;

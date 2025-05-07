@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,22 +24,26 @@ public final class SecurityPostureReference implements JsonSerializable<Security
      * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{
      * major.*}|latest
      */
+    @Generated
     private String id;
 
     /*
      * List of virtual machine extension names to exclude when applying the security
      * posture.
      */
+    @Generated
     private List<String> excludeExtensions;
 
     /*
      * Whether the security posture can be overridden by the user.
      */
+    @Generated
     private Boolean isOverridable;
 
     /**
      * Creates an instance of SecurityPostureReference class.
      */
+    @Generated
     public SecurityPostureReference() {
     }
 
@@ -48,6 +53,7 @@ public final class SecurityPostureReference implements JsonSerializable<Security
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }
@@ -59,6 +65,7 @@ public final class SecurityPostureReference implements JsonSerializable<Security
      * @param id the id value to set.
      * @return the SecurityPostureReference object itself.
      */
+    @Generated
     public SecurityPostureReference withId(String id) {
         this.id = id;
         return this;
@@ -70,6 +77,7 @@ public final class SecurityPostureReference implements JsonSerializable<Security
      * 
      * @return the excludeExtensions value.
      */
+    @Generated
     public List<String> excludeExtensions() {
         return this.excludeExtensions;
     }
@@ -81,6 +89,7 @@ public final class SecurityPostureReference implements JsonSerializable<Security
      * @param excludeExtensions the excludeExtensions value to set.
      * @return the SecurityPostureReference object itself.
      */
+    @Generated
     public SecurityPostureReference withExcludeExtensions(List<String> excludeExtensions) {
         this.excludeExtensions = excludeExtensions;
         return this;
@@ -91,6 +100,7 @@ public final class SecurityPostureReference implements JsonSerializable<Security
      * 
      * @return the isOverridable value.
      */
+    @Generated
     public Boolean isOverridable() {
         return this.isOverridable;
     }
@@ -101,6 +111,7 @@ public final class SecurityPostureReference implements JsonSerializable<Security
      * @param isOverridable the isOverridable value to set.
      * @return the SecurityPostureReference object itself.
      */
+    @Generated
     public SecurityPostureReference withIsOverridable(Boolean isOverridable) {
         this.isOverridable = isOverridable;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class ErrorDefinition implements JsonSerializable<ErrorDefinition> 
     /*
      * Service specific error code which serves as the substatus for the HTTP error code.
      */
+    @Generated
     private String code;
 
     /*
      * Description of the error.
      */
+    @Generated
     private String message;
 
     /*
      * Internal error details.
      */
+    @Generated
     private List<ErrorDefinition> details;
 
     /**
      * Creates an instance of ErrorDefinition class.
      */
+    @Generated
     private ErrorDefinition() {
     }
 
@@ -43,6 +48,7 @@ public final class ErrorDefinition implements JsonSerializable<ErrorDefinition> 
      * 
      * @return the code value.
      */
+    @Generated
     public String code() {
         return this.code;
     }
@@ -52,6 +58,7 @@ public final class ErrorDefinition implements JsonSerializable<ErrorDefinition> 
      * 
      * @return the message value.
      */
+    @Generated
     public String message() {
         return this.message;
     }
@@ -61,6 +68,7 @@ public final class ErrorDefinition implements JsonSerializable<ErrorDefinition> 
      * 
      * @return the details value.
      */
+    @Generated
     public List<ErrorDefinition> details() {
         return this.details;
     }

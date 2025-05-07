@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,6 +17,7 @@ public final class NodeImageSelectionType extends ExpandableStringEnum<NodeImage
      * 'AKSUbuntu-1804gen2containerd-2021.10.12' and 'AKSUbuntu-1804gen2containerd-2021.10.19') because, for example,
      * the latest available version is different in different regions.
      */
+    @Generated
     public static final NodeImageSelectionType LATEST = fromString("Latest");
 
     /**
@@ -27,12 +29,14 @@ public final class NodeImageSelectionType extends ExpandableStringEnum<NodeImage
      * region X, and is 'AKSUbuntu-1804gen2containerd-2021.10.17' for a node pool in cluster B in region Y, the system
      * will upgrade both node pools to image version 'AKSUbuntu-1804gen2containerd-2021.10.12'.
      */
+    @Generated
     public static final NodeImageSelectionType CONSISTENT = fromString("Consistent");
 
     /**
      * Upgrade the nodes to the custom image versions. When set, update run will use node image versions provided in
      * customNodeImageVersions to upgrade the nodes. If set, customNodeImageVersions must not be empty.
      */
+    @Generated
     public static final NodeImageSelectionType CUSTOM = fromString("Custom");
 
     /**
@@ -40,6 +44,7 @@ public final class NodeImageSelectionType extends ExpandableStringEnum<NodeImage
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public NodeImageSelectionType() {
     }
@@ -50,6 +55,7 @@ public final class NodeImageSelectionType extends ExpandableStringEnum<NodeImage
      * @param name a name to look for.
      * @return the corresponding NodeImageSelectionType.
      */
+    @Generated
     public static NodeImageSelectionType fromString(String name) {
         return fromString(name, NodeImageSelectionType.class);
     }
@@ -59,6 +65,7 @@ public final class NodeImageSelectionType extends ExpandableStringEnum<NodeImage
      * 
      * @return known NodeImageSelectionType values.
      */
+    @Generated
     public static Collection<NodeImageSelectionType> values() {
         return values(NodeImageSelectionType.class);
     }

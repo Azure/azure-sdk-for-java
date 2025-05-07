@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class DataflowEndpointAuthenticationServiceAccountToken
     /*
      * Audience of the service account. Optional, defaults to the broker internal service account audience.
      */
+    @Generated
     private String audience;
 
     /**
      * Creates an instance of DataflowEndpointAuthenticationServiceAccountToken class.
      */
+    @Generated
     public DataflowEndpointAuthenticationServiceAccountToken() {
     }
 
@@ -35,6 +38,7 @@ public final class DataflowEndpointAuthenticationServiceAccountToken
      * 
      * @return the audience value.
      */
+    @Generated
     public String audience() {
         return this.audience;
     }
@@ -46,6 +50,7 @@ public final class DataflowEndpointAuthenticationServiceAccountToken
      * @param audience the audience value to set.
      * @return the DataflowEndpointAuthenticationServiceAccountToken object itself.
      */
+    @Generated
     public DataflowEndpointAuthenticationServiceAccountToken withAudience(String audience) {
         this.audience = audience;
         return this;

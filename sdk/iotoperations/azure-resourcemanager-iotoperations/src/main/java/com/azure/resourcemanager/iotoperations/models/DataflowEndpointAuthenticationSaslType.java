@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,16 +16,19 @@ public final class DataflowEndpointAuthenticationSaslType
     /**
      * PLAIN Type.
      */
+    @Generated
     public static final DataflowEndpointAuthenticationSaslType PLAIN = fromString("Plain");
 
     /**
      * SCRAM_SHA_256 Type.
      */
+    @Generated
     public static final DataflowEndpointAuthenticationSaslType SCRAM_SHA256 = fromString("ScramSha256");
 
     /**
      * SCRAM_SHA_512 Type.
      */
+    @Generated
     public static final DataflowEndpointAuthenticationSaslType SCRAM_SHA512 = fromString("ScramSha512");
 
     /**
@@ -32,6 +36,7 @@ public final class DataflowEndpointAuthenticationSaslType
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataflowEndpointAuthenticationSaslType() {
     }
@@ -42,6 +47,7 @@ public final class DataflowEndpointAuthenticationSaslType
      * @param name a name to look for.
      * @return the corresponding DataflowEndpointAuthenticationSaslType.
      */
+    @Generated
     public static DataflowEndpointAuthenticationSaslType fromString(String name) {
         return fromString(name, DataflowEndpointAuthenticationSaslType.class);
     }
@@ -51,6 +57,7 @@ public final class DataflowEndpointAuthenticationSaslType
      * 
      * @return known DataflowEndpointAuthenticationSaslType values.
      */
+    @Generated
     public static Collection<DataflowEndpointAuthenticationSaslType> values() {
         return values(DataflowEndpointAuthenticationSaslType.class);
     }

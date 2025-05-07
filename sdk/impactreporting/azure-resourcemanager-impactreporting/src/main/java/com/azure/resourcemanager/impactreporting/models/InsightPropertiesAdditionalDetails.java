@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.impactreporting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,6 +20,7 @@ public final class InsightPropertiesAdditionalDetails implements JsonSerializabl
     /**
      * Creates an instance of InsightPropertiesAdditionalDetails class.
      */
+    @Generated
     public InsightPropertiesAdditionalDetails() {
     }
 

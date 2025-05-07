@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.CoreUtils;
@@ -24,26 +25,31 @@ public final class AutoUpgradeProfileStatus implements JsonSerializable<AutoUpgr
      * The UTC time of the last attempt to automatically create and start an UpdateRun as triggered by the release of
      * new versions.
      */
+    @Generated
     private OffsetDateTime lastTriggeredAt;
 
     /*
      * The status of the last AutoUpgrade trigger.
      */
+    @Generated
     private AutoUpgradeLastTriggerStatus lastTriggerStatus;
 
     /*
      * The error details of the last trigger.
      */
+    @Generated
     private ManagementError lastTriggerError;
 
     /*
      * The target Kubernetes version or node image versions of the last trigger.
      */
+    @Generated
     private List<String> lastTriggerUpgradeVersions;
 
     /**
      * Creates an instance of AutoUpgradeProfileStatus class.
      */
+    @Generated
     public AutoUpgradeProfileStatus() {
     }
 
@@ -53,6 +59,7 @@ public final class AutoUpgradeProfileStatus implements JsonSerializable<AutoUpgr
      * 
      * @return the lastTriggeredAt value.
      */
+    @Generated
     public OffsetDateTime lastTriggeredAt() {
         return this.lastTriggeredAt;
     }
@@ -62,6 +69,7 @@ public final class AutoUpgradeProfileStatus implements JsonSerializable<AutoUpgr
      * 
      * @return the lastTriggerStatus value.
      */
+    @Generated
     public AutoUpgradeLastTriggerStatus lastTriggerStatus() {
         return this.lastTriggerStatus;
     }
@@ -71,6 +79,7 @@ public final class AutoUpgradeProfileStatus implements JsonSerializable<AutoUpgr
      * 
      * @return the lastTriggerError value.
      */
+    @Generated
     public ManagementError lastTriggerError() {
         return this.lastTriggerError;
     }
@@ -81,6 +90,7 @@ public final class AutoUpgradeProfileStatus implements JsonSerializable<AutoUpgr
      * 
      * @return the lastTriggerUpgradeVersions value.
      */
+    @Generated
     public List<String> lastTriggerUpgradeVersions() {
         return this.lastTriggerUpgradeVersions;
     }

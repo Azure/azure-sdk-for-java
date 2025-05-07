@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class WinRMConfiguration implements JsonSerializable<WinRMConfigura
     /*
      * The list of Windows Remote Management listeners
      */
+    @Generated
     private List<WinRMListener> listeners;
 
     /**
      * Creates an instance of WinRMConfiguration class.
      */
+    @Generated
     public WinRMConfiguration() {
     }
 
@@ -33,6 +36,7 @@ public final class WinRMConfiguration implements JsonSerializable<WinRMConfigura
      * 
      * @return the listeners value.
      */
+    @Generated
     public List<WinRMListener> listeners() {
         return this.listeners;
     }
@@ -43,6 +47,7 @@ public final class WinRMConfiguration implements JsonSerializable<WinRMConfigura
      * @param listeners the listeners value to set.
      * @return the WinRMConfiguration object itself.
      */
+    @Generated
     public WinRMConfiguration withListeners(List<WinRMListener> listeners) {
         this.listeners = listeners;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,21 +20,25 @@ public final class ApiErrorBase implements JsonSerializable<ApiErrorBase> {
     /*
      * The error code.
      */
+    @Generated
     private String code;
 
     /*
      * The target of the particular error.
      */
+    @Generated
     private String target;
 
     /*
      * The error message.
      */
+    @Generated
     private String message;
 
     /**
      * Creates an instance of ApiErrorBase class.
      */
+    @Generated
     private ApiErrorBase() {
     }
 
@@ -42,6 +47,7 @@ public final class ApiErrorBase implements JsonSerializable<ApiErrorBase> {
      * 
      * @return the code value.
      */
+    @Generated
     public String code() {
         return this.code;
     }
@@ -51,6 +57,7 @@ public final class ApiErrorBase implements JsonSerializable<ApiErrorBase> {
      * 
      * @return the target value.
      */
+    @Generated
     public String target() {
         return this.target;
     }
@@ -60,6 +67,7 @@ public final class ApiErrorBase implements JsonSerializable<ApiErrorBase> {
      * 
      * @return the message value.
      */
+    @Generated
     public String message() {
         return this.message;
     }

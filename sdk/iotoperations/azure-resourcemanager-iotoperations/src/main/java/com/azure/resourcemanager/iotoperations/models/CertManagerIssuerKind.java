@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class CertManagerIssuerKind extends ExpandableStringEnum<CertManage
     /**
      * Issuer kind.
      */
+    @Generated
     public static final CertManagerIssuerKind ISSUER = fromString("Issuer");
 
     /**
      * ClusterIssuer kind.
      */
+    @Generated
     public static final CertManagerIssuerKind CLUSTER_ISSUER = fromString("ClusterIssuer");
 
     /**
@@ -26,6 +29,7 @@ public final class CertManagerIssuerKind extends ExpandableStringEnum<CertManage
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CertManagerIssuerKind() {
     }
@@ -36,6 +40,7 @@ public final class CertManagerIssuerKind extends ExpandableStringEnum<CertManage
      * @param name a name to look for.
      * @return the corresponding CertManagerIssuerKind.
      */
+    @Generated
     public static CertManagerIssuerKind fromString(String name) {
         return fromString(name, CertManagerIssuerKind.class);
     }
@@ -45,6 +50,7 @@ public final class CertManagerIssuerKind extends ExpandableStringEnum<CertManage
      * 
      * @return known CertManagerIssuerKind values.
      */
+    @Generated
     public static Collection<CertManagerIssuerKind> values() {
         return values(CertManagerIssuerKind.class);
     }

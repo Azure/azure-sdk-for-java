@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.healthdataaiservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * Updatable managed service identity
      */
+    @Generated
     private ManagedServiceIdentityUpdate identity;
 
     /*
      * RP-specific properties
      */
+    @Generated
     private DeidPropertiesUpdate properties;
 
     /**
      * Creates an instance of DeidUpdate class.
      */
+    @Generated
     public DeidUpdate() {
     }
 
@@ -43,6 +48,7 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -53,6 +59,7 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
      * @param tags the tags value to set.
      * @return the DeidUpdate object itself.
      */
+    @Generated
     public DeidUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -63,6 +70,7 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
      * 
      * @return the identity value.
      */
+    @Generated
     public ManagedServiceIdentityUpdate identity() {
         return this.identity;
     }
@@ -73,6 +81,7 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
      * @param identity the identity value to set.
      * @return the DeidUpdate object itself.
      */
+    @Generated
     public DeidUpdate withIdentity(ManagedServiceIdentityUpdate identity) {
         this.identity = identity;
         return this;
@@ -83,6 +92,7 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
      * 
      * @return the properties value.
      */
+    @Generated
     public DeidPropertiesUpdate properties() {
         return this.properties;
     }
@@ -93,6 +103,7 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
      * @param properties the properties value to set.
      * @return the DeidUpdate object itself.
      */
+    @Generated
     public DeidUpdate withProperties(DeidPropertiesUpdate properties) {
         this.properties = properties;
         return this;

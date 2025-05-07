@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,31 +22,37 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
     /*
      * Detailed description of the Instance.
      */
+    @Generated
     private String description;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * The Azure IoT Operations version.
      */
+    @Generated
     private String version;
 
     /*
      * The reference to the Schema Registry for this AIO Instance.
      */
+    @Generated
     private SchemaRegistryRef schemaRegistryRef;
 
     /*
      * The features of the AIO Instance.
      */
+    @Generated
     private Map<String, InstanceFeature> features;
 
     /**
      * Creates an instance of InstanceProperties class.
      */
+    @Generated
     public InstanceProperties() {
     }
 
@@ -54,6 +61,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * 
      * @return the description value.
      */
+    @Generated
     public String description() {
         return this.description;
     }
@@ -64,6 +72,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * @param description the description value to set.
      * @return the InstanceProperties object itself.
      */
+    @Generated
     public InstanceProperties withDescription(String description) {
         this.description = description;
         return this;
@@ -74,6 +83,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -83,6 +93,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * 
      * @return the version value.
      */
+    @Generated
     public String version() {
         return this.version;
     }
@@ -92,6 +103,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * 
      * @return the schemaRegistryRef value.
      */
+    @Generated
     public SchemaRegistryRef schemaRegistryRef() {
         return this.schemaRegistryRef;
     }
@@ -102,6 +114,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * @param schemaRegistryRef the schemaRegistryRef value to set.
      * @return the InstanceProperties object itself.
      */
+    @Generated
     public InstanceProperties withSchemaRegistryRef(SchemaRegistryRef schemaRegistryRef) {
         this.schemaRegistryRef = schemaRegistryRef;
         return this;
@@ -112,6 +125,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * 
      * @return the features value.
      */
+    @Generated
     public Map<String, InstanceFeature> features() {
         return this.features;
     }
@@ -122,6 +136,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * @param features the features value to set.
      * @return the InstanceProperties object itself.
      */
+    @Generated
     public InstanceProperties withFeatures(Map<String, InstanceFeature> features) {
         this.features = features;
         return this;

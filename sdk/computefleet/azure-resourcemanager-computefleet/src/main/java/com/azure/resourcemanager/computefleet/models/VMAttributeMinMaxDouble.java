@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class VMAttributeMinMaxDouble implements JsonSerializable<VMAttribu
     /*
      * Minimum value. default 0. Double.MinValue()
      */
+    @Generated
     private Double min;
 
     /*
      * Maximum value. Double.MaxValue(1.7976931348623157E+308)
      */
+    @Generated
     private Double max;
 
     /**
      * Creates an instance of VMAttributeMinMaxDouble class.
      */
+    @Generated
     public VMAttributeMinMaxDouble() {
     }
 
@@ -37,6 +41,7 @@ public final class VMAttributeMinMaxDouble implements JsonSerializable<VMAttribu
      * 
      * @return the min value.
      */
+    @Generated
     public Double min() {
         return this.min;
     }
@@ -47,6 +52,7 @@ public final class VMAttributeMinMaxDouble implements JsonSerializable<VMAttribu
      * @param min the min value to set.
      * @return the VMAttributeMinMaxDouble object itself.
      */
+    @Generated
     public VMAttributeMinMaxDouble withMin(Double min) {
         this.min = min;
         return this;
@@ -57,6 +63,7 @@ public final class VMAttributeMinMaxDouble implements JsonSerializable<VMAttribu
      * 
      * @return the max value.
      */
+    @Generated
     public Double max() {
         return this.max;
     }
@@ -67,6 +74,7 @@ public final class VMAttributeMinMaxDouble implements JsonSerializable<VMAttribu
      * @param max the max value to set.
      * @return the VMAttributeMinMaxDouble object itself.
      */
+    @Generated
     public VMAttributeMinMaxDouble withMax(Double max) {
         this.max = max;
         return this;

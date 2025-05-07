@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,22 +21,26 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
     /*
      * The type of file share config, eg: Mount/CreateAndMount/Skip.
      */
+    @Generated
     private FileShareConfigurationType configurationType = FileShareConfigurationType.CREATE_AND_MOUNT;
 
     /*
      * The name of transport file share resource group. This should be pre created by the customer. The app rg is used
      * in case of missing input.
      */
+    @Generated
     private String resourceGroup;
 
     /*
      * The name of file share storage account name . A custom name is used in case of missing input.
      */
+    @Generated
     private String storageAccountName;
 
     /**
      * Creates an instance of CreateAndMountFileShareConfiguration class.
      */
+    @Generated
     public CreateAndMountFileShareConfiguration() {
     }
 
@@ -44,6 +49,7 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
      * 
      * @return the configurationType value.
      */
+    @Generated
     @Override
     public FileShareConfigurationType configurationType() {
         return this.configurationType;
@@ -55,6 +61,7 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
      * 
      * @return the resourceGroup value.
      */
+    @Generated
     public String resourceGroup() {
         return this.resourceGroup;
     }
@@ -66,6 +73,7 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
      * @param resourceGroup the resourceGroup value to set.
      * @return the CreateAndMountFileShareConfiguration object itself.
      */
+    @Generated
     public CreateAndMountFileShareConfiguration withResourceGroup(String resourceGroup) {
         this.resourceGroup = resourceGroup;
         return this;
@@ -77,6 +85,7 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
      * 
      * @return the storageAccountName value.
      */
+    @Generated
     public String storageAccountName() {
         return this.storageAccountName;
     }
@@ -88,6 +97,7 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
      * @param storageAccountName the storageAccountName value to set.
      * @return the CreateAndMountFileShareConfiguration object itself.
      */
+    @Generated
     public CreateAndMountFileShareConfiguration withStorageAccountName(String storageAccountName) {
         this.storageAccountName = storageAccountName;
         return this;

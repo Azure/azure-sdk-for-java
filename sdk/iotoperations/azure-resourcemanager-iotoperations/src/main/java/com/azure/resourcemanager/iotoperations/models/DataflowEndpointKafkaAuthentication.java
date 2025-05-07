@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,31 +22,37 @@ public final class DataflowEndpointKafkaAuthentication
     /*
      * Mode of Authentication.
      */
+    @Generated
     private KafkaAuthMethod method;
 
     /*
      * System-assigned managed identity authentication.
      */
+    @Generated
     private DataflowEndpointAuthenticationSystemAssignedManagedIdentity systemAssignedManagedIdentitySettings;
 
     /*
      * User-assigned managed identity authentication.
      */
+    @Generated
     private DataflowEndpointAuthenticationUserAssignedManagedIdentity userAssignedManagedIdentitySettings;
 
     /*
      * SASL authentication.
      */
+    @Generated
     private DataflowEndpointAuthenticationSasl saslSettings;
 
     /*
      * X.509 certificate authentication.
      */
+    @Generated
     private DataflowEndpointAuthenticationX509 x509CertificateSettings;
 
     /**
      * Creates an instance of DataflowEndpointKafkaAuthentication class.
      */
+    @Generated
     public DataflowEndpointKafkaAuthentication() {
     }
 
@@ -54,6 +61,7 @@ public final class DataflowEndpointKafkaAuthentication
      * 
      * @return the method value.
      */
+    @Generated
     public KafkaAuthMethod method() {
         return this.method;
     }
@@ -64,6 +72,7 @@ public final class DataflowEndpointKafkaAuthentication
      * @param method the method value to set.
      * @return the DataflowEndpointKafkaAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointKafkaAuthentication withMethod(KafkaAuthMethod method) {
         this.method = method;
         return this;
@@ -74,6 +83,7 @@ public final class DataflowEndpointKafkaAuthentication
      * 
      * @return the systemAssignedManagedIdentitySettings value.
      */
+    @Generated
     public DataflowEndpointAuthenticationSystemAssignedManagedIdentity systemAssignedManagedIdentitySettings() {
         return this.systemAssignedManagedIdentitySettings;
     }
@@ -84,6 +94,7 @@ public final class DataflowEndpointKafkaAuthentication
      * @param systemAssignedManagedIdentitySettings the systemAssignedManagedIdentitySettings value to set.
      * @return the DataflowEndpointKafkaAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointKafkaAuthentication withSystemAssignedManagedIdentitySettings(
         DataflowEndpointAuthenticationSystemAssignedManagedIdentity systemAssignedManagedIdentitySettings) {
         this.systemAssignedManagedIdentitySettings = systemAssignedManagedIdentitySettings;
@@ -95,6 +106,7 @@ public final class DataflowEndpointKafkaAuthentication
      * 
      * @return the userAssignedManagedIdentitySettings value.
      */
+    @Generated
     public DataflowEndpointAuthenticationUserAssignedManagedIdentity userAssignedManagedIdentitySettings() {
         return this.userAssignedManagedIdentitySettings;
     }
@@ -105,6 +117,7 @@ public final class DataflowEndpointKafkaAuthentication
      * @param userAssignedManagedIdentitySettings the userAssignedManagedIdentitySettings value to set.
      * @return the DataflowEndpointKafkaAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointKafkaAuthentication withUserAssignedManagedIdentitySettings(
         DataflowEndpointAuthenticationUserAssignedManagedIdentity userAssignedManagedIdentitySettings) {
         this.userAssignedManagedIdentitySettings = userAssignedManagedIdentitySettings;
@@ -116,6 +129,7 @@ public final class DataflowEndpointKafkaAuthentication
      * 
      * @return the saslSettings value.
      */
+    @Generated
     public DataflowEndpointAuthenticationSasl saslSettings() {
         return this.saslSettings;
     }
@@ -126,6 +140,7 @@ public final class DataflowEndpointKafkaAuthentication
      * @param saslSettings the saslSettings value to set.
      * @return the DataflowEndpointKafkaAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointKafkaAuthentication withSaslSettings(DataflowEndpointAuthenticationSasl saslSettings) {
         this.saslSettings = saslSettings;
         return this;
@@ -136,6 +151,7 @@ public final class DataflowEndpointKafkaAuthentication
      * 
      * @return the x509CertificateSettings value.
      */
+    @Generated
     public DataflowEndpointAuthenticationX509 x509CertificateSettings() {
         return this.x509CertificateSettings;
     }
@@ -146,6 +162,7 @@ public final class DataflowEndpointKafkaAuthentication
      * @param x509CertificateSettings the x509CertificateSettings value to set.
      * @return the DataflowEndpointKafkaAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointKafkaAuthentication
         withX509CertificateSettings(DataflowEndpointAuthenticationX509 x509CertificateSettings) {
         this.x509CertificateSettings = x509CertificateSettings;

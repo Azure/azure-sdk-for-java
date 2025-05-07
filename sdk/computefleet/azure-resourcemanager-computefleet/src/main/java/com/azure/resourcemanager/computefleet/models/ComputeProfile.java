@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,6 +22,7 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
      * Base Virtual Machine Profile Properties to be specified according to
      * "specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/{computeApiVersion}/virtualMachineScaleSet.json#/definitions/VirtualMachineScaleSetVMProfile"
      */
+    @Generated
     private BaseVirtualMachineProfile baseVirtualMachineProfile;
 
     /*
@@ -28,6 +30,7 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
      * Virtual Machines.
      * The default value will be the latest supported computeApiVersion by Compute Fleet.
      */
+    @Generated
     private String computeApiVersion;
 
     /*
@@ -37,6 +40,7 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
      * If not specified, defaults to 1, which represents "Max Spreading" (using as many fault domains as possible).
      * This property cannot be updated.
      */
+    @Generated
     private Integer platformFaultDomainCount;
 
     /*
@@ -46,11 +50,13 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
      * hibernationEnabled: Enables the hibernation capability on the VMSS VMs.
      * Default value is null if not specified. This property cannot be updated once set.
      */
+    @Generated
     private AdditionalCapabilities additionalVirtualMachineCapabilities;
 
     /**
      * Creates an instance of ComputeProfile class.
      */
+    @Generated
     public ComputeProfile() {
     }
 
@@ -60,6 +66,7 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
      * 
      * @return the baseVirtualMachineProfile value.
      */
+    @Generated
     public BaseVirtualMachineProfile baseVirtualMachineProfile() {
         return this.baseVirtualMachineProfile;
     }
@@ -71,6 +78,7 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
      * @param baseVirtualMachineProfile the baseVirtualMachineProfile value to set.
      * @return the ComputeProfile object itself.
      */
+    @Generated
     public ComputeProfile withBaseVirtualMachineProfile(BaseVirtualMachineProfile baseVirtualMachineProfile) {
         this.baseVirtualMachineProfile = baseVirtualMachineProfile;
         return this;
@@ -83,6 +91,7 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
      * 
      * @return the computeApiVersion value.
      */
+    @Generated
     public String computeApiVersion() {
         return this.computeApiVersion;
     }
@@ -95,6 +104,7 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
      * @param computeApiVersion the computeApiVersion value to set.
      * @return the ComputeProfile object itself.
      */
+    @Generated
     public ComputeProfile withComputeApiVersion(String computeApiVersion) {
         this.computeApiVersion = computeApiVersion;
         return this;
@@ -110,6 +120,7 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
      * 
      * @return the platformFaultDomainCount value.
      */
+    @Generated
     public Integer platformFaultDomainCount() {
         return this.platformFaultDomainCount;
     }
@@ -125,6 +136,7 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
      * @param platformFaultDomainCount the platformFaultDomainCount value to set.
      * @return the ComputeProfile object itself.
      */
+    @Generated
     public ComputeProfile withPlatformFaultDomainCount(Integer platformFaultDomainCount) {
         this.platformFaultDomainCount = platformFaultDomainCount;
         return this;
@@ -139,6 +151,7 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
      * 
      * @return the additionalVirtualMachineCapabilities value.
      */
+    @Generated
     public AdditionalCapabilities additionalVirtualMachineCapabilities() {
         return this.additionalVirtualMachineCapabilities;
     }
@@ -153,6 +166,7 @@ public final class ComputeProfile implements JsonSerializable<ComputeProfile> {
      * @param additionalVirtualMachineCapabilities the additionalVirtualMachineCapabilities value to set.
      * @return the ComputeProfile object itself.
      */
+    @Generated
     public ComputeProfile
         withAdditionalVirtualMachineCapabilities(AdditionalCapabilities additionalVirtualMachineCapabilities) {
         this.additionalVirtualMachineCapabilities = additionalVirtualMachineCapabilities;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -22,11 +23,13 @@ public final class DiskControllerTypes extends ExpandableStringEnum<DiskControll
     /**
      * SCSI disk type.
      */
+    @Generated
     public static final DiskControllerTypes SCSI = fromString("SCSI");
 
     /**
      * NVMe disk type.
      */
+    @Generated
     public static final DiskControllerTypes NVME = fromString("NVMe");
 
     /**
@@ -34,6 +37,7 @@ public final class DiskControllerTypes extends ExpandableStringEnum<DiskControll
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DiskControllerTypes() {
     }
@@ -44,6 +48,7 @@ public final class DiskControllerTypes extends ExpandableStringEnum<DiskControll
      * @param name a name to look for.
      * @return the corresponding DiskControllerTypes.
      */
+    @Generated
     public static DiskControllerTypes fromString(String name) {
         return fromString(name, DiskControllerTypes.class);
     }
@@ -53,6 +58,7 @@ public final class DiskControllerTypes extends ExpandableStringEnum<DiskControll
      * 
      * @return known DiskControllerTypes values.
      */
+    @Generated
     public static Collection<DiskControllerTypes> values() {
         return values(DiskControllerTypes.class);
     }

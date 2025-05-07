@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,22 +22,26 @@ public final class CertManagerCertOptions implements JsonSerializable<CertManage
      * Lifetime of certificate. Must be specified using a Go time.Duration format (h|m|s). E.g. 240h for 240 hours and
      * 45m for 45 minutes.
      */
+    @Generated
     private String duration;
 
     /*
      * When to begin renewing certificate. Must be specified using a Go time.Duration format (h|m|s). E.g. 240h for 240
      * hours and 45m for 45 minutes.
      */
+    @Generated
     private String renewBefore;
 
     /*
      * Configuration of certificate private key.
      */
+    @Generated
     private CertManagerPrivateKey privateKey;
 
     /**
      * Creates an instance of CertManagerCertOptions class.
      */
+    @Generated
     public CertManagerCertOptions() {
     }
 
@@ -46,6 +51,7 @@ public final class CertManagerCertOptions implements JsonSerializable<CertManage
      * 
      * @return the duration value.
      */
+    @Generated
     public String duration() {
         return this.duration;
     }
@@ -57,6 +63,7 @@ public final class CertManagerCertOptions implements JsonSerializable<CertManage
      * @param duration the duration value to set.
      * @return the CertManagerCertOptions object itself.
      */
+    @Generated
     public CertManagerCertOptions withDuration(String duration) {
         this.duration = duration;
         return this;
@@ -68,6 +75,7 @@ public final class CertManagerCertOptions implements JsonSerializable<CertManage
      * 
      * @return the renewBefore value.
      */
+    @Generated
     public String renewBefore() {
         return this.renewBefore;
     }
@@ -79,6 +87,7 @@ public final class CertManagerCertOptions implements JsonSerializable<CertManage
      * @param renewBefore the renewBefore value to set.
      * @return the CertManagerCertOptions object itself.
      */
+    @Generated
     public CertManagerCertOptions withRenewBefore(String renewBefore) {
         this.renewBefore = renewBefore;
         return this;
@@ -89,6 +98,7 @@ public final class CertManagerCertOptions implements JsonSerializable<CertManage
      * 
      * @return the privateKey value.
      */
+    @Generated
     public CertManagerPrivateKey privateKey() {
         return this.privateKey;
     }
@@ -99,6 +109,7 @@ public final class CertManagerCertOptions implements JsonSerializable<CertManage
      * @param privateKey the privateKey value to set.
      * @return the CertManagerCertOptions object itself.
      */
+    @Generated
     public CertManagerCertOptions withPrivateKey(CertManagerPrivateKey privateKey) {
         this.privateKey = privateKey;
         return this;

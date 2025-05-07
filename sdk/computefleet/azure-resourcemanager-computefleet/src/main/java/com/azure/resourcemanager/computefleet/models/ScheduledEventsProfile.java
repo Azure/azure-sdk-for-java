@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class ScheduledEventsProfile implements JsonSerializable<ScheduledE
     /*
      * Specifies Terminate Scheduled Event related configurations.
      */
+    @Generated
     private TerminateNotificationProfile terminateNotificationProfile;
 
     /*
      * Specifies OS Image Scheduled Event related configurations.
      */
+    @Generated
     private OSImageNotificationProfile osImageNotificationProfile;
 
     /**
      * Creates an instance of ScheduledEventsProfile class.
      */
+    @Generated
     public ScheduledEventsProfile() {
     }
 
@@ -37,6 +41,7 @@ public final class ScheduledEventsProfile implements JsonSerializable<ScheduledE
      * 
      * @return the terminateNotificationProfile value.
      */
+    @Generated
     public TerminateNotificationProfile terminateNotificationProfile() {
         return this.terminateNotificationProfile;
     }
@@ -47,6 +52,7 @@ public final class ScheduledEventsProfile implements JsonSerializable<ScheduledE
      * @param terminateNotificationProfile the terminateNotificationProfile value to set.
      * @return the ScheduledEventsProfile object itself.
      */
+    @Generated
     public ScheduledEventsProfile
         withTerminateNotificationProfile(TerminateNotificationProfile terminateNotificationProfile) {
         this.terminateNotificationProfile = terminateNotificationProfile;
@@ -58,6 +64,7 @@ public final class ScheduledEventsProfile implements JsonSerializable<ScheduledE
      * 
      * @return the osImageNotificationProfile value.
      */
+    @Generated
     public OSImageNotificationProfile osImageNotificationProfile() {
         return this.osImageNotificationProfile;
     }
@@ -68,6 +75,7 @@ public final class ScheduledEventsProfile implements JsonSerializable<ScheduledE
      * @param osImageNotificationProfile the osImageNotificationProfile value to set.
      * @return the ScheduledEventsProfile object itself.
      */
+    @Generated
     public ScheduledEventsProfile
         withOsImageNotificationProfile(OSImageNotificationProfile osImageNotificationProfile) {
         this.osImageNotificationProfile = osImageNotificationProfile;

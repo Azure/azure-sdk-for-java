@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,21 +20,25 @@ public final class ConnectionString implements JsonSerializable<ConnectionString
     /*
      * Value of the connection string
      */
+    @Generated
     private String connectionString;
 
     /*
      * Description of the connection string
      */
+    @Generated
     private String description;
 
     /*
      * Name of the connection string.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of ConnectionString class.
      */
+    @Generated
     private ConnectionString() {
     }
 
@@ -42,6 +47,7 @@ public final class ConnectionString implements JsonSerializable<ConnectionString
      * 
      * @return the connectionString value.
      */
+    @Generated
     public String connectionString() {
         return this.connectionString;
     }
@@ -51,6 +57,7 @@ public final class ConnectionString implements JsonSerializable<ConnectionString
      * 
      * @return the description value.
      */
+    @Generated
     public String description() {
         return this.description;
     }
@@ -60,6 +67,7 @@ public final class ConnectionString implements JsonSerializable<ConnectionString
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }

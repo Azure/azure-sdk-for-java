@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.durabletask.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class RedundancyState extends ExpandableStringEnum<RedundancyState>
     /**
      * The resource is not redundant.
      */
+    @Generated
     public static final RedundancyState NONE = fromString("None");
 
     /**
      * The resource is zone redundant.
      */
+    @Generated
     public static final RedundancyState ZONE = fromString("Zone");
 
     /**
@@ -26,6 +29,7 @@ public final class RedundancyState extends ExpandableStringEnum<RedundancyState>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RedundancyState() {
     }
@@ -36,6 +40,7 @@ public final class RedundancyState extends ExpandableStringEnum<RedundancyState>
      * @param name a name to look for.
      * @return the corresponding RedundancyState.
      */
+    @Generated
     public static RedundancyState fromString(String name) {
         return fromString(name, RedundancyState.class);
     }
@@ -45,6 +50,7 @@ public final class RedundancyState extends ExpandableStringEnum<RedundancyState>
      * 
      * @return known RedundancyState values.
      */
+    @Generated
     public static Collection<RedundancyState> values() {
         return values(RedundancyState.class);
     }

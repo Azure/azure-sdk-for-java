@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.impactreporting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class ConfidenceLevel extends ExpandableStringEnum<ConfidenceLevel>
     /**
      * Low confidence on azure being the source of impact.
      */
+    @Generated
     public static final ConfidenceLevel LOW = fromString("Low");
 
     /**
      * Medium confidence on azure being the source of impact.
      */
+    @Generated
     public static final ConfidenceLevel MEDIUM = fromString("Medium");
 
     /**
      * High confidence on azure being the source of impact.
      */
+    @Generated
     public static final ConfidenceLevel HIGH = fromString("High");
 
     /**
@@ -31,6 +35,7 @@ public final class ConfidenceLevel extends ExpandableStringEnum<ConfidenceLevel>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ConfidenceLevel() {
     }
@@ -41,6 +46,7 @@ public final class ConfidenceLevel extends ExpandableStringEnum<ConfidenceLevel>
      * @param name a name to look for.
      * @return the corresponding ConfidenceLevel.
      */
+    @Generated
     public static ConfidenceLevel fromString(String name) {
         return fromString(name, ConfidenceLevel.class);
     }
@@ -50,6 +56,7 @@ public final class ConfidenceLevel extends ExpandableStringEnum<ConfidenceLevel>
      * 
      * @return known ConfidenceLevel values.
      */
+    @Generated
     public static Collection<ConfidenceLevel> values() {
         return values(ConfidenceLevel.class);
     }

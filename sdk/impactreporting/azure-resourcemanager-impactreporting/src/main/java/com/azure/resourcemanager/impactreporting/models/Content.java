@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class Content implements JsonSerializable<Content> {
     /*
      * Title of the insight
      */
+    @Generated
     private String title;
 
     /*
      * Description of the insight
      */
+    @Generated
     private String description;
 
     /**
      * Creates an instance of Content class.
      */
+    @Generated
     public Content() {
     }
 
@@ -38,6 +42,7 @@ public final class Content implements JsonSerializable<Content> {
      * 
      * @return the title value.
      */
+    @Generated
     public String title() {
         return this.title;
     }
@@ -48,6 +53,7 @@ public final class Content implements JsonSerializable<Content> {
      * @param title the title value to set.
      * @return the Content object itself.
      */
+    @Generated
     public Content withTitle(String title) {
         this.title = title;
         return this;
@@ -58,6 +64,7 @@ public final class Content implements JsonSerializable<Content> {
      * 
      * @return the description value.
      */
+    @Generated
     public String description() {
         return this.description;
     }
@@ -68,6 +75,7 @@ public final class Content implements JsonSerializable<Content> {
      * @param description the description value to set.
      * @return the Content object itself.
      */
+    @Generated
     public Content withDescription(String description) {
         this.description = description;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class WatcherUpdateProperties implements JsonSerializable<WatcherUp
     /*
      * The data store for collected monitoring data.
      */
+    @Generated
     private Datastore datastore;
 
     /*
      * The resource ID of a user-assigned managed identity that will be assigned to a new alert rule.
      */
+    @Generated
     private String defaultAlertRuleIdentityResourceId;
 
     /**
      * Creates an instance of WatcherUpdateProperties class.
      */
+    @Generated
     public WatcherUpdateProperties() {
     }
 
@@ -37,6 +41,7 @@ public final class WatcherUpdateProperties implements JsonSerializable<WatcherUp
      * 
      * @return the datastore value.
      */
+    @Generated
     public Datastore datastore() {
         return this.datastore;
     }
@@ -47,6 +52,7 @@ public final class WatcherUpdateProperties implements JsonSerializable<WatcherUp
      * @param datastore the datastore value to set.
      * @return the WatcherUpdateProperties object itself.
      */
+    @Generated
     public WatcherUpdateProperties withDatastore(Datastore datastore) {
         this.datastore = datastore;
         return this;
@@ -58,6 +64,7 @@ public final class WatcherUpdateProperties implements JsonSerializable<WatcherUp
      * 
      * @return the defaultAlertRuleIdentityResourceId value.
      */
+    @Generated
     public String defaultAlertRuleIdentityResourceId() {
         return this.defaultAlertRuleIdentityResourceId;
     }
@@ -69,6 +76,7 @@ public final class WatcherUpdateProperties implements JsonSerializable<WatcherUp
      * @param defaultAlertRuleIdentityResourceId the defaultAlertRuleIdentityResourceId value to set.
      * @return the WatcherUpdateProperties object itself.
      */
+    @Generated
     public WatcherUpdateProperties withDefaultAlertRuleIdentityResourceId(String defaultAlertRuleIdentityResourceId) {
         this.defaultAlertRuleIdentityResourceId = defaultAlertRuleIdentityResourceId;
         return this;

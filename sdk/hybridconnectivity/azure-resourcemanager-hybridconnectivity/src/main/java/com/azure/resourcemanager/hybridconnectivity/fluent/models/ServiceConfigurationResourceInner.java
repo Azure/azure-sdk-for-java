@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -22,31 +23,37 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
     /*
      * The service configuration properties.
      */
+    @Generated
     private ServiceConfigurationProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of ServiceConfigurationResourceInner class.
      */
+    @Generated
     public ServiceConfigurationResourceInner() {
     }
 
@@ -55,6 +62,7 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
      * 
      * @return the innerProperties value.
      */
+    @Generated
     private ServiceConfigurationProperties innerProperties() {
         return this.innerProperties;
     }
@@ -64,6 +72,7 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -73,6 +82,7 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -83,6 +93,7 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -93,6 +104,7 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;
@@ -103,6 +115,7 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
      * 
      * @return the serviceName value.
      */
+    @Generated
     public ServiceName serviceName() {
         return this.innerProperties() == null ? null : this.innerProperties().serviceName();
     }
@@ -113,6 +126,7 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
      * @param serviceName the serviceName value to set.
      * @return the ServiceConfigurationResourceInner object itself.
      */
+    @Generated
     public ServiceConfigurationResourceInner withServiceName(ServiceName serviceName) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServiceConfigurationProperties();
@@ -126,6 +140,7 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String resourceId() {
         return this.innerProperties() == null ? null : this.innerProperties().resourceId();
     }
@@ -136,6 +151,7 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
      * @param resourceId the resourceId value to set.
      * @return the ServiceConfigurationResourceInner object itself.
      */
+    @Generated
     public ServiceConfigurationResourceInner withResourceId(String resourceId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServiceConfigurationProperties();
@@ -149,6 +165,7 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
      * 
      * @return the port value.
      */
+    @Generated
     public Long port() {
         return this.innerProperties() == null ? null : this.innerProperties().port();
     }
@@ -159,6 +176,7 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
      * @param port the port value to set.
      * @return the ServiceConfigurationResourceInner object itself.
      */
+    @Generated
     public ServiceConfigurationResourceInner withPort(Long port) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServiceConfigurationProperties();
@@ -172,6 +190,7 @@ public final class ServiceConfigurationResourceInner extends ProxyResource {
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }

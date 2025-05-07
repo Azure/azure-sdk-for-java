@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class FilterType extends ExpandableStringEnum<FilterType> {
     /**
      * Filter type.
      */
+    @Generated
     public static final FilterType FILTER = fromString("Filter");
 
     /**
@@ -21,6 +23,7 @@ public final class FilterType extends ExpandableStringEnum<FilterType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public FilterType() {
     }
@@ -31,6 +34,7 @@ public final class FilterType extends ExpandableStringEnum<FilterType> {
      * @param name a name to look for.
      * @return the corresponding FilterType.
      */
+    @Generated
     public static FilterType fromString(String name) {
         return fromString(name, FilterType.class);
     }
@@ -40,6 +44,7 @@ public final class FilterType extends ExpandableStringEnum<FilterType> {
      * 
      * @return known FilterType values.
      */
+    @Generated
     public static Collection<FilterType> values() {
         return values(FilterType.class);
     }

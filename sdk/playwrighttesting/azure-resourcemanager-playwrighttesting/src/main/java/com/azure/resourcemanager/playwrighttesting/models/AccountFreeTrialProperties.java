@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.playwrighttesting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -21,31 +22,37 @@ public final class AccountFreeTrialProperties implements JsonSerializable<Accoun
     /*
      * The free-trial createdAt utcDateTime.
      */
+    @Generated
     private OffsetDateTime createdAt;
 
     /*
      * The free-trial expiryAt utcDateTime.
      */
+    @Generated
     private OffsetDateTime expiryAt;
 
     /*
      * The free-trial allocated limit value eg. allocated free minutes.
      */
+    @Generated
     private int allocatedValue;
 
     /*
      * The free-trial used value eg. used free minutes.
      */
+    @Generated
     private int usedValue;
 
     /*
      * The free-trial percentage used.
      */
+    @Generated
     private double percentageUsed;
 
     /**
      * Creates an instance of AccountFreeTrialProperties class.
      */
+    @Generated
     private AccountFreeTrialProperties() {
     }
 
@@ -54,6 +61,7 @@ public final class AccountFreeTrialProperties implements JsonSerializable<Accoun
      * 
      * @return the createdAt value.
      */
+    @Generated
     public OffsetDateTime createdAt() {
         return this.createdAt;
     }
@@ -63,6 +71,7 @@ public final class AccountFreeTrialProperties implements JsonSerializable<Accoun
      * 
      * @return the expiryAt value.
      */
+    @Generated
     public OffsetDateTime expiryAt() {
         return this.expiryAt;
     }
@@ -72,6 +81,7 @@ public final class AccountFreeTrialProperties implements JsonSerializable<Accoun
      * 
      * @return the allocatedValue value.
      */
+    @Generated
     public int allocatedValue() {
         return this.allocatedValue;
     }
@@ -81,6 +91,7 @@ public final class AccountFreeTrialProperties implements JsonSerializable<Accoun
      * 
      * @return the usedValue value.
      */
+    @Generated
     public int usedValue() {
         return this.usedValue;
     }
@@ -90,6 +101,7 @@ public final class AccountFreeTrialProperties implements JsonSerializable<Accoun
      * 
      * @return the percentageUsed value.
      */
+    @Generated
     public double percentageUsed() {
         return this.percentageUsed;
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ResourcePredictionsProfileType extends ExpandableStringEnum<R
     /**
      * Customer provides the stand-by agent scheme.
      */
+    @Generated
     public static final ResourcePredictionsProfileType MANUAL = fromString("Manual");
 
     /**
      * The stand-by agent scheme is determined based on historical demand.
      */
+    @Generated
     public static final ResourcePredictionsProfileType AUTOMATIC = fromString("Automatic");
 
     /**
@@ -26,6 +29,7 @@ public final class ResourcePredictionsProfileType extends ExpandableStringEnum<R
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ResourcePredictionsProfileType() {
     }
@@ -36,6 +40,7 @@ public final class ResourcePredictionsProfileType extends ExpandableStringEnum<R
      * @param name a name to look for.
      * @return the corresponding ResourcePredictionsProfileType.
      */
+    @Generated
     public static ResourcePredictionsProfileType fromString(String name) {
         return fromString(name, ResourcePredictionsProfileType.class);
     }
@@ -45,6 +50,7 @@ public final class ResourcePredictionsProfileType extends ExpandableStringEnum<R
      * 
      * @return known ResourcePredictionsProfileType values.
      */
+    @Generated
     public static Collection<ResourcePredictionsProfileType> values() {
         return values(ResourcePredictionsProfileType.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class FailoverTier extends ExpandableStringEnum<FailoverTier> {
     /**
      * Not available Failover Tier.
      */
+    @Generated
     public static final FailoverTier NOT_AVAILABLE = fromString("NotAvailable");
 
     /**
      * Slow Failover Tier.
      */
+    @Generated
     public static final FailoverTier SLOW = fromString("Slow");
 
     /**
      * Fast Failover Tier.
      */
+    @Generated
     public static final FailoverTier FAST = fromString("Fast");
 
     /**
      * Super Failover Tier.
      */
+    @Generated
     public static final FailoverTier SUPER = fromString("Super");
 
     /**
@@ -36,6 +41,7 @@ public final class FailoverTier extends ExpandableStringEnum<FailoverTier> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public FailoverTier() {
     }
@@ -46,6 +52,7 @@ public final class FailoverTier extends ExpandableStringEnum<FailoverTier> {
      * @param name a name to look for.
      * @return the corresponding FailoverTier.
      */
+    @Generated
     public static FailoverTier fromString(String name) {
         return fromString(name, FailoverTier.class);
     }
@@ -55,6 +62,7 @@ public final class FailoverTier extends ExpandableStringEnum<FailoverTier> {
      * 
      * @return known FailoverTier values.
      */
+    @Generated
     public static Collection<FailoverTier> values() {
         return values(FailoverTier.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -19,22 +20,26 @@ public final class CarbonEmissionItemDetailData extends CarbonEmissionData {
     /*
      * The data type of the query result, indicating the format of the returned response.
      */
+    @Generated
     private ResponseDataTypeEnum dataType = ResponseDataTypeEnum.ITEM_DETAILS_DATA;
 
     /*
      * Item name, it can be resource name, resource type name, location, resource group name or subscriptionId. It
      * depends on category type.
      */
+    @Generated
     private String itemName;
 
     /*
      * Item category, see supported type value defined in CategoryTypeEnum
      */
+    @Generated
     private CategoryTypeEnum categoryType;
 
     /**
      * Creates an instance of CarbonEmissionItemDetailData class.
      */
+    @Generated
     private CarbonEmissionItemDetailData() {
     }
 
@@ -43,6 +48,7 @@ public final class CarbonEmissionItemDetailData extends CarbonEmissionData {
      * 
      * @return the dataType value.
      */
+    @Generated
     @Override
     public ResponseDataTypeEnum dataType() {
         return this.dataType;
@@ -54,6 +60,7 @@ public final class CarbonEmissionItemDetailData extends CarbonEmissionData {
      * 
      * @return the itemName value.
      */
+    @Generated
     public String itemName() {
         return this.itemName;
     }
@@ -63,6 +70,7 @@ public final class CarbonEmissionItemDetailData extends CarbonEmissionData {
      * 
      * @return the categoryType value.
      */
+    @Generated
     public CategoryTypeEnum categoryType() {
         return this.categoryType;
     }

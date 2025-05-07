@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,11 +17,13 @@ public final class LinuxVMGuestPatchMode extends ExpandableStringEnum<LinuxVMGue
     /**
      * The virtual machine's default patching configuration is used.
      */
+    @Generated
     public static final LinuxVMGuestPatchMode IMAGE_DEFAULT = fromString("ImageDefault");
 
     /**
      * The virtual machine will be automatically updated by the platform. The property provisionVMAgent must be true.
      */
+    @Generated
     public static final LinuxVMGuestPatchMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 
     /**
@@ -28,6 +31,7 @@ public final class LinuxVMGuestPatchMode extends ExpandableStringEnum<LinuxVMGue
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public LinuxVMGuestPatchMode() {
     }
@@ -38,6 +42,7 @@ public final class LinuxVMGuestPatchMode extends ExpandableStringEnum<LinuxVMGue
      * @param name a name to look for.
      * @return the corresponding LinuxVMGuestPatchMode.
      */
+    @Generated
     public static LinuxVMGuestPatchMode fromString(String name) {
         return fromString(name, LinuxVMGuestPatchMode.class);
     }
@@ -47,6 +52,7 @@ public final class LinuxVMGuestPatchMode extends ExpandableStringEnum<LinuxVMGue
      * 
      * @return known LinuxVMGuestPatchMode values.
      */
+    @Generated
     public static Collection<LinuxVMGuestPatchMode> values() {
         return values(LinuxVMGuestPatchMode.class);
     }

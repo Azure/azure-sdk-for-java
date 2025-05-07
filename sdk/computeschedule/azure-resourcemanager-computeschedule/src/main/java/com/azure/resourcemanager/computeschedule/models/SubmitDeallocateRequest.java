@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,26 +21,31 @@ public final class SubmitDeallocateRequest implements JsonSerializable<SubmitDea
     /*
      * The schedule for the request
      */
+    @Generated
     private Schedule schedule;
 
     /*
      * The execution parameters for the request
      */
+    @Generated
     private ExecutionParameters executionParameters;
 
     /*
      * The resources for the request
      */
+    @Generated
     private Resources resources;
 
     /*
      * CorrelationId item
      */
+    @Generated
     private String correlationid;
 
     /**
      * Creates an instance of SubmitDeallocateRequest class.
      */
+    @Generated
     public SubmitDeallocateRequest() {
     }
 
@@ -48,6 +54,7 @@ public final class SubmitDeallocateRequest implements JsonSerializable<SubmitDea
      * 
      * @return the schedule value.
      */
+    @Generated
     public Schedule schedule() {
         return this.schedule;
     }
@@ -58,6 +65,7 @@ public final class SubmitDeallocateRequest implements JsonSerializable<SubmitDea
      * @param schedule the schedule value to set.
      * @return the SubmitDeallocateRequest object itself.
      */
+    @Generated
     public SubmitDeallocateRequest withSchedule(Schedule schedule) {
         this.schedule = schedule;
         return this;
@@ -68,6 +76,7 @@ public final class SubmitDeallocateRequest implements JsonSerializable<SubmitDea
      * 
      * @return the executionParameters value.
      */
+    @Generated
     public ExecutionParameters executionParameters() {
         return this.executionParameters;
     }
@@ -78,6 +87,7 @@ public final class SubmitDeallocateRequest implements JsonSerializable<SubmitDea
      * @param executionParameters the executionParameters value to set.
      * @return the SubmitDeallocateRequest object itself.
      */
+    @Generated
     public SubmitDeallocateRequest withExecutionParameters(ExecutionParameters executionParameters) {
         this.executionParameters = executionParameters;
         return this;
@@ -88,6 +98,7 @@ public final class SubmitDeallocateRequest implements JsonSerializable<SubmitDea
      * 
      * @return the resources value.
      */
+    @Generated
     public Resources resources() {
         return this.resources;
     }
@@ -98,6 +109,7 @@ public final class SubmitDeallocateRequest implements JsonSerializable<SubmitDea
      * @param resources the resources value to set.
      * @return the SubmitDeallocateRequest object itself.
      */
+    @Generated
     public SubmitDeallocateRequest withResources(Resources resources) {
         this.resources = resources;
         return this;
@@ -108,6 +120,7 @@ public final class SubmitDeallocateRequest implements JsonSerializable<SubmitDea
      * 
      * @return the correlationid value.
      */
+    @Generated
     public String correlationid() {
         return this.correlationid;
     }
@@ -118,6 +131,7 @@ public final class SubmitDeallocateRequest implements JsonSerializable<SubmitDea
      * @param correlationid the correlationid value to set.
      * @return the SubmitDeallocateRequest object itself.
      */
+    @Generated
     public SubmitDeallocateRequest withCorrelationid(String correlationid) {
         this.correlationid = correlationid;
         return this;

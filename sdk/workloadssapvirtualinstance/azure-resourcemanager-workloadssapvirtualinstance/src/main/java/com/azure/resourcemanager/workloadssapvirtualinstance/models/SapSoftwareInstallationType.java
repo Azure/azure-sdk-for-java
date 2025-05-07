@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,17 +15,20 @@ public final class SapSoftwareInstallationType extends ExpandableStringEnum<SapS
     /**
      * SAP Install managed by service.
      */
+    @Generated
     public static final SapSoftwareInstallationType SERVICE_INITIATED = fromString("ServiceInitiated");
 
     /**
      * SAP Install without OS Config.
      */
+    @Generated
     public static final SapSoftwareInstallationType SAPINSTALL_WITHOUT_OSCONFIG
         = fromString("SAPInstallWithoutOSConfig");
 
     /**
      * External software installation type.
      */
+    @Generated
     public static final SapSoftwareInstallationType EXTERNAL = fromString("External");
 
     /**
@@ -32,6 +36,7 @@ public final class SapSoftwareInstallationType extends ExpandableStringEnum<SapS
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SapSoftwareInstallationType() {
     }
@@ -42,6 +47,7 @@ public final class SapSoftwareInstallationType extends ExpandableStringEnum<SapS
      * @param name a name to look for.
      * @return the corresponding SapSoftwareInstallationType.
      */
+    @Generated
     public static SapSoftwareInstallationType fromString(String name) {
         return fromString(name, SapSoftwareInstallationType.class);
     }
@@ -51,6 +57,7 @@ public final class SapSoftwareInstallationType extends ExpandableStringEnum<SapS
      * 
      * @return known SapSoftwareInstallationType values.
      */
+    @Generated
     public static Collection<SapSoftwareInstallationType> values() {
         return values(SapSoftwareInstallationType.class);
     }

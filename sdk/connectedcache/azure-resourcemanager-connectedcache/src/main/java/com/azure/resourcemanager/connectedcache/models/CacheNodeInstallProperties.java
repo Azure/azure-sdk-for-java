@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.connectedcache.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,31 +20,37 @@ public final class CacheNodeInstallProperties implements JsonSerializable<CacheN
     /*
      * Mcc customer resource Id.
      */
+    @Generated
     private String customerId;
 
     /*
      * Mcc cache node resource Id.
      */
+    @Generated
     private String cacheNodeId;
 
     /*
      * Mcc primary account key. Internal to Mcc.
      */
+    @Generated
     private String primaryAccountKey;
 
     /*
      * Mcc secondary account key. Internal to Mcc.
      */
+    @Generated
     private String secondaryAccountKey;
 
     /*
      * Mcc Iot Central temporary device registration key, used once.
      */
+    @Generated
     private String registrationKey;
 
     /**
      * Creates an instance of CacheNodeInstallProperties class.
      */
+    @Generated
     private CacheNodeInstallProperties() {
     }
 
@@ -52,6 +59,7 @@ public final class CacheNodeInstallProperties implements JsonSerializable<CacheN
      * 
      * @return the customerId value.
      */
+    @Generated
     public String customerId() {
         return this.customerId;
     }
@@ -61,6 +69,7 @@ public final class CacheNodeInstallProperties implements JsonSerializable<CacheN
      * 
      * @return the cacheNodeId value.
      */
+    @Generated
     public String cacheNodeId() {
         return this.cacheNodeId;
     }
@@ -70,6 +79,7 @@ public final class CacheNodeInstallProperties implements JsonSerializable<CacheN
      * 
      * @return the primaryAccountKey value.
      */
+    @Generated
     public String primaryAccountKey() {
         return this.primaryAccountKey;
     }
@@ -79,6 +89,7 @@ public final class CacheNodeInstallProperties implements JsonSerializable<CacheN
      * 
      * @return the secondaryAccountKey value.
      */
+    @Generated
     public String secondaryAccountKey() {
         return this.secondaryAccountKey;
     }
@@ -88,6 +99,7 @@ public final class CacheNodeInstallProperties implements JsonSerializable<CacheN
      * 
      * @return the registrationKey value.
      */
+    @Generated
     public String registrationKey() {
         return this.registrationKey;
     }

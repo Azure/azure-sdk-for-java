@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class UpdateRunProvisioningState extends ExpandableStringEnum<Updat
     /**
      * Resource has been created.
      */
+    @Generated
     public static final UpdateRunProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
      * Resource creation failed.
      */
+    @Generated
     public static final UpdateRunProvisioningState FAILED = fromString("Failed");
 
     /**
      * Resource creation was canceled.
      */
+    @Generated
     public static final UpdateRunProvisioningState CANCELED = fromString("Canceled");
 
     /**
@@ -31,6 +35,7 @@ public final class UpdateRunProvisioningState extends ExpandableStringEnum<Updat
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public UpdateRunProvisioningState() {
     }
@@ -41,6 +46,7 @@ public final class UpdateRunProvisioningState extends ExpandableStringEnum<Updat
      * @param name a name to look for.
      * @return the corresponding UpdateRunProvisioningState.
      */
+    @Generated
     public static UpdateRunProvisioningState fromString(String name) {
         return fromString(name, UpdateRunProvisioningState.class);
     }
@@ -50,6 +56,7 @@ public final class UpdateRunProvisioningState extends ExpandableStringEnum<Updat
      * 
      * @return known UpdateRunProvisioningState values.
      */
+    @Generated
     public static Collection<UpdateRunProvisioningState> values() {
         return values(UpdateRunProvisioningState.class);
     }

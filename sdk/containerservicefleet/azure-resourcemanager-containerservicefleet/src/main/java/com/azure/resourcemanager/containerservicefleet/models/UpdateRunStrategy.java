@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -27,11 +28,13 @@ public final class UpdateRunStrategy implements JsonSerializable<UpdateRunStrate
     /*
      * The list of stages that compose this update run. Min size: 1.
      */
+    @Generated
     private List<UpdateStage> stages;
 
     /**
      * Creates an instance of UpdateRunStrategy class.
      */
+    @Generated
     public UpdateRunStrategy() {
     }
 
@@ -40,6 +43,7 @@ public final class UpdateRunStrategy implements JsonSerializable<UpdateRunStrate
      * 
      * @return the stages value.
      */
+    @Generated
     public List<UpdateStage> stages() {
         return this.stages;
     }
@@ -50,6 +54,7 @@ public final class UpdateRunStrategy implements JsonSerializable<UpdateRunStrate
      * @param stages the stages value to set.
      * @return the UpdateRunStrategy object itself.
      */
+    @Generated
     public UpdateRunStrategy withStages(List<UpdateStage> stages) {
         this.stages = stages;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class BrokerResourceDefinitionMethods extends ExpandableStringEnum<
     /**
      * Allowed Connecting to Broker.
      */
+    @Generated
     public static final BrokerResourceDefinitionMethods CONNECT = fromString("Connect");
 
     /**
      * Allowed Publishing to Broker.
      */
+    @Generated
     public static final BrokerResourceDefinitionMethods PUBLISH = fromString("Publish");
 
     /**
      * Allowed Subscribing to Broker.
      */
+    @Generated
     public static final BrokerResourceDefinitionMethods SUBSCRIBE = fromString("Subscribe");
 
     /**
@@ -31,6 +35,7 @@ public final class BrokerResourceDefinitionMethods extends ExpandableStringEnum<
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public BrokerResourceDefinitionMethods() {
     }
@@ -41,6 +46,7 @@ public final class BrokerResourceDefinitionMethods extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding BrokerResourceDefinitionMethods.
      */
+    @Generated
     public static BrokerResourceDefinitionMethods fromString(String name) {
         return fromString(name, BrokerResourceDefinitionMethods.class);
     }
@@ -50,6 +56,7 @@ public final class BrokerResourceDefinitionMethods extends ExpandableStringEnum<
      * 
      * @return known BrokerResourceDefinitionMethods values.
      */
+    @Generated
     public static Collection<BrokerResourceDefinitionMethods> values() {
         return values(BrokerResourceDefinitionMethods.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,16 +16,19 @@ public final class FleetUpdateStrategyProvisioningState
     /**
      * Resource has been created.
      */
+    @Generated
     public static final FleetUpdateStrategyProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
      * Resource creation failed.
      */
+    @Generated
     public static final FleetUpdateStrategyProvisioningState FAILED = fromString("Failed");
 
     /**
      * Resource creation was canceled.
      */
+    @Generated
     public static final FleetUpdateStrategyProvisioningState CANCELED = fromString("Canceled");
 
     /**
@@ -32,6 +36,7 @@ public final class FleetUpdateStrategyProvisioningState
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public FleetUpdateStrategyProvisioningState() {
     }
@@ -42,6 +47,7 @@ public final class FleetUpdateStrategyProvisioningState
      * @param name a name to look for.
      * @return the corresponding FleetUpdateStrategyProvisioningState.
      */
+    @Generated
     public static FleetUpdateStrategyProvisioningState fromString(String name) {
         return fromString(name, FleetUpdateStrategyProvisioningState.class);
     }
@@ -51,6 +57,7 @@ public final class FleetUpdateStrategyProvisioningState
      * 
      * @return known FleetUpdateStrategyProvisioningState values.
      */
+    @Generated
     public static Collection<FleetUpdateStrategyProvisioningState> values() {
         return values(FleetUpdateStrategyProvisioningState.class);
     }

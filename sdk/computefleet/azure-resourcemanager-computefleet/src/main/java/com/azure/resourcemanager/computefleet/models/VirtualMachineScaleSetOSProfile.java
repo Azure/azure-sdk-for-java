@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,6 +22,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * Specifies the computer name prefix for all of the virtual machines in the scale
      * set. Computer name prefixes must be 1 to 15 characters long.
      */
+    @Generated
     private String computerNamePrefix;
 
     /*
@@ -33,6 +35,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * <br><br> **Minimum-length (Linux):** 1 character <br><br> **Max-length
      * (Linux):** 64 characters <br><br> **Max-length (Windows):** 20 characters
      */
+    @Generated
     private String adminUsername;
 
     /*
@@ -51,6 +54,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * repair disks on Azure Linux VMs using the VMAccess
      * Extension](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
      */
+    @Generated
     private String adminPassword;
 
     /*
@@ -60,11 +64,13 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * your VM, see [Using cloud-init to customize a Linux VM during
      * creation](https://learn.microsoft.com/azure/virtual-machines/linux/using-cloud-init)
      */
+    @Generated
     private String customData;
 
     /*
      * Specifies Windows operating system settings on the virtual machine.
      */
+    @Generated
     private WindowsConfiguration windowsConfiguration;
 
     /*
@@ -72,6 +78,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * list of supported Linux distributions, see [Linux on Azure-Endorsed
      * Distributions](https://learn.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
      */
+    @Generated
     private LinuxConfiguration linuxConfiguration;
 
     /*
@@ -82,6 +89,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * or the [Azure Key Vault virtual machine extension for
      * Windows](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      */
+    @Generated
     private List<VaultSecretGroup> secrets;
 
     /*
@@ -89,16 +97,19 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * scale set. This may only be set to False when no extensions are present on the
      * virtual machine scale set.
      */
+    @Generated
     private Boolean allowExtensionOperations;
 
     /*
      * Optional property which must either be set to True or omitted.
      */
+    @Generated
     private Boolean requireGuestProvisionSignal;
 
     /**
      * Creates an instance of VirtualMachineScaleSetOSProfile class.
      */
+    @Generated
     public VirtualMachineScaleSetOSProfile() {
     }
 
@@ -109,6 +120,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * 
      * @return the computerNamePrefix value.
      */
+    @Generated
     public String computerNamePrefix() {
         return this.computerNamePrefix;
     }
@@ -121,6 +133,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * @param computerNamePrefix the computerNamePrefix value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSProfile withComputerNamePrefix(String computerNamePrefix) {
         this.computerNamePrefix = computerNamePrefix;
         return this;
@@ -139,6 +152,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * 
      * @return the adminUsername value.
      */
+    @Generated
     public String adminUsername() {
         return this.adminUsername;
     }
@@ -157,6 +171,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * @param adminUsername the adminUsername value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSProfile withAdminUsername(String adminUsername) {
         this.adminUsername = adminUsername;
         return this;
@@ -181,6 +196,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * 
      * @return the adminPassword value.
      */
+    @Generated
     public String adminPassword() {
         return this.adminPassword;
     }
@@ -205,6 +221,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * @param adminPassword the adminPassword value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSProfile withAdminPassword(String adminPassword) {
         this.adminPassword = adminPassword;
         return this;
@@ -219,6 +236,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * 
      * @return the customData value.
      */
+    @Generated
     public String customData() {
         return this.customData;
     }
@@ -233,6 +251,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * @param customData the customData value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSProfile withCustomData(String customData) {
         this.customData = customData;
         return this;
@@ -243,6 +262,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * 
      * @return the windowsConfiguration value.
      */
+    @Generated
     public WindowsConfiguration windowsConfiguration() {
         return this.windowsConfiguration;
     }
@@ -253,6 +273,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * @param windowsConfiguration the windowsConfiguration value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSProfile withWindowsConfiguration(WindowsConfiguration windowsConfiguration) {
         this.windowsConfiguration = windowsConfiguration;
         return this;
@@ -265,6 +286,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * 
      * @return the linuxConfiguration value.
      */
+    @Generated
     public LinuxConfiguration linuxConfiguration() {
         return this.linuxConfiguration;
     }
@@ -277,6 +299,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * @param linuxConfiguration the linuxConfiguration value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSProfile withLinuxConfiguration(LinuxConfiguration linuxConfiguration) {
         this.linuxConfiguration = linuxConfiguration;
         return this;
@@ -292,6 +315,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * 
      * @return the secrets value.
      */
+    @Generated
     public List<VaultSecretGroup> secrets() {
         return this.secrets;
     }
@@ -307,6 +331,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * @param secrets the secrets value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSProfile withSecrets(List<VaultSecretGroup> secrets) {
         this.secrets = secrets;
         return this;
@@ -320,6 +345,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * 
      * @return the allowExtensionOperations value.
      */
+    @Generated
     public Boolean allowExtensionOperations() {
         return this.allowExtensionOperations;
     }
@@ -333,6 +359,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * @param allowExtensionOperations the allowExtensionOperations value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSProfile withAllowExtensionOperations(Boolean allowExtensionOperations) {
         this.allowExtensionOperations = allowExtensionOperations;
         return this;
@@ -343,6 +370,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * 
      * @return the requireGuestProvisionSignal value.
      */
+    @Generated
     public Boolean requireGuestProvisionSignal() {
         return this.requireGuestProvisionSignal;
     }
@@ -353,6 +381,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * @param requireGuestProvisionSignal the requireGuestProvisionSignal value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSProfile withRequireGuestProvisionSignal(Boolean requireGuestProvisionSignal) {
         this.requireGuestProvisionSignal = requireGuestProvisionSignal;
         return this;

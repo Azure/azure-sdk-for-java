@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,26 +22,31 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
      * about the caching options see:
      * https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/.
      */
+    @Generated
     private CachingType caching;
 
     /*
      * The initial disk size in gigabytes.
      */
+    @Generated
     private Integer diskSizeGiB;
 
     /*
      * The storage Account type to be used for the data disk. If omitted, the default is "standard_lrs".
      */
+    @Generated
     private StorageAccountType storageAccountType;
 
     /*
      * The drive letter for the empty data disk. If not specified, it will be the first available letter.
      */
+    @Generated
     private String driveLetter;
 
     /**
      * Creates an instance of DataDisk class.
      */
+    @Generated
     public DataDisk() {
     }
 
@@ -51,6 +57,7 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
      * 
      * @return the caching value.
      */
+    @Generated
     public CachingType caching() {
         return this.caching;
     }
@@ -63,6 +70,7 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
      * @param caching the caching value to set.
      * @return the DataDisk object itself.
      */
+    @Generated
     public DataDisk withCaching(CachingType caching) {
         this.caching = caching;
         return this;
@@ -73,6 +81,7 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
      * 
      * @return the diskSizeGiB value.
      */
+    @Generated
     public Integer diskSizeGiB() {
         return this.diskSizeGiB;
     }
@@ -83,6 +92,7 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
      * @param diskSizeGiB the diskSizeGiB value to set.
      * @return the DataDisk object itself.
      */
+    @Generated
     public DataDisk withDiskSizeGiB(Integer diskSizeGiB) {
         this.diskSizeGiB = diskSizeGiB;
         return this;
@@ -94,6 +104,7 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
      * 
      * @return the storageAccountType value.
      */
+    @Generated
     public StorageAccountType storageAccountType() {
         return this.storageAccountType;
     }
@@ -105,6 +116,7 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
      * @param storageAccountType the storageAccountType value to set.
      * @return the DataDisk object itself.
      */
+    @Generated
     public DataDisk withStorageAccountType(StorageAccountType storageAccountType) {
         this.storageAccountType = storageAccountType;
         return this;
@@ -116,6 +128,7 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
      * 
      * @return the driveLetter value.
      */
+    @Generated
     public String driveLetter() {
         return this.driveLetter;
     }
@@ -127,6 +140,7 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
      * @param driveLetter the driveLetter value to set.
      * @return the DataDisk object itself.
      */
+    @Generated
     public DataDisk withDriveLetter(String driveLetter) {
         this.driveLetter = driveLetter;
         return this;

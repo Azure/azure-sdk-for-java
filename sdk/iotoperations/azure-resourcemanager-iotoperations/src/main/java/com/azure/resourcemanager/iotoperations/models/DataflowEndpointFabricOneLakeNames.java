@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class DataflowEndpointFabricOneLakeNames implements JsonSerializabl
     /*
      * Lakehouse name.
      */
+    @Generated
     private String lakehouseName;
 
     /*
      * Workspace name.
      */
+    @Generated
     private String workspaceName;
 
     /**
      * Creates an instance of DataflowEndpointFabricOneLakeNames class.
      */
+    @Generated
     public DataflowEndpointFabricOneLakeNames() {
     }
 
@@ -38,6 +42,7 @@ public final class DataflowEndpointFabricOneLakeNames implements JsonSerializabl
      * 
      * @return the lakehouseName value.
      */
+    @Generated
     public String lakehouseName() {
         return this.lakehouseName;
     }
@@ -48,6 +53,7 @@ public final class DataflowEndpointFabricOneLakeNames implements JsonSerializabl
      * @param lakehouseName the lakehouseName value to set.
      * @return the DataflowEndpointFabricOneLakeNames object itself.
      */
+    @Generated
     public DataflowEndpointFabricOneLakeNames withLakehouseName(String lakehouseName) {
         this.lakehouseName = lakehouseName;
         return this;
@@ -58,6 +64,7 @@ public final class DataflowEndpointFabricOneLakeNames implements JsonSerializabl
      * 
      * @return the workspaceName value.
      */
+    @Generated
     public String workspaceName() {
         return this.workspaceName;
     }
@@ -68,6 +75,7 @@ public final class DataflowEndpointFabricOneLakeNames implements JsonSerializabl
      * @param workspaceName the workspaceName value to set.
      * @return the DataflowEndpointFabricOneLakeNames object itself.
      */
+    @Generated
     public DataflowEndpointFabricOneLakeNames withWorkspaceName(String workspaceName) {
         this.workspaceName = workspaceName;
         return this;

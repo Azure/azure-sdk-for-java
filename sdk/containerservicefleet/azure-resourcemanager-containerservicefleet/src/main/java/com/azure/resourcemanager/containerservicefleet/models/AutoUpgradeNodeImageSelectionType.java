@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,6 +17,7 @@ public final class AutoUpgradeNodeImageSelectionType extends ExpandableStringEnu
      * 'AKSUbuntu-1804gen2containerd-2021.10.12' and 'AKSUbuntu-1804gen2containerd-2021.10.19') because, for example,
      * the latest available version is different in different regions.
      */
+    @Generated
     public static final AutoUpgradeNodeImageSelectionType LATEST = fromString("Latest");
 
     /**
@@ -27,6 +29,7 @@ public final class AutoUpgradeNodeImageSelectionType extends ExpandableStringEnu
      * region X, and is 'AKSUbuntu-1804gen2containerd-2021.10.17' for a node pool in cluster B in region Y, the system
      * will upgrade both node pools to image version 'AKSUbuntu-1804gen2containerd-2021.10.12'.
      */
+    @Generated
     public static final AutoUpgradeNodeImageSelectionType CONSISTENT = fromString("Consistent");
 
     /**
@@ -34,6 +37,7 @@ public final class AutoUpgradeNodeImageSelectionType extends ExpandableStringEnu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AutoUpgradeNodeImageSelectionType() {
     }
@@ -44,6 +48,7 @@ public final class AutoUpgradeNodeImageSelectionType extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding AutoUpgradeNodeImageSelectionType.
      */
+    @Generated
     public static AutoUpgradeNodeImageSelectionType fromString(String name) {
         return fromString(name, AutoUpgradeNodeImageSelectionType.class);
     }
@@ -53,6 +58,7 @@ public final class AutoUpgradeNodeImageSelectionType extends ExpandableStringEnu
      * 
      * @return known AutoUpgradeNodeImageSelectionType values.
      */
+    @Generated
     public static Collection<AutoUpgradeNodeImageSelectionType> values() {
         return values(AutoUpgradeNodeImageSelectionType.class);
     }

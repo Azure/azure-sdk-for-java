@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class HighAvailabilityConfiguration implements JsonSerializable<Hig
     /*
      * The high availability type.
      */
+    @Generated
     private SapHighAvailabilityType highAvailabilityType;
 
     /**
      * Creates an instance of HighAvailabilityConfiguration class.
      */
+    @Generated
     public HighAvailabilityConfiguration() {
     }
 
@@ -33,6 +36,7 @@ public final class HighAvailabilityConfiguration implements JsonSerializable<Hig
      * 
      * @return the highAvailabilityType value.
      */
+    @Generated
     public SapHighAvailabilityType highAvailabilityType() {
         return this.highAvailabilityType;
     }
@@ -43,6 +47,7 @@ public final class HighAvailabilityConfiguration implements JsonSerializable<Hig
      * @param highAvailabilityType the highAvailabilityType value to set.
      * @return the HighAvailabilityConfiguration object itself.
      */
+    @Generated
     public HighAvailabilityConfiguration withHighAvailabilityType(SapHighAvailabilityType highAvailabilityType) {
         this.highAvailabilityType = highAvailabilityType;
         return this;

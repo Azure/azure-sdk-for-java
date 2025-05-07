@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,17 +18,20 @@ public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
      * For example, if a cluster runs version 1.17.7 and versions 1.17.9, 1.18.4, 1.18.6, and 1.19.1 are available, the
      * cluster upgrades to 1.18.6.
      */
+    @Generated
     public static final UpgradeChannel STABLE = fromString("Stable");
 
     /**
      * Upgrades the clusters kubernetes version to the latest supported patch release on the latest supported minor
      * version.
      */
+    @Generated
     public static final UpgradeChannel RAPID = fromString("Rapid");
 
     /**
      * Upgrade node image version of the clusters.
      */
+    @Generated
     public static final UpgradeChannel NODE_IMAGE = fromString("NodeImage");
 
     /**
@@ -35,6 +39,7 @@ public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public UpgradeChannel() {
     }
@@ -45,6 +50,7 @@ public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
      * @param name a name to look for.
      * @return the corresponding UpgradeChannel.
      */
+    @Generated
     public static UpgradeChannel fromString(String name) {
         return fromString(name, UpgradeChannel.class);
     }
@@ -54,6 +60,7 @@ public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
      * 
      * @return known UpgradeChannel values.
      */
+    @Generated
     public static Collection<UpgradeChannel> values() {
         return values(UpgradeChannel.class);
     }

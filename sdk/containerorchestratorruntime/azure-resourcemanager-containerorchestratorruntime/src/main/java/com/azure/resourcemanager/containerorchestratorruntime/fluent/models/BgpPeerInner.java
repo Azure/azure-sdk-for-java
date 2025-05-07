@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerorchestratorruntime.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -21,31 +22,37 @@ public final class BgpPeerInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private BgpPeerProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of BgpPeerInner class.
      */
+    @Generated
     public BgpPeerInner() {
     }
 
@@ -54,6 +61,7 @@ public final class BgpPeerInner extends ProxyResource {
      * 
      * @return the properties value.
      */
+    @Generated
     public BgpPeerProperties properties() {
         return this.properties;
     }
@@ -64,6 +72,7 @@ public final class BgpPeerInner extends ProxyResource {
      * @param properties the properties value to set.
      * @return the BgpPeerInner object itself.
      */
+    @Generated
     public BgpPeerInner withProperties(BgpPeerProperties properties) {
         this.properties = properties;
         return this;
@@ -74,6 +83,7 @@ public final class BgpPeerInner extends ProxyResource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -83,6 +93,7 @@ public final class BgpPeerInner extends ProxyResource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -93,6 +104,7 @@ public final class BgpPeerInner extends ProxyResource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -103,6 +115,7 @@ public final class BgpPeerInner extends ProxyResource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;

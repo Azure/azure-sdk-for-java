@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class ApplicationServerFullResourceNames implements JsonSerializabl
     /*
      * The list of virtual machine naming details.
      */
+    @Generated
     private List<VirtualMachineResourceNames> virtualMachines;
 
     /*
      * The full name for availability set. In case name is not provided, it will be defaulted to {SID}-App-AvSet.
      */
+    @Generated
     private String availabilitySetName;
 
     /**
      * Creates an instance of ApplicationServerFullResourceNames class.
      */
+    @Generated
     public ApplicationServerFullResourceNames() {
     }
 
@@ -39,6 +43,7 @@ public final class ApplicationServerFullResourceNames implements JsonSerializabl
      * 
      * @return the virtualMachines value.
      */
+    @Generated
     public List<VirtualMachineResourceNames> virtualMachines() {
         return this.virtualMachines;
     }
@@ -49,6 +54,7 @@ public final class ApplicationServerFullResourceNames implements JsonSerializabl
      * @param virtualMachines the virtualMachines value to set.
      * @return the ApplicationServerFullResourceNames object itself.
      */
+    @Generated
     public ApplicationServerFullResourceNames withVirtualMachines(List<VirtualMachineResourceNames> virtualMachines) {
         this.virtualMachines = virtualMachines;
         return this;
@@ -60,6 +66,7 @@ public final class ApplicationServerFullResourceNames implements JsonSerializabl
      * 
      * @return the availabilitySetName value.
      */
+    @Generated
     public String availabilitySetName() {
         return this.availabilitySetName;
     }
@@ -71,6 +78,7 @@ public final class ApplicationServerFullResourceNames implements JsonSerializabl
      * @param availabilitySetName the availabilitySetName value to set.
      * @return the ApplicationServerFullResourceNames object itself.
      */
+    @Generated
     public ApplicationServerFullResourceNames withAvailabilitySetName(String availabilitySetName) {
         this.availabilitySetName = availabilitySetName;
         return this;

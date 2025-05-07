@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,17 +22,20 @@ public final class DataflowDestinationOperationSettings
     /*
      * Reference to the Endpoint CR. Can be of Broker, Kafka, Fabric, ADLS, ADX type.
      */
+    @Generated
     private String endpointRef;
 
     /*
      * Destination location, can be a topic or table name. Supports dynamic values with $topic, $systemProperties,
      * $userProperties, $payload, $context, and $subscription.
      */
+    @Generated
     private String dataDestination;
 
     /**
      * Creates an instance of DataflowDestinationOperationSettings class.
      */
+    @Generated
     public DataflowDestinationOperationSettings() {
     }
 
@@ -40,6 +44,7 @@ public final class DataflowDestinationOperationSettings
      * 
      * @return the endpointRef value.
      */
+    @Generated
     public String endpointRef() {
         return this.endpointRef;
     }
@@ -50,6 +55,7 @@ public final class DataflowDestinationOperationSettings
      * @param endpointRef the endpointRef value to set.
      * @return the DataflowDestinationOperationSettings object itself.
      */
+    @Generated
     public DataflowDestinationOperationSettings withEndpointRef(String endpointRef) {
         this.endpointRef = endpointRef;
         return this;
@@ -61,6 +67,7 @@ public final class DataflowDestinationOperationSettings
      * 
      * @return the dataDestination value.
      */
+    @Generated
     public String dataDestination() {
         return this.dataDestination;
     }
@@ -72,6 +79,7 @@ public final class DataflowDestinationOperationSettings
      * @param dataDestination the dataDestination value to set.
      * @return the DataflowDestinationOperationSettings object itself.
      */
+    @Generated
     public DataflowDestinationOperationSettings withDataDestination(String dataDestination) {
         this.dataDestination = dataDestination;
         return this;

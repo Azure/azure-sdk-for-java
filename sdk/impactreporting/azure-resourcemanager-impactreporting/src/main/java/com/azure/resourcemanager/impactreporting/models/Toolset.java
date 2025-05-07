@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.impactreporting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,46 +15,55 @@ public final class Toolset extends ExpandableStringEnum<Toolset> {
     /**
      * If communication toolset is Terraform.
      */
+    @Generated
     public static final Toolset TERRAFORM = fromString("Terraform");
 
     /**
      * If communication toolset is Puppet.
      */
+    @Generated
     public static final Toolset PUPPET = fromString("Puppet");
 
     /**
      * If communication toolset is Chef.
      */
+    @Generated
     public static final Toolset CHEF = fromString("Chef");
 
     /**
      * If communication toolset is SDK.
      */
+    @Generated
     public static final Toolset SDK = fromString("SDK");
 
     /**
      * If communication toolset is Ansible.
      */
+    @Generated
     public static final Toolset ANSIBLE = fromString("Ansible");
 
     /**
      * If communication toolset is ARM.
      */
+    @Generated
     public static final Toolset ARM = fromString("ARM");
 
     /**
      * If communication toolset is Portal.
      */
+    @Generated
     public static final Toolset PORTAL = fromString("Portal");
 
     /**
      * If communication toolset is Shell.
      */
+    @Generated
     public static final Toolset SHELL = fromString("Shell");
 
     /**
      * If communication toolset is Other.
      */
+    @Generated
     public static final Toolset OTHER = fromString("Other");
 
     /**
@@ -61,6 +71,7 @@ public final class Toolset extends ExpandableStringEnum<Toolset> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public Toolset() {
     }
@@ -71,6 +82,7 @@ public final class Toolset extends ExpandableStringEnum<Toolset> {
      * @param name a name to look for.
      * @return the corresponding Toolset.
      */
+    @Generated
     public static Toolset fromString(String name) {
         return fromString(name, Toolset.class);
     }
@@ -80,6 +92,7 @@ public final class Toolset extends ExpandableStringEnum<Toolset> {
      * 
      * @return known Toolset values.
      */
+    @Generated
     public static Collection<Toolset> values() {
         return values(Toolset.class);
     }

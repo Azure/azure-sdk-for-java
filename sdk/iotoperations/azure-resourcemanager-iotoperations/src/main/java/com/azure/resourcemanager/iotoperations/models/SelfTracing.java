@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class SelfTracing implements JsonSerializable<SelfTracing> {
     /*
      * The toggle to enable/disable self tracing.
      */
+    @Generated
     private OperationalMode mode;
 
     /*
      * The self tracing interval.
      */
+    @Generated
     private Integer intervalSeconds;
 
     /**
      * Creates an instance of SelfTracing class.
      */
+    @Generated
     public SelfTracing() {
     }
 
@@ -37,6 +41,7 @@ public final class SelfTracing implements JsonSerializable<SelfTracing> {
      * 
      * @return the mode value.
      */
+    @Generated
     public OperationalMode mode() {
         return this.mode;
     }
@@ -47,6 +52,7 @@ public final class SelfTracing implements JsonSerializable<SelfTracing> {
      * @param mode the mode value to set.
      * @return the SelfTracing object itself.
      */
+    @Generated
     public SelfTracing withMode(OperationalMode mode) {
         this.mode = mode;
         return this;
@@ -57,6 +63,7 @@ public final class SelfTracing implements JsonSerializable<SelfTracing> {
      * 
      * @return the intervalSeconds value.
      */
+    @Generated
     public Integer intervalSeconds() {
         return this.intervalSeconds;
     }
@@ -67,6 +74,7 @@ public final class SelfTracing implements JsonSerializable<SelfTracing> {
      * @param intervalSeconds the intervalSeconds value to set.
      * @return the SelfTracing object itself.
      */
+    @Generated
     public SelfTracing withIntervalSeconds(Integer intervalSeconds) {
         this.intervalSeconds = intervalSeconds;
         return this;

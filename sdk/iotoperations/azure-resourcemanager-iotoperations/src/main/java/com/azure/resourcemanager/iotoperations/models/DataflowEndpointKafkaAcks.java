@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class DataflowEndpointKafkaAcks extends ExpandableStringEnum<Datafl
     /**
      * ZERO Option.
      */
+    @Generated
     public static final DataflowEndpointKafkaAcks ZERO = fromString("Zero");
 
     /**
      * ONE Option.
      */
+    @Generated
     public static final DataflowEndpointKafkaAcks ONE = fromString("One");
 
     /**
      * ALL Option.
      */
+    @Generated
     public static final DataflowEndpointKafkaAcks ALL = fromString("All");
 
     /**
@@ -31,6 +35,7 @@ public final class DataflowEndpointKafkaAcks extends ExpandableStringEnum<Datafl
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataflowEndpointKafkaAcks() {
     }
@@ -41,6 +46,7 @@ public final class DataflowEndpointKafkaAcks extends ExpandableStringEnum<Datafl
      * @param name a name to look for.
      * @return the corresponding DataflowEndpointKafkaAcks.
      */
+    @Generated
     public static DataflowEndpointKafkaAcks fromString(String name) {
         return fromString(name, DataflowEndpointKafkaAcks.class);
     }
@@ -50,6 +56,7 @@ public final class DataflowEndpointKafkaAcks extends ExpandableStringEnum<Datafl
      * 
      * @return known DataflowEndpointKafkaAcks values.
      */
+    @Generated
     public static Collection<DataflowEndpointKafkaAcks> values() {
         return values(DataflowEndpointKafkaAcks.class);
     }

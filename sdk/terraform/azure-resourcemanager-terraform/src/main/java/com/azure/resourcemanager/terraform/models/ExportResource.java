@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.terraform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -20,31 +21,37 @@ public final class ExportResource extends BaseExportModel {
     /*
      * The parameter type
      */
+    @Generated
     private Type type = Type.EXPORT_RESOURCE;
 
     /*
      * The id of the resource to be exported
      */
+    @Generated
     private List<String> resourceIds;
 
     /*
      * The Terraform resource name. Only works when `resourceIds` contains only one item.
      */
+    @Generated
     private String resourceName;
 
     /*
      * The Terraform resource type. Only works when `resourceIds` contains only one item.
      */
+    @Generated
     private String resourceType;
 
     /*
      * The name pattern of the Terraform resources
      */
+    @Generated
     private String namePattern;
 
     /**
      * Creates an instance of ExportResource class.
      */
+    @Generated
     public ExportResource() {
     }
 
@@ -53,6 +60,7 @@ public final class ExportResource extends BaseExportModel {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public Type type() {
         return this.type;
@@ -63,6 +71,7 @@ public final class ExportResource extends BaseExportModel {
      * 
      * @return the resourceIds value.
      */
+    @Generated
     public List<String> resourceIds() {
         return this.resourceIds;
     }
@@ -73,6 +82,7 @@ public final class ExportResource extends BaseExportModel {
      * @param resourceIds the resourceIds value to set.
      * @return the ExportResource object itself.
      */
+    @Generated
     public ExportResource withResourceIds(List<String> resourceIds) {
         this.resourceIds = resourceIds;
         return this;
@@ -83,6 +93,7 @@ public final class ExportResource extends BaseExportModel {
      * 
      * @return the resourceName value.
      */
+    @Generated
     public String resourceName() {
         return this.resourceName;
     }
@@ -93,6 +104,7 @@ public final class ExportResource extends BaseExportModel {
      * @param resourceName the resourceName value to set.
      * @return the ExportResource object itself.
      */
+    @Generated
     public ExportResource withResourceName(String resourceName) {
         this.resourceName = resourceName;
         return this;
@@ -103,6 +115,7 @@ public final class ExportResource extends BaseExportModel {
      * 
      * @return the resourceType value.
      */
+    @Generated
     public String resourceType() {
         return this.resourceType;
     }
@@ -113,6 +126,7 @@ public final class ExportResource extends BaseExportModel {
      * @param resourceType the resourceType value to set.
      * @return the ExportResource object itself.
      */
+    @Generated
     public ExportResource withResourceType(String resourceType) {
         this.resourceType = resourceType;
         return this;
@@ -123,6 +137,7 @@ public final class ExportResource extends BaseExportModel {
      * 
      * @return the namePattern value.
      */
+    @Generated
     public String namePattern() {
         return this.namePattern;
     }
@@ -133,6 +148,7 @@ public final class ExportResource extends BaseExportModel {
      * @param namePattern the namePattern value to set.
      * @return the ExportResource object itself.
      */
+    @Generated
     public ExportResource withNamePattern(String namePattern) {
         this.namePattern = namePattern;
         return this;
@@ -141,6 +157,7 @@ public final class ExportResource extends BaseExportModel {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExportResource withTargetProvider(TargetProvider targetProvider) {
         super.withTargetProvider(targetProvider);
@@ -150,6 +167,7 @@ public final class ExportResource extends BaseExportModel {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExportResource withFullProperties(Boolean fullProperties) {
         super.withFullProperties(fullProperties);
@@ -159,6 +177,7 @@ public final class ExportResource extends BaseExportModel {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExportResource withMaskSensitive(Boolean maskSensitive) {
         super.withMaskSensitive(maskSensitive);

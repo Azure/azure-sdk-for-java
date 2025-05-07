@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public final class SapVirtualInstanceError implements JsonSerializable<SapVirtua
     /*
      * The Virtual Instance for SAP error body.
      */
+    @Generated
     private ErrorDefinition properties;
 
     /**
      * Creates an instance of SapVirtualInstanceError class.
      */
+    @Generated
     private SapVirtualInstanceError() {
     }
 
@@ -32,6 +35,7 @@ public final class SapVirtualInstanceError implements JsonSerializable<SapVirtua
      * 
      * @return the properties value.
      */
+    @Generated
     public ErrorDefinition properties() {
         return this.properties;
     }

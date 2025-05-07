@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,6 +23,7 @@ public final class SshPublicKey implements JsonSerializable<SshPublicKey> {
      * the file already exists, the specified key is appended to the file. Example:
      * /home/user/.ssh/authorized_keys
      */
+    @Generated
     private String path;
 
     /*
@@ -30,11 +32,13 @@ public final class SshPublicKey implements JsonSerializable<SshPublicKey> {
      * see [Create SSH keys on Linux and Mac for Linux VMs in
      * Azure]https://learn.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
      */
+    @Generated
     private String keyData;
 
     /**
      * Creates an instance of SshPublicKey class.
      */
+    @Generated
     public SshPublicKey() {
     }
 
@@ -45,6 +49,7 @@ public final class SshPublicKey implements JsonSerializable<SshPublicKey> {
      * 
      * @return the path value.
      */
+    @Generated
     public String path() {
         return this.path;
     }
@@ -57,6 +62,7 @@ public final class SshPublicKey implements JsonSerializable<SshPublicKey> {
      * @param path the path value to set.
      * @return the SshPublicKey object itself.
      */
+    @Generated
     public SshPublicKey withPath(String path) {
         this.path = path;
         return this;
@@ -70,6 +76,7 @@ public final class SshPublicKey implements JsonSerializable<SshPublicKey> {
      * 
      * @return the keyData value.
      */
+    @Generated
     public String keyData() {
         return this.keyData;
     }
@@ -83,6 +90,7 @@ public final class SshPublicKey implements JsonSerializable<SshPublicKey> {
      * @param keyData the keyData value to set.
      * @return the SshPublicKey object itself.
      */
+    @Generated
     public SshPublicKey withKeyData(String keyData) {
         this.keyData = keyData;
         return this;

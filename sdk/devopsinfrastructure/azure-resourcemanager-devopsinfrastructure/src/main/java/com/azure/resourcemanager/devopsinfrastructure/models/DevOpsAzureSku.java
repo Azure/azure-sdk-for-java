@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class DevOpsAzureSku implements JsonSerializable<DevOpsAzureSku> {
     /*
      * The Azure SKU name of the machines in the pool.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of DevOpsAzureSku class.
      */
+    @Generated
     public DevOpsAzureSku() {
     }
 
@@ -33,6 +36,7 @@ public final class DevOpsAzureSku implements JsonSerializable<DevOpsAzureSku> {
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -43,6 +47,7 @@ public final class DevOpsAzureSku implements JsonSerializable<DevOpsAzureSku> {
      * @param name the name value to set.
      * @return the DevOpsAzureSku object itself.
      */
+    @Generated
     public DevOpsAzureSku withName(String name) {
         this.name = name;
         return this;

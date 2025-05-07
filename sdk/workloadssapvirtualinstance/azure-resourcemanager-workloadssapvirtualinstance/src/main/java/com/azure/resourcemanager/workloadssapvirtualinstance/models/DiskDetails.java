@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,41 +20,49 @@ public final class DiskDetails implements JsonSerializable<DiskDetails> {
     /*
      * The type of disk sku. For example, Standard_LRS, Standard_ZRS, Premium_LRS, Premium_ZRS.
      */
+    @Generated
     private DiskSku sku;
 
     /*
      * The disk size in GB.
      */
+    @Generated
     private Long sizeGB;
 
     /*
      * The minimum supported disk count.
      */
+    @Generated
     private Long minimumSupportedDiskCount;
 
     /*
      * The maximum supported disk count.
      */
+    @Generated
     private Long maximumSupportedDiskCount;
 
     /*
      * The disk Iops.
      */
+    @Generated
     private Long iopsReadWrite;
 
     /*
      * The disk provisioned throughput in MBps.
      */
+    @Generated
     private Long mbpsReadWrite;
 
     /*
      * The disk tier, e.g. P10, E10.
      */
+    @Generated
     private String diskTier;
 
     /**
      * Creates an instance of DiskDetails class.
      */
+    @Generated
     private DiskDetails() {
     }
 
@@ -62,6 +71,7 @@ public final class DiskDetails implements JsonSerializable<DiskDetails> {
      * 
      * @return the sku value.
      */
+    @Generated
     public DiskSku sku() {
         return this.sku;
     }
@@ -71,6 +81,7 @@ public final class DiskDetails implements JsonSerializable<DiskDetails> {
      * 
      * @return the sizeGB value.
      */
+    @Generated
     public Long sizeGB() {
         return this.sizeGB;
     }
@@ -80,6 +91,7 @@ public final class DiskDetails implements JsonSerializable<DiskDetails> {
      * 
      * @return the minimumSupportedDiskCount value.
      */
+    @Generated
     public Long minimumSupportedDiskCount() {
         return this.minimumSupportedDiskCount;
     }
@@ -89,6 +101,7 @@ public final class DiskDetails implements JsonSerializable<DiskDetails> {
      * 
      * @return the maximumSupportedDiskCount value.
      */
+    @Generated
     public Long maximumSupportedDiskCount() {
         return this.maximumSupportedDiskCount;
     }
@@ -98,6 +111,7 @@ public final class DiskDetails implements JsonSerializable<DiskDetails> {
      * 
      * @return the iopsReadWrite value.
      */
+    @Generated
     public Long iopsReadWrite() {
         return this.iopsReadWrite;
     }
@@ -107,6 +121,7 @@ public final class DiskDetails implements JsonSerializable<DiskDetails> {
      * 
      * @return the mbpsReadWrite value.
      */
+    @Generated
     public Long mbpsReadWrite() {
         return this.mbpsReadWrite;
     }
@@ -116,6 +131,7 @@ public final class DiskDetails implements JsonSerializable<DiskDetails> {
      * 
      * @return the diskTier value.
      */
+    @Generated
     public String diskTier() {
         return this.diskTier;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,6 +25,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * required when you want to use a platform image, marketplace image, or virtual
      * machine image, but is not used in other creation operations.
      */
+    @Generated
     private ImageReference imageReference;
 
     /*
@@ -32,6 +34,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * and VHDs for Azure virtual
      * machines](https://learn.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
+    @Generated
     private VirtualMachineScaleSetOSDisk osDisk;
 
     /*
@@ -40,17 +43,20 @@ public final class VirtualMachineScaleSetStorageProfile
      * and VHDs for Azure virtual
      * machines](https://learn.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
+    @Generated
     private List<VirtualMachineScaleSetDataDisk> dataDisks;
 
     /*
      * Specifies the disk controller type configured for the virtual machines in the scale set. Minimum api-version:
      * 2022-08-01
      */
+    @Generated
     private DiskControllerTypes diskControllerType;
 
     /**
      * Creates an instance of VirtualMachineScaleSetStorageProfile class.
      */
+    @Generated
     public VirtualMachineScaleSetStorageProfile() {
     }
 
@@ -62,6 +68,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * 
      * @return the imageReference value.
      */
+    @Generated
     public ImageReference imageReference() {
         return this.imageReference;
     }
@@ -75,6 +82,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * @param imageReference the imageReference value to set.
      * @return the VirtualMachineScaleSetStorageProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetStorageProfile withImageReference(ImageReference imageReference) {
         this.imageReference = imageReference;
         return this;
@@ -88,6 +96,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * 
      * @return the osDisk value.
      */
+    @Generated
     public VirtualMachineScaleSetOSDisk osDisk() {
         return this.osDisk;
     }
@@ -101,6 +110,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * @param osDisk the osDisk value to set.
      * @return the VirtualMachineScaleSetStorageProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetStorageProfile withOsDisk(VirtualMachineScaleSetOSDisk osDisk) {
         this.osDisk = osDisk;
         return this;
@@ -114,6 +124,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * 
      * @return the dataDisks value.
      */
+    @Generated
     public List<VirtualMachineScaleSetDataDisk> dataDisks() {
         return this.dataDisks;
     }
@@ -127,6 +138,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * @param dataDisks the dataDisks value to set.
      * @return the VirtualMachineScaleSetStorageProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetStorageProfile withDataDisks(List<VirtualMachineScaleSetDataDisk> dataDisks) {
         this.dataDisks = dataDisks;
         return this;
@@ -138,6 +150,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * 
      * @return the diskControllerType value.
      */
+    @Generated
     public DiskControllerTypes diskControllerType() {
         return this.diskControllerType;
     }
@@ -149,6 +162,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * @param diskControllerType the diskControllerType value to set.
      * @return the VirtualMachineScaleSetStorageProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetStorageProfile withDiskControllerType(DiskControllerTypes diskControllerType) {
         this.diskControllerType = diskControllerType;
         return this;

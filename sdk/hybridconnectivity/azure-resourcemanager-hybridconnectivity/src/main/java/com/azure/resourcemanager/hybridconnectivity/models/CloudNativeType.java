@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class CloudNativeType extends ExpandableStringEnum<CloudNativeType>
     /**
      * ec2 enum.
      */
+    @Generated
     public static final CloudNativeType EC2 = fromString("ec2");
 
     /**
@@ -21,6 +23,7 @@ public final class CloudNativeType extends ExpandableStringEnum<CloudNativeType>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CloudNativeType() {
     }
@@ -31,6 +34,7 @@ public final class CloudNativeType extends ExpandableStringEnum<CloudNativeType>
      * @param name a name to look for.
      * @return the corresponding CloudNativeType.
      */
+    @Generated
     public static CloudNativeType fromString(String name) {
         return fromString(name, CloudNativeType.class);
     }
@@ -40,6 +44,7 @@ public final class CloudNativeType extends ExpandableStringEnum<CloudNativeType>
      * 
      * @return known CloudNativeType values.
      */
+    @Generated
     public static Collection<CloudNativeType> values() {
         return values(CloudNativeType.class);
     }

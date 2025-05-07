@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class AutomaticResourcePredictionsProfile extends ResourcePredictio
     /*
      * Determines how the stand-by scheme should be provided.
      */
+    @Generated
     private ResourcePredictionsProfileType kind = ResourcePredictionsProfileType.AUTOMATIC;
 
     /*
      * Determines the balance between cost and performance.
      */
+    @Generated
     private PredictionPreference predictionPreference;
 
     /**
      * Creates an instance of AutomaticResourcePredictionsProfile class.
      */
+    @Generated
     public AutomaticResourcePredictionsProfile() {
     }
 
@@ -36,6 +40,7 @@ public final class AutomaticResourcePredictionsProfile extends ResourcePredictio
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public ResourcePredictionsProfileType kind() {
         return this.kind;
@@ -46,6 +51,7 @@ public final class AutomaticResourcePredictionsProfile extends ResourcePredictio
      * 
      * @return the predictionPreference value.
      */
+    @Generated
     public PredictionPreference predictionPreference() {
         return this.predictionPreference;
     }
@@ -56,6 +62,7 @@ public final class AutomaticResourcePredictionsProfile extends ResourcePredictio
      * @param predictionPreference the predictionPreference value to set.
      * @return the AutomaticResourcePredictionsProfile object itself.
      */
+    @Generated
     public AutomaticResourcePredictionsProfile withPredictionPreference(PredictionPreference predictionPreference) {
         this.predictionPreference = predictionPreference;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,11 +24,13 @@ public final class CapacityReservationProfile implements JsonSerializable<Capaci
      * capacity has been reserved. Please refer to https://aka.ms/CapacityReservation
      * for more details.
      */
+    @Generated
     private SubResource capacityReservationGroup;
 
     /**
      * Creates an instance of CapacityReservationProfile class.
      */
+    @Generated
     public CapacityReservationProfile() {
     }
 
@@ -40,6 +43,7 @@ public final class CapacityReservationProfile implements JsonSerializable<Capaci
      * 
      * @return the capacityReservationGroup value.
      */
+    @Generated
     public SubResource capacityReservationGroup() {
         return this.capacityReservationGroup;
     }
@@ -54,6 +58,7 @@ public final class CapacityReservationProfile implements JsonSerializable<Capaci
      * @param capacityReservationGroup the capacityReservationGroup value to set.
      * @return the CapacityReservationProfile object itself.
      */
+    @Generated
     public CapacityReservationProfile withCapacityReservationGroup(SubResource capacityReservationGroup) {
         this.capacityReservationGroup = capacityReservationGroup;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.pineconevectordb.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,31 +22,37 @@ public final class SingleSignOnPropertiesV2 implements JsonSerializable<SingleSi
     /*
      * Type of Single Sign-On mechanism being used
      */
+    @Generated
     private SingleSignOnType type;
 
     /*
      * State of the Single Sign On for the resource
      */
+    @Generated
     private SingleSignOnStates state;
 
     /*
      * AAD enterprise application Id used to setup SSO
      */
+    @Generated
     private String enterpriseAppId;
 
     /*
      * URL for SSO to be used by the partner to redirect the user to their system
      */
+    @Generated
     private String url;
 
     /*
      * List of AAD domains fetched from Microsoft Graph for user.
      */
+    @Generated
     private List<String> aadDomains;
 
     /**
      * Creates an instance of SingleSignOnPropertiesV2 class.
      */
+    @Generated
     public SingleSignOnPropertiesV2() {
     }
 
@@ -54,6 +61,7 @@ public final class SingleSignOnPropertiesV2 implements JsonSerializable<SingleSi
      * 
      * @return the type value.
      */
+    @Generated
     public SingleSignOnType type() {
         return this.type;
     }
@@ -64,6 +72,7 @@ public final class SingleSignOnPropertiesV2 implements JsonSerializable<SingleSi
      * @param type the type value to set.
      * @return the SingleSignOnPropertiesV2 object itself.
      */
+    @Generated
     public SingleSignOnPropertiesV2 withType(SingleSignOnType type) {
         this.type = type;
         return this;
@@ -74,6 +83,7 @@ public final class SingleSignOnPropertiesV2 implements JsonSerializable<SingleSi
      * 
      * @return the state value.
      */
+    @Generated
     public SingleSignOnStates state() {
         return this.state;
     }
@@ -84,6 +94,7 @@ public final class SingleSignOnPropertiesV2 implements JsonSerializable<SingleSi
      * @param state the state value to set.
      * @return the SingleSignOnPropertiesV2 object itself.
      */
+    @Generated
     public SingleSignOnPropertiesV2 withState(SingleSignOnStates state) {
         this.state = state;
         return this;
@@ -94,6 +105,7 @@ public final class SingleSignOnPropertiesV2 implements JsonSerializable<SingleSi
      * 
      * @return the enterpriseAppId value.
      */
+    @Generated
     public String enterpriseAppId() {
         return this.enterpriseAppId;
     }
@@ -104,6 +116,7 @@ public final class SingleSignOnPropertiesV2 implements JsonSerializable<SingleSi
      * @param enterpriseAppId the enterpriseAppId value to set.
      * @return the SingleSignOnPropertiesV2 object itself.
      */
+    @Generated
     public SingleSignOnPropertiesV2 withEnterpriseAppId(String enterpriseAppId) {
         this.enterpriseAppId = enterpriseAppId;
         return this;
@@ -114,6 +127,7 @@ public final class SingleSignOnPropertiesV2 implements JsonSerializable<SingleSi
      * 
      * @return the url value.
      */
+    @Generated
     public String url() {
         return this.url;
     }
@@ -124,6 +138,7 @@ public final class SingleSignOnPropertiesV2 implements JsonSerializable<SingleSi
      * @param url the url value to set.
      * @return the SingleSignOnPropertiesV2 object itself.
      */
+    @Generated
     public SingleSignOnPropertiesV2 withUrl(String url) {
         this.url = url;
         return this;
@@ -134,6 +149,7 @@ public final class SingleSignOnPropertiesV2 implements JsonSerializable<SingleSi
      * 
      * @return the aadDomains value.
      */
+    @Generated
     public List<String> aadDomains() {
         return this.aadDomains;
     }
@@ -144,6 +160,7 @@ public final class SingleSignOnPropertiesV2 implements JsonSerializable<SingleSi
      * @param aadDomains the aadDomains value to set.
      * @return the SingleSignOnPropertiesV2 object itself.
      */
+    @Generated
     public SingleSignOnPropertiesV2 withAadDomains(List<String> aadDomains) {
         this.aadDomains = aadDomains;
         return this;

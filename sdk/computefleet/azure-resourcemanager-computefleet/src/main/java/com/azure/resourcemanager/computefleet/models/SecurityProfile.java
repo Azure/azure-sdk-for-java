@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,6 +22,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * Specifies the security settings like secure boot and vTPM used while creating
      * the virtual machine. Minimum api-version: 2020-12-01.
      */
+    @Generated
     private UefiSettings uefiSettings;
 
     /*
@@ -30,6 +32,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * itself. The default behavior is: The Encryption at host will be disabled unless
      * this property is set to true for the resource.
      */
+    @Generated
     private Boolean encryptionAtHost;
 
     /*
@@ -37,23 +40,27 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * specified value to enable UefiSettings. The default behavior is: UefiSettings
      * will not be enabled unless this property is set.
      */
+    @Generated
     private SecurityTypes securityType;
 
     /*
      * Specifies the Managed Identity used by ADE to get access token for keyvault
      * operations.
      */
+    @Generated
     private EncryptionIdentity encryptionIdentity;
 
     /*
      * Specifies ProxyAgent settings while creating the virtual machine. Minimum
      * api-version: 2023-09-01.
      */
+    @Generated
     private ProxyAgentSettings proxyAgentSettings;
 
     /**
      * Creates an instance of SecurityProfile class.
      */
+    @Generated
     public SecurityProfile() {
     }
 
@@ -63,6 +70,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * 
      * @return the uefiSettings value.
      */
+    @Generated
     public UefiSettings uefiSettings() {
         return this.uefiSettings;
     }
@@ -74,6 +82,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * @param uefiSettings the uefiSettings value to set.
      * @return the SecurityProfile object itself.
      */
+    @Generated
     public SecurityProfile withUefiSettings(UefiSettings uefiSettings) {
         this.uefiSettings = uefiSettings;
         return this;
@@ -88,6 +97,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * 
      * @return the encryptionAtHost value.
      */
+    @Generated
     public Boolean encryptionAtHost() {
         return this.encryptionAtHost;
     }
@@ -102,6 +112,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * @param encryptionAtHost the encryptionAtHost value to set.
      * @return the SecurityProfile object itself.
      */
+    @Generated
     public SecurityProfile withEncryptionAtHost(Boolean encryptionAtHost) {
         this.encryptionAtHost = encryptionAtHost;
         return this;
@@ -114,6 +125,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * 
      * @return the securityType value.
      */
+    @Generated
     public SecurityTypes securityType() {
         return this.securityType;
     }
@@ -126,6 +138,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * @param securityType the securityType value to set.
      * @return the SecurityProfile object itself.
      */
+    @Generated
     public SecurityProfile withSecurityType(SecurityTypes securityType) {
         this.securityType = securityType;
         return this;
@@ -137,6 +150,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * 
      * @return the encryptionIdentity value.
      */
+    @Generated
     public EncryptionIdentity encryptionIdentity() {
         return this.encryptionIdentity;
     }
@@ -148,6 +162,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * @param encryptionIdentity the encryptionIdentity value to set.
      * @return the SecurityProfile object itself.
      */
+    @Generated
     public SecurityProfile withEncryptionIdentity(EncryptionIdentity encryptionIdentity) {
         this.encryptionIdentity = encryptionIdentity;
         return this;
@@ -159,6 +174,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * 
      * @return the proxyAgentSettings value.
      */
+    @Generated
     public ProxyAgentSettings proxyAgentSettings() {
         return this.proxyAgentSettings;
     }
@@ -170,6 +186,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * @param proxyAgentSettings the proxyAgentSettings value to set.
      * @return the SecurityProfile object itself.
      */
+    @Generated
     public SecurityProfile withProxyAgentSettings(ProxyAgentSettings proxyAgentSettings) {
         this.proxyAgentSettings = proxyAgentSettings;
         return this;

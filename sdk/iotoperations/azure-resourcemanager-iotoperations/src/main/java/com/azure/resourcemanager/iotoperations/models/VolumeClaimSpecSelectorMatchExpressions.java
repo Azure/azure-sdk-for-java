@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,12 +23,14 @@ public final class VolumeClaimSpecSelectorMatchExpressions
     /*
      * key is the label key that the selector applies to.
      */
+    @Generated
     private String key;
 
     /*
      * operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and
      * DoesNotExist.
      */
+    @Generated
     private OperatorValues operator;
 
     /*
@@ -35,11 +38,13 @@ public final class VolumeClaimSpecSelectorMatchExpressions
      * operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic
      * merge patch.
      */
+    @Generated
     private List<String> values;
 
     /**
      * Creates an instance of VolumeClaimSpecSelectorMatchExpressions class.
      */
+    @Generated
     public VolumeClaimSpecSelectorMatchExpressions() {
     }
 
@@ -48,6 +53,7 @@ public final class VolumeClaimSpecSelectorMatchExpressions
      * 
      * @return the key value.
      */
+    @Generated
     public String key() {
         return this.key;
     }
@@ -58,6 +64,7 @@ public final class VolumeClaimSpecSelectorMatchExpressions
      * @param key the key value to set.
      * @return the VolumeClaimSpecSelectorMatchExpressions object itself.
      */
+    @Generated
     public VolumeClaimSpecSelectorMatchExpressions withKey(String key) {
         this.key = key;
         return this;
@@ -69,6 +76,7 @@ public final class VolumeClaimSpecSelectorMatchExpressions
      * 
      * @return the operator value.
      */
+    @Generated
     public OperatorValues operator() {
         return this.operator;
     }
@@ -80,6 +88,7 @@ public final class VolumeClaimSpecSelectorMatchExpressions
      * @param operator the operator value to set.
      * @return the VolumeClaimSpecSelectorMatchExpressions object itself.
      */
+    @Generated
     public VolumeClaimSpecSelectorMatchExpressions withOperator(OperatorValues operator) {
         this.operator = operator;
         return this;
@@ -92,6 +101,7 @@ public final class VolumeClaimSpecSelectorMatchExpressions
      * 
      * @return the values value.
      */
+    @Generated
     public List<String> values() {
         return this.values;
     }
@@ -104,6 +114,7 @@ public final class VolumeClaimSpecSelectorMatchExpressions
      * @param values the values value to set.
      * @return the VolumeClaimSpecSelectorMatchExpressions object itself.
      */
+    @Generated
     public VolumeClaimSpecSelectorMatchExpressions withValues(List<String> values) {
         this.values = values;
         return this;

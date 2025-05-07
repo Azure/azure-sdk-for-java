@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class VirtualMachineScaleSetIpTag implements JsonSerializable<Virtu
     /*
      * IP tag type. Example: FirstPartyUsage.
      */
+    @Generated
     private String ipTagType;
 
     /*
      * IP tag associated with the public IP. Example: SQL, Storage etc.
      */
+    @Generated
     private String tag;
 
     /**
      * Creates an instance of VirtualMachineScaleSetIpTag class.
      */
+    @Generated
     public VirtualMachineScaleSetIpTag() {
     }
 
@@ -37,6 +41,7 @@ public final class VirtualMachineScaleSetIpTag implements JsonSerializable<Virtu
      * 
      * @return the ipTagType value.
      */
+    @Generated
     public String ipTagType() {
         return this.ipTagType;
     }
@@ -47,6 +52,7 @@ public final class VirtualMachineScaleSetIpTag implements JsonSerializable<Virtu
      * @param ipTagType the ipTagType value to set.
      * @return the VirtualMachineScaleSetIpTag object itself.
      */
+    @Generated
     public VirtualMachineScaleSetIpTag withIpTagType(String ipTagType) {
         this.ipTagType = ipTagType;
         return this;
@@ -57,6 +63,7 @@ public final class VirtualMachineScaleSetIpTag implements JsonSerializable<Virtu
      * 
      * @return the tag value.
      */
+    @Generated
     public String tag() {
         return this.tag;
     }
@@ -67,6 +74,7 @@ public final class VirtualMachineScaleSetIpTag implements JsonSerializable<Virtu
      * @param tag the tag value to set.
      * @return the VirtualMachineScaleSetIpTag object itself.
      */
+    @Generated
     public VirtualMachineScaleSetIpTag withTag(String tag) {
         this.tag = tag;
         return this;

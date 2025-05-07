@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,11 +24,13 @@ public final class NetworkInterfaceResourceNames implements JsonSerializable<Net
      * distributed and HA-AvSet systems, default name will be {SID}-{App/ASCS/DB}-Nic with an incrementor at the end in
      * case of more than 1 instance per layer.
      */
+    @Generated
     private String networkInterfaceName;
 
     /**
      * Creates an instance of NetworkInterfaceResourceNames class.
      */
+    @Generated
     public NetworkInterfaceResourceNames() {
     }
 
@@ -40,6 +43,7 @@ public final class NetworkInterfaceResourceNames implements JsonSerializable<Net
      * 
      * @return the networkInterfaceName value.
      */
+    @Generated
     public String networkInterfaceName() {
         return this.networkInterfaceName;
     }
@@ -54,6 +58,7 @@ public final class NetworkInterfaceResourceNames implements JsonSerializable<Net
      * @param networkInterfaceName the networkInterfaceName value to set.
      * @return the NetworkInterfaceResourceNames object itself.
      */
+    @Generated
     public NetworkInterfaceResourceNames withNetworkInterfaceName(String networkInterfaceName) {
         this.networkInterfaceName = networkInterfaceName;
         return this;

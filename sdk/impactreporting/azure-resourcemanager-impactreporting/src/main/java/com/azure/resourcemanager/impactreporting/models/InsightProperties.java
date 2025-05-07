@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -23,57 +24,68 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
     /*
      * Resource provisioning state.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * category of the insight.
      */
+    @Generated
     private String category;
 
     /*
      * status of the insight. example resolved, repaired, other.
      */
+    @Generated
     private String status;
 
     /*
      * Identifier of the event that has been correlated with this insight. This can be used to aggregate insights for
      * the same event.
      */
+    @Generated
     private String eventId;
 
     /*
      * Identifier that can be used to group similar insights.
      */
+    @Generated
     private String groupId;
 
     /*
      * Contains title & description for the insight
      */
+    @Generated
     private Content content;
 
     /*
      * Time of the event, which has been correlated the impact.
      */
+    @Generated
     private OffsetDateTime eventTime;
 
     /*
      * unique id of the insight.
      */
+    @Generated
     private String insightUniqueId;
 
     /*
      * details of of the impact for which insight has been generated.
      */
+    @Generated
     private ImpactDetails impact;
 
     /*
      * additional details of the insight.
      */
+    @Generated
     private InsightPropertiesAdditionalDetails additionalDetails;
 
     /**
      * Creates an instance of InsightProperties class.
      */
+    @Generated
     public InsightProperties() {
     }
 
@@ -82,6 +94,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -91,6 +104,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * 
      * @return the category value.
      */
+    @Generated
     public String category() {
         return this.category;
     }
@@ -101,6 +115,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * @param category the category value to set.
      * @return the InsightProperties object itself.
      */
+    @Generated
     public InsightProperties withCategory(String category) {
         this.category = category;
         return this;
@@ -111,6 +126,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * 
      * @return the status value.
      */
+    @Generated
     public String status() {
         return this.status;
     }
@@ -121,6 +137,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * @param status the status value to set.
      * @return the InsightProperties object itself.
      */
+    @Generated
     public InsightProperties withStatus(String status) {
         this.status = status;
         return this;
@@ -132,6 +149,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * 
      * @return the eventId value.
      */
+    @Generated
     public String eventId() {
         return this.eventId;
     }
@@ -143,6 +161,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * @param eventId the eventId value to set.
      * @return the InsightProperties object itself.
      */
+    @Generated
     public InsightProperties withEventId(String eventId) {
         this.eventId = eventId;
         return this;
@@ -153,6 +172,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * 
      * @return the groupId value.
      */
+    @Generated
     public String groupId() {
         return this.groupId;
     }
@@ -163,6 +183,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * @param groupId the groupId value to set.
      * @return the InsightProperties object itself.
      */
+    @Generated
     public InsightProperties withGroupId(String groupId) {
         this.groupId = groupId;
         return this;
@@ -173,6 +194,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * 
      * @return the content value.
      */
+    @Generated
     public Content content() {
         return this.content;
     }
@@ -183,6 +205,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * @param content the content value to set.
      * @return the InsightProperties object itself.
      */
+    @Generated
     public InsightProperties withContent(Content content) {
         this.content = content;
         return this;
@@ -193,6 +216,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * 
      * @return the eventTime value.
      */
+    @Generated
     public OffsetDateTime eventTime() {
         return this.eventTime;
     }
@@ -203,6 +227,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * @param eventTime the eventTime value to set.
      * @return the InsightProperties object itself.
      */
+    @Generated
     public InsightProperties withEventTime(OffsetDateTime eventTime) {
         this.eventTime = eventTime;
         return this;
@@ -213,6 +238,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * 
      * @return the insightUniqueId value.
      */
+    @Generated
     public String insightUniqueId() {
         return this.insightUniqueId;
     }
@@ -223,6 +249,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * @param insightUniqueId the insightUniqueId value to set.
      * @return the InsightProperties object itself.
      */
+    @Generated
     public InsightProperties withInsightUniqueId(String insightUniqueId) {
         this.insightUniqueId = insightUniqueId;
         return this;
@@ -233,6 +260,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * 
      * @return the impact value.
      */
+    @Generated
     public ImpactDetails impact() {
         return this.impact;
     }
@@ -243,6 +271,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * @param impact the impact value to set.
      * @return the InsightProperties object itself.
      */
+    @Generated
     public InsightProperties withImpact(ImpactDetails impact) {
         this.impact = impact;
         return this;
@@ -253,6 +282,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * 
      * @return the additionalDetails value.
      */
+    @Generated
     public InsightPropertiesAdditionalDetails additionalDetails() {
         return this.additionalDetails;
     }
@@ -263,6 +293,7 @@ public final class InsightProperties implements JsonSerializable<InsightProperti
      * @param additionalDetails the additionalDetails value to set.
      * @return the InsightProperties object itself.
      */
+    @Generated
     public InsightProperties withAdditionalDetails(InsightPropertiesAdditionalDetails additionalDetails) {
         this.additionalDetails = additionalDetails;
         return this;

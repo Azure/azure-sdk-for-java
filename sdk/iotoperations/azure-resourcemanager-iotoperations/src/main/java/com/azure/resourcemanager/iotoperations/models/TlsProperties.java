@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class TlsProperties implements JsonSerializable<TlsProperties> {
     /*
      * Mode for TLS.
      */
+    @Generated
     private OperationalMode mode;
 
     /*
      * Trusted CA certificate config map.
      */
+    @Generated
     private String trustedCaCertificateConfigMapRef;
 
     /**
      * Creates an instance of TlsProperties class.
      */
+    @Generated
     public TlsProperties() {
     }
 
@@ -37,6 +41,7 @@ public final class TlsProperties implements JsonSerializable<TlsProperties> {
      * 
      * @return the mode value.
      */
+    @Generated
     public OperationalMode mode() {
         return this.mode;
     }
@@ -47,6 +52,7 @@ public final class TlsProperties implements JsonSerializable<TlsProperties> {
      * @param mode the mode value to set.
      * @return the TlsProperties object itself.
      */
+    @Generated
     public TlsProperties withMode(OperationalMode mode) {
         this.mode = mode;
         return this;
@@ -57,6 +63,7 @@ public final class TlsProperties implements JsonSerializable<TlsProperties> {
      * 
      * @return the trustedCaCertificateConfigMapRef value.
      */
+    @Generated
     public String trustedCaCertificateConfigMapRef() {
         return this.trustedCaCertificateConfigMapRef;
     }
@@ -67,6 +74,7 @@ public final class TlsProperties implements JsonSerializable<TlsProperties> {
      * @param trustedCaCertificateConfigMapRef the trustedCaCertificateConfigMapRef value to set.
      * @return the TlsProperties object itself.
      */
+    @Generated
     public TlsProperties withTrustedCaCertificateConfigMapRef(String trustedCaCertificateConfigMapRef) {
         this.trustedCaCertificateConfigMapRef = trustedCaCertificateConfigMapRef;
         return this;

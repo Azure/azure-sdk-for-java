@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class OsDiskStorageAccountType extends ExpandableStringEnum<OsDiskS
     /**
      * Standard OS disk type.
      */
+    @Generated
     public static final OsDiskStorageAccountType STANDARD = fromString("Standard");
 
     /**
      * Premium OS disk type.
      */
+    @Generated
     public static final OsDiskStorageAccountType PREMIUM = fromString("Premium");
 
     /**
      * Standard SSD OS disk type.
      */
+    @Generated
     public static final OsDiskStorageAccountType STANDARD_SSD = fromString("StandardSSD");
 
     /**
@@ -31,6 +35,7 @@ public final class OsDiskStorageAccountType extends ExpandableStringEnum<OsDiskS
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OsDiskStorageAccountType() {
     }
@@ -41,6 +46,7 @@ public final class OsDiskStorageAccountType extends ExpandableStringEnum<OsDiskS
      * @param name a name to look for.
      * @return the corresponding OsDiskStorageAccountType.
      */
+    @Generated
     public static OsDiskStorageAccountType fromString(String name) {
         return fromString(name, OsDiskStorageAccountType.class);
     }
@@ -50,6 +56,7 @@ public final class OsDiskStorageAccountType extends ExpandableStringEnum<OsDiskS
      * 
      * @return known OsDiskStorageAccountType values.
      */
+    @Generated
     public static Collection<OsDiskStorageAccountType> values() {
         return values(OsDiskStorageAccountType.class);
     }

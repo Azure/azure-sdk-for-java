@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public class OrganizationProfile implements JsonSerializable<OrganizationProfile
     /*
      * Discriminator property for OrganizationProfile.
      */
+    @Generated
     private String kind = "OrganizationProfile";
 
     /**
      * Creates an instance of OrganizationProfile class.
      */
+    @Generated
     public OrganizationProfile() {
     }
 
@@ -32,6 +35,7 @@ public class OrganizationProfile implements JsonSerializable<OrganizationProfile
      * 
      * @return the kind value.
      */
+    @Generated
     public String kind() {
         return this.kind;
     }

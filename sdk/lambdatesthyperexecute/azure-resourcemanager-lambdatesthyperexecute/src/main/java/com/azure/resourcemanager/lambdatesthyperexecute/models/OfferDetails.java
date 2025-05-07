@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.lambdatesthyperexecute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,36 +21,43 @@ public final class OfferDetails implements JsonSerializable<OfferDetails> {
     /*
      * Publisher Id for the marketplace offer
      */
+    @Generated
     private String publisherId;
 
     /*
      * Offer Id for the marketplace offer
      */
+    @Generated
     private String offerId;
 
     /*
      * Plan Id for the marketplace offer
      */
+    @Generated
     private String planId;
 
     /*
      * Plan Name for the marketplace offer
      */
+    @Generated
     private String planName;
 
     /*
      * Plan Display Name for the marketplace offer
      */
+    @Generated
     private String termUnit;
 
     /*
      * Plan Display Name for the marketplace offer
      */
+    @Generated
     private String termId;
 
     /**
      * Creates an instance of OfferDetails class.
      */
+    @Generated
     public OfferDetails() {
     }
 
@@ -58,6 +66,7 @@ public final class OfferDetails implements JsonSerializable<OfferDetails> {
      * 
      * @return the publisherId value.
      */
+    @Generated
     public String publisherId() {
         return this.publisherId;
     }
@@ -68,6 +77,7 @@ public final class OfferDetails implements JsonSerializable<OfferDetails> {
      * @param publisherId the publisherId value to set.
      * @return the OfferDetails object itself.
      */
+    @Generated
     public OfferDetails withPublisherId(String publisherId) {
         this.publisherId = publisherId;
         return this;
@@ -78,6 +88,7 @@ public final class OfferDetails implements JsonSerializable<OfferDetails> {
      * 
      * @return the offerId value.
      */
+    @Generated
     public String offerId() {
         return this.offerId;
     }
@@ -88,6 +99,7 @@ public final class OfferDetails implements JsonSerializable<OfferDetails> {
      * @param offerId the offerId value to set.
      * @return the OfferDetails object itself.
      */
+    @Generated
     public OfferDetails withOfferId(String offerId) {
         this.offerId = offerId;
         return this;
@@ -98,6 +110,7 @@ public final class OfferDetails implements JsonSerializable<OfferDetails> {
      * 
      * @return the planId value.
      */
+    @Generated
     public String planId() {
         return this.planId;
     }
@@ -108,6 +121,7 @@ public final class OfferDetails implements JsonSerializable<OfferDetails> {
      * @param planId the planId value to set.
      * @return the OfferDetails object itself.
      */
+    @Generated
     public OfferDetails withPlanId(String planId) {
         this.planId = planId;
         return this;
@@ -118,6 +132,7 @@ public final class OfferDetails implements JsonSerializable<OfferDetails> {
      * 
      * @return the planName value.
      */
+    @Generated
     public String planName() {
         return this.planName;
     }
@@ -128,6 +143,7 @@ public final class OfferDetails implements JsonSerializable<OfferDetails> {
      * @param planName the planName value to set.
      * @return the OfferDetails object itself.
      */
+    @Generated
     public OfferDetails withPlanName(String planName) {
         this.planName = planName;
         return this;
@@ -138,6 +154,7 @@ public final class OfferDetails implements JsonSerializable<OfferDetails> {
      * 
      * @return the termUnit value.
      */
+    @Generated
     public String termUnit() {
         return this.termUnit;
     }
@@ -148,6 +165,7 @@ public final class OfferDetails implements JsonSerializable<OfferDetails> {
      * @param termUnit the termUnit value to set.
      * @return the OfferDetails object itself.
      */
+    @Generated
     public OfferDetails withTermUnit(String termUnit) {
         this.termUnit = termUnit;
         return this;
@@ -158,6 +176,7 @@ public final class OfferDetails implements JsonSerializable<OfferDetails> {
      * 
      * @return the termId value.
      */
+    @Generated
     public String termId() {
         return this.termId;
     }
@@ -168,6 +187,7 @@ public final class OfferDetails implements JsonSerializable<OfferDetails> {
      * @param termId the termId value to set.
      * @return the OfferDetails object itself.
      */
+    @Generated
     public OfferDetails withTermId(String termId) {
         this.termId = termId;
         return this;

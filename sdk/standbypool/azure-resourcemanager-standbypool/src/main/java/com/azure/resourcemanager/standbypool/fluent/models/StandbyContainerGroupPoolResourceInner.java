@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.standbypool.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -22,31 +23,37 @@ public final class StandbyContainerGroupPoolResourceInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private StandbyContainerGroupPoolResourceProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of StandbyContainerGroupPoolResourceInner class.
      */
+    @Generated
     public StandbyContainerGroupPoolResourceInner() {
     }
 
@@ -55,6 +62,7 @@ public final class StandbyContainerGroupPoolResourceInner extends Resource {
      * 
      * @return the properties value.
      */
+    @Generated
     public StandbyContainerGroupPoolResourceProperties properties() {
         return this.properties;
     }
@@ -65,6 +73,7 @@ public final class StandbyContainerGroupPoolResourceInner extends Resource {
      * @param properties the properties value to set.
      * @return the StandbyContainerGroupPoolResourceInner object itself.
      */
+    @Generated
     public StandbyContainerGroupPoolResourceInner
         withProperties(StandbyContainerGroupPoolResourceProperties properties) {
         this.properties = properties;
@@ -76,6 +85,7 @@ public final class StandbyContainerGroupPoolResourceInner extends Resource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -85,6 +95,7 @@ public final class StandbyContainerGroupPoolResourceInner extends Resource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -95,6 +106,7 @@ public final class StandbyContainerGroupPoolResourceInner extends Resource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -105,6 +117,7 @@ public final class StandbyContainerGroupPoolResourceInner extends Resource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;
@@ -113,6 +126,7 @@ public final class StandbyContainerGroupPoolResourceInner extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public StandbyContainerGroupPoolResourceInner withLocation(String location) {
         super.withLocation(location);
@@ -122,6 +136,7 @@ public final class StandbyContainerGroupPoolResourceInner extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public StandbyContainerGroupPoolResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);

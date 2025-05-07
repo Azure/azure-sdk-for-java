@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.weightsandbiases.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class SingleSignOnStates extends ExpandableStringEnum<SingleSignOnS
     /**
      * Initial state of the SSO resource.
      */
+    @Generated
     public static final SingleSignOnStates INITIAL = fromString("Initial");
 
     /**
      * State of the SSO resource when it is enabled.
      */
+    @Generated
     public static final SingleSignOnStates ENABLE = fromString("Enable");
 
     /**
      * State of the SSO resource when it is disabled.
      */
+    @Generated
     public static final SingleSignOnStates DISABLE = fromString("Disable");
 
     /**
@@ -31,6 +35,7 @@ public final class SingleSignOnStates extends ExpandableStringEnum<SingleSignOnS
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SingleSignOnStates() {
     }
@@ -41,6 +46,7 @@ public final class SingleSignOnStates extends ExpandableStringEnum<SingleSignOnS
      * @param name a name to look for.
      * @return the corresponding SingleSignOnStates.
      */
+    @Generated
     public static SingleSignOnStates fromString(String name) {
         return fromString(name, SingleSignOnStates.class);
     }
@@ -50,6 +56,7 @@ public final class SingleSignOnStates extends ExpandableStringEnum<SingleSignOnS
      * 
      * @return known SingleSignOnStates values.
      */
+    @Generated
     public static Collection<SingleSignOnStates> values() {
         return values(SingleSignOnStates.class);
     }

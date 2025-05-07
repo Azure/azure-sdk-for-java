@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,21 +23,25 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
     /*
      * The status of the last operation.
      */
+    @Generated
     private FleetProvisioningState provisioningState;
 
     /*
      * The FleetHubProfile configures the Fleet's hub.
      */
+    @Generated
     private FleetHubProfile hubProfile;
 
     /*
      * Status information for the fleet.
      */
+    @Generated
     private FleetStatus status;
 
     /**
      * Creates an instance of FleetProperties class.
      */
+    @Generated
     public FleetProperties() {
     }
 
@@ -45,6 +50,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public FleetProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -54,6 +60,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * 
      * @return the hubProfile value.
      */
+    @Generated
     public FleetHubProfile hubProfile() {
         return this.hubProfile;
     }
@@ -64,6 +71,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * @param hubProfile the hubProfile value to set.
      * @return the FleetProperties object itself.
      */
+    @Generated
     public FleetProperties withHubProfile(FleetHubProfile hubProfile) {
         this.hubProfile = hubProfile;
         return this;
@@ -74,6 +82,7 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * 
      * @return the status value.
      */
+    @Generated
     public FleetStatus status() {
         return this.status;
     }

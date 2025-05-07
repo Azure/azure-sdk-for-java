@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class ClientIncidentDetails implements JsonSerializable<ClientIncid
     /*
      * Client incident id. ex : id of the incident created to investigate and address the impact if any.
      */
+    @Generated
     private String clientIncidentId;
 
     /*
      * Client incident source. ex : source system name where the incident is created
      */
+    @Generated
     private IncidentSource clientIncidentSource;
 
     /**
      * Creates an instance of ClientIncidentDetails class.
      */
+    @Generated
     public ClientIncidentDetails() {
     }
 
@@ -38,6 +42,7 @@ public final class ClientIncidentDetails implements JsonSerializable<ClientIncid
      * 
      * @return the clientIncidentId value.
      */
+    @Generated
     public String clientIncidentId() {
         return this.clientIncidentId;
     }
@@ -49,6 +54,7 @@ public final class ClientIncidentDetails implements JsonSerializable<ClientIncid
      * @param clientIncidentId the clientIncidentId value to set.
      * @return the ClientIncidentDetails object itself.
      */
+    @Generated
     public ClientIncidentDetails withClientIncidentId(String clientIncidentId) {
         this.clientIncidentId = clientIncidentId;
         return this;
@@ -60,6 +66,7 @@ public final class ClientIncidentDetails implements JsonSerializable<ClientIncid
      * 
      * @return the clientIncidentSource value.
      */
+    @Generated
     public IncidentSource clientIncidentSource() {
         return this.clientIncidentSource;
     }
@@ -71,6 +78,7 @@ public final class ClientIncidentDetails implements JsonSerializable<ClientIncid
      * @param clientIncidentSource the clientIncidentSource value to set.
      * @return the ClientIncidentDetails object itself.
      */
+    @Generated
     public ClientIncidentDetails withClientIncidentSource(IncidentSource clientIncidentSource) {
         this.clientIncidentSource = clientIncidentSource;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class TargetType extends ExpandableStringEnum<TargetType> {
     /**
      * Skip the update of a member.
      */
+    @Generated
     public static final TargetType MEMBER = fromString("Member");
 
     /**
      * Skip the update of a group.
      */
+    @Generated
     public static final TargetType GROUP = fromString("Group");
 
     /**
      * Skip the update of an entire stage including the after stage wait.
      */
+    @Generated
     public static final TargetType STAGE = fromString("Stage");
 
     /**
      * Skip the update of the after stage wait of a certain stage.
      */
+    @Generated
     public static final TargetType AFTER_STAGE_WAIT = fromString("AfterStageWait");
 
     /**
@@ -36,6 +41,7 @@ public final class TargetType extends ExpandableStringEnum<TargetType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TargetType() {
     }
@@ -46,6 +52,7 @@ public final class TargetType extends ExpandableStringEnum<TargetType> {
      * @param name a name to look for.
      * @return the corresponding TargetType.
      */
+    @Generated
     public static TargetType fromString(String name) {
         return fromString(name, TargetType.class);
     }
@@ -55,6 +62,7 @@ public final class TargetType extends ExpandableStringEnum<TargetType> {
      * 
      * @return known TargetType values.
      */
+    @Generated
     public static Collection<TargetType> values() {
         return values(TargetType.class);
     }

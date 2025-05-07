@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -22,21 +23,25 @@ public final class StandbyContainerGroupPoolPrediction
     /*
      * Displays the forecast information of the standby pool.
      */
+    @Generated
     private StandbyContainerGroupPoolForecastValues forecastValues;
 
     /*
      * Displays the UTC timestamp of when the prediction was retrieved for the standby pool.
      */
+    @Generated
     private OffsetDateTime forecastStartTime;
 
     /*
      * Displays additional information for the prediction of the standby pool.
      */
+    @Generated
     private String forecastInfo;
 
     /**
      * Creates an instance of StandbyContainerGroupPoolPrediction class.
      */
+    @Generated
     private StandbyContainerGroupPoolPrediction() {
     }
 
@@ -45,6 +50,7 @@ public final class StandbyContainerGroupPoolPrediction
      * 
      * @return the forecastValues value.
      */
+    @Generated
     public StandbyContainerGroupPoolForecastValues forecastValues() {
         return this.forecastValues;
     }
@@ -55,6 +61,7 @@ public final class StandbyContainerGroupPoolPrediction
      * 
      * @return the forecastStartTime value.
      */
+    @Generated
     public OffsetDateTime forecastStartTime() {
         return this.forecastStartTime;
     }
@@ -64,6 +71,7 @@ public final class StandbyContainerGroupPoolPrediction
      * 
      * @return the forecastInfo value.
      */
+    @Generated
     public String forecastInfo() {
         return this.forecastInfo;
     }

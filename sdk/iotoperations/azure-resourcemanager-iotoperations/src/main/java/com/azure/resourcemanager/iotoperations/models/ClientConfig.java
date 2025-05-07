@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,36 +20,43 @@ public final class ClientConfig implements JsonSerializable<ClientConfig> {
     /*
      * Upper bound of Session Expiry Interval, in seconds.
      */
+    @Generated
     private Integer maxSessionExpirySeconds;
 
     /*
      * Upper bound of Message Expiry Interval, in seconds.
      */
+    @Generated
     private Integer maxMessageExpirySeconds;
 
     /*
      * Max message size for a packet in Bytes.
      */
+    @Generated
     private Integer maxPacketSizeBytes;
 
     /*
      * The limit on the number of queued messages for a subscriber.
      */
+    @Generated
     private SubscriberQueueLimit subscriberQueueLimit;
 
     /*
      * Upper bound of Receive Maximum that a client can request in the CONNECT packet.
      */
+    @Generated
     private Integer maxReceiveMaximum;
 
     /*
      * Upper bound of a client's Keep Alive, in seconds.
      */
+    @Generated
     private Integer maxKeepAliveSeconds;
 
     /**
      * Creates an instance of ClientConfig class.
      */
+    @Generated
     public ClientConfig() {
     }
 
@@ -57,6 +65,7 @@ public final class ClientConfig implements JsonSerializable<ClientConfig> {
      * 
      * @return the maxSessionExpirySeconds value.
      */
+    @Generated
     public Integer maxSessionExpirySeconds() {
         return this.maxSessionExpirySeconds;
     }
@@ -67,6 +76,7 @@ public final class ClientConfig implements JsonSerializable<ClientConfig> {
      * @param maxSessionExpirySeconds the maxSessionExpirySeconds value to set.
      * @return the ClientConfig object itself.
      */
+    @Generated
     public ClientConfig withMaxSessionExpirySeconds(Integer maxSessionExpirySeconds) {
         this.maxSessionExpirySeconds = maxSessionExpirySeconds;
         return this;
@@ -77,6 +87,7 @@ public final class ClientConfig implements JsonSerializable<ClientConfig> {
      * 
      * @return the maxMessageExpirySeconds value.
      */
+    @Generated
     public Integer maxMessageExpirySeconds() {
         return this.maxMessageExpirySeconds;
     }
@@ -87,6 +98,7 @@ public final class ClientConfig implements JsonSerializable<ClientConfig> {
      * @param maxMessageExpirySeconds the maxMessageExpirySeconds value to set.
      * @return the ClientConfig object itself.
      */
+    @Generated
     public ClientConfig withMaxMessageExpirySeconds(Integer maxMessageExpirySeconds) {
         this.maxMessageExpirySeconds = maxMessageExpirySeconds;
         return this;
@@ -97,6 +109,7 @@ public final class ClientConfig implements JsonSerializable<ClientConfig> {
      * 
      * @return the maxPacketSizeBytes value.
      */
+    @Generated
     public Integer maxPacketSizeBytes() {
         return this.maxPacketSizeBytes;
     }
@@ -107,6 +120,7 @@ public final class ClientConfig implements JsonSerializable<ClientConfig> {
      * @param maxPacketSizeBytes the maxPacketSizeBytes value to set.
      * @return the ClientConfig object itself.
      */
+    @Generated
     public ClientConfig withMaxPacketSizeBytes(Integer maxPacketSizeBytes) {
         this.maxPacketSizeBytes = maxPacketSizeBytes;
         return this;
@@ -117,6 +131,7 @@ public final class ClientConfig implements JsonSerializable<ClientConfig> {
      * 
      * @return the subscriberQueueLimit value.
      */
+    @Generated
     public SubscriberQueueLimit subscriberQueueLimit() {
         return this.subscriberQueueLimit;
     }
@@ -127,6 +142,7 @@ public final class ClientConfig implements JsonSerializable<ClientConfig> {
      * @param subscriberQueueLimit the subscriberQueueLimit value to set.
      * @return the ClientConfig object itself.
      */
+    @Generated
     public ClientConfig withSubscriberQueueLimit(SubscriberQueueLimit subscriberQueueLimit) {
         this.subscriberQueueLimit = subscriberQueueLimit;
         return this;
@@ -138,6 +154,7 @@ public final class ClientConfig implements JsonSerializable<ClientConfig> {
      * 
      * @return the maxReceiveMaximum value.
      */
+    @Generated
     public Integer maxReceiveMaximum() {
         return this.maxReceiveMaximum;
     }
@@ -149,6 +166,7 @@ public final class ClientConfig implements JsonSerializable<ClientConfig> {
      * @param maxReceiveMaximum the maxReceiveMaximum value to set.
      * @return the ClientConfig object itself.
      */
+    @Generated
     public ClientConfig withMaxReceiveMaximum(Integer maxReceiveMaximum) {
         this.maxReceiveMaximum = maxReceiveMaximum;
         return this;
@@ -159,6 +177,7 @@ public final class ClientConfig implements JsonSerializable<ClientConfig> {
      * 
      * @return the maxKeepAliveSeconds value.
      */
+    @Generated
     public Integer maxKeepAliveSeconds() {
         return this.maxKeepAliveSeconds;
     }
@@ -169,6 +188,7 @@ public final class ClientConfig implements JsonSerializable<ClientConfig> {
      * @param maxKeepAliveSeconds the maxKeepAliveSeconds value to set.
      * @return the ClientConfig object itself.
      */
+    @Generated
     public ClientConfig withMaxKeepAliveSeconds(Integer maxKeepAliveSeconds) {
         this.maxKeepAliveSeconds = maxKeepAliveSeconds;
         return this;

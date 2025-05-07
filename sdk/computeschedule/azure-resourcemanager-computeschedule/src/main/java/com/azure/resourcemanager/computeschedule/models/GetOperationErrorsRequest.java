@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class GetOperationErrorsRequest implements JsonSerializable<GetOper
     /*
      * The list of operation ids to query errors of
      */
+    @Generated
     private List<String> operationIds;
 
     /**
      * Creates an instance of GetOperationErrorsRequest class.
      */
+    @Generated
     public GetOperationErrorsRequest() {
     }
 
@@ -34,6 +37,7 @@ public final class GetOperationErrorsRequest implements JsonSerializable<GetOper
      * 
      * @return the operationIds value.
      */
+    @Generated
     public List<String> operationIds() {
         return this.operationIds;
     }
@@ -44,6 +48,7 @@ public final class GetOperationErrorsRequest implements JsonSerializable<GetOper
      * @param operationIds the operationIds value to set.
      * @return the GetOperationErrorsRequest object itself.
      */
+    @Generated
     public GetOperationErrorsRequest withOperationIds(List<String> operationIds) {
         this.operationIds = operationIds;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class Topic implements JsonSerializable<Topic> {
     /*
      * The topic path for messages published to an MQTT broker.
      */
+    @Generated
     private String path;
 
     /*
      * When set to 'Keep', messages published to an MQTT broker will have the retain flag set. Default: 'Never'.
      */
+    @Generated
     private TopicRetainType retain;
 
     /**
      * Creates an instance of Topic class.
      */
+    @Generated
     public Topic() {
     }
 
@@ -38,6 +42,7 @@ public final class Topic implements JsonSerializable<Topic> {
      * 
      * @return the path value.
      */
+    @Generated
     public String path() {
         return this.path;
     }
@@ -48,6 +53,7 @@ public final class Topic implements JsonSerializable<Topic> {
      * @param path the path value to set.
      * @return the Topic object itself.
      */
+    @Generated
     public Topic withPath(String path) {
         this.path = path;
         return this;
@@ -59,6 +65,7 @@ public final class Topic implements JsonSerializable<Topic> {
      * 
      * @return the retain value.
      */
+    @Generated
     public TopicRetainType retain() {
         return this.retain;
     }
@@ -70,6 +77,7 @@ public final class Topic implements JsonSerializable<Topic> {
      * @param retain the retain value to set.
      * @return the Topic object itself.
      */
+    @Generated
     public Topic withRetain(TopicRetainType retain) {
         this.retain = retain;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -20,16 +21,19 @@ public final class ManagedProxyResourceInner implements JsonSerializable<Managed
     /*
      * The short lived proxy name.
      */
+    @Generated
     private String proxy;
 
     /*
      * The expiration time of short lived proxy name in unix epoch.
      */
+    @Generated
     private long expiresOn;
 
     /**
      * Creates an instance of ManagedProxyResourceInner class.
      */
+    @Generated
     private ManagedProxyResourceInner() {
     }
 
@@ -38,6 +42,7 @@ public final class ManagedProxyResourceInner implements JsonSerializable<Managed
      * 
      * @return the proxy value.
      */
+    @Generated
     public String proxy() {
         return this.proxy;
     }
@@ -47,6 +52,7 @@ public final class ManagedProxyResourceInner implements JsonSerializable<Managed
      * 
      * @return the expiresOn value.
      */
+    @Generated
     public long expiresOn() {
         return this.expiresOn;
     }

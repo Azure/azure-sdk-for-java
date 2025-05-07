@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -24,63 +25,75 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * Specifies the primary network interface in case the virtual machine has more
      * than 1 network interface.
      */
+    @Generated
     private Boolean primary;
 
     /*
      * Specifies whether the network interface is accelerated networking-enabled.
      */
+    @Generated
     private Boolean enableAcceleratedNetworking;
 
     /*
      * Specifies whether the network interface is disabled for tcp state tracking.
      */
+    @Generated
     private Boolean disableTcpStateTracking;
 
     /*
      * Specifies whether the network interface is FPGA networking-enabled.
      */
+    @Generated
     private Boolean enableFpga;
 
     /*
      * The network security group.
      */
+    @Generated
     private SubResource networkSecurityGroup;
 
     /*
      * The dns settings to be applied on the network interfaces.
      */
+    @Generated
     private VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings;
 
     /*
      * Specifies the IP configurations of the network interface.
      */
+    @Generated
     private List<VirtualMachineScaleSetIPConfiguration> ipConfigurations;
 
     /*
      * Whether IP forwarding enabled on this NIC.
      */
+    @Generated
     private Boolean enableIPForwarding;
 
     /*
      * Specify what happens to the network interface when the VM is deleted
      */
+    @Generated
     private DeleteOptions deleteOption;
 
     /*
      * Specifies whether the Auxiliary mode is enabled for the Network Interface
      * resource.
      */
+    @Generated
     private NetworkInterfaceAuxiliaryMode auxiliaryMode;
 
     /*
      * Specifies whether the Auxiliary sku is enabled for the Network Interface
      * resource.
      */
+    @Generated
     private NetworkInterfaceAuxiliarySku auxiliarySku;
 
     /**
      * Creates an instance of VirtualMachineScaleSetNetworkConfigurationProperties class.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationProperties() {
     }
 
@@ -90,6 +103,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * 
      * @return the primary value.
      */
+    @Generated
     public Boolean primary() {
         return this.primary;
     }
@@ -101,6 +115,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * @param primary the primary value to set.
      * @return the VirtualMachineScaleSetNetworkConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationProperties withPrimary(Boolean primary) {
         this.primary = primary;
         return this;
@@ -112,6 +127,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * 
      * @return the enableAcceleratedNetworking value.
      */
+    @Generated
     public Boolean enableAcceleratedNetworking() {
         return this.enableAcceleratedNetworking;
     }
@@ -123,6 +139,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set.
      * @return the VirtualMachineScaleSetNetworkConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationProperties
         withEnableAcceleratedNetworking(Boolean enableAcceleratedNetworking) {
         this.enableAcceleratedNetworking = enableAcceleratedNetworking;
@@ -135,6 +152,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * 
      * @return the disableTcpStateTracking value.
      */
+    @Generated
     public Boolean disableTcpStateTracking() {
         return this.disableTcpStateTracking;
     }
@@ -146,6 +164,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * @param disableTcpStateTracking the disableTcpStateTracking value to set.
      * @return the VirtualMachineScaleSetNetworkConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationProperties
         withDisableTcpStateTracking(Boolean disableTcpStateTracking) {
         this.disableTcpStateTracking = disableTcpStateTracking;
@@ -157,6 +176,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * 
      * @return the enableFpga value.
      */
+    @Generated
     public Boolean enableFpga() {
         return this.enableFpga;
     }
@@ -167,6 +187,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * @param enableFpga the enableFpga value to set.
      * @return the VirtualMachineScaleSetNetworkConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationProperties withEnableFpga(Boolean enableFpga) {
         this.enableFpga = enableFpga;
         return this;
@@ -177,6 +198,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * 
      * @return the networkSecurityGroup value.
      */
+    @Generated
     public SubResource networkSecurityGroup() {
         return this.networkSecurityGroup;
     }
@@ -187,6 +209,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * @param networkSecurityGroup the networkSecurityGroup value to set.
      * @return the VirtualMachineScaleSetNetworkConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationProperties
         withNetworkSecurityGroup(SubResource networkSecurityGroup) {
         this.networkSecurityGroup = networkSecurityGroup;
@@ -198,6 +221,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * 
      * @return the dnsSettings value.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings() {
         return this.dnsSettings;
     }
@@ -208,6 +232,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * @param dnsSettings the dnsSettings value to set.
      * @return the VirtualMachineScaleSetNetworkConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationProperties
         withDnsSettings(VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
@@ -219,6 +244,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * 
      * @return the ipConfigurations value.
      */
+    @Generated
     public List<VirtualMachineScaleSetIPConfiguration> ipConfigurations() {
         return this.ipConfigurations;
     }
@@ -229,6 +255,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the VirtualMachineScaleSetNetworkConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationProperties
         withIpConfigurations(List<VirtualMachineScaleSetIPConfiguration> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
@@ -240,6 +267,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * 
      * @return the enableIPForwarding value.
      */
+    @Generated
     public Boolean enableIPForwarding() {
         return this.enableIPForwarding;
     }
@@ -250,6 +278,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * @param enableIPForwarding the enableIPForwarding value to set.
      * @return the VirtualMachineScaleSetNetworkConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationProperties withEnableIPForwarding(Boolean enableIPForwarding) {
         this.enableIPForwarding = enableIPForwarding;
         return this;
@@ -260,6 +289,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * 
      * @return the deleteOption value.
      */
+    @Generated
     public DeleteOptions deleteOption() {
         return this.deleteOption;
     }
@@ -270,6 +300,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * @param deleteOption the deleteOption value to set.
      * @return the VirtualMachineScaleSetNetworkConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationProperties withDeleteOption(DeleteOptions deleteOption) {
         this.deleteOption = deleteOption;
         return this;
@@ -281,6 +312,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * 
      * @return the auxiliaryMode value.
      */
+    @Generated
     public NetworkInterfaceAuxiliaryMode auxiliaryMode() {
         return this.auxiliaryMode;
     }
@@ -292,6 +324,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * @param auxiliaryMode the auxiliaryMode value to set.
      * @return the VirtualMachineScaleSetNetworkConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationProperties
         withAuxiliaryMode(NetworkInterfaceAuxiliaryMode auxiliaryMode) {
         this.auxiliaryMode = auxiliaryMode;
@@ -304,6 +337,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * 
      * @return the auxiliarySku value.
      */
+    @Generated
     public NetworkInterfaceAuxiliarySku auxiliarySku() {
         return this.auxiliarySku;
     }
@@ -315,6 +349,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
      * @param auxiliarySku the auxiliarySku value to set.
      * @return the VirtualMachineScaleSetNetworkConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationProperties
         withAuxiliarySku(NetworkInterfaceAuxiliarySku auxiliarySku) {
         this.auxiliarySku = auxiliarySku;

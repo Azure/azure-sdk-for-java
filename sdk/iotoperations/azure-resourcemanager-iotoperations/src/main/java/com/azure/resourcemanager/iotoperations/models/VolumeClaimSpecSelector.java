@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,6 +22,7 @@ public final class VolumeClaimSpecSelector implements JsonSerializable<VolumeCla
     /*
      * MatchExpressions is a list of label selector requirements. The requirements are ANDed.
      */
+    @Generated
     private List<VolumeClaimSpecSelectorMatchExpressions> matchExpressions;
 
     /*
@@ -28,11 +30,13 @@ public final class VolumeClaimSpecSelector implements JsonSerializable<VolumeCla
      * element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only
      * "value". The requirements are ANDed.
      */
+    @Generated
     private Map<String, String> matchLabels;
 
     /**
      * Creates an instance of VolumeClaimSpecSelector class.
      */
+    @Generated
     public VolumeClaimSpecSelector() {
     }
 
@@ -42,6 +46,7 @@ public final class VolumeClaimSpecSelector implements JsonSerializable<VolumeCla
      * 
      * @return the matchExpressions value.
      */
+    @Generated
     public List<VolumeClaimSpecSelectorMatchExpressions> matchExpressions() {
         return this.matchExpressions;
     }
@@ -53,6 +58,7 @@ public final class VolumeClaimSpecSelector implements JsonSerializable<VolumeCla
      * @param matchExpressions the matchExpressions value to set.
      * @return the VolumeClaimSpecSelector object itself.
      */
+    @Generated
     public VolumeClaimSpecSelector
         withMatchExpressions(List<VolumeClaimSpecSelectorMatchExpressions> matchExpressions) {
         this.matchExpressions = matchExpressions;
@@ -66,6 +72,7 @@ public final class VolumeClaimSpecSelector implements JsonSerializable<VolumeCla
      * 
      * @return the matchLabels value.
      */
+    @Generated
     public Map<String, String> matchLabels() {
         return this.matchLabels;
     }
@@ -78,6 +85,7 @@ public final class VolumeClaimSpecSelector implements JsonSerializable<VolumeCla
      * @param matchLabels the matchLabels value to set.
      * @return the VolumeClaimSpecSelector object itself.
      */
+    @Generated
     public VolumeClaimSpecSelector withMatchLabels(Map<String, String> matchLabels) {
         this.matchLabels = matchLabels;
         return this;

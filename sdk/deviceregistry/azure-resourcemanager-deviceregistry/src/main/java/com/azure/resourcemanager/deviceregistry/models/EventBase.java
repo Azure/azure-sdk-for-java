@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,28 +21,33 @@ public class EventBase implements JsonSerializable<EventBase> {
     /*
      * The name of the event.
      */
+    @Generated
     private String name;
 
     /*
      * The address of the notifier of the event in the asset (e.g. URL) so that a client can access the event on the
      * asset.
      */
+    @Generated
     private String eventNotifier;
 
     /*
      * Stringified JSON that contains connector-specific configuration for the event. For OPC UA, this could include
      * configuration like, publishingInterval, samplingInterval, and queueSize.
      */
+    @Generated
     private String eventConfiguration;
 
     /*
      * Object that describes the topic information for the specific event.
      */
+    @Generated
     private Topic topic;
 
     /**
      * Creates an instance of EventBase class.
      */
+    @Generated
     public EventBase() {
     }
 
@@ -50,6 +56,7 @@ public class EventBase implements JsonSerializable<EventBase> {
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -60,6 +67,7 @@ public class EventBase implements JsonSerializable<EventBase> {
      * @param name the name value to set.
      * @return the EventBase object itself.
      */
+    @Generated
     public EventBase withName(String name) {
         this.name = name;
         return this;
@@ -71,6 +79,7 @@ public class EventBase implements JsonSerializable<EventBase> {
      * 
      * @return the eventNotifier value.
      */
+    @Generated
     public String eventNotifier() {
         return this.eventNotifier;
     }
@@ -82,6 +91,7 @@ public class EventBase implements JsonSerializable<EventBase> {
      * @param eventNotifier the eventNotifier value to set.
      * @return the EventBase object itself.
      */
+    @Generated
     public EventBase withEventNotifier(String eventNotifier) {
         this.eventNotifier = eventNotifier;
         return this;
@@ -93,6 +103,7 @@ public class EventBase implements JsonSerializable<EventBase> {
      * 
      * @return the eventConfiguration value.
      */
+    @Generated
     public String eventConfiguration() {
         return this.eventConfiguration;
     }
@@ -104,6 +115,7 @@ public class EventBase implements JsonSerializable<EventBase> {
      * @param eventConfiguration the eventConfiguration value to set.
      * @return the EventBase object itself.
      */
+    @Generated
     public EventBase withEventConfiguration(String eventConfiguration) {
         this.eventConfiguration = eventConfiguration;
         return this;
@@ -114,6 +126,7 @@ public class EventBase implements JsonSerializable<EventBase> {
      * 
      * @return the topic value.
      */
+    @Generated
     public Topic topic() {
         return this.topic;
     }
@@ -124,6 +137,7 @@ public class EventBase implements JsonSerializable<EventBase> {
      * @param topic the topic value to set.
      * @return the EventBase object itself.
      */
+    @Generated
     public EventBase withTopic(Topic topic) {
         this.topic = topic;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class OperationalMode extends ExpandableStringEnum<OperationalMode>
     /**
      * Enabled is equivalent to True.
      */
+    @Generated
     public static final OperationalMode ENABLED = fromString("Enabled");
 
     /**
      * Disabled is equivalent to False.
      */
+    @Generated
     public static final OperationalMode DISABLED = fromString("Disabled");
 
     /**
@@ -26,6 +29,7 @@ public final class OperationalMode extends ExpandableStringEnum<OperationalMode>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OperationalMode() {
     }
@@ -36,6 +40,7 @@ public final class OperationalMode extends ExpandableStringEnum<OperationalMode>
      * @param name a name to look for.
      * @return the corresponding OperationalMode.
      */
+    @Generated
     public static OperationalMode fromString(String name) {
         return fromString(name, OperationalMode.class);
     }
@@ -45,6 +50,7 @@ public final class OperationalMode extends ExpandableStringEnum<OperationalMode>
      * 
      * @return known OperationalMode values.
      */
+    @Generated
     public static Collection<OperationalMode> values() {
         return values(OperationalMode.class);
     }

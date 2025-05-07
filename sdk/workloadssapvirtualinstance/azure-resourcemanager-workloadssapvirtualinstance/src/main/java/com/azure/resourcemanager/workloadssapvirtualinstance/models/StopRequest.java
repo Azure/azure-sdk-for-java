@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class StopRequest implements JsonSerializable<StopRequest> {
      * consider the server for calls with load balancing. Value 0 means that the kernel does not wait, but goes directly
      * into the next shutdown state, i.e. hard stop.
      */
+    @Generated
     private Long softStopTimeoutSeconds;
 
     /*
      * The boolean value indicates whether to Stop and deallocate the virtual machines along with the SAP instances.
      */
+    @Generated
     private Boolean deallocateVm;
 
     /**
      * Creates an instance of StopRequest class.
      */
+    @Generated
     public StopRequest() {
     }
 
@@ -41,6 +45,7 @@ public final class StopRequest implements JsonSerializable<StopRequest> {
      * 
      * @return the softStopTimeoutSeconds value.
      */
+    @Generated
     public Long softStopTimeoutSeconds() {
         return this.softStopTimeoutSeconds;
     }
@@ -53,6 +58,7 @@ public final class StopRequest implements JsonSerializable<StopRequest> {
      * @param softStopTimeoutSeconds the softStopTimeoutSeconds value to set.
      * @return the StopRequest object itself.
      */
+    @Generated
     public StopRequest withSoftStopTimeoutSeconds(Long softStopTimeoutSeconds) {
         this.softStopTimeoutSeconds = softStopTimeoutSeconds;
         return this;
@@ -64,6 +70,7 @@ public final class StopRequest implements JsonSerializable<StopRequest> {
      * 
      * @return the deallocateVm value.
      */
+    @Generated
     public Boolean deallocateVm() {
         return this.deallocateVm;
     }
@@ -75,6 +82,7 @@ public final class StopRequest implements JsonSerializable<StopRequest> {
      * @param deallocateVm the deallocateVm value to set.
      * @return the StopRequest object itself.
      */
+    @Generated
     public StopRequest withDeallocateVm(Boolean deallocateVm) {
         this.deallocateVm = deallocateVm;
         return this;

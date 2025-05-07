@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class SecurityPolicyConfigurations implements JsonSerializable<Secu
     /*
      * Contains reference to a WAF-type security policy.
      */
+    @Generated
     private WafSecurityPolicy wafSecurityPolicy;
 
     /*
      * Contains reference to a IpAccessRules-type security policy.
      */
+    @Generated
     private IpAccessRulesSecurityPolicy ipAccessRulesSecurityPolicy;
 
     /**
      * Creates an instance of SecurityPolicyConfigurations class.
      */
+    @Generated
     public SecurityPolicyConfigurations() {
     }
 
@@ -37,6 +41,7 @@ public final class SecurityPolicyConfigurations implements JsonSerializable<Secu
      * 
      * @return the wafSecurityPolicy value.
      */
+    @Generated
     public WafSecurityPolicy wafSecurityPolicy() {
         return this.wafSecurityPolicy;
     }
@@ -47,6 +52,7 @@ public final class SecurityPolicyConfigurations implements JsonSerializable<Secu
      * @param wafSecurityPolicy the wafSecurityPolicy value to set.
      * @return the SecurityPolicyConfigurations object itself.
      */
+    @Generated
     public SecurityPolicyConfigurations withWafSecurityPolicy(WafSecurityPolicy wafSecurityPolicy) {
         this.wafSecurityPolicy = wafSecurityPolicy;
         return this;
@@ -57,6 +63,7 @@ public final class SecurityPolicyConfigurations implements JsonSerializable<Secu
      * 
      * @return the ipAccessRulesSecurityPolicy value.
      */
+    @Generated
     public IpAccessRulesSecurityPolicy ipAccessRulesSecurityPolicy() {
         return this.ipAccessRulesSecurityPolicy;
     }
@@ -67,6 +74,7 @@ public final class SecurityPolicyConfigurations implements JsonSerializable<Secu
      * @param ipAccessRulesSecurityPolicy the ipAccessRulesSecurityPolicy value to set.
      * @return the SecurityPolicyConfigurations object itself.
      */
+    @Generated
     public SecurityPolicyConfigurations
         withIpAccessRulesSecurityPolicy(IpAccessRulesSecurityPolicy ipAccessRulesSecurityPolicy) {
         this.ipAccessRulesSecurityPolicy = ipAccessRulesSecurityPolicy;

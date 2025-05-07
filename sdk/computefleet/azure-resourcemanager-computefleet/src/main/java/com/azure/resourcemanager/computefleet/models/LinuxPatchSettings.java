@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,6 +25,7 @@ public final class LinuxPatchSettings implements JsonSerializable<LinuxPatchSett
      * **AutomaticByPlatform** - The virtual machine will be automatically updated by
      * the platform. The property provisionVMAgent must be true
      */
+    @Generated
     private LinuxVMGuestPatchMode patchMode;
 
     /*
@@ -33,17 +35,20 @@ public final class LinuxPatchSettings implements JsonSerializable<LinuxPatchSett
      * **AutomaticByPlatform** - The platform will trigger periodic patch assessments.
      * The property provisionVMAgent must be true.
      */
+    @Generated
     private LinuxPatchAssessmentMode assessmentMode;
 
     /*
      * Specifies additional settings for patch mode AutomaticByPlatform in VM Guest
      * Patching on Linux.
      */
+    @Generated
     private LinuxVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings;
 
     /**
      * Creates an instance of LinuxPatchSettings class.
      */
+    @Generated
     public LinuxPatchSettings() {
     }
 
@@ -57,6 +62,7 @@ public final class LinuxPatchSettings implements JsonSerializable<LinuxPatchSett
      * 
      * @return the patchMode value.
      */
+    @Generated
     public LinuxVMGuestPatchMode patchMode() {
         return this.patchMode;
     }
@@ -72,6 +78,7 @@ public final class LinuxPatchSettings implements JsonSerializable<LinuxPatchSett
      * @param patchMode the patchMode value to set.
      * @return the LinuxPatchSettings object itself.
      */
+    @Generated
     public LinuxPatchSettings withPatchMode(LinuxVMGuestPatchMode patchMode) {
         this.patchMode = patchMode;
         return this;
@@ -86,6 +93,7 @@ public final class LinuxPatchSettings implements JsonSerializable<LinuxPatchSett
      * 
      * @return the assessmentMode value.
      */
+    @Generated
     public LinuxPatchAssessmentMode assessmentMode() {
         return this.assessmentMode;
     }
@@ -100,6 +108,7 @@ public final class LinuxPatchSettings implements JsonSerializable<LinuxPatchSett
      * @param assessmentMode the assessmentMode value to set.
      * @return the LinuxPatchSettings object itself.
      */
+    @Generated
     public LinuxPatchSettings withAssessmentMode(LinuxPatchAssessmentMode assessmentMode) {
         this.assessmentMode = assessmentMode;
         return this;
@@ -112,6 +121,7 @@ public final class LinuxPatchSettings implements JsonSerializable<LinuxPatchSett
      * 
      * @return the automaticByPlatformSettings value.
      */
+    @Generated
     public LinuxVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings() {
         return this.automaticByPlatformSettings;
     }
@@ -124,6 +134,7 @@ public final class LinuxPatchSettings implements JsonSerializable<LinuxPatchSett
      * @param automaticByPlatformSettings the automaticByPlatformSettings value to set.
      * @return the LinuxPatchSettings object itself.
      */
+    @Generated
     public LinuxPatchSettings
         withAutomaticByPlatformSettings(LinuxVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings) {
         this.automaticByPlatformSettings = automaticByPlatformSettings;

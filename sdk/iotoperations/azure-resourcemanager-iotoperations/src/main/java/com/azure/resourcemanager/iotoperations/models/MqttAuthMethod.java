@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class MqttAuthMethod extends ExpandableStringEnum<MqttAuthMethod> {
     /**
      * SystemAssignedManagedIdentity type.
      */
+    @Generated
     public static final MqttAuthMethod SYSTEM_ASSIGNED_MANAGED_IDENTITY = fromString("SystemAssignedManagedIdentity");
 
     /**
      * UserAssignedManagedIdentity type.
      */
+    @Generated
     public static final MqttAuthMethod USER_ASSIGNED_MANAGED_IDENTITY = fromString("UserAssignedManagedIdentity");
 
     /**
      * ServiceAccountToken Option.
      */
+    @Generated
     public static final MqttAuthMethod SERVICE_ACCOUNT_TOKEN = fromString("ServiceAccountToken");
 
     /**
      * x509Certificate Option.
      */
+    @Generated
     public static final MqttAuthMethod X509CERTIFICATE = fromString("X509Certificate");
 
     /**
      * Anonymous Option.
      */
+    @Generated
     public static final MqttAuthMethod ANONYMOUS = fromString("Anonymous");
 
     /**
@@ -41,6 +47,7 @@ public final class MqttAuthMethod extends ExpandableStringEnum<MqttAuthMethod> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MqttAuthMethod() {
     }
@@ -51,6 +58,7 @@ public final class MqttAuthMethod extends ExpandableStringEnum<MqttAuthMethod> {
      * @param name a name to look for.
      * @return the corresponding MqttAuthMethod.
      */
+    @Generated
     public static MqttAuthMethod fromString(String name) {
         return fromString(name, MqttAuthMethod.class);
     }
@@ -60,6 +68,7 @@ public final class MqttAuthMethod extends ExpandableStringEnum<MqttAuthMethod> {
      * 
      * @return known MqttAuthMethod values.
      */
+    @Generated
     public static Collection<MqttAuthMethod> values() {
         return values(MqttAuthMethod.class);
     }

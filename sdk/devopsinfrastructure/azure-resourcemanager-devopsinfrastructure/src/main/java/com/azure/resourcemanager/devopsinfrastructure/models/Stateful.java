@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,22 +19,26 @@ public final class Stateful extends AgentProfile {
     /*
      * Discriminator property for AgentProfile.
      */
+    @Generated
     private String kind = "Stateful";
 
     /*
      * How long should stateful machines be kept around. The maximum is one week.
      */
+    @Generated
     private String maxAgentLifetime;
 
     /*
      * How long should the machine be kept around after it ran a workload when there are no stand-by agents. The maximum
      * is one week.
      */
+    @Generated
     private String gracePeriodTimeSpan;
 
     /**
      * Creates an instance of Stateful class.
      */
+    @Generated
     public Stateful() {
     }
 
@@ -42,6 +47,7 @@ public final class Stateful extends AgentProfile {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public String kind() {
         return this.kind;
@@ -52,6 +58,7 @@ public final class Stateful extends AgentProfile {
      * 
      * @return the maxAgentLifetime value.
      */
+    @Generated
     public String maxAgentLifetime() {
         return this.maxAgentLifetime;
     }
@@ -62,6 +69,7 @@ public final class Stateful extends AgentProfile {
      * @param maxAgentLifetime the maxAgentLifetime value to set.
      * @return the Stateful object itself.
      */
+    @Generated
     public Stateful withMaxAgentLifetime(String maxAgentLifetime) {
         this.maxAgentLifetime = maxAgentLifetime;
         return this;
@@ -73,6 +81,7 @@ public final class Stateful extends AgentProfile {
      * 
      * @return the gracePeriodTimeSpan value.
      */
+    @Generated
     public String gracePeriodTimeSpan() {
         return this.gracePeriodTimeSpan;
     }
@@ -84,6 +93,7 @@ public final class Stateful extends AgentProfile {
      * @param gracePeriodTimeSpan the gracePeriodTimeSpan value to set.
      * @return the Stateful object itself.
      */
+    @Generated
     public Stateful withGracePeriodTimeSpan(String gracePeriodTimeSpan) {
         this.gracePeriodTimeSpan = gracePeriodTimeSpan;
         return this;
@@ -92,6 +102,7 @@ public final class Stateful extends AgentProfile {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Stateful withResourcePredictions(ResourcePredictions resourcePredictions) {
         super.withResourcePredictions(resourcePredictions);
@@ -101,6 +112,7 @@ public final class Stateful extends AgentProfile {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Stateful withResourcePredictionsProfile(ResourcePredictionsProfile resourcePredictionsProfile) {
         super.withResourcePredictionsProfile(resourcePredictionsProfile);

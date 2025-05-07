@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class HighAvailabilityProperties implements JsonSerializable<HighAv
     /*
      * The target high availability mode requested for the cluster.
      */
+    @Generated
     private HighAvailabilityMode targetMode;
 
     /**
      * Creates an instance of HighAvailabilityProperties class.
      */
+    @Generated
     public HighAvailabilityProperties() {
     }
 
@@ -32,6 +35,7 @@ public final class HighAvailabilityProperties implements JsonSerializable<HighAv
      * 
      * @return the targetMode value.
      */
+    @Generated
     public HighAvailabilityMode targetMode() {
         return this.targetMode;
     }
@@ -42,6 +46,7 @@ public final class HighAvailabilityProperties implements JsonSerializable<HighAv
      * @param targetMode the targetMode value to set.
      * @return the HighAvailabilityProperties object itself.
      */
+    @Generated
     public HighAvailabilityProperties withTargetMode(HighAvailabilityMode targetMode) {
         this.targetMode = targetMode;
         return this;

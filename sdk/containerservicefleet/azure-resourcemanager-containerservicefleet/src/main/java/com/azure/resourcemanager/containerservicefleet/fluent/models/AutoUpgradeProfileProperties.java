@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,22 +25,26 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
     /*
      * The provisioning state of the AutoUpgradeProfile resource.
      */
+    @Generated
     private AutoUpgradeProfileProvisioningState provisioningState;
 
     /*
      * The resource id of the UpdateStrategy resource to reference. If not specified, the auto upgrade will run on all
      * clusters which are members of the fleet.
      */
+    @Generated
     private String updateStrategyId;
 
     /*
      * Configures how auto-upgrade will be run.
      */
+    @Generated
     private UpgradeChannel channel;
 
     /*
      * The node image upgrade to be applied to the target clusters in auto upgrade.
      */
+    @Generated
     private AutoUpgradeNodeImageSelection nodeImageSelection;
 
     /*
@@ -48,16 +53,19 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
      * This is a boolean and not an enum because enabled/disabled are all available states of the auto upgrade profile.
      * By default, this is set to False.
      */
+    @Generated
     private Boolean disabled;
 
     /*
      * The status of the auto upgrade profile.
      */
+    @Generated
     private AutoUpgradeProfileStatus autoUpgradeProfileStatus;
 
     /**
      * Creates an instance of AutoUpgradeProfileProperties class.
      */
+    @Generated
     public AutoUpgradeProfileProperties() {
     }
 
@@ -66,6 +74,7 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public AutoUpgradeProfileProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -76,6 +85,7 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
      * 
      * @return the updateStrategyId value.
      */
+    @Generated
     public String updateStrategyId() {
         return this.updateStrategyId;
     }
@@ -87,6 +97,7 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
      * @param updateStrategyId the updateStrategyId value to set.
      * @return the AutoUpgradeProfileProperties object itself.
      */
+    @Generated
     public AutoUpgradeProfileProperties withUpdateStrategyId(String updateStrategyId) {
         this.updateStrategyId = updateStrategyId;
         return this;
@@ -97,6 +108,7 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
      * 
      * @return the channel value.
      */
+    @Generated
     public UpgradeChannel channel() {
         return this.channel;
     }
@@ -107,6 +119,7 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
      * @param channel the channel value to set.
      * @return the AutoUpgradeProfileProperties object itself.
      */
+    @Generated
     public AutoUpgradeProfileProperties withChannel(UpgradeChannel channel) {
         this.channel = channel;
         return this;
@@ -117,6 +130,7 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
      * 
      * @return the nodeImageSelection value.
      */
+    @Generated
     public AutoUpgradeNodeImageSelection nodeImageSelection() {
         return this.nodeImageSelection;
     }
@@ -127,6 +141,7 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
      * @param nodeImageSelection the nodeImageSelection value to set.
      * @return the AutoUpgradeProfileProperties object itself.
      */
+    @Generated
     public AutoUpgradeProfileProperties withNodeImageSelection(AutoUpgradeNodeImageSelection nodeImageSelection) {
         this.nodeImageSelection = nodeImageSelection;
         return this;
@@ -141,6 +156,7 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
      * 
      * @return the disabled value.
      */
+    @Generated
     public Boolean disabled() {
         return this.disabled;
     }
@@ -155,6 +171,7 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
      * @param disabled the disabled value to set.
      * @return the AutoUpgradeProfileProperties object itself.
      */
+    @Generated
     public AutoUpgradeProfileProperties withDisabled(Boolean disabled) {
         this.disabled = disabled;
         return this;
@@ -165,6 +182,7 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
      * 
      * @return the autoUpgradeProfileStatus value.
      */
+    @Generated
     public AutoUpgradeProfileStatus autoUpgradeProfileStatus() {
         return this.autoUpgradeProfileStatus;
     }
@@ -175,6 +193,7 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
      * @param autoUpgradeProfileStatus the autoUpgradeProfileStatus value to set.
      * @return the AutoUpgradeProfileProperties object itself.
      */
+    @Generated
     public AutoUpgradeProfileProperties
         withAutoUpgradeProfileStatus(AutoUpgradeProfileStatus autoUpgradeProfileStatus) {
         this.autoUpgradeProfileStatus = autoUpgradeProfileStatus;

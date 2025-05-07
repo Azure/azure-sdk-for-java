@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.trustedsigning.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class CodeSigningAccountProperties implements JsonSerializable<Code
     /*
      * The URI of the trusted signing account which is used during signing files.
      */
+    @Generated
     private String accountUri;
 
     /*
      * SKU of the trusted signing account.
      */
+    @Generated
     private AccountSku sku;
 
     /*
      * Status of the current operation on trusted signing account.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of CodeSigningAccountProperties class.
      */
+    @Generated
     public CodeSigningAccountProperties() {
     }
 
@@ -42,6 +47,7 @@ public final class CodeSigningAccountProperties implements JsonSerializable<Code
      * 
      * @return the accountUri value.
      */
+    @Generated
     public String accountUri() {
         return this.accountUri;
     }
@@ -51,6 +57,7 @@ public final class CodeSigningAccountProperties implements JsonSerializable<Code
      * 
      * @return the sku value.
      */
+    @Generated
     public AccountSku sku() {
         return this.sku;
     }
@@ -61,6 +68,7 @@ public final class CodeSigningAccountProperties implements JsonSerializable<Code
      * @param sku the sku value to set.
      * @return the CodeSigningAccountProperties object itself.
      */
+    @Generated
     public CodeSigningAccountProperties withSku(AccountSku sku) {
         this.sku = sku;
         return this;
@@ -71,6 +79,7 @@ public final class CodeSigningAccountProperties implements JsonSerializable<Code
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

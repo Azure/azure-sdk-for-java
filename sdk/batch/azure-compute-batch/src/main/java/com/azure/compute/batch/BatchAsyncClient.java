@@ -90,7 +90,6 @@ import com.azure.compute.batch.models.GetBatchPoolOptions;
 import com.azure.compute.batch.models.GetBatchTaskFileOptions;
 import com.azure.compute.batch.models.GetBatchTaskFilePropertiesOptions;
 import com.azure.compute.batch.models.GetBatchTaskOptions;
-import com.azure.compute.batch.models.GetCertificateResponse;
 import com.azure.compute.batch.models.ListBatchApplicationsOptions;
 import com.azure.compute.batch.models.ListBatchCertificatesOptions;
 import com.azure.compute.batch.models.ListBatchJobPreparationAndReleaseTaskStatusOptions;
@@ -5790,6 +5789,9 @@ public final class BatchAsyncClient {
      *             }
      *         ]
      *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
      * }
      * }
      * </pre>
@@ -13699,7 +13701,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetCertificateResponse> getCertificate(String thumbprintAlgorithm, String thumbprint,
+    public Mono<BatchCertificate> getCertificate(String thumbprintAlgorithm, String thumbprint,
         GetBatchCertificateOptions options) {
         // Generated convenience method for getCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -13716,7 +13718,7 @@ public final class BatchAsyncClient {
                 false);
         }
         return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(GetCertificateResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(BatchCertificate.class));
     }
 
     /**
@@ -13734,11 +13736,11 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetCertificateResponse> getCertificate(String thumbprintAlgorithm, String thumbprint) {
+    public Mono<BatchCertificate> getCertificate(String thumbprintAlgorithm, String thumbprint) {
         // Generated convenience method for getCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(GetCertificateResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(BatchCertificate.class));
     }
 
     /**

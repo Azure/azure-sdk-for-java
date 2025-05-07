@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.trustedsigning.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -23,36 +24,43 @@ public final class Revocation implements JsonSerializable<Revocation> {
     /*
      * The timestamp when the revocation is requested.
      */
+    @Generated
     private OffsetDateTime requestedAt;
 
     /*
      * The timestamp when the revocation is effective.
      */
+    @Generated
     private OffsetDateTime effectiveAt;
 
     /*
      * Reason for revocation.
      */
+    @Generated
     private String reason;
 
     /*
      * Remarks for the revocation.
      */
+    @Generated
     private String remarks;
 
     /*
      * Status of the revocation.
      */
+    @Generated
     private RevocationStatus status;
 
     /*
      * Reason for the revocation failure.
      */
+    @Generated
     private String failureReason;
 
     /**
      * Creates an instance of Revocation class.
      */
+    @Generated
     private Revocation() {
     }
 
@@ -61,6 +69,7 @@ public final class Revocation implements JsonSerializable<Revocation> {
      * 
      * @return the requestedAt value.
      */
+    @Generated
     public OffsetDateTime requestedAt() {
         return this.requestedAt;
     }
@@ -70,6 +79,7 @@ public final class Revocation implements JsonSerializable<Revocation> {
      * 
      * @return the effectiveAt value.
      */
+    @Generated
     public OffsetDateTime effectiveAt() {
         return this.effectiveAt;
     }
@@ -79,6 +89,7 @@ public final class Revocation implements JsonSerializable<Revocation> {
      * 
      * @return the reason value.
      */
+    @Generated
     public String reason() {
         return this.reason;
     }
@@ -88,6 +99,7 @@ public final class Revocation implements JsonSerializable<Revocation> {
      * 
      * @return the remarks value.
      */
+    @Generated
     public String remarks() {
         return this.remarks;
     }
@@ -97,6 +109,7 @@ public final class Revocation implements JsonSerializable<Revocation> {
      * 
      * @return the status value.
      */
+    @Generated
     public RevocationStatus status() {
         return this.status;
     }
@@ -106,6 +119,7 @@ public final class Revocation implements JsonSerializable<Revocation> {
      * 
      * @return the failureReason value.
      */
+    @Generated
     public String failureReason() {
         return this.failureReason;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,51 +21,61 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
     /*
      * Unique identifier for the entity
      */
+    @Generated
     private String entityId;
 
     /*
      * Name of the resource
      */
+    @Generated
     private String entityName;
 
     /*
      * Timestamp indicating when the entity was created
      */
+    @Generated
     private String createdAt;
 
     /*
      * Provisioning state of the resource.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /*
      * Additional attributes for the entity
      */
+    @Generated
     private List<Attributes> attributes;
 
     /*
      * Region where the compute instance is located
      */
+    @Generated
     private String region;
 
     /*
      * Number of allocated CPU cores
      */
+    @Generated
     private Integer cpuCores;
 
     /*
      * Memory allocated in GB
      */
+    @Generated
     private Integer memory;
 
     /*
      * Current status of the compute instance
      */
+    @Generated
     private String status;
 
     /**
      * Creates an instance of ComputeProperties class.
      */
+    @Generated
     public ComputeProperties() {
     }
 
@@ -73,6 +84,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * 
      * @return the entityId value.
      */
+    @Generated
     public String entityId() {
         return this.entityId;
     }
@@ -82,6 +94,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * 
      * @return the entityName value.
      */
+    @Generated
     public String entityName() {
         return this.entityName;
     }
@@ -92,6 +105,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * @param entityName the entityName value to set.
      * @return the ComputeProperties object itself.
      */
+    @Generated
     public ComputeProperties withEntityName(String entityName) {
         this.entityName = entityName;
         return this;
@@ -102,6 +116,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * 
      * @return the createdAt value.
      */
+    @Generated
     public String createdAt() {
         return this.createdAt;
     }
@@ -111,6 +126,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -120,6 +136,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * 
      * @return the attributes value.
      */
+    @Generated
     public List<Attributes> attributes() {
         return this.attributes;
     }
@@ -130,6 +147,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * @param attributes the attributes value to set.
      * @return the ComputeProperties object itself.
      */
+    @Generated
     public ComputeProperties withAttributes(List<Attributes> attributes) {
         this.attributes = attributes;
         return this;
@@ -140,6 +158,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * 
      * @return the region value.
      */
+    @Generated
     public String region() {
         return this.region;
     }
@@ -150,6 +169,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * @param region the region value to set.
      * @return the ComputeProperties object itself.
      */
+    @Generated
     public ComputeProperties withRegion(String region) {
         this.region = region;
         return this;
@@ -160,6 +180,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * 
      * @return the cpuCores value.
      */
+    @Generated
     public Integer cpuCores() {
         return this.cpuCores;
     }
@@ -170,6 +191,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * @param cpuCores the cpuCores value to set.
      * @return the ComputeProperties object itself.
      */
+    @Generated
     public ComputeProperties withCpuCores(Integer cpuCores) {
         this.cpuCores = cpuCores;
         return this;
@@ -180,6 +202,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * 
      * @return the memory value.
      */
+    @Generated
     public Integer memory() {
         return this.memory;
     }
@@ -190,6 +213,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * @param memory the memory value to set.
      * @return the ComputeProperties object itself.
      */
+    @Generated
     public ComputeProperties withMemory(Integer memory) {
         this.memory = memory;
         return this;
@@ -200,6 +224,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * 
      * @return the status value.
      */
+    @Generated
     public String status() {
         return this.status;
     }
@@ -210,6 +235,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * @param status the status value to set.
      * @return the ComputeProperties object itself.
      */
+    @Generated
     public ComputeProperties withStatus(String status) {
         this.status = status;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -22,16 +23,19 @@ public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacem
     /**
      * CacheDisk option.
      */
+    @Generated
     public static final DiffDiskPlacement CACHE_DISK = fromString("CacheDisk");
 
     /**
      * Resource Disk option.
      */
+    @Generated
     public static final DiffDiskPlacement RESOURCE_DISK = fromString("ResourceDisk");
 
     /**
      * NvmeDisk option.
      */
+    @Generated
     public static final DiffDiskPlacement NVME_DISK = fromString("NvmeDisk");
 
     /**
@@ -39,6 +43,7 @@ public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacem
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DiffDiskPlacement() {
     }
@@ -49,6 +54,7 @@ public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacem
      * @param name a name to look for.
      * @return the corresponding DiffDiskPlacement.
      */
+    @Generated
     public static DiffDiskPlacement fromString(String name) {
         return fromString(name, DiffDiskPlacement.class);
     }
@@ -58,6 +64,7 @@ public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacem
      * 
      * @return known DiffDiskPlacement values.
      */
+    @Generated
     public static Collection<DiffDiskPlacement> values() {
         return values(DiffDiskPlacement.class);
     }

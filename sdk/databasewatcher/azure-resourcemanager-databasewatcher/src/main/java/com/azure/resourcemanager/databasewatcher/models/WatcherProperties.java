@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class WatcherProperties implements JsonSerializable<WatcherProperti
     /*
      * The data store for collected monitoring data.
      */
+    @Generated
     private Datastore datastore;
 
     /*
      * The monitoring collection status of the watcher.
      */
+    @Generated
     private WatcherStatus status;
 
     /*
      * The provisioning state of the resource watcher.
      */
+    @Generated
     private DatabaseWatcherProvisioningState provisioningState;
 
     /*
      * The resource ID of a user-assigned managed identity that will be assigned to a new alert rule.
      */
+    @Generated
     private String defaultAlertRuleIdentityResourceId;
 
     /**
      * Creates an instance of WatcherProperties class.
      */
+    @Generated
     public WatcherProperties() {
     }
 
@@ -47,6 +53,7 @@ public final class WatcherProperties implements JsonSerializable<WatcherProperti
      * 
      * @return the datastore value.
      */
+    @Generated
     public Datastore datastore() {
         return this.datastore;
     }
@@ -57,6 +64,7 @@ public final class WatcherProperties implements JsonSerializable<WatcherProperti
      * @param datastore the datastore value to set.
      * @return the WatcherProperties object itself.
      */
+    @Generated
     public WatcherProperties withDatastore(Datastore datastore) {
         this.datastore = datastore;
         return this;
@@ -67,6 +75,7 @@ public final class WatcherProperties implements JsonSerializable<WatcherProperti
      * 
      * @return the status value.
      */
+    @Generated
     public WatcherStatus status() {
         return this.status;
     }
@@ -76,6 +85,7 @@ public final class WatcherProperties implements JsonSerializable<WatcherProperti
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public DatabaseWatcherProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -86,6 +96,7 @@ public final class WatcherProperties implements JsonSerializable<WatcherProperti
      * 
      * @return the defaultAlertRuleIdentityResourceId value.
      */
+    @Generated
     public String defaultAlertRuleIdentityResourceId() {
         return this.defaultAlertRuleIdentityResourceId;
     }
@@ -97,6 +108,7 @@ public final class WatcherProperties implements JsonSerializable<WatcherProperti
      * @param defaultAlertRuleIdentityResourceId the defaultAlertRuleIdentityResourceId value to set.
      * @return the WatcherProperties object itself.
      */
+    @Generated
     public WatcherProperties withDefaultAlertRuleIdentityResourceId(String defaultAlertRuleIdentityResourceId) {
         this.defaultAlertRuleIdentityResourceId = defaultAlertRuleIdentityResourceId;
         return this;

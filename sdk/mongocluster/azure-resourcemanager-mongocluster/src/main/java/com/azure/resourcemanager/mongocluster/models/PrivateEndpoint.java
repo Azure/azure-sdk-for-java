@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -12,26 +13,29 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The Private Endpoint resource.
+ * The private endpoint resource.
  */
 @Immutable
 public final class PrivateEndpoint implements JsonSerializable<PrivateEndpoint> {
     /*
-     * The resource identifier for private endpoint
+     * The resource identifier of the private endpoint
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of PrivateEndpoint class.
      */
+    @Generated
     public PrivateEndpoint() {
     }
 
     /**
-     * Get the id property: The resource identifier for private endpoint.
+     * Get the id property: The resource identifier of the private endpoint.
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }

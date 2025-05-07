@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
     /*
      * Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
      */
+    @Generated
     private PrivateEndpointServiceConnectionStatus status;
 
     /*
      * The reason for approval/rejection of the connection.
      */
+    @Generated
     private String description;
 
     /*
      * A message indicating if changes on the service provider require any updates on the consumer.
      */
+    @Generated
     private String actionsRequired;
 
     /**
      * Creates an instance of PrivateLinkServiceConnectionState class.
      */
+    @Generated
     public PrivateLinkServiceConnectionState() {
     }
 
@@ -43,6 +48,7 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
      * 
      * @return the status value.
      */
+    @Generated
     public PrivateEndpointServiceConnectionStatus status() {
         return this.status;
     }
@@ -54,6 +60,7 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
      * @param status the status value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
+    @Generated
     public PrivateLinkServiceConnectionState withStatus(PrivateEndpointServiceConnectionStatus status) {
         this.status = status;
         return this;
@@ -64,6 +71,7 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
      * 
      * @return the description value.
      */
+    @Generated
     public String description() {
         return this.description;
     }
@@ -74,6 +82,7 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
      * @param description the description value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
+    @Generated
     public PrivateLinkServiceConnectionState withDescription(String description) {
         this.description = description;
         return this;
@@ -85,6 +94,7 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
      * 
      * @return the actionsRequired value.
      */
+    @Generated
     public String actionsRequired() {
         return this.actionsRequired;
     }
@@ -96,6 +106,7 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
      * @param actionsRequired the actionsRequired value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
+    @Generated
     public PrivateLinkServiceConnectionState withActionsRequired(String actionsRequired) {
         this.actionsRequired = actionsRequired;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,6 +22,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
     /*
      * The disk name.
      */
+    @Generated
     private String name;
 
     /*
@@ -28,11 +30,13 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * **ReadOnly,** **ReadWrite.** The default values are: **None for Standard
      * storage. ReadOnly for Premium storage.**
      */
+    @Generated
     private CachingTypes caching;
 
     /*
      * Specifies whether writeAccelerator should be enabled or disabled on the disk.
      */
+    @Generated
     private Boolean writeAcceleratorEnabled;
 
     /*
@@ -42,12 +46,14 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * the imageReference element described above. If you are using a marketplace
      * image, you also use the plan element previously described.
      */
+    @Generated
     private DiskCreateOptionTypes createOption;
 
     /*
      * Specifies the ephemeral disk Settings for the operating system disk used by the
      * virtual machine scale set.
      */
+    @Generated
     private DiffDiskSettings diffDiskSettings;
 
     /*
@@ -56,6 +62,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * is the number of bytes x 1024^3 for the disk and the value cannot
      * be larger than 1023.
      */
+    @Generated
     private Integer diskSizeGB;
 
     /*
@@ -63,22 +70,26 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * disk if creating a VM from user-image or a specialized VHD. Possible values
      * are: **Windows,** **Linux.**
      */
+    @Generated
     private OperatingSystemTypes osType;
 
     /*
      * Specifies information about the unmanaged user image to base the scale set on.
      */
+    @Generated
     private VirtualHardDisk image;
 
     /*
      * Specifies the container urls that are used to store operating system disks for
      * the scale set.
      */
+    @Generated
     private List<String> vhdContainers;
 
     /*
      * The managed disk parameters.
      */
+    @Generated
     private VirtualMachineScaleSetManagedDiskParameters managedDisk;
 
     /*
@@ -91,11 +102,13 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * is set to **Delete**. User cannot change the delete option for Ephemeral OS
      * Disk.
      */
+    @Generated
     private DiskDeleteOptionTypes deleteOption;
 
     /**
      * Creates an instance of VirtualMachineScaleSetOSDisk class.
      */
+    @Generated
     public VirtualMachineScaleSetOSDisk() {
     }
 
@@ -104,6 +117,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -114,6 +128,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * @param name the name value to set.
      * @return the VirtualMachineScaleSetOSDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSDisk withName(String name) {
         this.name = name;
         return this;
@@ -126,6 +141,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * 
      * @return the caching value.
      */
+    @Generated
     public CachingTypes caching() {
         return this.caching;
     }
@@ -138,6 +154,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * @param caching the caching value to set.
      * @return the VirtualMachineScaleSetOSDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSDisk withCaching(CachingTypes caching) {
         this.caching = caching;
         return this;
@@ -149,6 +166,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * 
      * @return the writeAcceleratorEnabled value.
      */
+    @Generated
     public Boolean writeAcceleratorEnabled() {
         return this.writeAcceleratorEnabled;
     }
@@ -160,6 +178,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the VirtualMachineScaleSetOSDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSDisk withWriteAcceleratorEnabled(Boolean writeAcceleratorEnabled) {
         this.writeAcceleratorEnabled = writeAcceleratorEnabled;
         return this;
@@ -174,6 +193,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * 
      * @return the createOption value.
      */
+    @Generated
     public DiskCreateOptionTypes createOption() {
         return this.createOption;
     }
@@ -188,6 +208,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * @param createOption the createOption value to set.
      * @return the VirtualMachineScaleSetOSDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSDisk withCreateOption(DiskCreateOptionTypes createOption) {
         this.createOption = createOption;
         return this;
@@ -200,6 +221,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * 
      * @return the diffDiskSettings value.
      */
+    @Generated
     public DiffDiskSettings diffDiskSettings() {
         return this.diffDiskSettings;
     }
@@ -212,6 +234,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * @param diffDiskSettings the diffDiskSettings value to set.
      * @return the VirtualMachineScaleSetOSDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSDisk withDiffDiskSettings(DiffDiskSettings diffDiskSettings) {
         this.diffDiskSettings = diffDiskSettings;
         return this;
@@ -225,6 +248,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * 
      * @return the diskSizeGB value.
      */
+    @Generated
     public Integer diskSizeGB() {
         return this.diskSizeGB;
     }
@@ -238,6 +262,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the VirtualMachineScaleSetOSDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSDisk withDiskSizeGB(Integer diskSizeGB) {
         this.diskSizeGB = diskSizeGB;
         return this;
@@ -250,6 +275,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * 
      * @return the osType value.
      */
+    @Generated
     public OperatingSystemTypes osType() {
         return this.osType;
     }
@@ -262,6 +288,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * @param osType the osType value to set.
      * @return the VirtualMachineScaleSetOSDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSDisk withOsType(OperatingSystemTypes osType) {
         this.osType = osType;
         return this;
@@ -272,6 +299,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * 
      * @return the image value.
      */
+    @Generated
     public VirtualHardDisk image() {
         return this.image;
     }
@@ -282,6 +310,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * @param image the image value to set.
      * @return the VirtualMachineScaleSetOSDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSDisk withImage(VirtualHardDisk image) {
         this.image = image;
         return this;
@@ -293,6 +322,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * 
      * @return the vhdContainers value.
      */
+    @Generated
     public List<String> vhdContainers() {
         return this.vhdContainers;
     }
@@ -304,6 +334,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * @param vhdContainers the vhdContainers value to set.
      * @return the VirtualMachineScaleSetOSDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSDisk withVhdContainers(List<String> vhdContainers) {
         this.vhdContainers = vhdContainers;
         return this;
@@ -314,6 +345,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * 
      * @return the managedDisk value.
      */
+    @Generated
     public VirtualMachineScaleSetManagedDiskParameters managedDisk() {
         return this.managedDisk;
     }
@@ -324,6 +356,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * @param managedDisk the managedDisk value to set.
      * @return the VirtualMachineScaleSetOSDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSDisk withManagedDisk(VirtualMachineScaleSetManagedDiskParameters managedDisk) {
         this.managedDisk = managedDisk;
         return this;
@@ -341,6 +374,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * 
      * @return the deleteOption value.
      */
+    @Generated
     public DiskDeleteOptionTypes deleteOption() {
         return this.deleteOption;
     }
@@ -358,6 +392,7 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
      * @param deleteOption the deleteOption value to set.
      * @return the VirtualMachineScaleSetOSDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetOSDisk withDeleteOption(DiskDeleteOptionTypes deleteOption) {
         this.deleteOption = deleteOption;
         return this;

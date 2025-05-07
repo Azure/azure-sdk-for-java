@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class ApiEntityReference implements JsonSerializable<ApiEntityRefer
      * The ARM resource id in the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of ApiEntityReference class.
      */
+    @Generated
     public ApiEntityReference() {
     }
 
@@ -34,6 +37,7 @@ public final class ApiEntityReference implements JsonSerializable<ApiEntityRefer
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }
@@ -45,6 +49,7 @@ public final class ApiEntityReference implements JsonSerializable<ApiEntityRefer
      * @param id the id value to set.
      * @return the ApiEntityReference object itself.
      */
+    @Generated
     public ApiEntityReference withId(String id) {
         this.id = id;
         return this;

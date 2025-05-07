@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,11 +22,13 @@ public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings
     /*
      * List of DNS servers IP addresses
      */
+    @Generated
     private List<String> dnsServers;
 
     /**
      * Creates an instance of VirtualMachineScaleSetNetworkConfigurationDnsSettings class.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationDnsSettings() {
     }
 
@@ -34,6 +37,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings
      * 
      * @return the dnsServers value.
      */
+    @Generated
     public List<String> dnsServers() {
         return this.dnsServers;
     }
@@ -44,6 +48,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings
      * @param dnsServers the dnsServers value to set.
      * @return the VirtualMachineScaleSetNetworkConfigurationDnsSettings object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkConfigurationDnsSettings withDnsServers(List<String> dnsServers) {
         this.dnsServers = dnsServers;
         return this;

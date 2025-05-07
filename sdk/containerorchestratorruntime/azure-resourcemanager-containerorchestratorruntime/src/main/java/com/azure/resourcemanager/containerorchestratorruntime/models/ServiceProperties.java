@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class ServiceProperties implements JsonSerializable<ServiceProperti
     /*
      * The object id of the service principal of the RP provisioned in the tenant
      */
+    @Generated
     private String rpObjectId;
 
     /*
      * Resource provision state
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of ServiceProperties class.
      */
+    @Generated
     public ServiceProperties() {
     }
 
@@ -37,6 +41,7 @@ public final class ServiceProperties implements JsonSerializable<ServiceProperti
      * 
      * @return the rpObjectId value.
      */
+    @Generated
     public String rpObjectId() {
         return this.rpObjectId;
     }
@@ -46,6 +51,7 @@ public final class ServiceProperties implements JsonSerializable<ServiceProperti
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

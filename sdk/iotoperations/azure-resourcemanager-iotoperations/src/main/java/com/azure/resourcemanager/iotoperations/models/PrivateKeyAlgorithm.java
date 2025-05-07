@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class PrivateKeyAlgorithm extends ExpandableStringEnum<PrivateKeyAl
     /**
      * Algorithm - ec256.
      */
+    @Generated
     public static final PrivateKeyAlgorithm EC256 = fromString("Ec256");
 
     /**
      * Algorithm - ec384.
      */
+    @Generated
     public static final PrivateKeyAlgorithm EC384 = fromString("Ec384");
 
     /**
      * Algorithm - ec521.
      */
+    @Generated
     public static final PrivateKeyAlgorithm EC521 = fromString("Ec521");
 
     /**
      * Algorithm - ed25519.
      */
+    @Generated
     public static final PrivateKeyAlgorithm ED25519 = fromString("Ed25519");
 
     /**
      * Algorithm - rsa2048.
      */
+    @Generated
     public static final PrivateKeyAlgorithm RSA2048 = fromString("Rsa2048");
 
     /**
      * Algorithm - rsa4096.
      */
+    @Generated
     public static final PrivateKeyAlgorithm RSA4096 = fromString("Rsa4096");
 
     /**
      * Algorithm - rsa8192.
      */
+    @Generated
     public static final PrivateKeyAlgorithm RSA8192 = fromString("Rsa8192");
 
     /**
@@ -51,6 +59,7 @@ public final class PrivateKeyAlgorithm extends ExpandableStringEnum<PrivateKeyAl
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PrivateKeyAlgorithm() {
     }
@@ -61,6 +70,7 @@ public final class PrivateKeyAlgorithm extends ExpandableStringEnum<PrivateKeyAl
      * @param name a name to look for.
      * @return the corresponding PrivateKeyAlgorithm.
      */
+    @Generated
     public static PrivateKeyAlgorithm fromString(String name) {
         return fromString(name, PrivateKeyAlgorithm.class);
     }
@@ -70,6 +80,7 @@ public final class PrivateKeyAlgorithm extends ExpandableStringEnum<PrivateKeyAl
      * 
      * @return known PrivateKeyAlgorithm values.
      */
+    @Generated
     public static Collection<PrivateKeyAlgorithm> values() {
         return values(PrivateKeyAlgorithm.class);
     }

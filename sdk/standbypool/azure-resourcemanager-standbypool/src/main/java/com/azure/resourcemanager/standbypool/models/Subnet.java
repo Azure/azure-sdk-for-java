@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class Subnet implements JsonSerializable<Subnet> {
     /*
      * Specifies ARM resource id of the subnet.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of Subnet class.
      */
+    @Generated
     public Subnet() {
     }
 
@@ -33,6 +36,7 @@ public final class Subnet implements JsonSerializable<Subnet> {
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }
@@ -43,6 +47,7 @@ public final class Subnet implements JsonSerializable<Subnet> {
      * @param id the id value to set.
      * @return the Subnet object itself.
      */
+    @Generated
     public Subnet withId(String id) {
         this.id = id;
         return this;

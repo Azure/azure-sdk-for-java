@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,27 +20,32 @@ public final class SpotPriorityProfile implements JsonSerializable<SpotPriorityP
     /*
      * Total capacity to achieve. It is currently in terms of number of VMs.
      */
+    @Generated
     private Integer capacity;
 
     /*
      * Minimum capacity to achieve which cannot be updated. If we will not be able to "guarantee" minimum capacity, we
      * will reject the request in the sync path itself.
      */
+    @Generated
     private Integer minCapacity;
 
     /*
      * Price per hour of each Spot VM will never exceed this.
      */
+    @Generated
     private Double maxPricePerVM;
 
     /*
      * Eviction Policy to follow when evicting Spot VMs.
      */
+    @Generated
     private EvictionPolicy evictionPolicy;
 
     /*
      * Allocation strategy to follow when determining the VM sizes distribution for Spot VMs.
      */
+    @Generated
     private SpotAllocationStrategy allocationStrategy;
 
     /*
@@ -50,11 +56,13 @@ public final class SpotPriorityProfile implements JsonSerializable<SpotPriorityP
      * constraint) in order to achieve the desired capacity.
      * Maintain is enabled by default.
      */
+    @Generated
     private Boolean maintain;
 
     /**
      * Creates an instance of SpotPriorityProfile class.
      */
+    @Generated
     public SpotPriorityProfile() {
     }
 
@@ -63,6 +71,7 @@ public final class SpotPriorityProfile implements JsonSerializable<SpotPriorityP
      * 
      * @return the capacity value.
      */
+    @Generated
     public Integer capacity() {
         return this.capacity;
     }
@@ -73,6 +82,7 @@ public final class SpotPriorityProfile implements JsonSerializable<SpotPriorityP
      * @param capacity the capacity value to set.
      * @return the SpotPriorityProfile object itself.
      */
+    @Generated
     public SpotPriorityProfile withCapacity(Integer capacity) {
         this.capacity = capacity;
         return this;
@@ -84,6 +94,7 @@ public final class SpotPriorityProfile implements JsonSerializable<SpotPriorityP
      * 
      * @return the minCapacity value.
      */
+    @Generated
     public Integer minCapacity() {
         return this.minCapacity;
     }
@@ -95,6 +106,7 @@ public final class SpotPriorityProfile implements JsonSerializable<SpotPriorityP
      * @param minCapacity the minCapacity value to set.
      * @return the SpotPriorityProfile object itself.
      */
+    @Generated
     public SpotPriorityProfile withMinCapacity(Integer minCapacity) {
         this.minCapacity = minCapacity;
         return this;
@@ -105,6 +117,7 @@ public final class SpotPriorityProfile implements JsonSerializable<SpotPriorityP
      * 
      * @return the maxPricePerVM value.
      */
+    @Generated
     public Double maxPricePerVM() {
         return this.maxPricePerVM;
     }
@@ -115,6 +128,7 @@ public final class SpotPriorityProfile implements JsonSerializable<SpotPriorityP
      * @param maxPricePerVM the maxPricePerVM value to set.
      * @return the SpotPriorityProfile object itself.
      */
+    @Generated
     public SpotPriorityProfile withMaxPricePerVM(Double maxPricePerVM) {
         this.maxPricePerVM = maxPricePerVM;
         return this;
@@ -125,6 +139,7 @@ public final class SpotPriorityProfile implements JsonSerializable<SpotPriorityP
      * 
      * @return the evictionPolicy value.
      */
+    @Generated
     public EvictionPolicy evictionPolicy() {
         return this.evictionPolicy;
     }
@@ -135,6 +150,7 @@ public final class SpotPriorityProfile implements JsonSerializable<SpotPriorityP
      * @param evictionPolicy the evictionPolicy value to set.
      * @return the SpotPriorityProfile object itself.
      */
+    @Generated
     public SpotPriorityProfile withEvictionPolicy(EvictionPolicy evictionPolicy) {
         this.evictionPolicy = evictionPolicy;
         return this;
@@ -146,6 +162,7 @@ public final class SpotPriorityProfile implements JsonSerializable<SpotPriorityP
      * 
      * @return the allocationStrategy value.
      */
+    @Generated
     public SpotAllocationStrategy allocationStrategy() {
         return this.allocationStrategy;
     }
@@ -157,6 +174,7 @@ public final class SpotPriorityProfile implements JsonSerializable<SpotPriorityP
      * @param allocationStrategy the allocationStrategy value to set.
      * @return the SpotPriorityProfile object itself.
      */
+    @Generated
     public SpotPriorityProfile withAllocationStrategy(SpotAllocationStrategy allocationStrategy) {
         this.allocationStrategy = allocationStrategy;
         return this;
@@ -173,6 +191,7 @@ public final class SpotPriorityProfile implements JsonSerializable<SpotPriorityP
      * 
      * @return the maintain value.
      */
+    @Generated
     public Boolean maintain() {
         return this.maintain;
     }
@@ -189,6 +208,7 @@ public final class SpotPriorityProfile implements JsonSerializable<SpotPriorityP
      * @param maintain the maintain value to set.
      * @return the SpotPriorityProfile object itself.
      */
+    @Generated
     public SpotPriorityProfile withMaintain(Boolean maintain) {
         this.maintain = maintain;
         return this;

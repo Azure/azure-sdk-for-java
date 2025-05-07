@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,11 +24,13 @@ public final class DiagnosticsProfile implements JsonSerializable<DiagnosticsPro
      * subscription as the VM. You can easily view the output of your console log.
      * Azure also enables you to see a screenshot of the VM from the hypervisor.
      */
+    @Generated
     private BootDiagnostics bootDiagnostics;
 
     /**
      * Creates an instance of DiagnosticsProfile class.
      */
+    @Generated
     public DiagnosticsProfile() {
     }
 
@@ -40,6 +43,7 @@ public final class DiagnosticsProfile implements JsonSerializable<DiagnosticsPro
      * 
      * @return the bootDiagnostics value.
      */
+    @Generated
     public BootDiagnostics bootDiagnostics() {
         return this.bootDiagnostics;
     }
@@ -54,6 +58,7 @@ public final class DiagnosticsProfile implements JsonSerializable<DiagnosticsPro
      * @param bootDiagnostics the bootDiagnostics value to set.
      * @return the DiagnosticsProfile object itself.
      */
+    @Generated
     public DiagnosticsProfile withBootDiagnostics(BootDiagnostics bootDiagnostics) {
         this.bootDiagnostics = bootDiagnostics;
         return this;

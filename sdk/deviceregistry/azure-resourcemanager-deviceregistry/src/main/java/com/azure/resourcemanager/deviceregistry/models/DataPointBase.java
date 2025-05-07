@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,23 +21,27 @@ public class DataPointBase implements JsonSerializable<DataPointBase> {
     /*
      * The name of the data point.
      */
+    @Generated
     private String name;
 
     /*
      * The address of the source of the data in the asset (e.g. URL) so that a client can access the data source on the
      * asset.
      */
+    @Generated
     private String dataSource;
 
     /*
      * Stringified JSON that contains connector-specific configuration for the data point. For OPC UA, this could
      * include configuration like, publishingInterval, samplingInterval, and queueSize.
      */
+    @Generated
     private String dataPointConfiguration;
 
     /**
      * Creates an instance of DataPointBase class.
      */
+    @Generated
     public DataPointBase() {
     }
 
@@ -45,6 +50,7 @@ public class DataPointBase implements JsonSerializable<DataPointBase> {
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -55,6 +61,7 @@ public class DataPointBase implements JsonSerializable<DataPointBase> {
      * @param name the name value to set.
      * @return the DataPointBase object itself.
      */
+    @Generated
     public DataPointBase withName(String name) {
         this.name = name;
         return this;
@@ -66,6 +73,7 @@ public class DataPointBase implements JsonSerializable<DataPointBase> {
      * 
      * @return the dataSource value.
      */
+    @Generated
     public String dataSource() {
         return this.dataSource;
     }
@@ -77,6 +85,7 @@ public class DataPointBase implements JsonSerializable<DataPointBase> {
      * @param dataSource the dataSource value to set.
      * @return the DataPointBase object itself.
      */
+    @Generated
     public DataPointBase withDataSource(String dataSource) {
         this.dataSource = dataSource;
         return this;
@@ -89,6 +98,7 @@ public class DataPointBase implements JsonSerializable<DataPointBase> {
      * 
      * @return the dataPointConfiguration value.
      */
+    @Generated
     public String dataPointConfiguration() {
         return this.dataPointConfiguration;
     }
@@ -101,6 +111,7 @@ public class DataPointBase implements JsonSerializable<DataPointBase> {
      * @param dataPointConfiguration the dataPointConfiguration value to set.
      * @return the DataPointBase object itself.
      */
+    @Generated
     public DataPointBase withDataPointConfiguration(String dataPointConfiguration) {
         this.dataPointConfiguration = dataPointConfiguration;
         return this;

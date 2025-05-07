@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,26 +16,31 @@ public final class NetworkInterfaceAuxiliarySku extends ExpandableStringEnum<Net
     /**
      * no sku.
      */
+    @Generated
     public static final NetworkInterfaceAuxiliarySku NONE = fromString("None");
 
     /**
      * A1 sku.
      */
+    @Generated
     public static final NetworkInterfaceAuxiliarySku A1 = fromString("A1");
 
     /**
      * A2 sku.
      */
+    @Generated
     public static final NetworkInterfaceAuxiliarySku A2 = fromString("A2");
 
     /**
      * A4 sku.
      */
+    @Generated
     public static final NetworkInterfaceAuxiliarySku A4 = fromString("A4");
 
     /**
      * A8 sku.
      */
+    @Generated
     public static final NetworkInterfaceAuxiliarySku A8 = fromString("A8");
 
     /**
@@ -42,6 +48,7 @@ public final class NetworkInterfaceAuxiliarySku extends ExpandableStringEnum<Net
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public NetworkInterfaceAuxiliarySku() {
     }
@@ -52,6 +59,7 @@ public final class NetworkInterfaceAuxiliarySku extends ExpandableStringEnum<Net
      * @param name a name to look for.
      * @return the corresponding NetworkInterfaceAuxiliarySku.
      */
+    @Generated
     public static NetworkInterfaceAuxiliarySku fromString(String name) {
         return fromString(name, NetworkInterfaceAuxiliarySku.class);
     }
@@ -61,6 +69,7 @@ public final class NetworkInterfaceAuxiliarySku extends ExpandableStringEnum<Net
      * 
      * @return known NetworkInterfaceAuxiliarySku values.
      */
+    @Generated
     public static Collection<NetworkInterfaceAuxiliarySku> values() {
         return values(NetworkInterfaceAuxiliarySku.class);
     }

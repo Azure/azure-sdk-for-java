@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,11 +16,13 @@ public final class SettingNames extends ExpandableStringEnum<SettingNames> {
     /**
      * AutoLogon setting.
      */
+    @Generated
     public static final SettingNames AUTO_LOGON = fromString("AutoLogon");
 
     /**
      * FirstLogonCommands setting.
      */
+    @Generated
     public static final SettingNames FIRST_LOGON_COMMANDS = fromString("FirstLogonCommands");
 
     /**
@@ -27,6 +30,7 @@ public final class SettingNames extends ExpandableStringEnum<SettingNames> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SettingNames() {
     }
@@ -37,6 +41,7 @@ public final class SettingNames extends ExpandableStringEnum<SettingNames> {
      * @param name a name to look for.
      * @return the corresponding SettingNames.
      */
+    @Generated
     public static SettingNames fromString(String name) {
         return fromString(name, SettingNames.class);
     }
@@ -46,6 +51,7 @@ public final class SettingNames extends ExpandableStringEnum<SettingNames> {
      * 
      * @return known SettingNames values.
      */
+    @Generated
     public static Collection<SettingNames> values() {
         return values(SettingNames.class);
     }

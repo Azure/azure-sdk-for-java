@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public class InfrastructureConfiguration implements JsonSerializable<Infrastruct
     /*
      * The SAP deployment type. Eg: SingleServer/ThreeTier.
      */
+    @Generated
     private SapDeploymentType deploymentType = SapDeploymentType.fromString("InfrastructureConfiguration");
 
     /*
      * The application resource group where SAP system resources will be deployed.
      */
+    @Generated
     private String appResourceGroup;
 
     /**
      * Creates an instance of InfrastructureConfiguration class.
      */
+    @Generated
     public InfrastructureConfiguration() {
     }
 
@@ -38,6 +42,7 @@ public class InfrastructureConfiguration implements JsonSerializable<Infrastruct
      * 
      * @return the deploymentType value.
      */
+    @Generated
     public SapDeploymentType deploymentType() {
         return this.deploymentType;
     }
@@ -47,6 +52,7 @@ public class InfrastructureConfiguration implements JsonSerializable<Infrastruct
      * 
      * @return the appResourceGroup value.
      */
+    @Generated
     public String appResourceGroup() {
         return this.appResourceGroup;
     }
@@ -57,6 +63,7 @@ public class InfrastructureConfiguration implements JsonSerializable<Infrastruct
      * @param appResourceGroup the appResourceGroup value to set.
      * @return the InfrastructureConfiguration object itself.
      */
+    @Generated
     public InfrastructureConfiguration withAppResourceGroup(String appResourceGroup) {
         this.appResourceGroup = appResourceGroup;
         return this;

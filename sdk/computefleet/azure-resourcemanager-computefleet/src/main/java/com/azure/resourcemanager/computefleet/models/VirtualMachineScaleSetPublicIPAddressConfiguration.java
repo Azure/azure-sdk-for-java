@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,23 +23,27 @@ public final class VirtualMachineScaleSetPublicIPAddressConfiguration
     /*
      * The publicIP address configuration name.
      */
+    @Generated
     private String name;
 
     /*
      * Describes a virtual machines scale set IP Configuration's PublicIPAddress
      * configuration
      */
+    @Generated
     private VirtualMachineScaleSetPublicIPAddressConfigurationProperties properties;
 
     /*
      * Describes the public IP Sku. It can only be set with OrchestrationMode as
      * Flexible.
      */
+    @Generated
     private PublicIPAddressSku sku;
 
     /**
      * Creates an instance of VirtualMachineScaleSetPublicIPAddressConfiguration class.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfiguration() {
     }
 
@@ -47,6 +52,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfiguration
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -57,6 +63,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfiguration
      * @param name the name value to set.
      * @return the VirtualMachineScaleSetPublicIPAddressConfiguration object itself.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfiguration withName(String name) {
         this.name = name;
         return this;
@@ -68,6 +75,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfiguration
      * 
      * @return the properties value.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfigurationProperties properties() {
         return this.properties;
     }
@@ -79,6 +87,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfiguration
      * @param properties the properties value to set.
      * @return the VirtualMachineScaleSetPublicIPAddressConfiguration object itself.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfiguration
         withProperties(VirtualMachineScaleSetPublicIPAddressConfigurationProperties properties) {
         this.properties = properties;
@@ -91,6 +100,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfiguration
      * 
      * @return the sku value.
      */
+    @Generated
     public PublicIPAddressSku sku() {
         return this.sku;
     }
@@ -102,6 +112,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfiguration
      * @param sku the sku value to set.
      * @return the VirtualMachineScaleSetPublicIPAddressConfiguration object itself.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfiguration withSku(PublicIPAddressSku sku) {
         this.sku = sku;
         return this;

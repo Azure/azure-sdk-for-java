@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class StandbyContainerGroupPoolResourceUpdate
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private StandbyContainerGroupPoolResourceUpdateProperties properties;
 
     /**
      * Creates an instance of StandbyContainerGroupPoolResourceUpdate class.
      */
+    @Generated
     public StandbyContainerGroupPoolResourceUpdate() {
     }
 
@@ -39,6 +43,7 @@ public final class StandbyContainerGroupPoolResourceUpdate
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -49,6 +54,7 @@ public final class StandbyContainerGroupPoolResourceUpdate
      * @param tags the tags value to set.
      * @return the StandbyContainerGroupPoolResourceUpdate object itself.
      */
+    @Generated
     public StandbyContainerGroupPoolResourceUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -59,6 +65,7 @@ public final class StandbyContainerGroupPoolResourceUpdate
      * 
      * @return the properties value.
      */
+    @Generated
     public StandbyContainerGroupPoolResourceUpdateProperties properties() {
         return this.properties;
     }
@@ -69,6 +76,7 @@ public final class StandbyContainerGroupPoolResourceUpdate
      * @param properties the properties value to set.
      * @return the StandbyContainerGroupPoolResourceUpdate object itself.
      */
+    @Generated
     public StandbyContainerGroupPoolResourceUpdate
         withProperties(StandbyContainerGroupPoolResourceUpdateProperties properties) {
         this.properties = properties;

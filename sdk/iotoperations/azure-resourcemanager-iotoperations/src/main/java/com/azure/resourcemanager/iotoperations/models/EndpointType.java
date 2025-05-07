@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
     /**
      * Azure Data Explorer Type.
      */
+    @Generated
     public static final EndpointType DATA_EXPLORER = fromString("DataExplorer");
 
     /**
      * Azure Data Lake Type.
      */
+    @Generated
     public static final EndpointType DATA_LAKE_STORAGE = fromString("DataLakeStorage");
 
     /**
      * Microsoft Fabric Type.
      */
+    @Generated
     public static final EndpointType FABRIC_ONE_LAKE = fromString("FabricOneLake");
 
     /**
      * Kafka Type.
      */
+    @Generated
     public static final EndpointType KAFKA = fromString("Kafka");
 
     /**
      * Local Storage Type.
      */
+    @Generated
     public static final EndpointType LOCAL_STORAGE = fromString("LocalStorage");
 
     /**
      * Broker Type.
      */
+    @Generated
     public static final EndpointType MQTT = fromString("Mqtt");
 
     /**
@@ -46,6 +53,7 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public EndpointType() {
     }
@@ -56,6 +64,7 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
      * @param name a name to look for.
      * @return the corresponding EndpointType.
      */
+    @Generated
     public static EndpointType fromString(String name) {
         return fromString(name, EndpointType.class);
     }
@@ -65,6 +74,7 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
      * 
      * @return known EndpointType values.
      */
+    @Generated
     public static Collection<EndpointType> values() {
         return values(EndpointType.class);
     }

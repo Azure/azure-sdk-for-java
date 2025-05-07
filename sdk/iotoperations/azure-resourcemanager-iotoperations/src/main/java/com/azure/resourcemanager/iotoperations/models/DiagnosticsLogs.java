@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class DiagnosticsLogs implements JsonSerializable<DiagnosticsLogs> 
     /*
      * The log level. Examples - 'debug', 'info', 'warn', 'error', 'trace'.
      */
+    @Generated
     private String level;
 
     /**
      * Creates an instance of DiagnosticsLogs class.
      */
+    @Generated
     public DiagnosticsLogs() {
     }
 
@@ -32,6 +35,7 @@ public final class DiagnosticsLogs implements JsonSerializable<DiagnosticsLogs> 
      * 
      * @return the level value.
      */
+    @Generated
     public String level() {
         return this.level;
     }
@@ -42,6 +46,7 @@ public final class DiagnosticsLogs implements JsonSerializable<DiagnosticsLogs> 
      * @param level the level value to set.
      * @return the DiagnosticsLogs object itself.
      */
+    @Generated
     public DiagnosticsLogs withLevel(String level) {
         this.level = level;
         return this;

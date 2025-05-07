@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,27 +22,32 @@ public final class KubernetesReference implements JsonSerializable<KubernetesRef
      * APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be
      * in the core API group. For any other third-party types, APIGroup is required.
      */
+    @Generated
     private String apiGroup;
 
     /*
      * Kind is the type of resource being referenced
      */
+    @Generated
     private String kind;
 
     /*
      * Name is the name of resource being referenced
      */
+    @Generated
     private String name;
 
     /*
      * Namespace is the namespace of the resource being referenced. This field is required when the resource has a
      * namespace.
      */
+    @Generated
     private String namespace;
 
     /**
      * Creates an instance of KubernetesReference class.
      */
+    @Generated
     public KubernetesReference() {
     }
 
@@ -51,6 +57,7 @@ public final class KubernetesReference implements JsonSerializable<KubernetesRef
      * 
      * @return the apiGroup value.
      */
+    @Generated
     public String apiGroup() {
         return this.apiGroup;
     }
@@ -62,6 +69,7 @@ public final class KubernetesReference implements JsonSerializable<KubernetesRef
      * @param apiGroup the apiGroup value to set.
      * @return the KubernetesReference object itself.
      */
+    @Generated
     public KubernetesReference withApiGroup(String apiGroup) {
         this.apiGroup = apiGroup;
         return this;
@@ -72,6 +80,7 @@ public final class KubernetesReference implements JsonSerializable<KubernetesRef
      * 
      * @return the kind value.
      */
+    @Generated
     public String kind() {
         return this.kind;
     }
@@ -82,6 +91,7 @@ public final class KubernetesReference implements JsonSerializable<KubernetesRef
      * @param kind the kind value to set.
      * @return the KubernetesReference object itself.
      */
+    @Generated
     public KubernetesReference withKind(String kind) {
         this.kind = kind;
         return this;
@@ -92,6 +102,7 @@ public final class KubernetesReference implements JsonSerializable<KubernetesRef
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -102,6 +113,7 @@ public final class KubernetesReference implements JsonSerializable<KubernetesRef
      * @param name the name value to set.
      * @return the KubernetesReference object itself.
      */
+    @Generated
     public KubernetesReference withName(String name) {
         this.name = name;
         return this;
@@ -113,6 +125,7 @@ public final class KubernetesReference implements JsonSerializable<KubernetesRef
      * 
      * @return the namespace value.
      */
+    @Generated
     public String namespace() {
         return this.namespace;
     }
@@ -124,6 +137,7 @@ public final class KubernetesReference implements JsonSerializable<KubernetesRef
      * @param namespace the namespace value to set.
      * @return the KubernetesReference object itself.
      */
+    @Generated
     public KubernetesReference withNamespace(String namespace) {
         this.namespace = namespace;
         return this;

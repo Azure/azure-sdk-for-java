@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,27 +22,32 @@ public final class IpAccessRule implements JsonSerializable<IpAccessRule> {
     /*
      * Name of the Ip Access Rule
      */
+    @Generated
     private String name;
 
     /*
      * The priority of the rule. The value can be between 1 and 500. The priority number must be unique for each rule in
      * the collection. The lower the priority number, the higher the priority of the rule.
      */
+    @Generated
     private int priority;
 
     /*
      * Source Address Prefixed Applied by the Rule. Asterisk '*' can also be used to match all source IPs.
      */
+    @Generated
     private List<String> sourceAddressPrefixes;
 
     /*
      * Action of the Rule
      */
+    @Generated
     private IpAccessRuleAction action;
 
     /**
      * Creates an instance of IpAccessRule class.
      */
+    @Generated
     public IpAccessRule() {
     }
 
@@ -50,6 +56,7 @@ public final class IpAccessRule implements JsonSerializable<IpAccessRule> {
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -60,6 +67,7 @@ public final class IpAccessRule implements JsonSerializable<IpAccessRule> {
      * @param name the name value to set.
      * @return the IpAccessRule object itself.
      */
+    @Generated
     public IpAccessRule withName(String name) {
         this.name = name;
         return this;
@@ -71,6 +79,7 @@ public final class IpAccessRule implements JsonSerializable<IpAccessRule> {
      * 
      * @return the priority value.
      */
+    @Generated
     public int priority() {
         return this.priority;
     }
@@ -82,6 +91,7 @@ public final class IpAccessRule implements JsonSerializable<IpAccessRule> {
      * @param priority the priority value to set.
      * @return the IpAccessRule object itself.
      */
+    @Generated
     public IpAccessRule withPriority(int priority) {
         this.priority = priority;
         return this;
@@ -93,6 +103,7 @@ public final class IpAccessRule implements JsonSerializable<IpAccessRule> {
      * 
      * @return the sourceAddressPrefixes value.
      */
+    @Generated
     public List<String> sourceAddressPrefixes() {
         return this.sourceAddressPrefixes;
     }
@@ -104,6 +115,7 @@ public final class IpAccessRule implements JsonSerializable<IpAccessRule> {
      * @param sourceAddressPrefixes the sourceAddressPrefixes value to set.
      * @return the IpAccessRule object itself.
      */
+    @Generated
     public IpAccessRule withSourceAddressPrefixes(List<String> sourceAddressPrefixes) {
         this.sourceAddressPrefixes = sourceAddressPrefixes;
         return this;
@@ -114,6 +126,7 @@ public final class IpAccessRule implements JsonSerializable<IpAccessRule> {
      * 
      * @return the action value.
      */
+    @Generated
     public IpAccessRuleAction action() {
         return this.action;
     }
@@ -124,6 +137,7 @@ public final class IpAccessRule implements JsonSerializable<IpAccessRule> {
      * @param action the action value to set.
      * @return the IpAccessRule object itself.
      */
+    @Generated
     public IpAccessRule withAction(IpAccessRuleAction action) {
         this.action = action;
         return this;

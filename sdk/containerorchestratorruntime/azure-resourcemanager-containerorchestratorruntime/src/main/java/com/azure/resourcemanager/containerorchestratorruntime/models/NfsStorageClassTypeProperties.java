@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,36 +20,43 @@ public final class NfsStorageClassTypeProperties extends StorageClassTypePropert
     /*
      * Type of the storage class.
      */
+    @Generated
     private SCType type = SCType.NFS;
 
     /*
      * NFS Server
      */
+    @Generated
     private String server;
 
     /*
      * NFS share
      */
+    @Generated
     private String share;
 
     /*
      * Sub directory under share. If the sub directory doesn't exist, driver will create it
      */
+    @Generated
     private String subDir;
 
     /*
      * Mounted folder permissions. Default is 0. If set as non-zero, driver will perform `chmod` after mount
      */
+    @Generated
     private String mountPermissions;
 
     /*
      * The action to take when a NFS volume is deleted. Default is Delete
      */
+    @Generated
     private NfsDirectoryActionOnVolumeDeletion onDelete;
 
     /**
      * Creates an instance of NfsStorageClassTypeProperties class.
      */
+    @Generated
     public NfsStorageClassTypeProperties() {
     }
 
@@ -57,6 +65,7 @@ public final class NfsStorageClassTypeProperties extends StorageClassTypePropert
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public SCType type() {
         return this.type;
@@ -67,6 +76,7 @@ public final class NfsStorageClassTypeProperties extends StorageClassTypePropert
      * 
      * @return the server value.
      */
+    @Generated
     public String server() {
         return this.server;
     }
@@ -77,6 +87,7 @@ public final class NfsStorageClassTypeProperties extends StorageClassTypePropert
      * @param server the server value to set.
      * @return the NfsStorageClassTypeProperties object itself.
      */
+    @Generated
     public NfsStorageClassTypeProperties withServer(String server) {
         this.server = server;
         return this;
@@ -87,6 +98,7 @@ public final class NfsStorageClassTypeProperties extends StorageClassTypePropert
      * 
      * @return the share value.
      */
+    @Generated
     public String share() {
         return this.share;
     }
@@ -97,6 +109,7 @@ public final class NfsStorageClassTypeProperties extends StorageClassTypePropert
      * @param share the share value to set.
      * @return the NfsStorageClassTypeProperties object itself.
      */
+    @Generated
     public NfsStorageClassTypeProperties withShare(String share) {
         this.share = share;
         return this;
@@ -107,6 +120,7 @@ public final class NfsStorageClassTypeProperties extends StorageClassTypePropert
      * 
      * @return the subDir value.
      */
+    @Generated
     public String subDir() {
         return this.subDir;
     }
@@ -117,6 +131,7 @@ public final class NfsStorageClassTypeProperties extends StorageClassTypePropert
      * @param subDir the subDir value to set.
      * @return the NfsStorageClassTypeProperties object itself.
      */
+    @Generated
     public NfsStorageClassTypeProperties withSubDir(String subDir) {
         this.subDir = subDir;
         return this;
@@ -128,6 +143,7 @@ public final class NfsStorageClassTypeProperties extends StorageClassTypePropert
      * 
      * @return the mountPermissions value.
      */
+    @Generated
     public String mountPermissions() {
         return this.mountPermissions;
     }
@@ -139,6 +155,7 @@ public final class NfsStorageClassTypeProperties extends StorageClassTypePropert
      * @param mountPermissions the mountPermissions value to set.
      * @return the NfsStorageClassTypeProperties object itself.
      */
+    @Generated
     public NfsStorageClassTypeProperties withMountPermissions(String mountPermissions) {
         this.mountPermissions = mountPermissions;
         return this;
@@ -149,6 +166,7 @@ public final class NfsStorageClassTypeProperties extends StorageClassTypePropert
      * 
      * @return the onDelete value.
      */
+    @Generated
     public NfsDirectoryActionOnVolumeDeletion onDelete() {
         return this.onDelete;
     }
@@ -159,6 +177,7 @@ public final class NfsStorageClassTypeProperties extends StorageClassTypePropert
      * @param onDelete the onDelete value to set.
      * @return the NfsStorageClassTypeProperties object itself.
      */
+    @Generated
     public NfsStorageClassTypeProperties withOnDelete(NfsDirectoryActionOnVolumeDeletion onDelete) {
         this.onDelete = onDelete;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class DeployerVmPackages implements JsonSerializable<DeployerVmPack
     /*
      * The URL to the deployer VM packages file.
      */
+    @Generated
     private String url;
 
     /*
      * The deployer VM packages storage account id
      */
+    @Generated
     private String storageAccountId;
 
     /**
      * Creates an instance of DeployerVmPackages class.
      */
+    @Generated
     public DeployerVmPackages() {
     }
 
@@ -37,6 +41,7 @@ public final class DeployerVmPackages implements JsonSerializable<DeployerVmPack
      * 
      * @return the url value.
      */
+    @Generated
     public String url() {
         return this.url;
     }
@@ -47,6 +52,7 @@ public final class DeployerVmPackages implements JsonSerializable<DeployerVmPack
      * @param url the url value to set.
      * @return the DeployerVmPackages object itself.
      */
+    @Generated
     public DeployerVmPackages withUrl(String url) {
         this.url = url;
         return this;
@@ -57,6 +63,7 @@ public final class DeployerVmPackages implements JsonSerializable<DeployerVmPack
      * 
      * @return the storageAccountId value.
      */
+    @Generated
     public String storageAccountId() {
         return this.storageAccountId;
     }
@@ -67,6 +74,7 @@ public final class DeployerVmPackages implements JsonSerializable<DeployerVmPack
      * @param storageAccountId the storageAccountId value to set.
      * @return the DeployerVmPackages object itself.
      */
+    @Generated
     public DeployerVmPackages withStorageAccountId(String storageAccountId) {
         this.storageAccountId = storageAccountId;
         return this;

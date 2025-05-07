@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.healthdataaiservices.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
@@ -21,31 +22,37 @@ public final class PrivateLinkResourceInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private PrivateLinkResourceProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of PrivateLinkResourceInner class.
      */
+    @Generated
     private PrivateLinkResourceInner() {
     }
 
@@ -54,6 +61,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * 
      * @return the properties value.
      */
+    @Generated
     public PrivateLinkResourceProperties properties() {
         return this.properties;
     }
@@ -63,6 +71,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -72,6 +81,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -82,6 +92,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -92,6 +103,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;

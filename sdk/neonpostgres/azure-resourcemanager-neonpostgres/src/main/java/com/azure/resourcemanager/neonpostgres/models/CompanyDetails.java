@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,36 +20,43 @@ public final class CompanyDetails implements JsonSerializable<CompanyDetails> {
     /*
      * Company name
      */
+    @Generated
     private String companyName;
 
     /*
      * Country name of the company
      */
+    @Generated
     private String country;
 
     /*
      * Office address of the company
      */
+    @Generated
     private String officeAddress;
 
     /*
      * Business phone number of the company
      */
+    @Generated
     private String businessPhone;
 
     /*
      * Domain of the user
      */
+    @Generated
     private String domain;
 
     /*
      * Number of employees in the company
      */
+    @Generated
     private Long numberOfEmployees;
 
     /**
      * Creates an instance of CompanyDetails class.
      */
+    @Generated
     public CompanyDetails() {
     }
 
@@ -57,6 +65,7 @@ public final class CompanyDetails implements JsonSerializable<CompanyDetails> {
      * 
      * @return the companyName value.
      */
+    @Generated
     public String companyName() {
         return this.companyName;
     }
@@ -67,6 +76,7 @@ public final class CompanyDetails implements JsonSerializable<CompanyDetails> {
      * @param companyName the companyName value to set.
      * @return the CompanyDetails object itself.
      */
+    @Generated
     public CompanyDetails withCompanyName(String companyName) {
         this.companyName = companyName;
         return this;
@@ -77,6 +87,7 @@ public final class CompanyDetails implements JsonSerializable<CompanyDetails> {
      * 
      * @return the country value.
      */
+    @Generated
     public String country() {
         return this.country;
     }
@@ -87,6 +98,7 @@ public final class CompanyDetails implements JsonSerializable<CompanyDetails> {
      * @param country the country value to set.
      * @return the CompanyDetails object itself.
      */
+    @Generated
     public CompanyDetails withCountry(String country) {
         this.country = country;
         return this;
@@ -97,6 +109,7 @@ public final class CompanyDetails implements JsonSerializable<CompanyDetails> {
      * 
      * @return the officeAddress value.
      */
+    @Generated
     public String officeAddress() {
         return this.officeAddress;
     }
@@ -107,6 +120,7 @@ public final class CompanyDetails implements JsonSerializable<CompanyDetails> {
      * @param officeAddress the officeAddress value to set.
      * @return the CompanyDetails object itself.
      */
+    @Generated
     public CompanyDetails withOfficeAddress(String officeAddress) {
         this.officeAddress = officeAddress;
         return this;
@@ -117,6 +131,7 @@ public final class CompanyDetails implements JsonSerializable<CompanyDetails> {
      * 
      * @return the businessPhone value.
      */
+    @Generated
     public String businessPhone() {
         return this.businessPhone;
     }
@@ -127,6 +142,7 @@ public final class CompanyDetails implements JsonSerializable<CompanyDetails> {
      * @param businessPhone the businessPhone value to set.
      * @return the CompanyDetails object itself.
      */
+    @Generated
     public CompanyDetails withBusinessPhone(String businessPhone) {
         this.businessPhone = businessPhone;
         return this;
@@ -137,6 +153,7 @@ public final class CompanyDetails implements JsonSerializable<CompanyDetails> {
      * 
      * @return the domain value.
      */
+    @Generated
     public String domain() {
         return this.domain;
     }
@@ -147,6 +164,7 @@ public final class CompanyDetails implements JsonSerializable<CompanyDetails> {
      * @param domain the domain value to set.
      * @return the CompanyDetails object itself.
      */
+    @Generated
     public CompanyDetails withDomain(String domain) {
         this.domain = domain;
         return this;
@@ -157,6 +175,7 @@ public final class CompanyDetails implements JsonSerializable<CompanyDetails> {
      * 
      * @return the numberOfEmployees value.
      */
+    @Generated
     public Long numberOfEmployees() {
         return this.numberOfEmployees;
     }
@@ -167,6 +186,7 @@ public final class CompanyDetails implements JsonSerializable<CompanyDetails> {
      * @param numberOfEmployees the numberOfEmployees value to set.
      * @return the CompanyDetails object itself.
      */
+    @Generated
     public CompanyDetails withNumberOfEmployees(Long numberOfEmployees) {
         this.numberOfEmployees = numberOfEmployees;
         return this;

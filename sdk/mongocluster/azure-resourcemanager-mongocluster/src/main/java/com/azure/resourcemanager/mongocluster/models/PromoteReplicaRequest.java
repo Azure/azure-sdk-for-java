@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class PromoteReplicaRequest implements JsonSerializable<PromoteRepl
     /*
      * The promote option to apply to the operation.
      */
+    @Generated
     private PromoteOption promoteOption;
 
     /*
      * The mode to apply to the promote operation. Value is optional and default value is 'Switchover'.
      */
+    @Generated
     private PromoteMode mode;
 
     /**
      * Creates an instance of PromoteReplicaRequest class.
      */
+    @Generated
     public PromoteReplicaRequest() {
     }
 
@@ -38,6 +42,7 @@ public final class PromoteReplicaRequest implements JsonSerializable<PromoteRepl
      * 
      * @return the promoteOption value.
      */
+    @Generated
     public PromoteOption promoteOption() {
         return this.promoteOption;
     }
@@ -48,6 +53,7 @@ public final class PromoteReplicaRequest implements JsonSerializable<PromoteRepl
      * @param promoteOption the promoteOption value to set.
      * @return the PromoteReplicaRequest object itself.
      */
+    @Generated
     public PromoteReplicaRequest withPromoteOption(PromoteOption promoteOption) {
         this.promoteOption = promoteOption;
         return this;
@@ -59,6 +65,7 @@ public final class PromoteReplicaRequest implements JsonSerializable<PromoteRepl
      * 
      * @return the mode value.
      */
+    @Generated
     public PromoteMode mode() {
         return this.mode;
     }
@@ -70,6 +77,7 @@ public final class PromoteReplicaRequest implements JsonSerializable<PromoteRepl
      * @param mode the mode value to set.
      * @return the PromoteReplicaRequest object itself.
      */
+    @Generated
     public PromoteReplicaRequest withMode(PromoteMode mode) {
         this.mode = mode;
         return this;

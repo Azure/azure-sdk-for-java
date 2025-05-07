@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,17 +22,20 @@ public final class VirtualMachineScaleSetIPConfiguration
     /*
      * The IP configuration name.
      */
+    @Generated
     private String name;
 
     /*
      * Describes a virtual machine scale set network profile's IP configuration
      * properties.
      */
+    @Generated
     private VirtualMachineScaleSetIPConfigurationProperties properties;
 
     /**
      * Creates an instance of VirtualMachineScaleSetIPConfiguration class.
      */
+    @Generated
     public VirtualMachineScaleSetIPConfiguration() {
     }
 
@@ -40,6 +44,7 @@ public final class VirtualMachineScaleSetIPConfiguration
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -50,6 +55,7 @@ public final class VirtualMachineScaleSetIPConfiguration
      * @param name the name value to set.
      * @return the VirtualMachineScaleSetIPConfiguration object itself.
      */
+    @Generated
     public VirtualMachineScaleSetIPConfiguration withName(String name) {
         this.name = name;
         return this;
@@ -61,6 +67,7 @@ public final class VirtualMachineScaleSetIPConfiguration
      * 
      * @return the properties value.
      */
+    @Generated
     public VirtualMachineScaleSetIPConfigurationProperties properties() {
         return this.properties;
     }
@@ -72,6 +79,7 @@ public final class VirtualMachineScaleSetIPConfiguration
      * @param properties the properties value to set.
      * @return the VirtualMachineScaleSetIPConfiguration object itself.
      */
+    @Generated
     public VirtualMachineScaleSetIPConfiguration
         withProperties(VirtualMachineScaleSetIPConfigurationProperties properties) {
         this.properties = properties;

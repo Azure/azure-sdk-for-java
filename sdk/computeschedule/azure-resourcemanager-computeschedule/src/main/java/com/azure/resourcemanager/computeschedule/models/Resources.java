@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class Resources implements JsonSerializable<Resources> {
     /*
      * The resource ids used for the request
      */
+    @Generated
     private List<String> ids;
 
     /**
      * Creates an instance of Resources class.
      */
+    @Generated
     public Resources() {
     }
 
@@ -34,6 +37,7 @@ public final class Resources implements JsonSerializable<Resources> {
      * 
      * @return the ids value.
      */
+    @Generated
     public List<String> ids() {
         return this.ids;
     }
@@ -44,6 +48,7 @@ public final class Resources implements JsonSerializable<Resources> {
      * @param ids the ids value to set.
      * @return the Resources object itself.
      */
+    @Generated
     public Resources withIds(List<String> ids) {
         this.ids = ids;
         return this;

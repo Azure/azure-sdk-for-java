@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -25,21 +26,25 @@ public final class VirtualMachineScaleSetExtensionProperties
      * handler will be forced to update even if the extension configuration has not
      * changed.
      */
+    @Generated
     private String forceUpdateTag;
 
     /*
      * The name of the extension handler publisher.
      */
+    @Generated
     private String publisher;
 
     /*
      * Specifies the type of the extension; an example is "CustomScriptExtension".
      */
+    @Generated
     private String type;
 
     /*
      * Specifies the version of the script handler.
      */
+    @Generated
     private String typeHandlerVersion;
 
     /*
@@ -47,34 +52,40 @@ public final class VirtualMachineScaleSetExtensionProperties
      * available at deployment time. Once deployed, however, the extension will not
      * upgrade minor versions unless redeployed, even with this property set to true.
      */
+    @Generated
     private Boolean autoUpgradeMinorVersion;
 
     /*
      * Indicates whether the extension should be automatically upgraded by the
      * platform if there is a newer version of the extension available.
      */
+    @Generated
     private Boolean enableAutomaticUpgrade;
 
     /*
      * Json formatted public settings for the extension.
      */
+    @Generated
     private Map<String, BinaryData> settings;
 
     /*
      * The extension can contain either protectedSettings or
      * protectedSettingsFromKeyVault or no protected settings at all.
      */
+    @Generated
     private Map<String, BinaryData> protectedSettings;
 
     /*
      * The provisioning state, which only appears in the response.
      */
+    @Generated
     private String provisioningState;
 
     /*
      * Collection of extension names after which this extension needs to be
      * provisioned.
      */
+    @Generated
     private List<String> provisionAfterExtensions;
 
     /*
@@ -82,17 +93,20 @@ public final class VirtualMachineScaleSetExtensionProperties
      * (Operational failures such as not connecting to the VM will not be suppressed
      * regardless of this value). The default is false.
      */
+    @Generated
     private Boolean suppressFailures;
 
     /*
      * The extensions protected settings that are passed by reference, and consumed
      * from key vault
      */
+    @Generated
     private KeyVaultSecretReference protectedSettingsFromKeyVault;
 
     /**
      * Creates an instance of VirtualMachineScaleSetExtensionProperties class.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProperties() {
     }
 
@@ -103,6 +117,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * 
      * @return the forceUpdateTag value.
      */
+    @Generated
     public String forceUpdateTag() {
         return this.forceUpdateTag;
     }
@@ -115,6 +130,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProperties withForceUpdateTag(String forceUpdateTag) {
         this.forceUpdateTag = forceUpdateTag;
         return this;
@@ -125,6 +141,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * 
      * @return the publisher value.
      */
+    @Generated
     public String publisher() {
         return this.publisher;
     }
@@ -135,6 +152,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * @param publisher the publisher value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProperties withPublisher(String publisher) {
         this.publisher = publisher;
         return this;
@@ -145,6 +163,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * 
      * @return the type value.
      */
+    @Generated
     public String type() {
         return this.type;
     }
@@ -155,6 +174,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * @param type the type value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProperties withType(String type) {
         this.type = type;
         return this;
@@ -165,6 +185,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * 
      * @return the typeHandlerVersion value.
      */
+    @Generated
     public String typeHandlerVersion() {
         return this.typeHandlerVersion;
     }
@@ -175,6 +196,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProperties withTypeHandlerVersion(String typeHandlerVersion) {
         this.typeHandlerVersion = typeHandlerVersion;
         return this;
@@ -188,6 +210,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * 
      * @return the autoUpgradeMinorVersion value.
      */
+    @Generated
     public Boolean autoUpgradeMinorVersion() {
         return this.autoUpgradeMinorVersion;
     }
@@ -201,6 +224,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProperties withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion) {
         this.autoUpgradeMinorVersion = autoUpgradeMinorVersion;
         return this;
@@ -212,6 +236,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * 
      * @return the enableAutomaticUpgrade value.
      */
+    @Generated
     public Boolean enableAutomaticUpgrade() {
         return this.enableAutomaticUpgrade;
     }
@@ -223,6 +248,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProperties withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
         this.enableAutomaticUpgrade = enableAutomaticUpgrade;
         return this;
@@ -233,6 +259,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * 
      * @return the settings value.
      */
+    @Generated
     public Map<String, BinaryData> settings() {
         return this.settings;
     }
@@ -243,6 +270,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * @param settings the settings value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProperties withSettings(Map<String, BinaryData> settings) {
         this.settings = settings;
         return this;
@@ -254,6 +282,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * 
      * @return the protectedSettings value.
      */
+    @Generated
     public Map<String, BinaryData> protectedSettings() {
         return this.protectedSettings;
     }
@@ -265,6 +294,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * @param protectedSettings the protectedSettings value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProperties withProtectedSettings(Map<String, BinaryData> protectedSettings) {
         this.protectedSettings = protectedSettings;
         return this;
@@ -275,6 +305,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public String provisioningState() {
         return this.provisioningState;
     }
@@ -285,6 +316,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * 
      * @return the provisionAfterExtensions value.
      */
+    @Generated
     public List<String> provisionAfterExtensions() {
         return this.provisionAfterExtensions;
     }
@@ -296,6 +328,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * @param provisionAfterExtensions the provisionAfterExtensions value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProperties
         withProvisionAfterExtensions(List<String> provisionAfterExtensions) {
         this.provisionAfterExtensions = provisionAfterExtensions;
@@ -309,6 +342,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * 
      * @return the suppressFailures value.
      */
+    @Generated
     public Boolean suppressFailures() {
         return this.suppressFailures;
     }
@@ -321,6 +355,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * @param suppressFailures the suppressFailures value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProperties withSuppressFailures(Boolean suppressFailures) {
         this.suppressFailures = suppressFailures;
         return this;
@@ -333,6 +368,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * 
      * @return the protectedSettingsFromKeyVault value.
      */
+    @Generated
     public KeyVaultSecretReference protectedSettingsFromKeyVault() {
         return this.protectedSettingsFromKeyVault;
     }
@@ -345,6 +381,7 @@ public final class VirtualMachineScaleSetExtensionProperties
      * @param protectedSettingsFromKeyVault the protectedSettingsFromKeyVault value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProperties
         withProtectedSettingsFromKeyVault(KeyVaultSecretReference protectedSettingsFromKeyVault) {
         this.protectedSettingsFromKeyVault = protectedSettingsFromKeyVault;

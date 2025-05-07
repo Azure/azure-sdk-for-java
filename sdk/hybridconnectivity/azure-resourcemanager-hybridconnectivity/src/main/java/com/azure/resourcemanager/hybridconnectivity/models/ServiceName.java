@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ServiceName extends ExpandableStringEnum<ServiceName> {
     /**
      * Static value SSH for ServiceName.
      */
+    @Generated
     public static final ServiceName SSH = fromString("SSH");
 
     /**
      * Static value WAC for ServiceName.
      */
+    @Generated
     public static final ServiceName WAC = fromString("WAC");
 
     /**
@@ -26,6 +29,7 @@ public final class ServiceName extends ExpandableStringEnum<ServiceName> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ServiceName() {
     }
@@ -36,6 +40,7 @@ public final class ServiceName extends ExpandableStringEnum<ServiceName> {
      * @param name a name to look for.
      * @return the corresponding ServiceName.
      */
+    @Generated
     public static ServiceName fromString(String name) {
         return fromString(name, ServiceName.class);
     }
@@ -45,6 +50,7 @@ public final class ServiceName extends ExpandableStringEnum<ServiceName> {
      * 
      * @return known ServiceName values.
      */
+    @Generated
     public static Collection<ServiceName> values() {
         return values(ServiceName.class);
     }

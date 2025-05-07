@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.dependencymap.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public final class MapsResourceProperties implements JsonSerializable<MapsResour
     /*
      * Provisioning state of Maps resource.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of MapsResourceProperties class.
      */
+    @Generated
     public MapsResourceProperties() {
     }
 
@@ -32,6 +35,7 @@ public final class MapsResourceProperties implements JsonSerializable<MapsResour
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

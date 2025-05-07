@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,12 +21,14 @@ public class FileShareConfiguration implements JsonSerializable<FileShareConfigu
     /*
      * The type of file share config, eg: Mount/CreateAndMount/Skip.
      */
+    @Generated
     private FileShareConfigurationType configurationType
         = FileShareConfigurationType.fromString("FileShareConfiguration");
 
     /**
      * Creates an instance of FileShareConfiguration class.
      */
+    @Generated
     public FileShareConfiguration() {
     }
 
@@ -34,6 +37,7 @@ public class FileShareConfiguration implements JsonSerializable<FileShareConfigu
      * 
      * @return the configurationType value.
      */
+    @Generated
     public FileShareConfigurationType configurationType() {
         return this.configurationType;
     }

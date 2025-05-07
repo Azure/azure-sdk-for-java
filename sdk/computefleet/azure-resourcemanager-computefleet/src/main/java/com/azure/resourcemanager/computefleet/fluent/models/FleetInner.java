@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -25,46 +26,55 @@ public final class FleetInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private FleetProperties properties;
 
     /*
      * Zones in which the Compute Fleet is available
      */
+    @Generated
     private List<String> zones;
 
     /*
      * The managed service identities assigned to this resource.
      */
+    @Generated
     private ManagedServiceIdentity identity;
 
     /*
      * Details of the resource plan.
      */
+    @Generated
     private Plan plan;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of FleetInner class.
      */
+    @Generated
     public FleetInner() {
     }
 
@@ -73,6 +83,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the properties value.
      */
+    @Generated
     public FleetProperties properties() {
         return this.properties;
     }
@@ -83,6 +94,7 @@ public final class FleetInner extends Resource {
      * @param properties the properties value to set.
      * @return the FleetInner object itself.
      */
+    @Generated
     public FleetInner withProperties(FleetProperties properties) {
         this.properties = properties;
         return this;
@@ -93,6 +105,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the zones value.
      */
+    @Generated
     public List<String> zones() {
         return this.zones;
     }
@@ -103,6 +116,7 @@ public final class FleetInner extends Resource {
      * @param zones the zones value to set.
      * @return the FleetInner object itself.
      */
+    @Generated
     public FleetInner withZones(List<String> zones) {
         this.zones = zones;
         return this;
@@ -113,6 +127,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the identity value.
      */
+    @Generated
     public ManagedServiceIdentity identity() {
         return this.identity;
     }
@@ -123,6 +138,7 @@ public final class FleetInner extends Resource {
      * @param identity the identity value to set.
      * @return the FleetInner object itself.
      */
+    @Generated
     public FleetInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
@@ -133,6 +149,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the plan value.
      */
+    @Generated
     public Plan plan() {
         return this.plan;
     }
@@ -143,6 +160,7 @@ public final class FleetInner extends Resource {
      * @param plan the plan value to set.
      * @return the FleetInner object itself.
      */
+    @Generated
     public FleetInner withPlan(Plan plan) {
         this.plan = plan;
         return this;
@@ -153,6 +171,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -162,6 +181,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -172,6 +192,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -182,6 +203,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;
@@ -190,6 +212,7 @@ public final class FleetInner extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FleetInner withLocation(String location) {
         super.withLocation(location);
@@ -199,6 +222,7 @@ public final class FleetInner extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FleetInner withTags(Map<String, String> tags) {
         super.withTags(tags);

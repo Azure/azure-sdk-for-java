@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,66 +20,79 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
     /*
      * The backing storageclass used to create new storageclass
      */
+    @Generated
     private String backingStorageClassName;
 
     /*
      * Azure Storage Account Name
      */
+    @Generated
     private String azureStorageAccountName;
 
     /*
      * Azure Storage Account Key
      */
+    @Generated
     private String azureStorageAccountKey;
 
     /*
      * NFS Server
      */
+    @Generated
     private String server;
 
     /*
      * NFS share
      */
+    @Generated
     private String share;
 
     /*
      * Sub directory under share. If the sub directory doesn't exist, driver will create it
      */
+    @Generated
     private String subDir;
 
     /*
      * Mounted folder permissions. Default is 0. If set as non-zero, driver will perform `chmod` after mount
      */
+    @Generated
     private String mountPermissions;
 
     /*
      * The action to take when a NFS volume is deleted. Default is Delete
      */
+    @Generated
     private NfsDirectoryActionOnVolumeDeletion onDelete;
 
     /*
      * SMB Source
      */
+    @Generated
     private String source;
 
     /*
      * Server username
      */
+    @Generated
     private String username;
 
     /*
      * Server password
      */
+    @Generated
     private String password;
 
     /*
      * Server domain
      */
+    @Generated
     private String domain;
 
     /**
      * Creates an instance of StorageClassTypePropertiesUpdate class.
      */
+    @Generated
     public StorageClassTypePropertiesUpdate() {
     }
 
@@ -87,6 +101,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * 
      * @return the backingStorageClassName value.
      */
+    @Generated
     public String backingStorageClassName() {
         return this.backingStorageClassName;
     }
@@ -97,6 +112,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * @param backingStorageClassName the backingStorageClassName value to set.
      * @return the StorageClassTypePropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassTypePropertiesUpdate withBackingStorageClassName(String backingStorageClassName) {
         this.backingStorageClassName = backingStorageClassName;
         return this;
@@ -107,6 +123,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * 
      * @return the azureStorageAccountName value.
      */
+    @Generated
     public String azureStorageAccountName() {
         return this.azureStorageAccountName;
     }
@@ -117,6 +134,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * @param azureStorageAccountName the azureStorageAccountName value to set.
      * @return the StorageClassTypePropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassTypePropertiesUpdate withAzureStorageAccountName(String azureStorageAccountName) {
         this.azureStorageAccountName = azureStorageAccountName;
         return this;
@@ -127,6 +145,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * 
      * @return the azureStorageAccountKey value.
      */
+    @Generated
     public String azureStorageAccountKey() {
         return this.azureStorageAccountKey;
     }
@@ -137,6 +156,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * @param azureStorageAccountKey the azureStorageAccountKey value to set.
      * @return the StorageClassTypePropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassTypePropertiesUpdate withAzureStorageAccountKey(String azureStorageAccountKey) {
         this.azureStorageAccountKey = azureStorageAccountKey;
         return this;
@@ -147,6 +167,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * 
      * @return the server value.
      */
+    @Generated
     public String server() {
         return this.server;
     }
@@ -157,6 +178,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * @param server the server value to set.
      * @return the StorageClassTypePropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassTypePropertiesUpdate withServer(String server) {
         this.server = server;
         return this;
@@ -167,6 +189,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * 
      * @return the share value.
      */
+    @Generated
     public String share() {
         return this.share;
     }
@@ -177,6 +200,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * @param share the share value to set.
      * @return the StorageClassTypePropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassTypePropertiesUpdate withShare(String share) {
         this.share = share;
         return this;
@@ -187,6 +211,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * 
      * @return the subDir value.
      */
+    @Generated
     public String subDir() {
         return this.subDir;
     }
@@ -197,6 +222,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * @param subDir the subDir value to set.
      * @return the StorageClassTypePropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassTypePropertiesUpdate withSubDir(String subDir) {
         this.subDir = subDir;
         return this;
@@ -208,6 +234,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * 
      * @return the mountPermissions value.
      */
+    @Generated
     public String mountPermissions() {
         return this.mountPermissions;
     }
@@ -219,6 +246,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * @param mountPermissions the mountPermissions value to set.
      * @return the StorageClassTypePropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassTypePropertiesUpdate withMountPermissions(String mountPermissions) {
         this.mountPermissions = mountPermissions;
         return this;
@@ -229,6 +257,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * 
      * @return the onDelete value.
      */
+    @Generated
     public NfsDirectoryActionOnVolumeDeletion onDelete() {
         return this.onDelete;
     }
@@ -239,6 +268,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * @param onDelete the onDelete value to set.
      * @return the StorageClassTypePropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassTypePropertiesUpdate withOnDelete(NfsDirectoryActionOnVolumeDeletion onDelete) {
         this.onDelete = onDelete;
         return this;
@@ -249,6 +279,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * 
      * @return the source value.
      */
+    @Generated
     public String source() {
         return this.source;
     }
@@ -259,6 +290,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * @param source the source value to set.
      * @return the StorageClassTypePropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassTypePropertiesUpdate withSource(String source) {
         this.source = source;
         return this;
@@ -269,6 +301,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * 
      * @return the username value.
      */
+    @Generated
     public String username() {
         return this.username;
     }
@@ -279,6 +312,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * @param username the username value to set.
      * @return the StorageClassTypePropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassTypePropertiesUpdate withUsername(String username) {
         this.username = username;
         return this;
@@ -289,6 +323,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * 
      * @return the password value.
      */
+    @Generated
     public String password() {
         return this.password;
     }
@@ -299,6 +334,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * @param password the password value to set.
      * @return the StorageClassTypePropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassTypePropertiesUpdate withPassword(String password) {
         this.password = password;
         return this;
@@ -309,6 +345,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * 
      * @return the domain value.
      */
+    @Generated
     public String domain() {
         return this.domain;
     }
@@ -319,6 +356,7 @@ public final class StorageClassTypePropertiesUpdate implements JsonSerializable<
      * @param domain the domain value to set.
      * @return the StorageClassTypePropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassTypePropertiesUpdate withDomain(String domain) {
         this.domain = domain;
         return this;

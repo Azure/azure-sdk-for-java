@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,31 +23,37 @@ public final class ConnectorProperties implements JsonSerializable<ConnectorProp
     /*
      * Resource provisioning state.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * unique id of the connector.
      */
+    @Generated
     private String connectorId;
 
     /*
      * tenant id of this connector
      */
+    @Generated
     private String tenantId;
 
     /*
      * connector type
      */
+    @Generated
     private Platform connectorType;
 
     /*
      * last run time stamp of this connector in UTC time zone
      */
+    @Generated
     private OffsetDateTime lastRunTimeStamp;
 
     /**
      * Creates an instance of ConnectorProperties class.
      */
+    @Generated
     public ConnectorProperties() {
     }
 
@@ -55,6 +62,7 @@ public final class ConnectorProperties implements JsonSerializable<ConnectorProp
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -64,6 +72,7 @@ public final class ConnectorProperties implements JsonSerializable<ConnectorProp
      * 
      * @return the connectorId value.
      */
+    @Generated
     public String connectorId() {
         return this.connectorId;
     }
@@ -73,6 +82,7 @@ public final class ConnectorProperties implements JsonSerializable<ConnectorProp
      * 
      * @return the tenantId value.
      */
+    @Generated
     public String tenantId() {
         return this.tenantId;
     }
@@ -82,6 +92,7 @@ public final class ConnectorProperties implements JsonSerializable<ConnectorProp
      * 
      * @return the connectorType value.
      */
+    @Generated
     public Platform connectorType() {
         return this.connectorType;
     }
@@ -92,6 +103,7 @@ public final class ConnectorProperties implements JsonSerializable<ConnectorProp
      * @param connectorType the connectorType value to set.
      * @return the ConnectorProperties object itself.
      */
+    @Generated
     public ConnectorProperties withConnectorType(Platform connectorType) {
         this.connectorType = connectorType;
         return this;
@@ -102,6 +114,7 @@ public final class ConnectorProperties implements JsonSerializable<ConnectorProp
      * 
      * @return the lastRunTimeStamp value.
      */
+    @Generated
     public OffsetDateTime lastRunTimeStamp() {
         return this.lastRunTimeStamp;
     }

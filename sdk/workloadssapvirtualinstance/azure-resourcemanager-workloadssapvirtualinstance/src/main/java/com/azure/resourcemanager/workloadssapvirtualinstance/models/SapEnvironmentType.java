@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SapEnvironmentType extends ExpandableStringEnum<SapEnvironmen
     /**
      * Non Production SAP system.
      */
+    @Generated
     public static final SapEnvironmentType NON_PROD = fromString("NonProd");
 
     /**
      * Production SAP system.
      */
+    @Generated
     public static final SapEnvironmentType PROD = fromString("Prod");
 
     /**
@@ -26,6 +29,7 @@ public final class SapEnvironmentType extends ExpandableStringEnum<SapEnvironmen
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SapEnvironmentType() {
     }
@@ -36,6 +40,7 @@ public final class SapEnvironmentType extends ExpandableStringEnum<SapEnvironmen
      * @param name a name to look for.
      * @return the corresponding SapEnvironmentType.
      */
+    @Generated
     public static SapEnvironmentType fromString(String name) {
         return fromString(name, SapEnvironmentType.class);
     }
@@ -45,6 +50,7 @@ public final class SapEnvironmentType extends ExpandableStringEnum<SapEnvironmen
      * 
      * @return known SapEnvironmentType values.
      */
+    @Generated
     public static Collection<SapEnvironmentType> values() {
         return values(SapEnvironmentType.class);
     }

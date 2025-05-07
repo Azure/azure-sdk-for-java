@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.connectedcache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,162 +24,194 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
     /*
      * issues list to return the issues as part of the additional cache node properties
      */
+    @Generated
     private List<String> cacheNodePropertiesDetailsIssuesList;
 
     /*
      * Cache node resource aggregated status details.
      */
+    @Generated
     private String aggregatedStatusDetails;
 
     /*
      * Cache node resource aggregated status text.
      */
+    @Generated
     private String aggregatedStatusText;
 
     /*
      * Cache node resource aggregated status code.
      */
+    @Generated
     private Integer aggregatedStatusCode;
 
     /*
      * Cache node resource Mcc product version.
      */
+    @Generated
     private String productVersion;
 
     /*
      * Cache node resource flag indicating if cache node has been physically installed or provisioned on their physical
      * lab.
      */
+    @Generated
     private Boolean isProvisioned;
 
     /*
      * Cache node resource detailed state text.
      */
+    @Generated
     private String cacheNodeStateDetailedText;
 
     /*
      * Cache node resource short state text.
      */
+    @Generated
     private String cacheNodeStateShortText;
 
     /*
      * Cache node resource state as integer.
      */
+    @Generated
     private Integer cacheNodeState;
 
     /*
      * Cache node resource drive configurations.
      */
+    @Generated
     private List<CacheNodeDriveConfiguration> driveConfiguration;
 
     /*
      * Cache node resource Bgp configuration.
      */
+    @Generated
     private BgpConfiguration bgpConfiguration;
 
     /*
      * proxyUrl configuration of the cache node
      */
+    @Generated
     private ProxyUrlConfiguration proxyUrlConfiguration;
 
     /*
      * Cache node resource Mcc proxy Url
      */
+    @Generated
     private String proxyUrl;
 
     /*
      * Cache node resource requires a proxy
      */
+    @Generated
     private ProxyRequired isProxyRequired;
 
     /*
      * Operating system of the cache node
      */
+    @Generated
     private OsType osType;
 
     /*
      * Update Cycle Type
      */
+    @Generated
     private CycleType updateCycleType;
 
     /*
      * Auto update or fast update version
      */
+    @Generated
     private String autoUpdateVersion;
 
     /*
      * Update related information details
      */
+    @Generated
     private String updateInfoDetails;
 
     /*
      * customer requested date time for mcc install of update cycle
      */
+    @Generated
     private OffsetDateTime updateRequestedDateTime;
 
     /*
      * Auto update version that is the Next available version to update on mcc cache node
      */
+    @Generated
     private String autoUpdateNextAvailableVersion;
 
     /*
      * Auto update last applied date time of mcc install
      */
+    @Generated
     private OffsetDateTime autoUpdateNextAvailableDateTime;
 
     /*
      * Auto update version that is the applied to update on mcc cache node
      */
+    @Generated
     private String autoUpdateAppliedVersion;
 
     /*
      * Auto Update status details from the backend after applying the new version details
      */
+    @Generated
     private String autoUpdateLastAppliedDetails;
 
     /*
      * Last applied auto update state for mcc install of auto update cycle
      */
+    @Generated
     private String autoUpdateLastAppliedState;
 
     /*
      * Auto update last applied date time of mcc install
      */
+    @Generated
     private OffsetDateTime autoUpdateLastAppliedDateTime;
 
     /*
      * Auto update last triggered date time of mcc install
      */
+    @Generated
     private OffsetDateTime autoUpdateLastTriggeredDateTime;
 
     /*
      * Optional property #1 of Mcc response object
      */
+    @Generated
     private String optionalProperty1;
 
     /*
      * Optional property #2 of Mcc response object
      */
+    @Generated
     private String optionalProperty2;
 
     /*
      * Optional property #3 of Mcc response object
      */
+    @Generated
     private String optionalProperty3;
 
     /*
      * Optional property #4 of Mcc response object
      */
+    @Generated
     private String optionalProperty4;
 
     /*
      * Optional property #5 of Mcc response object
      */
+    @Generated
     private String optionalProperty5;
 
     /**
      * Creates an instance of AdditionalCacheNodeProperties class.
      */
+    @Generated
     public AdditionalCacheNodeProperties() {
     }
 
@@ -188,6 +221,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the cacheNodePropertiesDetailsIssuesList value.
      */
+    @Generated
     public List<String> cacheNodePropertiesDetailsIssuesList() {
         return this.cacheNodePropertiesDetailsIssuesList;
     }
@@ -199,6 +233,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param cacheNodePropertiesDetailsIssuesList the cacheNodePropertiesDetailsIssuesList value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties
         withCacheNodePropertiesDetailsIssuesList(List<String> cacheNodePropertiesDetailsIssuesList) {
         this.cacheNodePropertiesDetailsIssuesList = cacheNodePropertiesDetailsIssuesList;
@@ -210,6 +245,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the aggregatedStatusDetails value.
      */
+    @Generated
     public String aggregatedStatusDetails() {
         return this.aggregatedStatusDetails;
     }
@@ -219,6 +255,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the aggregatedStatusText value.
      */
+    @Generated
     public String aggregatedStatusText() {
         return this.aggregatedStatusText;
     }
@@ -228,6 +265,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the aggregatedStatusCode value.
      */
+    @Generated
     public Integer aggregatedStatusCode() {
         return this.aggregatedStatusCode;
     }
@@ -237,6 +275,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the productVersion value.
      */
+    @Generated
     public String productVersion() {
         return this.productVersion;
     }
@@ -247,6 +286,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the isProvisioned value.
      */
+    @Generated
     public Boolean isProvisioned() {
         return this.isProvisioned;
     }
@@ -256,6 +296,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the cacheNodeStateDetailedText value.
      */
+    @Generated
     public String cacheNodeStateDetailedText() {
         return this.cacheNodeStateDetailedText;
     }
@@ -265,6 +306,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the cacheNodeStateShortText value.
      */
+    @Generated
     public String cacheNodeStateShortText() {
         return this.cacheNodeStateShortText;
     }
@@ -274,6 +316,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the cacheNodeState value.
      */
+    @Generated
     public Integer cacheNodeState() {
         return this.cacheNodeState;
     }
@@ -283,6 +326,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the driveConfiguration value.
      */
+    @Generated
     public List<CacheNodeDriveConfiguration> driveConfiguration() {
         return this.driveConfiguration;
     }
@@ -293,6 +337,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param driveConfiguration the driveConfiguration value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withDriveConfiguration(List<CacheNodeDriveConfiguration> driveConfiguration) {
         this.driveConfiguration = driveConfiguration;
         return this;
@@ -303,6 +348,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the bgpConfiguration value.
      */
+    @Generated
     public BgpConfiguration bgpConfiguration() {
         return this.bgpConfiguration;
     }
@@ -313,6 +359,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param bgpConfiguration the bgpConfiguration value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withBgpConfiguration(BgpConfiguration bgpConfiguration) {
         this.bgpConfiguration = bgpConfiguration;
         return this;
@@ -323,6 +370,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the proxyUrlConfiguration value.
      */
+    @Generated
     public ProxyUrlConfiguration proxyUrlConfiguration() {
         return this.proxyUrlConfiguration;
     }
@@ -333,6 +381,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param proxyUrlConfiguration the proxyUrlConfiguration value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withProxyUrlConfiguration(ProxyUrlConfiguration proxyUrlConfiguration) {
         this.proxyUrlConfiguration = proxyUrlConfiguration;
         return this;
@@ -343,6 +392,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the proxyUrl value.
      */
+    @Generated
     public String proxyUrl() {
         return this.proxyUrl;
     }
@@ -353,6 +403,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param proxyUrl the proxyUrl value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withProxyUrl(String proxyUrl) {
         this.proxyUrl = proxyUrl;
         return this;
@@ -363,6 +414,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the isProxyRequired value.
      */
+    @Generated
     public ProxyRequired isProxyRequired() {
         return this.isProxyRequired;
     }
@@ -373,6 +425,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param isProxyRequired the isProxyRequired value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withIsProxyRequired(ProxyRequired isProxyRequired) {
         this.isProxyRequired = isProxyRequired;
         return this;
@@ -383,6 +436,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the osType value.
      */
+    @Generated
     public OsType osType() {
         return this.osType;
     }
@@ -393,6 +447,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param osType the osType value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withOsType(OsType osType) {
         this.osType = osType;
         return this;
@@ -403,6 +458,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the updateCycleType value.
      */
+    @Generated
     public CycleType updateCycleType() {
         return this.updateCycleType;
     }
@@ -413,6 +469,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param updateCycleType the updateCycleType value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withUpdateCycleType(CycleType updateCycleType) {
         this.updateCycleType = updateCycleType;
         return this;
@@ -423,6 +480,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the autoUpdateVersion value.
      */
+    @Generated
     public String autoUpdateVersion() {
         return this.autoUpdateVersion;
     }
@@ -433,6 +491,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param autoUpdateVersion the autoUpdateVersion value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withAutoUpdateVersion(String autoUpdateVersion) {
         this.autoUpdateVersion = autoUpdateVersion;
         return this;
@@ -443,6 +502,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the updateInfoDetails value.
      */
+    @Generated
     public String updateInfoDetails() {
         return this.updateInfoDetails;
     }
@@ -453,6 +513,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param updateInfoDetails the updateInfoDetails value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withUpdateInfoDetails(String updateInfoDetails) {
         this.updateInfoDetails = updateInfoDetails;
         return this;
@@ -463,6 +524,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the updateRequestedDateTime value.
      */
+    @Generated
     public OffsetDateTime updateRequestedDateTime() {
         return this.updateRequestedDateTime;
     }
@@ -473,6 +535,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param updateRequestedDateTime the updateRequestedDateTime value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withUpdateRequestedDateTime(OffsetDateTime updateRequestedDateTime) {
         this.updateRequestedDateTime = updateRequestedDateTime;
         return this;
@@ -484,6 +547,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the autoUpdateNextAvailableVersion value.
      */
+    @Generated
     public String autoUpdateNextAvailableVersion() {
         return this.autoUpdateNextAvailableVersion;
     }
@@ -493,6 +557,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the autoUpdateNextAvailableDateTime value.
      */
+    @Generated
     public OffsetDateTime autoUpdateNextAvailableDateTime() {
         return this.autoUpdateNextAvailableDateTime;
     }
@@ -502,6 +567,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the autoUpdateAppliedVersion value.
      */
+    @Generated
     public String autoUpdateAppliedVersion() {
         return this.autoUpdateAppliedVersion;
     }
@@ -512,6 +578,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the autoUpdateLastAppliedDetails value.
      */
+    @Generated
     public String autoUpdateLastAppliedDetails() {
         return this.autoUpdateLastAppliedDetails;
     }
@@ -521,6 +588,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the autoUpdateLastAppliedState value.
      */
+    @Generated
     public String autoUpdateLastAppliedState() {
         return this.autoUpdateLastAppliedState;
     }
@@ -530,6 +598,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the autoUpdateLastAppliedDateTime value.
      */
+    @Generated
     public OffsetDateTime autoUpdateLastAppliedDateTime() {
         return this.autoUpdateLastAppliedDateTime;
     }
@@ -539,6 +608,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the autoUpdateLastTriggeredDateTime value.
      */
+    @Generated
     public OffsetDateTime autoUpdateLastTriggeredDateTime() {
         return this.autoUpdateLastTriggeredDateTime;
     }
@@ -548,6 +618,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the optionalProperty1 value.
      */
+    @Generated
     public String optionalProperty1() {
         return this.optionalProperty1;
     }
@@ -558,6 +629,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param optionalProperty1 the optionalProperty1 value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withOptionalProperty1(String optionalProperty1) {
         this.optionalProperty1 = optionalProperty1;
         return this;
@@ -568,6 +640,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the optionalProperty2 value.
      */
+    @Generated
     public String optionalProperty2() {
         return this.optionalProperty2;
     }
@@ -578,6 +651,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param optionalProperty2 the optionalProperty2 value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withOptionalProperty2(String optionalProperty2) {
         this.optionalProperty2 = optionalProperty2;
         return this;
@@ -588,6 +662,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the optionalProperty3 value.
      */
+    @Generated
     public String optionalProperty3() {
         return this.optionalProperty3;
     }
@@ -598,6 +673,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param optionalProperty3 the optionalProperty3 value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withOptionalProperty3(String optionalProperty3) {
         this.optionalProperty3 = optionalProperty3;
         return this;
@@ -608,6 +684,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the optionalProperty4 value.
      */
+    @Generated
     public String optionalProperty4() {
         return this.optionalProperty4;
     }
@@ -618,6 +695,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param optionalProperty4 the optionalProperty4 value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withOptionalProperty4(String optionalProperty4) {
         this.optionalProperty4 = optionalProperty4;
         return this;
@@ -628,6 +706,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * 
      * @return the optionalProperty5 value.
      */
+    @Generated
     public String optionalProperty5() {
         return this.optionalProperty5;
     }
@@ -638,6 +717,7 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
      * @param optionalProperty5 the optionalProperty5 value to set.
      * @return the AdditionalCacheNodeProperties object itself.
      */
+    @Generated
     public AdditionalCacheNodeProperties withOptionalProperty5(String optionalProperty5) {
         this.optionalProperty5 = optionalProperty5;
         return this;

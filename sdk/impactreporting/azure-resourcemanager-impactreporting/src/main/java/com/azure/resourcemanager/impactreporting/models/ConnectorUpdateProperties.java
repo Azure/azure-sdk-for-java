@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class ConnectorUpdateProperties implements JsonSerializable<Connect
     /*
      * connector type
      */
+    @Generated
     private Platform connectorType;
 
     /**
      * Creates an instance of ConnectorUpdateProperties class.
      */
+    @Generated
     public ConnectorUpdateProperties() {
     }
 
@@ -32,6 +35,7 @@ public final class ConnectorUpdateProperties implements JsonSerializable<Connect
      * 
      * @return the connectorType value.
      */
+    @Generated
     public Platform connectorType() {
         return this.connectorType;
     }
@@ -42,6 +46,7 @@ public final class ConnectorUpdateProperties implements JsonSerializable<Connect
      * @param connectorType the connectorType value to set.
      * @return the ConnectorUpdateProperties object itself.
      */
+    @Generated
     public ConnectorUpdateProperties withConnectorType(Platform connectorType) {
         this.connectorType = connectorType;
         return this;

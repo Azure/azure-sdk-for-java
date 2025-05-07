@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.arizeaiobservabilityeval.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
     /*
      * Description of the Organization's purpose
      */
+    @Generated
     private String description;
 
     /**
      * Creates an instance of PartnerProperties class.
      */
+    @Generated
     public PartnerProperties() {
     }
 
@@ -33,6 +36,7 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
      * 
      * @return the description value.
      */
+    @Generated
     public String description() {
         return this.description;
     }
@@ -43,6 +47,7 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
      * @param description the description value to set.
      * @return the PartnerProperties object itself.
      */
+    @Generated
     public PartnerProperties withDescription(String description) {
         this.description = description;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class CentralServerVirtualMachineType extends ExpandableStringEnum<
     /**
      * Primary central server vm.
      */
+    @Generated
     public static final CentralServerVirtualMachineType PRIMARY = fromString("Primary");
 
     /**
      * Secondary central server vm.
      */
+    @Generated
     public static final CentralServerVirtualMachineType SECONDARY = fromString("Secondary");
 
     /**
      * Central server vm type unknown.
      */
+    @Generated
     public static final CentralServerVirtualMachineType UNKNOWN = fromString("Unknown");
 
     /**
      * ASCS Central server vm type.
      */
+    @Generated
     public static final CentralServerVirtualMachineType ASCS = fromString("ASCS");
 
     /**
      * ERSInactive Central server vm type.
      */
+    @Generated
     public static final CentralServerVirtualMachineType ERSINACTIVE = fromString("ERSInactive");
 
     /**
      * ERS Central server vm type.
      */
+    @Generated
     public static final CentralServerVirtualMachineType ERS = fromString("ERS");
 
     /**
      * Standby Central server vm type.
      */
+    @Generated
     public static final CentralServerVirtualMachineType STANDBY = fromString("Standby");
 
     /**
@@ -51,6 +59,7 @@ public final class CentralServerVirtualMachineType extends ExpandableStringEnum<
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CentralServerVirtualMachineType() {
     }
@@ -61,6 +70,7 @@ public final class CentralServerVirtualMachineType extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding CentralServerVirtualMachineType.
      */
+    @Generated
     public static CentralServerVirtualMachineType fromString(String name) {
         return fromString(name, CentralServerVirtualMachineType.class);
     }
@@ -70,6 +80,7 @@ public final class CentralServerVirtualMachineType extends ExpandableStringEnum<
      * 
      * @return known CentralServerVirtualMachineType values.
      */
+    @Generated
     public static Collection<CentralServerVirtualMachineType> values() {
         return values(CentralServerVirtualMachineType.class);
     }

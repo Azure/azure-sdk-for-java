@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class SapDatabaseScaleMethod extends ExpandableStringEnum<SapDataba
     /**
      * ScaleUp Hana Database deployment type.
      */
+    @Generated
     public static final SapDatabaseScaleMethod SCALE_UP = fromString("ScaleUp");
 
     /**
@@ -21,6 +23,7 @@ public final class SapDatabaseScaleMethod extends ExpandableStringEnum<SapDataba
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SapDatabaseScaleMethod() {
     }
@@ -31,6 +34,7 @@ public final class SapDatabaseScaleMethod extends ExpandableStringEnum<SapDataba
      * @param name a name to look for.
      * @return the corresponding SapDatabaseScaleMethod.
      */
+    @Generated
     public static SapDatabaseScaleMethod fromString(String name) {
         return fromString(name, SapDatabaseScaleMethod.class);
     }
@@ -40,6 +44,7 @@ public final class SapDatabaseScaleMethod extends ExpandableStringEnum<SapDataba
      * 
      * @return known SapDatabaseScaleMethod values.
      */
+    @Generated
     public static Collection<SapDatabaseScaleMethod> values() {
         return values(SapDatabaseScaleMethod.class);
     }

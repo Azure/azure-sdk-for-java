@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,17 +20,20 @@ public final class AssetStatusError implements JsonSerializable<AssetStatusError
     /*
      * Error code for classification of errors (ex: 400, 404, 500, etc.).
      */
+    @Generated
     private Integer code;
 
     /*
      * Human readable helpful error message to provide additional context for error (ex: “capability Id 'foo' does not
      * exist”).
      */
+    @Generated
     private String message;
 
     /**
      * Creates an instance of AssetStatusError class.
      */
+    @Generated
     private AssetStatusError() {
     }
 
@@ -38,6 +42,7 @@ public final class AssetStatusError implements JsonSerializable<AssetStatusError
      * 
      * @return the code value.
      */
+    @Generated
     public Integer code() {
         return this.code;
     }
@@ -48,6 +53,7 @@ public final class AssetStatusError implements JsonSerializable<AssetStatusError
      * 
      * @return the message value.
      */
+    @Generated
     public String message() {
         return this.message;
     }

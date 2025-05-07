@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,26 +20,31 @@ public final class EnqueueServerProperties implements JsonSerializable<EnqueueSe
     /*
      * Enqueue Server SAP Hostname.
      */
+    @Generated
     private String hostname;
 
     /*
      * Enqueue Server SAP IP Address.
      */
+    @Generated
     private String ipAddress;
 
     /*
      * Enqueue Server Port.
      */
+    @Generated
     private Long port;
 
     /*
      * Defines the health of SAP Instances.
      */
+    @Generated
     private SapHealthState health;
 
     /**
      * Creates an instance of EnqueueServerProperties class.
      */
+    @Generated
     public EnqueueServerProperties() {
     }
 
@@ -47,6 +53,7 @@ public final class EnqueueServerProperties implements JsonSerializable<EnqueueSe
      * 
      * @return the hostname value.
      */
+    @Generated
     public String hostname() {
         return this.hostname;
     }
@@ -56,6 +63,7 @@ public final class EnqueueServerProperties implements JsonSerializable<EnqueueSe
      * 
      * @return the ipAddress value.
      */
+    @Generated
     public String ipAddress() {
         return this.ipAddress;
     }
@@ -65,6 +73,7 @@ public final class EnqueueServerProperties implements JsonSerializable<EnqueueSe
      * 
      * @return the port value.
      */
+    @Generated
     public Long port() {
         return this.port;
     }
@@ -74,6 +83,7 @@ public final class EnqueueServerProperties implements JsonSerializable<EnqueueSe
      * 
      * @return the health value.
      */
+    @Generated
     public SapHealthState health() {
         return this.health;
     }

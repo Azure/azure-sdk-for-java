@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,21 +20,25 @@ public final class MessageSchemaReference implements JsonSerializable<MessageSch
     /*
      * The message schema registry namespace.
      */
+    @Generated
     private String schemaRegistryNamespace;
 
     /*
      * The message schema name.
      */
+    @Generated
     private String schemaName;
 
     /*
      * The message schema version.
      */
+    @Generated
     private String schemaVersion;
 
     /**
      * Creates an instance of MessageSchemaReference class.
      */
+    @Generated
     private MessageSchemaReference() {
     }
 
@@ -42,6 +47,7 @@ public final class MessageSchemaReference implements JsonSerializable<MessageSch
      * 
      * @return the schemaRegistryNamespace value.
      */
+    @Generated
     public String schemaRegistryNamespace() {
         return this.schemaRegistryNamespace;
     }
@@ -51,6 +57,7 @@ public final class MessageSchemaReference implements JsonSerializable<MessageSch
      * 
      * @return the schemaName value.
      */
+    @Generated
     public String schemaName() {
         return this.schemaName;
     }
@@ -60,6 +67,7 @@ public final class MessageSchemaReference implements JsonSerializable<MessageSch
      * 
      * @return the schemaVersion value.
      */
+    @Generated
     public String schemaVersion() {
         return this.schemaVersion;
     }

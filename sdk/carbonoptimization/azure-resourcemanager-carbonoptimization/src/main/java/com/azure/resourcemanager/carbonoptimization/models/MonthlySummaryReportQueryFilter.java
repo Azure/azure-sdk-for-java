@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.carbonoptimization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -21,11 +22,13 @@ public final class MonthlySummaryReportQueryFilter extends QueryFilter {
      * The ReportType requested for carbon emissions data. Required. Specifies how data is aggregated and displayed in
      * the output, as explained in the ReportTypeEnum.
      */
+    @Generated
     private ReportTypeEnum reportType = ReportTypeEnum.MONTHLY_SUMMARY_REPORT;
 
     /**
      * Creates an instance of MonthlySummaryReportQueryFilter class.
      */
+    @Generated
     public MonthlySummaryReportQueryFilter() {
     }
 
@@ -35,6 +38,7 @@ public final class MonthlySummaryReportQueryFilter extends QueryFilter {
      * 
      * @return the reportType value.
      */
+    @Generated
     @Override
     public ReportTypeEnum reportType() {
         return this.reportType;
@@ -43,6 +47,7 @@ public final class MonthlySummaryReportQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MonthlySummaryReportQueryFilter withDateRange(DateRange dateRange) {
         super.withDateRange(dateRange);
@@ -52,6 +57,7 @@ public final class MonthlySummaryReportQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MonthlySummaryReportQueryFilter withSubscriptionList(List<String> subscriptionList) {
         super.withSubscriptionList(subscriptionList);
@@ -61,6 +67,7 @@ public final class MonthlySummaryReportQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MonthlySummaryReportQueryFilter withResourceGroupUrlList(List<String> resourceGroupUrlList) {
         super.withResourceGroupUrlList(resourceGroupUrlList);
@@ -70,6 +77,7 @@ public final class MonthlySummaryReportQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MonthlySummaryReportQueryFilter withResourceTypeList(List<String> resourceTypeList) {
         super.withResourceTypeList(resourceTypeList);
@@ -79,6 +87,7 @@ public final class MonthlySummaryReportQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MonthlySummaryReportQueryFilter withLocationList(List<String> locationList) {
         super.withLocationList(locationList);
@@ -88,6 +97,7 @@ public final class MonthlySummaryReportQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MonthlySummaryReportQueryFilter withCarbonScopeList(List<EmissionScopeEnum> carbonScopeList) {
         super.withCarbonScopeList(carbonScopeList);

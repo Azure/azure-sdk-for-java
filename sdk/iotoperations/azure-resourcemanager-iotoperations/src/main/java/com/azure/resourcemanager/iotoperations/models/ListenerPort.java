@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,36 +20,43 @@ public final class ListenerPort implements JsonSerializable<ListenerPort> {
     /*
      * Reference to client authentication settings. Omit to disable authentication.
      */
+    @Generated
     private String authenticationRef;
 
     /*
      * Reference to client authorization settings. Omit to disable authorization.
      */
+    @Generated
     private String authorizationRef;
 
     /*
      * Kubernetes node port. Only relevant when this port is associated with a `NodePort` listener.
      */
+    @Generated
     private Integer nodePort;
 
     /*
      * TCP port for accepting client connections.
      */
+    @Generated
     private int port;
 
     /*
      * Protocol to use for client connections.
      */
+    @Generated
     private BrokerProtocolType protocol;
 
     /*
      * TLS server certificate settings for this port. Omit to disable TLS.
      */
+    @Generated
     private TlsCertMethod tls;
 
     /**
      * Creates an instance of ListenerPort class.
      */
+    @Generated
     public ListenerPort() {
     }
 
@@ -57,6 +65,7 @@ public final class ListenerPort implements JsonSerializable<ListenerPort> {
      * 
      * @return the authenticationRef value.
      */
+    @Generated
     public String authenticationRef() {
         return this.authenticationRef;
     }
@@ -67,6 +76,7 @@ public final class ListenerPort implements JsonSerializable<ListenerPort> {
      * @param authenticationRef the authenticationRef value to set.
      * @return the ListenerPort object itself.
      */
+    @Generated
     public ListenerPort withAuthenticationRef(String authenticationRef) {
         this.authenticationRef = authenticationRef;
         return this;
@@ -77,6 +87,7 @@ public final class ListenerPort implements JsonSerializable<ListenerPort> {
      * 
      * @return the authorizationRef value.
      */
+    @Generated
     public String authorizationRef() {
         return this.authorizationRef;
     }
@@ -87,6 +98,7 @@ public final class ListenerPort implements JsonSerializable<ListenerPort> {
      * @param authorizationRef the authorizationRef value to set.
      * @return the ListenerPort object itself.
      */
+    @Generated
     public ListenerPort withAuthorizationRef(String authorizationRef) {
         this.authorizationRef = authorizationRef;
         return this;
@@ -98,6 +110,7 @@ public final class ListenerPort implements JsonSerializable<ListenerPort> {
      * 
      * @return the nodePort value.
      */
+    @Generated
     public Integer nodePort() {
         return this.nodePort;
     }
@@ -109,6 +122,7 @@ public final class ListenerPort implements JsonSerializable<ListenerPort> {
      * @param nodePort the nodePort value to set.
      * @return the ListenerPort object itself.
      */
+    @Generated
     public ListenerPort withNodePort(Integer nodePort) {
         this.nodePort = nodePort;
         return this;
@@ -119,6 +133,7 @@ public final class ListenerPort implements JsonSerializable<ListenerPort> {
      * 
      * @return the port value.
      */
+    @Generated
     public int port() {
         return this.port;
     }
@@ -129,6 +144,7 @@ public final class ListenerPort implements JsonSerializable<ListenerPort> {
      * @param port the port value to set.
      * @return the ListenerPort object itself.
      */
+    @Generated
     public ListenerPort withPort(int port) {
         this.port = port;
         return this;
@@ -139,6 +155,7 @@ public final class ListenerPort implements JsonSerializable<ListenerPort> {
      * 
      * @return the protocol value.
      */
+    @Generated
     public BrokerProtocolType protocol() {
         return this.protocol;
     }
@@ -149,6 +166,7 @@ public final class ListenerPort implements JsonSerializable<ListenerPort> {
      * @param protocol the protocol value to set.
      * @return the ListenerPort object itself.
      */
+    @Generated
     public ListenerPort withProtocol(BrokerProtocolType protocol) {
         this.protocol = protocol;
         return this;
@@ -159,6 +177,7 @@ public final class ListenerPort implements JsonSerializable<ListenerPort> {
      * 
      * @return the tls value.
      */
+    @Generated
     public TlsCertMethod tls() {
         return this.tls;
     }
@@ -169,6 +188,7 @@ public final class ListenerPort implements JsonSerializable<ListenerPort> {
      * @param tls the tls value to set.
      * @return the ListenerPort object itself.
      */
+    @Generated
     public ListenerPort withTls(TlsCertMethod tls) {
         this.tls = tls;
         return this;

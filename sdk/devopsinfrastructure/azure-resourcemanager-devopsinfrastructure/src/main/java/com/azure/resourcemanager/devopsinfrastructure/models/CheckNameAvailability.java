@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class CheckNameAvailability implements JsonSerializable<CheckNameAv
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * The type of resource that is used as the scope of the availability check.
      */
+    @Generated
     private DevOpsInfrastructureResourceType type;
 
     /**
      * Creates an instance of CheckNameAvailability class.
      */
+    @Generated
     public CheckNameAvailability() {
     }
 
@@ -38,6 +42,7 @@ public final class CheckNameAvailability implements JsonSerializable<CheckNameAv
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -48,6 +53,7 @@ public final class CheckNameAvailability implements JsonSerializable<CheckNameAv
      * @param name the name value to set.
      * @return the CheckNameAvailability object itself.
      */
+    @Generated
     public CheckNameAvailability withName(String name) {
         this.name = name;
         return this;
@@ -58,6 +64,7 @@ public final class CheckNameAvailability implements JsonSerializable<CheckNameAv
      * 
      * @return the type value.
      */
+    @Generated
     public DevOpsInfrastructureResourceType type() {
         return this.type;
     }
@@ -68,6 +75,7 @@ public final class CheckNameAvailability implements JsonSerializable<CheckNameAv
      * @param type the type value to set.
      * @return the CheckNameAvailability object itself.
      */
+    @Generated
     public CheckNameAvailability withType(DevOpsInfrastructureResourceType type) {
         this.type = type;
         return this;

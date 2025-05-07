@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class CancelOperationsRequest implements JsonSerializable<CancelOpe
     /*
      * The list of operation ids to cancel operations on
      */
+    @Generated
     private List<String> operationIds;
 
     /*
      * CorrelationId item
      */
+    @Generated
     private String correlationid;
 
     /**
      * Creates an instance of CancelOperationsRequest class.
      */
+    @Generated
     public CancelOperationsRequest() {
     }
 
@@ -39,6 +43,7 @@ public final class CancelOperationsRequest implements JsonSerializable<CancelOpe
      * 
      * @return the operationIds value.
      */
+    @Generated
     public List<String> operationIds() {
         return this.operationIds;
     }
@@ -49,6 +54,7 @@ public final class CancelOperationsRequest implements JsonSerializable<CancelOpe
      * @param operationIds the operationIds value to set.
      * @return the CancelOperationsRequest object itself.
      */
+    @Generated
     public CancelOperationsRequest withOperationIds(List<String> operationIds) {
         this.operationIds = operationIds;
         return this;
@@ -59,6 +65,7 @@ public final class CancelOperationsRequest implements JsonSerializable<CancelOpe
      * 
      * @return the correlationid value.
      */
+    @Generated
     public String correlationid() {
         return this.correlationid;
     }
@@ -69,6 +76,7 @@ public final class CancelOperationsRequest implements JsonSerializable<CancelOpe
      * @param correlationid the correlationid value to set.
      * @return the CancelOperationsRequest object itself.
      */
+    @Generated
     public CancelOperationsRequest withCorrelationid(String correlationid) {
         this.correlationid = correlationid;
         return this;

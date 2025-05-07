@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.weightsandbiases.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
     /*
      * The region of the instance
      */
+    @Generated
     private Region region;
 
     /*
      * The subdomain of the instance
      */
+    @Generated
     private String subdomain;
 
     /**
      * Creates an instance of PartnerProperties class.
      */
+    @Generated
     public PartnerProperties() {
     }
 
@@ -38,6 +42,7 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
      * 
      * @return the region value.
      */
+    @Generated
     public Region region() {
         return this.region;
     }
@@ -48,6 +53,7 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
      * @param region the region value to set.
      * @return the PartnerProperties object itself.
      */
+    @Generated
     public PartnerProperties withRegion(Region region) {
         this.region = region;
         return this;
@@ -58,6 +64,7 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
      * 
      * @return the subdomain value.
      */
+    @Generated
     public String subdomain() {
         return this.subdomain;
     }
@@ -68,6 +75,7 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
      * @param subdomain the subdomain value to set.
      * @return the PartnerProperties object itself.
      */
+    @Generated
     public PartnerProperties withSubdomain(String subdomain) {
         this.subdomain = subdomain;
         return this;

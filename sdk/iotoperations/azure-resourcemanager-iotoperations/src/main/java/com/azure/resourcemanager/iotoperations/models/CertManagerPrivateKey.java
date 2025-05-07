@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class CertManagerPrivateKey implements JsonSerializable<CertManager
     /*
      * algorithm for private key.
      */
+    @Generated
     private PrivateKeyAlgorithm algorithm;
 
     /*
      * cert-manager private key rotationPolicy.
      */
+    @Generated
     private PrivateKeyRotationPolicy rotationPolicy;
 
     /**
      * Creates an instance of CertManagerPrivateKey class.
      */
+    @Generated
     public CertManagerPrivateKey() {
     }
 
@@ -38,6 +42,7 @@ public final class CertManagerPrivateKey implements JsonSerializable<CertManager
      * 
      * @return the algorithm value.
      */
+    @Generated
     public PrivateKeyAlgorithm algorithm() {
         return this.algorithm;
     }
@@ -48,6 +53,7 @@ public final class CertManagerPrivateKey implements JsonSerializable<CertManager
      * @param algorithm the algorithm value to set.
      * @return the CertManagerPrivateKey object itself.
      */
+    @Generated
     public CertManagerPrivateKey withAlgorithm(PrivateKeyAlgorithm algorithm) {
         this.algorithm = algorithm;
         return this;
@@ -58,6 +64,7 @@ public final class CertManagerPrivateKey implements JsonSerializable<CertManager
      * 
      * @return the rotationPolicy value.
      */
+    @Generated
     public PrivateKeyRotationPolicy rotationPolicy() {
         return this.rotationPolicy;
     }
@@ -68,6 +75,7 @@ public final class CertManagerPrivateKey implements JsonSerializable<CertManager
      * @param rotationPolicy the rotationPolicy value to set.
      * @return the CertManagerPrivateKey object itself.
      */
+    @Generated
     public CertManagerPrivateKey withRotationPolicy(PrivateKeyRotationPolicy rotationPolicy) {
         this.rotationPolicy = rotationPolicy;
         return this;

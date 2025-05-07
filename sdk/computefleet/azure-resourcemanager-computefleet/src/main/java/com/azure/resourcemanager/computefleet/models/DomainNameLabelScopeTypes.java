@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,21 +18,25 @@ public final class DomainNameLabelScopeTypes extends ExpandableStringEnum<Domain
     /**
      * TenantReuse type.
      */
+    @Generated
     public static final DomainNameLabelScopeTypes TENANT_REUSE = fromString("TenantReuse");
 
     /**
      * SubscriptionReuse type.
      */
+    @Generated
     public static final DomainNameLabelScopeTypes SUBSCRIPTION_REUSE = fromString("SubscriptionReuse");
 
     /**
      * ResourceGroupReuse type.
      */
+    @Generated
     public static final DomainNameLabelScopeTypes RESOURCE_GROUP_REUSE = fromString("ResourceGroupReuse");
 
     /**
      * NoReuse type.
      */
+    @Generated
     public static final DomainNameLabelScopeTypes NO_REUSE = fromString("NoReuse");
 
     /**
@@ -39,6 +44,7 @@ public final class DomainNameLabelScopeTypes extends ExpandableStringEnum<Domain
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DomainNameLabelScopeTypes() {
     }
@@ -49,6 +55,7 @@ public final class DomainNameLabelScopeTypes extends ExpandableStringEnum<Domain
      * @param name a name to look for.
      * @return the corresponding DomainNameLabelScopeTypes.
      */
+    @Generated
     public static DomainNameLabelScopeTypes fromString(String name) {
         return fromString(name, DomainNameLabelScopeTypes.class);
     }
@@ -58,6 +65,7 @@ public final class DomainNameLabelScopeTypes extends ExpandableStringEnum<Domain
      * 
      * @return known DomainNameLabelScopeTypes values.
      */
+    @Generated
     public static Collection<DomainNameLabelScopeTypes> values() {
         return values(DomainNameLabelScopeTypes.class);
     }

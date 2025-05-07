@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,41 +21,49 @@ public final class Datastore implements JsonSerializable<Datastore> {
     /*
      * The Azure resource ID of an Azure Data Explorer cluster.
      */
+    @Generated
     private String adxClusterResourceId;
 
     /*
      * The Kusto cluster display name.
      */
+    @Generated
     private String kustoClusterDisplayName;
 
     /*
      * The Kusto cluster URI.
      */
+    @Generated
     private String kustoClusterUri;
 
     /*
      * The Kusto data ingestion URI.
      */
+    @Generated
     private String kustoDataIngestionUri;
 
     /*
      * The name of a Kusto database.
      */
+    @Generated
     private String kustoDatabaseName;
 
     /*
      * The Kusto management URL.
      */
+    @Generated
     private String kustoManagementUrl;
 
     /*
      * The type of a Kusto offering.
      */
+    @Generated
     private KustoOfferingType kustoOfferingType;
 
     /**
      * Creates an instance of Datastore class.
      */
+    @Generated
     public Datastore() {
     }
 
@@ -63,6 +72,7 @@ public final class Datastore implements JsonSerializable<Datastore> {
      * 
      * @return the adxClusterResourceId value.
      */
+    @Generated
     public String adxClusterResourceId() {
         return this.adxClusterResourceId;
     }
@@ -73,6 +83,7 @@ public final class Datastore implements JsonSerializable<Datastore> {
      * @param adxClusterResourceId the adxClusterResourceId value to set.
      * @return the Datastore object itself.
      */
+    @Generated
     public Datastore withAdxClusterResourceId(String adxClusterResourceId) {
         this.adxClusterResourceId = adxClusterResourceId;
         return this;
@@ -83,6 +94,7 @@ public final class Datastore implements JsonSerializable<Datastore> {
      * 
      * @return the kustoClusterDisplayName value.
      */
+    @Generated
     public String kustoClusterDisplayName() {
         return this.kustoClusterDisplayName;
     }
@@ -93,6 +105,7 @@ public final class Datastore implements JsonSerializable<Datastore> {
      * @param kustoClusterDisplayName the kustoClusterDisplayName value to set.
      * @return the Datastore object itself.
      */
+    @Generated
     public Datastore withKustoClusterDisplayName(String kustoClusterDisplayName) {
         this.kustoClusterDisplayName = kustoClusterDisplayName;
         return this;
@@ -103,6 +116,7 @@ public final class Datastore implements JsonSerializable<Datastore> {
      * 
      * @return the kustoClusterUri value.
      */
+    @Generated
     public String kustoClusterUri() {
         return this.kustoClusterUri;
     }
@@ -113,6 +127,7 @@ public final class Datastore implements JsonSerializable<Datastore> {
      * @param kustoClusterUri the kustoClusterUri value to set.
      * @return the Datastore object itself.
      */
+    @Generated
     public Datastore withKustoClusterUri(String kustoClusterUri) {
         this.kustoClusterUri = kustoClusterUri;
         return this;
@@ -123,6 +138,7 @@ public final class Datastore implements JsonSerializable<Datastore> {
      * 
      * @return the kustoDataIngestionUri value.
      */
+    @Generated
     public String kustoDataIngestionUri() {
         return this.kustoDataIngestionUri;
     }
@@ -133,6 +149,7 @@ public final class Datastore implements JsonSerializable<Datastore> {
      * @param kustoDataIngestionUri the kustoDataIngestionUri value to set.
      * @return the Datastore object itself.
      */
+    @Generated
     public Datastore withKustoDataIngestionUri(String kustoDataIngestionUri) {
         this.kustoDataIngestionUri = kustoDataIngestionUri;
         return this;
@@ -143,6 +160,7 @@ public final class Datastore implements JsonSerializable<Datastore> {
      * 
      * @return the kustoDatabaseName value.
      */
+    @Generated
     public String kustoDatabaseName() {
         return this.kustoDatabaseName;
     }
@@ -153,6 +171,7 @@ public final class Datastore implements JsonSerializable<Datastore> {
      * @param kustoDatabaseName the kustoDatabaseName value to set.
      * @return the Datastore object itself.
      */
+    @Generated
     public Datastore withKustoDatabaseName(String kustoDatabaseName) {
         this.kustoDatabaseName = kustoDatabaseName;
         return this;
@@ -163,6 +182,7 @@ public final class Datastore implements JsonSerializable<Datastore> {
      * 
      * @return the kustoManagementUrl value.
      */
+    @Generated
     public String kustoManagementUrl() {
         return this.kustoManagementUrl;
     }
@@ -173,6 +193,7 @@ public final class Datastore implements JsonSerializable<Datastore> {
      * @param kustoManagementUrl the kustoManagementUrl value to set.
      * @return the Datastore object itself.
      */
+    @Generated
     public Datastore withKustoManagementUrl(String kustoManagementUrl) {
         this.kustoManagementUrl = kustoManagementUrl;
         return this;
@@ -183,6 +204,7 @@ public final class Datastore implements JsonSerializable<Datastore> {
      * 
      * @return the kustoOfferingType value.
      */
+    @Generated
     public KustoOfferingType kustoOfferingType() {
         return this.kustoOfferingType;
     }
@@ -193,6 +215,7 @@ public final class Datastore implements JsonSerializable<Datastore> {
      * @param kustoOfferingType the kustoOfferingType value to set.
      * @return the Datastore object itself.
      */
+    @Generated
     public Datastore withKustoOfferingType(KustoOfferingType kustoOfferingType) {
         this.kustoOfferingType = kustoOfferingType;
         return this;

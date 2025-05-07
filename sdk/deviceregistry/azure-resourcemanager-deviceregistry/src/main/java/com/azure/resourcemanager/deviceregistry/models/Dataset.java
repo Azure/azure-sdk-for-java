@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,27 +22,32 @@ public final class Dataset implements JsonSerializable<Dataset> {
     /*
      * Name of the dataset.
      */
+    @Generated
     private String name;
 
     /*
      * Stringified JSON that contains connector-specific JSON string that describes configuration for the specific
      * dataset.
      */
+    @Generated
     private String datasetConfiguration;
 
     /*
      * Object that describes the topic information for the specific dataset.
      */
+    @Generated
     private Topic topic;
 
     /*
      * Array of data points that are part of the dataset. Each data point can have per-data point configuration.
      */
+    @Generated
     private List<DataPoint> dataPoints;
 
     /**
      * Creates an instance of Dataset class.
      */
+    @Generated
     public Dataset() {
     }
 
@@ -50,6 +56,7 @@ public final class Dataset implements JsonSerializable<Dataset> {
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -60,6 +67,7 @@ public final class Dataset implements JsonSerializable<Dataset> {
      * @param name the name value to set.
      * @return the Dataset object itself.
      */
+    @Generated
     public Dataset withName(String name) {
         this.name = name;
         return this;
@@ -71,6 +79,7 @@ public final class Dataset implements JsonSerializable<Dataset> {
      * 
      * @return the datasetConfiguration value.
      */
+    @Generated
     public String datasetConfiguration() {
         return this.datasetConfiguration;
     }
@@ -82,6 +91,7 @@ public final class Dataset implements JsonSerializable<Dataset> {
      * @param datasetConfiguration the datasetConfiguration value to set.
      * @return the Dataset object itself.
      */
+    @Generated
     public Dataset withDatasetConfiguration(String datasetConfiguration) {
         this.datasetConfiguration = datasetConfiguration;
         return this;
@@ -92,6 +102,7 @@ public final class Dataset implements JsonSerializable<Dataset> {
      * 
      * @return the topic value.
      */
+    @Generated
     public Topic topic() {
         return this.topic;
     }
@@ -102,6 +113,7 @@ public final class Dataset implements JsonSerializable<Dataset> {
      * @param topic the topic value to set.
      * @return the Dataset object itself.
      */
+    @Generated
     public Dataset withTopic(Topic topic) {
         this.topic = topic;
         return this;
@@ -113,6 +125,7 @@ public final class Dataset implements JsonSerializable<Dataset> {
      * 
      * @return the dataPoints value.
      */
+    @Generated
     public List<DataPoint> dataPoints() {
         return this.dataPoints;
     }
@@ -124,6 +137,7 @@ public final class Dataset implements JsonSerializable<Dataset> {
      * @param dataPoints the dataPoints value to set.
      * @return the Dataset object itself.
      */
+    @Generated
     public Dataset withDataPoints(List<DataPoint> dataPoints) {
         this.dataPoints = dataPoints;
         return this;

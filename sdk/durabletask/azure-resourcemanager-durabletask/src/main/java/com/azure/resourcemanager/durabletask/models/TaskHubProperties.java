@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.durabletask.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class TaskHubProperties implements JsonSerializable<TaskHubProperti
     /*
      * The status of the last operation
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * URL of the durable task scheduler dashboard
      */
+    @Generated
     private String dashboardUrl;
 
     /**
      * Creates an instance of TaskHubProperties class.
      */
+    @Generated
     public TaskHubProperties() {
     }
 
@@ -37,6 +41,7 @@ public final class TaskHubProperties implements JsonSerializable<TaskHubProperti
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -46,6 +51,7 @@ public final class TaskHubProperties implements JsonSerializable<TaskHubProperti
      * 
      * @return the dashboardUrl value.
      */
+    @Generated
     public String dashboardUrl() {
         return this.dashboardUrl;
     }

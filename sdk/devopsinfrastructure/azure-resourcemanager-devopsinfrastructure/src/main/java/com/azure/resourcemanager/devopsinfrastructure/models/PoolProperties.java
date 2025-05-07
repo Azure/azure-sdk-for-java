@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,36 +21,43 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
     /*
      * The status of the current operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * Defines how many resources can there be created at any given time.
      */
+    @Generated
     private int maximumConcurrency;
 
     /*
      * Defines the organization in which the pool will be used.
      */
+    @Generated
     private OrganizationProfile organizationProfile;
 
     /*
      * Defines how the machine will be handled once it executed a job.
      */
+    @Generated
     private AgentProfile agentProfile;
 
     /*
      * Defines the type of fabric the agent will run on.
      */
+    @Generated
     private FabricProfile fabricProfile;
 
     /*
      * The resource id of the DevCenter Project the pool belongs to.
      */
+    @Generated
     private String devCenterProjectResourceId;
 
     /**
      * Creates an instance of PoolProperties class.
      */
+    @Generated
     public PoolProperties() {
     }
 
@@ -58,6 +66,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -68,6 +77,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * @param provisioningState the provisioningState value to set.
      * @return the PoolProperties object itself.
      */
+    @Generated
     public PoolProperties withProvisioningState(ProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
@@ -78,6 +88,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * 
      * @return the maximumConcurrency value.
      */
+    @Generated
     public int maximumConcurrency() {
         return this.maximumConcurrency;
     }
@@ -88,6 +99,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * @param maximumConcurrency the maximumConcurrency value to set.
      * @return the PoolProperties object itself.
      */
+    @Generated
     public PoolProperties withMaximumConcurrency(int maximumConcurrency) {
         this.maximumConcurrency = maximumConcurrency;
         return this;
@@ -98,6 +110,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * 
      * @return the organizationProfile value.
      */
+    @Generated
     public OrganizationProfile organizationProfile() {
         return this.organizationProfile;
     }
@@ -108,6 +121,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * @param organizationProfile the organizationProfile value to set.
      * @return the PoolProperties object itself.
      */
+    @Generated
     public PoolProperties withOrganizationProfile(OrganizationProfile organizationProfile) {
         this.organizationProfile = organizationProfile;
         return this;
@@ -118,6 +132,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * 
      * @return the agentProfile value.
      */
+    @Generated
     public AgentProfile agentProfile() {
         return this.agentProfile;
     }
@@ -128,6 +143,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * @param agentProfile the agentProfile value to set.
      * @return the PoolProperties object itself.
      */
+    @Generated
     public PoolProperties withAgentProfile(AgentProfile agentProfile) {
         this.agentProfile = agentProfile;
         return this;
@@ -138,6 +154,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * 
      * @return the fabricProfile value.
      */
+    @Generated
     public FabricProfile fabricProfile() {
         return this.fabricProfile;
     }
@@ -148,6 +165,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * @param fabricProfile the fabricProfile value to set.
      * @return the PoolProperties object itself.
      */
+    @Generated
     public PoolProperties withFabricProfile(FabricProfile fabricProfile) {
         this.fabricProfile = fabricProfile;
         return this;
@@ -158,6 +176,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * 
      * @return the devCenterProjectResourceId value.
      */
+    @Generated
     public String devCenterProjectResourceId() {
         return this.devCenterProjectResourceId;
     }
@@ -168,6 +187,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * @param devCenterProjectResourceId the devCenterProjectResourceId value to set.
      * @return the PoolProperties object itself.
      */
+    @Generated
     public PoolProperties withDevCenterProjectResourceId(String devCenterProjectResourceId) {
         this.devCenterProjectResourceId = devCenterProjectResourceId;
         return this;

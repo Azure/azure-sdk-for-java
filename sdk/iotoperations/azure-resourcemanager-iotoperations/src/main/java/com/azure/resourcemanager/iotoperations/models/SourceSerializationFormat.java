@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class SourceSerializationFormat extends ExpandableStringEnum<Source
     /**
      * JSON Format.
      */
+    @Generated
     public static final SourceSerializationFormat JSON = fromString("Json");
 
     /**
@@ -21,6 +23,7 @@ public final class SourceSerializationFormat extends ExpandableStringEnum<Source
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SourceSerializationFormat() {
     }
@@ -31,6 +34,7 @@ public final class SourceSerializationFormat extends ExpandableStringEnum<Source
      * @param name a name to look for.
      * @return the corresponding SourceSerializationFormat.
      */
+    @Generated
     public static SourceSerializationFormat fromString(String name) {
         return fromString(name, SourceSerializationFormat.class);
     }
@@ -40,6 +44,7 @@ public final class SourceSerializationFormat extends ExpandableStringEnum<Source
      * 
      * @return known SourceSerializationFormat values.
      */
+    @Generated
     public static Collection<SourceSerializationFormat> values() {
         return values(SourceSerializationFormat.class);
     }

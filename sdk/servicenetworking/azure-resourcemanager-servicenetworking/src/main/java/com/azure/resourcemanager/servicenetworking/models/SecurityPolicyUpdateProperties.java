@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,17 +21,20 @@ public final class SecurityPolicyUpdateProperties implements JsonSerializable<Se
      * Web Application Firewall Policy of the Traffic Controller Security Policy. Single Security Policy can have only
      * one policy type set.
      */
+    @Generated
     private WafPolicy wafPolicy;
 
     /*
      * Ip Access Policy of the Traffic Controller Security Policy. Single Security Policy can have only one policy type
      * set.
      */
+    @Generated
     private IpAccessRulesPolicy ipAccessRulesPolicy;
 
     /**
      * Creates an instance of SecurityPolicyUpdateProperties class.
      */
+    @Generated
     public SecurityPolicyUpdateProperties() {
     }
 
@@ -40,6 +44,7 @@ public final class SecurityPolicyUpdateProperties implements JsonSerializable<Se
      * 
      * @return the wafPolicy value.
      */
+    @Generated
     public WafPolicy wafPolicy() {
         return this.wafPolicy;
     }
@@ -51,6 +56,7 @@ public final class SecurityPolicyUpdateProperties implements JsonSerializable<Se
      * @param wafPolicy the wafPolicy value to set.
      * @return the SecurityPolicyUpdateProperties object itself.
      */
+    @Generated
     public SecurityPolicyUpdateProperties withWafPolicy(WafPolicy wafPolicy) {
         this.wafPolicy = wafPolicy;
         return this;
@@ -62,6 +68,7 @@ public final class SecurityPolicyUpdateProperties implements JsonSerializable<Se
      * 
      * @return the ipAccessRulesPolicy value.
      */
+    @Generated
     public IpAccessRulesPolicy ipAccessRulesPolicy() {
         return this.ipAccessRulesPolicy;
     }
@@ -73,6 +80,7 @@ public final class SecurityPolicyUpdateProperties implements JsonSerializable<Se
      * @param ipAccessRulesPolicy the ipAccessRulesPolicy value to set.
      * @return the SecurityPolicyUpdateProperties object itself.
      */
+    @Generated
     public SecurityPolicyUpdateProperties withIpAccessRulesPolicy(IpAccessRulesPolicy ipAccessRulesPolicy) {
         this.ipAccessRulesPolicy = ipAccessRulesPolicy;
         return this;

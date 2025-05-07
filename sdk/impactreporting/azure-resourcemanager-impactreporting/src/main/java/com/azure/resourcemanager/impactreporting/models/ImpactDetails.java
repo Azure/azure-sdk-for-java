@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -23,26 +24,31 @@ public final class ImpactDetails implements JsonSerializable<ImpactDetails> {
     /*
      * List of impacted Azure resources.
      */
+    @Generated
     private String impactedResourceId;
 
     /*
      * Time at which impact was started according to reported impact.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * Time at which impact was ended according to reported impact.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * Azure Id of the impact.
      */
+    @Generated
     private String impactId;
 
     /**
      * Creates an instance of ImpactDetails class.
      */
+    @Generated
     public ImpactDetails() {
     }
 
@@ -51,6 +57,7 @@ public final class ImpactDetails implements JsonSerializable<ImpactDetails> {
      * 
      * @return the impactedResourceId value.
      */
+    @Generated
     public String impactedResourceId() {
         return this.impactedResourceId;
     }
@@ -61,6 +68,7 @@ public final class ImpactDetails implements JsonSerializable<ImpactDetails> {
      * @param impactedResourceId the impactedResourceId value to set.
      * @return the ImpactDetails object itself.
      */
+    @Generated
     public ImpactDetails withImpactedResourceId(String impactedResourceId) {
         this.impactedResourceId = impactedResourceId;
         return this;
@@ -71,6 +79,7 @@ public final class ImpactDetails implements JsonSerializable<ImpactDetails> {
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime startTime() {
         return this.startTime;
     }
@@ -81,6 +90,7 @@ public final class ImpactDetails implements JsonSerializable<ImpactDetails> {
      * @param startTime the startTime value to set.
      * @return the ImpactDetails object itself.
      */
+    @Generated
     public ImpactDetails withStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -91,6 +101,7 @@ public final class ImpactDetails implements JsonSerializable<ImpactDetails> {
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime endTime() {
         return this.endTime;
     }
@@ -101,6 +112,7 @@ public final class ImpactDetails implements JsonSerializable<ImpactDetails> {
      * @param endTime the endTime value to set.
      * @return the ImpactDetails object itself.
      */
+    @Generated
     public ImpactDetails withEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -111,6 +123,7 @@ public final class ImpactDetails implements JsonSerializable<ImpactDetails> {
      * 
      * @return the impactId value.
      */
+    @Generated
     public String impactId() {
         return this.impactId;
     }
@@ -121,6 +134,7 @@ public final class ImpactDetails implements JsonSerializable<ImpactDetails> {
      * @param impactId the impactId value to set.
      * @return the ImpactDetails object itself.
      */
+    @Generated
     public ImpactDetails withImpactId(String impactId) {
         this.impactId = impactId;
         return this;

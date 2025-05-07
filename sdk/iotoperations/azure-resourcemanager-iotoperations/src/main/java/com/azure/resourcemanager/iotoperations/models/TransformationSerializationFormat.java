@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class TransformationSerializationFormat extends ExpandableStringEnu
     /**
      * Delta Format.
      */
+    @Generated
     public static final TransformationSerializationFormat DELTA = fromString("Delta");
 
     /**
      * JSON Format.
      */
+    @Generated
     public static final TransformationSerializationFormat JSON = fromString("Json");
 
     /**
      * Parquet Format.
      */
+    @Generated
     public static final TransformationSerializationFormat PARQUET = fromString("Parquet");
 
     /**
@@ -31,6 +35,7 @@ public final class TransformationSerializationFormat extends ExpandableStringEnu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TransformationSerializationFormat() {
     }
@@ -41,6 +46,7 @@ public final class TransformationSerializationFormat extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding TransformationSerializationFormat.
      */
+    @Generated
     public static TransformationSerializationFormat fromString(String name) {
         return fromString(name, TransformationSerializationFormat.class);
     }
@@ -50,6 +56,7 @@ public final class TransformationSerializationFormat extends ExpandableStringEnu
      * 
      * @return known TransformationSerializationFormat values.
      */
+    @Generated
     public static Collection<TransformationSerializationFormat> values() {
         return values(TransformationSerializationFormat.class);
     }

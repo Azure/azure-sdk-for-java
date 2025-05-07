@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.healthdataaiservices.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,16 +23,19 @@ public final class DeidServiceListResult implements JsonSerializable<DeidService
     /*
      * The DeidService items on this page
      */
+    @Generated
     private List<DeidServiceInner> value;
 
     /*
      * The link to the next page of items
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of DeidServiceListResult class.
      */
+    @Generated
     private DeidServiceListResult() {
     }
 
@@ -40,6 +44,7 @@ public final class DeidServiceListResult implements JsonSerializable<DeidService
      * 
      * @return the value value.
      */
+    @Generated
     public List<DeidServiceInner> value() {
         return this.value;
     }
@@ -49,6 +54,7 @@ public final class DeidServiceListResult implements JsonSerializable<DeidService
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String nextLink() {
         return this.nextLink;
     }

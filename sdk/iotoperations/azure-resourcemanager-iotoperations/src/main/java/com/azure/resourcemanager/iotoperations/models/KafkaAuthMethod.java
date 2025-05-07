@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class KafkaAuthMethod extends ExpandableStringEnum<KafkaAuthMethod>
     /**
      * SystemAssignedManagedIdentity type.
      */
+    @Generated
     public static final KafkaAuthMethod SYSTEM_ASSIGNED_MANAGED_IDENTITY = fromString("SystemAssignedManagedIdentity");
 
     /**
      * UserAssignedManagedIdentity type.
      */
+    @Generated
     public static final KafkaAuthMethod USER_ASSIGNED_MANAGED_IDENTITY = fromString("UserAssignedManagedIdentity");
 
     /**
      * Sasl Option.
      */
+    @Generated
     public static final KafkaAuthMethod SASL = fromString("Sasl");
 
     /**
      * x509Certificate Option.
      */
+    @Generated
     public static final KafkaAuthMethod X509CERTIFICATE = fromString("X509Certificate");
 
     /**
      * Anonymous Option.
      */
+    @Generated
     public static final KafkaAuthMethod ANONYMOUS = fromString("Anonymous");
 
     /**
@@ -41,6 +47,7 @@ public final class KafkaAuthMethod extends ExpandableStringEnum<KafkaAuthMethod>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public KafkaAuthMethod() {
     }
@@ -51,6 +58,7 @@ public final class KafkaAuthMethod extends ExpandableStringEnum<KafkaAuthMethod>
      * @param name a name to look for.
      * @return the corresponding KafkaAuthMethod.
      */
+    @Generated
     public static KafkaAuthMethod fromString(String name) {
         return fromString(name, KafkaAuthMethod.class);
     }
@@ -60,6 +68,7 @@ public final class KafkaAuthMethod extends ExpandableStringEnum<KafkaAuthMethod>
      * 
      * @return known KafkaAuthMethod values.
      */
+    @Generated
     public static Collection<KafkaAuthMethod> values() {
         return values(KafkaAuthMethod.class);
     }

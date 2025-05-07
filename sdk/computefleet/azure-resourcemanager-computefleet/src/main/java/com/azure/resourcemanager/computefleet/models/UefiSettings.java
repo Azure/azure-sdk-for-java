@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,17 +22,20 @@ public final class UefiSettings implements JsonSerializable<UefiSettings> {
      * Specifies whether secure boot should be enabled on the virtual machine. Minimum
      * api-version: 2020-12-01.
      */
+    @Generated
     private Boolean secureBootEnabled;
 
     /*
      * Specifies whether vTPM should be enabled on the virtual machine. Minimum
      * api-version: 2020-12-01.
      */
+    @Generated
     private Boolean vTpmEnabled;
 
     /**
      * Creates an instance of UefiSettings class.
      */
+    @Generated
     public UefiSettings() {
     }
 
@@ -42,6 +46,7 @@ public final class UefiSettings implements JsonSerializable<UefiSettings> {
      * 
      * @return the secureBootEnabled value.
      */
+    @Generated
     public Boolean secureBootEnabled() {
         return this.secureBootEnabled;
     }
@@ -54,6 +59,7 @@ public final class UefiSettings implements JsonSerializable<UefiSettings> {
      * @param secureBootEnabled the secureBootEnabled value to set.
      * @return the UefiSettings object itself.
      */
+    @Generated
     public UefiSettings withSecureBootEnabled(Boolean secureBootEnabled) {
         this.secureBootEnabled = secureBootEnabled;
         return this;
@@ -65,6 +71,7 @@ public final class UefiSettings implements JsonSerializable<UefiSettings> {
      * 
      * @return the vTpmEnabled value.
      */
+    @Generated
     public Boolean vTpmEnabled() {
         return this.vTpmEnabled;
     }
@@ -76,6 +83,7 @@ public final class UefiSettings implements JsonSerializable<UefiSettings> {
      * @param vTpmEnabled the vTpmEnabled value to set.
      * @return the UefiSettings object itself.
      */
+    @Generated
     public UefiSettings withVTpmEnabled(Boolean vTpmEnabled) {
         this.vTpmEnabled = vTpmEnabled;
         return this;

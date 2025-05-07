@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -21,27 +22,32 @@ public final class ResourceSkuRestrictions implements JsonSerializable<ResourceS
     /*
      * the type of restrictions.
      */
+    @Generated
     private ResourceSkuRestrictionsType type;
 
     /*
      * The value of restrictions. If the restriction type is set to location. This would be different locations where
      * the SKU is restricted.
      */
+    @Generated
     private List<String> values;
 
     /*
      * The information about the restriction where the SKU cannot be used.
      */
+    @Generated
     private ResourceSkuRestrictionInfo restrictionInfo;
 
     /*
      * the reason for restriction.
      */
+    @Generated
     private ResourceSkuRestrictionsReasonCode reasonCode;
 
     /**
      * Creates an instance of ResourceSkuRestrictions class.
      */
+    @Generated
     private ResourceSkuRestrictions() {
     }
 
@@ -50,6 +56,7 @@ public final class ResourceSkuRestrictions implements JsonSerializable<ResourceS
      * 
      * @return the type value.
      */
+    @Generated
     public ResourceSkuRestrictionsType type() {
         return this.type;
     }
@@ -60,6 +67,7 @@ public final class ResourceSkuRestrictions implements JsonSerializable<ResourceS
      * 
      * @return the values value.
      */
+    @Generated
     public List<String> values() {
         return this.values;
     }
@@ -69,6 +77,7 @@ public final class ResourceSkuRestrictions implements JsonSerializable<ResourceS
      * 
      * @return the restrictionInfo value.
      */
+    @Generated
     public ResourceSkuRestrictionInfo restrictionInfo() {
         return this.restrictionInfo;
     }
@@ -78,6 +87,7 @@ public final class ResourceSkuRestrictions implements JsonSerializable<ResourceS
      * 
      * @return the reasonCode value.
      */
+    @Generated
     public ResourceSkuRestrictionsReasonCode reasonCode() {
         return this.reasonCode;
     }

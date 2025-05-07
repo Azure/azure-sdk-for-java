@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,11 +23,13 @@ public final class SapSupportedResourceSkusResultInner
     /*
      * Gets the list of SAP supported SKUs.
      */
+    @Generated
     private List<SapSupportedSku> supportedSkus;
 
     /**
      * Creates an instance of SapSupportedResourceSkusResultInner class.
      */
+    @Generated
     private SapSupportedResourceSkusResultInner() {
     }
 
@@ -35,6 +38,7 @@ public final class SapSupportedResourceSkusResultInner
      * 
      * @return the supportedSkus value.
      */
+    @Generated
     public List<SapSupportedSku> supportedSkus() {
         return this.supportedSkus;
     }

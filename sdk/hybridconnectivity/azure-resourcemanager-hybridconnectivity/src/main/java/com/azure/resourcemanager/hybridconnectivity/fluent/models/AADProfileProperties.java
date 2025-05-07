@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -20,16 +21,19 @@ public final class AADProfileProperties implements JsonSerializable<AADProfilePr
     /*
      * The arc ingress gateway server app id.
      */
+    @Generated
     private String serverId;
 
     /*
      * The target resource home tenant id.
      */
+    @Generated
     private String tenantId;
 
     /**
      * Creates an instance of AADProfileProperties class.
      */
+    @Generated
     private AADProfileProperties() {
     }
 
@@ -38,6 +42,7 @@ public final class AADProfileProperties implements JsonSerializable<AADProfilePr
      * 
      * @return the serverId value.
      */
+    @Generated
     public String serverId() {
         return this.serverId;
     }
@@ -47,6 +52,7 @@ public final class AADProfileProperties implements JsonSerializable<AADProfilePr
      * 
      * @return the tenantId value.
      */
+    @Generated
     public String tenantId() {
         return this.tenantId;
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -23,26 +24,31 @@ public final class HibernateResourceOperationResponseInner
     /*
      * The description of the operation response
      */
+    @Generated
     private String description;
 
     /*
      * The type of resources used in the Hibernate request eg virtual machines
      */
+    @Generated
     private String type;
 
     /*
      * The location of the Hibernate request eg westus
      */
+    @Generated
     private String location;
 
     /*
      * The results from the Hibernate request if no errors exist
      */
+    @Generated
     private List<ResourceOperation> results;
 
     /**
      * Creates an instance of HibernateResourceOperationResponseInner class.
      */
+    @Generated
     private HibernateResourceOperationResponseInner() {
     }
 
@@ -51,6 +57,7 @@ public final class HibernateResourceOperationResponseInner
      * 
      * @return the description value.
      */
+    @Generated
     public String description() {
         return this.description;
     }
@@ -60,6 +67,7 @@ public final class HibernateResourceOperationResponseInner
      * 
      * @return the type value.
      */
+    @Generated
     public String type() {
         return this.type;
     }
@@ -69,6 +77,7 @@ public final class HibernateResourceOperationResponseInner
      * 
      * @return the location value.
      */
+    @Generated
     public String location() {
         return this.location;
     }
@@ -78,6 +87,7 @@ public final class HibernateResourceOperationResponseInner
      * 
      * @return the results value.
      */
+    @Generated
     public List<ResourceOperation> results() {
         return this.results;
     }

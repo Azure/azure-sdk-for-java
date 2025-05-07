@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.dependencymap.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class SourceType extends ExpandableStringEnum<SourceType> {
     /**
      * OffAzure source type.
      */
+    @Generated
     public static final SourceType OFF_AZURE = fromString("OffAzure");
 
     /**
@@ -21,6 +23,7 @@ public final class SourceType extends ExpandableStringEnum<SourceType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SourceType() {
     }
@@ -31,6 +34,7 @@ public final class SourceType extends ExpandableStringEnum<SourceType> {
      * @param name a name to look for.
      * @return the corresponding SourceType.
      */
+    @Generated
     public static SourceType fromString(String name) {
         return fromString(name, SourceType.class);
     }
@@ -40,6 +44,7 @@ public final class SourceType extends ExpandableStringEnum<SourceType> {
      * 
      * @return known SourceType values.
      */
+    @Generated
     public static Collection<SourceType> values() {
         return values(SourceType.class);
     }

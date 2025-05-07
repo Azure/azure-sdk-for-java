@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,11 +23,13 @@ public final class CancelOperationsResponseInner implements JsonSerializable<Can
     /*
      * An array of resource operations that were successfully cancelled
      */
+    @Generated
     private List<ResourceOperation> results;
 
     /**
      * Creates an instance of CancelOperationsResponseInner class.
      */
+    @Generated
     private CancelOperationsResponseInner() {
     }
 
@@ -35,6 +38,7 @@ public final class CancelOperationsResponseInner implements JsonSerializable<Can
      * 
      * @return the results value.
      */
+    @Generated
     public List<ResourceOperation> results() {
         return this.results;
     }

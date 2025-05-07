@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class StorageConfiguration implements JsonSerializable<StorageConfi
      * The properties of the transport directory attached to the VIS. The default for transportFileShareConfiguration is
      * the createAndMount flow if storage configuration is missing.
      */
+    @Generated
     private FileShareConfiguration transportFileShareConfiguration;
 
     /**
      * Creates an instance of StorageConfiguration class.
      */
+    @Generated
     public StorageConfiguration() {
     }
 
@@ -34,6 +37,7 @@ public final class StorageConfiguration implements JsonSerializable<StorageConfi
      * 
      * @return the transportFileShareConfiguration value.
      */
+    @Generated
     public FileShareConfiguration transportFileShareConfiguration() {
         return this.transportFileShareConfiguration;
     }
@@ -45,6 +49,7 @@ public final class StorageConfiguration implements JsonSerializable<StorageConfi
      * @param transportFileShareConfiguration the transportFileShareConfiguration value to set.
      * @return the StorageConfiguration object itself.
      */
+    @Generated
     public StorageConfiguration
         withTransportFileShareConfiguration(FileShareConfiguration transportFileShareConfiguration) {
         this.transportFileShareConfiguration = transportFileShareConfiguration;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.playwrighttesting.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,16 +23,19 @@ public final class QuotaListResult implements JsonSerializable<QuotaListResult> 
     /*
      * The Quota items on this page
      */
+    @Generated
     private List<QuotaInner> value;
 
     /*
      * The link to the next page of items
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of QuotaListResult class.
      */
+    @Generated
     private QuotaListResult() {
     }
 
@@ -40,6 +44,7 @@ public final class QuotaListResult implements JsonSerializable<QuotaListResult> 
      * 
      * @return the value value.
      */
+    @Generated
     public List<QuotaInner> value() {
         return this.value;
     }
@@ -49,6 +54,7 @@ public final class QuotaListResult implements JsonSerializable<QuotaListResult> 
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String nextLink() {
         return this.nextLink;
     }

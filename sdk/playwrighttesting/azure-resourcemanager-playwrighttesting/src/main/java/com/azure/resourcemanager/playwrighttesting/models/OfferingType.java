@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.playwrighttesting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class OfferingType extends ExpandableStringEnum<OfferingType> {
     /**
      * The offeringType is NotApplicable.
      */
+    @Generated
     public static final OfferingType NOT_APPLICABLE = fromString("NotApplicable");
 
     /**
      * The offeringType is PrivatePreview.
      */
+    @Generated
     public static final OfferingType PRIVATE_PREVIEW = fromString("PrivatePreview");
 
     /**
      * The offeringType is PublicPreview.
      */
+    @Generated
     public static final OfferingType PUBLIC_PREVIEW = fromString("PublicPreview");
 
     /**
      * The offeringType is GeneralAvailability.
      */
+    @Generated
     public static final OfferingType GENERAL_AVAILABILITY = fromString("GeneralAvailability");
 
     /**
@@ -36,6 +41,7 @@ public final class OfferingType extends ExpandableStringEnum<OfferingType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OfferingType() {
     }
@@ -46,6 +52,7 @@ public final class OfferingType extends ExpandableStringEnum<OfferingType> {
      * @param name a name to look for.
      * @return the corresponding OfferingType.
      */
+    @Generated
     public static OfferingType fromString(String name) {
         return fromString(name, OfferingType.class);
     }
@@ -55,6 +62,7 @@ public final class OfferingType extends ExpandableStringEnum<OfferingType> {
      * 
      * @return known OfferingType values.
      */
+    @Generated
     public static Collection<OfferingType> values() {
         return values(OfferingType.class);
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,26 +21,31 @@ public final class BgpPeerProperties implements JsonSerializable<BgpPeerProperti
     /*
      * My ASN
      */
+    @Generated
     private int myAsn;
 
     /*
      * Peer ASN
      */
+    @Generated
     private int peerAsn;
 
     /*
      * Peer Address
      */
+    @Generated
     private String peerAddress;
 
     /*
      * Resource provision state
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of BgpPeerProperties class.
      */
+    @Generated
     public BgpPeerProperties() {
     }
 
@@ -48,6 +54,7 @@ public final class BgpPeerProperties implements JsonSerializable<BgpPeerProperti
      * 
      * @return the myAsn value.
      */
+    @Generated
     public int myAsn() {
         return this.myAsn;
     }
@@ -58,6 +65,7 @@ public final class BgpPeerProperties implements JsonSerializable<BgpPeerProperti
      * @param myAsn the myAsn value to set.
      * @return the BgpPeerProperties object itself.
      */
+    @Generated
     public BgpPeerProperties withMyAsn(int myAsn) {
         this.myAsn = myAsn;
         return this;
@@ -68,6 +76,7 @@ public final class BgpPeerProperties implements JsonSerializable<BgpPeerProperti
      * 
      * @return the peerAsn value.
      */
+    @Generated
     public int peerAsn() {
         return this.peerAsn;
     }
@@ -78,6 +87,7 @@ public final class BgpPeerProperties implements JsonSerializable<BgpPeerProperti
      * @param peerAsn the peerAsn value to set.
      * @return the BgpPeerProperties object itself.
      */
+    @Generated
     public BgpPeerProperties withPeerAsn(int peerAsn) {
         this.peerAsn = peerAsn;
         return this;
@@ -88,6 +98,7 @@ public final class BgpPeerProperties implements JsonSerializable<BgpPeerProperti
      * 
      * @return the peerAddress value.
      */
+    @Generated
     public String peerAddress() {
         return this.peerAddress;
     }
@@ -98,6 +109,7 @@ public final class BgpPeerProperties implements JsonSerializable<BgpPeerProperti
      * @param peerAddress the peerAddress value to set.
      * @return the BgpPeerProperties object itself.
      */
+    @Generated
     public BgpPeerProperties withPeerAddress(String peerAddress) {
         this.peerAddress = peerAddress;
         return this;
@@ -108,6 +120,7 @@ public final class BgpPeerProperties implements JsonSerializable<BgpPeerProperti
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

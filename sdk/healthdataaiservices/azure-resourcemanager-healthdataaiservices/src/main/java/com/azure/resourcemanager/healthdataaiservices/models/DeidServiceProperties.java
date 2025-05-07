@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.healthdataaiservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class DeidServiceProperties implements JsonSerializable<DeidService
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * Deid service url.
      */
+    @Generated
     private String serviceUrl;
 
     /*
      * List of private endpoint connections.
      */
+    @Generated
     private List<PrivateEndpointConnection> privateEndpointConnections;
 
     /*
      * Gets or sets allow or disallow public network access to resource
      */
+    @Generated
     private PublicNetworkAccess publicNetworkAccess;
 
     /**
      * Creates an instance of DeidServiceProperties class.
      */
+    @Generated
     public DeidServiceProperties() {
     }
 
@@ -48,6 +54,7 @@ public final class DeidServiceProperties implements JsonSerializable<DeidService
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -57,6 +64,7 @@ public final class DeidServiceProperties implements JsonSerializable<DeidService
      * 
      * @return the serviceUrl value.
      */
+    @Generated
     public String serviceUrl() {
         return this.serviceUrl;
     }
@@ -66,6 +74,7 @@ public final class DeidServiceProperties implements JsonSerializable<DeidService
      * 
      * @return the privateEndpointConnections value.
      */
+    @Generated
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         return this.privateEndpointConnections;
     }
@@ -75,6 +84,7 @@ public final class DeidServiceProperties implements JsonSerializable<DeidService
      * 
      * @return the publicNetworkAccess value.
      */
+    @Generated
     public PublicNetworkAccess publicNetworkAccess() {
         return this.publicNetworkAccess;
     }
@@ -85,6 +95,7 @@ public final class DeidServiceProperties implements JsonSerializable<DeidService
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the DeidServiceProperties object itself.
      */
+    @Generated
     public DeidServiceProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
         return this;

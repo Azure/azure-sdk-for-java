@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.CoreUtils;
@@ -22,26 +23,31 @@ public final class UpdateStatus implements JsonSerializable<UpdateStatus> {
     /*
      * The time the operation or group was started.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * The time the operation or group was completed.
      */
+    @Generated
     private OffsetDateTime completedTime;
 
     /*
      * The State of the operation or group.
      */
+    @Generated
     private UpdateState state;
 
     /*
      * The error details when a failure is encountered.
      */
+    @Generated
     private ManagementError error;
 
     /**
      * Creates an instance of UpdateStatus class.
      */
+    @Generated
     private UpdateStatus() {
     }
 
@@ -50,6 +56,7 @@ public final class UpdateStatus implements JsonSerializable<UpdateStatus> {
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime startTime() {
         return this.startTime;
     }
@@ -59,6 +66,7 @@ public final class UpdateStatus implements JsonSerializable<UpdateStatus> {
      * 
      * @return the completedTime value.
      */
+    @Generated
     public OffsetDateTime completedTime() {
         return this.completedTime;
     }
@@ -68,6 +76,7 @@ public final class UpdateStatus implements JsonSerializable<UpdateStatus> {
      * 
      * @return the state value.
      */
+    @Generated
     public UpdateState state() {
         return this.state;
     }
@@ -77,6 +86,7 @@ public final class UpdateStatus implements JsonSerializable<UpdateStatus> {
      * 
      * @return the error value.
      */
+    @Generated
     public ManagementError error() {
         return this.error;
     }

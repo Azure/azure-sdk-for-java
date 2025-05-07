@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.trustedsigning.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,59 +22,70 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
     /*
      * Profile type of the certificate.
      */
+    @Generated
     private ProfileType profileType;
 
     /*
      * Whether to include STREET in the certificate subject name.
      */
+    @Generated
     private Boolean includeStreetAddress;
 
     /*
      * Whether to include L in the certificate subject name. Applicable only for private trust, private trust ci profile
      * types
      */
+    @Generated
     private Boolean includeCity;
 
     /*
      * Whether to include S in the certificate subject name. Applicable only for private trust, private trust ci profile
      * types
      */
+    @Generated
     private Boolean includeState;
 
     /*
      * Whether to include C in the certificate subject name. Applicable only for private trust, private trust ci profile
      * types
      */
+    @Generated
     private Boolean includeCountry;
 
     /*
      * Whether to include PC in the certificate subject name.
      */
+    @Generated
     private Boolean includePostalCode;
 
     /*
      * Identity validation id used for the certificate subject name.
      */
+    @Generated
     private String identityValidationId;
 
     /*
      * Status of the current operation on certificate profile.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * Status of the certificate profile.
      */
+    @Generated
     private CertificateProfileStatus status;
 
     /*
      * List of renewed certificates.
      */
+    @Generated
     private List<Certificate> certificates;
 
     /**
      * Creates an instance of CertificateProfileProperties class.
      */
+    @Generated
     public CertificateProfileProperties() {
     }
 
@@ -82,6 +94,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * 
      * @return the profileType value.
      */
+    @Generated
     public ProfileType profileType() {
         return this.profileType;
     }
@@ -92,6 +105,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * @param profileType the profileType value to set.
      * @return the CertificateProfileProperties object itself.
      */
+    @Generated
     public CertificateProfileProperties withProfileType(ProfileType profileType) {
         this.profileType = profileType;
         return this;
@@ -102,6 +116,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * 
      * @return the includeStreetAddress value.
      */
+    @Generated
     public Boolean includeStreetAddress() {
         return this.includeStreetAddress;
     }
@@ -112,6 +127,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * @param includeStreetAddress the includeStreetAddress value to set.
      * @return the CertificateProfileProperties object itself.
      */
+    @Generated
     public CertificateProfileProperties withIncludeStreetAddress(Boolean includeStreetAddress) {
         this.includeStreetAddress = includeStreetAddress;
         return this;
@@ -123,6 +139,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * 
      * @return the includeCity value.
      */
+    @Generated
     public Boolean includeCity() {
         return this.includeCity;
     }
@@ -134,6 +151,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * @param includeCity the includeCity value to set.
      * @return the CertificateProfileProperties object itself.
      */
+    @Generated
     public CertificateProfileProperties withIncludeCity(Boolean includeCity) {
         this.includeCity = includeCity;
         return this;
@@ -145,6 +163,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * 
      * @return the includeState value.
      */
+    @Generated
     public Boolean includeState() {
         return this.includeState;
     }
@@ -156,6 +175,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * @param includeState the includeState value to set.
      * @return the CertificateProfileProperties object itself.
      */
+    @Generated
     public CertificateProfileProperties withIncludeState(Boolean includeState) {
         this.includeState = includeState;
         return this;
@@ -167,6 +187,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * 
      * @return the includeCountry value.
      */
+    @Generated
     public Boolean includeCountry() {
         return this.includeCountry;
     }
@@ -178,6 +199,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * @param includeCountry the includeCountry value to set.
      * @return the CertificateProfileProperties object itself.
      */
+    @Generated
     public CertificateProfileProperties withIncludeCountry(Boolean includeCountry) {
         this.includeCountry = includeCountry;
         return this;
@@ -188,6 +210,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * 
      * @return the includePostalCode value.
      */
+    @Generated
     public Boolean includePostalCode() {
         return this.includePostalCode;
     }
@@ -198,6 +221,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * @param includePostalCode the includePostalCode value to set.
      * @return the CertificateProfileProperties object itself.
      */
+    @Generated
     public CertificateProfileProperties withIncludePostalCode(Boolean includePostalCode) {
         this.includePostalCode = includePostalCode;
         return this;
@@ -208,6 +232,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * 
      * @return the identityValidationId value.
      */
+    @Generated
     public String identityValidationId() {
         return this.identityValidationId;
     }
@@ -218,6 +243,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * @param identityValidationId the identityValidationId value to set.
      * @return the CertificateProfileProperties object itself.
      */
+    @Generated
     public CertificateProfileProperties withIdentityValidationId(String identityValidationId) {
         this.identityValidationId = identityValidationId;
         return this;
@@ -228,6 +254,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -237,6 +264,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * 
      * @return the status value.
      */
+    @Generated
     public CertificateProfileStatus status() {
         return this.status;
     }
@@ -246,6 +274,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
      * 
      * @return the certificates value.
      */
+    @Generated
     public List<Certificate> certificates() {
         return this.certificates;
     }

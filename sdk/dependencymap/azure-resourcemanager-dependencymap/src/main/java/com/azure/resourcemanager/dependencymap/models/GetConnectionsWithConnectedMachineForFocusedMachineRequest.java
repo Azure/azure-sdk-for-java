@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dependencymap.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,21 +22,25 @@ public final class GetConnectionsWithConnectedMachineForFocusedMachineRequest
     /*
      * Source machine arm id
      */
+    @Generated
     private String focusedMachineId;
 
     /*
      * Destination machine arm id
      */
+    @Generated
     private String connectedMachineId;
 
     /*
      * Filters for GetNetworkConnectionsBetweenMachines
      */
+    @Generated
     private DependencyMapVisualizationFilter filters;
 
     /**
      * Creates an instance of GetConnectionsWithConnectedMachineForFocusedMachineRequest class.
      */
+    @Generated
     public GetConnectionsWithConnectedMachineForFocusedMachineRequest() {
     }
 
@@ -44,6 +49,7 @@ public final class GetConnectionsWithConnectedMachineForFocusedMachineRequest
      * 
      * @return the focusedMachineId value.
      */
+    @Generated
     public String focusedMachineId() {
         return this.focusedMachineId;
     }
@@ -54,6 +60,7 @@ public final class GetConnectionsWithConnectedMachineForFocusedMachineRequest
      * @param focusedMachineId the focusedMachineId value to set.
      * @return the GetConnectionsWithConnectedMachineForFocusedMachineRequest object itself.
      */
+    @Generated
     public GetConnectionsWithConnectedMachineForFocusedMachineRequest withFocusedMachineId(String focusedMachineId) {
         this.focusedMachineId = focusedMachineId;
         return this;
@@ -64,6 +71,7 @@ public final class GetConnectionsWithConnectedMachineForFocusedMachineRequest
      * 
      * @return the connectedMachineId value.
      */
+    @Generated
     public String connectedMachineId() {
         return this.connectedMachineId;
     }
@@ -74,6 +82,7 @@ public final class GetConnectionsWithConnectedMachineForFocusedMachineRequest
      * @param connectedMachineId the connectedMachineId value to set.
      * @return the GetConnectionsWithConnectedMachineForFocusedMachineRequest object itself.
      */
+    @Generated
     public GetConnectionsWithConnectedMachineForFocusedMachineRequest
         withConnectedMachineId(String connectedMachineId) {
         this.connectedMachineId = connectedMachineId;
@@ -85,6 +94,7 @@ public final class GetConnectionsWithConnectedMachineForFocusedMachineRequest
      * 
      * @return the filters value.
      */
+    @Generated
     public DependencyMapVisualizationFilter filters() {
         return this.filters;
     }
@@ -95,6 +105,7 @@ public final class GetConnectionsWithConnectedMachineForFocusedMachineRequest
      * @param filters the filters value to set.
      * @return the GetConnectionsWithConnectedMachineForFocusedMachineRequest object itself.
      */
+    @Generated
     public GetConnectionsWithConnectedMachineForFocusedMachineRequest
         withFilters(DependencyMapVisualizationFilter filters) {
         this.filters = filters;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,51 +21,61 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
     /*
      * The geo-location where the resource is to be created.
      */
+    @Generated
     private String appLocation;
 
     /*
      * Defines the environment type - Production/Non Production.
      */
+    @Generated
     private SapEnvironmentType environment;
 
     /*
      * Defines the SAP Product type.
      */
+    @Generated
     private SapProductType sapProduct;
 
     /*
      * The deployment type. Eg: SingleServer/ThreeTier
      */
+    @Generated
     private SapDeploymentType deploymentType;
 
     /*
      * The SAP Application Performance Standard measurement.
      */
+    @Generated
     private long saps;
 
     /*
      * The database memory configuration.
      */
+    @Generated
     private long dbMemory;
 
     /*
      * The database type.
      */
+    @Generated
     private SapDatabaseType databaseType;
 
     /*
      * The DB scale method.
      */
+    @Generated
     private SapDatabaseScaleMethod dbScaleMethod;
 
     /*
      * The high availability type.
      */
+    @Generated
     private SapHighAvailabilityType highAvailabilityType;
 
     /**
      * Creates an instance of SapSizingRecommendationRequest class.
      */
+    @Generated
     public SapSizingRecommendationRequest() {
     }
 
@@ -73,6 +84,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * 
      * @return the appLocation value.
      */
+    @Generated
     public String appLocation() {
         return this.appLocation;
     }
@@ -83,6 +95,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * @param appLocation the appLocation value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
+    @Generated
     public SapSizingRecommendationRequest withAppLocation(String appLocation) {
         this.appLocation = appLocation;
         return this;
@@ -93,6 +106,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * 
      * @return the environment value.
      */
+    @Generated
     public SapEnvironmentType environment() {
         return this.environment;
     }
@@ -103,6 +117,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * @param environment the environment value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
+    @Generated
     public SapSizingRecommendationRequest withEnvironment(SapEnvironmentType environment) {
         this.environment = environment;
         return this;
@@ -113,6 +128,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * 
      * @return the sapProduct value.
      */
+    @Generated
     public SapProductType sapProduct() {
         return this.sapProduct;
     }
@@ -123,6 +139,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * @param sapProduct the sapProduct value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
+    @Generated
     public SapSizingRecommendationRequest withSapProduct(SapProductType sapProduct) {
         this.sapProduct = sapProduct;
         return this;
@@ -133,6 +150,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * 
      * @return the deploymentType value.
      */
+    @Generated
     public SapDeploymentType deploymentType() {
         return this.deploymentType;
     }
@@ -143,6 +161,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * @param deploymentType the deploymentType value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
+    @Generated
     public SapSizingRecommendationRequest withDeploymentType(SapDeploymentType deploymentType) {
         this.deploymentType = deploymentType;
         return this;
@@ -153,6 +172,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * 
      * @return the saps value.
      */
+    @Generated
     public long saps() {
         return this.saps;
     }
@@ -163,6 +183,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * @param saps the saps value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
+    @Generated
     public SapSizingRecommendationRequest withSaps(long saps) {
         this.saps = saps;
         return this;
@@ -173,6 +194,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * 
      * @return the dbMemory value.
      */
+    @Generated
     public long dbMemory() {
         return this.dbMemory;
     }
@@ -183,6 +205,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * @param dbMemory the dbMemory value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
+    @Generated
     public SapSizingRecommendationRequest withDbMemory(long dbMemory) {
         this.dbMemory = dbMemory;
         return this;
@@ -193,6 +216,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * 
      * @return the databaseType value.
      */
+    @Generated
     public SapDatabaseType databaseType() {
         return this.databaseType;
     }
@@ -203,6 +227,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * @param databaseType the databaseType value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
+    @Generated
     public SapSizingRecommendationRequest withDatabaseType(SapDatabaseType databaseType) {
         this.databaseType = databaseType;
         return this;
@@ -213,6 +238,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * 
      * @return the dbScaleMethod value.
      */
+    @Generated
     public SapDatabaseScaleMethod dbScaleMethod() {
         return this.dbScaleMethod;
     }
@@ -223,6 +249,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * @param dbScaleMethod the dbScaleMethod value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
+    @Generated
     public SapSizingRecommendationRequest withDbScaleMethod(SapDatabaseScaleMethod dbScaleMethod) {
         this.dbScaleMethod = dbScaleMethod;
         return this;
@@ -233,6 +260,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * 
      * @return the highAvailabilityType value.
      */
+    @Generated
     public SapHighAvailabilityType highAvailabilityType() {
         return this.highAvailabilityType;
     }
@@ -243,6 +271,7 @@ public final class SapSizingRecommendationRequest implements JsonSerializable<Sa
      * @param highAvailabilityType the highAvailabilityType value to set.
      * @return the SapSizingRecommendationRequest object itself.
      */
+    @Generated
     public SapSizingRecommendationRequest withHighAvailabilityType(SapHighAvailabilityType highAvailabilityType) {
         this.highAvailabilityType = highAvailabilityType;
         return this;

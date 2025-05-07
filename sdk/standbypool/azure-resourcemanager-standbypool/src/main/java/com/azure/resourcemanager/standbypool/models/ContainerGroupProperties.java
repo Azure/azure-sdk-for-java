@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
     /*
      * Specifies container group profile of standby container groups.
      */
+    @Generated
     private ContainerGroupProfile containerGroupProfile;
 
     /*
      * Specifies subnet Ids for container group.
      */
+    @Generated
     private List<Subnet> subnetIds;
 
     /**
      * Creates an instance of ContainerGroupProperties class.
      */
+    @Generated
     public ContainerGroupProperties() {
     }
 
@@ -39,6 +43,7 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * 
      * @return the containerGroupProfile value.
      */
+    @Generated
     public ContainerGroupProfile containerGroupProfile() {
         return this.containerGroupProfile;
     }
@@ -49,6 +54,7 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * @param containerGroupProfile the containerGroupProfile value to set.
      * @return the ContainerGroupProperties object itself.
      */
+    @Generated
     public ContainerGroupProperties withContainerGroupProfile(ContainerGroupProfile containerGroupProfile) {
         this.containerGroupProfile = containerGroupProfile;
         return this;
@@ -59,6 +65,7 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * 
      * @return the subnetIds value.
      */
+    @Generated
     public List<Subnet> subnetIds() {
         return this.subnetIds;
     }
@@ -69,6 +76,7 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * @param subnetIds the subnetIds value to set.
      * @return the ContainerGroupProperties object itself.
      */
+    @Generated
     public ContainerGroupProperties withSubnetIds(List<Subnet> subnetIds) {
         this.subnetIds = subnetIds;
         return this;

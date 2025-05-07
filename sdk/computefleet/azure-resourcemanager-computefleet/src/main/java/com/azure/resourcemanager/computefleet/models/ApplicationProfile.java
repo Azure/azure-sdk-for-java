@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,11 +22,13 @@ public final class ApplicationProfile implements JsonSerializable<ApplicationPro
     /*
      * Specifies the gallery applications that should be made available to the VM/VMSS
      */
+    @Generated
     private List<VMGalleryApplication> galleryApplications;
 
     /**
      * Creates an instance of ApplicationProfile class.
      */
+    @Generated
     public ApplicationProfile() {
     }
 
@@ -35,6 +38,7 @@ public final class ApplicationProfile implements JsonSerializable<ApplicationPro
      * 
      * @return the galleryApplications value.
      */
+    @Generated
     public List<VMGalleryApplication> galleryApplications() {
         return this.galleryApplications;
     }
@@ -46,6 +50,7 @@ public final class ApplicationProfile implements JsonSerializable<ApplicationPro
      * @param galleryApplications the galleryApplications value to set.
      * @return the ApplicationProfile object itself.
      */
+    @Generated
     public ApplicationProfile withGalleryApplications(List<VMGalleryApplication> galleryApplications) {
         this.galleryApplications = galleryApplications;
         return this;

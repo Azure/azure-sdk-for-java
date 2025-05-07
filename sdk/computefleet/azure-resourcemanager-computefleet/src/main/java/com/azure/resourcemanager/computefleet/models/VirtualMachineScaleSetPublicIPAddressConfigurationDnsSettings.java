@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,6 +24,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings
      * will be the domain name labels of the PublicIPAddress resources that will be
      * created
      */
+    @Generated
     private String domainNameLabel;
 
     /*
@@ -31,11 +33,13 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings
      * index will be the domain name labels of the PublicIPAddress resources that will
      * be created
      */
+    @Generated
     private DomainNameLabelScopeTypes domainNameLabelScope;
 
     /**
      * Creates an instance of VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings class.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings() {
     }
 
@@ -46,6 +50,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings
      * 
      * @return the domainNameLabel value.
      */
+    @Generated
     public String domainNameLabel() {
         return this.domainNameLabel;
     }
@@ -58,6 +63,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings
      * @param domainNameLabel the domainNameLabel value to set.
      * @return the VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings object itself.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings withDomainNameLabel(String domainNameLabel) {
         this.domainNameLabel = domainNameLabel;
         return this;
@@ -72,6 +78,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings
      * 
      * @return the domainNameLabelScope value.
      */
+    @Generated
     public DomainNameLabelScopeTypes domainNameLabelScope() {
         return this.domainNameLabelScope;
     }
@@ -86,6 +93,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings
      * @param domainNameLabelScope the domainNameLabelScope value to set.
      * @return the VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings object itself.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings
         withDomainNameLabelScope(DomainNameLabelScopeTypes domainNameLabelScope) {
         this.domainNameLabelScope = domainNameLabelScope;

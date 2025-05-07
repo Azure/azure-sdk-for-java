@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class OSImageNotificationProfile implements JsonSerializable<OSImag
      * auto approved (timed out). The configuration is specified in ISO 8601 format,
      * and the value must not exceed 15 minutes (PT15M)
      */
+    @Generated
     private String notBeforeTimeout;
 
     /*
      * Specifies whether the OS Image Scheduled event is enabled or disabled.
      */
+    @Generated
     private Boolean enable;
 
     /**
      * Creates an instance of OSImageNotificationProfile class.
      */
+    @Generated
     public OSImageNotificationProfile() {
     }
 
@@ -43,6 +47,7 @@ public final class OSImageNotificationProfile implements JsonSerializable<OSImag
      * 
      * @return the notBeforeTimeout value.
      */
+    @Generated
     public String notBeforeTimeout() {
         return this.notBeforeTimeout;
     }
@@ -56,6 +61,7 @@ public final class OSImageNotificationProfile implements JsonSerializable<OSImag
      * @param notBeforeTimeout the notBeforeTimeout value to set.
      * @return the OSImageNotificationProfile object itself.
      */
+    @Generated
     public OSImageNotificationProfile withNotBeforeTimeout(String notBeforeTimeout) {
         this.notBeforeTimeout = notBeforeTimeout;
         return this;
@@ -66,6 +72,7 @@ public final class OSImageNotificationProfile implements JsonSerializable<OSImag
      * 
      * @return the enable value.
      */
+    @Generated
     public Boolean enable() {
         return this.enable;
     }
@@ -76,6 +83,7 @@ public final class OSImageNotificationProfile implements JsonSerializable<OSImag
      * @param enable the enable value to set.
      * @return the OSImageNotificationProfile object itself.
      */
+    @Generated
     public OSImageNotificationProfile withEnable(Boolean enable) {
         this.enable = enable;
         return this;

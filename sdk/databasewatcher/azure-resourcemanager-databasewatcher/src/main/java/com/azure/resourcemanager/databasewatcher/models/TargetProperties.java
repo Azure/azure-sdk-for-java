@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,17 +21,20 @@ public class TargetProperties implements JsonSerializable<TargetProperties> {
     /*
      * Discriminator property for TargetProperties.
      */
+    @Generated
     private String targetType = "TargetProperties";
 
     /*
      * The type of authentication to use when connecting to a target.
      */
+    @Generated
     private TargetAuthenticationType targetAuthenticationType;
 
     /*
      * To use SQL authentication when connecting to targets, specify the vault where the login name and password secrets
      * are stored.
      */
+    @Generated
     private VaultSecret targetVault;
 
     /*
@@ -40,16 +44,19 @@ public class TargetProperties implements JsonSerializable<TargetProperties> {
      * cloud, the value might be 'sql-mi-39441134.767d5869f605.database.windows.net'. Port number and instance name must
      * be specified separately.
      */
+    @Generated
     private String connectionServerName;
 
     /*
      * The provisioning state of the resource.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /**
      * Creates an instance of TargetProperties class.
      */
+    @Generated
     public TargetProperties() {
     }
 
@@ -58,6 +65,7 @@ public class TargetProperties implements JsonSerializable<TargetProperties> {
      * 
      * @return the targetType value.
      */
+    @Generated
     public String targetType() {
         return this.targetType;
     }
@@ -67,6 +75,7 @@ public class TargetProperties implements JsonSerializable<TargetProperties> {
      * 
      * @return the targetAuthenticationType value.
      */
+    @Generated
     public TargetAuthenticationType targetAuthenticationType() {
         return this.targetAuthenticationType;
     }
@@ -77,6 +86,7 @@ public class TargetProperties implements JsonSerializable<TargetProperties> {
      * @param targetAuthenticationType the targetAuthenticationType value to set.
      * @return the TargetProperties object itself.
      */
+    @Generated
     public TargetProperties withTargetAuthenticationType(TargetAuthenticationType targetAuthenticationType) {
         this.targetAuthenticationType = targetAuthenticationType;
         return this;
@@ -88,6 +98,7 @@ public class TargetProperties implements JsonSerializable<TargetProperties> {
      * 
      * @return the targetVault value.
      */
+    @Generated
     public VaultSecret targetVault() {
         return this.targetVault;
     }
@@ -99,6 +110,7 @@ public class TargetProperties implements JsonSerializable<TargetProperties> {
      * @param targetVault the targetVault value to set.
      * @return the TargetProperties object itself.
      */
+    @Generated
     public TargetProperties withTargetVault(VaultSecret targetVault) {
         this.targetVault = targetVault;
         return this;
@@ -113,6 +125,7 @@ public class TargetProperties implements JsonSerializable<TargetProperties> {
      * 
      * @return the connectionServerName value.
      */
+    @Generated
     public String connectionServerName() {
         return this.connectionServerName;
     }
@@ -127,6 +140,7 @@ public class TargetProperties implements JsonSerializable<TargetProperties> {
      * @param connectionServerName the connectionServerName value to set.
      * @return the TargetProperties object itself.
      */
+    @Generated
     public TargetProperties withConnectionServerName(String connectionServerName) {
         this.connectionServerName = connectionServerName;
         return this;
@@ -137,6 +151,7 @@ public class TargetProperties implements JsonSerializable<TargetProperties> {
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -147,6 +162,7 @@ public class TargetProperties implements JsonSerializable<TargetProperties> {
      * @param provisioningState the provisioningState value to set.
      * @return the TargetProperties object itself.
      */
+    @Generated
     TargetProperties withProvisioningState(ResourceProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;

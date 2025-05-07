@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,21 +22,25 @@ public final class AuthorizationRule implements JsonSerializable<AuthorizationRu
     /*
      * Give access to Broker methods and topics.
      */
+    @Generated
     private List<BrokerResourceRule> brokerResources;
 
     /*
      * Give access to clients based on the following properties.
      */
+    @Generated
     private PrincipalDefinition principals;
 
     /*
      * Give access to state store resources.
      */
+    @Generated
     private List<StateStoreResourceRule> stateStoreResources;
 
     /**
      * Creates an instance of AuthorizationRule class.
      */
+    @Generated
     public AuthorizationRule() {
     }
 
@@ -44,6 +49,7 @@ public final class AuthorizationRule implements JsonSerializable<AuthorizationRu
      * 
      * @return the brokerResources value.
      */
+    @Generated
     public List<BrokerResourceRule> brokerResources() {
         return this.brokerResources;
     }
@@ -54,6 +60,7 @@ public final class AuthorizationRule implements JsonSerializable<AuthorizationRu
      * @param brokerResources the brokerResources value to set.
      * @return the AuthorizationRule object itself.
      */
+    @Generated
     public AuthorizationRule withBrokerResources(List<BrokerResourceRule> brokerResources) {
         this.brokerResources = brokerResources;
         return this;
@@ -64,6 +71,7 @@ public final class AuthorizationRule implements JsonSerializable<AuthorizationRu
      * 
      * @return the principals value.
      */
+    @Generated
     public PrincipalDefinition principals() {
         return this.principals;
     }
@@ -74,6 +82,7 @@ public final class AuthorizationRule implements JsonSerializable<AuthorizationRu
      * @param principals the principals value to set.
      * @return the AuthorizationRule object itself.
      */
+    @Generated
     public AuthorizationRule withPrincipals(PrincipalDefinition principals) {
         this.principals = principals;
         return this;
@@ -84,6 +93,7 @@ public final class AuthorizationRule implements JsonSerializable<AuthorizationRu
      * 
      * @return the stateStoreResources value.
      */
+    @Generated
     public List<StateStoreResourceRule> stateStoreResources() {
         return this.stateStoreResources;
     }
@@ -94,6 +104,7 @@ public final class AuthorizationRule implements JsonSerializable<AuthorizationRu
      * @param stateStoreResources the stateStoreResources value to set.
      * @return the AuthorizationRule object itself.
      */
+    @Generated
     public AuthorizationRule withStateStoreResources(List<StateStoreResourceRule> stateStoreResources) {
         this.stateStoreResources = stateStoreResources;
         return this;

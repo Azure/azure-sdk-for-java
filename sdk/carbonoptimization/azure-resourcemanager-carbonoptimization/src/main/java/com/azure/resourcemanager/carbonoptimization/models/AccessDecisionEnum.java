@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class AccessDecisionEnum extends ExpandableStringEnum<AccessDecisio
     /**
      * Access allowed.
      */
+    @Generated
     public static final AccessDecisionEnum ALLOWED = fromString("Allowed");
 
     /**
      * Access denied.
      */
+    @Generated
     public static final AccessDecisionEnum DENIED = fromString("Denied");
 
     /**
@@ -26,6 +29,7 @@ public final class AccessDecisionEnum extends ExpandableStringEnum<AccessDecisio
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AccessDecisionEnum() {
     }
@@ -36,6 +40,7 @@ public final class AccessDecisionEnum extends ExpandableStringEnum<AccessDecisio
      * @param name a name to look for.
      * @return the corresponding AccessDecisionEnum.
      */
+    @Generated
     public static AccessDecisionEnum fromString(String name) {
         return fromString(name, AccessDecisionEnum.class);
     }
@@ -45,6 +50,7 @@ public final class AccessDecisionEnum extends ExpandableStringEnum<AccessDecisio
      * 
      * @return known AccessDecisionEnum values.
      */
+    @Generated
     public static Collection<AccessDecisionEnum> values() {
         return values(AccessDecisionEnum.class);
     }

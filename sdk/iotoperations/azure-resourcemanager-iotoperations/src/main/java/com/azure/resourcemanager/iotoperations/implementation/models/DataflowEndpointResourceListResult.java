@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,16 +23,19 @@ public final class DataflowEndpointResourceListResult implements JsonSerializabl
     /*
      * The DataflowEndpointResource items on this page
      */
+    @Generated
     private List<DataflowEndpointResourceInner> value;
 
     /*
      * The link to the next page of items
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of DataflowEndpointResourceListResult class.
      */
+    @Generated
     private DataflowEndpointResourceListResult() {
     }
 
@@ -40,6 +44,7 @@ public final class DataflowEndpointResourceListResult implements JsonSerializabl
      * 
      * @return the value value.
      */
+    @Generated
     public List<DataflowEndpointResourceInner> value() {
         return this.value;
     }
@@ -49,6 +54,7 @@ public final class DataflowEndpointResourceListResult implements JsonSerializabl
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String nextLink() {
         return this.nextLink;
     }

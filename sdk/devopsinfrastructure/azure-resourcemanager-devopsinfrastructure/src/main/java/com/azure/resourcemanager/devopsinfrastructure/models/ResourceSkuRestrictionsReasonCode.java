@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ResourceSkuRestrictionsReasonCode extends ExpandableStringEnu
     /**
      * The restriction is due to exceeding a quota limitation.
      */
+    @Generated
     public static final ResourceSkuRestrictionsReasonCode QUOTA_ID = fromString("QuotaId");
 
     /**
      * The restriction is not available for this subscription.
      */
+    @Generated
     public static final ResourceSkuRestrictionsReasonCode NOT_AVAILABLE_FOR_SUBSCRIPTION
         = fromString("NotAvailableForSubscription");
 
@@ -27,6 +30,7 @@ public final class ResourceSkuRestrictionsReasonCode extends ExpandableStringEnu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ResourceSkuRestrictionsReasonCode() {
     }
@@ -37,6 +41,7 @@ public final class ResourceSkuRestrictionsReasonCode extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding ResourceSkuRestrictionsReasonCode.
      */
+    @Generated
     public static ResourceSkuRestrictionsReasonCode fromString(String name) {
         return fromString(name, ResourceSkuRestrictionsReasonCode.class);
     }
@@ -46,6 +51,7 @@ public final class ResourceSkuRestrictionsReasonCode extends ExpandableStringEnu
      * 
      * @return known ResourceSkuRestrictionsReasonCode values.
      */
+    @Generated
     public static Collection<ResourceSkuRestrictionsReasonCode> values() {
         return values(ResourceSkuRestrictionsReasonCode.class);
     }

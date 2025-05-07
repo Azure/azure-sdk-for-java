@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.playwrighttesting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,21 +20,25 @@ public final class QuotaProperties implements JsonSerializable<QuotaProperties> 
     /*
      * The subscription quota resource free-trial properties.
      */
+    @Generated
     private FreeTrialProperties freeTrial;
 
     /*
      * Indicates the offering type for the subscription.
      */
+    @Generated
     private OfferingType offeringType;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of QuotaProperties class.
      */
+    @Generated
     private QuotaProperties() {
     }
 
@@ -42,6 +47,7 @@ public final class QuotaProperties implements JsonSerializable<QuotaProperties> 
      * 
      * @return the freeTrial value.
      */
+    @Generated
     public FreeTrialProperties freeTrial() {
         return this.freeTrial;
     }
@@ -51,6 +57,7 @@ public final class QuotaProperties implements JsonSerializable<QuotaProperties> 
      * 
      * @return the offeringType value.
      */
+    @Generated
     public OfferingType offeringType() {
         return this.offeringType;
     }
@@ -60,6 +67,7 @@ public final class QuotaProperties implements JsonSerializable<QuotaProperties> 
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

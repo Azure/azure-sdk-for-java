@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.trustedsigning.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class ProfileType extends ExpandableStringEnum<ProfileType> {
     /**
      * Used for signing files which are distributed publicly.
      */
+    @Generated
     public static final ProfileType PUBLIC_TRUST = fromString("PublicTrust");
 
     /**
      * Used for signing files which are distributed internally within organization or group boundary.
      */
+    @Generated
     public static final ProfileType PRIVATE_TRUST = fromString("PrivateTrust");
 
     /**
      * Used for signing CI policy files.
      */
+    @Generated
     public static final ProfileType PRIVATE_TRUST_CIPOLICY = fromString("PrivateTrustCIPolicy");
 
     /**
      * Used for signing files which are run in secure vbs enclave.
      */
+    @Generated
     public static final ProfileType VBSENCLAVE = fromString("VBSEnclave");
 
     /**
      * Used for signing files for testing purpose.
      */
+    @Generated
     public static final ProfileType PUBLIC_TRUST_TEST = fromString("PublicTrustTest");
 
     /**
@@ -41,6 +47,7 @@ public final class ProfileType extends ExpandableStringEnum<ProfileType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ProfileType() {
     }
@@ -51,6 +58,7 @@ public final class ProfileType extends ExpandableStringEnum<ProfileType> {
      * @param name a name to look for.
      * @return the corresponding ProfileType.
      */
+    @Generated
     public static ProfileType fromString(String name) {
         return fromString(name, ProfileType.class);
     }
@@ -60,6 +68,7 @@ public final class ProfileType extends ExpandableStringEnum<ProfileType> {
      * 
      * @return known ProfileType values.
      */
+    @Generated
     public static Collection<ProfileType> values() {
         return values(ProfileType.class);
     }

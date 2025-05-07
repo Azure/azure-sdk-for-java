@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
     /*
      * The list of operation ids to get the status of
      */
+    @Generated
     private List<String> operationIds;
 
     /*
      * CorrelationId item
      */
+    @Generated
     private String correlationid;
 
     /**
      * Creates an instance of GetOperationStatusRequest class.
      */
+    @Generated
     public GetOperationStatusRequest() {
     }
 
@@ -39,6 +43,7 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
      * 
      * @return the operationIds value.
      */
+    @Generated
     public List<String> operationIds() {
         return this.operationIds;
     }
@@ -49,6 +54,7 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
      * @param operationIds the operationIds value to set.
      * @return the GetOperationStatusRequest object itself.
      */
+    @Generated
     public GetOperationStatusRequest withOperationIds(List<String> operationIds) {
         this.operationIds = operationIds;
         return this;
@@ -59,6 +65,7 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
      * 
      * @return the correlationid value.
      */
+    @Generated
     public String correlationid() {
         return this.correlationid;
     }
@@ -69,6 +76,7 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
      * @param correlationid the correlationid value to set.
      * @return the GetOperationStatusRequest object itself.
      */
+    @Generated
     public GetOperationStatusRequest withCorrelationid(String correlationid) {
         this.correlationid = correlationid;
         return this;

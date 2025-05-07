@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,12 +15,14 @@ public final class DataExplorerAuthMethod extends ExpandableStringEnum<DataExplo
     /**
      * SystemAssignedManagedIdentity type.
      */
+    @Generated
     public static final DataExplorerAuthMethod SYSTEM_ASSIGNED_MANAGED_IDENTITY
         = fromString("SystemAssignedManagedIdentity");
 
     /**
      * UserAssignedManagedIdentity type.
      */
+    @Generated
     public static final DataExplorerAuthMethod USER_ASSIGNED_MANAGED_IDENTITY
         = fromString("UserAssignedManagedIdentity");
 
@@ -28,6 +31,7 @@ public final class DataExplorerAuthMethod extends ExpandableStringEnum<DataExplo
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataExplorerAuthMethod() {
     }
@@ -38,6 +42,7 @@ public final class DataExplorerAuthMethod extends ExpandableStringEnum<DataExplo
      * @param name a name to look for.
      * @return the corresponding DataExplorerAuthMethod.
      */
+    @Generated
     public static DataExplorerAuthMethod fromString(String name) {
         return fromString(name, DataExplorerAuthMethod.class);
     }
@@ -47,6 +52,7 @@ public final class DataExplorerAuthMethod extends ExpandableStringEnum<DataExplo
      * 
      * @return known DataExplorerAuthMethod values.
      */
+    @Generated
     public static Collection<DataExplorerAuthMethod> values() {
         return values(DataExplorerAuthMethod.class);
     }

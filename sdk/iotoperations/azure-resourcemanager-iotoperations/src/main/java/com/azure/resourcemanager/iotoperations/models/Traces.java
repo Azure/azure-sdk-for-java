@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class Traces implements JsonSerializable<Traces> {
     /*
      * The toggle to enable/disable traces.
      */
+    @Generated
     private OperationalMode mode;
 
     /*
      * The cache size in megabytes.
      */
+    @Generated
     private Integer cacheSizeMegabytes;
 
     /*
      * The self tracing properties.
      */
+    @Generated
     private SelfTracing selfTracing;
 
     /*
      * The span channel capacity.
      */
+    @Generated
     private Integer spanChannelCapacity;
 
     /**
      * Creates an instance of Traces class.
      */
+    @Generated
     public Traces() {
     }
 
@@ -47,6 +53,7 @@ public final class Traces implements JsonSerializable<Traces> {
      * 
      * @return the mode value.
      */
+    @Generated
     public OperationalMode mode() {
         return this.mode;
     }
@@ -57,6 +64,7 @@ public final class Traces implements JsonSerializable<Traces> {
      * @param mode the mode value to set.
      * @return the Traces object itself.
      */
+    @Generated
     public Traces withMode(OperationalMode mode) {
         this.mode = mode;
         return this;
@@ -67,6 +75,7 @@ public final class Traces implements JsonSerializable<Traces> {
      * 
      * @return the cacheSizeMegabytes value.
      */
+    @Generated
     public Integer cacheSizeMegabytes() {
         return this.cacheSizeMegabytes;
     }
@@ -77,6 +86,7 @@ public final class Traces implements JsonSerializable<Traces> {
      * @param cacheSizeMegabytes the cacheSizeMegabytes value to set.
      * @return the Traces object itself.
      */
+    @Generated
     public Traces withCacheSizeMegabytes(Integer cacheSizeMegabytes) {
         this.cacheSizeMegabytes = cacheSizeMegabytes;
         return this;
@@ -87,6 +97,7 @@ public final class Traces implements JsonSerializable<Traces> {
      * 
      * @return the selfTracing value.
      */
+    @Generated
     public SelfTracing selfTracing() {
         return this.selfTracing;
     }
@@ -97,6 +108,7 @@ public final class Traces implements JsonSerializable<Traces> {
      * @param selfTracing the selfTracing value to set.
      * @return the Traces object itself.
      */
+    @Generated
     public Traces withSelfTracing(SelfTracing selfTracing) {
         this.selfTracing = selfTracing;
         return this;
@@ -107,6 +119,7 @@ public final class Traces implements JsonSerializable<Traces> {
      * 
      * @return the spanChannelCapacity value.
      */
+    @Generated
     public Integer spanChannelCapacity() {
         return this.spanChannelCapacity;
     }
@@ -117,6 +130,7 @@ public final class Traces implements JsonSerializable<Traces> {
      * @param spanChannelCapacity the spanChannelCapacity value to set.
      * @return the Traces object itself.
      */
+    @Generated
     public Traces withSpanChannelCapacity(Integer spanChannelCapacity) {
         this.spanChannelCapacity = spanChannelCapacity;
         return this;

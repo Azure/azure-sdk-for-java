@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,6 +21,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
     /*
      * The disk name.
      */
+    @Generated
     private String name;
 
     /*
@@ -27,6 +29,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * identify data disks within the VM and therefore must be unique for each data
      * disk attached to a VM.
      */
+    @Generated
     private int lun;
 
     /*
@@ -34,16 +37,19 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * **ReadOnly,** **ReadWrite.** The default values are: **None for Standard
      * storage. ReadOnly for Premium storage.**
      */
+    @Generated
     private CachingTypes caching;
 
     /*
      * Specifies whether writeAccelerator should be enabled or disabled on the disk.
      */
+    @Generated
     private Boolean writeAcceleratorEnabled;
 
     /*
      * The create option.
      */
+    @Generated
     private DiskCreateOptionTypes createOption;
 
     /*
@@ -52,11 +58,13 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * diskSizeGB is the number of bytes x 1024^3 for the disk and the value cannot be
      * larger than 1023.
      */
+    @Generated
     private Integer diskSizeGB;
 
     /*
      * The managed disk parameters.
      */
+    @Generated
     private VirtualMachineScaleSetManagedDiskParameters managedDisk;
 
     /*
@@ -64,6 +72,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * StorageAccountType is UltraSSD_LRS. If not specified, a default value would be
      * assigned based on diskSizeGB.
      */
+    @Generated
     private Long diskIOPSReadWrite;
 
     /*
@@ -71,6 +80,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * only when StorageAccountType is UltraSSD_LRS. If not specified, a default value
      * would be assigned based on diskSizeGB.
      */
+    @Generated
     private Long diskMBpsReadWrite;
 
     /*
@@ -81,11 +91,13 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * this value is used, the data disk is retained after VMSS Flex VM is
      * deleted.<br><br> The default value is set to **Delete**.
      */
+    @Generated
     private DiskDeleteOptionTypes deleteOption;
 
     /**
      * Creates an instance of VirtualMachineScaleSetDataDisk class.
      */
+    @Generated
     public VirtualMachineScaleSetDataDisk() {
     }
 
@@ -94,6 +106,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -104,6 +117,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * @param name the name value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetDataDisk withName(String name) {
         this.name = name;
         return this;
@@ -116,6 +130,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * 
      * @return the lun value.
      */
+    @Generated
     public int lun() {
         return this.lun;
     }
@@ -128,6 +143,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * @param lun the lun value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetDataDisk withLun(int lun) {
         this.lun = lun;
         return this;
@@ -140,6 +156,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * 
      * @return the caching value.
      */
+    @Generated
     public CachingTypes caching() {
         return this.caching;
     }
@@ -152,6 +169,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * @param caching the caching value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetDataDisk withCaching(CachingTypes caching) {
         this.caching = caching;
         return this;
@@ -163,6 +181,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * 
      * @return the writeAcceleratorEnabled value.
      */
+    @Generated
     public Boolean writeAcceleratorEnabled() {
         return this.writeAcceleratorEnabled;
     }
@@ -174,6 +193,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetDataDisk withWriteAcceleratorEnabled(Boolean writeAcceleratorEnabled) {
         this.writeAcceleratorEnabled = writeAcceleratorEnabled;
         return this;
@@ -184,6 +204,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * 
      * @return the createOption value.
      */
+    @Generated
     public DiskCreateOptionTypes createOption() {
         return this.createOption;
     }
@@ -194,6 +215,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * @param createOption the createOption value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetDataDisk withCreateOption(DiskCreateOptionTypes createOption) {
         this.createOption = createOption;
         return this;
@@ -207,6 +229,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * 
      * @return the diskSizeGB value.
      */
+    @Generated
     public Integer diskSizeGB() {
         return this.diskSizeGB;
     }
@@ -220,6 +243,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetDataDisk withDiskSizeGB(Integer diskSizeGB) {
         this.diskSizeGB = diskSizeGB;
         return this;
@@ -230,6 +254,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * 
      * @return the managedDisk value.
      */
+    @Generated
     public VirtualMachineScaleSetManagedDiskParameters managedDisk() {
         return this.managedDisk;
     }
@@ -240,6 +265,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * @param managedDisk the managedDisk value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetDataDisk withManagedDisk(VirtualMachineScaleSetManagedDiskParameters managedDisk) {
         this.managedDisk = managedDisk;
         return this;
@@ -252,6 +278,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * 
      * @return the diskIOPSReadWrite value.
      */
+    @Generated
     public Long diskIOPSReadWrite() {
         return this.diskIOPSReadWrite;
     }
@@ -264,6 +291,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * @param diskIOPSReadWrite the diskIOPSReadWrite value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetDataDisk withDiskIOPSReadWrite(Long diskIOPSReadWrite) {
         this.diskIOPSReadWrite = diskIOPSReadWrite;
         return this;
@@ -276,6 +304,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * 
      * @return the diskMBpsReadWrite value.
      */
+    @Generated
     public Long diskMBpsReadWrite() {
         return this.diskMBpsReadWrite;
     }
@@ -288,6 +317,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * @param diskMBpsReadWrite the diskMBpsReadWrite value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetDataDisk withDiskMBpsReadWrite(Long diskMBpsReadWrite) {
         this.diskMBpsReadWrite = diskMBpsReadWrite;
         return this;
@@ -303,6 +333,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * 
      * @return the deleteOption value.
      */
+    @Generated
     public DiskDeleteOptionTypes deleteOption() {
         return this.deleteOption;
     }
@@ -318,6 +349,7 @@ public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<Vi
      * @param deleteOption the deleteOption value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
+    @Generated
     public VirtualMachineScaleSetDataDisk withDeleteOption(DiskDeleteOptionTypes deleteOption) {
         this.deleteOption = deleteOption;
         return this;

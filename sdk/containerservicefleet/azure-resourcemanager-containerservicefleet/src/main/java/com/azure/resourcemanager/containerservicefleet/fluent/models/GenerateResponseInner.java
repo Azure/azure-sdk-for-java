@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class GenerateResponseInner implements JsonSerializable<GenerateRes
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{
      * fleetName}/updateRuns/{updateRunName}'.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of GenerateResponseInner class.
      */
+    @Generated
     private GenerateResponseInner() {
     }
 
@@ -35,6 +38,7 @@ public final class GenerateResponseInner implements JsonSerializable<GenerateRes
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }

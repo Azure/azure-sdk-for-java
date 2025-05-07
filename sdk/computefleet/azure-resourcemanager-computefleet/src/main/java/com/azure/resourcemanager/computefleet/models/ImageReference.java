@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,22 +24,26 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
     /*
      * Resource Id
      */
+    @Generated
     private String id;
 
     /*
      * The image publisher.
      */
+    @Generated
     private String publisher;
 
     /*
      * Specifies the offer of the platform image or marketplace image used to create
      * the virtual machine.
      */
+    @Generated
     private String offer;
 
     /*
      * The image SKU.
      */
+    @Generated
     private String sku;
 
     /*
@@ -54,6 +59,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * galleryName}/images/{imageName}'
      * in the 'id' field without version input.
      */
+    @Generated
     private String version;
 
     /*
@@ -61,23 +67,27 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * image used to create the virtual machine. This readonly field differs from 'version',
      * only if the value specified in 'version' field is 'latest'.
      */
+    @Generated
     private String exactVersion;
 
     /*
      * Specified the shared gallery image unique id for vm deployment. This can be
      * fetched from shared gallery image GET call.
      */
+    @Generated
     private String sharedGalleryImageId;
 
     /*
      * Specified the community gallery image unique id for vm deployment. This can be
      * fetched from community gallery image GET call.
      */
+    @Generated
     private String communityGalleryImageId;
 
     /**
      * Creates an instance of ImageReference class.
      */
+    @Generated
     public ImageReference() {
     }
 
@@ -86,6 +96,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }
@@ -96,6 +107,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * @param id the id value to set.
      * @return the ImageReference object itself.
      */
+    @Generated
     public ImageReference withId(String id) {
         this.id = id;
         return this;
@@ -106,6 +118,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * 
      * @return the publisher value.
      */
+    @Generated
     public String publisher() {
         return this.publisher;
     }
@@ -116,6 +129,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * @param publisher the publisher value to set.
      * @return the ImageReference object itself.
      */
+    @Generated
     public ImageReference withPublisher(String publisher) {
         this.publisher = publisher;
         return this;
@@ -127,6 +141,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * 
      * @return the offer value.
      */
+    @Generated
     public String offer() {
         return this.offer;
     }
@@ -138,6 +153,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * @param offer the offer value to set.
      * @return the ImageReference object itself.
      */
+    @Generated
     public ImageReference withOffer(String offer) {
         this.offer = offer;
         return this;
@@ -148,6 +164,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * 
      * @return the sku value.
      */
+    @Generated
     public String sku() {
         return this.sku;
     }
@@ -158,6 +175,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * @param sku the sku value to set.
      * @return the ImageReference object itself.
      */
+    @Generated
     public ImageReference withSku(String sku) {
         this.sku = sku;
         return this;
@@ -177,6 +195,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * 
      * @return the version value.
      */
+    @Generated
     public String version() {
         return this.version;
     }
@@ -196,6 +215,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * @param version the version value to set.
      * @return the ImageReference object itself.
      */
+    @Generated
     public ImageReference withVersion(String version) {
         this.version = version;
         return this;
@@ -208,6 +228,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * 
      * @return the exactVersion value.
      */
+    @Generated
     public String exactVersion() {
         return this.exactVersion;
     }
@@ -219,6 +240,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * 
      * @return the sharedGalleryImageId value.
      */
+    @Generated
     public String sharedGalleryImageId() {
         return this.sharedGalleryImageId;
     }
@@ -231,6 +253,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * @param sharedGalleryImageId the sharedGalleryImageId value to set.
      * @return the ImageReference object itself.
      */
+    @Generated
     public ImageReference withSharedGalleryImageId(String sharedGalleryImageId) {
         this.sharedGalleryImageId = sharedGalleryImageId;
         return this;
@@ -243,6 +266,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * 
      * @return the communityGalleryImageId value.
      */
+    @Generated
     public String communityGalleryImageId() {
         return this.communityGalleryImageId;
     }
@@ -255,6 +279,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * @param communityGalleryImageId the communityGalleryImageId value to set.
      * @return the ImageReference object itself.
      */
+    @Generated
     public ImageReference withCommunityGalleryImageId(String communityGalleryImageId) {
         this.communityGalleryImageId = communityGalleryImageId;
         return this;

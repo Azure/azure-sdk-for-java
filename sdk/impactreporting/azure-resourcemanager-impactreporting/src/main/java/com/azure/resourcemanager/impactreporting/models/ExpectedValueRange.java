@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class ExpectedValueRange implements JsonSerializable<ExpectedValueR
     /*
      * Min threshold value for the metric
      */
+    @Generated
     private double min;
 
     /*
      * Max threshold value for the metric
      */
+    @Generated
     private double max;
 
     /**
      * Creates an instance of ExpectedValueRange class.
      */
+    @Generated
     public ExpectedValueRange() {
     }
 
@@ -37,6 +41,7 @@ public final class ExpectedValueRange implements JsonSerializable<ExpectedValueR
      * 
      * @return the min value.
      */
+    @Generated
     public double min() {
         return this.min;
     }
@@ -47,6 +52,7 @@ public final class ExpectedValueRange implements JsonSerializable<ExpectedValueR
      * @param min the min value to set.
      * @return the ExpectedValueRange object itself.
      */
+    @Generated
     public ExpectedValueRange withMin(double min) {
         this.min = min;
         return this;
@@ -57,6 +63,7 @@ public final class ExpectedValueRange implements JsonSerializable<ExpectedValueR
      * 
      * @return the max value.
      */
+    @Generated
     public double max() {
         return this.max;
     }
@@ -67,6 +74,7 @@ public final class ExpectedValueRange implements JsonSerializable<ExpectedValueR
      * @param max the max value to set.
      * @return the ExpectedValueRange object itself.
      */
+    @Generated
     public ExpectedValueRange withMax(double max) {
         this.max = max;
         return this;

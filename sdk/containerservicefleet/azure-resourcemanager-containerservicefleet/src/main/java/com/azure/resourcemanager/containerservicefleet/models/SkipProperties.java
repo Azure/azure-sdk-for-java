@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class SkipProperties implements JsonSerializable<SkipProperties> {
     /*
      * The targets to skip.
      */
+    @Generated
     private List<SkipTarget> targets;
 
     /**
      * Creates an instance of SkipProperties class.
      */
+    @Generated
     public SkipProperties() {
     }
 
@@ -34,6 +37,7 @@ public final class SkipProperties implements JsonSerializable<SkipProperties> {
      * 
      * @return the targets value.
      */
+    @Generated
     public List<SkipTarget> targets() {
         return this.targets;
     }
@@ -44,6 +48,7 @@ public final class SkipProperties implements JsonSerializable<SkipProperties> {
      * @param targets the targets value to set.
      * @return the SkipProperties object itself.
      */
+    @Generated
     public SkipProperties withTargets(List<SkipTarget> targets) {
         this.targets = targets;
         return this;

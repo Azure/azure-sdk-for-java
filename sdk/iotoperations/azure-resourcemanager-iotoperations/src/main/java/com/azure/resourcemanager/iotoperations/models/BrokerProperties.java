@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
     /*
      * Advanced settings of Broker.
      */
+    @Generated
     private AdvancedSettings advanced;
 
     /*
      * The cardinality details of the broker.
      */
+    @Generated
     private Cardinality cardinality;
 
     /*
      * Spec defines the desired identities of Broker diagnostics settings.
      */
+    @Generated
     private BrokerDiagnostics diagnostics;
 
     /*
      * Settings of Disk Backed Message Buffer.
      */
+    @Generated
     private DiskBackedMessageBuffer diskBackedMessageBuffer;
 
     /*
@@ -41,21 +46,25 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * workers proportionally increases the amount of CPU resources requested. If this setting is enabled and there are
      * insufficient CPU resources, an error will be emitted.
      */
+    @Generated
     private GenerateResourceLimits generateResourceLimits;
 
     /*
      * Memory profile of Broker.
      */
+    @Generated
     private BrokerMemoryProfile memoryProfile;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of BrokerProperties class.
      */
+    @Generated
     public BrokerProperties() {
     }
 
@@ -64,6 +73,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * 
      * @return the advanced value.
      */
+    @Generated
     public AdvancedSettings advanced() {
         return this.advanced;
     }
@@ -74,6 +84,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * @param advanced the advanced value to set.
      * @return the BrokerProperties object itself.
      */
+    @Generated
     public BrokerProperties withAdvanced(AdvancedSettings advanced) {
         this.advanced = advanced;
         return this;
@@ -84,6 +95,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * 
      * @return the cardinality value.
      */
+    @Generated
     public Cardinality cardinality() {
         return this.cardinality;
     }
@@ -94,6 +106,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * @param cardinality the cardinality value to set.
      * @return the BrokerProperties object itself.
      */
+    @Generated
     public BrokerProperties withCardinality(Cardinality cardinality) {
         this.cardinality = cardinality;
         return this;
@@ -104,6 +117,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * 
      * @return the diagnostics value.
      */
+    @Generated
     public BrokerDiagnostics diagnostics() {
         return this.diagnostics;
     }
@@ -114,6 +128,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * @param diagnostics the diagnostics value to set.
      * @return the BrokerProperties object itself.
      */
+    @Generated
     public BrokerProperties withDiagnostics(BrokerDiagnostics diagnostics) {
         this.diagnostics = diagnostics;
         return this;
@@ -124,6 +139,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * 
      * @return the diskBackedMessageBuffer value.
      */
+    @Generated
     public DiskBackedMessageBuffer diskBackedMessageBuffer() {
         return this.diskBackedMessageBuffer;
     }
@@ -134,6 +150,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * @param diskBackedMessageBuffer the diskBackedMessageBuffer value to set.
      * @return the BrokerProperties object itself.
      */
+    @Generated
     public BrokerProperties withDiskBackedMessageBuffer(DiskBackedMessageBuffer diskBackedMessageBuffer) {
         this.diskBackedMessageBuffer = diskBackedMessageBuffer;
         return this;
@@ -146,6 +163,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * 
      * @return the generateResourceLimits value.
      */
+    @Generated
     public GenerateResourceLimits generateResourceLimits() {
         return this.generateResourceLimits;
     }
@@ -158,6 +176,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * @param generateResourceLimits the generateResourceLimits value to set.
      * @return the BrokerProperties object itself.
      */
+    @Generated
     public BrokerProperties withGenerateResourceLimits(GenerateResourceLimits generateResourceLimits) {
         this.generateResourceLimits = generateResourceLimits;
         return this;
@@ -168,6 +187,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * 
      * @return the memoryProfile value.
      */
+    @Generated
     public BrokerMemoryProfile memoryProfile() {
         return this.memoryProfile;
     }
@@ -178,6 +198,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * @param memoryProfile the memoryProfile value to set.
      * @return the BrokerProperties object itself.
      */
+    @Generated
     public BrokerProperties withMemoryProfile(BrokerMemoryProfile memoryProfile) {
         this.memoryProfile = memoryProfile;
         return this;
@@ -188,6 +209,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

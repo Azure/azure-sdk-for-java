@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ManagedResourcesNetworkAccessType extends ExpandableStringEnu
     /**
      * Managed resources will be deployed with public network access enabled.
      */
+    @Generated
     public static final ManagedResourcesNetworkAccessType PUBLIC = fromString("Public");
 
     /**
      * Managed resources will be deployed with public network access disabled.
      */
+    @Generated
     public static final ManagedResourcesNetworkAccessType PRIVATE = fromString("Private");
 
     /**
@@ -26,6 +29,7 @@ public final class ManagedResourcesNetworkAccessType extends ExpandableStringEnu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ManagedResourcesNetworkAccessType() {
     }
@@ -36,6 +40,7 @@ public final class ManagedResourcesNetworkAccessType extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding ManagedResourcesNetworkAccessType.
      */
+    @Generated
     public static ManagedResourcesNetworkAccessType fromString(String name) {
         return fromString(name, ManagedResourcesNetworkAccessType.class);
     }
@@ -45,6 +50,7 @@ public final class ManagedResourcesNetworkAccessType extends ExpandableStringEnu
      * 
      * @return known ManagedResourcesNetworkAccessType values.
      */
+    @Generated
     public static Collection<ManagedResourcesNetworkAccessType> values() {
         return values(ManagedResourcesNetworkAccessType.class);
     }

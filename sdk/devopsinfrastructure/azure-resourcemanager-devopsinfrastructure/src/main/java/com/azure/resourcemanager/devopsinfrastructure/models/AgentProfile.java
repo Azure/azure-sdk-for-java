@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
     /*
      * Discriminator property for AgentProfile.
      */
+    @Generated
     private String kind = "AgentProfile";
 
     /*
      * Defines pool buffer/stand-by agents.
      */
+    @Generated
     private ResourcePredictions resourcePredictions;
 
     /*
      * Defines how the pool buffer/stand-by agents is provided.
      */
+    @Generated
     private ResourcePredictionsProfile resourcePredictionsProfile;
 
     /**
      * Creates an instance of AgentProfile class.
      */
+    @Generated
     public AgentProfile() {
     }
 
@@ -42,6 +47,7 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
      * 
      * @return the kind value.
      */
+    @Generated
     public String kind() {
         return this.kind;
     }
@@ -51,6 +57,7 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
      * 
      * @return the resourcePredictions value.
      */
+    @Generated
     public ResourcePredictions resourcePredictions() {
         return this.resourcePredictions;
     }
@@ -61,6 +68,7 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
      * @param resourcePredictions the resourcePredictions value to set.
      * @return the AgentProfile object itself.
      */
+    @Generated
     public AgentProfile withResourcePredictions(ResourcePredictions resourcePredictions) {
         this.resourcePredictions = resourcePredictions;
         return this;
@@ -71,6 +79,7 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
      * 
      * @return the resourcePredictionsProfile value.
      */
+    @Generated
     public ResourcePredictionsProfile resourcePredictionsProfile() {
         return this.resourcePredictionsProfile;
     }
@@ -81,6 +90,7 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
      * @param resourcePredictionsProfile the resourcePredictionsProfile value to set.
      * @return the AgentProfile object itself.
      */
+    @Generated
     public AgentProfile withResourcePredictionsProfile(ResourcePredictionsProfile resourcePredictionsProfile) {
         this.resourcePredictionsProfile = resourcePredictionsProfile;
         return this;

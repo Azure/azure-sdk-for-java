@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,23 +23,27 @@ public final class BrokerResourceRule implements JsonSerializable<BrokerResource
     /*
      * Give access for a Broker method (i.e., Connect, Subscribe, or Publish).
      */
+    @Generated
     private BrokerResourceDefinitionMethods method;
 
     /*
      * A list of client IDs that match the clients. The client IDs are case-sensitive and must match the client IDs
      * provided by the clients during connection. This subfield may be set if the method is Connect.
      */
+    @Generated
     private List<String> clientIds;
 
     /*
      * A list of topics or topic patterns that match the topics that the clients can publish or subscribe to. This
      * subfield is required if the method is Publish or Subscribe.
      */
+    @Generated
     private List<String> topics;
 
     /**
      * Creates an instance of BrokerResourceRule class.
      */
+    @Generated
     public BrokerResourceRule() {
     }
 
@@ -47,6 +52,7 @@ public final class BrokerResourceRule implements JsonSerializable<BrokerResource
      * 
      * @return the method value.
      */
+    @Generated
     public BrokerResourceDefinitionMethods method() {
         return this.method;
     }
@@ -57,6 +63,7 @@ public final class BrokerResourceRule implements JsonSerializable<BrokerResource
      * @param method the method value to set.
      * @return the BrokerResourceRule object itself.
      */
+    @Generated
     public BrokerResourceRule withMethod(BrokerResourceDefinitionMethods method) {
         this.method = method;
         return this;
@@ -69,6 +76,7 @@ public final class BrokerResourceRule implements JsonSerializable<BrokerResource
      * 
      * @return the clientIds value.
      */
+    @Generated
     public List<String> clientIds() {
         return this.clientIds;
     }
@@ -81,6 +89,7 @@ public final class BrokerResourceRule implements JsonSerializable<BrokerResource
      * @param clientIds the clientIds value to set.
      * @return the BrokerResourceRule object itself.
      */
+    @Generated
     public BrokerResourceRule withClientIds(List<String> clientIds) {
         this.clientIds = clientIds;
         return this;
@@ -92,6 +101,7 @@ public final class BrokerResourceRule implements JsonSerializable<BrokerResource
      * 
      * @return the topics value.
      */
+    @Generated
     public List<String> topics() {
         return this.topics;
     }
@@ -103,6 +113,7 @@ public final class BrokerResourceRule implements JsonSerializable<BrokerResource
      * @param topics the topics value to set.
      * @return the BrokerResourceRule object itself.
      */
+    @Generated
     public BrokerResourceRule withTopics(List<String> topics) {
         this.topics = topics;
         return this;

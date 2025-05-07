@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,101 +21,121 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     /*
      * The mode to create a mongo cluster.
      */
+    @Generated
     private CreateMode createMode;
 
     /*
      * The parameters to create a point-in-time restore mongo cluster.
      */
+    @Generated
     private MongoClusterRestoreParameters restoreParameters;
 
     /*
      * The parameters to create a replica mongo cluster.
      */
+    @Generated
     private MongoClusterReplicaParameters replicaParameters;
 
     /*
      * The local administrator properties for the mongo cluster.
      */
+    @Generated
     private AdministratorProperties administrator;
 
     /*
      * The Mongo DB server version. Defaults to the latest available version if not specified.
      */
+    @Generated
     private String serverVersion;
 
     /*
      * The default mongo connection string for the cluster.
      */
+    @Generated
     private String connectionString;
 
     /*
      * The provisioning state of the mongo cluster.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * The status of the mongo cluster.
      */
+    @Generated
     private MongoClusterStatus clusterStatus;
 
     /*
      * Whether or not public endpoint access is allowed for this mongo cluster.
      */
+    @Generated
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * The high availability properties of the mongo cluster.
      */
+    @Generated
     private HighAvailabilityProperties highAvailability;
 
     /*
      * The storage properties of the mongo cluster.
      */
+    @Generated
     private StorageProperties storage;
 
     /*
      * The sharding properties of the mongo cluster.
      */
+    @Generated
     private ShardingProperties sharding;
 
     /*
      * The compute properties of the mongo cluster.
      */
+    @Generated
     private ComputeProperties compute;
 
     /*
      * The backup properties of the mongo cluster.
      */
+    @Generated
     private BackupProperties backup;
 
     /*
      * The Data API properties of the mongo cluster.
      */
+    @Generated
     private DataApiProperties dataApi;
 
     /*
      * List of private endpoint connections.
      */
+    @Generated
     private List<PrivateEndpointConnection> privateEndpointConnections;
 
     /*
      * List of private endpoint connections.
      */
+    @Generated
     private List<PreviewFeature> previewFeatures;
 
     /*
      * The replication properties for the mongo cluster
      */
+    @Generated
     private ReplicationProperties replica;
 
     /*
      * The infrastructure version the cluster is provisioned on.
      */
+    @Generated
     private String infrastructureVersion;
 
     /**
      * Creates an instance of MongoClusterProperties class.
      */
+    @Generated
     public MongoClusterProperties() {
     }
 
@@ -123,6 +144,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the createMode value.
      */
+    @Generated
     public CreateMode createMode() {
         return this.createMode;
     }
@@ -133,6 +155,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * @param createMode the createMode value to set.
      * @return the MongoClusterProperties object itself.
      */
+    @Generated
     public MongoClusterProperties withCreateMode(CreateMode createMode) {
         this.createMode = createMode;
         return this;
@@ -143,6 +166,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the restoreParameters value.
      */
+    @Generated
     public MongoClusterRestoreParameters restoreParameters() {
         return this.restoreParameters;
     }
@@ -153,6 +177,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * @param restoreParameters the restoreParameters value to set.
      * @return the MongoClusterProperties object itself.
      */
+    @Generated
     public MongoClusterProperties withRestoreParameters(MongoClusterRestoreParameters restoreParameters) {
         this.restoreParameters = restoreParameters;
         return this;
@@ -163,6 +188,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the replicaParameters value.
      */
+    @Generated
     public MongoClusterReplicaParameters replicaParameters() {
         return this.replicaParameters;
     }
@@ -173,6 +199,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * @param replicaParameters the replicaParameters value to set.
      * @return the MongoClusterProperties object itself.
      */
+    @Generated
     public MongoClusterProperties withReplicaParameters(MongoClusterReplicaParameters replicaParameters) {
         this.replicaParameters = replicaParameters;
         return this;
@@ -183,6 +210,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the administrator value.
      */
+    @Generated
     public AdministratorProperties administrator() {
         return this.administrator;
     }
@@ -193,6 +221,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * @param administrator the administrator value to set.
      * @return the MongoClusterProperties object itself.
      */
+    @Generated
     public MongoClusterProperties withAdministrator(AdministratorProperties administrator) {
         this.administrator = administrator;
         return this;
@@ -204,6 +233,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the serverVersion value.
      */
+    @Generated
     public String serverVersion() {
         return this.serverVersion;
     }
@@ -215,6 +245,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * @param serverVersion the serverVersion value to set.
      * @return the MongoClusterProperties object itself.
      */
+    @Generated
     public MongoClusterProperties withServerVersion(String serverVersion) {
         this.serverVersion = serverVersion;
         return this;
@@ -225,6 +256,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the connectionString value.
      */
+    @Generated
     public String connectionString() {
         return this.connectionString;
     }
@@ -234,6 +266,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -243,6 +276,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the clusterStatus value.
      */
+    @Generated
     public MongoClusterStatus clusterStatus() {
         return this.clusterStatus;
     }
@@ -252,6 +286,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the publicNetworkAccess value.
      */
+    @Generated
     public PublicNetworkAccess publicNetworkAccess() {
         return this.publicNetworkAccess;
     }
@@ -262,6 +297,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the MongoClusterProperties object itself.
      */
+    @Generated
     public MongoClusterProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
         return this;
@@ -272,6 +308,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the highAvailability value.
      */
+    @Generated
     public HighAvailabilityProperties highAvailability() {
         return this.highAvailability;
     }
@@ -282,6 +319,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * @param highAvailability the highAvailability value to set.
      * @return the MongoClusterProperties object itself.
      */
+    @Generated
     public MongoClusterProperties withHighAvailability(HighAvailabilityProperties highAvailability) {
         this.highAvailability = highAvailability;
         return this;
@@ -292,6 +330,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the storage value.
      */
+    @Generated
     public StorageProperties storage() {
         return this.storage;
     }
@@ -302,6 +341,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * @param storage the storage value to set.
      * @return the MongoClusterProperties object itself.
      */
+    @Generated
     public MongoClusterProperties withStorage(StorageProperties storage) {
         this.storage = storage;
         return this;
@@ -312,6 +352,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the sharding value.
      */
+    @Generated
     public ShardingProperties sharding() {
         return this.sharding;
     }
@@ -322,6 +363,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * @param sharding the sharding value to set.
      * @return the MongoClusterProperties object itself.
      */
+    @Generated
     public MongoClusterProperties withSharding(ShardingProperties sharding) {
         this.sharding = sharding;
         return this;
@@ -332,6 +374,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the compute value.
      */
+    @Generated
     public ComputeProperties compute() {
         return this.compute;
     }
@@ -342,6 +385,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * @param compute the compute value to set.
      * @return the MongoClusterProperties object itself.
      */
+    @Generated
     public MongoClusterProperties withCompute(ComputeProperties compute) {
         this.compute = compute;
         return this;
@@ -352,6 +396,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the backup value.
      */
+    @Generated
     public BackupProperties backup() {
         return this.backup;
     }
@@ -362,6 +407,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * @param backup the backup value to set.
      * @return the MongoClusterProperties object itself.
      */
+    @Generated
     public MongoClusterProperties withBackup(BackupProperties backup) {
         this.backup = backup;
         return this;
@@ -372,6 +418,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the dataApi value.
      */
+    @Generated
     public DataApiProperties dataApi() {
         return this.dataApi;
     }
@@ -382,6 +429,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * @param dataApi the dataApi value to set.
      * @return the MongoClusterProperties object itself.
      */
+    @Generated
     public MongoClusterProperties withDataApi(DataApiProperties dataApi) {
         this.dataApi = dataApi;
         return this;
@@ -392,6 +440,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the privateEndpointConnections value.
      */
+    @Generated
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         return this.privateEndpointConnections;
     }
@@ -401,6 +450,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the previewFeatures value.
      */
+    @Generated
     public List<PreviewFeature> previewFeatures() {
         return this.previewFeatures;
     }
@@ -411,6 +461,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * @param previewFeatures the previewFeatures value to set.
      * @return the MongoClusterProperties object itself.
      */
+    @Generated
     public MongoClusterProperties withPreviewFeatures(List<PreviewFeature> previewFeatures) {
         this.previewFeatures = previewFeatures;
         return this;
@@ -421,6 +472,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the replica value.
      */
+    @Generated
     public ReplicationProperties replica() {
         return this.replica;
     }
@@ -430,6 +482,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * 
      * @return the infrastructureVersion value.
      */
+    @Generated
     public String infrastructureVersion() {
         return this.infrastructureVersion;
     }

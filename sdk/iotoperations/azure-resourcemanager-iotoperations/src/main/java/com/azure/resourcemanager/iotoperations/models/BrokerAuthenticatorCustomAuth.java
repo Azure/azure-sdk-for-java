@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class BrokerAuthenticatorCustomAuth implements JsonSerializable<Bro
     /*
      * X509 Custom Auth type details.
      */
+    @Generated
     private X509ManualCertificate x509;
 
     /**
      * Creates an instance of BrokerAuthenticatorCustomAuth class.
      */
+    @Generated
     public BrokerAuthenticatorCustomAuth() {
     }
 
@@ -33,6 +36,7 @@ public final class BrokerAuthenticatorCustomAuth implements JsonSerializable<Bro
      * 
      * @return the x509 value.
      */
+    @Generated
     public X509ManualCertificate x509() {
         return this.x509;
     }
@@ -43,6 +47,7 @@ public final class BrokerAuthenticatorCustomAuth implements JsonSerializable<Bro
      * @param x509 the x509 value to set.
      * @return the BrokerAuthenticatorCustomAuth object itself.
      */
+    @Generated
     public BrokerAuthenticatorCustomAuth withX509(X509ManualCertificate x509) {
         this.x509 = x509;
         return this;

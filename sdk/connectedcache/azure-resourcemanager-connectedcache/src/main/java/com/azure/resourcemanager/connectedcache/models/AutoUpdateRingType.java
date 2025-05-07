@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.connectedcache.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class AutoUpdateRingType extends ExpandableStringEnum<AutoUpdateRin
     /**
      * customer selection of preview update install mcc on their physical vm.
      */
+    @Generated
     public static final AutoUpdateRingType PREVIEW = fromString("Preview");
 
     /**
      * customer selection of slow update to install mcc on their physical vm.
      */
+    @Generated
     public static final AutoUpdateRingType SLOW = fromString("Slow");
 
     /**
      * customer selection of fast / auto update to install mcc on their physical vm.
      */
+    @Generated
     public static final AutoUpdateRingType FAST = fromString("Fast");
 
     /**
@@ -31,6 +35,7 @@ public final class AutoUpdateRingType extends ExpandableStringEnum<AutoUpdateRin
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AutoUpdateRingType() {
     }
@@ -41,6 +46,7 @@ public final class AutoUpdateRingType extends ExpandableStringEnum<AutoUpdateRin
      * @param name a name to look for.
      * @return the corresponding AutoUpdateRingType.
      */
+    @Generated
     public static AutoUpdateRingType fromString(String name) {
         return fromString(name, AutoUpdateRingType.class);
     }
@@ -50,6 +56,7 @@ public final class AutoUpdateRingType extends ExpandableStringEnum<AutoUpdateRin
      * 
      * @return known AutoUpdateRingType values.
      */
+    @Generated
     public static Collection<AutoUpdateRingType> values() {
         return values(AutoUpdateRingType.class);
     }

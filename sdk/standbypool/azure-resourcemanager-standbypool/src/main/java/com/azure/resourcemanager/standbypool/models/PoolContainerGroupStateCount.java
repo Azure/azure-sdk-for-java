@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -20,16 +21,19 @@ public final class PoolContainerGroupStateCount implements JsonSerializable<Pool
     /*
      * The state that the pooled container groups count is for.
      */
+    @Generated
     private PoolContainerGroupState state;
 
     /*
      * The count of pooled container groups in the given state.
      */
+    @Generated
     private long count;
 
     /**
      * Creates an instance of PoolContainerGroupStateCount class.
      */
+    @Generated
     private PoolContainerGroupStateCount() {
     }
 
@@ -38,6 +42,7 @@ public final class PoolContainerGroupStateCount implements JsonSerializable<Pool
      * 
      * @return the state value.
      */
+    @Generated
     public PoolContainerGroupState state() {
         return this.state;
     }
@@ -47,6 +52,7 @@ public final class PoolContainerGroupStateCount implements JsonSerializable<Pool
      * 
      * @return the count value.
      */
+    @Generated
     public long count() {
         return this.count;
     }

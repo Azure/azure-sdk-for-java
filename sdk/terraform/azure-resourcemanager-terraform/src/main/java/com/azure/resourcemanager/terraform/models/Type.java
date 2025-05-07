@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.terraform.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class Type extends ExpandableStringEnum<Type> {
     /**
      * Static value ExportResource for Type.
      */
+    @Generated
     public static final Type EXPORT_RESOURCE = fromString("ExportResource");
 
     /**
      * Static value ExportResourceGroup for Type.
      */
+    @Generated
     public static final Type EXPORT_RESOURCE_GROUP = fromString("ExportResourceGroup");
 
     /**
      * Static value ExportQuery for Type.
      */
+    @Generated
     public static final Type EXPORT_QUERY = fromString("ExportQuery");
 
     /**
@@ -31,6 +35,7 @@ public final class Type extends ExpandableStringEnum<Type> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public Type() {
     }
@@ -41,6 +46,7 @@ public final class Type extends ExpandableStringEnum<Type> {
      * @param name a name to look for.
      * @return the corresponding Type.
      */
+    @Generated
     public static Type fromString(String name) {
         return fromString(name, Type.class);
     }
@@ -50,6 +56,7 @@ public final class Type extends ExpandableStringEnum<Type> {
      * 
      * @return known Type values.
      */
+    @Generated
     public static Collection<Type> values() {
         return values(Type.class);
     }

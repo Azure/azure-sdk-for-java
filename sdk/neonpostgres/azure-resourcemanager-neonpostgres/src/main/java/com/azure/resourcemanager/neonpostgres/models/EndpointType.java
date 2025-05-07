@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.neonpostgres.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
     /**
      * ReadOnly compute endpoint type.
      */
+    @Generated
     public static final EndpointType READ_ONLY = fromString("read_only");
 
     /**
      * ReadWrite compute endpoint type.
      */
+    @Generated
     public static final EndpointType READ_WRITE = fromString("read_write");
 
     /**
@@ -26,6 +29,7 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public EndpointType() {
     }
@@ -36,6 +40,7 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
      * @param name a name to look for.
      * @return the corresponding EndpointType.
      */
+    @Generated
     public static EndpointType fromString(String name) {
         return fromString(name, EndpointType.class);
     }
@@ -45,6 +50,7 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
      * 
      * @return known EndpointType values.
      */
+    @Generated
     public static Collection<EndpointType> values() {
         return values(EndpointType.class);
     }

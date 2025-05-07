@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,41 +20,49 @@ public final class ConnectionUriPropertiesInner implements JsonSerializable<Conn
     /*
      * Project Id associated with this connection
      */
+    @Generated
     private String projectId;
 
     /*
      * Branch Id associated with this connection
      */
+    @Generated
     private String branchId;
 
     /*
      * Database name associated with this connection
      */
+    @Generated
     private String databaseName;
 
     /*
      * The role name used for authentication
      */
+    @Generated
     private String roleName;
 
     /*
      * the endpoint Id with this connection
      */
+    @Generated
     private String endpointId;
 
     /*
      * Indicates if the connection is pooled
      */
+    @Generated
     private Boolean isPooled;
 
     /*
      * connection uri returned for the database
      */
+    @Generated
     private String connectionStringUri;
 
     /**
      * Creates an instance of ConnectionUriPropertiesInner class.
      */
+    @Generated
     public ConnectionUriPropertiesInner() {
     }
 
@@ -62,6 +71,7 @@ public final class ConnectionUriPropertiesInner implements JsonSerializable<Conn
      * 
      * @return the projectId value.
      */
+    @Generated
     public String projectId() {
         return this.projectId;
     }
@@ -72,6 +82,7 @@ public final class ConnectionUriPropertiesInner implements JsonSerializable<Conn
      * @param projectId the projectId value to set.
      * @return the ConnectionUriPropertiesInner object itself.
      */
+    @Generated
     public ConnectionUriPropertiesInner withProjectId(String projectId) {
         this.projectId = projectId;
         return this;
@@ -82,6 +93,7 @@ public final class ConnectionUriPropertiesInner implements JsonSerializable<Conn
      * 
      * @return the branchId value.
      */
+    @Generated
     public String branchId() {
         return this.branchId;
     }
@@ -92,6 +104,7 @@ public final class ConnectionUriPropertiesInner implements JsonSerializable<Conn
      * @param branchId the branchId value to set.
      * @return the ConnectionUriPropertiesInner object itself.
      */
+    @Generated
     public ConnectionUriPropertiesInner withBranchId(String branchId) {
         this.branchId = branchId;
         return this;
@@ -102,6 +115,7 @@ public final class ConnectionUriPropertiesInner implements JsonSerializable<Conn
      * 
      * @return the databaseName value.
      */
+    @Generated
     public String databaseName() {
         return this.databaseName;
     }
@@ -112,6 +126,7 @@ public final class ConnectionUriPropertiesInner implements JsonSerializable<Conn
      * @param databaseName the databaseName value to set.
      * @return the ConnectionUriPropertiesInner object itself.
      */
+    @Generated
     public ConnectionUriPropertiesInner withDatabaseName(String databaseName) {
         this.databaseName = databaseName;
         return this;
@@ -122,6 +137,7 @@ public final class ConnectionUriPropertiesInner implements JsonSerializable<Conn
      * 
      * @return the roleName value.
      */
+    @Generated
     public String roleName() {
         return this.roleName;
     }
@@ -132,6 +148,7 @@ public final class ConnectionUriPropertiesInner implements JsonSerializable<Conn
      * @param roleName the roleName value to set.
      * @return the ConnectionUriPropertiesInner object itself.
      */
+    @Generated
     public ConnectionUriPropertiesInner withRoleName(String roleName) {
         this.roleName = roleName;
         return this;
@@ -142,6 +159,7 @@ public final class ConnectionUriPropertiesInner implements JsonSerializable<Conn
      * 
      * @return the endpointId value.
      */
+    @Generated
     public String endpointId() {
         return this.endpointId;
     }
@@ -152,6 +170,7 @@ public final class ConnectionUriPropertiesInner implements JsonSerializable<Conn
      * @param endpointId the endpointId value to set.
      * @return the ConnectionUriPropertiesInner object itself.
      */
+    @Generated
     public ConnectionUriPropertiesInner withEndpointId(String endpointId) {
         this.endpointId = endpointId;
         return this;
@@ -162,6 +181,7 @@ public final class ConnectionUriPropertiesInner implements JsonSerializable<Conn
      * 
      * @return the isPooled value.
      */
+    @Generated
     public Boolean isPooled() {
         return this.isPooled;
     }
@@ -172,6 +192,7 @@ public final class ConnectionUriPropertiesInner implements JsonSerializable<Conn
      * @param isPooled the isPooled value to set.
      * @return the ConnectionUriPropertiesInner object itself.
      */
+    @Generated
     public ConnectionUriPropertiesInner withIsPooled(Boolean isPooled) {
         this.isPooled = isPooled;
         return this;
@@ -182,6 +203,7 @@ public final class ConnectionUriPropertiesInner implements JsonSerializable<Conn
      * 
      * @return the connectionStringUri value.
      */
+    @Generated
     public String connectionStringUri() {
         return this.connectionStringUri;
     }

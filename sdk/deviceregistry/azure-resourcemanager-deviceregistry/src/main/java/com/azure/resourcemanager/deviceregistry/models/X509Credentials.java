@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class X509Credentials implements JsonSerializable<X509Credentials> 
     /*
      * The name of the secret containing the certificate and private key (e.g. stored as .der/.pem or .der/.pfx).
      */
+    @Generated
     private String certificateSecretName;
 
     /**
      * Creates an instance of X509Credentials class.
      */
+    @Generated
     public X509Credentials() {
     }
 
@@ -34,6 +37,7 @@ public final class X509Credentials implements JsonSerializable<X509Credentials> 
      * 
      * @return the certificateSecretName value.
      */
+    @Generated
     public String certificateSecretName() {
         return this.certificateSecretName;
     }
@@ -45,6 +49,7 @@ public final class X509Credentials implements JsonSerializable<X509Credentials> 
      * @param certificateSecretName the certificateSecretName value to set.
      * @return the X509Credentials object itself.
      */
+    @Generated
     public X509Credentials withCertificateSecretName(String certificateSecretName) {
         this.certificateSecretName = certificateSecretName;
         return this;

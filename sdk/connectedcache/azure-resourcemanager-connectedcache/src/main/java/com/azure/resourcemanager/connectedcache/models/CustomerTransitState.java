@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.connectedcache.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class CustomerTransitState extends ExpandableStringEnum<CustomerTra
     /**
      * do not have transit.
      */
+    @Generated
     public static final CustomerTransitState NO_TRANSIT = fromString("NoTransit");
 
     /**
      * transit provider and have own subscribers.
      */
+    @Generated
     public static final CustomerTransitState COMBINED_TRANSIT = fromString("CombinedTransit");
 
     /**
      * pure transit provider or network service provider.
      */
+    @Generated
     public static final CustomerTransitState TRANSIT_ONLY = fromString("TransitOnly");
 
     /**
@@ -31,6 +35,7 @@ public final class CustomerTransitState extends ExpandableStringEnum<CustomerTra
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CustomerTransitState() {
     }
@@ -41,6 +46,7 @@ public final class CustomerTransitState extends ExpandableStringEnum<CustomerTra
      * @param name a name to look for.
      * @return the corresponding CustomerTransitState.
      */
+    @Generated
     public static CustomerTransitState fromString(String name) {
         return fromString(name, CustomerTransitState.class);
     }
@@ -50,6 +56,7 @@ public final class CustomerTransitState extends ExpandableStringEnum<CustomerTra
      * 
      * @return known CustomerTransitState values.
      */
+    @Generated
     public static Collection<CustomerTransitState> values() {
         return values(CustomerTransitState.class);
     }

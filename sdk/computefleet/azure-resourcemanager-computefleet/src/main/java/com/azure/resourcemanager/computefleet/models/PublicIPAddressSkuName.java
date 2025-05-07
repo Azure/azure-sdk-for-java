@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class PublicIPAddressSkuName extends ExpandableStringEnum<PublicIPA
     /**
      * Basic sku name.
      */
+    @Generated
     public static final PublicIPAddressSkuName BASIC = fromString("Basic");
 
     /**
      * Standard sku name.
      */
+    @Generated
     public static final PublicIPAddressSkuName STANDARD = fromString("Standard");
 
     /**
@@ -26,6 +29,7 @@ public final class PublicIPAddressSkuName extends ExpandableStringEnum<PublicIPA
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PublicIPAddressSkuName() {
     }
@@ -36,6 +40,7 @@ public final class PublicIPAddressSkuName extends ExpandableStringEnum<PublicIPA
      * @param name a name to look for.
      * @return the corresponding PublicIPAddressSkuName.
      */
+    @Generated
     public static PublicIPAddressSkuName fromString(String name) {
         return fromString(name, PublicIPAddressSkuName.class);
     }
@@ -45,6 +50,7 @@ public final class PublicIPAddressSkuName extends ExpandableStringEnum<PublicIPA
      * 
      * @return known PublicIPAddressSkuName values.
      */
+    @Generated
     public static Collection<PublicIPAddressSkuName> values() {
         return values(PublicIPAddressSkuName.class);
     }

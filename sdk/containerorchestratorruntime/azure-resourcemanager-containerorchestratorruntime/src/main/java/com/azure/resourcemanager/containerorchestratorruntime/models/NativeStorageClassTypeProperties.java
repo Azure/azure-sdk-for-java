@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -18,11 +19,13 @@ public final class NativeStorageClassTypeProperties extends StorageClassTypeProp
     /*
      * Type of the storage class.
      */
+    @Generated
     private SCType type = SCType.NATIVE;
 
     /**
      * Creates an instance of NativeStorageClassTypeProperties class.
      */
+    @Generated
     public NativeStorageClassTypeProperties() {
     }
 
@@ -31,6 +34,7 @@ public final class NativeStorageClassTypeProperties extends StorageClassTypeProp
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public SCType type() {
         return this.type;

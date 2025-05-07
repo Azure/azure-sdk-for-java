@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dependencymap.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public class DiscoverySourceResourceProperties implements JsonSerializable<Disco
     /*
      * Source type of Discovery Source resource.
      */
+    @Generated
     private SourceType sourceType = SourceType.fromString("DiscoverySourceResourceProperties");
 
     /*
      * Provisioning state of Discovery Source resource.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * Source ArmId of Discovery Source resource
      */
+    @Generated
     private String sourceId;
 
     /**
      * Creates an instance of DiscoverySourceResourceProperties class.
      */
+    @Generated
     public DiscoverySourceResourceProperties() {
     }
 
@@ -43,6 +48,7 @@ public class DiscoverySourceResourceProperties implements JsonSerializable<Disco
      * 
      * @return the sourceType value.
      */
+    @Generated
     public SourceType sourceType() {
         return this.sourceType;
     }
@@ -52,6 +58,7 @@ public class DiscoverySourceResourceProperties implements JsonSerializable<Disco
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -62,6 +69,7 @@ public class DiscoverySourceResourceProperties implements JsonSerializable<Disco
      * @param provisioningState the provisioningState value to set.
      * @return the DiscoverySourceResourceProperties object itself.
      */
+    @Generated
     DiscoverySourceResourceProperties withProvisioningState(ProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
@@ -72,6 +80,7 @@ public class DiscoverySourceResourceProperties implements JsonSerializable<Disco
      * 
      * @return the sourceId value.
      */
+    @Generated
     public String sourceId() {
         return this.sourceId;
     }
@@ -82,6 +91,7 @@ public class DiscoverySourceResourceProperties implements JsonSerializable<Disco
      * @param sourceId the sourceId value to set.
      * @return the DiscoverySourceResourceProperties object itself.
      */
+    @Generated
     public DiscoverySourceResourceProperties withSourceId(String sourceId) {
         this.sourceId = sourceId;
         return this;

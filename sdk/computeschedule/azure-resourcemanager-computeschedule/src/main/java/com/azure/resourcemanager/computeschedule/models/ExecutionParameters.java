@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
     /*
      * Details that could optimize the user's request
      */
+    @Generated
     private OptimizationPreference optimizationPreference;
 
     /*
      * Retry policy the user can pass
      */
+    @Generated
     private RetryPolicy retryPolicy;
 
     /**
      * Creates an instance of ExecutionParameters class.
      */
+    @Generated
     public ExecutionParameters() {
     }
 
@@ -37,6 +41,7 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
      * 
      * @return the optimizationPreference value.
      */
+    @Generated
     public OptimizationPreference optimizationPreference() {
         return this.optimizationPreference;
     }
@@ -47,6 +52,7 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
      * @param optimizationPreference the optimizationPreference value to set.
      * @return the ExecutionParameters object itself.
      */
+    @Generated
     public ExecutionParameters withOptimizationPreference(OptimizationPreference optimizationPreference) {
         this.optimizationPreference = optimizationPreference;
         return this;
@@ -57,6 +63,7 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
      * 
      * @return the retryPolicy value.
      */
+    @Generated
     public RetryPolicy retryPolicy() {
         return this.retryPolicy;
     }
@@ -67,6 +74,7 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
      * @param retryPolicy the retryPolicy value to set.
      * @return the ExecutionParameters object itself.
      */
+    @Generated
     public ExecutionParameters withRetryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;

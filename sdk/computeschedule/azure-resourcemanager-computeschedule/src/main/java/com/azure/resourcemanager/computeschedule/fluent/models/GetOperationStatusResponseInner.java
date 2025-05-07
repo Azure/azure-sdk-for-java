@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,11 +23,13 @@ public final class GetOperationStatusResponseInner implements JsonSerializable<G
     /*
      * An array of resource operations based on their operation ids
      */
+    @Generated
     private List<ResourceOperation> results;
 
     /**
      * Creates an instance of GetOperationStatusResponseInner class.
      */
+    @Generated
     private GetOperationStatusResponseInner() {
     }
 
@@ -35,6 +38,7 @@ public final class GetOperationStatusResponseInner implements JsonSerializable<G
      * 
      * @return the results value.
      */
+    @Generated
     public List<ResourceOperation> results() {
         return this.results;
     }

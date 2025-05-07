@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,24 +21,28 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
     /*
      * VolumeName is the binding reference to the PersistentVolume backing this claim.
      */
+    @Generated
     private String volumeName;
 
     /*
      * volumeMode defines what type of volume is required by the claim. Value of Filesystem is implied when not included
      * in claim spec. This is a beta feature.
      */
+    @Generated
     private String volumeMode;
 
     /*
      * Name of the StorageClass required by the claim. More info:
      * https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1
      */
+    @Generated
     private String storageClassName;
 
     /*
      * AccessModes contains the desired access modes the volume should have. More info:
      * https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1
      */
+    @Generated
     private List<String> accessModes;
 
     /*
@@ -47,6 +52,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * the specified data source. If the AnyVolumeDataSource feature gate is enabled, this field will always have the
      * same contents as the DataSourceRef field.
      */
+    @Generated
     private LocalKubernetesReference dataSource;
 
     /*
@@ -62,6 +68,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * generates an error if a disallowed value is specified. (Beta) Using this field requires the AnyVolumeDataSource
      * feature gate to be enabled.
      */
+    @Generated
     private KubernetesReference dataSourceRef;
 
     /*
@@ -70,16 +77,19 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * higher than capacity recorded in the status field of the claim. More info:
      * https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources
      */
+    @Generated
     private VolumeClaimResourceRequirements resources;
 
     /*
      * A label query over volumes to consider for binding.
      */
+    @Generated
     private VolumeClaimSpecSelector selector;
 
     /**
      * Creates an instance of VolumeClaimSpec class.
      */
+    @Generated
     public VolumeClaimSpec() {
     }
 
@@ -88,6 +98,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * 
      * @return the volumeName value.
      */
+    @Generated
     public String volumeName() {
         return this.volumeName;
     }
@@ -98,6 +109,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * @param volumeName the volumeName value to set.
      * @return the VolumeClaimSpec object itself.
      */
+    @Generated
     public VolumeClaimSpec withVolumeName(String volumeName) {
         this.volumeName = volumeName;
         return this;
@@ -109,6 +121,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * 
      * @return the volumeMode value.
      */
+    @Generated
     public String volumeMode() {
         return this.volumeMode;
     }
@@ -120,6 +133,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * @param volumeMode the volumeMode value to set.
      * @return the VolumeClaimSpec object itself.
      */
+    @Generated
     public VolumeClaimSpec withVolumeMode(String volumeMode) {
         this.volumeMode = volumeMode;
         return this;
@@ -131,6 +145,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * 
      * @return the storageClassName value.
      */
+    @Generated
     public String storageClassName() {
         return this.storageClassName;
     }
@@ -142,6 +157,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * @param storageClassName the storageClassName value to set.
      * @return the VolumeClaimSpec object itself.
      */
+    @Generated
     public VolumeClaimSpec withStorageClassName(String storageClassName) {
         this.storageClassName = storageClassName;
         return this;
@@ -153,6 +169,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * 
      * @return the accessModes value.
      */
+    @Generated
     public List<String> accessModes() {
         return this.accessModes;
     }
@@ -164,6 +181,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * @param accessModes the accessModes value to set.
      * @return the VolumeClaimSpec object itself.
      */
+    @Generated
     public VolumeClaimSpec withAccessModes(List<String> accessModes) {
         this.accessModes = accessModes;
         return this;
@@ -178,6 +196,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * 
      * @return the dataSource value.
      */
+    @Generated
     public LocalKubernetesReference dataSource() {
         return this.dataSource;
     }
@@ -192,6 +211,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * @param dataSource the dataSource value to set.
      * @return the VolumeClaimSpec object itself.
      */
+    @Generated
     public VolumeClaimSpec withDataSource(LocalKubernetesReference dataSource) {
         this.dataSource = dataSource;
         return this;
@@ -212,6 +232,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * 
      * @return the dataSourceRef value.
      */
+    @Generated
     public KubernetesReference dataSourceRef() {
         return this.dataSourceRef;
     }
@@ -232,6 +253,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * @param dataSourceRef the dataSourceRef value to set.
      * @return the VolumeClaimSpec object itself.
      */
+    @Generated
     public VolumeClaimSpec withDataSourceRef(KubernetesReference dataSourceRef) {
         this.dataSourceRef = dataSourceRef;
         return this;
@@ -245,6 +267,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * 
      * @return the resources value.
      */
+    @Generated
     public VolumeClaimResourceRequirements resources() {
         return this.resources;
     }
@@ -258,6 +281,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * @param resources the resources value to set.
      * @return the VolumeClaimSpec object itself.
      */
+    @Generated
     public VolumeClaimSpec withResources(VolumeClaimResourceRequirements resources) {
         this.resources = resources;
         return this;
@@ -268,6 +292,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * 
      * @return the selector value.
      */
+    @Generated
     public VolumeClaimSpecSelector selector() {
         return this.selector;
     }
@@ -278,6 +303,7 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
      * @param selector the selector value to set.
      * @return the VolumeClaimSpec object itself.
      */
+    @Generated
     public VolumeClaimSpec withSelector(VolumeClaimSpecSelector selector) {
         this.selector = selector;
         return this;

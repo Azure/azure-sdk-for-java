@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,6 +16,7 @@ public final class PreviewFeature extends ExpandableStringEnum<PreviewFeature> {
      * Enables geo replicas preview feature. The feature must be set at create-time on new cluster to enable linking a
      * geo-replica cluster to it.
      */
+    @Generated
     public static final PreviewFeature GEO_REPLICAS = fromString("GeoReplicas");
 
     /**
@@ -22,6 +24,7 @@ public final class PreviewFeature extends ExpandableStringEnum<PreviewFeature> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PreviewFeature() {
     }
@@ -32,6 +35,7 @@ public final class PreviewFeature extends ExpandableStringEnum<PreviewFeature> {
      * @param name a name to look for.
      * @return the corresponding PreviewFeature.
      */
+    @Generated
     public static PreviewFeature fromString(String name) {
         return fromString(name, PreviewFeature.class);
     }
@@ -41,6 +45,7 @@ public final class PreviewFeature extends ExpandableStringEnum<PreviewFeature> {
      * 
      * @return known PreviewFeature values.
      */
+    @Generated
     public static Collection<PreviewFeature> values() {
         return values(PreviewFeature.class);
     }

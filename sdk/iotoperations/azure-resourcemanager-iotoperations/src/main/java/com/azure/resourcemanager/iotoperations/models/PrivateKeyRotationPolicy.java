@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class PrivateKeyRotationPolicy extends ExpandableStringEnum<Private
     /**
      * Rotation Policy - Always.
      */
+    @Generated
     public static final PrivateKeyRotationPolicy ALWAYS = fromString("Always");
 
     /**
      * Rotation Policy - Never.
      */
+    @Generated
     public static final PrivateKeyRotationPolicy NEVER = fromString("Never");
 
     /**
@@ -26,6 +29,7 @@ public final class PrivateKeyRotationPolicy extends ExpandableStringEnum<Private
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PrivateKeyRotationPolicy() {
     }
@@ -36,6 +40,7 @@ public final class PrivateKeyRotationPolicy extends ExpandableStringEnum<Private
      * @param name a name to look for.
      * @return the corresponding PrivateKeyRotationPolicy.
      */
+    @Generated
     public static PrivateKeyRotationPolicy fromString(String name) {
         return fromString(name, PrivateKeyRotationPolicy.class);
     }
@@ -45,6 +50,7 @@ public final class PrivateKeyRotationPolicy extends ExpandableStringEnum<Private
      * 
      * @return known PrivateKeyRotationPolicy values.
      */
+    @Generated
     public static Collection<PrivateKeyRotationPolicy> values() {
         return values(PrivateKeyRotationPolicy.class);
     }

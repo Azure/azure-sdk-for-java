@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dependencymap.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class MapsResourceTagsUpdate implements JsonSerializable<MapsResour
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /**
      * Creates an instance of MapsResourceTagsUpdate class.
      */
+    @Generated
     public MapsResourceTagsUpdate() {
     }
 
@@ -33,6 +36,7 @@ public final class MapsResourceTagsUpdate implements JsonSerializable<MapsResour
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -43,6 +47,7 @@ public final class MapsResourceTagsUpdate implements JsonSerializable<MapsResour
      * @param tags the tags value to set.
      * @return the MapsResourceTagsUpdate object itself.
      */
+    @Generated
     public MapsResourceTagsUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;

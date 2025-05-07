@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,6 +21,7 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
     /*
      * Globally unique, immutable, non-reusable id.
      */
+    @Generated
     private String uuid;
 
     /*
@@ -27,43 +29,51 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
      * targetAddress URI specifies the type of the device. The additionalConfiguration field holds further connector
      * type specific configuration.
      */
+    @Generated
     private String targetAddress;
 
     /*
      * Defines the configuration for the connector type that is being used with the endpoint profile.
      */
+    @Generated
     private String endpointProfileType;
 
     /*
      * Defines the client authentication mechanism to the server.
      */
+    @Generated
     private Authentication authentication;
 
     /*
      * Stringified JSON that contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
      */
+    @Generated
     private String additionalConfiguration;
 
     /*
      * Reference to a discovered asset endpoint profile. Populated only if the asset endpoint profile has been created
      * from discovery flow. Discovered asset endpoint profile name must be provided.
      */
+    @Generated
     private String discoveredAssetEndpointProfileRef;
 
     /*
      * Read only object to reflect changes that have occurred on the Edge. Similar to Kubernetes status property for
      * custom resources.
      */
+    @Generated
     private AssetEndpointProfileStatus status;
 
     /*
      * Provisioning state of the resource.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of AssetEndpointProfileProperties class.
      */
+    @Generated
     public AssetEndpointProfileProperties() {
     }
 
@@ -72,6 +82,7 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
      * 
      * @return the uuid value.
      */
+    @Generated
     public String uuid() {
         return this.uuid;
     }
@@ -83,6 +94,7 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
      * 
      * @return the targetAddress value.
      */
+    @Generated
     public String targetAddress() {
         return this.targetAddress;
     }
@@ -95,6 +107,7 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
      * @param targetAddress the targetAddress value to set.
      * @return the AssetEndpointProfileProperties object itself.
      */
+    @Generated
     public AssetEndpointProfileProperties withTargetAddress(String targetAddress) {
         this.targetAddress = targetAddress;
         return this;
@@ -106,6 +119,7 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
      * 
      * @return the endpointProfileType value.
      */
+    @Generated
     public String endpointProfileType() {
         return this.endpointProfileType;
     }
@@ -117,6 +131,7 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
      * @param endpointProfileType the endpointProfileType value to set.
      * @return the AssetEndpointProfileProperties object itself.
      */
+    @Generated
     public AssetEndpointProfileProperties withEndpointProfileType(String endpointProfileType) {
         this.endpointProfileType = endpointProfileType;
         return this;
@@ -127,6 +142,7 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
      * 
      * @return the authentication value.
      */
+    @Generated
     public Authentication authentication() {
         return this.authentication;
     }
@@ -137,6 +153,7 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
      * @param authentication the authentication value to set.
      * @return the AssetEndpointProfileProperties object itself.
      */
+    @Generated
     public AssetEndpointProfileProperties withAuthentication(Authentication authentication) {
         this.authentication = authentication;
         return this;
@@ -148,6 +165,7 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
      * 
      * @return the additionalConfiguration value.
      */
+    @Generated
     public String additionalConfiguration() {
         return this.additionalConfiguration;
     }
@@ -159,6 +177,7 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
      * @param additionalConfiguration the additionalConfiguration value to set.
      * @return the AssetEndpointProfileProperties object itself.
      */
+    @Generated
     public AssetEndpointProfileProperties withAdditionalConfiguration(String additionalConfiguration) {
         this.additionalConfiguration = additionalConfiguration;
         return this;
@@ -171,6 +190,7 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
      * 
      * @return the discoveredAssetEndpointProfileRef value.
      */
+    @Generated
     public String discoveredAssetEndpointProfileRef() {
         return this.discoveredAssetEndpointProfileRef;
     }
@@ -183,6 +203,7 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
      * @param discoveredAssetEndpointProfileRef the discoveredAssetEndpointProfileRef value to set.
      * @return the AssetEndpointProfileProperties object itself.
      */
+    @Generated
     public AssetEndpointProfileProperties
         withDiscoveredAssetEndpointProfileRef(String discoveredAssetEndpointProfileRef) {
         this.discoveredAssetEndpointProfileRef = discoveredAssetEndpointProfileRef;
@@ -195,6 +216,7 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
      * 
      * @return the status value.
      */
+    @Generated
     public AssetEndpointProfileStatus status() {
         return this.status;
     }
@@ -204,6 +226,7 @@ public final class AssetEndpointProfileProperties implements JsonSerializable<As
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,41 +20,49 @@ public final class MessageServerProperties implements JsonSerializable<MessageSe
     /*
      * message server port.
      */
+    @Generated
     private Long msPort;
 
     /*
      * message server internal MS port.
      */
+    @Generated
     private Long internalMsPort;
 
     /*
      * message server HTTP Port.
      */
+    @Generated
     private Long httpPort;
 
     /*
      * message server HTTPS Port.
      */
+    @Generated
     private Long httpsPort;
 
     /*
      * message server SAP Hostname.
      */
+    @Generated
     private String hostname;
 
     /*
      * message server IP Address.
      */
+    @Generated
     private String ipAddress;
 
     /*
      * Defines the health of SAP Instances.
      */
+    @Generated
     private SapHealthState health;
 
     /**
      * Creates an instance of MessageServerProperties class.
      */
+    @Generated
     public MessageServerProperties() {
     }
 
@@ -62,6 +71,7 @@ public final class MessageServerProperties implements JsonSerializable<MessageSe
      * 
      * @return the msPort value.
      */
+    @Generated
     public Long msPort() {
         return this.msPort;
     }
@@ -71,6 +81,7 @@ public final class MessageServerProperties implements JsonSerializable<MessageSe
      * 
      * @return the internalMsPort value.
      */
+    @Generated
     public Long internalMsPort() {
         return this.internalMsPort;
     }
@@ -80,6 +91,7 @@ public final class MessageServerProperties implements JsonSerializable<MessageSe
      * 
      * @return the httpPort value.
      */
+    @Generated
     public Long httpPort() {
         return this.httpPort;
     }
@@ -89,6 +101,7 @@ public final class MessageServerProperties implements JsonSerializable<MessageSe
      * 
      * @return the httpsPort value.
      */
+    @Generated
     public Long httpsPort() {
         return this.httpsPort;
     }
@@ -98,6 +111,7 @@ public final class MessageServerProperties implements JsonSerializable<MessageSe
      * 
      * @return the hostname value.
      */
+    @Generated
     public String hostname() {
         return this.hostname;
     }
@@ -107,6 +121,7 @@ public final class MessageServerProperties implements JsonSerializable<MessageSe
      * 
      * @return the ipAddress value.
      */
+    @Generated
     public String ipAddress() {
         return this.ipAddress;
     }
@@ -116,6 +131,7 @@ public final class MessageServerProperties implements JsonSerializable<MessageSe
      * 
      * @return the health value.
      */
+    @Generated
     public SapHealthState health() {
         return this.health;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,32 +20,38 @@ public final class ResourcePlanUpdate implements JsonSerializable<ResourcePlanUp
     /*
      * A user defined name of the 3rd Party Artifact that is being procured.
      */
+    @Generated
     private String name;
 
     /*
      * The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
      */
+    @Generated
     private String publisher;
 
     /*
      * The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the
      * artifact at the time of Data Market onboarding.
      */
+    @Generated
     private String product;
 
     /*
      * A publisher provided promotion code as provisioned in Data Market for the said product/artifact.
      */
+    @Generated
     private String promotionCode;
 
     /*
      * The version of the desired product/artifact.
      */
+    @Generated
     private String version;
 
     /**
      * Creates an instance of ResourcePlanUpdate class.
      */
+    @Generated
     public ResourcePlanUpdate() {
     }
 
@@ -53,6 +60,7 @@ public final class ResourcePlanUpdate implements JsonSerializable<ResourcePlanUp
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -63,6 +71,7 @@ public final class ResourcePlanUpdate implements JsonSerializable<ResourcePlanUp
      * @param name the name value to set.
      * @return the ResourcePlanUpdate object itself.
      */
+    @Generated
     public ResourcePlanUpdate withName(String name) {
         this.name = name;
         return this;
@@ -73,6 +82,7 @@ public final class ResourcePlanUpdate implements JsonSerializable<ResourcePlanUp
      * 
      * @return the publisher value.
      */
+    @Generated
     public String publisher() {
         return this.publisher;
     }
@@ -83,6 +93,7 @@ public final class ResourcePlanUpdate implements JsonSerializable<ResourcePlanUp
      * @param publisher the publisher value to set.
      * @return the ResourcePlanUpdate object itself.
      */
+    @Generated
     public ResourcePlanUpdate withPublisher(String publisher) {
         this.publisher = publisher;
         return this;
@@ -94,6 +105,7 @@ public final class ResourcePlanUpdate implements JsonSerializable<ResourcePlanUp
      * 
      * @return the product value.
      */
+    @Generated
     public String product() {
         return this.product;
     }
@@ -105,6 +117,7 @@ public final class ResourcePlanUpdate implements JsonSerializable<ResourcePlanUp
      * @param product the product value to set.
      * @return the ResourcePlanUpdate object itself.
      */
+    @Generated
     public ResourcePlanUpdate withProduct(String product) {
         this.product = product;
         return this;
@@ -116,6 +129,7 @@ public final class ResourcePlanUpdate implements JsonSerializable<ResourcePlanUp
      * 
      * @return the promotionCode value.
      */
+    @Generated
     public String promotionCode() {
         return this.promotionCode;
     }
@@ -127,6 +141,7 @@ public final class ResourcePlanUpdate implements JsonSerializable<ResourcePlanUp
      * @param promotionCode the promotionCode value to set.
      * @return the ResourcePlanUpdate object itself.
      */
+    @Generated
     public ResourcePlanUpdate withPromotionCode(String promotionCode) {
         this.promotionCode = promotionCode;
         return this;
@@ -137,6 +152,7 @@ public final class ResourcePlanUpdate implements JsonSerializable<ResourcePlanUp
      * 
      * @return the version value.
      */
+    @Generated
     public String version() {
         return this.version;
     }
@@ -147,6 +163,7 @@ public final class ResourcePlanUpdate implements JsonSerializable<ResourcePlanUp
      * @param version the version value to set.
      * @return the ResourcePlanUpdate object itself.
      */
+    @Generated
     public ResourcePlanUpdate withVersion(String version) {
         this.version = version;
         return this;

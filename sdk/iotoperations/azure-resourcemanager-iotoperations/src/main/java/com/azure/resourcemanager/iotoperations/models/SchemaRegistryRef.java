@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class SchemaRegistryRef implements JsonSerializable<SchemaRegistryR
     /*
      * The resource ID of the Schema Registry.
      */
+    @Generated
     private String resourceId;
 
     /**
      * Creates an instance of SchemaRegistryRef class.
      */
+    @Generated
     public SchemaRegistryRef() {
     }
 
@@ -33,6 +36,7 @@ public final class SchemaRegistryRef implements JsonSerializable<SchemaRegistryR
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String resourceId() {
         return this.resourceId;
     }
@@ -43,6 +47,7 @@ public final class SchemaRegistryRef implements JsonSerializable<SchemaRegistryR
      * @param resourceId the resourceId value to set.
      * @return the SchemaRegistryRef object itself.
      */
+    @Generated
     public SchemaRegistryRef withResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;

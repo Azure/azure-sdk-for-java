@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,11 +22,13 @@ public final class DataflowEndpointAuthenticationSystemAssignedManagedIdentity
      * Audience of the service to authenticate against. Optional; defaults to the audience for Service host
      * configuration.
      */
+    @Generated
     private String audience;
 
     /**
      * Creates an instance of DataflowEndpointAuthenticationSystemAssignedManagedIdentity class.
      */
+    @Generated
     public DataflowEndpointAuthenticationSystemAssignedManagedIdentity() {
     }
 
@@ -35,6 +38,7 @@ public final class DataflowEndpointAuthenticationSystemAssignedManagedIdentity
      * 
      * @return the audience value.
      */
+    @Generated
     public String audience() {
         return this.audience;
     }
@@ -46,6 +50,7 @@ public final class DataflowEndpointAuthenticationSystemAssignedManagedIdentity
      * @param audience the audience value to set.
      * @return the DataflowEndpointAuthenticationSystemAssignedManagedIdentity object itself.
      */
+    @Generated
     public DataflowEndpointAuthenticationSystemAssignedManagedIdentity withAudience(String audience) {
         this.audience = audience;
         return this;

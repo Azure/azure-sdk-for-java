@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class SecurityPolicyUpdate implements JsonSerializable<SecurityPoli
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private SecurityPolicyUpdateProperties properties;
 
     /**
      * Creates an instance of SecurityPolicyUpdate class.
      */
+    @Generated
     public SecurityPolicyUpdate() {
     }
 
@@ -38,6 +42,7 @@ public final class SecurityPolicyUpdate implements JsonSerializable<SecurityPoli
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -48,6 +53,7 @@ public final class SecurityPolicyUpdate implements JsonSerializable<SecurityPoli
      * @param tags the tags value to set.
      * @return the SecurityPolicyUpdate object itself.
      */
+    @Generated
     public SecurityPolicyUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -58,6 +64,7 @@ public final class SecurityPolicyUpdate implements JsonSerializable<SecurityPoli
      * 
      * @return the properties value.
      */
+    @Generated
     public SecurityPolicyUpdateProperties properties() {
         return this.properties;
     }
@@ -68,6 +75,7 @@ public final class SecurityPolicyUpdate implements JsonSerializable<SecurityPoli
      * @param properties the properties value to set.
      * @return the SecurityPolicyUpdate object itself.
      */
+    @Generated
     public SecurityPolicyUpdate withProperties(SecurityPolicyUpdateProperties properties) {
         this.properties = properties;
         return this;

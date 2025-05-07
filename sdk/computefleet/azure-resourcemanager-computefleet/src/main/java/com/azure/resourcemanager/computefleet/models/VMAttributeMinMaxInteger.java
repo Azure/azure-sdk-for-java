@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class VMAttributeMinMaxInteger implements JsonSerializable<VMAttrib
     /*
      * Min VMSize from CRS, Min = 0 (uint.MinValue) if not specified.
      */
+    @Generated
     private Integer min;
 
     /*
      * Max VMSize from CRS, Max = 4294967295 (uint.MaxValue) if not specified.
      */
+    @Generated
     private Integer max;
 
     /**
      * Creates an instance of VMAttributeMinMaxInteger class.
      */
+    @Generated
     public VMAttributeMinMaxInteger() {
     }
 
@@ -38,6 +42,7 @@ public final class VMAttributeMinMaxInteger implements JsonSerializable<VMAttrib
      * 
      * @return the min value.
      */
+    @Generated
     public Integer min() {
         return this.min;
     }
@@ -48,6 +53,7 @@ public final class VMAttributeMinMaxInteger implements JsonSerializable<VMAttrib
      * @param min the min value to set.
      * @return the VMAttributeMinMaxInteger object itself.
      */
+    @Generated
     public VMAttributeMinMaxInteger withMin(Integer min) {
         this.min = min;
         return this;
@@ -58,6 +64,7 @@ public final class VMAttributeMinMaxInteger implements JsonSerializable<VMAttrib
      * 
      * @return the max value.
      */
+    @Generated
     public Integer max() {
         return this.max;
     }
@@ -68,6 +75,7 @@ public final class VMAttributeMinMaxInteger implements JsonSerializable<VMAttrib
      * @param max the max value to set.
      * @return the VMAttributeMinMaxInteger object itself.
      */
+    @Generated
     public VMAttributeMinMaxInteger withMax(Integer max) {
         this.max = max;
         return this;

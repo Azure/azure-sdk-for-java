@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,22 +21,26 @@ public final class UpdateRunStatus implements JsonSerializable<UpdateRunStatus> 
     /*
      * The status of the UpdateRun.
      */
+    @Generated
     private UpdateStatus status;
 
     /*
      * The stages composing an update run. Stages are run sequentially withing an UpdateRun.
      */
+    @Generated
     private List<UpdateStageStatus> stages;
 
     /*
      * The node image upgrade specs for the update run. It is only set in update run when `NodeImageSelection.type` is
      * `Consistent`.
      */
+    @Generated
     private NodeImageSelectionStatus nodeImageSelection;
 
     /**
      * Creates an instance of UpdateRunStatus class.
      */
+    @Generated
     private UpdateRunStatus() {
     }
 
@@ -44,6 +49,7 @@ public final class UpdateRunStatus implements JsonSerializable<UpdateRunStatus> 
      * 
      * @return the status value.
      */
+    @Generated
     public UpdateStatus status() {
         return this.status;
     }
@@ -53,6 +59,7 @@ public final class UpdateRunStatus implements JsonSerializable<UpdateRunStatus> 
      * 
      * @return the stages value.
      */
+    @Generated
     public List<UpdateStageStatus> stages() {
         return this.stages;
     }
@@ -63,6 +70,7 @@ public final class UpdateRunStatus implements JsonSerializable<UpdateRunStatus> 
      * 
      * @return the nodeImageSelection value.
      */
+    @Generated
     public NodeImageSelectionStatus nodeImageSelection() {
         return this.nodeImageSelection;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class ErrorDetailProperties implements JsonSerializable<ErrorDetail
     /*
      * ARM Error code associated with the impact.
      */
+    @Generated
     private String errorCode;
 
     /*
      * ARM Error Message associated with the impact
      */
+    @Generated
     private String errorMessage;
 
     /**
      * Creates an instance of ErrorDetailProperties class.
      */
+    @Generated
     public ErrorDetailProperties() {
     }
 
@@ -37,6 +41,7 @@ public final class ErrorDetailProperties implements JsonSerializable<ErrorDetail
      * 
      * @return the errorCode value.
      */
+    @Generated
     public String errorCode() {
         return this.errorCode;
     }
@@ -47,6 +52,7 @@ public final class ErrorDetailProperties implements JsonSerializable<ErrorDetail
      * @param errorCode the errorCode value to set.
      * @return the ErrorDetailProperties object itself.
      */
+    @Generated
     public ErrorDetailProperties withErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
@@ -57,6 +63,7 @@ public final class ErrorDetailProperties implements JsonSerializable<ErrorDetail
      * 
      * @return the errorMessage value.
      */
+    @Generated
     public String errorMessage() {
         return this.errorMessage;
     }
@@ -67,6 +74,7 @@ public final class ErrorDetailProperties implements JsonSerializable<ErrorDetail
      * @param errorMessage the errorMessage value to set.
      * @return the ErrorDetailProperties object itself.
      */
+    @Generated
     public ErrorDetailProperties withErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public class OSConfiguration implements JsonSerializable<OSConfiguration> {
     /*
      * The OS Type
      */
+    @Generated
     private OSType osType = OSType.fromString("OSConfiguration");
 
     /**
      * Creates an instance of OSConfiguration class.
      */
+    @Generated
     public OSConfiguration() {
     }
 
@@ -32,6 +35,7 @@ public class OSConfiguration implements JsonSerializable<OSConfiguration> {
      * 
      * @return the osType value.
      */
+    @Generated
     public OSType osType() {
         return this.osType;
     }

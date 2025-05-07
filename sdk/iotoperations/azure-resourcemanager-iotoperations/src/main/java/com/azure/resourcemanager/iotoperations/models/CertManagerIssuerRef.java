@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class CertManagerIssuerRef implements JsonSerializable<CertManagerI
     /*
      * group of issuer.
      */
+    @Generated
     private String group;
 
     /*
      * kind of issuer (Issuer or ClusterIssuer).
      */
+    @Generated
     private CertManagerIssuerKind kind;
 
     /*
      * name of issuer.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of CertManagerIssuerRef class.
      */
+    @Generated
     public CertManagerIssuerRef() {
     }
 
@@ -43,6 +48,7 @@ public final class CertManagerIssuerRef implements JsonSerializable<CertManagerI
      * 
      * @return the group value.
      */
+    @Generated
     public String group() {
         return this.group;
     }
@@ -53,6 +59,7 @@ public final class CertManagerIssuerRef implements JsonSerializable<CertManagerI
      * @param group the group value to set.
      * @return the CertManagerIssuerRef object itself.
      */
+    @Generated
     public CertManagerIssuerRef withGroup(String group) {
         this.group = group;
         return this;
@@ -63,6 +70,7 @@ public final class CertManagerIssuerRef implements JsonSerializable<CertManagerI
      * 
      * @return the kind value.
      */
+    @Generated
     public CertManagerIssuerKind kind() {
         return this.kind;
     }
@@ -73,6 +81,7 @@ public final class CertManagerIssuerRef implements JsonSerializable<CertManagerI
      * @param kind the kind value to set.
      * @return the CertManagerIssuerRef object itself.
      */
+    @Generated
     public CertManagerIssuerRef withKind(CertManagerIssuerKind kind) {
         this.kind = kind;
         return this;
@@ -83,6 +92,7 @@ public final class CertManagerIssuerRef implements JsonSerializable<CertManagerI
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -93,6 +103,7 @@ public final class CertManagerIssuerRef implements JsonSerializable<CertManagerI
      * @param name the name value to set.
      * @return the CertManagerIssuerRef object itself.
      */
+    @Generated
     public CertManagerIssuerRef withName(String name) {
         this.name = name;
         return this;

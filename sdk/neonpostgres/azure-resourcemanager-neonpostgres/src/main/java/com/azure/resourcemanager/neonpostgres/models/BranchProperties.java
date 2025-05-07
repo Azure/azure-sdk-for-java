@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,66 +21,79 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
     /*
      * Unique identifier for the entity
      */
+    @Generated
     private String entityId;
 
     /*
      * Name of the resource
      */
+    @Generated
     private String entityName;
 
     /*
      * Timestamp indicating when the entity was created
      */
+    @Generated
     private String createdAt;
 
     /*
      * Provisioning state of the resource.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /*
      * Additional attributes for the entity
      */
+    @Generated
     private List<Attributes> attributes;
 
     /*
      * The ID of the project this branch belongs to
      */
+    @Generated
     private String projectId;
 
     /*
      * The ID of the parent branch
      */
+    @Generated
     private String parentId;
 
     /*
      * Role name associated with the branch
      */
+    @Generated
     private String roleName;
 
     /*
      * Database name associated with the branch
      */
+    @Generated
     private String databaseName;
 
     /*
      * Roles associated with the branch
      */
+    @Generated
     private List<NeonRoleProperties> roles;
 
     /*
      * Neon Databases associated with the branch
      */
+    @Generated
     private List<NeonDatabaseProperties> databases;
 
     /*
      * Endpoints associated with the branch
      */
+    @Generated
     private List<EndpointProperties> endpoints;
 
     /**
      * Creates an instance of BranchProperties class.
      */
+    @Generated
     public BranchProperties() {
     }
 
@@ -88,6 +102,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * 
      * @return the entityId value.
      */
+    @Generated
     public String entityId() {
         return this.entityId;
     }
@@ -97,6 +112,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * 
      * @return the entityName value.
      */
+    @Generated
     public String entityName() {
         return this.entityName;
     }
@@ -107,6 +123,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * @param entityName the entityName value to set.
      * @return the BranchProperties object itself.
      */
+    @Generated
     public BranchProperties withEntityName(String entityName) {
         this.entityName = entityName;
         return this;
@@ -117,6 +134,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * 
      * @return the createdAt value.
      */
+    @Generated
     public String createdAt() {
         return this.createdAt;
     }
@@ -126,6 +144,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -135,6 +154,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * 
      * @return the attributes value.
      */
+    @Generated
     public List<Attributes> attributes() {
         return this.attributes;
     }
@@ -145,6 +165,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * @param attributes the attributes value to set.
      * @return the BranchProperties object itself.
      */
+    @Generated
     public BranchProperties withAttributes(List<Attributes> attributes) {
         this.attributes = attributes;
         return this;
@@ -155,6 +176,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * 
      * @return the projectId value.
      */
+    @Generated
     public String projectId() {
         return this.projectId;
     }
@@ -165,6 +187,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * @param projectId the projectId value to set.
      * @return the BranchProperties object itself.
      */
+    @Generated
     public BranchProperties withProjectId(String projectId) {
         this.projectId = projectId;
         return this;
@@ -175,6 +198,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * 
      * @return the parentId value.
      */
+    @Generated
     public String parentId() {
         return this.parentId;
     }
@@ -185,6 +209,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * @param parentId the parentId value to set.
      * @return the BranchProperties object itself.
      */
+    @Generated
     public BranchProperties withParentId(String parentId) {
         this.parentId = parentId;
         return this;
@@ -195,6 +220,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * 
      * @return the roleName value.
      */
+    @Generated
     public String roleName() {
         return this.roleName;
     }
@@ -205,6 +231,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * @param roleName the roleName value to set.
      * @return the BranchProperties object itself.
      */
+    @Generated
     public BranchProperties withRoleName(String roleName) {
         this.roleName = roleName;
         return this;
@@ -215,6 +242,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * 
      * @return the databaseName value.
      */
+    @Generated
     public String databaseName() {
         return this.databaseName;
     }
@@ -225,6 +253,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * @param databaseName the databaseName value to set.
      * @return the BranchProperties object itself.
      */
+    @Generated
     public BranchProperties withDatabaseName(String databaseName) {
         this.databaseName = databaseName;
         return this;
@@ -235,6 +264,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * 
      * @return the roles value.
      */
+    @Generated
     public List<NeonRoleProperties> roles() {
         return this.roles;
     }
@@ -245,6 +275,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * @param roles the roles value to set.
      * @return the BranchProperties object itself.
      */
+    @Generated
     public BranchProperties withRoles(List<NeonRoleProperties> roles) {
         this.roles = roles;
         return this;
@@ -255,6 +286,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * 
      * @return the databases value.
      */
+    @Generated
     public List<NeonDatabaseProperties> databases() {
         return this.databases;
     }
@@ -265,6 +297,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * @param databases the databases value to set.
      * @return the BranchProperties object itself.
      */
+    @Generated
     public BranchProperties withDatabases(List<NeonDatabaseProperties> databases) {
         this.databases = databases;
         return this;
@@ -275,6 +308,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * 
      * @return the endpoints value.
      */
+    @Generated
     public List<EndpointProperties> endpoints() {
         return this.endpoints;
     }
@@ -285,6 +319,7 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      * @param endpoints the endpoints value to set.
      * @return the BranchProperties object itself.
      */
+    @Generated
     public BranchProperties withEndpoints(List<EndpointProperties> endpoints) {
         this.endpoints = endpoints;
         return this;

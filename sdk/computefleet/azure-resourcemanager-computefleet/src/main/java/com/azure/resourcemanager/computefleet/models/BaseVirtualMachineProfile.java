@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,34 +23,40 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * Specifies the operating system settings for the virtual machines in the scale
      * set.
      */
+    @Generated
     private VirtualMachineScaleSetOSProfile osProfile;
 
     /*
      * Specifies the storage settings for the virtual machine disks.
      */
+    @Generated
     private VirtualMachineScaleSetStorageProfile storageProfile;
 
     /*
      * Specifies properties of the network interfaces of the virtual machines in the
      * scale set.
      */
+    @Generated
     private VirtualMachineScaleSetNetworkProfile networkProfile;
 
     /*
      * Specifies the Security related profile settings for the virtual machines in the
      * scale set.
      */
+    @Generated
     private SecurityProfile securityProfile;
 
     /*
      * Specifies the boot diagnostic settings state.
      */
+    @Generated
     private DiagnosticsProfile diagnosticsProfile;
 
     /*
      * Specifies a collection of settings for extensions installed on virtual machines
      * in the scale set.
      */
+    @Generated
     private VirtualMachineScaleSetExtensionProfile extensionProfile;
 
     /*
@@ -64,11 +71,13 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * Server](https://learn.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
      * <br><br> Minimum api-version: 2015-06-15
      */
+    @Generated
     private String licenseType;
 
     /*
      * Specifies Scheduled Event related configurations.
      */
+    @Generated
     private ScheduledEventsProfile scheduledEventsProfile;
 
     /*
@@ -76,23 +85,27 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * encoded. Customer should not pass any secrets in here. Minimum api-version:
      * 2021-03-01.
      */
+    @Generated
     private String userData;
 
     /*
      * Specifies the capacity reservation related details of a scale set. Minimum
      * api-version: 2021-04-01.
      */
+    @Generated
     private CapacityReservationProfile capacityReservation;
 
     /*
      * Specifies the gallery applications that should be made available to the VM/VMSS
      */
+    @Generated
     private ApplicationProfile applicationProfile;
 
     /*
      * Specifies the hardware profile related details of a scale set. Minimum
      * api-version: 2021-11-01.
      */
+    @Generated
     private VirtualMachineScaleSetHardwareProfile hardwareProfile;
 
     /*
@@ -100,12 +113,14 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * all virtual machines in the scale set when using 'latest' image version.
      * Minimum api-version: 2022-11-01
      */
+    @Generated
     private ServiceArtifactReference serviceArtifactReference;
 
     /*
      * Specifies the security posture to be used for all virtual machines in the scale
      * set. Minimum api-version: 2023-03-01
      */
+    @Generated
     private SecurityPostureReference securityPostureReference;
 
     /*
@@ -114,11 +129,13 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * will be added to VMSS Flex VM tags when creating/updating the VMSS VM Profile
      * with minimum api-version 2023-09-01. Examples: "2024-07-01T00:00:01.1234567+00:00"
      */
+    @Generated
     private OffsetDateTime timeCreated;
 
     /**
      * Creates an instance of BaseVirtualMachineProfile class.
      */
+    @Generated
     public BaseVirtualMachineProfile() {
     }
 
@@ -128,6 +145,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the osProfile value.
      */
+    @Generated
     public VirtualMachineScaleSetOSProfile osProfile() {
         return this.osProfile;
     }
@@ -139,6 +157,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * @param osProfile the osProfile value to set.
      * @return the BaseVirtualMachineProfile object itself.
      */
+    @Generated
     public BaseVirtualMachineProfile withOsProfile(VirtualMachineScaleSetOSProfile osProfile) {
         this.osProfile = osProfile;
         return this;
@@ -149,6 +168,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the storageProfile value.
      */
+    @Generated
     public VirtualMachineScaleSetStorageProfile storageProfile() {
         return this.storageProfile;
     }
@@ -159,6 +179,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * @param storageProfile the storageProfile value to set.
      * @return the BaseVirtualMachineProfile object itself.
      */
+    @Generated
     public BaseVirtualMachineProfile withStorageProfile(VirtualMachineScaleSetStorageProfile storageProfile) {
         this.storageProfile = storageProfile;
         return this;
@@ -170,6 +191,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the networkProfile value.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkProfile networkProfile() {
         return this.networkProfile;
     }
@@ -181,6 +203,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * @param networkProfile the networkProfile value to set.
      * @return the BaseVirtualMachineProfile object itself.
      */
+    @Generated
     public BaseVirtualMachineProfile withNetworkProfile(VirtualMachineScaleSetNetworkProfile networkProfile) {
         this.networkProfile = networkProfile;
         return this;
@@ -192,6 +215,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the securityProfile value.
      */
+    @Generated
     public SecurityProfile securityProfile() {
         return this.securityProfile;
     }
@@ -203,6 +227,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * @param securityProfile the securityProfile value to set.
      * @return the BaseVirtualMachineProfile object itself.
      */
+    @Generated
     public BaseVirtualMachineProfile withSecurityProfile(SecurityProfile securityProfile) {
         this.securityProfile = securityProfile;
         return this;
@@ -213,6 +238,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the diagnosticsProfile value.
      */
+    @Generated
     public DiagnosticsProfile diagnosticsProfile() {
         return this.diagnosticsProfile;
     }
@@ -223,6 +249,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * @param diagnosticsProfile the diagnosticsProfile value to set.
      * @return the BaseVirtualMachineProfile object itself.
      */
+    @Generated
     public BaseVirtualMachineProfile withDiagnosticsProfile(DiagnosticsProfile diagnosticsProfile) {
         this.diagnosticsProfile = diagnosticsProfile;
         return this;
@@ -235,6 +262,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the extensionProfile value.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProfile extensionProfile() {
         return this.extensionProfile;
     }
@@ -247,6 +275,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * @param extensionProfile the extensionProfile value to set.
      * @return the BaseVirtualMachineProfile object itself.
      */
+    @Generated
     public BaseVirtualMachineProfile withExtensionProfile(VirtualMachineScaleSetExtensionProfile extensionProfile) {
         this.extensionProfile = extensionProfile;
         return this;
@@ -266,6 +295,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the licenseType value.
      */
+    @Generated
     public String licenseType() {
         return this.licenseType;
     }
@@ -285,6 +315,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * @param licenseType the licenseType value to set.
      * @return the BaseVirtualMachineProfile object itself.
      */
+    @Generated
     public BaseVirtualMachineProfile withLicenseType(String licenseType) {
         this.licenseType = licenseType;
         return this;
@@ -295,6 +326,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the scheduledEventsProfile value.
      */
+    @Generated
     public ScheduledEventsProfile scheduledEventsProfile() {
         return this.scheduledEventsProfile;
     }
@@ -305,6 +337,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * @param scheduledEventsProfile the scheduledEventsProfile value to set.
      * @return the BaseVirtualMachineProfile object itself.
      */
+    @Generated
     public BaseVirtualMachineProfile withScheduledEventsProfile(ScheduledEventsProfile scheduledEventsProfile) {
         this.scheduledEventsProfile = scheduledEventsProfile;
         return this;
@@ -317,6 +350,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the userData value.
      */
+    @Generated
     public String userData() {
         return this.userData;
     }
@@ -329,6 +363,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * @param userData the userData value to set.
      * @return the BaseVirtualMachineProfile object itself.
      */
+    @Generated
     public BaseVirtualMachineProfile withUserData(String userData) {
         this.userData = userData;
         return this;
@@ -340,6 +375,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the capacityReservation value.
      */
+    @Generated
     public CapacityReservationProfile capacityReservation() {
         return this.capacityReservation;
     }
@@ -351,6 +387,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * @param capacityReservation the capacityReservation value to set.
      * @return the BaseVirtualMachineProfile object itself.
      */
+    @Generated
     public BaseVirtualMachineProfile withCapacityReservation(CapacityReservationProfile capacityReservation) {
         this.capacityReservation = capacityReservation;
         return this;
@@ -362,6 +399,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the applicationProfile value.
      */
+    @Generated
     public ApplicationProfile applicationProfile() {
         return this.applicationProfile;
     }
@@ -373,6 +411,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * @param applicationProfile the applicationProfile value to set.
      * @return the BaseVirtualMachineProfile object itself.
      */
+    @Generated
     public BaseVirtualMachineProfile withApplicationProfile(ApplicationProfile applicationProfile) {
         this.applicationProfile = applicationProfile;
         return this;
@@ -384,6 +423,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the hardwareProfile value.
      */
+    @Generated
     public VirtualMachineScaleSetHardwareProfile hardwareProfile() {
         return this.hardwareProfile;
     }
@@ -395,6 +435,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the BaseVirtualMachineProfile object itself.
      */
+    @Generated
     public BaseVirtualMachineProfile withHardwareProfile(VirtualMachineScaleSetHardwareProfile hardwareProfile) {
         this.hardwareProfile = hardwareProfile;
         return this;
@@ -408,6 +449,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the serviceArtifactReference value.
      */
+    @Generated
     public ServiceArtifactReference serviceArtifactReference() {
         return this.serviceArtifactReference;
     }
@@ -421,6 +463,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * @param serviceArtifactReference the serviceArtifactReference value to set.
      * @return the BaseVirtualMachineProfile object itself.
      */
+    @Generated
     public BaseVirtualMachineProfile withServiceArtifactReference(ServiceArtifactReference serviceArtifactReference) {
         this.serviceArtifactReference = serviceArtifactReference;
         return this;
@@ -433,6 +476,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the securityPostureReference value.
      */
+    @Generated
     public SecurityPostureReference securityPostureReference() {
         return this.securityPostureReference;
     }
@@ -445,6 +489,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * @param securityPostureReference the securityPostureReference value to set.
      * @return the BaseVirtualMachineProfile object itself.
      */
+    @Generated
     public BaseVirtualMachineProfile withSecurityPostureReference(SecurityPostureReference securityPostureReference) {
         this.securityPostureReference = securityPostureReference;
         return this;
@@ -458,6 +503,7 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * 
      * @return the timeCreated value.
      */
+    @Generated
     public OffsetDateTime timeCreated() {
         return this.timeCreated;
     }

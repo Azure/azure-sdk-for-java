@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -19,22 +20,26 @@ public final class CarbonEmissionMonthlySummaryData extends CarbonEmissionData {
     /*
      * The data type of the query result, indicating the format of the returned response.
      */
+    @Generated
     private ResponseDataTypeEnum dataType = ResponseDataTypeEnum.MONTHLY_SUMMARY_DATA;
 
     /*
      * The date, representing the month, for which the emissions data is reported, formatted as yyyy-MM-dd (e.g.,
      * 2024-03-01)
      */
+    @Generated
     private String date;
 
     /*
      * Carbon intensity for the specified month, typically in units of kgCO2E per unit of normalized usage
      */
+    @Generated
     private double carbonIntensity;
 
     /**
      * Creates an instance of CarbonEmissionMonthlySummaryData class.
      */
+    @Generated
     private CarbonEmissionMonthlySummaryData() {
     }
 
@@ -43,6 +48,7 @@ public final class CarbonEmissionMonthlySummaryData extends CarbonEmissionData {
      * 
      * @return the dataType value.
      */
+    @Generated
     @Override
     public ResponseDataTypeEnum dataType() {
         return this.dataType;
@@ -54,6 +60,7 @@ public final class CarbonEmissionMonthlySummaryData extends CarbonEmissionData {
      * 
      * @return the date value.
      */
+    @Generated
     public String date() {
         return this.date;
     }
@@ -64,6 +71,7 @@ public final class CarbonEmissionMonthlySummaryData extends CarbonEmissionData {
      * 
      * @return the carbonIntensity value.
      */
+    @Generated
     public double carbonIntensity() {
         return this.carbonIntensity;
     }

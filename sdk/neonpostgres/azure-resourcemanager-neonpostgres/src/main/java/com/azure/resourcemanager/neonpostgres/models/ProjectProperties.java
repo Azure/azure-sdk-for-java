@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,76 +21,91 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
     /*
      * Unique identifier for the entity
      */
+    @Generated
     private String entityId;
 
     /*
      * Name of the resource
      */
+    @Generated
     private String entityName;
 
     /*
      * Timestamp indicating when the entity was created
      */
+    @Generated
     private String createdAt;
 
     /*
      * Provisioning state of the resource.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /*
      * Additional attributes for the entity
      */
+    @Generated
     private List<Attributes> attributes;
 
     /*
      * Region where the project is created
      */
+    @Generated
     private String regionId;
 
     /*
      * Data Storage bytes per hour for the project
      */
+    @Generated
     private Long storage;
 
     /*
      * Postgres version for the project
      */
+    @Generated
     private Integer pgVersion;
 
     /*
      * The retention period for project history in seconds.
      */
+    @Generated
     private Integer historyRetention;
 
     /*
      * Default endpoint settings for the project.
      */
+    @Generated
     private DefaultEndpointSettings defaultEndpointSettings;
 
     /*
      * The Branch properties of the project. This is optional
      */
+    @Generated
     private BranchProperties branch;
 
     /*
      * Roles associated with the project
      */
+    @Generated
     private List<NeonRoleProperties> roles;
 
     /*
      * Neon Databases associated with the project
      */
+    @Generated
     private List<NeonDatabaseProperties> databases;
 
     /*
      * Endpoints associated with the project
      */
+    @Generated
     private List<EndpointProperties> endpoints;
 
     /**
      * Creates an instance of ProjectProperties class.
      */
+    @Generated
     public ProjectProperties() {
     }
 
@@ -98,6 +114,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * 
      * @return the entityId value.
      */
+    @Generated
     public String entityId() {
         return this.entityId;
     }
@@ -107,6 +124,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * 
      * @return the entityName value.
      */
+    @Generated
     public String entityName() {
         return this.entityName;
     }
@@ -117,6 +135,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * @param entityName the entityName value to set.
      * @return the ProjectProperties object itself.
      */
+    @Generated
     public ProjectProperties withEntityName(String entityName) {
         this.entityName = entityName;
         return this;
@@ -127,6 +146,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * 
      * @return the createdAt value.
      */
+    @Generated
     public String createdAt() {
         return this.createdAt;
     }
@@ -136,6 +156,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -145,6 +166,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * 
      * @return the attributes value.
      */
+    @Generated
     public List<Attributes> attributes() {
         return this.attributes;
     }
@@ -155,6 +177,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * @param attributes the attributes value to set.
      * @return the ProjectProperties object itself.
      */
+    @Generated
     public ProjectProperties withAttributes(List<Attributes> attributes) {
         this.attributes = attributes;
         return this;
@@ -165,6 +188,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * 
      * @return the regionId value.
      */
+    @Generated
     public String regionId() {
         return this.regionId;
     }
@@ -175,6 +199,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * @param regionId the regionId value to set.
      * @return the ProjectProperties object itself.
      */
+    @Generated
     public ProjectProperties withRegionId(String regionId) {
         this.regionId = regionId;
         return this;
@@ -185,6 +210,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * 
      * @return the storage value.
      */
+    @Generated
     public Long storage() {
         return this.storage;
     }
@@ -195,6 +221,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * @param storage the storage value to set.
      * @return the ProjectProperties object itself.
      */
+    @Generated
     public ProjectProperties withStorage(Long storage) {
         this.storage = storage;
         return this;
@@ -205,6 +232,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * 
      * @return the pgVersion value.
      */
+    @Generated
     public Integer pgVersion() {
         return this.pgVersion;
     }
@@ -215,6 +243,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * @param pgVersion the pgVersion value to set.
      * @return the ProjectProperties object itself.
      */
+    @Generated
     public ProjectProperties withPgVersion(Integer pgVersion) {
         this.pgVersion = pgVersion;
         return this;
@@ -225,6 +254,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * 
      * @return the historyRetention value.
      */
+    @Generated
     public Integer historyRetention() {
         return this.historyRetention;
     }
@@ -235,6 +265,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * @param historyRetention the historyRetention value to set.
      * @return the ProjectProperties object itself.
      */
+    @Generated
     public ProjectProperties withHistoryRetention(Integer historyRetention) {
         this.historyRetention = historyRetention;
         return this;
@@ -245,6 +276,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * 
      * @return the defaultEndpointSettings value.
      */
+    @Generated
     public DefaultEndpointSettings defaultEndpointSettings() {
         return this.defaultEndpointSettings;
     }
@@ -255,6 +287,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * @param defaultEndpointSettings the defaultEndpointSettings value to set.
      * @return the ProjectProperties object itself.
      */
+    @Generated
     public ProjectProperties withDefaultEndpointSettings(DefaultEndpointSettings defaultEndpointSettings) {
         this.defaultEndpointSettings = defaultEndpointSettings;
         return this;
@@ -265,6 +298,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * 
      * @return the branch value.
      */
+    @Generated
     public BranchProperties branch() {
         return this.branch;
     }
@@ -275,6 +309,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * @param branch the branch value to set.
      * @return the ProjectProperties object itself.
      */
+    @Generated
     public ProjectProperties withBranch(BranchProperties branch) {
         this.branch = branch;
         return this;
@@ -285,6 +320,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * 
      * @return the roles value.
      */
+    @Generated
     public List<NeonRoleProperties> roles() {
         return this.roles;
     }
@@ -295,6 +331,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * @param roles the roles value to set.
      * @return the ProjectProperties object itself.
      */
+    @Generated
     public ProjectProperties withRoles(List<NeonRoleProperties> roles) {
         this.roles = roles;
         return this;
@@ -305,6 +342,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * 
      * @return the databases value.
      */
+    @Generated
     public List<NeonDatabaseProperties> databases() {
         return this.databases;
     }
@@ -315,6 +353,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * @param databases the databases value to set.
      * @return the ProjectProperties object itself.
      */
+    @Generated
     public ProjectProperties withDatabases(List<NeonDatabaseProperties> databases) {
         this.databases = databases;
         return this;
@@ -325,6 +364,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * 
      * @return the endpoints value.
      */
+    @Generated
     public List<EndpointProperties> endpoints() {
         return this.endpoints;
     }
@@ -335,6 +375,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * @param endpoints the endpoints value to set.
      * @return the ProjectProperties object itself.
      */
+    @Generated
     public ProjectProperties withEndpoints(List<EndpointProperties> endpoints) {
         this.endpoints = endpoints;
         return this;

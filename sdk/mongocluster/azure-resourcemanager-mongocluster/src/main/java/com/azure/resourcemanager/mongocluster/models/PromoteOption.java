@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,6 +16,7 @@ public final class PromoteOption extends ExpandableStringEnum<PromoteOption> {
      * Promote option forces the promotion without waiting for the replica to be caught up to the primary. This can
      * result in data-loss so should only be used during disaster recovery scenarios.
      */
+    @Generated
     public static final PromoteOption FORCED = fromString("Forced");
 
     /**
@@ -22,6 +24,7 @@ public final class PromoteOption extends ExpandableStringEnum<PromoteOption> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PromoteOption() {
     }
@@ -32,6 +35,7 @@ public final class PromoteOption extends ExpandableStringEnum<PromoteOption> {
      * @param name a name to look for.
      * @return the corresponding PromoteOption.
      */
+    @Generated
     public static PromoteOption fromString(String name) {
         return fromString(name, PromoteOption.class);
     }
@@ -41,6 +45,7 @@ public final class PromoteOption extends ExpandableStringEnum<PromoteOption> {
      * 
      * @return known PromoteOption values.
      */
+    @Generated
     public static Collection<PromoteOption> values() {
         return values(PromoteOption.class);
     }

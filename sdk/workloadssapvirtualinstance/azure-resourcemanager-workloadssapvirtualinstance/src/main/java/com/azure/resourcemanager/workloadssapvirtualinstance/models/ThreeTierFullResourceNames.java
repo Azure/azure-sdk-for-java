@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,33 +20,39 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
     /*
      * The pattern type to be used for resource naming.
      */
+    @Generated
     private NamingPatternType namingPatternType = NamingPatternType.FULL_RESOURCE_NAME;
 
     /*
      * The full resource names object for central server layer resources.
      */
+    @Generated
     private CentralServerFullResourceNames centralServer;
 
     /*
      * The full resource names object for application layer resources. The number of entries in this list should be
      * equal to the number VMs to be created for application layer.
      */
+    @Generated
     private ApplicationServerFullResourceNames applicationServer;
 
     /*
      * The full resource names object for database layer resources. The number of entries in this list should be equal
      * to the number VMs to be created for database layer.
      */
+    @Generated
     private DatabaseServerFullResourceNames databaseServer;
 
     /*
      * The resource names object for shared storage.
      */
+    @Generated
     private SharedStorageResourceNames sharedStorage;
 
     /**
      * Creates an instance of ThreeTierFullResourceNames class.
      */
+    @Generated
     public ThreeTierFullResourceNames() {
     }
 
@@ -54,6 +61,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
      * 
      * @return the namingPatternType value.
      */
+    @Generated
     @Override
     public NamingPatternType namingPatternType() {
         return this.namingPatternType;
@@ -64,6 +72,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
      * 
      * @return the centralServer value.
      */
+    @Generated
     public CentralServerFullResourceNames centralServer() {
         return this.centralServer;
     }
@@ -74,6 +83,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
      * @param centralServer the centralServer value to set.
      * @return the ThreeTierFullResourceNames object itself.
      */
+    @Generated
     public ThreeTierFullResourceNames withCentralServer(CentralServerFullResourceNames centralServer) {
         this.centralServer = centralServer;
         return this;
@@ -85,6 +95,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
      * 
      * @return the applicationServer value.
      */
+    @Generated
     public ApplicationServerFullResourceNames applicationServer() {
         return this.applicationServer;
     }
@@ -96,6 +107,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
      * @param applicationServer the applicationServer value to set.
      * @return the ThreeTierFullResourceNames object itself.
      */
+    @Generated
     public ThreeTierFullResourceNames withApplicationServer(ApplicationServerFullResourceNames applicationServer) {
         this.applicationServer = applicationServer;
         return this;
@@ -107,6 +119,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
      * 
      * @return the databaseServer value.
      */
+    @Generated
     public DatabaseServerFullResourceNames databaseServer() {
         return this.databaseServer;
     }
@@ -118,6 +131,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
      * @param databaseServer the databaseServer value to set.
      * @return the ThreeTierFullResourceNames object itself.
      */
+    @Generated
     public ThreeTierFullResourceNames withDatabaseServer(DatabaseServerFullResourceNames databaseServer) {
         this.databaseServer = databaseServer;
         return this;
@@ -128,6 +142,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
      * 
      * @return the sharedStorage value.
      */
+    @Generated
     public SharedStorageResourceNames sharedStorage() {
         return this.sharedStorage;
     }
@@ -138,6 +153,7 @@ public final class ThreeTierFullResourceNames extends ThreeTierCustomResourceNam
      * @param sharedStorage the sharedStorage value to set.
      * @return the ThreeTierFullResourceNames object itself.
      */
+    @Generated
     public ThreeTierFullResourceNames withSharedStorage(SharedStorageResourceNames sharedStorage) {
         this.sharedStorage = sharedStorage;
         return this;

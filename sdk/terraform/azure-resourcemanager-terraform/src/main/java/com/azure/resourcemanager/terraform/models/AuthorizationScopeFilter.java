@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.terraform.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class AuthorizationScopeFilter extends ExpandableStringEnum<Authori
     /**
      * Returns assignments for the given scope and all child scopes.
      */
+    @Generated
     public static final AuthorizationScopeFilter AT_SCOPE_AND_BELOW = fromString("AtScopeAndBelow");
 
     /**
      * Returns assignments for the given scope and all parent scopes, but not child scopes.
      */
+    @Generated
     public static final AuthorizationScopeFilter AT_SCOPE_AND_ABOVE = fromString("AtScopeAndAbove");
 
     /**
      * Returns assignments for the given scope, all parent scopes, and all child scopes.
      */
+    @Generated
     public static final AuthorizationScopeFilter AT_SCOPE_ABOVE_AND_BELOW = fromString("AtScopeAboveAndBelow");
 
     /**
      * Returns assignments only for the given scope; no parent or child scopes are included.
      */
+    @Generated
     public static final AuthorizationScopeFilter AT_SCOPE_EXACT = fromString("AtScopeExact");
 
     /**
@@ -36,6 +41,7 @@ public final class AuthorizationScopeFilter extends ExpandableStringEnum<Authori
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AuthorizationScopeFilter() {
     }
@@ -46,6 +52,7 @@ public final class AuthorizationScopeFilter extends ExpandableStringEnum<Authori
      * @param name a name to look for.
      * @return the corresponding AuthorizationScopeFilter.
      */
+    @Generated
     public static AuthorizationScopeFilter fromString(String name) {
         return fromString(name, AuthorizationScopeFilter.class);
     }
@@ -55,6 +62,7 @@ public final class AuthorizationScopeFilter extends ExpandableStringEnum<Authori
      * 
      * @return known AuthorizationScopeFilter values.
      */
+    @Generated
     public static Collection<AuthorizationScopeFilter> values() {
         return values(AuthorizationScopeFilter.class);
     }

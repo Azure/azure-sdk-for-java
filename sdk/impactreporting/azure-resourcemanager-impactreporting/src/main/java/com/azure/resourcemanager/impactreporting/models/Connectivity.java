@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,26 +22,31 @@ public final class Connectivity implements JsonSerializable<Connectivity> {
     /*
      * Protocol used for the connection
      */
+    @Generated
     private Protocol protocol;
 
     /*
      * Port number for the connection
      */
+    @Generated
     private Integer port;
 
     /*
      * Source from which the connection was attempted
      */
+    @Generated
     private SourceOrTarget source;
 
     /*
      * target which connection was attempted
      */
+    @Generated
     private SourceOrTarget target;
 
     /**
      * Creates an instance of Connectivity class.
      */
+    @Generated
     public Connectivity() {
     }
 
@@ -49,6 +55,7 @@ public final class Connectivity implements JsonSerializable<Connectivity> {
      * 
      * @return the protocol value.
      */
+    @Generated
     public Protocol protocol() {
         return this.protocol;
     }
@@ -59,6 +66,7 @@ public final class Connectivity implements JsonSerializable<Connectivity> {
      * @param protocol the protocol value to set.
      * @return the Connectivity object itself.
      */
+    @Generated
     public Connectivity withProtocol(Protocol protocol) {
         this.protocol = protocol;
         return this;
@@ -69,6 +77,7 @@ public final class Connectivity implements JsonSerializable<Connectivity> {
      * 
      * @return the port value.
      */
+    @Generated
     public Integer port() {
         return this.port;
     }
@@ -79,6 +88,7 @@ public final class Connectivity implements JsonSerializable<Connectivity> {
      * @param port the port value to set.
      * @return the Connectivity object itself.
      */
+    @Generated
     public Connectivity withPort(Integer port) {
         this.port = port;
         return this;
@@ -89,6 +99,7 @@ public final class Connectivity implements JsonSerializable<Connectivity> {
      * 
      * @return the source value.
      */
+    @Generated
     public SourceOrTarget source() {
         return this.source;
     }
@@ -99,6 +110,7 @@ public final class Connectivity implements JsonSerializable<Connectivity> {
      * @param source the source value to set.
      * @return the Connectivity object itself.
      */
+    @Generated
     public Connectivity withSource(SourceOrTarget source) {
         this.source = source;
         return this;
@@ -109,6 +121,7 @@ public final class Connectivity implements JsonSerializable<Connectivity> {
      * 
      * @return the target value.
      */
+    @Generated
     public SourceOrTarget target() {
         return this.target;
     }
@@ -119,6 +132,7 @@ public final class Connectivity implements JsonSerializable<Connectivity> {
      * @param target the target value to set.
      * @return the Connectivity object itself.
      */
+    @Generated
     public Connectivity withTarget(SourceOrTarget target) {
         this.target = target;
         return this;

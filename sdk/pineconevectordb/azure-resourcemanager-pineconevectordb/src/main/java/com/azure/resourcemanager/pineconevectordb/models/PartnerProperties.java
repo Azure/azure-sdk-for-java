@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.pineconevectordb.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
     /*
      * Pinecone Organization Name
      */
+    @Generated
     private String displayName;
 
     /**
      * Creates an instance of PartnerProperties class.
      */
+    @Generated
     public PartnerProperties() {
     }
 
@@ -33,6 +36,7 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
      * 
      * @return the displayName value.
      */
+    @Generated
     public String displayName() {
         return this.displayName;
     }
@@ -43,6 +47,7 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
      * @param displayName the displayName value to set.
      * @return the PartnerProperties object itself.
      */
+    @Generated
     public PartnerProperties withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;

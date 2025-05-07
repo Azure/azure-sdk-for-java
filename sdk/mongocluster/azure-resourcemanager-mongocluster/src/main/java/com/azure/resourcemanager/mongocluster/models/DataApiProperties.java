@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class DataApiProperties implements JsonSerializable<DataApiProperti
     /*
      * The mode to indicate whether the Mongo Data API is enabled for a cluster.
      */
+    @Generated
     private DataApiMode mode;
 
     /**
      * Creates an instance of DataApiProperties class.
      */
+    @Generated
     public DataApiProperties() {
     }
 
@@ -32,6 +35,7 @@ public final class DataApiProperties implements JsonSerializable<DataApiProperti
      * 
      * @return the mode value.
      */
+    @Generated
     public DataApiMode mode() {
         return this.mode;
     }
@@ -42,6 +46,7 @@ public final class DataApiProperties implements JsonSerializable<DataApiProperti
      * @param mode the mode value to set.
      * @return the DataApiProperties object itself.
      */
+    @Generated
     public DataApiProperties withMode(DataApiMode mode) {
         this.mode = mode;
         return this;

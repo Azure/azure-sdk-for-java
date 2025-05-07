@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,24 +26,28 @@ public final class VirtualMachineResourceNames implements JsonSerializable<Virtu
      * than 1 vm per layer. For distributed and HA-AvSet systems, default name will be {SID}{app/ascs/db}vm with an
      * incrementor at the end in case of more than 1 vm per layer.
      */
+    @Generated
     private String vmName;
 
     /*
      * The full name for virtual-machine's host (computer name). Currently, ACSS only supports host names which are less
      * than or equal to 13 characters long. If this value is not provided, vmName will be used as host name.
      */
+    @Generated
     private String hostName;
 
     /*
      * The list of network interface name objects for the selected virtual machine. Currently, only one network
      * interface is supported per virtual machine.
      */
+    @Generated
     private List<NetworkInterfaceResourceNames> networkInterfaces;
 
     /*
      * The full name for OS disk attached to the VM. If this value is not provided, it will be named by ARM as per its
      * default naming standards (prefixed with vm name). There is only one OS disk attached per Virtual Machine.
      */
+    @Generated
     private String osDiskName;
 
     /*
@@ -50,11 +55,13 @@ public final class VirtualMachineResourceNames implements JsonSerializable<Virtu
      * disks per volume. Currently supported volumes for database layer are ['hana/data', 'hana/log', hana/shared',
      * 'usr/sap', 'os', 'backup']. For application and cs layers, only 'default' volume is supported
      */
+    @Generated
     private Map<String, List<String>> dataDiskNames;
 
     /**
      * Creates an instance of VirtualMachineResourceNames class.
      */
+    @Generated
     public VirtualMachineResourceNames() {
     }
 
@@ -67,6 +74,7 @@ public final class VirtualMachineResourceNames implements JsonSerializable<Virtu
      * 
      * @return the vmName value.
      */
+    @Generated
     public String vmName() {
         return this.vmName;
     }
@@ -81,6 +89,7 @@ public final class VirtualMachineResourceNames implements JsonSerializable<Virtu
      * @param vmName the vmName value to set.
      * @return the VirtualMachineResourceNames object itself.
      */
+    @Generated
     public VirtualMachineResourceNames withVmName(String vmName) {
         this.vmName = vmName;
         return this;
@@ -93,6 +102,7 @@ public final class VirtualMachineResourceNames implements JsonSerializable<Virtu
      * 
      * @return the hostName value.
      */
+    @Generated
     public String hostName() {
         return this.hostName;
     }
@@ -105,6 +115,7 @@ public final class VirtualMachineResourceNames implements JsonSerializable<Virtu
      * @param hostName the hostName value to set.
      * @return the VirtualMachineResourceNames object itself.
      */
+    @Generated
     public VirtualMachineResourceNames withHostName(String hostName) {
         this.hostName = hostName;
         return this;
@@ -116,6 +127,7 @@ public final class VirtualMachineResourceNames implements JsonSerializable<Virtu
      * 
      * @return the networkInterfaces value.
      */
+    @Generated
     public List<NetworkInterfaceResourceNames> networkInterfaces() {
         return this.networkInterfaces;
     }
@@ -127,6 +139,7 @@ public final class VirtualMachineResourceNames implements JsonSerializable<Virtu
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the VirtualMachineResourceNames object itself.
      */
+    @Generated
     public VirtualMachineResourceNames withNetworkInterfaces(List<NetworkInterfaceResourceNames> networkInterfaces) {
         this.networkInterfaces = networkInterfaces;
         return this;
@@ -139,6 +152,7 @@ public final class VirtualMachineResourceNames implements JsonSerializable<Virtu
      * 
      * @return the osDiskName value.
      */
+    @Generated
     public String osDiskName() {
         return this.osDiskName;
     }
@@ -151,6 +165,7 @@ public final class VirtualMachineResourceNames implements JsonSerializable<Virtu
      * @param osDiskName the osDiskName value to set.
      * @return the VirtualMachineResourceNames object itself.
      */
+    @Generated
     public VirtualMachineResourceNames withOsDiskName(String osDiskName) {
         this.osDiskName = osDiskName;
         return this;
@@ -164,6 +179,7 @@ public final class VirtualMachineResourceNames implements JsonSerializable<Virtu
      * 
      * @return the dataDiskNames value.
      */
+    @Generated
     public Map<String, List<String>> dataDiskNames() {
         return this.dataDiskNames;
     }
@@ -177,6 +193,7 @@ public final class VirtualMachineResourceNames implements JsonSerializable<Virtu
      * @param dataDiskNames the dataDiskNames value to set.
      * @return the VirtualMachineResourceNames object itself.
      */
+    @Generated
     public VirtualMachineResourceNames withDataDiskNames(Map<String, List<String>> dataDiskNames) {
         this.dataDiskNames = dataDiskNames;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,32 +23,38 @@ public final class DataflowBuiltInTransformationDataset
     /*
      * The key of the dataset.
      */
+    @Generated
     private String key;
 
     /*
      * A user provided optional description of the dataset.
      */
+    @Generated
     private String description;
 
     /*
      * The reference to the schema that describes the dataset. Allowed: JSON Schema/draft-7.
      */
+    @Generated
     private String schemaRef;
 
     /*
      * List of fields for enriching from the Broker State Store.
      */
+    @Generated
     private List<String> inputs;
 
     /*
      * Condition to enrich data from Broker State Store. Example: $1 < 0 || $1 > $2 (Assuming inputs section $1 and $2
      * are provided)
      */
+    @Generated
     private String expression;
 
     /**
      * Creates an instance of DataflowBuiltInTransformationDataset class.
      */
+    @Generated
     public DataflowBuiltInTransformationDataset() {
     }
 
@@ -56,6 +63,7 @@ public final class DataflowBuiltInTransformationDataset
      * 
      * @return the key value.
      */
+    @Generated
     public String key() {
         return this.key;
     }
@@ -66,6 +74,7 @@ public final class DataflowBuiltInTransformationDataset
      * @param key the key value to set.
      * @return the DataflowBuiltInTransformationDataset object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationDataset withKey(String key) {
         this.key = key;
         return this;
@@ -76,6 +85,7 @@ public final class DataflowBuiltInTransformationDataset
      * 
      * @return the description value.
      */
+    @Generated
     public String description() {
         return this.description;
     }
@@ -86,6 +96,7 @@ public final class DataflowBuiltInTransformationDataset
      * @param description the description value to set.
      * @return the DataflowBuiltInTransformationDataset object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationDataset withDescription(String description) {
         this.description = description;
         return this;
@@ -96,6 +107,7 @@ public final class DataflowBuiltInTransformationDataset
      * 
      * @return the schemaRef value.
      */
+    @Generated
     public String schemaRef() {
         return this.schemaRef;
     }
@@ -106,6 +118,7 @@ public final class DataflowBuiltInTransformationDataset
      * @param schemaRef the schemaRef value to set.
      * @return the DataflowBuiltInTransformationDataset object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationDataset withSchemaRef(String schemaRef) {
         this.schemaRef = schemaRef;
         return this;
@@ -116,6 +129,7 @@ public final class DataflowBuiltInTransformationDataset
      * 
      * @return the inputs value.
      */
+    @Generated
     public List<String> inputs() {
         return this.inputs;
     }
@@ -126,6 +140,7 @@ public final class DataflowBuiltInTransformationDataset
      * @param inputs the inputs value to set.
      * @return the DataflowBuiltInTransformationDataset object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationDataset withInputs(List<String> inputs) {
         this.inputs = inputs;
         return this;
@@ -137,6 +152,7 @@ public final class DataflowBuiltInTransformationDataset
      * 
      * @return the expression value.
      */
+    @Generated
     public String expression() {
         return this.expression;
     }
@@ -148,6 +164,7 @@ public final class DataflowBuiltInTransformationDataset
      * @param expression the expression value to set.
      * @return the DataflowBuiltInTransformationDataset object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationDataset withExpression(String expression) {
         this.expression = expression;
         return this;

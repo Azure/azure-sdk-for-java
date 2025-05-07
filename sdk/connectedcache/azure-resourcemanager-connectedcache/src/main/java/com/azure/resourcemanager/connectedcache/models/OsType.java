@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.connectedcache.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class OsType extends ExpandableStringEnum<OsType> {
     /**
      * cache node installs on windows operating system.
      */
+    @Generated
     public static final OsType WINDOWS = fromString("Windows");
 
     /**
      * cache node installs on Linux Operating system.
      */
+    @Generated
     public static final OsType LINUX = fromString("Linux");
 
     /**
      * cache node installs on Azure Eflow.
      */
+    @Generated
     public static final OsType EFLOW = fromString("Eflow");
 
     /**
@@ -31,6 +35,7 @@ public final class OsType extends ExpandableStringEnum<OsType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OsType() {
     }
@@ -41,6 +46,7 @@ public final class OsType extends ExpandableStringEnum<OsType> {
      * @param name a name to look for.
      * @return the corresponding OsType.
      */
+    @Generated
     public static OsType fromString(String name) {
         return fromString(name, OsType.class);
     }
@@ -50,6 +56,7 @@ public final class OsType extends ExpandableStringEnum<OsType> {
      * 
      * @return known OsType values.
      */
+    @Generated
     public static Collection<OsType> values() {
         return values(OsType.class);
     }

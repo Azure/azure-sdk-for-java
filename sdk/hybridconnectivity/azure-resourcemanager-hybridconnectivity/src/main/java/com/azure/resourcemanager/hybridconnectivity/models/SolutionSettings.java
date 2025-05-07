@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,11 +22,13 @@ public final class SolutionSettings implements JsonSerializable<SolutionSettings
     /*
      * Solution settings
      */
+    @Generated
     private Map<String, String> additionalProperties;
 
     /**
      * Creates an instance of SolutionSettings class.
      */
+    @Generated
     public SolutionSettings() {
     }
 
@@ -34,6 +37,7 @@ public final class SolutionSettings implements JsonSerializable<SolutionSettings
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, String> additionalProperties() {
         return this.additionalProperties;
     }
@@ -44,6 +48,7 @@ public final class SolutionSettings implements JsonSerializable<SolutionSettings
      * @param additionalProperties the additionalProperties value to set.
      * @return the SolutionSettings object itself.
      */
+    @Generated
     public SolutionSettings withAdditionalProperties(Map<String, String> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;

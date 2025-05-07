@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,21 +20,25 @@ public final class ReplicationProperties implements JsonSerializable<Replication
     /*
      * The resource id the source cluster for the replica cluster.
      */
+    @Generated
     private String sourceResourceId;
 
     /*
      * The replication role of the cluster
      */
+    @Generated
     private ReplicationRole role;
 
     /*
      * The replication link state of the replica cluster.
      */
+    @Generated
     private ReplicationState replicationState;
 
     /**
      * Creates an instance of ReplicationProperties class.
      */
+    @Generated
     private ReplicationProperties() {
     }
 
@@ -42,6 +47,7 @@ public final class ReplicationProperties implements JsonSerializable<Replication
      * 
      * @return the sourceResourceId value.
      */
+    @Generated
     public String sourceResourceId() {
         return this.sourceResourceId;
     }
@@ -51,6 +57,7 @@ public final class ReplicationProperties implements JsonSerializable<Replication
      * 
      * @return the role value.
      */
+    @Generated
     public ReplicationRole role() {
         return this.role;
     }
@@ -60,6 +67,7 @@ public final class ReplicationProperties implements JsonSerializable<Replication
      * 
      * @return the replicationState value.
      */
+    @Generated
     public ReplicationState replicationState() {
         return this.replicationState;
     }

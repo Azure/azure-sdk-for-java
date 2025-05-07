@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.fabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -24,36 +25,43 @@ public final class FabricCapacityInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private FabricCapacityProperties properties;
 
     /*
      * The SKU details
      */
+    @Generated
     private RpSku sku;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of FabricCapacityInner class.
      */
+    @Generated
     public FabricCapacityInner() {
     }
 
@@ -62,6 +70,7 @@ public final class FabricCapacityInner extends Resource {
      * 
      * @return the properties value.
      */
+    @Generated
     public FabricCapacityProperties properties() {
         return this.properties;
     }
@@ -72,6 +81,7 @@ public final class FabricCapacityInner extends Resource {
      * @param properties the properties value to set.
      * @return the FabricCapacityInner object itself.
      */
+    @Generated
     public FabricCapacityInner withProperties(FabricCapacityProperties properties) {
         this.properties = properties;
         return this;
@@ -82,6 +92,7 @@ public final class FabricCapacityInner extends Resource {
      * 
      * @return the sku value.
      */
+    @Generated
     public RpSku sku() {
         return this.sku;
     }
@@ -92,6 +103,7 @@ public final class FabricCapacityInner extends Resource {
      * @param sku the sku value to set.
      * @return the FabricCapacityInner object itself.
      */
+    @Generated
     public FabricCapacityInner withSku(RpSku sku) {
         this.sku = sku;
         return this;
@@ -102,6 +114,7 @@ public final class FabricCapacityInner extends Resource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -111,6 +124,7 @@ public final class FabricCapacityInner extends Resource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -121,6 +135,7 @@ public final class FabricCapacityInner extends Resource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -131,6 +146,7 @@ public final class FabricCapacityInner extends Resource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;
@@ -139,6 +155,7 @@ public final class FabricCapacityInner extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FabricCapacityInner withLocation(String location) {
         super.withLocation(location);
@@ -148,6 +165,7 @@ public final class FabricCapacityInner extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FabricCapacityInner withTags(Map<String, String> tags) {
         super.withTags(tags);

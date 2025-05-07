@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databasewatcher.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class TargetAuthenticationType extends ExpandableStringEnum<TargetA
     /**
      * The Azure Active Directory authentication.
      */
+    @Generated
     public static final TargetAuthenticationType AAD = fromString("Aad");
 
     /**
      * The SQL password authentication.
      */
+    @Generated
     public static final TargetAuthenticationType SQL = fromString("Sql");
 
     /**
@@ -26,6 +29,7 @@ public final class TargetAuthenticationType extends ExpandableStringEnum<TargetA
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TargetAuthenticationType() {
     }
@@ -36,6 +40,7 @@ public final class TargetAuthenticationType extends ExpandableStringEnum<TargetA
      * @param name a name to look for.
      * @return the corresponding TargetAuthenticationType.
      */
+    @Generated
     public static TargetAuthenticationType fromString(String name) {
         return fromString(name, TargetAuthenticationType.class);
     }
@@ -45,6 +50,7 @@ public final class TargetAuthenticationType extends ExpandableStringEnum<TargetA
      * 
      * @return known TargetAuthenticationType values.
      */
+    @Generated
     public static Collection<TargetAuthenticationType> values() {
         return values(TargetAuthenticationType.class);
     }

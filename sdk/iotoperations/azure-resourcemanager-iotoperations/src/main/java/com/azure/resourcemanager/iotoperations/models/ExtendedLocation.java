@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class ExtendedLocation implements JsonSerializable<ExtendedLocation
     /*
      * The name of the extended location.
      */
+    @Generated
     private String name;
 
     /*
      * Type of ExtendedLocation.
      */
+    @Generated
     private ExtendedLocationType type;
 
     /**
      * Creates an instance of ExtendedLocation class.
      */
+    @Generated
     public ExtendedLocation() {
     }
 
@@ -39,6 +43,7 @@ public final class ExtendedLocation implements JsonSerializable<ExtendedLocation
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -49,6 +54,7 @@ public final class ExtendedLocation implements JsonSerializable<ExtendedLocation
      * @param name the name value to set.
      * @return the ExtendedLocation object itself.
      */
+    @Generated
     public ExtendedLocation withName(String name) {
         this.name = name;
         return this;
@@ -59,6 +65,7 @@ public final class ExtendedLocation implements JsonSerializable<ExtendedLocation
      * 
      * @return the type value.
      */
+    @Generated
     public ExtendedLocationType type() {
         return this.type;
     }
@@ -69,6 +76,7 @@ public final class ExtendedLocation implements JsonSerializable<ExtendedLocation
      * @param type the type value to set.
      * @return the ExtendedLocation object itself.
      */
+    @Generated
     public ExtendedLocation withType(ExtendedLocationType type) {
         this.type = type;
         return this;

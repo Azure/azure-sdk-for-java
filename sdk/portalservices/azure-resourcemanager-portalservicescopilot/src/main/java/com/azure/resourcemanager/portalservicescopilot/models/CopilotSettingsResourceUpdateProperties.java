@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.portalservicescopilot.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class CopilotSettingsResourceUpdateProperties
     /*
      * Boolean indicating if role-based access control is enabled for copilot in this tenant.
      */
+    @Generated
     private Boolean accessControlEnabled;
 
     /**
      * Creates an instance of CopilotSettingsResourceUpdateProperties class.
      */
+    @Generated
     public CopilotSettingsResourceUpdateProperties() {
     }
 
@@ -34,6 +37,7 @@ public final class CopilotSettingsResourceUpdateProperties
      * 
      * @return the accessControlEnabled value.
      */
+    @Generated
     public Boolean accessControlEnabled() {
         return this.accessControlEnabled;
     }
@@ -45,6 +49,7 @@ public final class CopilotSettingsResourceUpdateProperties
      * @param accessControlEnabled the accessControlEnabled value to set.
      * @return the CopilotSettingsResourceUpdateProperties object itself.
      */
+    @Generated
     public CopilotSettingsResourceUpdateProperties withAccessControlEnabled(Boolean accessControlEnabled) {
         this.accessControlEnabled = accessControlEnabled;
         return this;

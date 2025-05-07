@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class Type extends ExpandableStringEnum<Type> {
     /**
      * Static value default for Type.
      */
+    @Generated
     public static final Type DEFAULT = fromString("default");
 
     /**
      * Static value custom for Type.
      */
+    @Generated
     public static final Type CUSTOM = fromString("custom");
 
     /**
@@ -26,6 +29,7 @@ public final class Type extends ExpandableStringEnum<Type> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public Type() {
     }
@@ -36,6 +40,7 @@ public final class Type extends ExpandableStringEnum<Type> {
      * @param name a name to look for.
      * @return the corresponding Type.
      */
+    @Generated
     public static Type fromString(String name) {
         return fromString(name, Type.class);
     }
@@ -45,6 +50,7 @@ public final class Type extends ExpandableStringEnum<Type> {
      * 
      * @return known Type values.
      */
+    @Generated
     public static Collection<Type> values() {
         return values(Type.class);
     }

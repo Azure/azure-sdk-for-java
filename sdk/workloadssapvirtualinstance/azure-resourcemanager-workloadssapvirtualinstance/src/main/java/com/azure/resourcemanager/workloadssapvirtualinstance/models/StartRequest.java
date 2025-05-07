@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class StartRequest implements JsonSerializable<StartRequest> {
     /*
      * The boolean value indicates whether to start the virtual machines before starting the SAP instances.
      */
+    @Generated
     private Boolean startVm;
 
     /**
      * Creates an instance of StartRequest class.
      */
+    @Generated
     public StartRequest() {
     }
 
@@ -33,6 +36,7 @@ public final class StartRequest implements JsonSerializable<StartRequest> {
      * 
      * @return the startVm value.
      */
+    @Generated
     public Boolean startVm() {
         return this.startVm;
     }
@@ -44,6 +48,7 @@ public final class StartRequest implements JsonSerializable<StartRequest> {
      * @param startVm the startVm value to set.
      * @return the StartRequest object itself.
      */
+    @Generated
     public StartRequest withStartVm(Boolean startVm) {
         this.startVm = startVm;
         return this;

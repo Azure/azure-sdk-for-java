@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,17 +21,20 @@ public final class StandbyVirtualMachinePoolElasticityProfile
     /*
      * Specifies the maximum number of virtual machines in the standby virtual machine pool.
      */
+    @Generated
     private long maxReadyCapacity;
 
     /*
      * Specifies the desired minimum number of virtual machines in the standby virtual machine pool. MinReadyCapacity
      * cannot exceed MaxReadyCapacity.
      */
+    @Generated
     private Long minReadyCapacity;
 
     /**
      * Creates an instance of StandbyVirtualMachinePoolElasticityProfile class.
      */
+    @Generated
     public StandbyVirtualMachinePoolElasticityProfile() {
     }
 
@@ -40,6 +44,7 @@ public final class StandbyVirtualMachinePoolElasticityProfile
      * 
      * @return the maxReadyCapacity value.
      */
+    @Generated
     public long maxReadyCapacity() {
         return this.maxReadyCapacity;
     }
@@ -51,6 +56,7 @@ public final class StandbyVirtualMachinePoolElasticityProfile
      * @param maxReadyCapacity the maxReadyCapacity value to set.
      * @return the StandbyVirtualMachinePoolElasticityProfile object itself.
      */
+    @Generated
     public StandbyVirtualMachinePoolElasticityProfile withMaxReadyCapacity(long maxReadyCapacity) {
         this.maxReadyCapacity = maxReadyCapacity;
         return this;
@@ -62,6 +68,7 @@ public final class StandbyVirtualMachinePoolElasticityProfile
      * 
      * @return the minReadyCapacity value.
      */
+    @Generated
     public Long minReadyCapacity() {
         return this.minReadyCapacity;
     }
@@ -73,6 +80,7 @@ public final class StandbyVirtualMachinePoolElasticityProfile
      * @param minReadyCapacity the minReadyCapacity value to set.
      * @return the StandbyVirtualMachinePoolElasticityProfile object itself.
      */
+    @Generated
     public StandbyVirtualMachinePoolElasticityProfile withMinReadyCapacity(Long minReadyCapacity) {
         this.minReadyCapacity = minReadyCapacity;
         return this;

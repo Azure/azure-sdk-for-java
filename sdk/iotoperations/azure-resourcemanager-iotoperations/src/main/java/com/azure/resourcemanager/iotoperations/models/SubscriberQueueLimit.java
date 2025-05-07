@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class SubscriberQueueLimit implements JsonSerializable<SubscriberQu
     /*
      * The maximum length of the queue before messages start getting dropped.
      */
+    @Generated
     private Long length;
 
     /*
      * The strategy to use for dropping messages from the queue.
      */
+    @Generated
     private SubscriberMessageDropStrategy strategy;
 
     /**
      * Creates an instance of SubscriberQueueLimit class.
      */
+    @Generated
     public SubscriberQueueLimit() {
     }
 
@@ -37,6 +41,7 @@ public final class SubscriberQueueLimit implements JsonSerializable<SubscriberQu
      * 
      * @return the length value.
      */
+    @Generated
     public Long length() {
         return this.length;
     }
@@ -47,6 +52,7 @@ public final class SubscriberQueueLimit implements JsonSerializable<SubscriberQu
      * @param length the length value to set.
      * @return the SubscriberQueueLimit object itself.
      */
+    @Generated
     public SubscriberQueueLimit withLength(Long length) {
         this.length = length;
         return this;
@@ -57,6 +63,7 @@ public final class SubscriberQueueLimit implements JsonSerializable<SubscriberQu
      * 
      * @return the strategy value.
      */
+    @Generated
     public SubscriberMessageDropStrategy strategy() {
         return this.strategy;
     }
@@ -67,6 +74,7 @@ public final class SubscriberQueueLimit implements JsonSerializable<SubscriberQu
      * @param strategy the strategy value to set.
      * @return the SubscriberQueueLimit object itself.
      */
+    @Generated
     public SubscriberQueueLimit withStrategy(SubscriberMessageDropStrategy strategy) {
         this.strategy = strategy;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class WindowsPatchAssessmentMode extends ExpandableStringEnum<Windo
     /**
      * You control the timing of patch assessments on a virtual machine.
      */
+    @Generated
     public static final WindowsPatchAssessmentMode IMAGE_DEFAULT = fromString("ImageDefault");
 
     /**
      * The platform will trigger periodic patch assessments. The property provisionVMAgent must be true.
      */
+    @Generated
     public static final WindowsPatchAssessmentMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 
     /**
@@ -26,6 +29,7 @@ public final class WindowsPatchAssessmentMode extends ExpandableStringEnum<Windo
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public WindowsPatchAssessmentMode() {
     }
@@ -36,6 +40,7 @@ public final class WindowsPatchAssessmentMode extends ExpandableStringEnum<Windo
      * @param name a name to look for.
      * @return the corresponding WindowsPatchAssessmentMode.
      */
+    @Generated
     public static WindowsPatchAssessmentMode fromString(String name) {
         return fromString(name, WindowsPatchAssessmentMode.class);
     }
@@ -45,6 +50,7 @@ public final class WindowsPatchAssessmentMode extends ExpandableStringEnum<Windo
      * 
      * @return known WindowsPatchAssessmentMode values.
      */
+    @Generated
     public static Collection<WindowsPatchAssessmentMode> values() {
         return values(WindowsPatchAssessmentMode.class);
     }

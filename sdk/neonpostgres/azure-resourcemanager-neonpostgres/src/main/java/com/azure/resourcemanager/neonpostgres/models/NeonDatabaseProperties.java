@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,41 +21,49 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
     /*
      * Unique identifier for the entity
      */
+    @Generated
     private String entityId;
 
     /*
      * Name of the resource
      */
+    @Generated
     private String entityName;
 
     /*
      * Timestamp indicating when the entity was created
      */
+    @Generated
     private String createdAt;
 
     /*
      * Provisioning state of the resource.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /*
      * Additional attributes for the entity
      */
+    @Generated
     private List<Attributes> attributes;
 
     /*
      * The ID of the branch this database belongs to
      */
+    @Generated
     private String branchId;
 
     /*
      * The name of the role that owns the database
      */
+    @Generated
     private String ownerName;
 
     /**
      * Creates an instance of NeonDatabaseProperties class.
      */
+    @Generated
     public NeonDatabaseProperties() {
     }
 
@@ -63,6 +72,7 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
      * 
      * @return the entityId value.
      */
+    @Generated
     public String entityId() {
         return this.entityId;
     }
@@ -72,6 +82,7 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
      * 
      * @return the entityName value.
      */
+    @Generated
     public String entityName() {
         return this.entityName;
     }
@@ -82,6 +93,7 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
      * @param entityName the entityName value to set.
      * @return the NeonDatabaseProperties object itself.
      */
+    @Generated
     public NeonDatabaseProperties withEntityName(String entityName) {
         this.entityName = entityName;
         return this;
@@ -92,6 +104,7 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
      * 
      * @return the createdAt value.
      */
+    @Generated
     public String createdAt() {
         return this.createdAt;
     }
@@ -101,6 +114,7 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -110,6 +124,7 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
      * 
      * @return the attributes value.
      */
+    @Generated
     public List<Attributes> attributes() {
         return this.attributes;
     }
@@ -120,6 +135,7 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
      * @param attributes the attributes value to set.
      * @return the NeonDatabaseProperties object itself.
      */
+    @Generated
     public NeonDatabaseProperties withAttributes(List<Attributes> attributes) {
         this.attributes = attributes;
         return this;
@@ -130,6 +146,7 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
      * 
      * @return the branchId value.
      */
+    @Generated
     public String branchId() {
         return this.branchId;
     }
@@ -140,6 +157,7 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
      * @param branchId the branchId value to set.
      * @return the NeonDatabaseProperties object itself.
      */
+    @Generated
     public NeonDatabaseProperties withBranchId(String branchId) {
         this.branchId = branchId;
         return this;
@@ -150,6 +168,7 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
      * 
      * @return the ownerName value.
      */
+    @Generated
     public String ownerName() {
         return this.ownerName;
     }
@@ -160,6 +179,7 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
      * @param ownerName the ownerName value to set.
      * @return the NeonDatabaseProperties object itself.
      */
+    @Generated
     public NeonDatabaseProperties withOwnerName(String ownerName) {
         this.ownerName = ownerName;
         return this;

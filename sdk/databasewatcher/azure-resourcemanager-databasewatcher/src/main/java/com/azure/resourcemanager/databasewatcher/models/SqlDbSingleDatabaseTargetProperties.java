@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class SqlDbSingleDatabaseTargetProperties extends TargetProperties 
     /*
      * Discriminator property for TargetProperties.
      */
+    @Generated
     private String targetType = "SqlDb";
 
     /*
      * The Azure resource ID of an Azure SQL DB database target.
      */
+    @Generated
     private String sqlDbResourceId;
 
     /*
      * Set to true to monitor a high availability replica of specified target, if any.
      */
+    @Generated
     private Boolean readIntent;
 
     /**
      * Creates an instance of SqlDbSingleDatabaseTargetProperties class.
      */
+    @Generated
     public SqlDbSingleDatabaseTargetProperties() {
     }
 
@@ -42,6 +47,7 @@ public final class SqlDbSingleDatabaseTargetProperties extends TargetProperties 
      * 
      * @return the targetType value.
      */
+    @Generated
     @Override
     public String targetType() {
         return this.targetType;
@@ -52,6 +58,7 @@ public final class SqlDbSingleDatabaseTargetProperties extends TargetProperties 
      * 
      * @return the sqlDbResourceId value.
      */
+    @Generated
     public String sqlDbResourceId() {
         return this.sqlDbResourceId;
     }
@@ -62,6 +69,7 @@ public final class SqlDbSingleDatabaseTargetProperties extends TargetProperties 
      * @param sqlDbResourceId the sqlDbResourceId value to set.
      * @return the SqlDbSingleDatabaseTargetProperties object itself.
      */
+    @Generated
     public SqlDbSingleDatabaseTargetProperties withSqlDbResourceId(String sqlDbResourceId) {
         this.sqlDbResourceId = sqlDbResourceId;
         return this;
@@ -72,6 +80,7 @@ public final class SqlDbSingleDatabaseTargetProperties extends TargetProperties 
      * 
      * @return the readIntent value.
      */
+    @Generated
     public Boolean readIntent() {
         return this.readIntent;
     }
@@ -82,6 +91,7 @@ public final class SqlDbSingleDatabaseTargetProperties extends TargetProperties 
      * @param readIntent the readIntent value to set.
      * @return the SqlDbSingleDatabaseTargetProperties object itself.
      */
+    @Generated
     public SqlDbSingleDatabaseTargetProperties withReadIntent(Boolean readIntent) {
         this.readIntent = readIntent;
         return this;
@@ -90,6 +100,7 @@ public final class SqlDbSingleDatabaseTargetProperties extends TargetProperties 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlDbSingleDatabaseTargetProperties
         withTargetAuthenticationType(TargetAuthenticationType targetAuthenticationType) {
@@ -100,6 +111,7 @@ public final class SqlDbSingleDatabaseTargetProperties extends TargetProperties 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlDbSingleDatabaseTargetProperties withTargetVault(VaultSecret targetVault) {
         super.withTargetVault(targetVault);
@@ -109,6 +121,7 @@ public final class SqlDbSingleDatabaseTargetProperties extends TargetProperties 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlDbSingleDatabaseTargetProperties withConnectionServerName(String connectionServerName) {
         super.withConnectionServerName(connectionServerName);

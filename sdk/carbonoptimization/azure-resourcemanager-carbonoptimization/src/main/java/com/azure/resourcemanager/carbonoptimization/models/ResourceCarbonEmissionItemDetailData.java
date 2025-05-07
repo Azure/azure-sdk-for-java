@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -19,26 +20,31 @@ public final class ResourceCarbonEmissionItemDetailData extends CarbonEmissionDa
     /*
      * The data type of the query result, indicating the format of the returned response.
      */
+    @Generated
     private ResponseDataTypeEnum dataType = ResponseDataTypeEnum.RESOURCE_ITEM_DETAILS_DATA;
 
     /*
      * It's resource name.
      */
+    @Generated
     private String itemName;
 
     /*
      * Resource Item category, see supported value defined in CategoryTypeEnum
      */
+    @Generated
     private CategoryTypeEnum categoryType;
 
     /*
      * Subscription Id
      */
+    @Generated
     private String subscriptionId;
 
     /*
      * Resource Group
      */
+    @Generated
     private String resourceGroup;
 
     /*
@@ -46,21 +52,25 @@ public final class ResourceCarbonEmissionItemDetailData extends CarbonEmissionDa
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String resourceId;
 
     /*
      * Resource Location (e.g., 'east us').
      */
+    @Generated
     private String location;
 
     /*
      * The type of resource, for example: microsoft.storage/storageaccounts
      */
+    @Generated
     private String resourceType;
 
     /**
      * Creates an instance of ResourceCarbonEmissionItemDetailData class.
      */
+    @Generated
     private ResourceCarbonEmissionItemDetailData() {
     }
 
@@ -69,6 +79,7 @@ public final class ResourceCarbonEmissionItemDetailData extends CarbonEmissionDa
      * 
      * @return the dataType value.
      */
+    @Generated
     @Override
     public ResponseDataTypeEnum dataType() {
         return this.dataType;
@@ -79,6 +90,7 @@ public final class ResourceCarbonEmissionItemDetailData extends CarbonEmissionDa
      * 
      * @return the itemName value.
      */
+    @Generated
     public String itemName() {
         return this.itemName;
     }
@@ -88,6 +100,7 @@ public final class ResourceCarbonEmissionItemDetailData extends CarbonEmissionDa
      * 
      * @return the categoryType value.
      */
+    @Generated
     public CategoryTypeEnum categoryType() {
         return this.categoryType;
     }
@@ -97,6 +110,7 @@ public final class ResourceCarbonEmissionItemDetailData extends CarbonEmissionDa
      * 
      * @return the subscriptionId value.
      */
+    @Generated
     public String subscriptionId() {
         return this.subscriptionId;
     }
@@ -106,6 +120,7 @@ public final class ResourceCarbonEmissionItemDetailData extends CarbonEmissionDa
      * 
      * @return the resourceGroup value.
      */
+    @Generated
     public String resourceGroup() {
         return this.resourceGroup;
     }
@@ -116,6 +131,7 @@ public final class ResourceCarbonEmissionItemDetailData extends CarbonEmissionDa
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String resourceId() {
         return this.resourceId;
     }
@@ -125,6 +141,7 @@ public final class ResourceCarbonEmissionItemDetailData extends CarbonEmissionDa
      * 
      * @return the location value.
      */
+    @Generated
     public String location() {
         return this.location;
     }
@@ -134,6 +151,7 @@ public final class ResourceCarbonEmissionItemDetailData extends CarbonEmissionDa
      * 
      * @return the resourceType value.
      */
+    @Generated
     public String resourceType() {
         return this.resourceType;
     }

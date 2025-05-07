@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class TrafficControllerUpdate implements JsonSerializable<TrafficCo
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private TrafficControllerUpdateProperties properties;
 
     /**
      * Creates an instance of TrafficControllerUpdate class.
      */
+    @Generated
     public TrafficControllerUpdate() {
     }
 
@@ -38,6 +42,7 @@ public final class TrafficControllerUpdate implements JsonSerializable<TrafficCo
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -48,6 +53,7 @@ public final class TrafficControllerUpdate implements JsonSerializable<TrafficCo
      * @param tags the tags value to set.
      * @return the TrafficControllerUpdate object itself.
      */
+    @Generated
     public TrafficControllerUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -58,6 +64,7 @@ public final class TrafficControllerUpdate implements JsonSerializable<TrafficCo
      * 
      * @return the properties value.
      */
+    @Generated
     public TrafficControllerUpdateProperties properties() {
         return this.properties;
     }
@@ -68,6 +75,7 @@ public final class TrafficControllerUpdate implements JsonSerializable<TrafficCo
      * @param properties the properties value to set.
      * @return the TrafficControllerUpdate object itself.
      */
+    @Generated
     public TrafficControllerUpdate withProperties(TrafficControllerUpdateProperties properties) {
         this.properties = properties;
         return this;

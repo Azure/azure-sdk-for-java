@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class AssociationProperties implements JsonSerializable<Association
     /*
      * Association Type
      */
+    @Generated
     private AssociationType associationType;
 
     /*
      * Association Subnet
      */
+    @Generated
     private AssociationSubnet subnet;
 
     /*
      * Provisioning State of Traffic Controller Association Resource
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of AssociationProperties class.
      */
+    @Generated
     public AssociationProperties() {
     }
 
@@ -43,6 +48,7 @@ public final class AssociationProperties implements JsonSerializable<Association
      * 
      * @return the associationType value.
      */
+    @Generated
     public AssociationType associationType() {
         return this.associationType;
     }
@@ -53,6 +59,7 @@ public final class AssociationProperties implements JsonSerializable<Association
      * @param associationType the associationType value to set.
      * @return the AssociationProperties object itself.
      */
+    @Generated
     public AssociationProperties withAssociationType(AssociationType associationType) {
         this.associationType = associationType;
         return this;
@@ -63,6 +70,7 @@ public final class AssociationProperties implements JsonSerializable<Association
      * 
      * @return the subnet value.
      */
+    @Generated
     public AssociationSubnet subnet() {
         return this.subnet;
     }
@@ -73,6 +81,7 @@ public final class AssociationProperties implements JsonSerializable<Association
      * @param subnet the subnet value to set.
      * @return the AssociationProperties object itself.
      */
+    @Generated
     public AssociationProperties withSubnet(AssociationSubnet subnet) {
         this.subnet = subnet;
         return this;
@@ -83,6 +92,7 @@ public final class AssociationProperties implements JsonSerializable<Association
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

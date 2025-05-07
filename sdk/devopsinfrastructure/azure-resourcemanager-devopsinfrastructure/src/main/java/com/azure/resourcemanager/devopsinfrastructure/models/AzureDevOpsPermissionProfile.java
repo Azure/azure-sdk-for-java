@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,21 +22,25 @@ public final class AzureDevOpsPermissionProfile implements JsonSerializable<Azur
     /*
      * Determines who has admin permissions to the Azure DevOps pool.
      */
+    @Generated
     private AzureDevOpsPermissionType kind;
 
     /*
      * User email addresses
      */
+    @Generated
     private List<String> users;
 
     /*
      * Group email addresses
      */
+    @Generated
     private List<String> groups;
 
     /**
      * Creates an instance of AzureDevOpsPermissionProfile class.
      */
+    @Generated
     public AzureDevOpsPermissionProfile() {
     }
 
@@ -44,6 +49,7 @@ public final class AzureDevOpsPermissionProfile implements JsonSerializable<Azur
      * 
      * @return the kind value.
      */
+    @Generated
     public AzureDevOpsPermissionType kind() {
         return this.kind;
     }
@@ -54,6 +60,7 @@ public final class AzureDevOpsPermissionProfile implements JsonSerializable<Azur
      * @param kind the kind value to set.
      * @return the AzureDevOpsPermissionProfile object itself.
      */
+    @Generated
     public AzureDevOpsPermissionProfile withKind(AzureDevOpsPermissionType kind) {
         this.kind = kind;
         return this;
@@ -64,6 +71,7 @@ public final class AzureDevOpsPermissionProfile implements JsonSerializable<Azur
      * 
      * @return the users value.
      */
+    @Generated
     public List<String> users() {
         return this.users;
     }
@@ -74,6 +82,7 @@ public final class AzureDevOpsPermissionProfile implements JsonSerializable<Azur
      * @param users the users value to set.
      * @return the AzureDevOpsPermissionProfile object itself.
      */
+    @Generated
     public AzureDevOpsPermissionProfile withUsers(List<String> users) {
         this.users = users;
         return this;
@@ -84,6 +93,7 @@ public final class AzureDevOpsPermissionProfile implements JsonSerializable<Azur
      * 
      * @return the groups value.
      */
+    @Generated
     public List<String> groups() {
         return this.groups;
     }
@@ -94,6 +104,7 @@ public final class AzureDevOpsPermissionProfile implements JsonSerializable<Azur
      * @param groups the groups value to set.
      * @return the AzureDevOpsPermissionProfile object itself.
      */
+    @Generated
     public AzureDevOpsPermissionProfile withGroups(List<String> groups) {
         this.groups = groups;
         return this;

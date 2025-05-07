@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class CentralServerConfiguration implements JsonSerializable<Centra
     /*
      * The subnet id.
      */
+    @Generated
     private String subnetId;
 
     /*
      * Gets or sets the virtual machine configuration.
      */
+    @Generated
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /*
      * The number of central server VMs.
      */
+    @Generated
     private long instanceCount;
 
     /**
      * Creates an instance of CentralServerConfiguration class.
      */
+    @Generated
     public CentralServerConfiguration() {
     }
 
@@ -43,6 +48,7 @@ public final class CentralServerConfiguration implements JsonSerializable<Centra
      * 
      * @return the subnetId value.
      */
+    @Generated
     public String subnetId() {
         return this.subnetId;
     }
@@ -53,6 +59,7 @@ public final class CentralServerConfiguration implements JsonSerializable<Centra
      * @param subnetId the subnetId value to set.
      * @return the CentralServerConfiguration object itself.
      */
+    @Generated
     public CentralServerConfiguration withSubnetId(String subnetId) {
         this.subnetId = subnetId;
         return this;
@@ -63,6 +70,7 @@ public final class CentralServerConfiguration implements JsonSerializable<Centra
      * 
      * @return the virtualMachineConfiguration value.
      */
+    @Generated
     public VirtualMachineConfiguration virtualMachineConfiguration() {
         return this.virtualMachineConfiguration;
     }
@@ -73,6 +81,7 @@ public final class CentralServerConfiguration implements JsonSerializable<Centra
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the CentralServerConfiguration object itself.
      */
+    @Generated
     public CentralServerConfiguration
         withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
@@ -84,6 +93,7 @@ public final class CentralServerConfiguration implements JsonSerializable<Centra
      * 
      * @return the instanceCount value.
      */
+    @Generated
     public long instanceCount() {
         return this.instanceCount;
     }
@@ -94,6 +104,7 @@ public final class CentralServerConfiguration implements JsonSerializable<Centra
      * @param instanceCount the instanceCount value to set.
      * @return the CentralServerConfiguration object itself.
      */
+    @Generated
     public CentralServerConfiguration withInstanceCount(long instanceCount) {
         this.instanceCount = instanceCount;
         return this;

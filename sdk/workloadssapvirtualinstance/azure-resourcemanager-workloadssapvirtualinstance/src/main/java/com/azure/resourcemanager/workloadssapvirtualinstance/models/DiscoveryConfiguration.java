@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,11 +19,13 @@ public final class DiscoveryConfiguration extends SapConfiguration {
     /*
      * The configuration type. Eg: Deployment/Discovery
      */
+    @Generated
     private SapConfigurationType configurationType = SapConfigurationType.DISCOVERY;
 
     /*
      * The virtual machine ID of the Central Server.
      */
+    @Generated
     private String centralServerVmId;
 
     /*
@@ -31,16 +34,19 @@ public final class DiscoveryConfiguration extends SapConfiguration {
      * [here](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules#microsoftstorage).
      * <br><br>If not provided, the service will create the storage account with a random name.
      */
+    @Generated
     private String managedRgStorageAccountName;
 
     /*
      * The geo-location where the SAP system exists.
      */
+    @Generated
     private String appLocation;
 
     /**
      * Creates an instance of DiscoveryConfiguration class.
      */
+    @Generated
     public DiscoveryConfiguration() {
     }
 
@@ -49,6 +55,7 @@ public final class DiscoveryConfiguration extends SapConfiguration {
      * 
      * @return the configurationType value.
      */
+    @Generated
     @Override
     public SapConfigurationType configurationType() {
         return this.configurationType;
@@ -59,6 +66,7 @@ public final class DiscoveryConfiguration extends SapConfiguration {
      * 
      * @return the centralServerVmId value.
      */
+    @Generated
     public String centralServerVmId() {
         return this.centralServerVmId;
     }
@@ -69,6 +77,7 @@ public final class DiscoveryConfiguration extends SapConfiguration {
      * @param centralServerVmId the centralServerVmId value to set.
      * @return the DiscoveryConfiguration object itself.
      */
+    @Generated
     public DiscoveryConfiguration withCentralServerVmId(String centralServerVmId) {
         this.centralServerVmId = centralServerVmId;
         return this;
@@ -83,6 +92,7 @@ public final class DiscoveryConfiguration extends SapConfiguration {
      * 
      * @return the managedRgStorageAccountName value.
      */
+    @Generated
     public String managedRgStorageAccountName() {
         return this.managedRgStorageAccountName;
     }
@@ -97,6 +107,7 @@ public final class DiscoveryConfiguration extends SapConfiguration {
      * @param managedRgStorageAccountName the managedRgStorageAccountName value to set.
      * @return the DiscoveryConfiguration object itself.
      */
+    @Generated
     public DiscoveryConfiguration withManagedRgStorageAccountName(String managedRgStorageAccountName) {
         this.managedRgStorageAccountName = managedRgStorageAccountName;
         return this;
@@ -107,6 +118,7 @@ public final class DiscoveryConfiguration extends SapConfiguration {
      * 
      * @return the appLocation value.
      */
+    @Generated
     public String appLocation() {
         return this.appLocation;
     }

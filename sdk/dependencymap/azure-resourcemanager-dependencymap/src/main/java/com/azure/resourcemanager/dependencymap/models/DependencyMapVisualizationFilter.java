@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dependencymap.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class DependencyMapVisualizationFilter implements JsonSerializable<
     /*
      * DateTime filter
      */
+    @Generated
     private DateTimeFilter dateTime;
 
     /*
      * Process name filter
      */
+    @Generated
     private ProcessNameFilter processNameFilter;
 
     /**
      * Creates an instance of DependencyMapVisualizationFilter class.
      */
+    @Generated
     public DependencyMapVisualizationFilter() {
     }
 
@@ -37,6 +41,7 @@ public final class DependencyMapVisualizationFilter implements JsonSerializable<
      * 
      * @return the dateTime value.
      */
+    @Generated
     public DateTimeFilter dateTime() {
         return this.dateTime;
     }
@@ -47,6 +52,7 @@ public final class DependencyMapVisualizationFilter implements JsonSerializable<
      * @param dateTime the dateTime value to set.
      * @return the DependencyMapVisualizationFilter object itself.
      */
+    @Generated
     public DependencyMapVisualizationFilter withDateTime(DateTimeFilter dateTime) {
         this.dateTime = dateTime;
         return this;
@@ -57,6 +63,7 @@ public final class DependencyMapVisualizationFilter implements JsonSerializable<
      * 
      * @return the processNameFilter value.
      */
+    @Generated
     public ProcessNameFilter processNameFilter() {
         return this.processNameFilter;
     }
@@ -67,6 +74,7 @@ public final class DependencyMapVisualizationFilter implements JsonSerializable<
      * @param processNameFilter the processNameFilter value to set.
      * @return the DependencyMapVisualizationFilter object itself.
      */
+    @Generated
     public DependencyMapVisualizationFilter withProcessNameFilter(ProcessNameFilter processNameFilter) {
         this.processNameFilter = processNameFilter;
         return this;

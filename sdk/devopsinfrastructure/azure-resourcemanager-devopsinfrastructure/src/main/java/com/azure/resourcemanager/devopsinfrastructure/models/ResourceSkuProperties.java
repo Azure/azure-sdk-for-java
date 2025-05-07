@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -21,46 +22,55 @@ public final class ResourceSkuProperties implements JsonSerializable<ResourceSku
     /*
      * The type of resource the SKU applies to.
      */
+    @Generated
     private String resourceType;
 
     /*
      * The tier of virtual machines in a scale set
      */
+    @Generated
     private String tier;
 
     /*
      * The size of the SKU.
      */
+    @Generated
     private String size;
 
     /*
      * The family of the SKU.
      */
+    @Generated
     private String family;
 
     /*
      * The set of locations that the SKU is available.
      */
+    @Generated
     private List<String> locations;
 
     /*
      * A list of locations and availability zones in those locations where the SKU is available
      */
+    @Generated
     private List<ResourceSkuLocationInfo> locationInfo;
 
     /*
      * Name value pairs to describe the capability.
      */
+    @Generated
     private List<ResourceSkuCapabilities> capabilities;
 
     /*
      * The restrictions of the SKU.
      */
+    @Generated
     private List<ResourceSkuRestrictions> restrictions;
 
     /**
      * Creates an instance of ResourceSkuProperties class.
      */
+    @Generated
     private ResourceSkuProperties() {
     }
 
@@ -69,6 +79,7 @@ public final class ResourceSkuProperties implements JsonSerializable<ResourceSku
      * 
      * @return the resourceType value.
      */
+    @Generated
     public String resourceType() {
         return this.resourceType;
     }
@@ -78,6 +89,7 @@ public final class ResourceSkuProperties implements JsonSerializable<ResourceSku
      * 
      * @return the tier value.
      */
+    @Generated
     public String tier() {
         return this.tier;
     }
@@ -87,6 +99,7 @@ public final class ResourceSkuProperties implements JsonSerializable<ResourceSku
      * 
      * @return the size value.
      */
+    @Generated
     public String size() {
         return this.size;
     }
@@ -96,6 +109,7 @@ public final class ResourceSkuProperties implements JsonSerializable<ResourceSku
      * 
      * @return the family value.
      */
+    @Generated
     public String family() {
         return this.family;
     }
@@ -105,6 +119,7 @@ public final class ResourceSkuProperties implements JsonSerializable<ResourceSku
      * 
      * @return the locations value.
      */
+    @Generated
     public List<String> locations() {
         return this.locations;
     }
@@ -115,6 +130,7 @@ public final class ResourceSkuProperties implements JsonSerializable<ResourceSku
      * 
      * @return the locationInfo value.
      */
+    @Generated
     public List<ResourceSkuLocationInfo> locationInfo() {
         return this.locationInfo;
     }
@@ -124,6 +140,7 @@ public final class ResourceSkuProperties implements JsonSerializable<ResourceSku
      * 
      * @return the capabilities value.
      */
+    @Generated
     public List<ResourceSkuCapabilities> capabilities() {
         return this.capabilities;
     }
@@ -133,6 +150,7 @@ public final class ResourceSkuProperties implements JsonSerializable<ResourceSku
      * 
      * @return the restrictions value.
      */
+    @Generated
     public List<ResourceSkuRestrictions> restrictions() {
         return this.restrictions;
     }

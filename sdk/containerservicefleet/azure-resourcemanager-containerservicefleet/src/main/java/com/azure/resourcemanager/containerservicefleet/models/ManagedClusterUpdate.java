@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class ManagedClusterUpdate implements JsonSerializable<ManagedClust
     /*
      * The upgrade to apply to the ManagedClusters.
      */
+    @Generated
     private ManagedClusterUpgradeSpec upgrade;
 
     /*
      * The node image upgrade to be applied to the target nodes in update run.
      */
+    @Generated
     private NodeImageSelection nodeImageSelection;
 
     /**
      * Creates an instance of ManagedClusterUpdate class.
      */
+    @Generated
     public ManagedClusterUpdate() {
     }
 
@@ -38,6 +42,7 @@ public final class ManagedClusterUpdate implements JsonSerializable<ManagedClust
      * 
      * @return the upgrade value.
      */
+    @Generated
     public ManagedClusterUpgradeSpec upgrade() {
         return this.upgrade;
     }
@@ -48,6 +53,7 @@ public final class ManagedClusterUpdate implements JsonSerializable<ManagedClust
      * @param upgrade the upgrade value to set.
      * @return the ManagedClusterUpdate object itself.
      */
+    @Generated
     public ManagedClusterUpdate withUpgrade(ManagedClusterUpgradeSpec upgrade) {
         this.upgrade = upgrade;
         return this;
@@ -58,6 +64,7 @@ public final class ManagedClusterUpdate implements JsonSerializable<ManagedClust
      * 
      * @return the nodeImageSelection value.
      */
+    @Generated
     public NodeImageSelection nodeImageSelection() {
         return this.nodeImageSelection;
     }
@@ -68,6 +75,7 @@ public final class ManagedClusterUpdate implements JsonSerializable<ManagedClust
      * @param nodeImageSelection the nodeImageSelection value to set.
      * @return the ManagedClusterUpdate object itself.
      */
+    @Generated
     public ManagedClusterUpdate withNodeImageSelection(NodeImageSelection nodeImageSelection) {
         this.nodeImageSelection = nodeImageSelection;
         return this;

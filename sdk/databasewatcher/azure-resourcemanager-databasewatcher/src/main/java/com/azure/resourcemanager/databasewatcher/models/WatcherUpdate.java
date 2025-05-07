@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class WatcherUpdate implements JsonSerializable<WatcherUpdate> {
     /*
      * The managed service identities assigned to this resource.
      */
+    @Generated
     private ManagedServiceIdentityV4 identity;
 
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private WatcherUpdateProperties properties;
 
     /**
      * Creates an instance of WatcherUpdate class.
      */
+    @Generated
     public WatcherUpdate() {
     }
 
@@ -43,6 +48,7 @@ public final class WatcherUpdate implements JsonSerializable<WatcherUpdate> {
      * 
      * @return the identity value.
      */
+    @Generated
     public ManagedServiceIdentityV4 identity() {
         return this.identity;
     }
@@ -53,6 +59,7 @@ public final class WatcherUpdate implements JsonSerializable<WatcherUpdate> {
      * @param identity the identity value to set.
      * @return the WatcherUpdate object itself.
      */
+    @Generated
     public WatcherUpdate withIdentity(ManagedServiceIdentityV4 identity) {
         this.identity = identity;
         return this;
@@ -63,6 +70,7 @@ public final class WatcherUpdate implements JsonSerializable<WatcherUpdate> {
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -73,6 +81,7 @@ public final class WatcherUpdate implements JsonSerializable<WatcherUpdate> {
      * @param tags the tags value to set.
      * @return the WatcherUpdate object itself.
      */
+    @Generated
     public WatcherUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -83,6 +92,7 @@ public final class WatcherUpdate implements JsonSerializable<WatcherUpdate> {
      * 
      * @return the properties value.
      */
+    @Generated
     public WatcherUpdateProperties properties() {
         return this.properties;
     }
@@ -93,6 +103,7 @@ public final class WatcherUpdate implements JsonSerializable<WatcherUpdate> {
      * @param properties the properties value to set.
      * @return the WatcherUpdate object itself.
      */
+    @Generated
     public WatcherUpdate withProperties(WatcherUpdateProperties properties) {
         this.properties = properties;
         return this;

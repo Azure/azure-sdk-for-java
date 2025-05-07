@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class OperationType extends ExpandableStringEnum<OperationType> {
     /**
      * Dataflow Source Operation.
      */
+    @Generated
     public static final OperationType SOURCE = fromString("Source");
 
     /**
      * Dataflow Destination Operation.
      */
+    @Generated
     public static final OperationType DESTINATION = fromString("Destination");
 
     /**
      * Dataflow BuiltIn Transformation Operation.
      */
+    @Generated
     public static final OperationType BUILT_IN_TRANSFORMATION = fromString("BuiltInTransformation");
 
     /**
@@ -31,6 +35,7 @@ public final class OperationType extends ExpandableStringEnum<OperationType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OperationType() {
     }
@@ -41,6 +46,7 @@ public final class OperationType extends ExpandableStringEnum<OperationType> {
      * @param name a name to look for.
      * @return the corresponding OperationType.
      */
+    @Generated
     public static OperationType fromString(String name) {
         return fromString(name, OperationType.class);
     }
@@ -50,6 +56,7 @@ public final class OperationType extends ExpandableStringEnum<OperationType> {
      * 
      * @return known OperationType values.
      */
+    @Generated
     public static Collection<OperationType> values() {
         return values(OperationType.class);
     }

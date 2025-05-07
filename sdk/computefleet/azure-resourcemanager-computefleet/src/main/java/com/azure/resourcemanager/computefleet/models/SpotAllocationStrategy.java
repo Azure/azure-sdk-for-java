@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,17 +15,20 @@ public final class SpotAllocationStrategy extends ExpandableStringEnum<SpotAlloc
     /**
      * Default. VM sizes distribution will be determined to optimize for both price and capacity.
      */
+    @Generated
     public static final SpotAllocationStrategy PRICE_CAPACITY_OPTIMIZED = fromString("PriceCapacityOptimized");
 
     /**
      * VM sizes distribution will be determined to optimize for price. Note: Capacity will still be considered here but
      * will be given much less weight.
      */
+    @Generated
     public static final SpotAllocationStrategy LOWEST_PRICE = fromString("LowestPrice");
 
     /**
      * VM sizes distribution will be determined to optimize for capacity.
      */
+    @Generated
     public static final SpotAllocationStrategy CAPACITY_OPTIMIZED = fromString("CapacityOptimized");
 
     /**
@@ -32,6 +36,7 @@ public final class SpotAllocationStrategy extends ExpandableStringEnum<SpotAlloc
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SpotAllocationStrategy() {
     }
@@ -42,6 +47,7 @@ public final class SpotAllocationStrategy extends ExpandableStringEnum<SpotAlloc
      * @param name a name to look for.
      * @return the corresponding SpotAllocationStrategy.
      */
+    @Generated
     public static SpotAllocationStrategy fromString(String name) {
         return fromString(name, SpotAllocationStrategy.class);
     }
@@ -51,6 +57,7 @@ public final class SpotAllocationStrategy extends ExpandableStringEnum<SpotAlloc
      * 
      * @return known SpotAllocationStrategy values.
      */
+    @Generated
     public static Collection<SpotAllocationStrategy> values() {
         return values(SpotAllocationStrategy.class);
     }

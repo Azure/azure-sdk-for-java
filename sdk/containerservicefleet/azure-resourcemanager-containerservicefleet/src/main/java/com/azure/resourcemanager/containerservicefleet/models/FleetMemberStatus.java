@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
@@ -20,16 +21,19 @@ public final class FleetMemberStatus implements JsonSerializable<FleetMemberStat
     /*
      * The last operation ID for the fleet member
      */
+    @Generated
     private String lastOperationId;
 
     /*
      * The last operation error of the fleet member
      */
+    @Generated
     private ManagementError lastOperationError;
 
     /**
      * Creates an instance of FleetMemberStatus class.
      */
+    @Generated
     private FleetMemberStatus() {
     }
 
@@ -38,6 +42,7 @@ public final class FleetMemberStatus implements JsonSerializable<FleetMemberStat
      * 
      * @return the lastOperationId value.
      */
+    @Generated
     public String lastOperationId() {
         return this.lastOperationId;
     }
@@ -47,6 +52,7 @@ public final class FleetMemberStatus implements JsonSerializable<FleetMemberStat
      * 
      * @return the lastOperationError value.
      */
+    @Generated
     public ManagementError lastOperationError() {
         return this.lastOperationError;
     }

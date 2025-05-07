@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class DataPoint extends DataPointBase {
     /*
      * An indication of how the data point should be mapped to OpenTelemetry.
      */
+    @Generated
     private DataPointObservabilityMode observabilityMode;
 
     /**
      * Creates an instance of DataPoint class.
      */
+    @Generated
     public DataPoint() {
     }
 
@@ -32,6 +35,7 @@ public final class DataPoint extends DataPointBase {
      * 
      * @return the observabilityMode value.
      */
+    @Generated
     public DataPointObservabilityMode observabilityMode() {
         return this.observabilityMode;
     }
@@ -42,6 +46,7 @@ public final class DataPoint extends DataPointBase {
      * @param observabilityMode the observabilityMode value to set.
      * @return the DataPoint object itself.
      */
+    @Generated
     public DataPoint withObservabilityMode(DataPointObservabilityMode observabilityMode) {
         this.observabilityMode = observabilityMode;
         return this;
@@ -50,6 +55,7 @@ public final class DataPoint extends DataPointBase {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataPoint withName(String name) {
         super.withName(name);
@@ -59,6 +65,7 @@ public final class DataPoint extends DataPointBase {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataPoint withDataSource(String dataSource) {
         super.withDataSource(dataSource);
@@ -68,6 +75,7 @@ public final class DataPoint extends DataPointBase {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataPoint withDataPointConfiguration(String dataPointConfiguration) {
         super.withDataPointConfiguration(dataPointConfiguration);

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
     /*
      * The size of the data disk assigned to each server.
      */
+    @Generated
     private Long sizeGb;
 
     /**
      * Creates an instance of StorageProperties class.
      */
+    @Generated
     public StorageProperties() {
     }
 
@@ -33,6 +36,7 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
      * 
      * @return the sizeGb value.
      */
+    @Generated
     public Long sizeGb() {
         return this.sizeGb;
     }
@@ -43,6 +47,7 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
      * @param sizeGb the sizeGb value to set.
      * @return the StorageProperties object itself.
      */
+    @Generated
     public StorageProperties withSizeGb(Long sizeGb) {
         this.sizeGb = sizeGb;
         return this;

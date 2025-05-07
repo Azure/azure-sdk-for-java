@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -21,16 +22,19 @@ public final class CarbonEmissionDataAvailableDateRangeInner
     /*
      * Start date parameter, format is yyyy-MM-dd
      */
+    @Generated
     private String startDate;
 
     /*
      * End date parameter, format is yyyy-MM-dd
      */
+    @Generated
     private String endDate;
 
     /**
      * Creates an instance of CarbonEmissionDataAvailableDateRangeInner class.
      */
+    @Generated
     private CarbonEmissionDataAvailableDateRangeInner() {
     }
 
@@ -39,6 +43,7 @@ public final class CarbonEmissionDataAvailableDateRangeInner
      * 
      * @return the startDate value.
      */
+    @Generated
     public String startDate() {
         return this.startDate;
     }
@@ -48,6 +53,7 @@ public final class CarbonEmissionDataAvailableDateRangeInner
      * 
      * @return the endDate value.
      */
+    @Generated
     public String endDate() {
         return this.endDate;
     }

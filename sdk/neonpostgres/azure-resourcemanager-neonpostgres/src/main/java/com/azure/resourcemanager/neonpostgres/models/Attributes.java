@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class Attributes implements JsonSerializable<Attributes> {
     /*
      * Name of the attribute
      */
+    @Generated
     private String name;
 
     /*
      * Value of the attribute
      */
+    @Generated
     private String value;
 
     /**
      * Creates an instance of Attributes class.
      */
+    @Generated
     public Attributes() {
     }
 
@@ -38,6 +42,7 @@ public final class Attributes implements JsonSerializable<Attributes> {
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -48,6 +53,7 @@ public final class Attributes implements JsonSerializable<Attributes> {
      * @param name the name value to set.
      * @return the Attributes object itself.
      */
+    @Generated
     public Attributes withName(String name) {
         this.name = name;
         return this;
@@ -58,6 +64,7 @@ public final class Attributes implements JsonSerializable<Attributes> {
      * 
      * @return the value value.
      */
+    @Generated
     public String value() {
         return this.value;
     }
@@ -68,6 +75,7 @@ public final class Attributes implements JsonSerializable<Attributes> {
      * @param value the value value to set.
      * @return the Attributes object itself.
      */
+    @Generated
     public Attributes withValue(String value) {
         this.value = value;
         return this;

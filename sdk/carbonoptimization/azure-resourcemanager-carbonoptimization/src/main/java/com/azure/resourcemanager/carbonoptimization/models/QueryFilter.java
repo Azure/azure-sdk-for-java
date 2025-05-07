@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.carbonoptimization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,6 +24,7 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * The ReportType requested for carbon emissions data. Required. Specifies how data is aggregated and displayed in
      * the output, as explained in the ReportTypeEnum.
      */
+    @Generated
     private ReportTypeEnum reportType = ReportTypeEnum.fromString("QueryFilter");
 
     /*
@@ -30,24 +32,28 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * only one month of data is supported at a time, so start and end dates should be equal within DateRange (e.g.,
      * start: 2024-06-01 and end: 2024-06-01).
      */
+    @Generated
     private DateRange dateRange;
 
     /*
      * List of subscription IDs for which carbon emissions data is requested. Required. Each subscription ID should be
      * in lowercase format. The max length of list is 100.
      */
+    @Generated
     private List<String> subscriptionList;
 
     /*
      * List of resource group URLs for carbon emissions data. Optional. Each URL must follow the format
      * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroup}', and should be in all lowercase.
      */
+    @Generated
     private List<String> resourceGroupUrlList;
 
     /*
      * List of resource types for carbon emissions data. Optional. Each resource type should be specified in lowercase,
      * following the format 'microsoft.{service}/{resourceType}', e.g., 'microsoft.storage/storageaccounts'.
      */
+    @Generated
     private List<String> resourceTypeList;
 
     /*
@@ -55,17 +61,20 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * (e.g., 'east us'). Optional. You can use the command 'az account list-locations -o table' to find Azure Region
      * Display Names.
      */
+    @Generated
     private List<String> locationList;
 
     /*
      * List of carbon emission scopes. Required. Accepts one or more values from EmissionScopeEnum (e.g., Scope1,
      * Scope2, Scope3) in list form. The output will include the total emissions for the specified scopes.
      */
+    @Generated
     private List<EmissionScopeEnum> carbonScopeList;
 
     /**
      * Creates an instance of QueryFilter class.
      */
+    @Generated
     public QueryFilter() {
     }
 
@@ -75,6 +84,7 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * 
      * @return the reportType value.
      */
+    @Generated
     public ReportTypeEnum reportType() {
         return this.reportType;
     }
@@ -86,6 +96,7 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * 
      * @return the dateRange value.
      */
+    @Generated
     public DateRange dateRange() {
         return this.dateRange;
     }
@@ -98,6 +109,7 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * @param dateRange the dateRange value to set.
      * @return the QueryFilter object itself.
      */
+    @Generated
     public QueryFilter withDateRange(DateRange dateRange) {
         this.dateRange = dateRange;
         return this;
@@ -109,6 +121,7 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * 
      * @return the subscriptionList value.
      */
+    @Generated
     public List<String> subscriptionList() {
         return this.subscriptionList;
     }
@@ -120,6 +133,7 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * @param subscriptionList the subscriptionList value to set.
      * @return the QueryFilter object itself.
      */
+    @Generated
     public QueryFilter withSubscriptionList(List<String> subscriptionList) {
         this.subscriptionList = subscriptionList;
         return this;
@@ -132,6 +146,7 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * 
      * @return the resourceGroupUrlList value.
      */
+    @Generated
     public List<String> resourceGroupUrlList() {
         return this.resourceGroupUrlList;
     }
@@ -144,6 +159,7 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * @param resourceGroupUrlList the resourceGroupUrlList value to set.
      * @return the QueryFilter object itself.
      */
+    @Generated
     public QueryFilter withResourceGroupUrlList(List<String> resourceGroupUrlList) {
         this.resourceGroupUrlList = resourceGroupUrlList;
         return this;
@@ -156,6 +172,7 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * 
      * @return the resourceTypeList value.
      */
+    @Generated
     public List<String> resourceTypeList() {
         return this.resourceTypeList;
     }
@@ -168,6 +185,7 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * @param resourceTypeList the resourceTypeList value to set.
      * @return the QueryFilter object itself.
      */
+    @Generated
     public QueryFilter withResourceTypeList(List<String> resourceTypeList) {
         this.resourceTypeList = resourceTypeList;
         return this;
@@ -180,6 +198,7 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * 
      * @return the locationList value.
      */
+    @Generated
     public List<String> locationList() {
         return this.locationList;
     }
@@ -192,6 +211,7 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * @param locationList the locationList value to set.
      * @return the QueryFilter object itself.
      */
+    @Generated
     public QueryFilter withLocationList(List<String> locationList) {
         this.locationList = locationList;
         return this;
@@ -204,6 +224,7 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * 
      * @return the carbonScopeList value.
      */
+    @Generated
     public List<EmissionScopeEnum> carbonScopeList() {
         return this.carbonScopeList;
     }
@@ -216,6 +237,7 @@ public class QueryFilter implements JsonSerializable<QueryFilter> {
      * @param carbonScopeList the carbonScopeList value to set.
      * @return the QueryFilter object itself.
      */
+    @Generated
     public QueryFilter withCarbonScopeList(List<EmissionScopeEnum> carbonScopeList) {
         this.carbonScopeList = carbonScopeList;
         return this;

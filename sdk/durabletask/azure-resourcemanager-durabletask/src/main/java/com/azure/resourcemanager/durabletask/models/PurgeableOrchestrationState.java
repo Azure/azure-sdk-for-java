@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.durabletask.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class PurgeableOrchestrationState extends ExpandableStringEnum<Purg
     /**
      * The orchestration is completed.
      */
+    @Generated
     public static final PurgeableOrchestrationState COMPLETED = fromString("Completed");
 
     /**
      * The orchestration is failed.
      */
+    @Generated
     public static final PurgeableOrchestrationState FAILED = fromString("Failed");
 
     /**
      * The orchestration is terminated.
      */
+    @Generated
     public static final PurgeableOrchestrationState TERMINATED = fromString("Terminated");
 
     /**
      * The orchestration is canceled.
      */
+    @Generated
     public static final PurgeableOrchestrationState CANCELED = fromString("Canceled");
 
     /**
@@ -36,6 +41,7 @@ public final class PurgeableOrchestrationState extends ExpandableStringEnum<Purg
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PurgeableOrchestrationState() {
     }
@@ -46,6 +52,7 @@ public final class PurgeableOrchestrationState extends ExpandableStringEnum<Purg
      * @param name a name to look for.
      * @return the corresponding PurgeableOrchestrationState.
      */
+    @Generated
     public static PurgeableOrchestrationState fromString(String name) {
         return fromString(name, PurgeableOrchestrationState.class);
     }
@@ -55,6 +62,7 @@ public final class PurgeableOrchestrationState extends ExpandableStringEnum<Purg
      * 
      * @return known PurgeableOrchestrationState values.
      */
+    @Generated
     public static Collection<PurgeableOrchestrationState> values() {
         return values(PurgeableOrchestrationState.class);
     }

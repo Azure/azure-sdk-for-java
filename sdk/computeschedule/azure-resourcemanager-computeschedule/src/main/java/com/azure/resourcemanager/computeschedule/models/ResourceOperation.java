@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,26 +20,31 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
     /*
      * Unique identifier for the resource involved in the operation, eg ArmId
      */
+    @Generated
     private String resourceId;
 
     /*
      * Resource level error code if it exists
      */
+    @Generated
     private String errorCode;
 
     /*
      * Resource level error details if they exist
      */
+    @Generated
     private String errorDetails;
 
     /*
      * Details of the operation performed on a resource
      */
+    @Generated
     private ResourceOperationDetails operation;
 
     /**
      * Creates an instance of ResourceOperation class.
      */
+    @Generated
     private ResourceOperation() {
     }
 
@@ -47,6 +53,7 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String resourceId() {
         return this.resourceId;
     }
@@ -56,6 +63,7 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
      * 
      * @return the errorCode value.
      */
+    @Generated
     public String errorCode() {
         return this.errorCode;
     }
@@ -65,6 +73,7 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
      * 
      * @return the errorDetails value.
      */
+    @Generated
     public String errorDetails() {
         return this.errorDetails;
     }
@@ -74,6 +83,7 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
      * 
      * @return the operation value.
      */
+    @Generated
     public ResourceOperationDetails operation() {
         return this.operation;
     }

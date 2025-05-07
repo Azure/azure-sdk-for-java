@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.carbonoptimization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -21,22 +22,26 @@ public final class TopItemsMonthlySummaryReportQueryFilter extends QueryFilter {
      * The ReportType requested for carbon emissions data. Required. Specifies how data is aggregated and displayed in
      * the output, as explained in the ReportTypeEnum.
      */
+    @Generated
     private ReportTypeEnum reportType = ReportTypeEnum.TOP_ITEMS_MONTHLY_SUMMARY_REPORT;
 
     /*
      * Specifies the category type to retrieve top-emitting items, aggregated by month. See supported types in
      * CategoryTypeEnum.
      */
+    @Generated
     private CategoryTypeEnum categoryType;
 
     /*
      * The number of top items to return, based on emissions. Must be between 1 and 10.
      */
+    @Generated
     private int topItems;
 
     /**
      * Creates an instance of TopItemsMonthlySummaryReportQueryFilter class.
      */
+    @Generated
     public TopItemsMonthlySummaryReportQueryFilter() {
     }
 
@@ -46,6 +51,7 @@ public final class TopItemsMonthlySummaryReportQueryFilter extends QueryFilter {
      * 
      * @return the reportType value.
      */
+    @Generated
     @Override
     public ReportTypeEnum reportType() {
         return this.reportType;
@@ -57,6 +63,7 @@ public final class TopItemsMonthlySummaryReportQueryFilter extends QueryFilter {
      * 
      * @return the categoryType value.
      */
+    @Generated
     public CategoryTypeEnum categoryType() {
         return this.categoryType;
     }
@@ -68,6 +75,7 @@ public final class TopItemsMonthlySummaryReportQueryFilter extends QueryFilter {
      * @param categoryType the categoryType value to set.
      * @return the TopItemsMonthlySummaryReportQueryFilter object itself.
      */
+    @Generated
     public TopItemsMonthlySummaryReportQueryFilter withCategoryType(CategoryTypeEnum categoryType) {
         this.categoryType = categoryType;
         return this;
@@ -78,6 +86,7 @@ public final class TopItemsMonthlySummaryReportQueryFilter extends QueryFilter {
      * 
      * @return the topItems value.
      */
+    @Generated
     public int topItems() {
         return this.topItems;
     }
@@ -88,6 +97,7 @@ public final class TopItemsMonthlySummaryReportQueryFilter extends QueryFilter {
      * @param topItems the topItems value to set.
      * @return the TopItemsMonthlySummaryReportQueryFilter object itself.
      */
+    @Generated
     public TopItemsMonthlySummaryReportQueryFilter withTopItems(int topItems) {
         this.topItems = topItems;
         return this;
@@ -96,6 +106,7 @@ public final class TopItemsMonthlySummaryReportQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TopItemsMonthlySummaryReportQueryFilter withDateRange(DateRange dateRange) {
         super.withDateRange(dateRange);
@@ -105,6 +116,7 @@ public final class TopItemsMonthlySummaryReportQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TopItemsMonthlySummaryReportQueryFilter withSubscriptionList(List<String> subscriptionList) {
         super.withSubscriptionList(subscriptionList);
@@ -114,6 +126,7 @@ public final class TopItemsMonthlySummaryReportQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TopItemsMonthlySummaryReportQueryFilter withResourceGroupUrlList(List<String> resourceGroupUrlList) {
         super.withResourceGroupUrlList(resourceGroupUrlList);
@@ -123,6 +136,7 @@ public final class TopItemsMonthlySummaryReportQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TopItemsMonthlySummaryReportQueryFilter withResourceTypeList(List<String> resourceTypeList) {
         super.withResourceTypeList(resourceTypeList);
@@ -132,6 +146,7 @@ public final class TopItemsMonthlySummaryReportQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TopItemsMonthlySummaryReportQueryFilter withLocationList(List<String> locationList) {
         super.withLocationList(locationList);
@@ -141,6 +156,7 @@ public final class TopItemsMonthlySummaryReportQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TopItemsMonthlySummaryReportQueryFilter withCarbonScopeList(List<EmissionScopeEnum> carbonScopeList) {
         super.withCarbonScopeList(carbonScopeList);

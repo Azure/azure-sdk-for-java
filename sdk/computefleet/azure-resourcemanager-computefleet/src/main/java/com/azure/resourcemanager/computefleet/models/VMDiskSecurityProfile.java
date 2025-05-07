@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,6 +25,7 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
      * NonPersistedTPM for not persisting firmware state in the VMGuestState blob..
      * **Note:** It can be set for only Confidential VMs.
      */
+    @Generated
     private SecurityEncryptionTypes securityEncryptionType;
 
     /*
@@ -31,11 +33,13 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
      * disk that is used for Customer Managed Key encrypted ConfidentialVM OS Disk and
      * VMGuest blob.
      */
+    @Generated
     private DiskEncryptionSetParameters diskEncryptionSet;
 
     /**
      * Creates an instance of VMDiskSecurityProfile class.
      */
+    @Generated
     public VMDiskSecurityProfile() {
     }
 
@@ -48,6 +52,7 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
      * 
      * @return the securityEncryptionType value.
      */
+    @Generated
     public SecurityEncryptionTypes securityEncryptionType() {
         return this.securityEncryptionType;
     }
@@ -62,6 +67,7 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
      * @param securityEncryptionType the securityEncryptionType value to set.
      * @return the VMDiskSecurityProfile object itself.
      */
+    @Generated
     public VMDiskSecurityProfile withSecurityEncryptionType(SecurityEncryptionTypes securityEncryptionType) {
         this.securityEncryptionType = securityEncryptionType;
         return this;
@@ -75,6 +81,7 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
      * 
      * @return the diskEncryptionSet value.
      */
+    @Generated
     public DiskEncryptionSetParameters diskEncryptionSet() {
         return this.diskEncryptionSet;
     }
@@ -88,6 +95,7 @@ public final class VMDiskSecurityProfile implements JsonSerializable<VMDiskSecur
      * @param diskEncryptionSet the diskEncryptionSet value to set.
      * @return the VMDiskSecurityProfile object itself.
      */
+    @Generated
     public VMDiskSecurityProfile withDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet) {
         this.diskEncryptionSet = diskEncryptionSet;
         return this;

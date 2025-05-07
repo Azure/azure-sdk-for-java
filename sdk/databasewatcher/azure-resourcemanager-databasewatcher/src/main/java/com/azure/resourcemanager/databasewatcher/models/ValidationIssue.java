@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databasewatcher.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,41 +20,49 @@ public final class ValidationIssue implements JsonSerializable<ValidationIssue> 
     /*
      * The error code of the issue.
      */
+    @Generated
     private String errorCode;
 
     /*
      * The error message of the issue.
      */
+    @Generated
     private String errorMessage;
 
     /*
      * The additional details for the issue.
      */
+    @Generated
     private String additionalDetails;
 
     /*
      * The recommendation for resolving the issue.
      */
+    @Generated
     private String recommendationMessage;
 
     /*
      * The URL related to resolving the issue.
      */
+    @Generated
     private String recommendationUrl;
 
     /*
      * The resource ID of the Azure resource related to the issue.
      */
+    @Generated
     private String relatedResourceId;
 
     /*
      * The type of the Azure resource related to the issue.
      */
+    @Generated
     private String relatedResourceType;
 
     /**
      * Creates an instance of ValidationIssue class.
      */
+    @Generated
     private ValidationIssue() {
     }
 
@@ -62,6 +71,7 @@ public final class ValidationIssue implements JsonSerializable<ValidationIssue> 
      * 
      * @return the errorCode value.
      */
+    @Generated
     public String errorCode() {
         return this.errorCode;
     }
@@ -71,6 +81,7 @@ public final class ValidationIssue implements JsonSerializable<ValidationIssue> 
      * 
      * @return the errorMessage value.
      */
+    @Generated
     public String errorMessage() {
         return this.errorMessage;
     }
@@ -80,6 +91,7 @@ public final class ValidationIssue implements JsonSerializable<ValidationIssue> 
      * 
      * @return the additionalDetails value.
      */
+    @Generated
     public String additionalDetails() {
         return this.additionalDetails;
     }
@@ -89,6 +101,7 @@ public final class ValidationIssue implements JsonSerializable<ValidationIssue> 
      * 
      * @return the recommendationMessage value.
      */
+    @Generated
     public String recommendationMessage() {
         return this.recommendationMessage;
     }
@@ -98,6 +111,7 @@ public final class ValidationIssue implements JsonSerializable<ValidationIssue> 
      * 
      * @return the recommendationUrl value.
      */
+    @Generated
     public String recommendationUrl() {
         return this.recommendationUrl;
     }
@@ -107,6 +121,7 @@ public final class ValidationIssue implements JsonSerializable<ValidationIssue> 
      * 
      * @return the relatedResourceId value.
      */
+    @Generated
     public String relatedResourceId() {
         return this.relatedResourceId;
     }
@@ -116,6 +131,7 @@ public final class ValidationIssue implements JsonSerializable<ValidationIssue> 
      * 
      * @return the relatedResourceType value.
      */
+    @Generated
     public String relatedResourceType() {
         return this.relatedResourceType;
     }

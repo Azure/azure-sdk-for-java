@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     /**
      * Create a new mongo cluster.
      */
+    @Generated
     public static final CreateMode DEFAULT = fromString("Default");
 
     /**
      * Create a mongo cluster from a restore point-in-time.
      */
+    @Generated
     public static final CreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
 
     /**
      * Create a replica cluster in distinct geographic region from the source cluster.
      */
+    @Generated
     public static final CreateMode GEO_REPLICA = fromString("GeoReplica");
 
     /**
      * Create a replica cluster in the same geographic region as the source cluster.
      */
+    @Generated
     public static final CreateMode REPLICA = fromString("Replica");
 
     /**
@@ -36,6 +41,7 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CreateMode() {
     }
@@ -46,6 +52,7 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
      * @param name a name to look for.
      * @return the corresponding CreateMode.
      */
+    @Generated
     public static CreateMode fromString(String name) {
         return fromString(name, CreateMode.class);
     }
@@ -55,6 +62,7 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
      * 
      * @return known CreateMode values.
      */
+    @Generated
     public static Collection<CreateMode> values() {
         return values(CreateMode.class);
     }

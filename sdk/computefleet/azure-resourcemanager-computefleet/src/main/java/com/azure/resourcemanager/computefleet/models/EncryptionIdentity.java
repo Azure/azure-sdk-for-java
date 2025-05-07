@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class EncryptionIdentity implements JsonSerializable<EncryptionIden
     /*
      * Specifies ARM Resource ID of one of the user identities associated with the VM.
      */
+    @Generated
     private String userAssignedIdentityResourceId;
 
     /**
      * Creates an instance of EncryptionIdentity class.
      */
+    @Generated
     public EncryptionIdentity() {
     }
 
@@ -34,6 +37,7 @@ public final class EncryptionIdentity implements JsonSerializable<EncryptionIden
      * 
      * @return the userAssignedIdentityResourceId value.
      */
+    @Generated
     public String userAssignedIdentityResourceId() {
         return this.userAssignedIdentityResourceId;
     }
@@ -45,6 +49,7 @@ public final class EncryptionIdentity implements JsonSerializable<EncryptionIden
      * @param userAssignedIdentityResourceId the userAssignedIdentityResourceId value to set.
      * @return the EncryptionIdentity object itself.
      */
+    @Generated
     public EncryptionIdentity withUserAssignedIdentityResourceId(String userAssignedIdentityResourceId) {
         this.userAssignedIdentityResourceId = userAssignedIdentityResourceId;
         return this;

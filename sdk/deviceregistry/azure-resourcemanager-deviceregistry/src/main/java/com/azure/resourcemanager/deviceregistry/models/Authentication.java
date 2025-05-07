@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class Authentication implements JsonSerializable<Authentication> {
     /*
      * Defines the method to authenticate the user of the client at the server.
      */
+    @Generated
     private AuthenticationMethod method;
 
     /*
      * Defines the username and password references when UsernamePassword user authentication mode is selected.
      */
+    @Generated
     private UsernamePasswordCredentials usernamePasswordCredentials;
 
     /*
      * Defines the certificate reference when Certificate user authentication mode is selected.
      */
+    @Generated
     private X509Credentials x509Credentials;
 
     /**
      * Creates an instance of Authentication class.
      */
+    @Generated
     public Authentication() {
     }
 
@@ -43,6 +48,7 @@ public final class Authentication implements JsonSerializable<Authentication> {
      * 
      * @return the method value.
      */
+    @Generated
     public AuthenticationMethod method() {
         return this.method;
     }
@@ -53,6 +59,7 @@ public final class Authentication implements JsonSerializable<Authentication> {
      * @param method the method value to set.
      * @return the Authentication object itself.
      */
+    @Generated
     public Authentication withMethod(AuthenticationMethod method) {
         this.method = method;
         return this;
@@ -64,6 +71,7 @@ public final class Authentication implements JsonSerializable<Authentication> {
      * 
      * @return the usernamePasswordCredentials value.
      */
+    @Generated
     public UsernamePasswordCredentials usernamePasswordCredentials() {
         return this.usernamePasswordCredentials;
     }
@@ -75,6 +83,7 @@ public final class Authentication implements JsonSerializable<Authentication> {
      * @param usernamePasswordCredentials the usernamePasswordCredentials value to set.
      * @return the Authentication object itself.
      */
+    @Generated
     public Authentication withUsernamePasswordCredentials(UsernamePasswordCredentials usernamePasswordCredentials) {
         this.usernamePasswordCredentials = usernamePasswordCredentials;
         return this;
@@ -86,6 +95,7 @@ public final class Authentication implements JsonSerializable<Authentication> {
      * 
      * @return the x509Credentials value.
      */
+    @Generated
     public X509Credentials x509Credentials() {
         return this.x509Credentials;
     }
@@ -97,6 +107,7 @@ public final class Authentication implements JsonSerializable<Authentication> {
      * @param x509Credentials the x509Credentials value to set.
      * @return the Authentication object itself.
      */
+    @Generated
     public Authentication withX509Credentials(X509Credentials x509Credentials) {
         this.x509Credentials = x509Credentials;
         return this;

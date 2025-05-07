@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databasewatcher.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class WatcherStatus extends ExpandableStringEnum<WatcherStatus> {
     /**
      * Denotes the watcher is in a starting state.
      */
+    @Generated
     public static final WatcherStatus STARTING = fromString("Starting");
 
     /**
      * Denotes the watcher is in a running state.
      */
+    @Generated
     public static final WatcherStatus RUNNING = fromString("Running");
 
     /**
      * Denotes the watcher is in a stopping state.
      */
+    @Generated
     public static final WatcherStatus STOPPING = fromString("Stopping");
 
     /**
      * Denotes the watcher is in a stopped state.
      */
+    @Generated
     public static final WatcherStatus STOPPED = fromString("Stopped");
 
     /**
      * Denotes the watcher is in a deleting state.
      */
+    @Generated
     public static final WatcherStatus DELETING = fromString("Deleting");
 
     /**
@@ -41,6 +47,7 @@ public final class WatcherStatus extends ExpandableStringEnum<WatcherStatus> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public WatcherStatus() {
     }
@@ -51,6 +58,7 @@ public final class WatcherStatus extends ExpandableStringEnum<WatcherStatus> {
      * @param name a name to look for.
      * @return the corresponding WatcherStatus.
      */
+    @Generated
     public static WatcherStatus fromString(String name) {
         return fromString(name, WatcherStatus.class);
     }
@@ -60,6 +68,7 @@ public final class WatcherStatus extends ExpandableStringEnum<WatcherStatus> {
      * 
      * @return known WatcherStatus values.
      */
+    @Generated
     public static Collection<WatcherStatus> values() {
         return values(WatcherStatus.class);
     }

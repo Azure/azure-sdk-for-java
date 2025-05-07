@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class BrokerDiagnostics implements JsonSerializable<BrokerDiagnosti
     /*
      * Diagnostic log settings for the resource.
      */
+    @Generated
     private DiagnosticsLogs logs;
 
     /*
      * The metrics settings for the resource.
      */
+    @Generated
     private Metrics metrics;
 
     /*
      * The self check properties.
      */
+    @Generated
     private SelfCheck selfCheck;
 
     /*
      * The trace properties.
      */
+    @Generated
     private Traces traces;
 
     /**
      * Creates an instance of BrokerDiagnostics class.
      */
+    @Generated
     public BrokerDiagnostics() {
     }
 
@@ -47,6 +53,7 @@ public final class BrokerDiagnostics implements JsonSerializable<BrokerDiagnosti
      * 
      * @return the logs value.
      */
+    @Generated
     public DiagnosticsLogs logs() {
         return this.logs;
     }
@@ -57,6 +64,7 @@ public final class BrokerDiagnostics implements JsonSerializable<BrokerDiagnosti
      * @param logs the logs value to set.
      * @return the BrokerDiagnostics object itself.
      */
+    @Generated
     public BrokerDiagnostics withLogs(DiagnosticsLogs logs) {
         this.logs = logs;
         return this;
@@ -67,6 +75,7 @@ public final class BrokerDiagnostics implements JsonSerializable<BrokerDiagnosti
      * 
      * @return the metrics value.
      */
+    @Generated
     public Metrics metrics() {
         return this.metrics;
     }
@@ -77,6 +86,7 @@ public final class BrokerDiagnostics implements JsonSerializable<BrokerDiagnosti
      * @param metrics the metrics value to set.
      * @return the BrokerDiagnostics object itself.
      */
+    @Generated
     public BrokerDiagnostics withMetrics(Metrics metrics) {
         this.metrics = metrics;
         return this;
@@ -87,6 +97,7 @@ public final class BrokerDiagnostics implements JsonSerializable<BrokerDiagnosti
      * 
      * @return the selfCheck value.
      */
+    @Generated
     public SelfCheck selfCheck() {
         return this.selfCheck;
     }
@@ -97,6 +108,7 @@ public final class BrokerDiagnostics implements JsonSerializable<BrokerDiagnosti
      * @param selfCheck the selfCheck value to set.
      * @return the BrokerDiagnostics object itself.
      */
+    @Generated
     public BrokerDiagnostics withSelfCheck(SelfCheck selfCheck) {
         this.selfCheck = selfCheck;
         return this;
@@ -107,6 +119,7 @@ public final class BrokerDiagnostics implements JsonSerializable<BrokerDiagnosti
      * 
      * @return the traces value.
      */
+    @Generated
     public Traces traces() {
         return this.traces;
     }
@@ -117,6 +130,7 @@ public final class BrokerDiagnostics implements JsonSerializable<BrokerDiagnosti
      * @param traces the traces value to set.
      * @return the BrokerDiagnostics object itself.
      */
+    @Generated
     public BrokerDiagnostics withTraces(Traces traces) {
         this.traces = traces;
         return this;

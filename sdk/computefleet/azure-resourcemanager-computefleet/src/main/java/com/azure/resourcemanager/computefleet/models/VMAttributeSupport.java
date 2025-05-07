@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,17 +15,20 @@ public final class VMAttributeSupport extends ExpandableStringEnum<VMAttributeSu
     /**
      * All VMSizes having the feature support will be excluded.
      */
+    @Generated
     public static final VMAttributeSupport EXCLUDED = fromString("Excluded");
 
     /**
      * VMSizes that have the feature support and that do not have the feature support will be used. Included is a union
      * of Excluded and Required.
      */
+    @Generated
     public static final VMAttributeSupport INCLUDED = fromString("Included");
 
     /**
      * Only the VMSizes having the feature support will be used.
      */
+    @Generated
     public static final VMAttributeSupport REQUIRED = fromString("Required");
 
     /**
@@ -32,6 +36,7 @@ public final class VMAttributeSupport extends ExpandableStringEnum<VMAttributeSu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VMAttributeSupport() {
     }
@@ -42,6 +47,7 @@ public final class VMAttributeSupport extends ExpandableStringEnum<VMAttributeSu
      * @param name a name to look for.
      * @return the corresponding VMAttributeSupport.
      */
+    @Generated
     public static VMAttributeSupport fromString(String name) {
         return fromString(name, VMAttributeSupport.class);
     }
@@ -51,6 +57,7 @@ public final class VMAttributeSupport extends ExpandableStringEnum<VMAttributeSu
      * 
      * @return known VMAttributeSupport values.
      */
+    @Generated
     public static Collection<VMAttributeSupport> values() {
         return values(VMAttributeSupport.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -19,31 +20,37 @@ public final class ResourceCarbonEmissionTopItemMonthlySummaryData extends Carbo
     /*
      * The data type of the query result, indicating the format of the returned response.
      */
+    @Generated
     private ResponseDataTypeEnum dataType = ResponseDataTypeEnum.RESOURCE_TOP_ITEMS_MONTHLY_SUMMARY_DATA;
 
     /*
      * The resource name of resource for Resource Category
      */
+    @Generated
     private String itemName;
 
     /*
      * Resource Item category
      */
+    @Generated
     private CategoryTypeEnum categoryType;
 
     /*
      * Monthly date string, format is yyyy-MM-dd
      */
+    @Generated
     private String date;
 
     /*
      * Subscription Id
      */
+    @Generated
     private String subscriptionId;
 
     /*
      * Resource Group
      */
+    @Generated
     private String resourceGroup;
 
     /*
@@ -51,11 +58,13 @@ public final class ResourceCarbonEmissionTopItemMonthlySummaryData extends Carbo
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String resourceId;
 
     /**
      * Creates an instance of ResourceCarbonEmissionTopItemMonthlySummaryData class.
      */
+    @Generated
     private ResourceCarbonEmissionTopItemMonthlySummaryData() {
     }
 
@@ -64,6 +73,7 @@ public final class ResourceCarbonEmissionTopItemMonthlySummaryData extends Carbo
      * 
      * @return the dataType value.
      */
+    @Generated
     @Override
     public ResponseDataTypeEnum dataType() {
         return this.dataType;
@@ -74,6 +84,7 @@ public final class ResourceCarbonEmissionTopItemMonthlySummaryData extends Carbo
      * 
      * @return the itemName value.
      */
+    @Generated
     public String itemName() {
         return this.itemName;
     }
@@ -83,6 +94,7 @@ public final class ResourceCarbonEmissionTopItemMonthlySummaryData extends Carbo
      * 
      * @return the categoryType value.
      */
+    @Generated
     public CategoryTypeEnum categoryType() {
         return this.categoryType;
     }
@@ -92,6 +104,7 @@ public final class ResourceCarbonEmissionTopItemMonthlySummaryData extends Carbo
      * 
      * @return the date value.
      */
+    @Generated
     public String date() {
         return this.date;
     }
@@ -101,6 +114,7 @@ public final class ResourceCarbonEmissionTopItemMonthlySummaryData extends Carbo
      * 
      * @return the subscriptionId value.
      */
+    @Generated
     public String subscriptionId() {
         return this.subscriptionId;
     }
@@ -110,6 +124,7 @@ public final class ResourceCarbonEmissionTopItemMonthlySummaryData extends Carbo
      * 
      * @return the resourceGroup value.
      */
+    @Generated
     public String resourceGroup() {
         return this.resourceGroup;
     }
@@ -120,6 +135,7 @@ public final class ResourceCarbonEmissionTopItemMonthlySummaryData extends Carbo
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String resourceId() {
         return this.resourceId;
     }

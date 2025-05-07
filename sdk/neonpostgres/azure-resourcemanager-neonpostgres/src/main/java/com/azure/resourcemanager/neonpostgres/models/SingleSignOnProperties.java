@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class SingleSignOnProperties implements JsonSerializable<SingleSign
     /*
      * State of the Single Sign On for the organization
      */
+    @Generated
     private SingleSignOnStates singleSignOnState;
 
     /*
      * AAD enterprise application Id used to setup SSO
      */
+    @Generated
     private String enterpriseAppId;
 
     /*
      * URL for SSO to be used by the partner to redirect the user to their system
      */
+    @Generated
     private String singleSignOnUrl;
 
     /*
      * List of AAD domains fetched from Microsoft Graph for user.
      */
+    @Generated
     private List<String> aadDomains;
 
     /**
      * Creates an instance of SingleSignOnProperties class.
      */
+    @Generated
     public SingleSignOnProperties() {
     }
 
@@ -48,6 +54,7 @@ public final class SingleSignOnProperties implements JsonSerializable<SingleSign
      * 
      * @return the singleSignOnState value.
      */
+    @Generated
     public SingleSignOnStates singleSignOnState() {
         return this.singleSignOnState;
     }
@@ -58,6 +65,7 @@ public final class SingleSignOnProperties implements JsonSerializable<SingleSign
      * @param singleSignOnState the singleSignOnState value to set.
      * @return the SingleSignOnProperties object itself.
      */
+    @Generated
     public SingleSignOnProperties withSingleSignOnState(SingleSignOnStates singleSignOnState) {
         this.singleSignOnState = singleSignOnState;
         return this;
@@ -68,6 +76,7 @@ public final class SingleSignOnProperties implements JsonSerializable<SingleSign
      * 
      * @return the enterpriseAppId value.
      */
+    @Generated
     public String enterpriseAppId() {
         return this.enterpriseAppId;
     }
@@ -78,6 +87,7 @@ public final class SingleSignOnProperties implements JsonSerializable<SingleSign
      * @param enterpriseAppId the enterpriseAppId value to set.
      * @return the SingleSignOnProperties object itself.
      */
+    @Generated
     public SingleSignOnProperties withEnterpriseAppId(String enterpriseAppId) {
         this.enterpriseAppId = enterpriseAppId;
         return this;
@@ -88,6 +98,7 @@ public final class SingleSignOnProperties implements JsonSerializable<SingleSign
      * 
      * @return the singleSignOnUrl value.
      */
+    @Generated
     public String singleSignOnUrl() {
         return this.singleSignOnUrl;
     }
@@ -98,6 +109,7 @@ public final class SingleSignOnProperties implements JsonSerializable<SingleSign
      * @param singleSignOnUrl the singleSignOnUrl value to set.
      * @return the SingleSignOnProperties object itself.
      */
+    @Generated
     public SingleSignOnProperties withSingleSignOnUrl(String singleSignOnUrl) {
         this.singleSignOnUrl = singleSignOnUrl;
         return this;
@@ -108,6 +120,7 @@ public final class SingleSignOnProperties implements JsonSerializable<SingleSign
      * 
      * @return the aadDomains value.
      */
+    @Generated
     public List<String> aadDomains() {
         return this.aadDomains;
     }
@@ -118,6 +131,7 @@ public final class SingleSignOnProperties implements JsonSerializable<SingleSign
      * @param aadDomains the aadDomains value to set.
      * @return the SingleSignOnProperties object itself.
      */
+    @Generated
     public SingleSignOnProperties withAadDomains(List<String> aadDomains) {
         this.aadDomains = aadDomains;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -24,6 +25,7 @@ public final class UpdateRunInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private UpdateRunProperties innerProperties;
 
     /*
@@ -32,31 +34,37 @@ public final class UpdateRunInner extends ProxyResource {
      * tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section
      * 14.27) header fields.
      */
+    @Generated
     private String etag;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of UpdateRunInner class.
      */
+    @Generated
     public UpdateRunInner() {
     }
 
@@ -65,6 +73,7 @@ public final class UpdateRunInner extends ProxyResource {
      * 
      * @return the innerProperties value.
      */
+    @Generated
     private UpdateRunProperties innerProperties() {
         return this.innerProperties;
     }
@@ -77,6 +86,7 @@ public final class UpdateRunInner extends ProxyResource {
      * 
      * @return the etag value.
      */
+    @Generated
     public String etag() {
         return this.etag;
     }
@@ -86,6 +96,7 @@ public final class UpdateRunInner extends ProxyResource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -95,6 +106,7 @@ public final class UpdateRunInner extends ProxyResource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -105,6 +117,7 @@ public final class UpdateRunInner extends ProxyResource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -115,6 +128,7 @@ public final class UpdateRunInner extends ProxyResource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;
@@ -125,6 +139,7 @@ public final class UpdateRunInner extends ProxyResource {
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public UpdateRunProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
@@ -147,6 +162,7 @@ public final class UpdateRunInner extends ProxyResource {
      * 
      * @return the updateStrategyId value.
      */
+    @Generated
     public String updateStrategyId() {
         return this.innerProperties() == null ? null : this.innerProperties().updateStrategyId();
     }
@@ -170,6 +186,7 @@ public final class UpdateRunInner extends ProxyResource {
      * @param updateStrategyId the updateStrategyId value to set.
      * @return the UpdateRunInner object itself.
      */
+    @Generated
     public UpdateRunInner withUpdateStrategyId(String updateStrategyId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new UpdateRunProperties();
@@ -186,6 +203,7 @@ public final class UpdateRunInner extends ProxyResource {
      * 
      * @return the strategy value.
      */
+    @Generated
     public UpdateRunStrategy strategy() {
         return this.innerProperties() == null ? null : this.innerProperties().strategy();
     }
@@ -199,6 +217,7 @@ public final class UpdateRunInner extends ProxyResource {
      * @param strategy the strategy value to set.
      * @return the UpdateRunInner object itself.
      */
+    @Generated
     public UpdateRunInner withStrategy(UpdateRunStrategy strategy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new UpdateRunProperties();
@@ -213,6 +232,7 @@ public final class UpdateRunInner extends ProxyResource {
      * 
      * @return the managedClusterUpdate value.
      */
+    @Generated
     public ManagedClusterUpdate managedClusterUpdate() {
         return this.innerProperties() == null ? null : this.innerProperties().managedClusterUpdate();
     }
@@ -224,6 +244,7 @@ public final class UpdateRunInner extends ProxyResource {
      * @param managedClusterUpdate the managedClusterUpdate value to set.
      * @return the UpdateRunInner object itself.
      */
+    @Generated
     public UpdateRunInner withManagedClusterUpdate(ManagedClusterUpdate managedClusterUpdate) {
         if (this.innerProperties() == null) {
             this.innerProperties = new UpdateRunProperties();
@@ -237,6 +258,7 @@ public final class UpdateRunInner extends ProxyResource {
      * 
      * @return the status value.
      */
+    @Generated
     public UpdateRunStatus status() {
         return this.innerProperties() == null ? null : this.innerProperties().status();
     }
@@ -246,6 +268,7 @@ public final class UpdateRunInner extends ProxyResource {
      * 
      * @return the autoUpgradeProfileId value.
      */
+    @Generated
     public String autoUpgradeProfileId() {
         return this.innerProperties() == null ? null : this.innerProperties().autoUpgradeProfileId();
     }

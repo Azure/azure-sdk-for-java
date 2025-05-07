@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,26 +22,31 @@ public final class BrokerAuthenticatorMethodCustom implements JsonSerializable<B
     /*
      * Optional authentication needed for authenticating with the custom authentication server.
      */
+    @Generated
     private BrokerAuthenticatorCustomAuth auth;
 
     /*
      * Optional CA certificate for validating the custom authentication server's certificate.
      */
+    @Generated
     private String caCertConfigMap;
 
     /*
      * Endpoint of the custom authentication server. Must be an HTTPS endpoint.
      */
+    @Generated
     private String endpoint;
 
     /*
      * Additional HTTP headers to pass to the custom authentication server.
      */
+    @Generated
     private Map<String, String> headers;
 
     /**
      * Creates an instance of BrokerAuthenticatorMethodCustom class.
      */
+    @Generated
     public BrokerAuthenticatorMethodCustom() {
     }
 
@@ -49,6 +55,7 @@ public final class BrokerAuthenticatorMethodCustom implements JsonSerializable<B
      * 
      * @return the auth value.
      */
+    @Generated
     public BrokerAuthenticatorCustomAuth auth() {
         return this.auth;
     }
@@ -59,6 +66,7 @@ public final class BrokerAuthenticatorMethodCustom implements JsonSerializable<B
      * @param auth the auth value to set.
      * @return the BrokerAuthenticatorMethodCustom object itself.
      */
+    @Generated
     public BrokerAuthenticatorMethodCustom withAuth(BrokerAuthenticatorCustomAuth auth) {
         this.auth = auth;
         return this;
@@ -70,6 +78,7 @@ public final class BrokerAuthenticatorMethodCustom implements JsonSerializable<B
      * 
      * @return the caCertConfigMap value.
      */
+    @Generated
     public String caCertConfigMap() {
         return this.caCertConfigMap;
     }
@@ -81,6 +90,7 @@ public final class BrokerAuthenticatorMethodCustom implements JsonSerializable<B
      * @param caCertConfigMap the caCertConfigMap value to set.
      * @return the BrokerAuthenticatorMethodCustom object itself.
      */
+    @Generated
     public BrokerAuthenticatorMethodCustom withCaCertConfigMap(String caCertConfigMap) {
         this.caCertConfigMap = caCertConfigMap;
         return this;
@@ -91,6 +101,7 @@ public final class BrokerAuthenticatorMethodCustom implements JsonSerializable<B
      * 
      * @return the endpoint value.
      */
+    @Generated
     public String endpoint() {
         return this.endpoint;
     }
@@ -101,6 +112,7 @@ public final class BrokerAuthenticatorMethodCustom implements JsonSerializable<B
      * @param endpoint the endpoint value to set.
      * @return the BrokerAuthenticatorMethodCustom object itself.
      */
+    @Generated
     public BrokerAuthenticatorMethodCustom withEndpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
@@ -111,6 +123,7 @@ public final class BrokerAuthenticatorMethodCustom implements JsonSerializable<B
      * 
      * @return the headers value.
      */
+    @Generated
     public Map<String, String> headers() {
         return this.headers;
     }
@@ -121,6 +134,7 @@ public final class BrokerAuthenticatorMethodCustom implements JsonSerializable<B
      * @param headers the headers value to set.
      * @return the BrokerAuthenticatorMethodCustom object itself.
      */
+    @Generated
     public BrokerAuthenticatorMethodCustom withHeaders(Map<String, String> headers) {
         this.headers = headers;
         return this;

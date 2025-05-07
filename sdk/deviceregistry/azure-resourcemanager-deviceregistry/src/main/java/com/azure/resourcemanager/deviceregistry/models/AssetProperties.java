@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -23,131 +24,156 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
     /*
      * Globally unique, immutable, non-reusable id.
      */
+    @Generated
     private String uuid;
 
     /*
      * Enabled/Disabled status of the asset.
      */
+    @Generated
     private Boolean enabled;
 
     /*
      * Asset id provided by the customer.
      */
+    @Generated
     private String externalAssetId;
 
     /*
      * Human-readable display name.
      */
+    @Generated
     private String displayName;
 
     /*
      * Human-readable description of the asset.
      */
+    @Generated
     private String description;
 
     /*
      * A reference to the asset endpoint profile (connection information) used by brokers to connect to an endpoint that
      * provides data points for this asset. Must provide asset endpoint profile name.
      */
+    @Generated
     private String assetEndpointProfileRef;
 
     /*
      * An integer that is incremented each time the resource is modified.
      */
+    @Generated
     private Long version;
 
     /*
      * Asset manufacturer name.
      */
+    @Generated
     private String manufacturer;
 
     /*
      * Asset manufacturer URI.
      */
+    @Generated
     private String manufacturerUri;
 
     /*
      * Asset model name.
      */
+    @Generated
     private String model;
 
     /*
      * Asset product code.
      */
+    @Generated
     private String productCode;
 
     /*
      * Revision number of the hardware.
      */
+    @Generated
     private String hardwareRevision;
 
     /*
      * Revision number of the software.
      */
+    @Generated
     private String softwareRevision;
 
     /*
      * Reference to the documentation.
      */
+    @Generated
     private String documentationUri;
 
     /*
      * Asset serial number.
      */
+    @Generated
     private String serialNumber;
 
     /*
      * A set of key-value pairs that contain custom attributes set by the customer.
      */
+    @Generated
     private Map<String, BinaryData> attributes;
 
     /*
      * Reference to a list of discovered assets. Populated only if the asset has been created from discovery flow.
      * Discovered asset names must be provided.
      */
+    @Generated
     private List<String> discoveredAssetRefs;
 
     /*
      * Stringified JSON that contains connector-specific default configuration for all datasets. Each dataset can have
      * its own configuration that overrides the default settings here.
      */
+    @Generated
     private String defaultDatasetsConfiguration;
 
     /*
      * Stringified JSON that contains connector-specific default configuration for all events. Each event can have its
      * own configuration that overrides the default settings here.
      */
+    @Generated
     private String defaultEventsConfiguration;
 
     /*
      * Object that describes the default topic information for the asset.
      */
+    @Generated
     private Topic defaultTopic;
 
     /*
      * Array of datasets that are part of the asset. Each dataset describes the data points that make up the set.
      */
+    @Generated
     private List<Dataset> datasets;
 
     /*
      * Array of events that are part of the asset. Each event can have per-event configuration.
      */
+    @Generated
     private List<Event> events;
 
     /*
      * Read only object to reflect changes that have occurred on the Edge. Similar to Kubernetes status property for
      * custom resources.
      */
+    @Generated
     private AssetStatus status;
 
     /*
      * Provisioning state of the resource.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of AssetProperties class.
      */
+    @Generated
     public AssetProperties() {
     }
 
@@ -156,6 +182,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the uuid value.
      */
+    @Generated
     public String uuid() {
         return this.uuid;
     }
@@ -165,6 +192,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the enabled value.
      */
+    @Generated
     public Boolean enabled() {
         return this.enabled;
     }
@@ -175,6 +203,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param enabled the enabled value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -185,6 +214,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the externalAssetId value.
      */
+    @Generated
     public String externalAssetId() {
         return this.externalAssetId;
     }
@@ -195,6 +225,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param externalAssetId the externalAssetId value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withExternalAssetId(String externalAssetId) {
         this.externalAssetId = externalAssetId;
         return this;
@@ -205,6 +236,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the displayName value.
      */
+    @Generated
     public String displayName() {
         return this.displayName;
     }
@@ -215,6 +247,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param displayName the displayName value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -225,6 +258,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the description value.
      */
+    @Generated
     public String description() {
         return this.description;
     }
@@ -235,6 +269,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param description the description value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withDescription(String description) {
         this.description = description;
         return this;
@@ -247,6 +282,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the assetEndpointProfileRef value.
      */
+    @Generated
     public String assetEndpointProfileRef() {
         return this.assetEndpointProfileRef;
     }
@@ -259,6 +295,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param assetEndpointProfileRef the assetEndpointProfileRef value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withAssetEndpointProfileRef(String assetEndpointProfileRef) {
         this.assetEndpointProfileRef = assetEndpointProfileRef;
         return this;
@@ -269,6 +306,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the version value.
      */
+    @Generated
     public Long version() {
         return this.version;
     }
@@ -278,6 +316,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the manufacturer value.
      */
+    @Generated
     public String manufacturer() {
         return this.manufacturer;
     }
@@ -288,6 +327,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param manufacturer the manufacturer value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
         return this;
@@ -298,6 +338,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the manufacturerUri value.
      */
+    @Generated
     public String manufacturerUri() {
         return this.manufacturerUri;
     }
@@ -308,6 +349,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param manufacturerUri the manufacturerUri value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withManufacturerUri(String manufacturerUri) {
         this.manufacturerUri = manufacturerUri;
         return this;
@@ -318,6 +360,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the model value.
      */
+    @Generated
     public String model() {
         return this.model;
     }
@@ -328,6 +371,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param model the model value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withModel(String model) {
         this.model = model;
         return this;
@@ -338,6 +382,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the productCode value.
      */
+    @Generated
     public String productCode() {
         return this.productCode;
     }
@@ -348,6 +393,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param productCode the productCode value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withProductCode(String productCode) {
         this.productCode = productCode;
         return this;
@@ -358,6 +404,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the hardwareRevision value.
      */
+    @Generated
     public String hardwareRevision() {
         return this.hardwareRevision;
     }
@@ -368,6 +415,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param hardwareRevision the hardwareRevision value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withHardwareRevision(String hardwareRevision) {
         this.hardwareRevision = hardwareRevision;
         return this;
@@ -378,6 +426,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the softwareRevision value.
      */
+    @Generated
     public String softwareRevision() {
         return this.softwareRevision;
     }
@@ -388,6 +437,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param softwareRevision the softwareRevision value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withSoftwareRevision(String softwareRevision) {
         this.softwareRevision = softwareRevision;
         return this;
@@ -398,6 +448,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the documentationUri value.
      */
+    @Generated
     public String documentationUri() {
         return this.documentationUri;
     }
@@ -408,6 +459,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param documentationUri the documentationUri value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withDocumentationUri(String documentationUri) {
         this.documentationUri = documentationUri;
         return this;
@@ -418,6 +470,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the serialNumber value.
      */
+    @Generated
     public String serialNumber() {
         return this.serialNumber;
     }
@@ -428,6 +481,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param serialNumber the serialNumber value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
         return this;
@@ -438,6 +492,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the attributes value.
      */
+    @Generated
     public Map<String, BinaryData> attributes() {
         return this.attributes;
     }
@@ -448,6 +503,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param attributes the attributes value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withAttributes(Map<String, BinaryData> attributes) {
         this.attributes = attributes;
         return this;
@@ -459,6 +515,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the discoveredAssetRefs value.
      */
+    @Generated
     public List<String> discoveredAssetRefs() {
         return this.discoveredAssetRefs;
     }
@@ -470,6 +527,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param discoveredAssetRefs the discoveredAssetRefs value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withDiscoveredAssetRefs(List<String> discoveredAssetRefs) {
         this.discoveredAssetRefs = discoveredAssetRefs;
         return this;
@@ -482,6 +540,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the defaultDatasetsConfiguration value.
      */
+    @Generated
     public String defaultDatasetsConfiguration() {
         return this.defaultDatasetsConfiguration;
     }
@@ -494,6 +553,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param defaultDatasetsConfiguration the defaultDatasetsConfiguration value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withDefaultDatasetsConfiguration(String defaultDatasetsConfiguration) {
         this.defaultDatasetsConfiguration = defaultDatasetsConfiguration;
         return this;
@@ -505,6 +565,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the defaultEventsConfiguration value.
      */
+    @Generated
     public String defaultEventsConfiguration() {
         return this.defaultEventsConfiguration;
     }
@@ -516,6 +577,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param defaultEventsConfiguration the defaultEventsConfiguration value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withDefaultEventsConfiguration(String defaultEventsConfiguration) {
         this.defaultEventsConfiguration = defaultEventsConfiguration;
         return this;
@@ -526,6 +588,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the defaultTopic value.
      */
+    @Generated
     public Topic defaultTopic() {
         return this.defaultTopic;
     }
@@ -536,6 +599,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param defaultTopic the defaultTopic value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withDefaultTopic(Topic defaultTopic) {
         this.defaultTopic = defaultTopic;
         return this;
@@ -547,6 +611,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the datasets value.
      */
+    @Generated
     public List<Dataset> datasets() {
         return this.datasets;
     }
@@ -558,6 +623,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param datasets the datasets value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withDatasets(List<Dataset> datasets) {
         this.datasets = datasets;
         return this;
@@ -568,6 +634,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the events value.
      */
+    @Generated
     public List<Event> events() {
         return this.events;
     }
@@ -578,6 +645,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * @param events the events value to set.
      * @return the AssetProperties object itself.
      */
+    @Generated
     public AssetProperties withEvents(List<Event> events) {
         this.events = events;
         return this;
@@ -589,6 +657,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the status value.
      */
+    @Generated
     public AssetStatus status() {
         return this.status;
     }
@@ -598,6 +667,7 @@ public final class AssetProperties implements JsonSerializable<AssetProperties> 
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

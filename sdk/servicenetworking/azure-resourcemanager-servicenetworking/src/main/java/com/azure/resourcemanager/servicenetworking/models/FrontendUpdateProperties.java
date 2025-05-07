@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class FrontendUpdateProperties implements JsonSerializable<Frontend
     /*
      * Frontend Security Policy Configuration
      */
+    @Generated
     private SecurityPolicyConfigurations securityPolicyConfigurations;
 
     /**
      * Creates an instance of FrontendUpdateProperties class.
      */
+    @Generated
     public FrontendUpdateProperties() {
     }
 
@@ -32,6 +35,7 @@ public final class FrontendUpdateProperties implements JsonSerializable<Frontend
      * 
      * @return the securityPolicyConfigurations value.
      */
+    @Generated
     public SecurityPolicyConfigurations securityPolicyConfigurations() {
         return this.securityPolicyConfigurations;
     }
@@ -42,6 +46,7 @@ public final class FrontendUpdateProperties implements JsonSerializable<Frontend
      * @param securityPolicyConfigurations the securityPolicyConfigurations value to set.
      * @return the FrontendUpdateProperties object itself.
      */
+    @Generated
     public FrontendUpdateProperties
         withSecurityPolicyConfigurations(SecurityPolicyConfigurations securityPolicyConfigurations) {
         this.securityPolicyConfigurations = securityPolicyConfigurations;

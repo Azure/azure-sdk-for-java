@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class RegularPriorityAllocationStrategy extends ExpandableStringEnu
     /**
      * Default. VM sizes distribution will be determined to optimize for price.
      */
+    @Generated
     public static final RegularPriorityAllocationStrategy LOWEST_PRICE = fromString("LowestPrice");
 
     /**
      * VM sizes distribution will be determined to optimize for the 'priority' as specified for each vm size.
      */
+    @Generated
     public static final RegularPriorityAllocationStrategy PRIORITIZED = fromString("Prioritized");
 
     /**
@@ -26,6 +29,7 @@ public final class RegularPriorityAllocationStrategy extends ExpandableStringEnu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RegularPriorityAllocationStrategy() {
     }
@@ -36,6 +40,7 @@ public final class RegularPriorityAllocationStrategy extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding RegularPriorityAllocationStrategy.
      */
+    @Generated
     public static RegularPriorityAllocationStrategy fromString(String name) {
         return fromString(name, RegularPriorityAllocationStrategy.class);
     }
@@ -45,6 +50,7 @@ public final class RegularPriorityAllocationStrategy extends ExpandableStringEnu
      * 
      * @return known RegularPriorityAllocationStrategy values.
      */
+    @Generated
     public static Collection<RegularPriorityAllocationStrategy> values() {
         return values(RegularPriorityAllocationStrategy.class);
     }

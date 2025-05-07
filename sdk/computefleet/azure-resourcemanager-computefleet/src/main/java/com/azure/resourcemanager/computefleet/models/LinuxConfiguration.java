@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,11 +22,13 @@ public final class LinuxConfiguration implements JsonSerializable<LinuxConfigura
     /*
      * Specifies whether password authentication should be disabled.
      */
+    @Generated
     private Boolean disablePasswordAuthentication;
 
     /*
      * Specifies the ssh key configuration for a Linux OS.
      */
+    @Generated
     private SshConfiguration ssh;
 
     /*
@@ -34,22 +37,26 @@ public final class LinuxConfiguration implements JsonSerializable<LinuxConfigura
      * behavior is to set it to true. This will ensure that VM Agent is installed on
      * the VM so that extensions can be added to the VM later.
      */
+    @Generated
     private Boolean provisionVMAgent;
 
     /*
      * [Preview Feature] Specifies settings related to VM Guest Patching on Linux.
      */
+    @Generated
     private LinuxPatchSettings patchSettings;
 
     /*
      * Indicates whether VMAgent Platform Updates is enabled for the Linux virtual
      * machine. Default value is false.
      */
+    @Generated
     private Boolean enableVMAgentPlatformUpdates;
 
     /**
      * Creates an instance of LinuxConfiguration class.
      */
+    @Generated
     public LinuxConfiguration() {
     }
 
@@ -58,6 +65,7 @@ public final class LinuxConfiguration implements JsonSerializable<LinuxConfigura
      * 
      * @return the disablePasswordAuthentication value.
      */
+    @Generated
     public Boolean disablePasswordAuthentication() {
         return this.disablePasswordAuthentication;
     }
@@ -68,6 +76,7 @@ public final class LinuxConfiguration implements JsonSerializable<LinuxConfigura
      * @param disablePasswordAuthentication the disablePasswordAuthentication value to set.
      * @return the LinuxConfiguration object itself.
      */
+    @Generated
     public LinuxConfiguration withDisablePasswordAuthentication(Boolean disablePasswordAuthentication) {
         this.disablePasswordAuthentication = disablePasswordAuthentication;
         return this;
@@ -78,6 +87,7 @@ public final class LinuxConfiguration implements JsonSerializable<LinuxConfigura
      * 
      * @return the ssh value.
      */
+    @Generated
     public SshConfiguration ssh() {
         return this.ssh;
     }
@@ -88,6 +98,7 @@ public final class LinuxConfiguration implements JsonSerializable<LinuxConfigura
      * @param ssh the ssh value to set.
      * @return the LinuxConfiguration object itself.
      */
+    @Generated
     public LinuxConfiguration withSsh(SshConfiguration ssh) {
         this.ssh = ssh;
         return this;
@@ -101,6 +112,7 @@ public final class LinuxConfiguration implements JsonSerializable<LinuxConfigura
      * 
      * @return the provisionVMAgent value.
      */
+    @Generated
     public Boolean provisionVMAgent() {
         return this.provisionVMAgent;
     }
@@ -114,6 +126,7 @@ public final class LinuxConfiguration implements JsonSerializable<LinuxConfigura
      * @param provisionVMAgent the provisionVMAgent value to set.
      * @return the LinuxConfiguration object itself.
      */
+    @Generated
     public LinuxConfiguration withProvisionVMAgent(Boolean provisionVMAgent) {
         this.provisionVMAgent = provisionVMAgent;
         return this;
@@ -124,6 +137,7 @@ public final class LinuxConfiguration implements JsonSerializable<LinuxConfigura
      * 
      * @return the patchSettings value.
      */
+    @Generated
     public LinuxPatchSettings patchSettings() {
         return this.patchSettings;
     }
@@ -134,6 +148,7 @@ public final class LinuxConfiguration implements JsonSerializable<LinuxConfigura
      * @param patchSettings the patchSettings value to set.
      * @return the LinuxConfiguration object itself.
      */
+    @Generated
     public LinuxConfiguration withPatchSettings(LinuxPatchSettings patchSettings) {
         this.patchSettings = patchSettings;
         return this;
@@ -146,6 +161,7 @@ public final class LinuxConfiguration implements JsonSerializable<LinuxConfigura
      * 
      * @return the enableVMAgentPlatformUpdates value.
      */
+    @Generated
     public Boolean enableVMAgentPlatformUpdates() {
         return this.enableVMAgentPlatformUpdates;
     }
@@ -158,6 +174,7 @@ public final class LinuxConfiguration implements JsonSerializable<LinuxConfigura
      * @param enableVMAgentPlatformUpdates the enableVMAgentPlatformUpdates value to set.
      * @return the LinuxConfiguration object itself.
      */
+    @Generated
     public LinuxConfiguration withEnableVMAgentPlatformUpdates(Boolean enableVMAgentPlatformUpdates) {
         this.enableVMAgentPlatformUpdates = enableVMAgentPlatformUpdates;
         return this;

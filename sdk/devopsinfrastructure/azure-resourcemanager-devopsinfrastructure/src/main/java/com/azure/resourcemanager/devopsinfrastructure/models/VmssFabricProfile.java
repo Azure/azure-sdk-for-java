@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -20,36 +21,43 @@ public final class VmssFabricProfile extends FabricProfile {
     /*
      * Discriminator property for FabricProfile.
      */
+    @Generated
     private String kind = "Vmss";
 
     /*
      * The Azure SKU of the machines in the pool.
      */
+    @Generated
     private DevOpsAzureSku sku;
 
     /*
      * The VM images of the machines in the pool.
      */
+    @Generated
     private List<PoolImage> images;
 
     /*
      * The OS profile of the machines in the pool.
      */
+    @Generated
     private OsProfile osProfile;
 
     /*
      * The storage profile of the machines in the pool.
      */
+    @Generated
     private StorageProfile storageProfile;
 
     /*
      * The network profile of the machines in the pool.
      */
+    @Generated
     private NetworkProfile networkProfile;
 
     /**
      * Creates an instance of VmssFabricProfile class.
      */
+    @Generated
     public VmssFabricProfile() {
     }
 
@@ -58,6 +66,7 @@ public final class VmssFabricProfile extends FabricProfile {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public String kind() {
         return this.kind;
@@ -68,6 +77,7 @@ public final class VmssFabricProfile extends FabricProfile {
      * 
      * @return the sku value.
      */
+    @Generated
     public DevOpsAzureSku sku() {
         return this.sku;
     }
@@ -78,6 +88,7 @@ public final class VmssFabricProfile extends FabricProfile {
      * @param sku the sku value to set.
      * @return the VmssFabricProfile object itself.
      */
+    @Generated
     public VmssFabricProfile withSku(DevOpsAzureSku sku) {
         this.sku = sku;
         return this;
@@ -88,6 +99,7 @@ public final class VmssFabricProfile extends FabricProfile {
      * 
      * @return the images value.
      */
+    @Generated
     public List<PoolImage> images() {
         return this.images;
     }
@@ -98,6 +110,7 @@ public final class VmssFabricProfile extends FabricProfile {
      * @param images the images value to set.
      * @return the VmssFabricProfile object itself.
      */
+    @Generated
     public VmssFabricProfile withImages(List<PoolImage> images) {
         this.images = images;
         return this;
@@ -108,6 +121,7 @@ public final class VmssFabricProfile extends FabricProfile {
      * 
      * @return the osProfile value.
      */
+    @Generated
     public OsProfile osProfile() {
         return this.osProfile;
     }
@@ -118,6 +132,7 @@ public final class VmssFabricProfile extends FabricProfile {
      * @param osProfile the osProfile value to set.
      * @return the VmssFabricProfile object itself.
      */
+    @Generated
     public VmssFabricProfile withOsProfile(OsProfile osProfile) {
         this.osProfile = osProfile;
         return this;
@@ -128,6 +143,7 @@ public final class VmssFabricProfile extends FabricProfile {
      * 
      * @return the storageProfile value.
      */
+    @Generated
     public StorageProfile storageProfile() {
         return this.storageProfile;
     }
@@ -138,6 +154,7 @@ public final class VmssFabricProfile extends FabricProfile {
      * @param storageProfile the storageProfile value to set.
      * @return the VmssFabricProfile object itself.
      */
+    @Generated
     public VmssFabricProfile withStorageProfile(StorageProfile storageProfile) {
         this.storageProfile = storageProfile;
         return this;
@@ -148,6 +165,7 @@ public final class VmssFabricProfile extends FabricProfile {
      * 
      * @return the networkProfile value.
      */
+    @Generated
     public NetworkProfile networkProfile() {
         return this.networkProfile;
     }
@@ -158,6 +176,7 @@ public final class VmssFabricProfile extends FabricProfile {
      * @param networkProfile the networkProfile value to set.
      * @return the VmssFabricProfile object itself.
      */
+    @Generated
     public VmssFabricProfile withNetworkProfile(NetworkProfile networkProfile) {
         this.networkProfile = networkProfile;
         return this;

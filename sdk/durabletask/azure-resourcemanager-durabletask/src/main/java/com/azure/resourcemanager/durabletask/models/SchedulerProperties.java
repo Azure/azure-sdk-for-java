@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.durabletask.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,26 +22,31 @@ public final class SchedulerProperties implements JsonSerializable<SchedulerProp
     /*
      * The status of the last operation
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * URL of the durable task scheduler
      */
+    @Generated
     private String endpoint;
 
     /*
      * IP allow list for durable task scheduler. Values can be IPv4, IPv6 or CIDR
      */
+    @Generated
     private List<String> ipAllowlist;
 
     /*
      * SKU of the durable task scheduler
      */
+    @Generated
     private SchedulerSku sku;
 
     /**
      * Creates an instance of SchedulerProperties class.
      */
+    @Generated
     public SchedulerProperties() {
     }
 
@@ -49,6 +55,7 @@ public final class SchedulerProperties implements JsonSerializable<SchedulerProp
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -58,6 +65,7 @@ public final class SchedulerProperties implements JsonSerializable<SchedulerProp
      * 
      * @return the endpoint value.
      */
+    @Generated
     public String endpoint() {
         return this.endpoint;
     }
@@ -67,6 +75,7 @@ public final class SchedulerProperties implements JsonSerializable<SchedulerProp
      * 
      * @return the ipAllowlist value.
      */
+    @Generated
     public List<String> ipAllowlist() {
         return this.ipAllowlist;
     }
@@ -77,6 +86,7 @@ public final class SchedulerProperties implements JsonSerializable<SchedulerProp
      * @param ipAllowlist the ipAllowlist value to set.
      * @return the SchedulerProperties object itself.
      */
+    @Generated
     public SchedulerProperties withIpAllowlist(List<String> ipAllowlist) {
         this.ipAllowlist = ipAllowlist;
         return this;
@@ -87,6 +97,7 @@ public final class SchedulerProperties implements JsonSerializable<SchedulerProp
      * 
      * @return the sku value.
      */
+    @Generated
     public SchedulerSku sku() {
         return this.sku;
     }
@@ -97,6 +108,7 @@ public final class SchedulerProperties implements JsonSerializable<SchedulerProp
      * @param sku the sku value to set.
      * @return the SchedulerProperties object itself.
      */
+    @Generated
     public SchedulerProperties withSku(SchedulerSku sku) {
         this.sku = sku;
         return this;

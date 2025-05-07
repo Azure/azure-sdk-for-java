@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,16 +23,19 @@ public final class FleetUpdateStrategyProperties implements JsonSerializable<Fle
     /*
      * The provisioning state of the UpdateStrategy resource.
      */
+    @Generated
     private FleetUpdateStrategyProvisioningState provisioningState;
 
     /*
      * Defines the update sequence of the clusters.
      */
+    @Generated
     private UpdateRunStrategy strategy;
 
     /**
      * Creates an instance of FleetUpdateStrategyProperties class.
      */
+    @Generated
     public FleetUpdateStrategyProperties() {
     }
 
@@ -40,6 +44,7 @@ public final class FleetUpdateStrategyProperties implements JsonSerializable<Fle
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public FleetUpdateStrategyProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -49,6 +54,7 @@ public final class FleetUpdateStrategyProperties implements JsonSerializable<Fle
      * 
      * @return the strategy value.
      */
+    @Generated
     public UpdateRunStrategy strategy() {
         return this.strategy;
     }
@@ -59,6 +65,7 @@ public final class FleetUpdateStrategyProperties implements JsonSerializable<Fle
      * @param strategy the strategy value to set.
      * @return the FleetUpdateStrategyProperties object itself.
      */
+    @Generated
     public FleetUpdateStrategyProperties withStrategy(UpdateRunStrategy strategy) {
         this.strategy = strategy;
         return this;

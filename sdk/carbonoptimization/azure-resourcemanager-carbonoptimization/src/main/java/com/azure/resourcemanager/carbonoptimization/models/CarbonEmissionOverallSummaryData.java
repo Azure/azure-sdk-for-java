@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -18,11 +19,13 @@ public final class CarbonEmissionOverallSummaryData extends CarbonEmissionData {
     /*
      * The data type of the query result, indicating the format of the returned response.
      */
+    @Generated
     private ResponseDataTypeEnum dataType = ResponseDataTypeEnum.OVERALL_SUMMARY_DATA;
 
     /**
      * Creates an instance of CarbonEmissionOverallSummaryData class.
      */
+    @Generated
     private CarbonEmissionOverallSummaryData() {
     }
 
@@ -31,6 +34,7 @@ public final class CarbonEmissionOverallSummaryData extends CarbonEmissionData {
      * 
      * @return the dataType value.
      */
+    @Generated
     @Override
     public ResponseDataTypeEnum dataType() {
         return this.dataType;

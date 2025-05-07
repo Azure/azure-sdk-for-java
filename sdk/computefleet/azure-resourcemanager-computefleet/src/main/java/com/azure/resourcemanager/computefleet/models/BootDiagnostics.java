@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,6 +23,7 @@ public final class BootDiagnostics implements JsonSerializable<BootDiagnostics> 
     /*
      * Whether boot diagnostics should be enabled on the Virtual Machine.
      */
+    @Generated
     private Boolean enabled;
 
     /*
@@ -29,11 +31,13 @@ public final class BootDiagnostics implements JsonSerializable<BootDiagnostics> 
      * screenshot. If storageUri is not specified while enabling boot diagnostics,
      * managed storage will be used.
      */
+    @Generated
     private String storageUri;
 
     /**
      * Creates an instance of BootDiagnostics class.
      */
+    @Generated
     public BootDiagnostics() {
     }
 
@@ -42,6 +46,7 @@ public final class BootDiagnostics implements JsonSerializable<BootDiagnostics> 
      * 
      * @return the enabled value.
      */
+    @Generated
     public Boolean enabled() {
         return this.enabled;
     }
@@ -52,6 +57,7 @@ public final class BootDiagnostics implements JsonSerializable<BootDiagnostics> 
      * @param enabled the enabled value to set.
      * @return the BootDiagnostics object itself.
      */
+    @Generated
     public BootDiagnostics withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -64,6 +70,7 @@ public final class BootDiagnostics implements JsonSerializable<BootDiagnostics> 
      * 
      * @return the storageUri value.
      */
+    @Generated
     public String storageUri() {
         return this.storageUri;
     }
@@ -76,6 +83,7 @@ public final class BootDiagnostics implements JsonSerializable<BootDiagnostics> 
      * @param storageUri the storageUri value to set.
      * @return the BootDiagnostics object itself.
      */
+    @Generated
     public BootDiagnostics withStorageUri(String storageUri) {
         this.storageUri = storageUri;
         return this;
