@@ -11,7 +11,7 @@ The Azure Key Vault Keys library client supports RSA keys and Elliptic Curve (EC
 in hardware security modules (HSM). It offers operations to create, retrieve, update, delete, purge, backup, restore,
 and list the keys and its versions.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][keys_samples]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azure_keyvault_docs] | [Samples][keys_samples]
 
 ## Getting started
 
@@ -320,7 +320,7 @@ For details on contributing to this repository, see the [contributing guide][con
 
 <!-- LINKS -->
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
-[azkeyvault_docs]: https://learn.microsoft.com/azure/key-vault/
+[azure_keyvault_docs]: https://learn.microsoft.com/azure/key-vault/
 [azure_keyvault_rest]: https://learn.microsoft.com/rest/api/keyvault/
 [azure_ca]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
