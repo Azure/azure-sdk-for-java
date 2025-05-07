@@ -22,7 +22,7 @@ public final class PhoneNumbersReservationAccessHelper {
          * Sets the phoneNumbers property of the {@link PhoneNumbersReservation}.
          *
          * @param reservation The {@link PhoneNumbersReservation} instance
-         * @param stream The boolean value to set private stream property
+         * @param phoneNumbers The map of phone numbers to set
          */
         void setPhoneNumbers(PhoneNumbersReservation reservation, Map<String, AvailablePhoneNumber> phoneNumbers);
     }
@@ -40,7 +40,7 @@ public final class PhoneNumbersReservationAccessHelper {
          * Sets the phoneNumbers property of the {@link PhoneNumbersReservation}.
          *
          * @param reservation The {@link PhoneNumbersReservation} instance
-         * @param stream The boolean value to set private stream property
+         * @param phoneNumbers The map of phone numbers to set
          */
     public static void setPhoneNumbers(PhoneNumbersReservation reservation,
         Map<String, AvailablePhoneNumber> phoneNumbers) {
