@@ -9,8 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TableAudienceTests {
 
-    // cosmos audience tests
-
     @Test
     public void testStorageAudiences() {
         TableAudience audience = TableAudience.AZURE_STORAGE_PUBLIC_CLOUD;
