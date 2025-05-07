@@ -3,6 +3,7 @@
 package com.azure.data.tables.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -52,6 +53,8 @@ public class TableAudience extends ExpandableStringEnum<TableAudience> {
      */
     public static final TableAudience AZURE_COSMOS_US_GOVERNMENT = fromString("https://cosmos.azure.us");
 
+    private final ClientLogger logger = new ClientLogger(TableAudience.class);
+
     /**
      * @deprecated The audience is for the public.
      */
@@ -75,11 +78,12 @@ public class TableAudience extends ExpandableStringEnum<TableAudience> {
             if (scheme != null && host != null) {
                 return scheme + "://" + host + "/.default";
             } else {
-                throw new IllegalArgumentException("Invalid scope: " + this.toString());
+                throw logger.logExceptionAsError(new IllegalArgumentException("Invalid scope: " + this.toString()));
             }
         } catch (URISyntaxException e) {
             // Handle the exception
-            throw new IllegalArgumentException("Invalid scope: " + this.toString());
+            throw logger.logExceptionAsError(new RuntimeException("Invalid URI syntax: " + this.toString(), e));
+
         }
     }
 

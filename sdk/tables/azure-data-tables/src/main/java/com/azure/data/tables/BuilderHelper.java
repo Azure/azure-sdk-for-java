@@ -34,10 +34,8 @@ import com.azure.data.tables.implementation.CosmosPatchTransformPolicy;
 import com.azure.data.tables.implementation.NullHttpClient;
 import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
-import com.azure.data.tables.implementation.StorageConstants;
 import com.azure.data.tables.implementation.TableBearerTokenChallengeAuthorizationPolicy;
 import com.azure.data.tables.implementation.TableUtils;
-import com.azure.data.tables.implementation.TablesConstants;
 import com.azure.data.tables.models.TableAudience;
 
 import java.util.ArrayList;
