@@ -40,6 +40,11 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
      */
     private final SearchIndexerLimits limits;
 
+    /*
+     * All of the state that defines and dictates the indexer's current execution.
+     */
+    private IndexerCurrentState currentState;
+
     /**
      * Creates an instance of SearchIndexerStatus class.
      * 
@@ -92,6 +97,15 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     }
 
     /**
+     * Get the currentState property: All of the state that defines and dictates the indexer's current execution.
+     * 
+     * @return the currentState value.
+     */
+    public IndexerCurrentState getCurrentState() {
+        return this.currentState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -118,6 +132,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
             boolean limitsFound = false;
             SearchIndexerLimits limits = null;
             IndexerExecutionResult lastResult = null;
+            IndexerCurrentState currentState = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -133,6 +148,8 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                     limitsFound = true;
                 } else if ("lastResult".equals(fieldName)) {
                     lastResult = IndexerExecutionResult.fromJson(reader);
+                } else if ("currentState".equals(fieldName)) {
+                    currentState = IndexerCurrentState.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -141,6 +158,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                 SearchIndexerStatus deserializedSearchIndexerStatus
                     = new SearchIndexerStatus(status, executionHistory, limits);
                 deserializedSearchIndexerStatus.lastResult = lastResult;
+                deserializedSearchIndexerStatus.currentState = currentState;
 
                 return deserializedSearchIndexerStatus;
             }

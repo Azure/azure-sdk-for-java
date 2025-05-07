@@ -49,6 +49,11 @@ public final class AIFoundryModelCatalogName extends ExpandableStringEnum<AIFoun
         = fromString("Cohere-embed-v3-multilingual");
 
     /**
+     * Cohere embed v4 model for generating embeddings from both text and images.
+     */
+    public static final AIFoundryModelCatalogName COHERE_EMBED_V4 = fromString("Cohere-embed-v4");
+
+    /**
      * Creates a new instance of AIFoundryModelCatalogName value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
