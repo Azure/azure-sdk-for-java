@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class EventObservabilityMode extends ExpandableStringEnum<EventObse
     /**
      * No mapping to OpenTelemetry.
      */
+    @Generated
     public static final EventObservabilityMode NONE = fromString("None");
 
     /**
      * Map as log to OpenTelemetry.
      */
+    @Generated
     public static final EventObservabilityMode LOG = fromString("Log");
 
     /**
@@ -26,6 +29,7 @@ public final class EventObservabilityMode extends ExpandableStringEnum<EventObse
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public EventObservabilityMode() {
     }
@@ -36,6 +40,7 @@ public final class EventObservabilityMode extends ExpandableStringEnum<EventObse
      * @param name a name to look for.
      * @return the corresponding EventObservabilityMode.
      */
+    @Generated
     public static EventObservabilityMode fromString(String name) {
         return fromString(name, EventObservabilityMode.class);
     }
@@ -45,6 +50,7 @@ public final class EventObservabilityMode extends ExpandableStringEnum<EventObse
      * 
      * @return known EventObservabilityMode values.
      */
+    @Generated
     public static Collection<EventObservabilityMode> values() {
         return values(EventObservabilityMode.class);
     }

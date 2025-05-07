@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class PredictionPreference extends ExpandableStringEnum<PredictionP
     /**
      * Balance between cost and performance.
      */
+    @Generated
     public static final PredictionPreference BALANCED = fromString("Balanced");
 
     /**
      * Optimizes for cost over performance.
      */
+    @Generated
     public static final PredictionPreference MOST_COST_EFFECTIVE = fromString("MostCostEffective");
 
     /**
      * Halfway through cost and balanced.
      */
+    @Generated
     public static final PredictionPreference MORE_COST_EFFECTIVE = fromString("MoreCostEffective");
 
     /**
      * Halfway through balanced and performance.
      */
+    @Generated
     public static final PredictionPreference MORE_PERFORMANCE = fromString("MorePerformance");
 
     /**
      * Optimizes for performance over cost.
      */
+    @Generated
     public static final PredictionPreference BEST_PERFORMANCE = fromString("BestPerformance");
 
     /**
@@ -41,6 +47,7 @@ public final class PredictionPreference extends ExpandableStringEnum<PredictionP
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PredictionPreference() {
     }
@@ -51,6 +58,7 @@ public final class PredictionPreference extends ExpandableStringEnum<PredictionP
      * @param name a name to look for.
      * @return the corresponding PredictionPreference.
      */
+    @Generated
     public static PredictionPreference fromString(String name) {
         return fromString(name, PredictionPreference.class);
     }
@@ -60,6 +68,7 @@ public final class PredictionPreference extends ExpandableStringEnum<PredictionP
      * 
      * @return known PredictionPreference values.
      */
+    @Generated
     public static Collection<PredictionPreference> values() {
         return values(PredictionPreference.class);
     }

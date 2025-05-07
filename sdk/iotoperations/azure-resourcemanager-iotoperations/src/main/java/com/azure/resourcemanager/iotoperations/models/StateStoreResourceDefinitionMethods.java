@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,16 +16,19 @@ public final class StateStoreResourceDefinitionMethods
     /**
      * Get/KeyNotify from Store.
      */
+    @Generated
     public static final StateStoreResourceDefinitionMethods READ = fromString("Read");
 
     /**
      * Set/Delete in Store.
      */
+    @Generated
     public static final StateStoreResourceDefinitionMethods WRITE = fromString("Write");
 
     /**
      * Allowed all operations on Store - Get/KeyNotify/Set/Delete.
      */
+    @Generated
     public static final StateStoreResourceDefinitionMethods READ_WRITE = fromString("ReadWrite");
 
     /**
@@ -32,6 +36,7 @@ public final class StateStoreResourceDefinitionMethods
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public StateStoreResourceDefinitionMethods() {
     }
@@ -42,6 +47,7 @@ public final class StateStoreResourceDefinitionMethods
      * @param name a name to look for.
      * @return the corresponding StateStoreResourceDefinitionMethods.
      */
+    @Generated
     public static StateStoreResourceDefinitionMethods fromString(String name) {
         return fromString(name, StateStoreResourceDefinitionMethods.class);
     }
@@ -51,6 +57,7 @@ public final class StateStoreResourceDefinitionMethods
      * 
      * @return known StateStoreResourceDefinitionMethods values.
      */
+    @Generated
     public static Collection<StateStoreResourceDefinitionMethods> values() {
         return values(StateStoreResourceDefinitionMethods.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.trustedsigning.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class CertificateProfileStatus extends ExpandableStringEnum<Certifi
     /**
      * The certificate profile is active.
      */
+    @Generated
     public static final CertificateProfileStatus ACTIVE = fromString("Active");
 
     /**
      * The certificate profile is disabled.
      */
+    @Generated
     public static final CertificateProfileStatus DISABLED = fromString("Disabled");
 
     /**
      * The certificate profile is suspended.
      */
+    @Generated
     public static final CertificateProfileStatus SUSPENDED = fromString("Suspended");
 
     /**
@@ -31,6 +35,7 @@ public final class CertificateProfileStatus extends ExpandableStringEnum<Certifi
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CertificateProfileStatus() {
     }
@@ -41,6 +46,7 @@ public final class CertificateProfileStatus extends ExpandableStringEnum<Certifi
      * @param name a name to look for.
      * @return the corresponding CertificateProfileStatus.
      */
+    @Generated
     public static CertificateProfileStatus fromString(String name) {
         return fromString(name, CertificateProfileStatus.class);
     }
@@ -50,6 +56,7 @@ public final class CertificateProfileStatus extends ExpandableStringEnum<Certifi
      * 
      * @return known CertificateProfileStatus values.
      */
+    @Generated
     public static Collection<CertificateProfileStatus> values() {
         return values(CertificateProfileStatus.class);
     }

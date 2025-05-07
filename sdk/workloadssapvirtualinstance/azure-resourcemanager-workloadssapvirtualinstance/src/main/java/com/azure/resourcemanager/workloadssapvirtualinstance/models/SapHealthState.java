@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class SapHealthState extends ExpandableStringEnum<SapHealthState> {
     /**
      * SAP System health is unknown.
      */
+    @Generated
     public static final SapHealthState UNKNOWN = fromString("Unknown");
 
     /**
      * SAP System health is healthy.
      */
+    @Generated
     public static final SapHealthState HEALTHY = fromString("Healthy");
 
     /**
      * SAP System is unhealthy.
      */
+    @Generated
     public static final SapHealthState UNHEALTHY = fromString("Unhealthy");
 
     /**
      * SAP System health is degraded.
      */
+    @Generated
     public static final SapHealthState DEGRADED = fromString("Degraded");
 
     /**
@@ -36,6 +41,7 @@ public final class SapHealthState extends ExpandableStringEnum<SapHealthState> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SapHealthState() {
     }
@@ -46,6 +52,7 @@ public final class SapHealthState extends ExpandableStringEnum<SapHealthState> {
      * @param name a name to look for.
      * @return the corresponding SapHealthState.
      */
+    @Generated
     public static SapHealthState fromString(String name) {
         return fromString(name, SapHealthState.class);
     }
@@ -55,6 +62,7 @@ public final class SapHealthState extends ExpandableStringEnum<SapHealthState> {
      * 
      * @return known SapHealthState values.
      */
+    @Generated
     public static Collection<SapHealthState> values() {
         return values(SapHealthState.class);
     }

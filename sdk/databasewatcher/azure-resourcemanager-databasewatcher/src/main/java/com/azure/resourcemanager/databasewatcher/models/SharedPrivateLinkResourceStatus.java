@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databasewatcher.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class SharedPrivateLinkResourceStatus extends ExpandableStringEnum<
     /**
      * The shared private link connection request was not yet authorized by the resource owner.
      */
+    @Generated
     public static final SharedPrivateLinkResourceStatus PENDING = fromString("Pending");
 
     /**
      * The shared private link connection request was approved by the resource owner.
      */
+    @Generated
     public static final SharedPrivateLinkResourceStatus APPROVED = fromString("Approved");
 
     /**
      * The shared private link connection request was rejected by the resource owner.
      */
+    @Generated
     public static final SharedPrivateLinkResourceStatus REJECTED = fromString("Rejected");
 
     /**
      * The shared private link connection request was disconnected by the resource owner.
      */
+    @Generated
     public static final SharedPrivateLinkResourceStatus DISCONNECTED = fromString("Disconnected");
 
     /**
@@ -36,6 +41,7 @@ public final class SharedPrivateLinkResourceStatus extends ExpandableStringEnum<
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SharedPrivateLinkResourceStatus() {
     }
@@ -46,6 +52,7 @@ public final class SharedPrivateLinkResourceStatus extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding SharedPrivateLinkResourceStatus.
      */
+    @Generated
     public static SharedPrivateLinkResourceStatus fromString(String name) {
         return fromString(name, SharedPrivateLinkResourceStatus.class);
     }
@@ -55,6 +62,7 @@ public final class SharedPrivateLinkResourceStatus extends ExpandableStringEnum<
      * 
      * @return known SharedPrivateLinkResourceStatus values.
      */
+    @Generated
     public static Collection<SharedPrivateLinkResourceStatus> values() {
         return values(SharedPrivateLinkResourceStatus.class);
     }

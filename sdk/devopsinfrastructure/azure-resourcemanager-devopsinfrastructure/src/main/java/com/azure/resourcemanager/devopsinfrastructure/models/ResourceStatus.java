@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,56 +15,67 @@ public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
     /**
      * Represents a machine resource that is ready.
      */
+    @Generated
     public static final ResourceStatus READY = fromString("Ready");
 
     /**
      * Represents a machine resource that is not ready.
      */
+    @Generated
     public static final ResourceStatus NOT_READY = fromString("NotReady");
 
     /**
      * Represents a machine resource that is allocated.
      */
+    @Generated
     public static final ResourceStatus ALLOCATED = fromString("Allocated");
 
     /**
      * Represents a machine resource that is pending return.
      */
+    @Generated
     public static final ResourceStatus PENDING_RETURN = fromString("PendingReturn");
 
     /**
      * Represents a machine resource that is returned.
      */
+    @Generated
     public static final ResourceStatus RETURNED = fromString("Returned");
 
     /**
      * Represents a machine resource that is leased.
      */
+    @Generated
     public static final ResourceStatus LEASED = fromString("Leased");
 
     /**
      * Represents a machine resource that is provisioning.
      */
+    @Generated
     public static final ResourceStatus PROVISIONING = fromString("Provisioning");
 
     /**
      * Represents a machine resource that is updating.
      */
+    @Generated
     public static final ResourceStatus UPDATING = fromString("Updating");
 
     /**
      * Represents a machine resource that is starting.
      */
+    @Generated
     public static final ResourceStatus STARTING = fromString("Starting");
 
     /**
      * Represents a machine resource that is pending reimage.
      */
+    @Generated
     public static final ResourceStatus PENDING_REIMAGE = fromString("PendingReimage");
 
     /**
      * Represents a machine resource that is reimaging.
      */
+    @Generated
     public static final ResourceStatus REIMAGING = fromString("Reimaging");
 
     /**
@@ -71,6 +83,7 @@ public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ResourceStatus() {
     }
@@ -81,6 +94,7 @@ public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
      * @param name a name to look for.
      * @return the corresponding ResourceStatus.
      */
+    @Generated
     public static ResourceStatus fromString(String name) {
         return fromString(name, ResourceStatus.class);
     }
@@ -90,6 +104,7 @@ public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
      * 
      * @return known ResourceStatus values.
      */
+    @Generated
     public static Collection<ResourceStatus> values() {
         return values(ResourceStatus.class);
     }

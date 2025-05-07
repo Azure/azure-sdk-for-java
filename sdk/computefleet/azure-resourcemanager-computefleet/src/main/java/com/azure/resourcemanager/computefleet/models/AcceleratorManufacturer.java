@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class AcceleratorManufacturer extends ExpandableStringEnum<Accelera
     /**
      * AMD GpuType.
      */
+    @Generated
     public static final AcceleratorManufacturer AMD = fromString("AMD");
 
     /**
      * Nvidia GpuType.
      */
+    @Generated
     public static final AcceleratorManufacturer NVIDIA = fromString("Nvidia");
 
     /**
      * Xilinx GpuType.
      */
+    @Generated
     public static final AcceleratorManufacturer XILINX = fromString("Xilinx");
 
     /**
@@ -31,6 +35,7 @@ public final class AcceleratorManufacturer extends ExpandableStringEnum<Accelera
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AcceleratorManufacturer() {
     }
@@ -41,6 +46,7 @@ public final class AcceleratorManufacturer extends ExpandableStringEnum<Accelera
      * @param name a name to look for.
      * @return the corresponding AcceleratorManufacturer.
      */
+    @Generated
     public static AcceleratorManufacturer fromString(String name) {
         return fromString(name, AcceleratorManufacturer.class);
     }
@@ -50,6 +56,7 @@ public final class AcceleratorManufacturer extends ExpandableStringEnum<Accelera
      * 
      * @return known AcceleratorManufacturer values.
      */
+    @Generated
     public static Collection<AcceleratorManufacturer> values() {
         return values(AcceleratorManufacturer.class);
     }

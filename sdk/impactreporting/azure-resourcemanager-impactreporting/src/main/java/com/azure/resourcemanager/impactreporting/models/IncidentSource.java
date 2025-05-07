@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.impactreporting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class IncidentSource extends ExpandableStringEnum<IncidentSource> {
     /**
      * When source of Incident is AzureDevops.
      */
+    @Generated
     public static final IncidentSource AZURE_DEVOPS = fromString("AzureDevops");
 
     /**
      * When source of Incident is Microsoft ICM.
      */
+    @Generated
     public static final IncidentSource ICM = fromString("ICM");
 
     /**
      * When source of Incident is Jira.
      */
+    @Generated
     public static final IncidentSource JIRA = fromString("Jira");
 
     /**
      * When source of Incident is ServiceNow.
      */
+    @Generated
     public static final IncidentSource SERVICE_NOW = fromString("ServiceNow");
 
     /**
      * When source of Incident is Other.
      */
+    @Generated
     public static final IncidentSource OTHER = fromString("Other");
 
     /**
@@ -41,6 +47,7 @@ public final class IncidentSource extends ExpandableStringEnum<IncidentSource> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IncidentSource() {
     }
@@ -51,6 +58,7 @@ public final class IncidentSource extends ExpandableStringEnum<IncidentSource> {
      * @param name a name to look for.
      * @return the corresponding IncidentSource.
      */
+    @Generated
     public static IncidentSource fromString(String name) {
         return fromString(name, IncidentSource.class);
     }
@@ -60,6 +68,7 @@ public final class IncidentSource extends ExpandableStringEnum<IncidentSource> {
      * 
      * @return known IncidentSource values.
      */
+    @Generated
     public static Collection<IncidentSource> values() {
         return values(IncidentSource.class);
     }

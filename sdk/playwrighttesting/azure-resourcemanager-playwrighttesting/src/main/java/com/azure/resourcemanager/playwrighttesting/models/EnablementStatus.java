@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.playwrighttesting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class EnablementStatus extends ExpandableStringEnum<EnablementStatu
     /**
      * The feature is Enabled.
      */
+    @Generated
     public static final EnablementStatus ENABLED = fromString("Enabled");
 
     /**
      * The feature is Disabled.
      */
+    @Generated
     public static final EnablementStatus DISABLED = fromString("Disabled");
 
     /**
@@ -26,6 +29,7 @@ public final class EnablementStatus extends ExpandableStringEnum<EnablementStatu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public EnablementStatus() {
     }
@@ -36,6 +40,7 @@ public final class EnablementStatus extends ExpandableStringEnum<EnablementStatu
      * @param name a name to look for.
      * @return the corresponding EnablementStatus.
      */
+    @Generated
     public static EnablementStatus fromString(String name) {
         return fromString(name, EnablementStatus.class);
     }
@@ -45,6 +50,7 @@ public final class EnablementStatus extends ExpandableStringEnum<EnablementStatu
      * 
      * @return known EnablementStatus values.
      */
+    @Generated
     public static Collection<EnablementStatus> values() {
         return values(EnablementStatus.class);
     }

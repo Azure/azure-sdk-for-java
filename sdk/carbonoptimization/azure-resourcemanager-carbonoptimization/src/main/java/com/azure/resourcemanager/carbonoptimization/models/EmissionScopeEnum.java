@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,16 +16,19 @@ public final class EmissionScopeEnum extends ExpandableStringEnum<EmissionScopeE
     /**
      * Scope1 carbon emission.
      */
+    @Generated
     public static final EmissionScopeEnum SCOPE1 = fromString("Scope1");
 
     /**
      * Scope2 carbon emission.
      */
+    @Generated
     public static final EmissionScopeEnum SCOPE2 = fromString("Scope2");
 
     /**
      * Scope3 carbon emission.
      */
+    @Generated
     public static final EmissionScopeEnum SCOPE3 = fromString("Scope3");
 
     /**
@@ -32,6 +36,7 @@ public final class EmissionScopeEnum extends ExpandableStringEnum<EmissionScopeE
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public EmissionScopeEnum() {
     }
@@ -42,6 +47,7 @@ public final class EmissionScopeEnum extends ExpandableStringEnum<EmissionScopeE
      * @param name a name to look for.
      * @return the corresponding EmissionScopeEnum.
      */
+    @Generated
     public static EmissionScopeEnum fromString(String name) {
         return fromString(name, EmissionScopeEnum.class);
     }
@@ -51,6 +57,7 @@ public final class EmissionScopeEnum extends ExpandableStringEnum<EmissionScopeE
      * 
      * @return known EmissionScopeEnum values.
      */
+    @Generated
     public static Collection<EmissionScopeEnum> values() {
         return values(EmissionScopeEnum.class);
     }

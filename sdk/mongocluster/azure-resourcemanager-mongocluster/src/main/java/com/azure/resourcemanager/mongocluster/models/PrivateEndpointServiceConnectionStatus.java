@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -13,18 +14,21 @@ import java.util.Collection;
 public final class PrivateEndpointServiceConnectionStatus
     extends ExpandableStringEnum<PrivateEndpointServiceConnectionStatus> {
     /**
-     * Connectionaiting for approval or rejection.
+     * Connection waiting for approval or rejection.
      */
+    @Generated
     public static final PrivateEndpointServiceConnectionStatus PENDING = fromString("Pending");
 
     /**
      * Connection approved.
      */
+    @Generated
     public static final PrivateEndpointServiceConnectionStatus APPROVED = fromString("Approved");
 
     /**
      * Connection Rejected.
      */
+    @Generated
     public static final PrivateEndpointServiceConnectionStatus REJECTED = fromString("Rejected");
 
     /**
@@ -32,6 +36,7 @@ public final class PrivateEndpointServiceConnectionStatus
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PrivateEndpointServiceConnectionStatus() {
     }
@@ -42,6 +47,7 @@ public final class PrivateEndpointServiceConnectionStatus
      * @param name a name to look for.
      * @return the corresponding PrivateEndpointServiceConnectionStatus.
      */
+    @Generated
     public static PrivateEndpointServiceConnectionStatus fromString(String name) {
         return fromString(name, PrivateEndpointServiceConnectionStatus.class);
     }
@@ -51,6 +57,7 @@ public final class PrivateEndpointServiceConnectionStatus
      * 
      * @return known PrivateEndpointServiceConnectionStatus values.
      */
+    @Generated
     public static Collection<PrivateEndpointServiceConnectionStatus> values() {
         return values(PrivateEndpointServiceConnectionStatus.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class LocalStorageDiskType extends ExpandableStringEnum<LocalStorag
     /**
      * HDD DiskType.
      */
+    @Generated
     public static final LocalStorageDiskType HDD = fromString("HDD");
 
     /**
      * SDD DiskType.
      */
+    @Generated
     public static final LocalStorageDiskType SSD = fromString("SSD");
 
     /**
@@ -26,6 +29,7 @@ public final class LocalStorageDiskType extends ExpandableStringEnum<LocalStorag
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public LocalStorageDiskType() {
     }
@@ -36,6 +40,7 @@ public final class LocalStorageDiskType extends ExpandableStringEnum<LocalStorag
      * @param name a name to look for.
      * @return the corresponding LocalStorageDiskType.
      */
+    @Generated
     public static LocalStorageDiskType fromString(String name) {
         return fromString(name, LocalStorageDiskType.class);
     }
@@ -45,6 +50,7 @@ public final class LocalStorageDiskType extends ExpandableStringEnum<LocalStorag
      * 
      * @return known LocalStorageDiskType values.
      */
+    @Generated
     public static Collection<LocalStorageDiskType> values() {
         return values(LocalStorageDiskType.class);
     }

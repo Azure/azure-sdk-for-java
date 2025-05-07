@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class PerformanceTier extends ExpandableStringEnum<PerformanceTier>
     /**
      * Undefined Performance Tier.
      */
+    @Generated
     public static final PerformanceTier UNDEFINED = fromString("Undefined");
 
     /**
      * Basic Performance Tier.
      */
+    @Generated
     public static final PerformanceTier BASIC = fromString("Basic");
 
     /**
      * Standard Performance Tier.
      */
+    @Generated
     public static final PerformanceTier STANDARD = fromString("Standard");
 
     /**
      * Premium Performance Tier.
      */
+    @Generated
     public static final PerformanceTier PREMIUM = fromString("Premium");
 
     /**
      * Ultra Performance Tier.
      */
+    @Generated
     public static final PerformanceTier ULTRA = fromString("Ultra");
 
     /**
@@ -41,6 +47,7 @@ public final class PerformanceTier extends ExpandableStringEnum<PerformanceTier>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PerformanceTier() {
     }
@@ -51,6 +58,7 @@ public final class PerformanceTier extends ExpandableStringEnum<PerformanceTier>
      * @param name a name to look for.
      * @return the corresponding PerformanceTier.
      */
+    @Generated
     public static PerformanceTier fromString(String name) {
         return fromString(name, PerformanceTier.class);
     }
@@ -60,6 +68,7 @@ public final class PerformanceTier extends ExpandableStringEnum<PerformanceTier>
      * 
      * @return known PerformanceTier values.
      */
+    @Generated
     public static Collection<PerformanceTier> values() {
         return values(PerformanceTier.class);
     }

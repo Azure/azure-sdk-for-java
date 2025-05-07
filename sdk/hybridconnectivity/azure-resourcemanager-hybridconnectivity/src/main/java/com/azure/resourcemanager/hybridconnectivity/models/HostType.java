@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class HostType extends ExpandableStringEnum<HostType> {
     /**
      * AWS state.
      */
+    @Generated
     public static final HostType AWS = fromString("AWS");
 
     /**
@@ -21,6 +23,7 @@ public final class HostType extends ExpandableStringEnum<HostType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public HostType() {
     }
@@ -31,6 +34,7 @@ public final class HostType extends ExpandableStringEnum<HostType> {
      * @param name a name to look for.
      * @return the corresponding HostType.
      */
+    @Generated
     public static HostType fromString(String name) {
         return fromString(name, HostType.class);
     }
@@ -40,6 +44,7 @@ public final class HostType extends ExpandableStringEnum<HostType> {
      * 
      * @return known HostType values.
      */
+    @Generated
     public static Collection<HostType> values() {
         return values(HostType.class);
     }

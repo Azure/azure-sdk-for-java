@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,60 +15,71 @@ public final class ResponseDataTypeEnum extends ExpandableStringEnum<ResponseDat
     /**
      * The response data type for OverallSummaryReport.
      */
+    @Generated
     public static final ResponseDataTypeEnum OVERALL_SUMMARY_DATA = fromString("OverallSummaryData");
 
     /**
      * The response data type for MonthlySummaryReport.
      */
+    @Generated
     public static final ResponseDataTypeEnum MONTHLY_SUMMARY_DATA = fromString("MonthlySummaryData");
 
     /**
      * The response data type for TopItemsSummaryReport.
      */
+    @Generated
     public static final ResponseDataTypeEnum TOP_ITEMS_SUMMARY_DATA = fromString("TopItemsSummaryData");
 
     /**
      * The response data type for Resource's TopItemsSummaryReport.
      */
+    @Generated
     public static final ResponseDataTypeEnum RESOURCE_TOP_ITEMS_SUMMARY_DATA
         = fromString("ResourceTopItemsSummaryData");
 
     /**
      * The response data type for ResourceGroup's TopItemsSummaryReport.
      */
+    @Generated
     public static final ResponseDataTypeEnum RESOURCE_GROUP_TOP_ITEMS_SUMMARY_DATA
         = fromString("ResourceGroupTopItemsSummaryData");
 
     /**
      * The response data type for TopItemsMonthlySummaryReport.
      */
+    @Generated
     public static final ResponseDataTypeEnum TOP_ITEMS_MONTHLY_SUMMARY_DATA = fromString("TopItemsMonthlySummaryData");
 
     /**
      * The response data type for Resource's TopItemsMonthlySummaryReport.
      */
+    @Generated
     public static final ResponseDataTypeEnum RESOURCE_TOP_ITEMS_MONTHLY_SUMMARY_DATA
         = fromString("ResourceTopItemsMonthlySummaryData");
 
     /**
      * The response data type for ResourceGroup's TopItemsMonthlySummaryReport.
      */
+    @Generated
     public static final ResponseDataTypeEnum RESOURCE_GROUP_TOP_ITEMS_MONTHLY_SUMMARY_DATA
         = fromString("ResourceGroupTopItemsMonthlySummaryData");
 
     /**
      * The response data type for ItemDetailsReport.
      */
+    @Generated
     public static final ResponseDataTypeEnum ITEM_DETAILS_DATA = fromString("ItemDetailsData");
 
     /**
      * The response data type for Resource's ItemDetailsReport.
      */
+    @Generated
     public static final ResponseDataTypeEnum RESOURCE_ITEM_DETAILS_DATA = fromString("ResourceItemDetailsData");
 
     /**
      * The response data type for ResourceGroup's ItemDetailsReport.
      */
+    @Generated
     public static final ResponseDataTypeEnum RESOURCE_GROUP_ITEM_DETAILS_DATA
         = fromString("ResourceGroupItemDetailsData");
 
@@ -76,6 +88,7 @@ public final class ResponseDataTypeEnum extends ExpandableStringEnum<ResponseDat
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ResponseDataTypeEnum() {
     }
@@ -86,6 +99,7 @@ public final class ResponseDataTypeEnum extends ExpandableStringEnum<ResponseDat
      * @param name a name to look for.
      * @return the corresponding ResponseDataTypeEnum.
      */
+    @Generated
     public static ResponseDataTypeEnum fromString(String name) {
         return fromString(name, ResponseDataTypeEnum.class);
     }
@@ -95,6 +109,7 @@ public final class ResponseDataTypeEnum extends ExpandableStringEnum<ResponseDat
      * 
      * @return known ResponseDataTypeEnum values.
      */
+    @Generated
     public static Collection<ResponseDataTypeEnum> values() {
         return values(ResponseDataTypeEnum.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class MongoClusterStatus extends ExpandableStringEnum<MongoClusterS
     /**
      * The mongo cluster resource is ready for use.
      */
+    @Generated
     public static final MongoClusterStatus READY = fromString("Ready");
 
     /**
      * The mongo cluster resource is being provisioned.
      */
+    @Generated
     public static final MongoClusterStatus PROVISIONING = fromString("Provisioning");
 
     /**
      * The mongo cluster resource is being updated.
      */
+    @Generated
     public static final MongoClusterStatus UPDATING = fromString("Updating");
 
     /**
      * The mongo cluster resource is being started.
      */
+    @Generated
     public static final MongoClusterStatus STARTING = fromString("Starting");
 
     /**
      * The mongo cluster resource is being stopped.
      */
+    @Generated
     public static final MongoClusterStatus STOPPING = fromString("Stopping");
 
     /**
      * The mongo cluster resource is stopped.
      */
+    @Generated
     public static final MongoClusterStatus STOPPED = fromString("Stopped");
 
     /**
      * The mongo cluster resource is being dropped.
      */
+    @Generated
     public static final MongoClusterStatus DROPPING = fromString("Dropping");
 
     /**
@@ -51,6 +59,7 @@ public final class MongoClusterStatus extends ExpandableStringEnum<MongoClusterS
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MongoClusterStatus() {
     }
@@ -61,6 +70,7 @@ public final class MongoClusterStatus extends ExpandableStringEnum<MongoClusterS
      * @param name a name to look for.
      * @return the corresponding MongoClusterStatus.
      */
+    @Generated
     public static MongoClusterStatus fromString(String name) {
         return fromString(name, MongoClusterStatus.class);
     }
@@ -70,6 +80,7 @@ public final class MongoClusterStatus extends ExpandableStringEnum<MongoClusterS
      * 
      * @return known MongoClusterStatus values.
      */
+    @Generated
     public static Collection<MongoClusterStatus> values() {
         return values(MongoClusterStatus.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.impactreporting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,61 +15,73 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
     /**
      * When measurement is in ByteSeconds.
      */
+    @Generated
     public static final MetricUnit BYTE_SECONDS = fromString("ByteSeconds");
 
     /**
      * When measurement is in Bytes.
      */
+    @Generated
     public static final MetricUnit BYTES = fromString("Bytes");
 
     /**
      * When measurement is in BytesPerSecond.
      */
+    @Generated
     public static final MetricUnit BYTES_PER_SECOND = fromString("BytesPerSecond");
 
     /**
      * When measurement is in Cores.
      */
+    @Generated
     public static final MetricUnit CORES = fromString("Cores");
 
     /**
      * When measurement is in Count.
      */
+    @Generated
     public static final MetricUnit COUNT = fromString("Count");
 
     /**
      * When measurement is in CountPerSecond.
      */
+    @Generated
     public static final MetricUnit COUNT_PER_SECOND = fromString("CountPerSecond");
 
     /**
      * When measurement is in MilliCores.
      */
+    @Generated
     public static final MetricUnit MILLI_CORES = fromString("MilliCores");
 
     /**
      * When measurement is in MilliSeconds.
      */
+    @Generated
     public static final MetricUnit MILLI_SECONDS = fromString("MilliSeconds");
 
     /**
      * When measurement is in NanoCores.
      */
+    @Generated
     public static final MetricUnit NANO_CORES = fromString("NanoCores");
 
     /**
      * When measurement is in Percent.
      */
+    @Generated
     public static final MetricUnit PERCENT = fromString("Percent");
 
     /**
      * When measurement is in Seconds.
      */
+    @Generated
     public static final MetricUnit SECONDS = fromString("Seconds");
 
     /**
      * When measurement is in Other than listed.
      */
+    @Generated
     public static final MetricUnit OTHER = fromString("Other");
 
     /**
@@ -76,6 +89,7 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MetricUnit() {
     }
@@ -86,6 +100,7 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
      * @param name a name to look for.
      * @return the corresponding MetricUnit.
      */
+    @Generated
     public static MetricUnit fromString(String name) {
         return fromString(name, MetricUnit.class);
     }
@@ -95,6 +110,7 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
      * 
      * @return known MetricUnit values.
      */
+    @Generated
     public static Collection<MetricUnit> values() {
         return values(MetricUnit.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.trustedsigning.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
     /**
      * Basic sku.
      */
+    @Generated
     public static final SkuName BASIC = fromString("Basic");
 
     /**
      * Premium sku.
      */
+    @Generated
     public static final SkuName PREMIUM = fromString("Premium");
 
     /**
@@ -26,6 +29,7 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SkuName() {
     }
@@ -36,6 +40,7 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
      * @param name a name to look for.
      * @return the corresponding SkuName.
      */
+    @Generated
     public static SkuName fromString(String name) {
         return fromString(name, SkuName.class);
     }
@@ -45,6 +50,7 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
      * 
      * @return known SkuName values.
      */
+    @Generated
     public static Collection<SkuName> values() {
         return values(SkuName.class);
     }

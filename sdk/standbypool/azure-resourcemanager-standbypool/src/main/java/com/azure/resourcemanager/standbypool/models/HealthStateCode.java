@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class HealthStateCode extends ExpandableStringEnum<HealthStateCode>
     /**
      * StandbyPool is in healthy state.
      */
+    @Generated
     public static final HealthStateCode HEALTHY = fromString("HealthState/healthy");
 
     /**
      * StandbyPool is in degraded state.
      */
+    @Generated
     public static final HealthStateCode DEGRADED = fromString("HealthState/degraded");
 
     /**
@@ -26,6 +29,7 @@ public final class HealthStateCode extends ExpandableStringEnum<HealthStateCode>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public HealthStateCode() {
     }
@@ -36,6 +40,7 @@ public final class HealthStateCode extends ExpandableStringEnum<HealthStateCode>
      * @param name a name to look for.
      * @return the corresponding HealthStateCode.
      */
+    @Generated
     public static HealthStateCode fromString(String name) {
         return fromString(name, HealthStateCode.class);
     }
@@ -45,6 +50,7 @@ public final class HealthStateCode extends ExpandableStringEnum<HealthStateCode>
      * 
      * @return known HealthStateCode values.
      */
+    @Generated
     public static Collection<HealthStateCode> values() {
         return values(HealthStateCode.class);
     }

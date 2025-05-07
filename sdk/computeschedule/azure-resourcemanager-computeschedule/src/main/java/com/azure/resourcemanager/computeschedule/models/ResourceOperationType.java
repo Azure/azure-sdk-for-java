@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class ResourceOperationType extends ExpandableStringEnum<ResourceOp
     /**
      * The default value for this enum type.
      */
+    @Generated
     public static final ResourceOperationType UNKNOWN = fromString("Unknown");
 
     /**
      * Start operations on the resources.
      */
+    @Generated
     public static final ResourceOperationType START = fromString("Start");
 
     /**
      * Deallocate operations on the resources.
      */
+    @Generated
     public static final ResourceOperationType DEALLOCATE = fromString("Deallocate");
 
     /**
      * Hibernate operations on the resources.
      */
+    @Generated
     public static final ResourceOperationType HIBERNATE = fromString("Hibernate");
 
     /**
@@ -36,6 +41,7 @@ public final class ResourceOperationType extends ExpandableStringEnum<ResourceOp
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ResourceOperationType() {
     }
@@ -46,6 +52,7 @@ public final class ResourceOperationType extends ExpandableStringEnum<ResourceOp
      * @param name a name to look for.
      * @return the corresponding ResourceOperationType.
      */
+    @Generated
     public static ResourceOperationType fromString(String name) {
         return fromString(name, ResourceOperationType.class);
     }
@@ -55,6 +62,7 @@ public final class ResourceOperationType extends ExpandableStringEnum<ResourceOp
      * 
      * @return known ResourceOperationType values.
      */
+    @Generated
     public static Collection<ResourceOperationType> values() {
         return values(ResourceOperationType.class);
     }

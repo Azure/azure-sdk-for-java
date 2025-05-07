@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.fabric.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,61 +15,73 @@ public final class ResourceState extends ExpandableStringEnum<ResourceState> {
     /**
      * Resource is active.
      */
+    @Generated
     public static final ResourceState ACTIVE = fromString("Active");
 
     /**
      * Resource is provisioning.
      */
+    @Generated
     public static final ResourceState PROVISIONING = fromString("Provisioning");
 
     /**
      * Resource is failed.
      */
+    @Generated
     public static final ResourceState FAILED = fromString("Failed");
 
     /**
      * Resource is updating.
      */
+    @Generated
     public static final ResourceState UPDATING = fromString("Updating");
 
     /**
      * Resource is deleting.
      */
+    @Generated
     public static final ResourceState DELETING = fromString("Deleting");
 
     /**
      * Resource is suspending.
      */
+    @Generated
     public static final ResourceState SUSPENDING = fromString("Suspending");
 
     /**
      * Resource is suspended.
      */
+    @Generated
     public static final ResourceState SUSPENDED = fromString("Suspended");
 
     /**
      * Resource is pausing.
      */
+    @Generated
     public static final ResourceState PAUSING = fromString("Pausing");
 
     /**
      * Resource is paused.
      */
+    @Generated
     public static final ResourceState PAUSED = fromString("Paused");
 
     /**
      * Resource is resuming.
      */
+    @Generated
     public static final ResourceState RESUMING = fromString("Resuming");
 
     /**
      * Resource is scaling.
      */
+    @Generated
     public static final ResourceState SCALING = fromString("Scaling");
 
     /**
      * Resource is preparing.
      */
+    @Generated
     public static final ResourceState PREPARING = fromString("Preparing");
 
     /**
@@ -76,6 +89,7 @@ public final class ResourceState extends ExpandableStringEnum<ResourceState> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ResourceState() {
     }
@@ -86,6 +100,7 @@ public final class ResourceState extends ExpandableStringEnum<ResourceState> {
      * @param name a name to look for.
      * @return the corresponding ResourceState.
      */
+    @Generated
     public static ResourceState fromString(String name) {
         return fromString(name, ResourceState.class);
     }
@@ -95,6 +110,7 @@ public final class ResourceState extends ExpandableStringEnum<ResourceState> {
      * 
      * @return known ResourceState values.
      */
+    @Generated
     public static Collection<ResourceState> values() {
         return values(ResourceState.class);
     }

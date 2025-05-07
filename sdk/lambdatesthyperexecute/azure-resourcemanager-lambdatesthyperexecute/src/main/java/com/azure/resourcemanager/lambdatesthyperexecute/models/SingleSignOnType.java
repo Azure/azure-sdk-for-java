@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.lambdatesthyperexecute.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SingleSignOnType extends ExpandableStringEnum<SingleSignOnTyp
     /**
      * Security Assertion Markup Language (SAML) based Single Sign-On.
      */
+    @Generated
     public static final SingleSignOnType SAML = fromString("Saml");
 
     /**
      * OpenID Connect based Single Sign-On.
      */
+    @Generated
     public static final SingleSignOnType OPEN_ID = fromString("OpenId");
 
     /**
@@ -26,6 +29,7 @@ public final class SingleSignOnType extends ExpandableStringEnum<SingleSignOnTyp
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SingleSignOnType() {
     }
@@ -36,6 +40,7 @@ public final class SingleSignOnType extends ExpandableStringEnum<SingleSignOnTyp
      * @param name a name to look for.
      * @return the corresponding SingleSignOnType.
      */
+    @Generated
     public static SingleSignOnType fromString(String name) {
         return fromString(name, SingleSignOnType.class);
     }
@@ -45,6 +50,7 @@ public final class SingleSignOnType extends ExpandableStringEnum<SingleSignOnTyp
      * 
      * @return known SingleSignOnType values.
      */
+    @Generated
     public static Collection<SingleSignOnType> values() {
         return values(SingleSignOnType.class);
     }

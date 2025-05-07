@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SapDeploymentType extends ExpandableStringEnum<SapDeploymentT
     /**
      * SAP Single server deployment type.
      */
+    @Generated
     public static final SapDeploymentType SINGLE_SERVER = fromString("SingleServer");
 
     /**
      * SAP Distributed deployment type.
      */
+    @Generated
     public static final SapDeploymentType THREE_TIER = fromString("ThreeTier");
 
     /**
@@ -26,6 +29,7 @@ public final class SapDeploymentType extends ExpandableStringEnum<SapDeploymentT
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SapDeploymentType() {
     }
@@ -36,6 +40,7 @@ public final class SapDeploymentType extends ExpandableStringEnum<SapDeploymentT
      * @param name a name to look for.
      * @return the corresponding SapDeploymentType.
      */
+    @Generated
     public static SapDeploymentType fromString(String name) {
         return fromString(name, SapDeploymentType.class);
     }
@@ -45,6 +50,7 @@ public final class SapDeploymentType extends ExpandableStringEnum<SapDeploymentT
      * 
      * @return known SapDeploymentType values.
      */
+    @Generated
     public static Collection<SapDeploymentType> values() {
         return values(SapDeploymentType.class);
     }

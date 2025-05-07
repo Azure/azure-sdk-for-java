@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class DataApiMode extends ExpandableStringEnum<DataApiMode> {
     /**
      * Mongo Data API is enabled for the cluster.
      */
+    @Generated
     public static final DataApiMode ENABLED = fromString("Enabled");
 
     /**
      * Mongo Data API is disabled for the cluster.
      */
+    @Generated
     public static final DataApiMode DISABLED = fromString("Disabled");
 
     /**
@@ -26,6 +29,7 @@ public final class DataApiMode extends ExpandableStringEnum<DataApiMode> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataApiMode() {
     }
@@ -36,6 +40,7 @@ public final class DataApiMode extends ExpandableStringEnum<DataApiMode> {
      * @param name a name to look for.
      * @return the corresponding DataApiMode.
      */
+    @Generated
     public static DataApiMode fromString(String name) {
         return fromString(name, DataApiMode.class);
     }
@@ -45,6 +50,7 @@ public final class DataApiMode extends ExpandableStringEnum<DataApiMode> {
      * 
      * @return known DataApiMode values.
      */
+    @Generated
     public static Collection<DataApiMode> values() {
         return values(DataApiMode.class);
     }

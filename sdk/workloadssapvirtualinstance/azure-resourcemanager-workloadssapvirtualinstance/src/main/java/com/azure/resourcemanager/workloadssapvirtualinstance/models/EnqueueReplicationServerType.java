@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class EnqueueReplicationServerType extends ExpandableStringEnum<Enq
     /**
      * Enqueue Replication server type 1.
      */
+    @Generated
     public static final EnqueueReplicationServerType ENQUEUE_REPLICATOR1 = fromString("EnqueueReplicator1");
 
     /**
      * Enqueue Replication server type 2.
      */
+    @Generated
     public static final EnqueueReplicationServerType ENQUEUE_REPLICATOR2 = fromString("EnqueueReplicator2");
 
     /**
@@ -26,6 +29,7 @@ public final class EnqueueReplicationServerType extends ExpandableStringEnum<Enq
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public EnqueueReplicationServerType() {
     }
@@ -36,6 +40,7 @@ public final class EnqueueReplicationServerType extends ExpandableStringEnum<Enq
      * @param name a name to look for.
      * @return the corresponding EnqueueReplicationServerType.
      */
+    @Generated
     public static EnqueueReplicationServerType fromString(String name) {
         return fromString(name, EnqueueReplicationServerType.class);
     }
@@ -45,6 +50,7 @@ public final class EnqueueReplicationServerType extends ExpandableStringEnum<Enq
      * 
      * @return known EnqueueReplicationServerType values.
      */
+    @Generated
     public static Collection<EnqueueReplicationServerType> values() {
         return values(EnqueueReplicationServerType.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class InstanceFeatureMode extends ExpandableStringEnum<InstanceFeat
     /**
      * Opt in to enable a stable feature.
      */
+    @Generated
     public static final InstanceFeatureMode STABLE = fromString("Stable");
 
     /**
      * Opt in to enable a preview feature.
      */
+    @Generated
     public static final InstanceFeatureMode PREVIEW = fromString("Preview");
 
     /**
      * Opt out of a feature.
      */
+    @Generated
     public static final InstanceFeatureMode DISABLED = fromString("Disabled");
 
     /**
@@ -31,6 +35,7 @@ public final class InstanceFeatureMode extends ExpandableStringEnum<InstanceFeat
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public InstanceFeatureMode() {
     }
@@ -41,6 +46,7 @@ public final class InstanceFeatureMode extends ExpandableStringEnum<InstanceFeat
      * @param name a name to look for.
      * @return the corresponding InstanceFeatureMode.
      */
+    @Generated
     public static InstanceFeatureMode fromString(String name) {
         return fromString(name, InstanceFeatureMode.class);
     }
@@ -50,6 +56,7 @@ public final class InstanceFeatureMode extends ExpandableStringEnum<InstanceFeat
      * 
      * @return known InstanceFeatureMode values.
      */
+    @Generated
     public static Collection<InstanceFeatureMode> values() {
         return values(InstanceFeatureMode.class);
     }

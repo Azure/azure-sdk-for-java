@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,31 +16,37 @@ public final class SapVirtualInstanceProvisioningState
     /**
      * ACSS succeeded provisioning state.
      */
+    @Generated
     public static final SapVirtualInstanceProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
      * ACSS updating provisioning state.
      */
+    @Generated
     public static final SapVirtualInstanceProvisioningState UPDATING = fromString("Updating");
 
     /**
      * ACSS Creating provisioning state.
      */
+    @Generated
     public static final SapVirtualInstanceProvisioningState CREATING = fromString("Creating");
 
     /**
      * ACSS Failed provisioning state.
      */
+    @Generated
     public static final SapVirtualInstanceProvisioningState FAILED = fromString("Failed");
 
     /**
      * ACSS Deleting provisioning state.
      */
+    @Generated
     public static final SapVirtualInstanceProvisioningState DELETING = fromString("Deleting");
 
     /**
      * ACSS Canceled provisioning state.
      */
+    @Generated
     public static final SapVirtualInstanceProvisioningState CANCELED = fromString("Canceled");
 
     /**
@@ -47,6 +54,7 @@ public final class SapVirtualInstanceProvisioningState
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SapVirtualInstanceProvisioningState() {
     }
@@ -57,6 +65,7 @@ public final class SapVirtualInstanceProvisioningState
      * @param name a name to look for.
      * @return the corresponding SapVirtualInstanceProvisioningState.
      */
+    @Generated
     public static SapVirtualInstanceProvisioningState fromString(String name) {
         return fromString(name, SapVirtualInstanceProvisioningState.class);
     }
@@ -66,6 +75,7 @@ public final class SapVirtualInstanceProvisioningState
      * 
      * @return known SapVirtualInstanceProvisioningState values.
      */
+    @Generated
     public static Collection<SapVirtualInstanceProvisioningState> values() {
         return values(SapVirtualInstanceProvisioningState.class);
     }

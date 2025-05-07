@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class PoolContainerGroupState extends ExpandableStringEnum<PoolCont
     /**
      * The container group is up and running.
      */
+    @Generated
     public static final PoolContainerGroupState RUNNING = fromString("Running");
 
     /**
      * The container group is creating.
      */
+    @Generated
     public static final PoolContainerGroupState CREATING = fromString("Creating");
 
     /**
      * The container group is deleting.
      */
+    @Generated
     public static final PoolContainerGroupState DELETING = fromString("Deleting");
 
     /**
@@ -31,6 +35,7 @@ public final class PoolContainerGroupState extends ExpandableStringEnum<PoolCont
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PoolContainerGroupState() {
     }
@@ -41,6 +46,7 @@ public final class PoolContainerGroupState extends ExpandableStringEnum<PoolCont
      * @param name a name to look for.
      * @return the corresponding PoolContainerGroupState.
      */
+    @Generated
     public static PoolContainerGroupState fromString(String name) {
         return fromString(name, PoolContainerGroupState.class);
     }
@@ -50,6 +56,7 @@ public final class PoolContainerGroupState extends ExpandableStringEnum<PoolCont
      * 
      * @return known PoolContainerGroupState values.
      */
+    @Generated
     public static Collection<PoolContainerGroupState> values() {
         return values(PoolContainerGroupState.class);
     }

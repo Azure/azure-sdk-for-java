@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.connectedcache.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class CycleType extends ExpandableStringEnum<CycleType> {
     /**
      * customer selection of preview update install mcc on their physical vm.
      */
+    @Generated
     public static final CycleType PREVIEW = fromString("Preview");
 
     /**
      * customer selection of slow update to install mcc on their physical vm.
      */
+    @Generated
     public static final CycleType SLOW = fromString("Slow");
 
     /**
      * customer selection of fast / auto update to install mcc on their physical vm.
      */
+    @Generated
     public static final CycleType FAST = fromString("Fast");
 
     /**
@@ -31,6 +35,7 @@ public final class CycleType extends ExpandableStringEnum<CycleType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CycleType() {
     }
@@ -41,6 +46,7 @@ public final class CycleType extends ExpandableStringEnum<CycleType> {
      * @param name a name to look for.
      * @return the corresponding CycleType.
      */
+    @Generated
     public static CycleType fromString(String name) {
         return fromString(name, CycleType.class);
     }
@@ -50,6 +56,7 @@ public final class CycleType extends ExpandableStringEnum<CycleType> {
      * 
      * @return known CycleType values.
      */
+    @Generated
     public static Collection<CycleType> values() {
         return values(CycleType.class);
     }

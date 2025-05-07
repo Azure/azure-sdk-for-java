@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.healthdataaiservices.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,21 +16,25 @@ public final class PrivateEndpointConnectionProvisioningState
     /**
      * Connection has been provisioned.
      */
+    @Generated
     public static final PrivateEndpointConnectionProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
      * Connection is being created.
      */
+    @Generated
     public static final PrivateEndpointConnectionProvisioningState CREATING = fromString("Creating");
 
     /**
      * Connection is being deleted.
      */
+    @Generated
     public static final PrivateEndpointConnectionProvisioningState DELETING = fromString("Deleting");
 
     /**
      * Connection provisioning has failed.
      */
+    @Generated
     public static final PrivateEndpointConnectionProvisioningState FAILED = fromString("Failed");
 
     /**
@@ -37,6 +42,7 @@ public final class PrivateEndpointConnectionProvisioningState
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PrivateEndpointConnectionProvisioningState() {
     }
@@ -47,6 +53,7 @@ public final class PrivateEndpointConnectionProvisioningState
      * @param name a name to look for.
      * @return the corresponding PrivateEndpointConnectionProvisioningState.
      */
+    @Generated
     public static PrivateEndpointConnectionProvisioningState fromString(String name) {
         return fromString(name, PrivateEndpointConnectionProvisioningState.class);
     }
@@ -56,6 +63,7 @@ public final class PrivateEndpointConnectionProvisioningState
      * 
      * @return known PrivateEndpointConnectionProvisioningState values.
      */
+    @Generated
     public static Collection<PrivateEndpointConnectionProvisioningState> values() {
         return values(PrivateEndpointConnectionProvisioningState.class);
     }

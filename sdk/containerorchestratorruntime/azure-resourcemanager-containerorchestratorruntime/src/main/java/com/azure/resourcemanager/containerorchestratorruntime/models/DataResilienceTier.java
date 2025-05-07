@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class DataResilienceTier extends ExpandableStringEnum<DataResilienc
     /**
      * Not data resilient.
      */
+    @Generated
     public static final DataResilienceTier NOT_DATA_RESILIENT = fromString("NotDataResilient");
 
     /**
      * Data resilient.
      */
+    @Generated
     public static final DataResilienceTier DATA_RESILIENT = fromString("DataResilient");
 
     /**
@@ -26,6 +29,7 @@ public final class DataResilienceTier extends ExpandableStringEnum<DataResilienc
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataResilienceTier() {
     }
@@ -36,6 +40,7 @@ public final class DataResilienceTier extends ExpandableStringEnum<DataResilienc
      * @param name a name to look for.
      * @return the corresponding DataResilienceTier.
      */
+    @Generated
     public static DataResilienceTier fromString(String name) {
         return fromString(name, DataResilienceTier.class);
     }
@@ -45,6 +50,7 @@ public final class DataResilienceTier extends ExpandableStringEnum<DataResilienc
      * 
      * @return known DataResilienceTier values.
      */
+    @Generated
     public static Collection<DataResilienceTier> values() {
         return values(DataResilienceTier.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class DiskSkuName extends ExpandableStringEnum<DiskSkuName> {
     /**
      * Standard LRS Disk SKU.
      */
+    @Generated
     public static final DiskSkuName STANDARD_LRS = fromString("Standard_LRS");
 
     /**
      * Premium_LRS Disk SKU.
      */
+    @Generated
     public static final DiskSkuName PREMIUM_LRS = fromString("Premium_LRS");
 
     /**
      * StandardSSD_LRS Disk SKU.
      */
+    @Generated
     public static final DiskSkuName STANDARD_SSD_LRS = fromString("StandardSSD_LRS");
 
     /**
      * UltraSSD_LRS Disk SKU.
      */
+    @Generated
     public static final DiskSkuName ULTRA_SSD_LRS = fromString("UltraSSD_LRS");
 
     /**
      * Premium_ZRS Disk SKU.
      */
+    @Generated
     public static final DiskSkuName PREMIUM_ZRS = fromString("Premium_ZRS");
 
     /**
      * StandardSSD_ZRS Disk SKU.
      */
+    @Generated
     public static final DiskSkuName STANDARD_SSD_ZRS = fromString("StandardSSD_ZRS");
 
     /**
      * PremiumV2_LRS Disk SKU.
      */
+    @Generated
     public static final DiskSkuName PREMIUM_V2_LRS = fromString("PremiumV2_LRS");
 
     /**
@@ -51,6 +59,7 @@ public final class DiskSkuName extends ExpandableStringEnum<DiskSkuName> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DiskSkuName() {
     }
@@ -61,6 +70,7 @@ public final class DiskSkuName extends ExpandableStringEnum<DiskSkuName> {
      * @param name a name to look for.
      * @return the corresponding DiskSkuName.
      */
+    @Generated
     public static DiskSkuName fromString(String name) {
         return fromString(name, DiskSkuName.class);
     }
@@ -70,6 +80,7 @@ public final class DiskSkuName extends ExpandableStringEnum<DiskSkuName> {
      * 
      * @return known DiskSkuName values.
      */
+    @Generated
     public static Collection<DiskSkuName> values() {
         return values(DiskSkuName.class);
     }

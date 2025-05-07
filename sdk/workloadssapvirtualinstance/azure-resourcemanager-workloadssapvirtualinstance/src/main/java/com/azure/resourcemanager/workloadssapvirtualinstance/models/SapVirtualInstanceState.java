@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,72 +15,85 @@ public final class SapVirtualInstanceState extends ExpandableStringEnum<SapVirtu
     /**
      * Infrastructure is not yet deployed.
      */
+    @Generated
     public static final SapVirtualInstanceState INFRASTRUCTURE_DEPLOYMENT_PENDING
         = fromString("InfrastructureDeploymentPending");
 
     /**
      * Infrastructure deployment is in progress.
      */
+    @Generated
     public static final SapVirtualInstanceState INFRASTRUCTURE_DEPLOYMENT_IN_PROGRESS
         = fromString("InfrastructureDeploymentInProgress");
 
     /**
      * Infrastructure deployment has failed.
      */
+    @Generated
     public static final SapVirtualInstanceState INFRASTRUCTURE_DEPLOYMENT_FAILED
         = fromString("InfrastructureDeploymentFailed");
 
     /**
      * Infrastructure deployment is successful. Software installation is pending.
      */
+    @Generated
     public static final SapVirtualInstanceState SOFTWARE_INSTALLATION_PENDING
         = fromString("SoftwareInstallationPending");
 
     /**
      * Software installation is in progress.
      */
+    @Generated
     public static final SapVirtualInstanceState SOFTWARE_INSTALLATION_IN_PROGRESS
         = fromString("SoftwareInstallationInProgress");
 
     /**
      * Software installation failed.
      */
+    @Generated
     public static final SapVirtualInstanceState SOFTWARE_INSTALLATION_FAILED = fromString("SoftwareInstallationFailed");
 
     /**
      * Software detection is in progress.
      */
+    @Generated
     public static final SapVirtualInstanceState SOFTWARE_DETECTION_IN_PROGRESS
         = fromString("SoftwareDetectionInProgress");
 
     /**
      * Software detection failed.
      */
+    @Generated
     public static final SapVirtualInstanceState SOFTWARE_DETECTION_FAILED = fromString("SoftwareDetectionFailed");
 
     /**
      * Registration has not started.
      */
+    @Generated
     public static final SapVirtualInstanceState DISCOVERY_PENDING = fromString("DiscoveryPending");
 
     /**
      * Registration is in progress.
      */
+    @Generated
     public static final SapVirtualInstanceState DISCOVERY_IN_PROGRESS = fromString("DiscoveryInProgress");
 
     /**
      * Registration has failed.
      */
+    @Generated
     public static final SapVirtualInstanceState DISCOVERY_FAILED = fromString("DiscoveryFailed");
 
     /**
      * Registration is complete.
      */
+    @Generated
     public static final SapVirtualInstanceState REGISTRATION_COMPLETE = fromString("RegistrationComplete");
 
     /**
      * ACSS installation cannot proceed.
      */
+    @Generated
     public static final SapVirtualInstanceState ACSSINSTALLATION_BLOCKED = fromString("ACSSInstallationBlocked");
 
     /**
@@ -87,6 +101,7 @@ public final class SapVirtualInstanceState extends ExpandableStringEnum<SapVirtu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SapVirtualInstanceState() {
     }
@@ -97,6 +112,7 @@ public final class SapVirtualInstanceState extends ExpandableStringEnum<SapVirtu
      * @param name a name to look for.
      * @return the corresponding SapVirtualInstanceState.
      */
+    @Generated
     public static SapVirtualInstanceState fromString(String name) {
         return fromString(name, SapVirtualInstanceState.class);
     }
@@ -106,6 +122,7 @@ public final class SapVirtualInstanceState extends ExpandableStringEnum<SapVirtu
      * 
      * @return known SapVirtualInstanceState values.
      */
+    @Generated
     public static Collection<SapVirtualInstanceState> values() {
         return values(SapVirtualInstanceState.class);
     }

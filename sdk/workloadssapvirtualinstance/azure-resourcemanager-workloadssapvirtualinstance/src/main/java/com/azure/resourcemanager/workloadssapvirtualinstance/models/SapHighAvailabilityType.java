@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SapHighAvailabilityType extends ExpandableStringEnum<SapHighA
     /**
      * HA deployment with availability sets.
      */
+    @Generated
     public static final SapHighAvailabilityType AVAILABILITY_SET = fromString("AvailabilitySet");
 
     /**
      * HA deployment with availability zones.
      */
+    @Generated
     public static final SapHighAvailabilityType AVAILABILITY_ZONE = fromString("AvailabilityZone");
 
     /**
@@ -26,6 +29,7 @@ public final class SapHighAvailabilityType extends ExpandableStringEnum<SapHighA
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SapHighAvailabilityType() {
     }
@@ -36,6 +40,7 @@ public final class SapHighAvailabilityType extends ExpandableStringEnum<SapHighA
      * @param name a name to look for.
      * @return the corresponding SapHighAvailabilityType.
      */
+    @Generated
     public static SapHighAvailabilityType fromString(String name) {
         return fromString(name, SapHighAvailabilityType.class);
     }
@@ -45,6 +50,7 @@ public final class SapHighAvailabilityType extends ExpandableStringEnum<SapHighA
      * 
      * @return known SapHighAvailabilityType values.
      */
+    @Generated
     public static Collection<SapHighAvailabilityType> values() {
         return values(SapHighAvailabilityType.class);
     }

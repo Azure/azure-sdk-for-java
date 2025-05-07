@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ArchitectureType extends ExpandableStringEnum<ArchitectureTyp
     /**
      * ARM64 Architecture.
      */
+    @Generated
     public static final ArchitectureType ARM64 = fromString("ARM64");
 
     /**
      * X64 Architecture.
      */
+    @Generated
     public static final ArchitectureType X64 = fromString("X64");
 
     /**
@@ -26,6 +29,7 @@ public final class ArchitectureType extends ExpandableStringEnum<ArchitectureTyp
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ArchitectureType() {
     }
@@ -36,6 +40,7 @@ public final class ArchitectureType extends ExpandableStringEnum<ArchitectureTyp
      * @param name a name to look for.
      * @return the corresponding ArchitectureType.
      */
+    @Generated
     public static ArchitectureType fromString(String name) {
         return fromString(name, ArchitectureType.class);
     }
@@ -45,6 +50,7 @@ public final class ArchitectureType extends ExpandableStringEnum<ArchitectureTyp
      * 
      * @return known ArchitectureType values.
      */
+    @Generated
     public static Collection<ArchitectureType> values() {
         return values(ArchitectureType.class);
     }

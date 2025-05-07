@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,11 +17,13 @@ public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
     /**
      * TrustedLaunch security type.
      */
+    @Generated
     public static final SecurityTypes TRUSTED_LAUNCH = fromString("TrustedLaunch");
 
     /**
      * ConfidentialVM security type.
      */
+    @Generated
     public static final SecurityTypes CONFIDENTIAL_VM = fromString("ConfidentialVM");
 
     /**
@@ -28,6 +31,7 @@ public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SecurityTypes() {
     }
@@ -38,6 +42,7 @@ public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
      * @param name a name to look for.
      * @return the corresponding SecurityTypes.
      */
+    @Generated
     public static SecurityTypes fromString(String name) {
         return fromString(name, SecurityTypes.class);
     }
@@ -47,6 +52,7 @@ public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
      * 
      * @return known SecurityTypes values.
      */
+    @Generated
     public static Collection<SecurityTypes> values() {
         return values(SecurityTypes.class);
     }

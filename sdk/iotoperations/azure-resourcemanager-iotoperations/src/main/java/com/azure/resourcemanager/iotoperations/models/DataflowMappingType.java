@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class DataflowMappingType extends ExpandableStringEnum<DataflowMapp
     /**
      * New Properties type.
      */
+    @Generated
     public static final DataflowMappingType NEW_PROPERTIES = fromString("NewProperties");
 
     /**
      * Rename type.
      */
+    @Generated
     public static final DataflowMappingType RENAME = fromString("Rename");
 
     /**
      * Compute type.
      */
+    @Generated
     public static final DataflowMappingType COMPUTE = fromString("Compute");
 
     /**
      * Pass-through type.
      */
+    @Generated
     public static final DataflowMappingType PASS_THROUGH = fromString("PassThrough");
 
     /**
      * Built in function type.
      */
+    @Generated
     public static final DataflowMappingType BUILT_IN_FUNCTION = fromString("BuiltInFunction");
 
     /**
@@ -41,6 +47,7 @@ public final class DataflowMappingType extends ExpandableStringEnum<DataflowMapp
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataflowMappingType() {
     }
@@ -51,6 +58,7 @@ public final class DataflowMappingType extends ExpandableStringEnum<DataflowMapp
      * @param name a name to look for.
      * @return the corresponding DataflowMappingType.
      */
+    @Generated
     public static DataflowMappingType fromString(String name) {
         return fromString(name, DataflowMappingType.class);
     }
@@ -60,6 +68,7 @@ public final class DataflowMappingType extends ExpandableStringEnum<DataflowMapp
      * 
      * @return known DataflowMappingType values.
      */
+    @Generated
     public static Collection<DataflowMappingType> values() {
         return values(DataflowMappingType.class);
     }

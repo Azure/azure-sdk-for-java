@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class SCType extends ExpandableStringEnum<SCType> {
     /**
      * Native storage class.
      */
+    @Generated
     public static final SCType NATIVE = fromString("Native");
 
     /**
      * RWX storage class.
      */
+    @Generated
     public static final SCType RWX = fromString("RWX");
 
     /**
      * Blob storage class.
      */
+    @Generated
     public static final SCType BLOB = fromString("Blob");
 
     /**
      * NFS storage class.
      */
+    @Generated
     public static final SCType NFS = fromString("NFS");
 
     /**
      * SMB storage class.
      */
+    @Generated
     public static final SCType SMB = fromString("SMB");
 
     /**
@@ -41,6 +47,7 @@ public final class SCType extends ExpandableStringEnum<SCType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SCType() {
     }
@@ -51,6 +58,7 @@ public final class SCType extends ExpandableStringEnum<SCType> {
      * @param name a name to look for.
      * @return the corresponding SCType.
      */
+    @Generated
     public static SCType fromString(String name) {
         return fromString(name, SCType.class);
     }
@@ -60,6 +68,7 @@ public final class SCType extends ExpandableStringEnum<SCType> {
      * 
      * @return known SCType values.
      */
+    @Generated
     public static Collection<SCType> values() {
         return values(SCType.class);
     }

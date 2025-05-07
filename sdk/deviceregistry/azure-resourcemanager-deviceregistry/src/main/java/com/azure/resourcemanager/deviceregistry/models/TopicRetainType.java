@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class TopicRetainType extends ExpandableStringEnum<TopicRetainType>
     /**
      * Retain the messages.
      */
+    @Generated
     public static final TopicRetainType KEEP = fromString("Keep");
 
     /**
      * Never retain messages.
      */
+    @Generated
     public static final TopicRetainType NEVER = fromString("Never");
 
     /**
@@ -26,6 +29,7 @@ public final class TopicRetainType extends ExpandableStringEnum<TopicRetainType>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TopicRetainType() {
     }
@@ -36,6 +40,7 @@ public final class TopicRetainType extends ExpandableStringEnum<TopicRetainType>
      * @param name a name to look for.
      * @return the corresponding TopicRetainType.
      */
+    @Generated
     public static TopicRetainType fromString(String name) {
         return fromString(name, TopicRetainType.class);
     }
@@ -45,6 +50,7 @@ public final class TopicRetainType extends ExpandableStringEnum<TopicRetainType>
      * 
      * @return known TopicRetainType values.
      */
+    @Generated
     public static Collection<TopicRetainType> values() {
         return values(TopicRetainType.class);
     }

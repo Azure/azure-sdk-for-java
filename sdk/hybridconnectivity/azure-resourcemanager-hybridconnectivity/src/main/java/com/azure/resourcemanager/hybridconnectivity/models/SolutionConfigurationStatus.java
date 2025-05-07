@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class SolutionConfigurationStatus extends ExpandableStringEnum<Solu
     /**
      * New status.
      */
+    @Generated
     public static final SolutionConfigurationStatus NEW = fromString("New");
 
     /**
      * InProgress status.
      */
+    @Generated
     public static final SolutionConfigurationStatus IN_PROGRESS = fromString("InProgress");
 
     /**
      * Canceled status.
      */
+    @Generated
     public static final SolutionConfigurationStatus COMPLETED = fromString("Completed");
 
     /**
      * Failed status.
      */
+    @Generated
     public static final SolutionConfigurationStatus FAILED = fromString("Failed");
 
     /**
@@ -36,6 +41,7 @@ public final class SolutionConfigurationStatus extends ExpandableStringEnum<Solu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SolutionConfigurationStatus() {
     }
@@ -46,6 +52,7 @@ public final class SolutionConfigurationStatus extends ExpandableStringEnum<Solu
      * @param name a name to look for.
      * @return the corresponding SolutionConfigurationStatus.
      */
+    @Generated
     public static SolutionConfigurationStatus fromString(String name) {
         return fromString(name, SolutionConfigurationStatus.class);
     }
@@ -55,6 +62,7 @@ public final class SolutionConfigurationStatus extends ExpandableStringEnum<Solu
      * 
      * @return known SolutionConfigurationStatus values.
      */
+    @Generated
     public static Collection<SolutionConfigurationStatus> values() {
         return values(SolutionConfigurationStatus.class);
     }

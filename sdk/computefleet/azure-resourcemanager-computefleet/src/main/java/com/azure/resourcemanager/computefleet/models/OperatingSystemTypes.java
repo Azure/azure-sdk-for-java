@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,11 +17,13 @@ public final class OperatingSystemTypes extends ExpandableStringEnum<OperatingSy
     /**
      * Windows OS type.
      */
+    @Generated
     public static final OperatingSystemTypes WINDOWS = fromString("Windows");
 
     /**
      * Linux OS type.
      */
+    @Generated
     public static final OperatingSystemTypes LINUX = fromString("Linux");
 
     /**
@@ -28,6 +31,7 @@ public final class OperatingSystemTypes extends ExpandableStringEnum<OperatingSy
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OperatingSystemTypes() {
     }
@@ -38,6 +42,7 @@ public final class OperatingSystemTypes extends ExpandableStringEnum<OperatingSy
      * @param name a name to look for.
      * @return the corresponding OperatingSystemTypes.
      */
+    @Generated
     public static OperatingSystemTypes fromString(String name) {
         return fromString(name, OperatingSystemTypes.class);
     }
@@ -47,6 +52,7 @@ public final class OperatingSystemTypes extends ExpandableStringEnum<OperatingSy
      * 
      * @return known OperatingSystemTypes values.
      */
+    @Generated
     public static Collection<OperatingSystemTypes> values() {
         return values(OperatingSystemTypes.class);
     }

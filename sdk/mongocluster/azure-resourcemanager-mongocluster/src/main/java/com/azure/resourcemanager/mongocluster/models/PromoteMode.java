@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,6 +16,7 @@ public final class PromoteMode extends ExpandableStringEnum<PromoteMode> {
      * Promotion will switch the current replica cluster to the primary role and the original primary will be switched
      * to a replica role, maintaining the replication link.
      */
+    @Generated
     public static final PromoteMode SWITCHOVER = fromString("Switchover");
 
     /**
@@ -22,6 +24,7 @@ public final class PromoteMode extends ExpandableStringEnum<PromoteMode> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PromoteMode() {
     }
@@ -32,6 +35,7 @@ public final class PromoteMode extends ExpandableStringEnum<PromoteMode> {
      * @param name a name to look for.
      * @return the corresponding PromoteMode.
      */
+    @Generated
     public static PromoteMode fromString(String name) {
         return fromString(name, PromoteMode.class);
     }
@@ -41,6 +45,7 @@ public final class PromoteMode extends ExpandableStringEnum<PromoteMode> {
      * 
      * @return known PromoteMode values.
      */
+    @Generated
     public static Collection<PromoteMode> values() {
         return values(PromoteMode.class);
     }

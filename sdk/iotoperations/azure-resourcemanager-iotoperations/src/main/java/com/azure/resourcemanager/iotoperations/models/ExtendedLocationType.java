@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class ExtendedLocationType extends ExpandableStringEnum<ExtendedLoc
     /**
      * CustomLocation type.
      */
+    @Generated
     public static final ExtendedLocationType CUSTOM_LOCATION = fromString("CustomLocation");
 
     /**
@@ -21,6 +23,7 @@ public final class ExtendedLocationType extends ExpandableStringEnum<ExtendedLoc
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ExtendedLocationType() {
     }
@@ -31,6 +34,7 @@ public final class ExtendedLocationType extends ExpandableStringEnum<ExtendedLoc
      * @param name a name to look for.
      * @return the corresponding ExtendedLocationType.
      */
+    @Generated
     public static ExtendedLocationType fromString(String name) {
         return fromString(name, ExtendedLocationType.class);
     }
@@ -40,6 +44,7 @@ public final class ExtendedLocationType extends ExpandableStringEnum<ExtendedLoc
      * 
      * @return known ExtendedLocationType values.
      */
+    @Generated
     public static Collection<ExtendedLocationType> values() {
         return values(ExtendedLocationType.class);
     }

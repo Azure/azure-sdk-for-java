@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class VolumeExpansion extends ExpandableStringEnum<VolumeExpansion>
     /**
      * Allow volume expansion.
      */
+    @Generated
     public static final VolumeExpansion ALLOW = fromString("Allow");
 
     /**
      * Disallow volume expansion.
      */
+    @Generated
     public static final VolumeExpansion DISALLOW = fromString("Disallow");
 
     /**
@@ -26,6 +29,7 @@ public final class VolumeExpansion extends ExpandableStringEnum<VolumeExpansion>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VolumeExpansion() {
     }
@@ -36,6 +40,7 @@ public final class VolumeExpansion extends ExpandableStringEnum<VolumeExpansion>
      * @param name a name to look for.
      * @return the corresponding VolumeExpansion.
      */
+    @Generated
     public static VolumeExpansion fromString(String name) {
         return fromString(name, VolumeExpansion.class);
     }
@@ -45,6 +50,7 @@ public final class VolumeExpansion extends ExpandableStringEnum<VolumeExpansion>
      * 
      * @return known VolumeExpansion values.
      */
+    @Generated
     public static Collection<VolumeExpansion> values() {
         return values(VolumeExpansion.class);
     }

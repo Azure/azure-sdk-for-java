@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.onlineexperimentation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,21 +16,25 @@ public final class OnlineExperimentationWorkspaceSkuName
     /**
      * The Free service sku name.
      */
+    @Generated
     public static final OnlineExperimentationWorkspaceSkuName F0 = fromString("F0");
 
     /**
      * The Standard service sku name.
      */
+    @Generated
     public static final OnlineExperimentationWorkspaceSkuName S0 = fromString("S0");
 
     /**
      * The Premium service sku name.
      */
+    @Generated
     public static final OnlineExperimentationWorkspaceSkuName P0 = fromString("P0");
 
     /**
      * The Developer service sku name.
      */
+    @Generated
     public static final OnlineExperimentationWorkspaceSkuName D0 = fromString("D0");
 
     /**
@@ -37,6 +42,7 @@ public final class OnlineExperimentationWorkspaceSkuName
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OnlineExperimentationWorkspaceSkuName() {
     }
@@ -47,6 +53,7 @@ public final class OnlineExperimentationWorkspaceSkuName
      * @param name a name to look for.
      * @return the corresponding OnlineExperimentationWorkspaceSkuName.
      */
+    @Generated
     public static OnlineExperimentationWorkspaceSkuName fromString(String name) {
         return fromString(name, OnlineExperimentationWorkspaceSkuName.class);
     }
@@ -56,6 +63,7 @@ public final class OnlineExperimentationWorkspaceSkuName
      * 
      * @return known OnlineExperimentationWorkspaceSkuName values.
      */
+    @Generated
     public static Collection<OnlineExperimentationWorkspaceSkuName> values() {
         return values(OnlineExperimentationWorkspaceSkuName.class);
     }

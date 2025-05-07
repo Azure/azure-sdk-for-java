@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class MqttRetainType extends ExpandableStringEnum<MqttRetainType> {
     /**
      * Retain the messages.
      */
+    @Generated
     public static final MqttRetainType KEEP = fromString("Keep");
 
     /**
      * Never retain messages.
      */
+    @Generated
     public static final MqttRetainType NEVER = fromString("Never");
 
     /**
@@ -26,6 +29,7 @@ public final class MqttRetainType extends ExpandableStringEnum<MqttRetainType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MqttRetainType() {
     }
@@ -36,6 +40,7 @@ public final class MqttRetainType extends ExpandableStringEnum<MqttRetainType> {
      * @param name a name to look for.
      * @return the corresponding MqttRetainType.
      */
+    @Generated
     public static MqttRetainType fromString(String name) {
         return fromString(name, MqttRetainType.class);
     }
@@ -45,6 +50,7 @@ public final class MqttRetainType extends ExpandableStringEnum<MqttRetainType> {
      * 
      * @return known MqttRetainType values.
      */
+    @Generated
     public static Collection<MqttRetainType> values() {
         return values(MqttRetainType.class);
     }

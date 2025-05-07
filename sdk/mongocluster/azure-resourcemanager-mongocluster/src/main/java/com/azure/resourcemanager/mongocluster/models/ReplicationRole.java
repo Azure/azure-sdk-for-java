@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class ReplicationRole extends ExpandableStringEnum<ReplicationRole>
     /**
      * The cluster is a primary replica.
      */
+    @Generated
     public static final ReplicationRole PRIMARY = fromString("Primary");
 
     /**
      * The cluster is a local asynchronous replica.
      */
+    @Generated
     public static final ReplicationRole ASYNC_REPLICA = fromString("AsyncReplica");
 
     /**
      * The cluster is a geo-asynchronous replica.
      */
+    @Generated
     public static final ReplicationRole GEO_ASYNC_REPLICA = fromString("GeoAsyncReplica");
 
     /**
@@ -31,6 +35,7 @@ public final class ReplicationRole extends ExpandableStringEnum<ReplicationRole>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ReplicationRole() {
     }
@@ -41,6 +46,7 @@ public final class ReplicationRole extends ExpandableStringEnum<ReplicationRole>
      * @param name a name to look for.
      * @return the corresponding ReplicationRole.
      */
+    @Generated
     public static ReplicationRole fromString(String name) {
         return fromString(name, ReplicationRole.class);
     }
@@ -50,6 +56,7 @@ public final class ReplicationRole extends ExpandableStringEnum<ReplicationRole>
      * 
      * @return known ReplicationRole values.
      */
+    @Generated
     public static Collection<ReplicationRole> values() {
         return values(ReplicationRole.class);
     }

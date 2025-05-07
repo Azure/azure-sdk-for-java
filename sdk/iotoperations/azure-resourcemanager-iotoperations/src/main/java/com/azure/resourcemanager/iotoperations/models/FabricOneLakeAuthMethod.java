@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,12 +15,14 @@ public final class FabricOneLakeAuthMethod extends ExpandableStringEnum<FabricOn
     /**
      * SystemAssignedManagedIdentity type.
      */
+    @Generated
     public static final FabricOneLakeAuthMethod SYSTEM_ASSIGNED_MANAGED_IDENTITY
         = fromString("SystemAssignedManagedIdentity");
 
     /**
      * UserAssignedManagedIdentity type.
      */
+    @Generated
     public static final FabricOneLakeAuthMethod USER_ASSIGNED_MANAGED_IDENTITY
         = fromString("UserAssignedManagedIdentity");
 
@@ -28,6 +31,7 @@ public final class FabricOneLakeAuthMethod extends ExpandableStringEnum<FabricOn
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public FabricOneLakeAuthMethod() {
     }
@@ -38,6 +42,7 @@ public final class FabricOneLakeAuthMethod extends ExpandableStringEnum<FabricOn
      * @param name a name to look for.
      * @return the corresponding FabricOneLakeAuthMethod.
      */
+    @Generated
     public static FabricOneLakeAuthMethod fromString(String name) {
         return fromString(name, FabricOneLakeAuthMethod.class);
     }
@@ -47,6 +52,7 @@ public final class FabricOneLakeAuthMethod extends ExpandableStringEnum<FabricOn
      * 
      * @return known FabricOneLakeAuthMethod values.
      */
+    @Generated
     public static Collection<FabricOneLakeAuthMethod> values() {
         return values(FabricOneLakeAuthMethod.class);
     }

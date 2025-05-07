@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class SapVirtualInstanceStatus extends ExpandableStringEnum<SapVirt
     /**
      * SAP system is getting started.
      */
+    @Generated
     public static final SapVirtualInstanceStatus STARTING = fromString("Starting");
 
     /**
      * SAP system is running.
      */
+    @Generated
     public static final SapVirtualInstanceStatus RUNNING = fromString("Running");
 
     /**
      * SAP system is being stopped.
      */
+    @Generated
     public static final SapVirtualInstanceStatus STOPPING = fromString("Stopping");
 
     /**
      * SAP system is offline.
      */
+    @Generated
     public static final SapVirtualInstanceStatus OFFLINE = fromString("Offline");
 
     /**
      * SAP system is partially running.
      */
+    @Generated
     public static final SapVirtualInstanceStatus PARTIALLY_RUNNING = fromString("PartiallyRunning");
 
     /**
      * SAP system status is unavailable.
      */
+    @Generated
     public static final SapVirtualInstanceStatus UNAVAILABLE = fromString("Unavailable");
 
     /**
      * Soft shutdown of SAP system is initiated.
      */
+    @Generated
     public static final SapVirtualInstanceStatus SOFT_SHUTDOWN = fromString("SoftShutdown");
 
     /**
@@ -51,6 +59,7 @@ public final class SapVirtualInstanceStatus extends ExpandableStringEnum<SapVirt
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SapVirtualInstanceStatus() {
     }
@@ -61,6 +70,7 @@ public final class SapVirtualInstanceStatus extends ExpandableStringEnum<SapVirt
      * @param name a name to look for.
      * @return the corresponding SapVirtualInstanceStatus.
      */
+    @Generated
     public static SapVirtualInstanceStatus fromString(String name) {
         return fromString(name, SapVirtualInstanceStatus.class);
     }
@@ -70,6 +80,7 @@ public final class SapVirtualInstanceStatus extends ExpandableStringEnum<SapVirt
      * 
      * @return known SapVirtualInstanceStatus values.
      */
+    @Generated
     public static Collection<SapVirtualInstanceStatus> values() {
         return values(SapVirtualInstanceStatus.class);
     }

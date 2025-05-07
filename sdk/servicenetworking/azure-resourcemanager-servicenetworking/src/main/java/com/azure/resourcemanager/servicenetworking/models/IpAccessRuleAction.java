@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.servicenetworking.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class IpAccessRuleAction extends ExpandableStringEnum<IpAccessRuleA
     /**
      * Allow Source Ip Prefixes.
      */
+    @Generated
     public static final IpAccessRuleAction ALLOW = fromString("allow");
 
     /**
      * Deny Source Ip Prefixes.
      */
+    @Generated
     public static final IpAccessRuleAction DENY = fromString("deny");
 
     /**
@@ -26,6 +29,7 @@ public final class IpAccessRuleAction extends ExpandableStringEnum<IpAccessRuleA
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IpAccessRuleAction() {
     }
@@ -36,6 +40,7 @@ public final class IpAccessRuleAction extends ExpandableStringEnum<IpAccessRuleA
      * @param name a name to look for.
      * @return the corresponding IpAccessRuleAction.
      */
+    @Generated
     public static IpAccessRuleAction fromString(String name) {
         return fromString(name, IpAccessRuleAction.class);
     }
@@ -45,6 +50,7 @@ public final class IpAccessRuleAction extends ExpandableStringEnum<IpAccessRuleA
      * 
      * @return known IpAccessRuleAction values.
      */
+    @Generated
     public static Collection<IpAccessRuleAction> values() {
         return values(IpAccessRuleAction.class);
     }

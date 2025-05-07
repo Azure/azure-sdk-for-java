@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class DeadlineType extends ExpandableStringEnum<DeadlineType> {
     /**
      * Default value of Unknown.
      */
+    @Generated
     public static final DeadlineType UNKNOWN = fromString("Unknown");
 
     /**
      * Initiate the operation at the given deadline.
      */
+    @Generated
     public static final DeadlineType INITIATE_AT = fromString("InitiateAt");
 
     /**
      * Complete the operation by the given deadline.
      */
+    @Generated
     public static final DeadlineType COMPLETE_BY = fromString("CompleteBy");
 
     /**
@@ -31,6 +35,7 @@ public final class DeadlineType extends ExpandableStringEnum<DeadlineType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DeadlineType() {
     }
@@ -41,6 +46,7 @@ public final class DeadlineType extends ExpandableStringEnum<DeadlineType> {
      * @param name a name to look for.
      * @return the corresponding DeadlineType.
      */
+    @Generated
     public static DeadlineType fromString(String name) {
         return fromString(name, DeadlineType.class);
     }
@@ -50,6 +56,7 @@ public final class DeadlineType extends ExpandableStringEnum<DeadlineType> {
      * 
      * @return known DeadlineType values.
      */
+    @Generated
     public static Collection<DeadlineType> values() {
         return values(DeadlineType.class);
     }

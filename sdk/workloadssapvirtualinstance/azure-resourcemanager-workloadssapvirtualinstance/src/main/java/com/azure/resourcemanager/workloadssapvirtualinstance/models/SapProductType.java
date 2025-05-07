@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class SapProductType extends ExpandableStringEnum<SapProductType> {
     /**
      * SAP Product ECC.
      */
+    @Generated
     public static final SapProductType ECC = fromString("ECC");
 
     /**
      * SAP Product S4HANA.
      */
+    @Generated
     public static final SapProductType S4HANA = fromString("S4HANA");
 
     /**
      * SAP Products other than the ones listed.
      */
+    @Generated
     public static final SapProductType OTHER = fromString("Other");
 
     /**
@@ -31,6 +35,7 @@ public final class SapProductType extends ExpandableStringEnum<SapProductType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SapProductType() {
     }
@@ -41,6 +46,7 @@ public final class SapProductType extends ExpandableStringEnum<SapProductType> {
      * @param name a name to look for.
      * @return the corresponding SapProductType.
      */
+    @Generated
     public static SapProductType fromString(String name) {
         return fromString(name, SapProductType.class);
     }
@@ -50,6 +56,7 @@ public final class SapProductType extends ExpandableStringEnum<SapProductType> {
      * 
      * @return known SapProductType values.
      */
+    @Generated
     public static Collection<SapProductType> values() {
         return values(SapProductType.class);
     }

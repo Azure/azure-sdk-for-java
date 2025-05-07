@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class CachingTypes extends ExpandableStringEnum<CachingTypes> {
     /**
      * 'None' is default for Standard Storage.
      */
+    @Generated
     public static final CachingTypes NONE = fromString("None");
 
     /**
      * 'ReadOnly' is default for Premium Storage.
      */
+    @Generated
     public static final CachingTypes READ_ONLY = fromString("ReadOnly");
 
     /**
      * 'ReadWrite' is default for OS Disk.
      */
+    @Generated
     public static final CachingTypes READ_WRITE = fromString("ReadWrite");
 
     /**
@@ -31,6 +35,7 @@ public final class CachingTypes extends ExpandableStringEnum<CachingTypes> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CachingTypes() {
     }
@@ -41,6 +46,7 @@ public final class CachingTypes extends ExpandableStringEnum<CachingTypes> {
      * @param name a name to look for.
      * @return the corresponding CachingTypes.
      */
+    @Generated
     public static CachingTypes fromString(String name) {
         return fromString(name, CachingTypes.class);
     }
@@ -50,6 +56,7 @@ public final class CachingTypes extends ExpandableStringEnum<CachingTypes> {
      * 
      * @return known CachingTypes values.
      */
+    @Generated
     public static Collection<CachingTypes> values() {
         return values(CachingTypes.class);
     }

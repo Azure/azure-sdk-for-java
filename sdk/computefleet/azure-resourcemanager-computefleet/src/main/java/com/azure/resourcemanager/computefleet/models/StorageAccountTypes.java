@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -24,36 +25,43 @@ public final class StorageAccountTypes extends ExpandableStringEnum<StorageAccou
     /**
      * Standard_LRS option.
      */
+    @Generated
     public static final StorageAccountTypes STANDARD_LRS = fromString("Standard_LRS");
 
     /**
      * Premium_LRS option.
      */
+    @Generated
     public static final StorageAccountTypes PREMIUM_LRS = fromString("Premium_LRS");
 
     /**
      * StandardSSD_LRS option.
      */
+    @Generated
     public static final StorageAccountTypes STANDARD_SSD_LRS = fromString("StandardSSD_LRS");
 
     /**
      * UltraSSD_LRS option.
      */
+    @Generated
     public static final StorageAccountTypes ULTRA_SSD_LRS = fromString("UltraSSD_LRS");
 
     /**
      * Premium_ZRS option.
      */
+    @Generated
     public static final StorageAccountTypes PREMIUM_ZRS = fromString("Premium_ZRS");
 
     /**
      * StandardSSD_ZRS option.
      */
+    @Generated
     public static final StorageAccountTypes STANDARD_SSD_ZRS = fromString("StandardSSD_ZRS");
 
     /**
      * PremiumV2_LRS option.
      */
+    @Generated
     public static final StorageAccountTypes PREMIUM_V2_LRS = fromString("PremiumV2_LRS");
 
     /**
@@ -61,6 +69,7 @@ public final class StorageAccountTypes extends ExpandableStringEnum<StorageAccou
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public StorageAccountTypes() {
     }
@@ -71,6 +80,7 @@ public final class StorageAccountTypes extends ExpandableStringEnum<StorageAccou
      * @param name a name to look for.
      * @return the corresponding StorageAccountTypes.
      */
+    @Generated
     public static StorageAccountTypes fromString(String name) {
         return fromString(name, StorageAccountTypes.class);
     }
@@ -80,6 +90,7 @@ public final class StorageAccountTypes extends ExpandableStringEnum<StorageAccou
      * 
      * @return known StorageAccountTypes values.
      */
+    @Generated
     public static Collection<StorageAccountTypes> values() {
         return values(StorageAccountTypes.class);
     }

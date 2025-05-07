@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class DevOpsInfrastructureResourceType extends ExpandableStringEnum
     /**
      * DevOpsInfrastructure pool resource.
      */
+    @Generated
     public static final DevOpsInfrastructureResourceType MICROSOFT_DEV_OPS_INFRASTRUCTURE_POOLS
         = fromString("Microsoft.DevOpsInfrastructure/pools");
 
@@ -22,6 +24,7 @@ public final class DevOpsInfrastructureResourceType extends ExpandableStringEnum
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DevOpsInfrastructureResourceType() {
     }
@@ -32,6 +35,7 @@ public final class DevOpsInfrastructureResourceType extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding DevOpsInfrastructureResourceType.
      */
+    @Generated
     public static DevOpsInfrastructureResourceType fromString(String name) {
         return fromString(name, DevOpsInfrastructureResourceType.class);
     }
@@ -41,6 +45,7 @@ public final class DevOpsInfrastructureResourceType extends ExpandableStringEnum
      * 
      * @return known DevOpsInfrastructureResourceType values.
      */
+    @Generated
     public static Collection<DevOpsInfrastructureResourceType> values() {
         return values(DevOpsInfrastructureResourceType.class);
     }

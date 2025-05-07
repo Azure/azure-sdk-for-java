@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class BrokerMemoryProfile extends ExpandableStringEnum<BrokerMemory
     /**
      * Tiny memory profile.
      */
+    @Generated
     public static final BrokerMemoryProfile TINY = fromString("Tiny");
 
     /**
      * Low memory profile.
      */
+    @Generated
     public static final BrokerMemoryProfile LOW = fromString("Low");
 
     /**
      * Medium memory profile.
      */
+    @Generated
     public static final BrokerMemoryProfile MEDIUM = fromString("Medium");
 
     /**
      * High memory profile.
      */
+    @Generated
     public static final BrokerMemoryProfile HIGH = fromString("High");
 
     /**
@@ -36,6 +41,7 @@ public final class BrokerMemoryProfile extends ExpandableStringEnum<BrokerMemory
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public BrokerMemoryProfile() {
     }
@@ -46,6 +52,7 @@ public final class BrokerMemoryProfile extends ExpandableStringEnum<BrokerMemory
      * @param name a name to look for.
      * @return the corresponding BrokerMemoryProfile.
      */
+    @Generated
     public static BrokerMemoryProfile fromString(String name) {
         return fromString(name, BrokerMemoryProfile.class);
     }
@@ -55,6 +62,7 @@ public final class BrokerMemoryProfile extends ExpandableStringEnum<BrokerMemory
      * 
      * @return known BrokerMemoryProfile values.
      */
+    @Generated
     public static Collection<BrokerMemoryProfile> values() {
         return values(BrokerMemoryProfile.class);
     }

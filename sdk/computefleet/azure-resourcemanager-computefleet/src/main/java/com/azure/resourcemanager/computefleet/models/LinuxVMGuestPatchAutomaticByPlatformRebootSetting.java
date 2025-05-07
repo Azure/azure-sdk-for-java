@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,21 +17,25 @@ public final class LinuxVMGuestPatchAutomaticByPlatformRebootSetting
     /**
      * Unknown Reboot setting.
      */
+    @Generated
     public static final LinuxVMGuestPatchAutomaticByPlatformRebootSetting UNKNOWN = fromString("Unknown");
 
     /**
      * IfRequired Reboot setting.
      */
+    @Generated
     public static final LinuxVMGuestPatchAutomaticByPlatformRebootSetting IF_REQUIRED = fromString("IfRequired");
 
     /**
      * Never Reboot setting.
      */
+    @Generated
     public static final LinuxVMGuestPatchAutomaticByPlatformRebootSetting NEVER = fromString("Never");
 
     /**
      * Always Reboot setting.
      */
+    @Generated
     public static final LinuxVMGuestPatchAutomaticByPlatformRebootSetting ALWAYS = fromString("Always");
 
     /**
@@ -38,6 +43,7 @@ public final class LinuxVMGuestPatchAutomaticByPlatformRebootSetting
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public LinuxVMGuestPatchAutomaticByPlatformRebootSetting() {
     }
@@ -48,6 +54,7 @@ public final class LinuxVMGuestPatchAutomaticByPlatformRebootSetting
      * @param name a name to look for.
      * @return the corresponding LinuxVMGuestPatchAutomaticByPlatformRebootSetting.
      */
+    @Generated
     public static LinuxVMGuestPatchAutomaticByPlatformRebootSetting fromString(String name) {
         return fromString(name, LinuxVMGuestPatchAutomaticByPlatformRebootSetting.class);
     }
@@ -57,6 +64,7 @@ public final class LinuxVMGuestPatchAutomaticByPlatformRebootSetting
      * 
      * @return known LinuxVMGuestPatchAutomaticByPlatformRebootSetting values.
      */
+    @Generated
     public static Collection<LinuxVMGuestPatchAutomaticByPlatformRebootSetting> values() {
         return values(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.class);
     }

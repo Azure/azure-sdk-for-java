@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.playwrighttesting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,6 +17,7 @@ public final class QuotaNames extends ExpandableStringEnum<QuotaNames> {
      * cloud-hosted browsers. This can increase the number of parallel workers for a test run, significantly minimizing
      * test completion durations.
      */
+    @Generated
     public static final QuotaNames SCALABLE_EXECUTION = fromString("ScalableExecution");
 
     /**
@@ -23,6 +25,7 @@ public final class QuotaNames extends ExpandableStringEnum<QuotaNames> {
      * results, including artifacts like traces and screenshots, in the Playwright portal. This enables faster and more
      * efficient troubleshooting.
      */
+    @Generated
     public static final QuotaNames REPORTING = fromString("Reporting");
 
     /**
@@ -30,6 +33,7 @@ public final class QuotaNames extends ExpandableStringEnum<QuotaNames> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public QuotaNames() {
     }
@@ -40,6 +44,7 @@ public final class QuotaNames extends ExpandableStringEnum<QuotaNames> {
      * @param name a name to look for.
      * @return the corresponding QuotaNames.
      */
+    @Generated
     public static QuotaNames fromString(String name) {
         return fromString(name, QuotaNames.class);
     }
@@ -49,6 +54,7 @@ public final class QuotaNames extends ExpandableStringEnum<QuotaNames> {
      * 
      * @return known QuotaNames values.
      */
+    @Generated
     public static Collection<QuotaNames> values() {
         return values(QuotaNames.class);
     }

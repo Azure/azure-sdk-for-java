@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.onlineexperimentation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class KeyEncryptionKeyIdentityType extends ExpandableStringEnum<Key
     /**
      * System assigned identity.
      */
+    @Generated
     public static final KeyEncryptionKeyIdentityType SYSTEM_ASSIGNED_IDENTITY = fromString("SystemAssignedIdentity");
 
     /**
      * User assigned identity.
      */
+    @Generated
     public static final KeyEncryptionKeyIdentityType USER_ASSIGNED_IDENTITY = fromString("UserAssignedIdentity");
 
     /**
@@ -26,6 +29,7 @@ public final class KeyEncryptionKeyIdentityType extends ExpandableStringEnum<Key
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public KeyEncryptionKeyIdentityType() {
     }
@@ -36,6 +40,7 @@ public final class KeyEncryptionKeyIdentityType extends ExpandableStringEnum<Key
      * @param name a name to look for.
      * @return the corresponding KeyEncryptionKeyIdentityType.
      */
+    @Generated
     public static KeyEncryptionKeyIdentityType fromString(String name) {
         return fromString(name, KeyEncryptionKeyIdentityType.class);
     }
@@ -45,6 +50,7 @@ public final class KeyEncryptionKeyIdentityType extends ExpandableStringEnum<Key
      * 
      * @return known KeyEncryptionKeyIdentityType values.
      */
+    @Generated
     public static Collection<KeyEncryptionKeyIdentityType> values() {
         return values(KeyEncryptionKeyIdentityType.class);
     }

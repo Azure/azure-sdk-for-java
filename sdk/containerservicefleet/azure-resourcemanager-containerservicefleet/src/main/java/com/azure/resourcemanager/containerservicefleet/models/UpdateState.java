@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class UpdateState extends ExpandableStringEnum<UpdateState> {
     /**
      * The state of an UpdateRun/UpdateStage/UpdateGroup/MemberUpdate that has not been started.
      */
+    @Generated
     public static final UpdateState NOT_STARTED = fromString("NotStarted");
 
     /**
      * The state of an UpdateRun/UpdateStage/UpdateGroup/MemberUpdate that is running.
      */
+    @Generated
     public static final UpdateState RUNNING = fromString("Running");
 
     /**
      * The state of an UpdateRun/UpdateStage/UpdateGroup/MemberUpdate that is being stopped.
      */
+    @Generated
     public static final UpdateState STOPPING = fromString("Stopping");
 
     /**
      * The state of an UpdateRun/UpdateStage/UpdateGroup/MemberUpdate that has stopped.
      */
+    @Generated
     public static final UpdateState STOPPED = fromString("Stopped");
 
     /**
      * The state of an UpdateRun/UpdateStage/UpdateGroup/MemberUpdate that has been skipped.
      */
+    @Generated
     public static final UpdateState SKIPPED = fromString("Skipped");
 
     /**
      * The state of an UpdateRun/UpdateStage/UpdateGroup/MemberUpdate that has failed.
      */
+    @Generated
     public static final UpdateState FAILED = fromString("Failed");
 
     /**
      * The state of an UpdateRun/UpdateStage/UpdateGroup/MemberUpdate that has completed.
      */
+    @Generated
     public static final UpdateState COMPLETED = fromString("Completed");
 
     /**
@@ -51,6 +59,7 @@ public final class UpdateState extends ExpandableStringEnum<UpdateState> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public UpdateState() {
     }
@@ -61,6 +70,7 @@ public final class UpdateState extends ExpandableStringEnum<UpdateState> {
      * @param name a name to look for.
      * @return the corresponding UpdateState.
      */
+    @Generated
     public static UpdateState fromString(String name) {
         return fromString(name, UpdateState.class);
     }
@@ -70,6 +80,7 @@ public final class UpdateState extends ExpandableStringEnum<UpdateState> {
      * 
      * @return known UpdateState values.
      */
+    @Generated
     public static Collection<UpdateState> values() {
         return values(UpdateState.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,18 +15,21 @@ public final class DataLakeStorageAuthMethod extends ExpandableStringEnum<DataLa
     /**
      * SystemAssignedManagedIdentity type.
      */
+    @Generated
     public static final DataLakeStorageAuthMethod SYSTEM_ASSIGNED_MANAGED_IDENTITY
         = fromString("SystemAssignedManagedIdentity");
 
     /**
      * UserAssignedManagedIdentity type.
      */
+    @Generated
     public static final DataLakeStorageAuthMethod USER_ASSIGNED_MANAGED_IDENTITY
         = fromString("UserAssignedManagedIdentity");
 
     /**
      * AccessToken Option.
      */
+    @Generated
     public static final DataLakeStorageAuthMethod ACCESS_TOKEN = fromString("AccessToken");
 
     /**
@@ -33,6 +37,7 @@ public final class DataLakeStorageAuthMethod extends ExpandableStringEnum<DataLa
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataLakeStorageAuthMethod() {
     }
@@ -43,6 +48,7 @@ public final class DataLakeStorageAuthMethod extends ExpandableStringEnum<DataLa
      * @param name a name to look for.
      * @return the corresponding DataLakeStorageAuthMethod.
      */
+    @Generated
     public static DataLakeStorageAuthMethod fromString(String name) {
         return fromString(name, DataLakeStorageAuthMethod.class);
     }
@@ -52,6 +58,7 @@ public final class DataLakeStorageAuthMethod extends ExpandableStringEnum<DataLa
      * 
      * @return known DataLakeStorageAuthMethod values.
      */
+    @Generated
     public static Collection<DataLakeStorageAuthMethod> values() {
         return values(DataLakeStorageAuthMethod.class);
     }

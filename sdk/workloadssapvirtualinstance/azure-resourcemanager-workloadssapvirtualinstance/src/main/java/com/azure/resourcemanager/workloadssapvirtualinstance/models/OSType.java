@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class OSType extends ExpandableStringEnum<OSType> {
     /**
      * Linux OS Type.
      */
+    @Generated
     public static final OSType LINUX = fromString("Linux");
 
     /**
      * Windows OS Type.
      */
+    @Generated
     public static final OSType WINDOWS = fromString("Windows");
 
     /**
@@ -26,6 +29,7 @@ public final class OSType extends ExpandableStringEnum<OSType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OSType() {
     }
@@ -36,6 +40,7 @@ public final class OSType extends ExpandableStringEnum<OSType> {
      * @param name a name to look for.
      * @return the corresponding OSType.
      */
+    @Generated
     public static OSType fromString(String name) {
         return fromString(name, OSType.class);
     }
@@ -45,6 +50,7 @@ public final class OSType extends ExpandableStringEnum<OSType> {
      * 
      * @return known OSType values.
      */
+    @Generated
     public static Collection<OSType> values() {
         return values(OSType.class);
     }

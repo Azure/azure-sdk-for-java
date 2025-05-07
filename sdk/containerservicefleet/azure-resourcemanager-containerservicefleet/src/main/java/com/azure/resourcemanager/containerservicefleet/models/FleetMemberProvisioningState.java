@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class FleetMemberProvisioningState extends ExpandableStringEnum<Fle
     /**
      * Resource has been created.
      */
+    @Generated
     public static final FleetMemberProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
      * Resource creation failed.
      */
+    @Generated
     public static final FleetMemberProvisioningState FAILED = fromString("Failed");
 
     /**
      * Resource creation was canceled.
      */
+    @Generated
     public static final FleetMemberProvisioningState CANCELED = fromString("Canceled");
 
     /**
      * The provisioning state of a member joining a fleet.
      */
+    @Generated
     public static final FleetMemberProvisioningState JOINING = fromString("Joining");
 
     /**
      * The provisioning state of a member leaving a fleet.
      */
+    @Generated
     public static final FleetMemberProvisioningState LEAVING = fromString("Leaving");
 
     /**
      * The provisioning state of a member being updated.
      */
+    @Generated
     public static final FleetMemberProvisioningState UPDATING = fromString("Updating");
 
     /**
@@ -46,6 +53,7 @@ public final class FleetMemberProvisioningState extends ExpandableStringEnum<Fle
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public FleetMemberProvisioningState() {
     }
@@ -56,6 +64,7 @@ public final class FleetMemberProvisioningState extends ExpandableStringEnum<Fle
      * @param name a name to look for.
      * @return the corresponding FleetMemberProvisioningState.
      */
+    @Generated
     public static FleetMemberProvisioningState fromString(String name) {
         return fromString(name, FleetMemberProvisioningState.class);
     }
@@ -65,6 +74,7 @@ public final class FleetMemberProvisioningState extends ExpandableStringEnum<Fle
      * 
      * @return known FleetMemberProvisioningState values.
      */
+    @Generated
     public static Collection<FleetMemberProvisioningState> values() {
         return values(FleetMemberProvisioningState.class);
     }
