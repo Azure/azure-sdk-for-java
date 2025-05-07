@@ -17,7 +17,7 @@ public final class VolumeBackupsTests {
         Assertions.assertEquals("fpwpjylwbt", model.volumeName());
         Assertions.assertEquals("flsjc", model.volumeResourceId());
         Assertions.assertEquals(1421362478, model.backupsCount());
-        Assertions.assertEquals(true, model.policyEnabled());
+        Assertions.assertTrue(model.policyEnabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,6 +30,6 @@ public final class VolumeBackupsTests {
         Assertions.assertEquals("fpwpjylwbt", model.volumeName());
         Assertions.assertEquals("flsjc", model.volumeResourceId());
         Assertions.assertEquals(1421362478, model.backupsCount());
-        Assertions.assertEquals(true, model.policyEnabled());
+        Assertions.assertTrue(model.policyEnabled());
     }
 }

@@ -27,17 +27,17 @@ public final class ServiceSpecificationTests {
             model.metricSpecifications().get(0).supportedAggregationTypes().get(0));
         Assertions.assertEquals("dkirsoodqxhcr", model.metricSpecifications().get(0).supportedTimeGrainTypes().get(0));
         Assertions.assertEquals("oifiyipjxsqwpgr", model.metricSpecifications().get(0).internalMetricName());
-        Assertions.assertEquals(false, model.metricSpecifications().get(0).enableRegionalMdmAccount());
+        Assertions.assertFalse(model.metricSpecifications().get(0).enableRegionalMdmAccount());
         Assertions.assertEquals("orcjxvsnby", model.metricSpecifications().get(0).sourceMdmAccount());
         Assertions.assertEquals("abnmocpcyshu", model.metricSpecifications().get(0).sourceMdmNamespace());
         Assertions.assertEquals("bl", model.metricSpecifications().get(0).dimensions().get(0).name());
         Assertions.assertEquals("gpbtoqcjmklj", model.metricSpecifications().get(0).dimensions().get(0).displayName());
         Assertions.assertEquals("aodxo", model.metricSpecifications().get(0).aggregationType());
-        Assertions.assertEquals(true, model.metricSpecifications().get(0).fillGapWithZero());
+        Assertions.assertTrue(model.metricSpecifications().get(0).fillGapWithZero());
         Assertions.assertEquals("xkqpxo", model.metricSpecifications().get(0).category());
         Assertions.assertEquals("jionpimexgstxgc",
             model.metricSpecifications().get(0).resourceIdDimensionNameOverride());
-        Assertions.assertEquals(false, model.metricSpecifications().get(0).isInternal());
+        Assertions.assertFalse(model.metricSpecifications().get(0).isInternal());
         Assertions.assertEquals("qciwqvhkhixuigdt", model.logSpecifications().get(0).name());
         Assertions.assertEquals("bob", model.logSpecifications().get(0).displayName());
     }
@@ -95,17 +95,17 @@ public final class ServiceSpecificationTests {
             model.metricSpecifications().get(0).supportedAggregationTypes().get(0));
         Assertions.assertEquals("dkirsoodqxhcr", model.metricSpecifications().get(0).supportedTimeGrainTypes().get(0));
         Assertions.assertEquals("oifiyipjxsqwpgr", model.metricSpecifications().get(0).internalMetricName());
-        Assertions.assertEquals(false, model.metricSpecifications().get(0).enableRegionalMdmAccount());
+        Assertions.assertFalse(model.metricSpecifications().get(0).enableRegionalMdmAccount());
         Assertions.assertEquals("orcjxvsnby", model.metricSpecifications().get(0).sourceMdmAccount());
         Assertions.assertEquals("abnmocpcyshu", model.metricSpecifications().get(0).sourceMdmNamespace());
         Assertions.assertEquals("bl", model.metricSpecifications().get(0).dimensions().get(0).name());
         Assertions.assertEquals("gpbtoqcjmklj", model.metricSpecifications().get(0).dimensions().get(0).displayName());
         Assertions.assertEquals("aodxo", model.metricSpecifications().get(0).aggregationType());
-        Assertions.assertEquals(true, model.metricSpecifications().get(0).fillGapWithZero());
+        Assertions.assertTrue(model.metricSpecifications().get(0).fillGapWithZero());
         Assertions.assertEquals("xkqpxo", model.metricSpecifications().get(0).category());
         Assertions.assertEquals("jionpimexgstxgc",
             model.metricSpecifications().get(0).resourceIdDimensionNameOverride());
-        Assertions.assertEquals(false, model.metricSpecifications().get(0).isInternal());
+        Assertions.assertFalse(model.metricSpecifications().get(0).isInternal());
         Assertions.assertEquals("qciwqvhkhixuigdt", model.logSpecifications().get(0).name());
         Assertions.assertEquals("bob", model.logSpecifications().get(0).displayName());
     }

@@ -13,14 +13,14 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Information regarding Subscription Quota Item.
+ * Information regarding Quota Item.
  */
 @Immutable
-public final class SubscriptionQuotaItemInner extends ProxyResource {
+public final class QuotaItemInner extends ProxyResource {
     /*
-     * SubscriptionQuotaItem properties
+     * QuotaItem properties
      */
-    private SubscriptionQuotaItemProperties innerProperties;
+    private QuotaItemProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -43,17 +43,17 @@ public final class SubscriptionQuotaItemInner extends ProxyResource {
     private String id;
 
     /**
-     * Creates an instance of SubscriptionQuotaItemInner class.
+     * Creates an instance of QuotaItemInner class.
      */
-    public SubscriptionQuotaItemInner() {
+    public QuotaItemInner() {
     }
 
     /**
-     * Get the innerProperties property: SubscriptionQuotaItem properties.
+     * Get the innerProperties property: QuotaItem properties.
      * 
      * @return the innerProperties value.
      */
-    private SubscriptionQuotaItemProperties innerProperties() {
+    private QuotaItemProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -115,6 +115,15 @@ public final class SubscriptionQuotaItemInner extends ProxyResource {
     }
 
     /**
+     * Get the usage property: The usage quota value.
+     * 
+     * @return the usage value.
+     */
+    public Integer usage() {
+        return this.innerProperties() == null ? null : this.innerProperties().usage();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -136,38 +145,37 @@ public final class SubscriptionQuotaItemInner extends ProxyResource {
     }
 
     /**
-     * Reads an instance of SubscriptionQuotaItemInner from the JsonReader.
+     * Reads an instance of QuotaItemInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SubscriptionQuotaItemInner if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of QuotaItemInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SubscriptionQuotaItemInner.
+     * @throws IOException If an error occurs while reading the QuotaItemInner.
      */
-    public static SubscriptionQuotaItemInner fromJson(JsonReader jsonReader) throws IOException {
+    public static QuotaItemInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SubscriptionQuotaItemInner deserializedSubscriptionQuotaItemInner = new SubscriptionQuotaItemInner();
+            QuotaItemInner deserializedQuotaItemInner = new QuotaItemInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedSubscriptionQuotaItemInner.id = reader.getString();
+                    deserializedQuotaItemInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedSubscriptionQuotaItemInner.name = reader.getString();
+                    deserializedQuotaItemInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedSubscriptionQuotaItemInner.type = reader.getString();
+                    deserializedQuotaItemInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedSubscriptionQuotaItemInner.innerProperties
-                        = SubscriptionQuotaItemProperties.fromJson(reader);
+                    deserializedQuotaItemInner.innerProperties = QuotaItemProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedSubscriptionQuotaItemInner.systemData = SystemData.fromJson(reader);
+                    deserializedQuotaItemInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSubscriptionQuotaItemInner;
+            return deserializedQuotaItemInner;
         });
     }
 }
