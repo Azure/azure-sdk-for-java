@@ -23,7 +23,6 @@ public class RegistryOperationsTests extends RegistryTest {
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
-            .withRegistryNameAsAdminUser()
             .withZoneRedundancy()
             .create();
         Assertions.assertTrue(registry.isZoneRedundancyEnabled());
