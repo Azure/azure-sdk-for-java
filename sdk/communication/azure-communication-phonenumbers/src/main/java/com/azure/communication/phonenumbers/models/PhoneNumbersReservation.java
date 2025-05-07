@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
+import com.azure.communication.phonenumbers.implementation.accesshelpers.PhoneNumbersReservationAccessHelper;
 
 /**
  * Represents a reservation for phone numbers. A reservation is a temporary hold on phone numbers that can later be
@@ -20,6 +21,18 @@ import java.util.UUID;
  */
 @Immutable
 public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumbersReservation> {
+
+    static {
+        PhoneNumbersReservationAccessHelper
+            .setAccessor(new PhoneNumbersReservationAccessHelper.PhoneNumbersReservationAccessor() {
+
+                @Override
+                public void setPhoneNumbers(PhoneNumbersReservation reservation,
+                    Map<String, AvailablePhoneNumber> phoneNumbers) {
+                    reservation.setPhoneNumbers(phoneNumbers);
+                }
+            });
+    }
 
     /*
      * The id of the reservation.
