@@ -12,27 +12,30 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The object that describes the operation.
+ * Localized display information for this particular operation.
  */
 @Immutable
 public final class OperationDisplay implements JsonSerializable<OperationDisplay> {
     /*
-     * The friendly name of the resource provider.
+     * The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or
+     * "Microsoft Compute".
      */
     private String provider;
 
     /*
-     * The operation type: read, write, delete, listKeys/action, etc.
-     */
-    private String operation;
-
-    /*
-     * The resource type on which the operation is performed.
+     * The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or
+     * "Job Schedule Collections".
      */
     private String resource;
 
     /*
-     * The friendly name of the operation.
+     * The concise, localized friendly name for the operation; suitable for dropdowns. E.g.
+     * "Create or Update Virtual Machine", "Restart Virtual Machine".
+     */
+    private String operation;
+
+    /*
+     * The short, localized friendly description of the operation; suitable for tool tips and detailed views.
      */
     private String description;
 
@@ -43,7 +46,8 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Get the provider property: The friendly name of the resource provider.
+     * Get the provider property: The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring
+     * Insights" or "Microsoft Compute".
      * 
      * @return the provider value.
      */
@@ -52,16 +56,8 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Get the operation property: The operation type: read, write, delete, listKeys/action, etc.
-     * 
-     * @return the operation value.
-     */
-    public String operation() {
-        return this.operation;
-    }
-
-    /**
-     * Get the resource property: The resource type on which the operation is performed.
+     * Get the resource property: The localized friendly name of the resource type related to this operation. E.g.
+     * "Virtual Machines" or "Job Schedule Collections".
      * 
      * @return the resource value.
      */
@@ -70,7 +66,18 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Get the description property: The friendly name of the operation.
+     * Get the operation property: The concise, localized friendly name for the operation; suitable for dropdowns. E.g.
+     * "Create or Update Virtual Machine", "Restart Virtual Machine".
+     * 
+     * @return the operation value.
+     */
+    public String operation() {
+        return this.operation;
+    }
+
+    /**
+     * Get the description property: The short, localized friendly description of the operation; suitable for tool tips
+     * and detailed views.
      * 
      * @return the description value.
      */
@@ -112,10 +119,10 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
 
                 if ("provider".equals(fieldName)) {
                     deserializedOperationDisplay.provider = reader.getString();
-                } else if ("operation".equals(fieldName)) {
-                    deserializedOperationDisplay.operation = reader.getString();
                 } else if ("resource".equals(fieldName)) {
                     deserializedOperationDisplay.resource = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedOperationDisplay.operation = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     deserializedOperationDisplay.description = reader.getString();
                 } else {

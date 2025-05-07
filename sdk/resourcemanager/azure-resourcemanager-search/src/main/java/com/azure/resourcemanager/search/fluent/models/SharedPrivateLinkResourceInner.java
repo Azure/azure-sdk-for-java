@@ -6,6 +6,7 @@ package com.azure.resourcemanager.search.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -13,19 +14,24 @@ import com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProperti
 import java.io.IOException;
 
 /**
- * Describes a Shared Private Link Resource managed by the search service.
+ * Describes a shared private link resource managed by the Azure AI Search service.
  */
 @Fluent
 public final class SharedPrivateLinkResourceInner extends ProxyResource {
     /*
-     * Describes the properties of a Shared Private Link Resource managed by the search service.
+     * Describes the properties of a shared private link resource managed by the Azure AI Search service.
      */
     private SharedPrivateLinkResourceProperties properties;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private String id;
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /*
      * The name of the resource.
@@ -33,9 +39,9 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of SharedPrivateLinkResourceInner class.
@@ -44,8 +50,8 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the properties property: Describes the properties of a Shared Private Link Resource managed by the search
-     * service.
+     * Get the properties property: Describes the properties of a shared private link resource managed by the Azure AI
+     * Search service.
      * 
      * @return the properties value.
      */
@@ -54,8 +60,8 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: Describes the properties of a Shared Private Link Resource managed by the search
-     * service.
+     * Set the properties property: Describes the properties of a shared private link resource managed by the Azure AI
+     * Search service.
      * 
      * @param properties the properties value to set.
      * @return the SharedPrivateLinkResourceInner object itself.
@@ -66,13 +72,22 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
-     * @return the id value.
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -86,13 +101,13 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -142,6 +157,8 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedSharedPrivateLinkResourceInner.properties
                         = SharedPrivateLinkResourceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSharedPrivateLinkResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -13,11 +14,12 @@ import com.azure.resourcemanager.search.fluent.models.PrivateEndpointConnectionI
 import com.azure.resourcemanager.search.fluent.models.SearchServiceProperties;
 import com.azure.resourcemanager.search.fluent.models.SharedPrivateLinkResourceInner;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /**
- * The parameters used to update a search service.
+ * The parameters used to update an Azure AI Search service.
  */
 @Fluent
 public final class SearchServiceUpdate extends ProxyResource {
@@ -27,8 +29,8 @@ public final class SearchServiceUpdate extends ProxyResource {
     private SearchServiceProperties innerProperties;
 
     /*
-     * The SKU of the search service, which determines the billing rate and capacity limits. This property is required
-     * when creating a new search service.
+     * The SKU of the search service, which determines price tier and capacity limits. This property is required when
+     * creating a new search service.
      */
     private Sku sku;
 
@@ -44,14 +46,20 @@ public final class SearchServiceUpdate extends ProxyResource {
     private Map<String, String> tags;
 
     /*
-     * The identity of the resource.
+     * Details about the search service identity. A null value indicates that the search service has no identity
+     * assigned.
      */
     private Identity identity;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private String id;
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /*
      * The name of the resource.
@@ -59,9 +67,9 @@ public final class SearchServiceUpdate extends ProxyResource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of SearchServiceUpdate class.
@@ -79,7 +87,7 @@ public final class SearchServiceUpdate extends ProxyResource {
     }
 
     /**
-     * Get the sku property: The SKU of the search service, which determines the billing rate and capacity limits. This
+     * Get the sku property: The SKU of the search service, which determines price tier and capacity limits. This
      * property is required when creating a new search service.
      * 
      * @return the sku value.
@@ -89,7 +97,7 @@ public final class SearchServiceUpdate extends ProxyResource {
     }
 
     /**
-     * Set the sku property: The SKU of the search service, which determines the billing rate and capacity limits. This
+     * Set the sku property: The SKU of the search service, which determines price tier and capacity limits. This
      * property is required when creating a new search service.
      * 
      * @param sku the sku value to set.
@@ -145,7 +153,8 @@ public final class SearchServiceUpdate extends ProxyResource {
     }
 
     /**
-     * Get the identity property: The identity of the resource.
+     * Get the identity property: Details about the search service identity. A null value indicates that the search
+     * service has no identity assigned.
      * 
      * @return the identity value.
      */
@@ -154,7 +163,8 @@ public final class SearchServiceUpdate extends ProxyResource {
     }
 
     /**
-     * Set the identity property: The identity of the resource.
+     * Set the identity property: Details about the search service identity. A null value indicates that the search
+     * service has no identity assigned.
      * 
      * @param identity the identity value to set.
      * @return the SearchServiceUpdate object itself.
@@ -165,13 +175,22 @@ public final class SearchServiceUpdate extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
-     * @return the id value.
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -185,13 +204,13 @@ public final class SearchServiceUpdate extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -247,6 +266,29 @@ public final class SearchServiceUpdate extends ProxyResource {
     }
 
     /**
+     * Get the endpoint property: The endpoint of the Azure AI Search service.
+     * 
+     * @return the endpoint value.
+     */
+    public String endpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpoint();
+    }
+
+    /**
+     * Set the endpoint property: The endpoint of the Azure AI Search service.
+     * 
+     * @param endpoint the endpoint value to set.
+     * @return the SearchServiceUpdate object itself.
+     */
+    public SearchServiceUpdate withEndpoint(String endpoint) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SearchServiceProperties();
+        }
+        this.innerProperties().withEndpoint(endpoint);
+        return this;
+    }
+
+    /**
      * Get the hostingMode property: Applicable only for the standard3 SKU. You can set this property to enable up to 3
      * high density partitions that allow up to 1000 indexes, which is much higher than the maximum indexes allowed for
      * any other SKU. For the standard3 SKU, the value is either 'default' or 'highDensity'. For all other SKUs, this
@@ -272,6 +314,31 @@ public final class SearchServiceUpdate extends ProxyResource {
             this.innerProperties = new SearchServiceProperties();
         }
         this.innerProperties().withHostingMode(hostingMode);
+        return this;
+    }
+
+    /**
+     * Get the computeType property: Configure this property to support the search service using either the Default
+     * Compute or Azure Confidential Compute.
+     * 
+     * @return the computeType value.
+     */
+    public ComputeType computeType() {
+        return this.innerProperties() == null ? null : this.innerProperties().computeType();
+    }
+
+    /**
+     * Set the computeType property: Configure this property to support the search service using either the Default
+     * Compute or Azure Confidential Compute.
+     * 
+     * @param computeType the computeType value to set.
+     * @return the SearchServiceUpdate object itself.
+     */
+    public SearchServiceUpdate withComputeType(ComputeType computeType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SearchServiceProperties();
+        }
+        this.innerProperties().withComputeType(computeType);
         return this;
     }
 
@@ -309,9 +376,9 @@ public final class SearchServiceUpdate extends ProxyResource {
      * degraded. This can occur when the underlying search units are not healthy. The search service is most likely
      * operational, but performance might be slow and some requests might be dropped. 'disabled': The search service is
      * disabled. In this state, the service will reject all API requests. 'error': The search service is in an error
-     * state. If your service is in the degraded, disabled, or error states, Microsoft is actively investigating the
-     * underlying issue. Dedicated services in these states are still chargeable based on the number of search units
-     * provisioned.
+     * state. 'stopped': The search service is in a subscription that's disabled. If your service is in the degraded,
+     * disabled, or error states, it means the Azure AI Search team is actively investigating the underlying issue.
+     * Dedicated services in these states are still chargeable based on the number of search units provisioned.
      * 
      * @return the status value.
      */
@@ -331,10 +398,10 @@ public final class SearchServiceUpdate extends ProxyResource {
     /**
      * Get the provisioningState property: The state of the last provisioning operation performed on the search service.
      * Provisioning is an intermediate state that occurs while service capacity is being established. After capacity is
-     * set up, provisioningState changes to either 'succeeded' or 'failed'. Client applications can poll provisioning
+     * set up, provisioningState changes to either 'Succeeded' or 'Failed'. Client applications can poll provisioning
      * status (the recommended polling interval is from 30 seconds to one minute) by using the Get Search Service
      * operation to see when an operation is completed. If you are using the free service, this value tends to come back
-     * as 'succeeded' directly in the call to Create search service. This is because the free service uses capacity that
+     * as 'Succeeded' directly in the call to Create search service. This is because the free service uses capacity that
      * is already set up.
      * 
      * @return the provisioningState value.
@@ -344,7 +411,8 @@ public final class SearchServiceUpdate extends ProxyResource {
     }
 
     /**
-     * Get the networkRuleSet property: Network-specific rules that determine how the search service may be reached.
+     * Get the networkRuleSet property: Network specific rules that determine how the Azure AI Search service may be
+     * reached.
      * 
      * @return the networkRuleSet value.
      */
@@ -353,7 +421,8 @@ public final class SearchServiceUpdate extends ProxyResource {
     }
 
     /**
-     * Set the networkRuleSet property: Network-specific rules that determine how the search service may be reached.
+     * Set the networkRuleSet property: Network specific rules that determine how the Azure AI Search service may be
+     * reached.
      * 
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the SearchServiceUpdate object itself.
@@ -363,6 +432,34 @@ public final class SearchServiceUpdate extends ProxyResource {
             this.innerProperties = new SearchServiceProperties();
         }
         this.innerProperties().withNetworkRuleSet(networkRuleSet);
+        return this;
+    }
+
+    /**
+     * Get the dataExfiltrationProtections property: A list of data exfiltration scenarios that are explicitly
+     * disallowed for the search service. Currently, the only supported value is 'All' to disable all possible data
+     * export scenarios with more fine grained controls planned for the future.
+     * 
+     * @return the dataExfiltrationProtections value.
+     */
+    public List<SearchDataExfiltrationProtection> dataExfiltrationProtections() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataExfiltrationProtections();
+    }
+
+    /**
+     * Set the dataExfiltrationProtections property: A list of data exfiltration scenarios that are explicitly
+     * disallowed for the search service. Currently, the only supported value is 'All' to disable all possible data
+     * export scenarios with more fine grained controls planned for the future.
+     * 
+     * @param dataExfiltrationProtections the dataExfiltrationProtections value to set.
+     * @return the SearchServiceUpdate object itself.
+     */
+    public SearchServiceUpdate
+        withDataExfiltrationProtections(List<SearchDataExfiltrationProtection> dataExfiltrationProtections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SearchServiceProperties();
+        }
+        this.innerProperties().withDataExfiltrationProtections(dataExfiltrationProtections);
         return this;
     }
 
@@ -442,17 +539,8 @@ public final class SearchServiceUpdate extends ProxyResource {
     }
 
     /**
-     * Get the privateEndpointConnections property: The list of private endpoint connections to the search service.
-     * 
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
-    }
-
-    /**
      * Get the semanticSearch property: Sets options that control the availability of semantic search. This
-     * configuration is only possible for certain search SKUs in certain locations.
+     * configuration is only possible for certain Azure AI Search SKUs in certain locations.
      * 
      * @return the semanticSearch value.
      */
@@ -462,7 +550,7 @@ public final class SearchServiceUpdate extends ProxyResource {
 
     /**
      * Set the semanticSearch property: Sets options that control the availability of semantic search. This
-     * configuration is only possible for certain search SKUs in certain locations.
+     * configuration is only possible for certain Azure AI Search SKUs in certain locations.
      * 
      * @param semanticSearch the semanticSearch value to set.
      * @return the SearchServiceUpdate object itself.
@@ -476,13 +564,66 @@ public final class SearchServiceUpdate extends ProxyResource {
     }
 
     /**
-     * Get the sharedPrivateLinkResources property: The list of shared private link resources managed by the search
+     * Get the privateEndpointConnections property: The list of private endpoint connections to the Azure AI Search
      * service.
+     * 
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the sharedPrivateLinkResources property: The list of shared private link resources managed by the Azure AI
+     * Search service.
      * 
      * @return the sharedPrivateLinkResources value.
      */
     public List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources() {
         return this.innerProperties() == null ? null : this.innerProperties().sharedPrivateLinkResources();
+    }
+
+    /**
+     * Get the etag property: A system generated property representing the service's etag that can be for optimistic
+     * concurrency control during updates.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.innerProperties() == null ? null : this.innerProperties().etag();
+    }
+
+    /**
+     * Get the upgradeAvailable property: Indicates if the search service has an upgrade available.
+     * 
+     * @return the upgradeAvailable value.
+     */
+    public UpgradeAvailable upgradeAvailable() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeAvailable();
+    }
+
+    /**
+     * Set the upgradeAvailable property: Indicates if the search service has an upgrade available.
+     * 
+     * @param upgradeAvailable the upgradeAvailable value to set.
+     * @return the SearchServiceUpdate object itself.
+     */
+    public SearchServiceUpdate withUpgradeAvailable(UpgradeAvailable upgradeAvailable) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SearchServiceProperties();
+        }
+        this.innerProperties().withUpgradeAvailable(upgradeAvailable);
+        return this;
+    }
+
+    /**
+     * Get the serviceUpgradedAt property: The date and time the search service was last upgraded. This field will be
+     * null until the service gets upgraded for the first time.
+     * 
+     * @return the serviceUpgradedAt value.
+     */
+    public OffsetDateTime serviceUpgradedAt() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceUpgradedAt();
     }
 
     /**
@@ -549,6 +690,8 @@ public final class SearchServiceUpdate extends ProxyResource {
                     deserializedSearchServiceUpdate.tags = tags;
                 } else if ("identity".equals(fieldName)) {
                     deserializedSearchServiceUpdate.identity = Identity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSearchServiceUpdate.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -20,7 +20,7 @@ import java.util.List;
 @Immutable
 public final class OperationListResult implements JsonSerializable<OperationListResult> {
     /*
-     * The list of operations supported by the resource provider.
+     * The list of operations by Azure AI Search, some supported by the resource provider and others by data plane APIs.
      */
     private List<OperationInner> value;
 
@@ -36,7 +36,8 @@ public final class OperationListResult implements JsonSerializable<OperationList
     }
 
     /**
-     * Get the value property: The list of operations supported by the resource provider.
+     * Get the value property: The list of operations by Azure AI Search, some supported by the resource provider and
+     * others by data plane APIs.
      * 
      * @return the value value.
      */
