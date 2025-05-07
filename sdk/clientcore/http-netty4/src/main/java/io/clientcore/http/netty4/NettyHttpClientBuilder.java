@@ -59,6 +59,8 @@ public class NettyHttpClientBuilder {
             epollEventLoopGroupClass = Class.forName(EPOLL_EVENT_LOOP_GROUP);
             epollEventLoopGroupCreator = MethodHandles.publicLookup()
                 .unreflectConstructor(epollEventLoopGroupClass.getDeclaredConstructor(ThreadFactory.class));
+            LOGGER.atVerbose().addKeyValue("epollAvailable", isEpollAvailable)
+                .log("Lookup for Epoll completed without error.");
         } catch (ReflectiveOperationException ignored) {
             LOGGER.atVerbose().log("Epoll is unavailable and won't be used.");
             isEpollAvailable = false;
@@ -84,6 +86,8 @@ public class NettyHttpClientBuilder {
             kqueueEventLoopGroupClass = Class.forName(KQUEUE_EVENT_LOOP_GROUP);
             kqueueEventLoopGroupCreator = MethodHandles.publicLookup()
                 .unreflectConstructor(kqueueEventLoopGroupClass.getDeclaredConstructor(ThreadFactory.class));
+            LOGGER.atVerbose().addKeyValue("kqueueAvailable", isKqueueAvailable)
+                .log("Lookup for KQueue completed without error.");
         } catch (ReflectiveOperationException ignored) {
             LOGGER.atVerbose().log("Epoll is unavailable and won't be used.");
             isKqueueAvailable = false;
@@ -301,7 +305,7 @@ public class NettyHttpClientBuilder {
         ThreadFactory threadFactory = new DefaultThreadFactory("clientcore-netty-client");
         if (IS_EPOLL_AVAILABLE) {
             try {
-                return (EventLoopGroup) EPOLL_EVENT_LOOP_GROUP_CREATOR.invokeExact(threadFactory);
+                return (EventLoopGroup) EPOLL_EVENT_LOOP_GROUP_CREATOR.invoke(threadFactory);
             } catch (Throwable ex) {
                 LOGGER.atVerbose().setThrowable(ex).log("Failed to create an EpollEventLoopGroup.");
             }
@@ -309,7 +313,7 @@ public class NettyHttpClientBuilder {
 
         if (IS_KQUEUE_AVAILABLE) {
             try {
-                return (EventLoopGroup) KQUEUE_EVENT_LOOP_GROUP_CREATOR.invokeExact(threadFactory);
+                return (EventLoopGroup) KQUEUE_EVENT_LOOP_GROUP_CREATOR.invoke(threadFactory);
             } catch (Throwable ex) {
                 LOGGER.atVerbose().setThrowable(ex).log("Failed to create a KQueueEventLoopGroup.");
             }
