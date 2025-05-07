@@ -35,6 +35,8 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.rx.changefeed.SplitTestsRetryAnalyzer;
+import com.azure.cosmos.rx.changefeed.SplitTimeoutException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,6 +44,7 @@ import com.fasterxml.jackson.databind.node.NullNode;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -1449,7 +1452,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT, retryAnalyzer = SplitTestsRetryAnalyzer.class)
     public void readFeedDocumentsAfterSplit_maxScaleCount() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
@@ -1511,14 +1514,25 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             // wait for the split to finish
             ThroughputResponse throughputResponse = createdFeedCollectionForSplit.readThroughput().block();
-            while (true) {
-                assert throughputResponse != null;
-                if (!throughputResponse.isReplacePending()) {
-                    break;
-                }
+            int i = 0;
+            // Only wait for 10 minutes for the split to complete
+            // If backend does not finish split within 10 minutes
+            // something is off in the backend
+            // it could be due to limits on how many splits can be executed concurrently etc.
+            // nothing that can really be done in the SDK
+            while (i < 120 && !throughputResponse.isReplacePending()) {
                 logger.info("Waiting for split to complete");
-                Thread.sleep(10 * 1000);
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
                 throughputResponse = createdFeedCollectionForSplit.readThroughput().block();
+                i += 2;
+            }
+
+            if (throughputResponse.isReplacePending()) {
+                throw new SplitTimeoutException(
+                    "Backend did not finish split for container '"
+                        + createdFeedCollectionForSplit.getDatabase().getId() + "/"
+                        + createdFeedCollectionForSplit.getId()
+                        + "' - skipping this test case");
             }
 
             // generate the second batch of documents
