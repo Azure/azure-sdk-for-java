@@ -321,7 +321,6 @@ public class NettyHttpClientBuilderTests {
     @Test
     @EnabledOnOs(OS.MAC)
     public void macUsesNioIfConfigured() {
-        // Only the
         NettyHttpClient nettyHttpClient
             = (NettyHttpClient) new NettyHttpClientBuilder().channelClass(NioSocketChannel.class)
                 .eventLoopGroup(new NioEventLoopGroup())

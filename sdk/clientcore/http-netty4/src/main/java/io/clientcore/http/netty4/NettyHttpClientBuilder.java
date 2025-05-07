@@ -13,6 +13,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.util.concurrent.DefaultThreadFactory;
@@ -32,7 +33,7 @@ public class NettyHttpClientBuilder {
     private static final String EPOLL_CHANNEL = "io.netty.channel.epoll.EpollSocketChannel";
     private static final String EPOLL_EVENT_LOOP_GROUP = "io.netty.channel.epoll.EpollEventLoopGroup";
     private static final boolean IS_EPOLL_AVAILABLE;
-    private static final Class<? extends Channel> EPOLL_CHANNEL_CLASS;
+    private static final Class<? extends SocketChannel> EPOLL_CHANNEL_CLASS;
     private static final Class<?> EPOLL_EVENT_LOOP_GROUP_CLASS;
     private static final MethodHandle EPOLL_EVENT_LOOP_GROUP_CREATOR;
 
@@ -40,7 +41,7 @@ public class NettyHttpClientBuilder {
     private static final String KQUEUE_CHANNEL = "io.netty.channel.kqueue.KQueueSocketChannel";
     private static final String KQUEUE_EVENT_LOOP_GROUP = "io.netty.channel.kqueue.KQueueEventLoopGroup";
     private static final boolean IS_KQUEUE_AVAILABLE;
-    private static final Class<? extends Channel> KQUEUE_CHANNEL_CLASS;
+    private static final Class<? extends SocketChannel> KQUEUE_CHANNEL_CLASS;
     private static final Class<?> KQUEUE_EVENT_LOOP_GROUP_CLASS;
     private static final MethodHandle KQUEUE_EVENT_LOOP_GROUP_CREATOR;
 
@@ -48,7 +49,7 @@ public class NettyHttpClientBuilder {
         // Inspect the class path to determine is native transports are available.
         // If they are, this will determine runtime behaviors.
         boolean isEpollAvailable;
-        Class<? extends Channel> epollChannelClass;
+        Class<? extends SocketChannel> epollChannelClass;
         Class<?> epollEventLoopGroupClass;
         MethodHandle epollEventLoopGroupCreator;
         try {
@@ -81,7 +82,7 @@ public class NettyHttpClientBuilder {
         EPOLL_EVENT_LOOP_GROUP_CREATOR = epollEventLoopGroupCreator;
 
         boolean isKqueueAvailable;
-        Class<? extends Channel> kqueueChannelClass;
+        Class<? extends SocketChannel> kqueueChannelClass;
         Class<?> kqueueEventLoopGroupClass;
         MethodHandle kqueueEventLoopGroupCreator;
         try {
@@ -101,7 +102,7 @@ public class NettyHttpClientBuilder {
                     .log("KQueue classes were available but can't be used.");
             }
         } catch (ReflectiveOperationException ignored) {
-            LOGGER.atVerbose().log("Epoll is unavailable and won't be used.");
+            LOGGER.atVerbose().log("KQueue is unavailable and won't be used.");
             isKqueueAvailable = false;
             kqueueChannelClass = null;
             kqueueEventLoopGroupClass = null;
@@ -115,12 +116,12 @@ public class NettyHttpClientBuilder {
     }
 
     @SuppressWarnings("unchecked")
-    private static Class<? extends Channel> getChannelClass(String className) throws ClassNotFoundException {
-        return (Class<? extends Channel>) Class.forName(className);
+    private static Class<? extends SocketChannel> getChannelClass(String className) throws ClassNotFoundException {
+        return (Class<? extends SocketChannel>) Class.forName(className);
     }
 
     private EventLoopGroup eventLoopGroup;
-    private Class<? extends Channel> channelClass;
+    private Class<? extends SocketChannel> channelClass;
     private SslContext sslContext;
 
     private Configuration configuration;
@@ -154,18 +155,18 @@ public class NettyHttpClientBuilder {
     }
 
     /**
-     * Sets the {@link Channel} type that will be used to create channels of that type.
+     * Sets the {@link SocketChannel} type that will be used to create channels of that type.
      * <p>
      * By default, if no {@code channelClass} is configured and no native transports are available (Epoll, KQueue)
      * {@link NioSocketChannel} will be used.
      * <p>
-     * If native transports are available, the {@link Channel} implementation for the native transport will be chosen
-     * over {@link NioSocketChannel}.
+     * If native transports are available, the {@link SocketChannel} implementation for the native transport will be
+     * chosen over {@link NioSocketChannel}.
      *
-     * @param channelClass The {@link Channel} class to use.
+     * @param channelClass The {@link SocketChannel} class to use.
      * @return The updated builder.
      */
-    public NettyHttpClientBuilder channelClass(Class<? extends Channel> channelClass) {
+    public NettyHttpClientBuilder channelClass(Class<? extends SocketChannel> channelClass) {
         this.channelClass = channelClass;
         return this;
     }
@@ -315,7 +316,10 @@ public class NettyHttpClientBuilder {
         }
 
         ThreadFactory threadFactory = new DefaultThreadFactory("clientcore-netty-client");
-        if (IS_EPOLL_AVAILABLE) {
+
+        // Use EpollEventLoopGroup if Epoll is available and 'channelClass' wasn't configured or was configured to
+        // EpollSocketChannel.
+        if (IS_EPOLL_AVAILABLE && (this.channelClass == null || this.channelClass == EPOLL_CHANNEL_CLASS)) {
             try {
                 return (EventLoopGroup) EPOLL_EVENT_LOOP_GROUP_CREATOR.invoke(threadFactory);
             } catch (Throwable ex) {
@@ -323,7 +327,9 @@ public class NettyHttpClientBuilder {
             }
         }
 
-        if (IS_KQUEUE_AVAILABLE) {
+        // Use KQueueEventLoopGroup if KQueue is available and 'channelClass' wasn't configured or was configured to
+        // KQueueSocketChannel.
+        if (IS_KQUEUE_AVAILABLE && (this.channelClass == null || this.channelClass == KQUEUE_CHANNEL_CLASS)) {
             try {
                 return (EventLoopGroup) KQUEUE_EVENT_LOOP_GROUP_CREATOR.invoke(threadFactory);
             } catch (Throwable ex) {
@@ -335,7 +341,7 @@ public class NettyHttpClientBuilder {
         return new NioEventLoopGroup(threadFactory);
     }
 
-    private Class<? extends Channel> getChannelClass(EventLoopGroup eventLoopGroup) {
+    private Class<? extends SocketChannel> getChannelClass(EventLoopGroup eventLoopGroup) {
         if (this.channelClass != null) {
             // If the Channel class was manually set, use it.
             return this.channelClass;
