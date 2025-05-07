@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,6 +20,7 @@ public final class PostResponseInner implements JsonSerializable<PostResponseInn
     /**
      * Creates an instance of PostResponseInner class.
      */
+    @Generated
     private PostResponseInner() {
     }
 

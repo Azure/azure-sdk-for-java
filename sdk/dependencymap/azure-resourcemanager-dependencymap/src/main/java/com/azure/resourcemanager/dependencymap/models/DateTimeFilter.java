@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dependencymap.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,16 +23,19 @@ public final class DateTimeFilter implements JsonSerializable<DateTimeFilter> {
     /*
      * Start date time for dependency map visualization query
      */
+    @Generated
     private OffsetDateTime startDateTimeUtc;
 
     /*
      * End date time for dependency map visualization query
      */
+    @Generated
     private OffsetDateTime endDateTimeUtc;
 
     /**
      * Creates an instance of DateTimeFilter class.
      */
+    @Generated
     public DateTimeFilter() {
     }
 
@@ -40,6 +44,7 @@ public final class DateTimeFilter implements JsonSerializable<DateTimeFilter> {
      * 
      * @return the startDateTimeUtc value.
      */
+    @Generated
     public OffsetDateTime startDateTimeUtc() {
         return this.startDateTimeUtc;
     }
@@ -50,6 +55,7 @@ public final class DateTimeFilter implements JsonSerializable<DateTimeFilter> {
      * @param startDateTimeUtc the startDateTimeUtc value to set.
      * @return the DateTimeFilter object itself.
      */
+    @Generated
     public DateTimeFilter withStartDateTimeUtc(OffsetDateTime startDateTimeUtc) {
         this.startDateTimeUtc = startDateTimeUtc;
         return this;
@@ -60,6 +66,7 @@ public final class DateTimeFilter implements JsonSerializable<DateTimeFilter> {
      * 
      * @return the endDateTimeUtc value.
      */
+    @Generated
     public OffsetDateTime endDateTimeUtc() {
         return this.endDateTimeUtc;
     }
@@ -70,6 +77,7 @@ public final class DateTimeFilter implements JsonSerializable<DateTimeFilter> {
      * @param endDateTimeUtc the endDateTimeUtc value to set.
      * @return the DateTimeFilter object itself.
      */
+    @Generated
     public DateTimeFilter withEndDateTimeUtc(OffsetDateTime endDateTimeUtc) {
         this.endDateTimeUtc = endDateTimeUtc;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,26 +22,31 @@ public final class StandbyVirtualMachinePoolResourceProperties
     /*
      * Specifies the elasticity profile of the standby virtual machine pools.
      */
+    @Generated
     private StandbyVirtualMachinePoolElasticityProfile elasticityProfile;
 
     /*
      * Specifies the desired state of virtual machines in the pool.
      */
+    @Generated
     private VirtualMachineState virtualMachineState;
 
     /*
      * Specifies the fully qualified resource ID of a virtual machine scale set the pool is attached to.
      */
+    @Generated
     private String attachedVirtualMachineScaleSetId;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of StandbyVirtualMachinePoolResourceProperties class.
      */
+    @Generated
     public StandbyVirtualMachinePoolResourceProperties() {
     }
 
@@ -49,6 +55,7 @@ public final class StandbyVirtualMachinePoolResourceProperties
      * 
      * @return the elasticityProfile value.
      */
+    @Generated
     public StandbyVirtualMachinePoolElasticityProfile elasticityProfile() {
         return this.elasticityProfile;
     }
@@ -59,6 +66,7 @@ public final class StandbyVirtualMachinePoolResourceProperties
      * @param elasticityProfile the elasticityProfile value to set.
      * @return the StandbyVirtualMachinePoolResourceProperties object itself.
      */
+    @Generated
     public StandbyVirtualMachinePoolResourceProperties
         withElasticityProfile(StandbyVirtualMachinePoolElasticityProfile elasticityProfile) {
         this.elasticityProfile = elasticityProfile;
@@ -70,6 +78,7 @@ public final class StandbyVirtualMachinePoolResourceProperties
      * 
      * @return the virtualMachineState value.
      */
+    @Generated
     public VirtualMachineState virtualMachineState() {
         return this.virtualMachineState;
     }
@@ -80,6 +89,7 @@ public final class StandbyVirtualMachinePoolResourceProperties
      * @param virtualMachineState the virtualMachineState value to set.
      * @return the StandbyVirtualMachinePoolResourceProperties object itself.
      */
+    @Generated
     public StandbyVirtualMachinePoolResourceProperties
         withVirtualMachineState(VirtualMachineState virtualMachineState) {
         this.virtualMachineState = virtualMachineState;
@@ -92,6 +102,7 @@ public final class StandbyVirtualMachinePoolResourceProperties
      * 
      * @return the attachedVirtualMachineScaleSetId value.
      */
+    @Generated
     public String attachedVirtualMachineScaleSetId() {
         return this.attachedVirtualMachineScaleSetId;
     }
@@ -103,6 +114,7 @@ public final class StandbyVirtualMachinePoolResourceProperties
      * @param attachedVirtualMachineScaleSetId the attachedVirtualMachineScaleSetId value to set.
      * @return the StandbyVirtualMachinePoolResourceProperties object itself.
      */
+    @Generated
     public StandbyVirtualMachinePoolResourceProperties
         withAttachedVirtualMachineScaleSetId(String attachedVirtualMachineScaleSetId) {
         this.attachedVirtualMachineScaleSetId = attachedVirtualMachineScaleSetId;
@@ -114,6 +126,7 @@ public final class StandbyVirtualMachinePoolResourceProperties
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.servicenetworking.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class AssociationType extends ExpandableStringEnum<AssociationType>
     /**
      * Association of Type Subnet.
      */
+    @Generated
     public static final AssociationType SUBNETS = fromString("subnets");
 
     /**
@@ -21,6 +23,7 @@ public final class AssociationType extends ExpandableStringEnum<AssociationType>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AssociationType() {
     }
@@ -31,6 +34,7 @@ public final class AssociationType extends ExpandableStringEnum<AssociationType>
      * @param name a name to look for.
      * @return the corresponding AssociationType.
      */
+    @Generated
     public static AssociationType fromString(String name) {
         return fromString(name, AssociationType.class);
     }
@@ -40,6 +44,7 @@ public final class AssociationType extends ExpandableStringEnum<AssociationType>
      * 
      * @return known AssociationType values.
      */
+    @Generated
     public static Collection<AssociationType> values() {
         return values(AssociationType.class);
     }

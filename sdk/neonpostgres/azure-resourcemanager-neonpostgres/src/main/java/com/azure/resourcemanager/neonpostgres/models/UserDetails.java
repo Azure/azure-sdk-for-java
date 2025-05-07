@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public final class UserDetails implements JsonSerializable<UserDetails> {
     /*
      * First name of the user
      */
+    @Generated
     private String firstName;
 
     /*
      * Last name of the user
      */
+    @Generated
     private String lastName;
 
     /*
      * Email address of the user
      */
+    @Generated
     private String emailAddress;
 
     /*
      * User's principal name
      */
+    @Generated
     private String upn;
 
     /*
      * User's phone number
      */
+    @Generated
     private String phoneNumber;
 
     /**
      * Creates an instance of UserDetails class.
      */
+    @Generated
     public UserDetails() {
     }
 
@@ -52,6 +59,7 @@ public final class UserDetails implements JsonSerializable<UserDetails> {
      * 
      * @return the firstName value.
      */
+    @Generated
     public String firstName() {
         return this.firstName;
     }
@@ -62,6 +70,7 @@ public final class UserDetails implements JsonSerializable<UserDetails> {
      * @param firstName the firstName value to set.
      * @return the UserDetails object itself.
      */
+    @Generated
     public UserDetails withFirstName(String firstName) {
         this.firstName = firstName;
         return this;
@@ -72,6 +81,7 @@ public final class UserDetails implements JsonSerializable<UserDetails> {
      * 
      * @return the lastName value.
      */
+    @Generated
     public String lastName() {
         return this.lastName;
     }
@@ -82,6 +92,7 @@ public final class UserDetails implements JsonSerializable<UserDetails> {
      * @param lastName the lastName value to set.
      * @return the UserDetails object itself.
      */
+    @Generated
     public UserDetails withLastName(String lastName) {
         this.lastName = lastName;
         return this;
@@ -92,6 +103,7 @@ public final class UserDetails implements JsonSerializable<UserDetails> {
      * 
      * @return the emailAddress value.
      */
+    @Generated
     public String emailAddress() {
         return this.emailAddress;
     }
@@ -102,6 +114,7 @@ public final class UserDetails implements JsonSerializable<UserDetails> {
      * @param emailAddress the emailAddress value to set.
      * @return the UserDetails object itself.
      */
+    @Generated
     public UserDetails withEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
         return this;
@@ -112,6 +125,7 @@ public final class UserDetails implements JsonSerializable<UserDetails> {
      * 
      * @return the upn value.
      */
+    @Generated
     public String upn() {
         return this.upn;
     }
@@ -122,6 +136,7 @@ public final class UserDetails implements JsonSerializable<UserDetails> {
      * @param upn the upn value to set.
      * @return the UserDetails object itself.
      */
+    @Generated
     public UserDetails withUpn(String upn) {
         this.upn = upn;
         return this;
@@ -132,6 +147,7 @@ public final class UserDetails implements JsonSerializable<UserDetails> {
      * 
      * @return the phoneNumber value.
      */
+    @Generated
     public String phoneNumber() {
         return this.phoneNumber;
     }
@@ -142,6 +158,7 @@ public final class UserDetails implements JsonSerializable<UserDetails> {
      * @param phoneNumber the phoneNumber value to set.
      * @return the UserDetails object itself.
      */
+    @Generated
     public UserDetails withPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;

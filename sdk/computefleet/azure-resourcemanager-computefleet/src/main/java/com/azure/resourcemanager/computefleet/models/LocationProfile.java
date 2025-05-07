@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,6 +22,7 @@ public final class LocationProfile implements JsonSerializable<LocationProfile> 
     /*
      * The ARM location name of the additional region. If LocationProfile is specified, then location is required.
      */
+    @Generated
     private String location;
 
     /*
@@ -28,11 +30,13 @@ public final class LocationProfile implements JsonSerializable<LocationProfile> 
      * This override is merged with the base virtual machine profile to define the final virtual machine profile for the
      * resources deployed in this location.
      */
+    @Generated
     private BaseVirtualMachineProfile virtualMachineProfileOverride;
 
     /**
      * Creates an instance of LocationProfile class.
      */
+    @Generated
     public LocationProfile() {
     }
 
@@ -42,6 +46,7 @@ public final class LocationProfile implements JsonSerializable<LocationProfile> 
      * 
      * @return the location value.
      */
+    @Generated
     public String location() {
         return this.location;
     }
@@ -53,6 +58,7 @@ public final class LocationProfile implements JsonSerializable<LocationProfile> 
      * @param location the location value to set.
      * @return the LocationProfile object itself.
      */
+    @Generated
     public LocationProfile withLocation(String location) {
         this.location = location;
         return this;
@@ -66,6 +72,7 @@ public final class LocationProfile implements JsonSerializable<LocationProfile> 
      * 
      * @return the virtualMachineProfileOverride value.
      */
+    @Generated
     public BaseVirtualMachineProfile virtualMachineProfileOverride() {
         return this.virtualMachineProfileOverride;
     }
@@ -79,6 +86,7 @@ public final class LocationProfile implements JsonSerializable<LocationProfile> 
      * @param virtualMachineProfileOverride the virtualMachineProfileOverride value to set.
      * @return the LocationProfile object itself.
      */
+    @Generated
     public LocationProfile withVirtualMachineProfileOverride(BaseVirtualMachineProfile virtualMachineProfileOverride) {
         this.virtualMachineProfileOverride = virtualMachineProfileOverride;
         return this;

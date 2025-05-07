@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -23,36 +24,43 @@ public final class AlertRuleResourceProperties implements JsonSerializable<Alert
     /*
      * The resource ID of the alert rule resource.
      */
+    @Generated
     private String alertRuleResourceId;
 
     /*
      * The properties with which the alert rule resource was created.
      */
+    @Generated
     private AlertRuleCreationProperties createdWithProperties;
 
     /*
      * The creation time of the alert rule resource.
      */
+    @Generated
     private OffsetDateTime creationTime;
 
     /*
      * The provisioning state of the alert rule resource.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /*
      * The template ID associated with alert rule resource.
      */
+    @Generated
     private String alertRuleTemplateId;
 
     /*
      * The alert rule template version.
      */
+    @Generated
     private String alertRuleTemplateVersion;
 
     /**
      * Creates an instance of AlertRuleResourceProperties class.
      */
+    @Generated
     public AlertRuleResourceProperties() {
     }
 
@@ -61,6 +69,7 @@ public final class AlertRuleResourceProperties implements JsonSerializable<Alert
      * 
      * @return the alertRuleResourceId value.
      */
+    @Generated
     public String alertRuleResourceId() {
         return this.alertRuleResourceId;
     }
@@ -71,6 +80,7 @@ public final class AlertRuleResourceProperties implements JsonSerializable<Alert
      * @param alertRuleResourceId the alertRuleResourceId value to set.
      * @return the AlertRuleResourceProperties object itself.
      */
+    @Generated
     public AlertRuleResourceProperties withAlertRuleResourceId(String alertRuleResourceId) {
         this.alertRuleResourceId = alertRuleResourceId;
         return this;
@@ -81,6 +91,7 @@ public final class AlertRuleResourceProperties implements JsonSerializable<Alert
      * 
      * @return the createdWithProperties value.
      */
+    @Generated
     public AlertRuleCreationProperties createdWithProperties() {
         return this.createdWithProperties;
     }
@@ -91,6 +102,7 @@ public final class AlertRuleResourceProperties implements JsonSerializable<Alert
      * @param createdWithProperties the createdWithProperties value to set.
      * @return the AlertRuleResourceProperties object itself.
      */
+    @Generated
     public AlertRuleResourceProperties withCreatedWithProperties(AlertRuleCreationProperties createdWithProperties) {
         this.createdWithProperties = createdWithProperties;
         return this;
@@ -101,6 +113,7 @@ public final class AlertRuleResourceProperties implements JsonSerializable<Alert
      * 
      * @return the creationTime value.
      */
+    @Generated
     public OffsetDateTime creationTime() {
         return this.creationTime;
     }
@@ -111,6 +124,7 @@ public final class AlertRuleResourceProperties implements JsonSerializable<Alert
      * @param creationTime the creationTime value to set.
      * @return the AlertRuleResourceProperties object itself.
      */
+    @Generated
     public AlertRuleResourceProperties withCreationTime(OffsetDateTime creationTime) {
         this.creationTime = creationTime;
         return this;
@@ -121,6 +135,7 @@ public final class AlertRuleResourceProperties implements JsonSerializable<Alert
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -130,6 +145,7 @@ public final class AlertRuleResourceProperties implements JsonSerializable<Alert
      * 
      * @return the alertRuleTemplateId value.
      */
+    @Generated
     public String alertRuleTemplateId() {
         return this.alertRuleTemplateId;
     }
@@ -140,6 +156,7 @@ public final class AlertRuleResourceProperties implements JsonSerializable<Alert
      * @param alertRuleTemplateId the alertRuleTemplateId value to set.
      * @return the AlertRuleResourceProperties object itself.
      */
+    @Generated
     public AlertRuleResourceProperties withAlertRuleTemplateId(String alertRuleTemplateId) {
         this.alertRuleTemplateId = alertRuleTemplateId;
         return this;
@@ -150,6 +167,7 @@ public final class AlertRuleResourceProperties implements JsonSerializable<Alert
      * 
      * @return the alertRuleTemplateVersion value.
      */
+    @Generated
     public String alertRuleTemplateVersion() {
         return this.alertRuleTemplateVersion;
     }
@@ -160,6 +178,7 @@ public final class AlertRuleResourceProperties implements JsonSerializable<Alert
      * @param alertRuleTemplateVersion the alertRuleTemplateVersion value to set.
      * @return the AlertRuleResourceProperties object itself.
      */
+    @Generated
     public AlertRuleResourceProperties withAlertRuleTemplateVersion(String alertRuleTemplateVersion) {
         this.alertRuleTemplateVersion = alertRuleTemplateVersion;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,17 +21,20 @@ public final class VmSizeProfile implements JsonSerializable<VmSizeProfile> {
     /*
      * The Sku name (e.g. 'Standard_DS1_v2')
      */
+    @Generated
     private String name;
 
     /*
      * The rank of the VM size. This is used with 'RegularPriorityAllocationStrategy.Prioritized'
      * The lower the number, the higher the priority. Starting with 0.
      */
+    @Generated
     private Integer rank;
 
     /**
      * Creates an instance of VmSizeProfile class.
      */
+    @Generated
     public VmSizeProfile() {
     }
 
@@ -39,6 +43,7 @@ public final class VmSizeProfile implements JsonSerializable<VmSizeProfile> {
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -49,6 +54,7 @@ public final class VmSizeProfile implements JsonSerializable<VmSizeProfile> {
      * @param name the name value to set.
      * @return the VmSizeProfile object itself.
      */
+    @Generated
     public VmSizeProfile withName(String name) {
         this.name = name;
         return this;
@@ -60,6 +66,7 @@ public final class VmSizeProfile implements JsonSerializable<VmSizeProfile> {
      * 
      * @return the rank value.
      */
+    @Generated
     public Integer rank() {
         return this.rank;
     }
@@ -71,6 +78,7 @@ public final class VmSizeProfile implements JsonSerializable<VmSizeProfile> {
      * @param rank the rank value to set.
      * @return the VmSizeProfile object itself.
      */
+    @Generated
     public VmSizeProfile withRank(Integer rank) {
         this.rank = rank;
         return this;

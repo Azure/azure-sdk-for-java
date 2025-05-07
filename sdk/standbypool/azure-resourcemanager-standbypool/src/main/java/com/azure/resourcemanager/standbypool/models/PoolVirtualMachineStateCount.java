@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -20,16 +21,19 @@ public final class PoolVirtualMachineStateCount implements JsonSerializable<Pool
     /*
      * The state that the pooled virtual machines count is for.
      */
+    @Generated
     private PoolVirtualMachineState state;
 
     /*
      * The count of pooled virtual machines in the given state.
      */
+    @Generated
     private long count;
 
     /**
      * Creates an instance of PoolVirtualMachineStateCount class.
      */
+    @Generated
     private PoolVirtualMachineStateCount() {
     }
 
@@ -38,6 +42,7 @@ public final class PoolVirtualMachineStateCount implements JsonSerializable<Pool
      * 
      * @return the state value.
      */
+    @Generated
     public PoolVirtualMachineState state() {
         return this.state;
     }
@@ -47,6 +52,7 @@ public final class PoolVirtualMachineStateCount implements JsonSerializable<Pool
      * 
      * @return the count value.
      */
+    @Generated
     public long count() {
         return this.count;
     }

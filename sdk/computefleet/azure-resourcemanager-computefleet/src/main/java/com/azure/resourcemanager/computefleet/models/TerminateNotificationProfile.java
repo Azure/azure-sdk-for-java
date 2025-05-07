@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class TerminateNotificationProfile implements JsonSerializable<Term
      * approved (timed out). The configuration must be specified in ISO 8601 format,
      * the default value is 5 minutes (PT5M)
      */
+    @Generated
     private String notBeforeTimeout;
 
     /*
      * Specifies whether the Terminate Scheduled event is enabled or disabled.
      */
+    @Generated
     private Boolean enable;
 
     /**
      * Creates an instance of TerminateNotificationProfile class.
      */
+    @Generated
     public TerminateNotificationProfile() {
     }
 
@@ -43,6 +47,7 @@ public final class TerminateNotificationProfile implements JsonSerializable<Term
      * 
      * @return the notBeforeTimeout value.
      */
+    @Generated
     public String notBeforeTimeout() {
         return this.notBeforeTimeout;
     }
@@ -56,6 +61,7 @@ public final class TerminateNotificationProfile implements JsonSerializable<Term
      * @param notBeforeTimeout the notBeforeTimeout value to set.
      * @return the TerminateNotificationProfile object itself.
      */
+    @Generated
     public TerminateNotificationProfile withNotBeforeTimeout(String notBeforeTimeout) {
         this.notBeforeTimeout = notBeforeTimeout;
         return this;
@@ -66,6 +72,7 @@ public final class TerminateNotificationProfile implements JsonSerializable<Term
      * 
      * @return the enable value.
      */
+    @Generated
     public Boolean enable() {
         return this.enable;
     }
@@ -76,6 +83,7 @@ public final class TerminateNotificationProfile implements JsonSerializable<Term
      * @param enable the enable value to set.
      * @return the TerminateNotificationProfile object itself.
      */
+    @Generated
     public TerminateNotificationProfile withEnable(Boolean enable) {
         this.enable = enable;
         return this;

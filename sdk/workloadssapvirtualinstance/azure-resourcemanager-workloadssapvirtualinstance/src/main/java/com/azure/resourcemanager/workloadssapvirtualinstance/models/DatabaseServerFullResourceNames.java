@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class DatabaseServerFullResourceNames implements JsonSerializable<D
     /*
      * The list of virtual machine naming details.
      */
+    @Generated
     private List<VirtualMachineResourceNames> virtualMachines;
 
     /*
      * The full name for availability set. In case name is not provided, it will be defaulted to {SID}-DB-AvSet.
      */
+    @Generated
     private String availabilitySetName;
 
     /*
      * The resource names object for load balancer and related resources.
      */
+    @Generated
     private LoadBalancerResourceNames loadBalancer;
 
     /**
      * Creates an instance of DatabaseServerFullResourceNames class.
      */
+    @Generated
     public DatabaseServerFullResourceNames() {
     }
 
@@ -44,6 +49,7 @@ public final class DatabaseServerFullResourceNames implements JsonSerializable<D
      * 
      * @return the virtualMachines value.
      */
+    @Generated
     public List<VirtualMachineResourceNames> virtualMachines() {
         return this.virtualMachines;
     }
@@ -54,6 +60,7 @@ public final class DatabaseServerFullResourceNames implements JsonSerializable<D
      * @param virtualMachines the virtualMachines value to set.
      * @return the DatabaseServerFullResourceNames object itself.
      */
+    @Generated
     public DatabaseServerFullResourceNames withVirtualMachines(List<VirtualMachineResourceNames> virtualMachines) {
         this.virtualMachines = virtualMachines;
         return this;
@@ -65,6 +72,7 @@ public final class DatabaseServerFullResourceNames implements JsonSerializable<D
      * 
      * @return the availabilitySetName value.
      */
+    @Generated
     public String availabilitySetName() {
         return this.availabilitySetName;
     }
@@ -76,6 +84,7 @@ public final class DatabaseServerFullResourceNames implements JsonSerializable<D
      * @param availabilitySetName the availabilitySetName value to set.
      * @return the DatabaseServerFullResourceNames object itself.
      */
+    @Generated
     public DatabaseServerFullResourceNames withAvailabilitySetName(String availabilitySetName) {
         this.availabilitySetName = availabilitySetName;
         return this;
@@ -86,6 +95,7 @@ public final class DatabaseServerFullResourceNames implements JsonSerializable<D
      * 
      * @return the loadBalancer value.
      */
+    @Generated
     public LoadBalancerResourceNames loadBalancer() {
         return this.loadBalancer;
     }
@@ -96,6 +106,7 @@ public final class DatabaseServerFullResourceNames implements JsonSerializable<D
      * @param loadBalancer the loadBalancer value to set.
      * @return the DatabaseServerFullResourceNames object itself.
      */
+    @Generated
     public DatabaseServerFullResourceNames withLoadBalancer(LoadBalancerResourceNames loadBalancer) {
         this.loadBalancer = loadBalancer;
         return this;

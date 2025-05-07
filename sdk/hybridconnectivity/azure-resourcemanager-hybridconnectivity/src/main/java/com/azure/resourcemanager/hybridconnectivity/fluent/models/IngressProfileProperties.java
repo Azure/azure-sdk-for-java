@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -20,16 +21,19 @@ public final class IngressProfileProperties implements JsonSerializable<IngressP
     /*
      * The ingress hostname.
      */
+    @Generated
     private String hostname;
 
     /*
      * The AAD Profile
      */
+    @Generated
     private AADProfileProperties innerAadProfile;
 
     /**
      * Creates an instance of IngressProfileProperties class.
      */
+    @Generated
     private IngressProfileProperties() {
     }
 
@@ -38,6 +42,7 @@ public final class IngressProfileProperties implements JsonSerializable<IngressP
      * 
      * @return the hostname value.
      */
+    @Generated
     public String hostname() {
         return this.hostname;
     }
@@ -47,6 +52,7 @@ public final class IngressProfileProperties implements JsonSerializable<IngressP
      * 
      * @return the innerAadProfile value.
      */
+    @Generated
     private AADProfileProperties innerAadProfile() {
         return this.innerAadProfile;
     }
@@ -56,6 +62,7 @@ public final class IngressProfileProperties implements JsonSerializable<IngressP
      * 
      * @return the serverId value.
      */
+    @Generated
     public String serverId() {
         return this.innerAadProfile() == null ? null : this.innerAadProfile().serverId();
     }
@@ -65,6 +72,7 @@ public final class IngressProfileProperties implements JsonSerializable<IngressP
      * 
      * @return the tenantId value.
      */
+    @Generated
     public String tenantId() {
         return this.innerAadProfile() == null ? null : this.innerAadProfile().tenantId();
     }

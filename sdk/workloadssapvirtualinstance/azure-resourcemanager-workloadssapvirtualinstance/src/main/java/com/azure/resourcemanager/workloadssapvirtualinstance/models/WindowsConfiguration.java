@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -18,11 +19,13 @@ public final class WindowsConfiguration extends OSConfiguration {
     /*
      * The OS Type
      */
+    @Generated
     private OSType osType = OSType.WINDOWS;
 
     /**
      * Creates an instance of WindowsConfiguration class.
      */
+    @Generated
     public WindowsConfiguration() {
     }
 
@@ -31,6 +34,7 @@ public final class WindowsConfiguration extends OSConfiguration {
      * 
      * @return the osType value.
      */
+    @Generated
     @Override
     public OSType osType() {
         return this.osType;

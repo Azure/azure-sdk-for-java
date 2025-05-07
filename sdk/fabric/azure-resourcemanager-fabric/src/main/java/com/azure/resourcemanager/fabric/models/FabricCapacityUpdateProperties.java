@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.fabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class FabricCapacityUpdateProperties implements JsonSerializable<Fa
     /*
      * The capacity administration
      */
+    @Generated
     private CapacityAdministration administration;
 
     /**
      * Creates an instance of FabricCapacityUpdateProperties class.
      */
+    @Generated
     public FabricCapacityUpdateProperties() {
     }
 
@@ -32,6 +35,7 @@ public final class FabricCapacityUpdateProperties implements JsonSerializable<Fa
      * 
      * @return the administration value.
      */
+    @Generated
     public CapacityAdministration administration() {
         return this.administration;
     }
@@ -42,6 +46,7 @@ public final class FabricCapacityUpdateProperties implements JsonSerializable<Fa
      * @param administration the administration value to set.
      * @return the FabricCapacityUpdateProperties object itself.
      */
+    @Generated
     public FabricCapacityUpdateProperties withAdministration(CapacityAdministration administration) {
         this.administration = administration;
         return this;

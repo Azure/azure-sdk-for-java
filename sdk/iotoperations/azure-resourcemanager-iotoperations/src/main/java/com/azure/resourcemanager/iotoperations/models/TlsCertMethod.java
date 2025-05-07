@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class TlsCertMethod implements JsonSerializable<TlsCertMethod> {
     /*
      * Mode of TLS server certificate management.
      */
+    @Generated
     private TlsCertMethodMode mode;
 
     /*
      * Option 1 - Automatic TLS server certificate management with cert-manager.
      */
+    @Generated
     private CertManagerCertificateSpec certManagerCertificateSpec;
 
     /*
      * Option 2 - Manual TLS server certificate management through a defined secret.
      */
+    @Generated
     private X509ManualCertificate manual;
 
     /**
      * Creates an instance of TlsCertMethod class.
      */
+    @Generated
     public TlsCertMethod() {
     }
 
@@ -43,6 +48,7 @@ public final class TlsCertMethod implements JsonSerializable<TlsCertMethod> {
      * 
      * @return the mode value.
      */
+    @Generated
     public TlsCertMethodMode mode() {
         return this.mode;
     }
@@ -53,6 +59,7 @@ public final class TlsCertMethod implements JsonSerializable<TlsCertMethod> {
      * @param mode the mode value to set.
      * @return the TlsCertMethod object itself.
      */
+    @Generated
     public TlsCertMethod withMode(TlsCertMethodMode mode) {
         this.mode = mode;
         return this;
@@ -64,6 +71,7 @@ public final class TlsCertMethod implements JsonSerializable<TlsCertMethod> {
      * 
      * @return the certManagerCertificateSpec value.
      */
+    @Generated
     public CertManagerCertificateSpec certManagerCertificateSpec() {
         return this.certManagerCertificateSpec;
     }
@@ -75,6 +83,7 @@ public final class TlsCertMethod implements JsonSerializable<TlsCertMethod> {
      * @param certManagerCertificateSpec the certManagerCertificateSpec value to set.
      * @return the TlsCertMethod object itself.
      */
+    @Generated
     public TlsCertMethod withCertManagerCertificateSpec(CertManagerCertificateSpec certManagerCertificateSpec) {
         this.certManagerCertificateSpec = certManagerCertificateSpec;
         return this;
@@ -85,6 +94,7 @@ public final class TlsCertMethod implements JsonSerializable<TlsCertMethod> {
      * 
      * @return the manual value.
      */
+    @Generated
     public X509ManualCertificate manual() {
         return this.manual;
     }
@@ -95,6 +105,7 @@ public final class TlsCertMethod implements JsonSerializable<TlsCertMethod> {
      * @param manual the manual value to set.
      * @return the TlsCertMethod object itself.
      */
+    @Generated
     public TlsCertMethod withManual(X509ManualCertificate manual) {
         this.manual = manual;
         return this;

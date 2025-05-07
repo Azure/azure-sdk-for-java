@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,16 +16,19 @@ public final class ApplicationServerVirtualMachineType
     /**
      * Active Application server vm type.
      */
+    @Generated
     public static final ApplicationServerVirtualMachineType ACTIVE = fromString("Active");
 
     /**
      * Standby Application server vm type.
      */
+    @Generated
     public static final ApplicationServerVirtualMachineType STANDBY = fromString("Standby");
 
     /**
      * Unknown Application server vm type.
      */
+    @Generated
     public static final ApplicationServerVirtualMachineType UNKNOWN = fromString("Unknown");
 
     /**
@@ -32,6 +36,7 @@ public final class ApplicationServerVirtualMachineType
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ApplicationServerVirtualMachineType() {
     }
@@ -42,6 +47,7 @@ public final class ApplicationServerVirtualMachineType
      * @param name a name to look for.
      * @return the corresponding ApplicationServerVirtualMachineType.
      */
+    @Generated
     public static ApplicationServerVirtualMachineType fromString(String name) {
         return fromString(name, ApplicationServerVirtualMachineType.class);
     }
@@ -51,6 +57,7 @@ public final class ApplicationServerVirtualMachineType
      * 
      * @return known ApplicationServerVirtualMachineType values.
      */
+    @Generated
     public static Collection<ApplicationServerVirtualMachineType> values() {
         return values(ApplicationServerVirtualMachineType.class);
     }

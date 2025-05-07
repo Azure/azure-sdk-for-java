@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.durabletask.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,17 +20,20 @@ public final class RetentionPolicyDetails implements JsonSerializable<RetentionP
     /*
      * The retention period in days after which the orchestration will be purged automatically
      */
+    @Generated
     private int retentionPeriodInDays;
 
     /*
      * The orchestration state to which this policy applies. If omitted, the policy applies to all purgeable
      * orchestration states.
      */
+    @Generated
     private PurgeableOrchestrationState orchestrationState;
 
     /**
      * Creates an instance of RetentionPolicyDetails class.
      */
+    @Generated
     public RetentionPolicyDetails() {
     }
 
@@ -39,6 +43,7 @@ public final class RetentionPolicyDetails implements JsonSerializable<RetentionP
      * 
      * @return the retentionPeriodInDays value.
      */
+    @Generated
     public int retentionPeriodInDays() {
         return this.retentionPeriodInDays;
     }
@@ -50,6 +55,7 @@ public final class RetentionPolicyDetails implements JsonSerializable<RetentionP
      * @param retentionPeriodInDays the retentionPeriodInDays value to set.
      * @return the RetentionPolicyDetails object itself.
      */
+    @Generated
     public RetentionPolicyDetails withRetentionPeriodInDays(int retentionPeriodInDays) {
         this.retentionPeriodInDays = retentionPeriodInDays;
         return this;
@@ -61,6 +67,7 @@ public final class RetentionPolicyDetails implements JsonSerializable<RetentionP
      * 
      * @return the orchestrationState value.
      */
+    @Generated
     public PurgeableOrchestrationState orchestrationState() {
         return this.orchestrationState;
     }
@@ -72,6 +79,7 @@ public final class RetentionPolicyDetails implements JsonSerializable<RetentionP
      * @param orchestrationState the orchestrationState value to set.
      * @return the RetentionPolicyDetails object itself.
      */
+    @Generated
     public RetentionPolicyDetails withOrchestrationState(PurgeableOrchestrationState orchestrationState) {
         this.orchestrationState = orchestrationState;
         return this;

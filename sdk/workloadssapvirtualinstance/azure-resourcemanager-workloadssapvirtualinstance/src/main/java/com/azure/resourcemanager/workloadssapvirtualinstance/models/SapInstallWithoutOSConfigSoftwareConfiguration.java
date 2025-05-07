@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,32 +20,38 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
     /*
      * The SAP software installation type.
      */
+    @Generated
     private SapSoftwareInstallationType softwareInstallationType
         = SapSoftwareInstallationType.SAPINSTALL_WITHOUT_OSCONFIG;
 
     /*
      * The URL to the SAP Build of Materials(BOM) file.
      */
+    @Generated
     private String bomUrl;
 
     /*
      * The SAP bits storage account id.
      */
+    @Generated
     private String sapBitsStorageAccountId;
 
     /*
      * The software version to install.
      */
+    @Generated
     private String softwareVersion;
 
     /*
      * Gets or sets the HA software configuration.
      */
+    @Generated
     private HighAvailabilitySoftwareConfiguration highAvailabilitySoftwareConfiguration;
 
     /**
      * Creates an instance of SapInstallWithoutOSConfigSoftwareConfiguration class.
      */
+    @Generated
     public SapInstallWithoutOSConfigSoftwareConfiguration() {
     }
 
@@ -53,6 +60,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
      * 
      * @return the softwareInstallationType value.
      */
+    @Generated
     @Override
     public SapSoftwareInstallationType softwareInstallationType() {
         return this.softwareInstallationType;
@@ -63,6 +71,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
      * 
      * @return the bomUrl value.
      */
+    @Generated
     public String bomUrl() {
         return this.bomUrl;
     }
@@ -73,6 +82,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
      * @param bomUrl the bomUrl value to set.
      * @return the SapInstallWithoutOSConfigSoftwareConfiguration object itself.
      */
+    @Generated
     public SapInstallWithoutOSConfigSoftwareConfiguration withBomUrl(String bomUrl) {
         this.bomUrl = bomUrl;
         return this;
@@ -83,6 +93,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
      * 
      * @return the sapBitsStorageAccountId value.
      */
+    @Generated
     public String sapBitsStorageAccountId() {
         return this.sapBitsStorageAccountId;
     }
@@ -93,6 +104,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
      * @param sapBitsStorageAccountId the sapBitsStorageAccountId value to set.
      * @return the SapInstallWithoutOSConfigSoftwareConfiguration object itself.
      */
+    @Generated
     public SapInstallWithoutOSConfigSoftwareConfiguration withSapBitsStorageAccountId(String sapBitsStorageAccountId) {
         this.sapBitsStorageAccountId = sapBitsStorageAccountId;
         return this;
@@ -103,6 +115,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
      * 
      * @return the softwareVersion value.
      */
+    @Generated
     public String softwareVersion() {
         return this.softwareVersion;
     }
@@ -113,6 +126,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
      * @param softwareVersion the softwareVersion value to set.
      * @return the SapInstallWithoutOSConfigSoftwareConfiguration object itself.
      */
+    @Generated
     public SapInstallWithoutOSConfigSoftwareConfiguration withSoftwareVersion(String softwareVersion) {
         this.softwareVersion = softwareVersion;
         return this;
@@ -123,6 +137,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
      * 
      * @return the highAvailabilitySoftwareConfiguration value.
      */
+    @Generated
     public HighAvailabilitySoftwareConfiguration highAvailabilitySoftwareConfiguration() {
         return this.highAvailabilitySoftwareConfiguration;
     }
@@ -133,6 +148,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
      * @param highAvailabilitySoftwareConfiguration the highAvailabilitySoftwareConfiguration value to set.
      * @return the SapInstallWithoutOSConfigSoftwareConfiguration object itself.
      */
+    @Generated
     public SapInstallWithoutOSConfigSoftwareConfiguration withHighAvailabilitySoftwareConfiguration(
         HighAvailabilitySoftwareConfiguration highAvailabilitySoftwareConfiguration) {
         this.highAvailabilitySoftwareConfiguration = highAvailabilitySoftwareConfiguration;

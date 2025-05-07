@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,32 +23,38 @@ public final class LoadBalancerProperties implements JsonSerializable<LoadBalanc
     /*
      * IP Range
      */
+    @Generated
     private List<String> addresses;
 
     /*
      * A dynamic label mapping to select related services. For instance, if you want to create a load balancer only for
      * services with label "a=b", then please specify {"a": "b"} in the field.
      */
+    @Generated
     private Map<String, String> serviceSelector;
 
     /*
      * Advertise Mode
      */
+    @Generated
     private AdvertiseMode advertiseMode;
 
     /*
      * The list of BGP peers it should advertise to. Null or empty means to advertise to all peers.
      */
+    @Generated
     private List<String> bgpPeers;
 
     /*
      * Resource provision state
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of LoadBalancerProperties class.
      */
+    @Generated
     public LoadBalancerProperties() {
     }
 
@@ -56,6 +63,7 @@ public final class LoadBalancerProperties implements JsonSerializable<LoadBalanc
      * 
      * @return the addresses value.
      */
+    @Generated
     public List<String> addresses() {
         return this.addresses;
     }
@@ -66,6 +74,7 @@ public final class LoadBalancerProperties implements JsonSerializable<LoadBalanc
      * @param addresses the addresses value to set.
      * @return the LoadBalancerProperties object itself.
      */
+    @Generated
     public LoadBalancerProperties withAddresses(List<String> addresses) {
         this.addresses = addresses;
         return this;
@@ -77,6 +86,7 @@ public final class LoadBalancerProperties implements JsonSerializable<LoadBalanc
      * 
      * @return the serviceSelector value.
      */
+    @Generated
     public Map<String, String> serviceSelector() {
         return this.serviceSelector;
     }
@@ -88,6 +98,7 @@ public final class LoadBalancerProperties implements JsonSerializable<LoadBalanc
      * @param serviceSelector the serviceSelector value to set.
      * @return the LoadBalancerProperties object itself.
      */
+    @Generated
     public LoadBalancerProperties withServiceSelector(Map<String, String> serviceSelector) {
         this.serviceSelector = serviceSelector;
         return this;
@@ -98,6 +109,7 @@ public final class LoadBalancerProperties implements JsonSerializable<LoadBalanc
      * 
      * @return the advertiseMode value.
      */
+    @Generated
     public AdvertiseMode advertiseMode() {
         return this.advertiseMode;
     }
@@ -108,6 +120,7 @@ public final class LoadBalancerProperties implements JsonSerializable<LoadBalanc
      * @param advertiseMode the advertiseMode value to set.
      * @return the LoadBalancerProperties object itself.
      */
+    @Generated
     public LoadBalancerProperties withAdvertiseMode(AdvertiseMode advertiseMode) {
         this.advertiseMode = advertiseMode;
         return this;
@@ -119,6 +132,7 @@ public final class LoadBalancerProperties implements JsonSerializable<LoadBalanc
      * 
      * @return the bgpPeers value.
      */
+    @Generated
     public List<String> bgpPeers() {
         return this.bgpPeers;
     }
@@ -130,6 +144,7 @@ public final class LoadBalancerProperties implements JsonSerializable<LoadBalanc
      * @param bgpPeers the bgpPeers value to set.
      * @return the LoadBalancerProperties object itself.
      */
+    @Generated
     public LoadBalancerProperties withBgpPeers(List<String> bgpPeers) {
         this.bgpPeers = bgpPeers;
         return this;
@@ -140,6 +155,7 @@ public final class LoadBalancerProperties implements JsonSerializable<LoadBalanc
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

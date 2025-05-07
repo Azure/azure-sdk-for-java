@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,26 +25,31 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceProperties
      * single entry without zone values. Note: any resources in the Running state may still be installing extensions /
      * not fully provisioned.
      */
+    @Generated
     private List<VirtualMachineInstanceCountSummary> instanceCountSummary;
 
     /*
      * Display status of the standby pool
      */
+    @Generated
     private PoolStatus status;
 
     /*
      * Displays the provisioning state of the standby pool
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * Displays prediction information of the standby pool
      */
+    @Generated
     private StandbyVirtualMachinePoolPrediction prediction;
 
     /**
      * Creates an instance of StandbyVirtualMachinePoolRuntimeViewResourceProperties class.
      */
+    @Generated
     private StandbyVirtualMachinePoolRuntimeViewResourceProperties() {
     }
 
@@ -55,6 +61,7 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceProperties
      * 
      * @return the instanceCountSummary value.
      */
+    @Generated
     public List<VirtualMachineInstanceCountSummary> instanceCountSummary() {
         return this.instanceCountSummary;
     }
@@ -64,6 +71,7 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceProperties
      * 
      * @return the status value.
      */
+    @Generated
     public PoolStatus status() {
         return this.status;
     }
@@ -73,6 +81,7 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceProperties
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -82,6 +91,7 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceProperties
      * 
      * @return the prediction value.
      */
+    @Generated
     public StandbyVirtualMachinePoolPrediction prediction() {
         return this.prediction;
     }

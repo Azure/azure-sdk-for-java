@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,41 +20,49 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
     /*
      * The deployment type. Eg: SingleServer/ThreeTier
      */
+    @Generated
     private SapDeploymentType deploymentType = SapDeploymentType.THREE_TIER;
 
     /*
      * The database VM SKU.
      */
+    @Generated
     private String dbVmSku;
 
     /*
      * The database server instance count.
      */
+    @Generated
     private Long databaseInstanceCount;
 
     /*
      * The central server VM SKU.
      */
+    @Generated
     private String centralServerVmSku;
 
     /*
      * The central server instance count.
      */
+    @Generated
     private Long centralServerInstanceCount;
 
     /*
      * The application server VM SKU.
      */
+    @Generated
     private String applicationServerVmSku;
 
     /*
      * The application server instance count.
      */
+    @Generated
     private Long applicationServerInstanceCount;
 
     /**
      * Creates an instance of ThreeTierRecommendationResult class.
      */
+    @Generated
     private ThreeTierRecommendationResult() {
     }
 
@@ -62,6 +71,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
      * 
      * @return the deploymentType value.
      */
+    @Generated
     @Override
     public SapDeploymentType deploymentType() {
         return this.deploymentType;
@@ -72,6 +82,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
      * 
      * @return the dbVmSku value.
      */
+    @Generated
     public String dbVmSku() {
         return this.dbVmSku;
     }
@@ -81,6 +92,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
      * 
      * @return the databaseInstanceCount value.
      */
+    @Generated
     public Long databaseInstanceCount() {
         return this.databaseInstanceCount;
     }
@@ -90,6 +102,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
      * 
      * @return the centralServerVmSku value.
      */
+    @Generated
     public String centralServerVmSku() {
         return this.centralServerVmSku;
     }
@@ -99,6 +112,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
      * 
      * @return the centralServerInstanceCount value.
      */
+    @Generated
     public Long centralServerInstanceCount() {
         return this.centralServerInstanceCount;
     }
@@ -108,6 +122,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
      * 
      * @return the applicationServerVmSku value.
      */
+    @Generated
     public String applicationServerVmSku() {
         return this.applicationServerVmSku;
     }
@@ -117,6 +132,7 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
      * 
      * @return the applicationServerInstanceCount value.
      */
+    @Generated
     public Long applicationServerInstanceCount() {
         return this.applicationServerInstanceCount;
     }

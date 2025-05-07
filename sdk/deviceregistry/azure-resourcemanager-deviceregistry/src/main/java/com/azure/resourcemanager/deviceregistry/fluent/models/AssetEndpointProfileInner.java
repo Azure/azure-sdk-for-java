@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -24,36 +25,43 @@ public final class AssetEndpointProfileInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private AssetEndpointProfileProperties properties;
 
     /*
      * The extended location.
      */
+    @Generated
     private ExtendedLocation extendedLocation;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of AssetEndpointProfileInner class.
      */
+    @Generated
     public AssetEndpointProfileInner() {
     }
 
@@ -62,6 +70,7 @@ public final class AssetEndpointProfileInner extends Resource {
      * 
      * @return the properties value.
      */
+    @Generated
     public AssetEndpointProfileProperties properties() {
         return this.properties;
     }
@@ -72,6 +81,7 @@ public final class AssetEndpointProfileInner extends Resource {
      * @param properties the properties value to set.
      * @return the AssetEndpointProfileInner object itself.
      */
+    @Generated
     public AssetEndpointProfileInner withProperties(AssetEndpointProfileProperties properties) {
         this.properties = properties;
         return this;
@@ -82,6 +92,7 @@ public final class AssetEndpointProfileInner extends Resource {
      * 
      * @return the extendedLocation value.
      */
+    @Generated
     public ExtendedLocation extendedLocation() {
         return this.extendedLocation;
     }
@@ -92,6 +103,7 @@ public final class AssetEndpointProfileInner extends Resource {
      * @param extendedLocation the extendedLocation value to set.
      * @return the AssetEndpointProfileInner object itself.
      */
+    @Generated
     public AssetEndpointProfileInner withExtendedLocation(ExtendedLocation extendedLocation) {
         this.extendedLocation = extendedLocation;
         return this;
@@ -102,6 +114,7 @@ public final class AssetEndpointProfileInner extends Resource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -111,6 +124,7 @@ public final class AssetEndpointProfileInner extends Resource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -121,6 +135,7 @@ public final class AssetEndpointProfileInner extends Resource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -131,6 +146,7 @@ public final class AssetEndpointProfileInner extends Resource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;
@@ -139,6 +155,7 @@ public final class AssetEndpointProfileInner extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AssetEndpointProfileInner withLocation(String location) {
         super.withLocation(location);
@@ -148,6 +165,7 @@ public final class AssetEndpointProfileInner extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AssetEndpointProfileInner withTags(Map<String, String> tags) {
         super.withTags(tags);

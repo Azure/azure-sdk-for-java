@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -19,18 +20,21 @@ public final class WindowsVMGuestPatchMode extends ExpandableStringEnum<WindowsV
      * automatic updates are disabled; the property WindowsConfiguration.enableAutomaticUpdates
      * must be false.
      */
+    @Generated
     public static final WindowsVMGuestPatchMode MANUAL = fromString("Manual");
 
     /**
      * The virtual machine will automatically be updated by the OS.
      * The property WindowsConfiguration.enableAutomaticUpdates must be true.
      */
+    @Generated
     public static final WindowsVMGuestPatchMode AUTOMATIC_BY_OS = fromString("AutomaticByOS");
 
     /**
      * The virtual machine will automatically updated by the platform. The properties
      * provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates must be true.
      */
+    @Generated
     public static final WindowsVMGuestPatchMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 
     /**
@@ -38,6 +42,7 @@ public final class WindowsVMGuestPatchMode extends ExpandableStringEnum<WindowsV
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public WindowsVMGuestPatchMode() {
     }
@@ -48,6 +53,7 @@ public final class WindowsVMGuestPatchMode extends ExpandableStringEnum<WindowsV
      * @param name a name to look for.
      * @return the corresponding WindowsVMGuestPatchMode.
      */
+    @Generated
     public static WindowsVMGuestPatchMode fromString(String name) {
         return fromString(name, WindowsVMGuestPatchMode.class);
     }
@@ -57,6 +63,7 @@ public final class WindowsVMGuestPatchMode extends ExpandableStringEnum<WindowsV
      * 
      * @return known WindowsVMGuestPatchMode values.
      */
+    @Generated
     public static Collection<WindowsVMGuestPatchMode> values() {
         return values(WindowsVMGuestPatchMode.class);
     }

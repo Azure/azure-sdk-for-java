@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class PoolStatus implements JsonSerializable<PoolStatus> {
     /*
      * Displays the healthy state of the StandbyPool.
      */
+    @Generated
     private HealthStateCode code;
 
     /*
      * Displays the StandbyPool health state details.
      */
+    @Generated
     private String message;
 
     /**
      * Creates an instance of PoolStatus class.
      */
+    @Generated
     private PoolStatus() {
     }
 
@@ -37,6 +41,7 @@ public final class PoolStatus implements JsonSerializable<PoolStatus> {
      * 
      * @return the code value.
      */
+    @Generated
     public HealthStateCode code() {
         return this.code;
     }
@@ -46,6 +51,7 @@ public final class PoolStatus implements JsonSerializable<PoolStatus> {
      * 
      * @return the message value.
      */
+    @Generated
     public String message() {
         return this.message;
     }

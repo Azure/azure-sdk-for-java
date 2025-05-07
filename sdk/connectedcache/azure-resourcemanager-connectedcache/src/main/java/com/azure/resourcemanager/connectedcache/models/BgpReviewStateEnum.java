@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.connectedcache.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class BgpReviewStateEnum extends ExpandableStringEnum<BgpReviewStat
     /**
      * bgp not configured.
      */
+    @Generated
     public static final BgpReviewStateEnum NOT_CONFIGURED = fromString("NotConfigured");
 
     /**
      * bgp is in review state.
      */
+    @Generated
     public static final BgpReviewStateEnum IN_REVIEW = fromString("InReview");
 
     /**
      * bgp is in Approved state.
      */
+    @Generated
     public static final BgpReviewStateEnum APPROVED = fromString("Approved");
 
     /**
      * bgp is setup need an attention for more troubleshoot.
      */
+    @Generated
     public static final BgpReviewStateEnum ATTENTION_REQUIRED = fromString("AttentionRequired");
 
     /**
@@ -36,6 +41,7 @@ public final class BgpReviewStateEnum extends ExpandableStringEnum<BgpReviewStat
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public BgpReviewStateEnum() {
     }
@@ -46,6 +52,7 @@ public final class BgpReviewStateEnum extends ExpandableStringEnum<BgpReviewStat
      * @param name a name to look for.
      * @return the corresponding BgpReviewStateEnum.
      */
+    @Generated
     public static BgpReviewStateEnum fromString(String name) {
         return fromString(name, BgpReviewStateEnum.class);
     }
@@ -55,6 +62,7 @@ public final class BgpReviewStateEnum extends ExpandableStringEnum<BgpReviewStat
      * 
      * @return known BgpReviewStateEnum values.
      */
+    @Generated
     public static Collection<BgpReviewStateEnum> values() {
         return values(BgpReviewStateEnum.class);
     }

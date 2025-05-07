@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.healthdataaiservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class DeidPropertiesUpdate implements JsonSerializable<DeidProperti
     /*
      * Gets or sets allow or disallow public network access to resource
      */
+    @Generated
     private PublicNetworkAccess publicNetworkAccess;
 
     /**
      * Creates an instance of DeidPropertiesUpdate class.
      */
+    @Generated
     public DeidPropertiesUpdate() {
     }
 
@@ -32,6 +35,7 @@ public final class DeidPropertiesUpdate implements JsonSerializable<DeidProperti
      * 
      * @return the publicNetworkAccess value.
      */
+    @Generated
     public PublicNetworkAccess publicNetworkAccess() {
         return this.publicNetworkAccess;
     }
@@ -42,6 +46,7 @@ public final class DeidPropertiesUpdate implements JsonSerializable<DeidProperti
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the DeidPropertiesUpdate object itself.
      */
+    @Generated
     public DeidPropertiesUpdate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
         return this;

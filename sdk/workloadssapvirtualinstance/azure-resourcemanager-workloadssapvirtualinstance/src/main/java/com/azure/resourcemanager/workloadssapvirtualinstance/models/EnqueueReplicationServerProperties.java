@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,41 +20,49 @@ public final class EnqueueReplicationServerProperties implements JsonSerializabl
     /*
      * Defines the type of Enqueue Replication Server.
      */
+    @Generated
     private EnqueueReplicationServerType ersVersion;
 
     /*
      * ERS Instance Number.
      */
+    @Generated
     private String instanceNo;
 
     /*
      * ERS SAP Hostname.
      */
+    @Generated
     private String hostname;
 
     /*
      * ERS SAP Kernel Version.
      */
+    @Generated
     private String kernelVersion;
 
     /*
      * ERS SAP Kernel Patch level.
      */
+    @Generated
     private String kernelPatch;
 
     /*
      * ERS SAP IP Address.
      */
+    @Generated
     private String ipAddress;
 
     /*
      * Defines the health of SAP Instances.
      */
+    @Generated
     private SapHealthState health;
 
     /**
      * Creates an instance of EnqueueReplicationServerProperties class.
      */
+    @Generated
     public EnqueueReplicationServerProperties() {
     }
 
@@ -62,6 +71,7 @@ public final class EnqueueReplicationServerProperties implements JsonSerializabl
      * 
      * @return the ersVersion value.
      */
+    @Generated
     public EnqueueReplicationServerType ersVersion() {
         return this.ersVersion;
     }
@@ -71,6 +81,7 @@ public final class EnqueueReplicationServerProperties implements JsonSerializabl
      * 
      * @return the instanceNo value.
      */
+    @Generated
     public String instanceNo() {
         return this.instanceNo;
     }
@@ -80,6 +91,7 @@ public final class EnqueueReplicationServerProperties implements JsonSerializabl
      * 
      * @return the hostname value.
      */
+    @Generated
     public String hostname() {
         return this.hostname;
     }
@@ -89,6 +101,7 @@ public final class EnqueueReplicationServerProperties implements JsonSerializabl
      * 
      * @return the kernelVersion value.
      */
+    @Generated
     public String kernelVersion() {
         return this.kernelVersion;
     }
@@ -98,6 +111,7 @@ public final class EnqueueReplicationServerProperties implements JsonSerializabl
      * 
      * @return the kernelPatch value.
      */
+    @Generated
     public String kernelPatch() {
         return this.kernelPatch;
     }
@@ -107,6 +121,7 @@ public final class EnqueueReplicationServerProperties implements JsonSerializabl
      * 
      * @return the ipAddress value.
      */
+    @Generated
     public String ipAddress() {
         return this.ipAddress;
     }
@@ -116,6 +131,7 @@ public final class EnqueueReplicationServerProperties implements JsonSerializabl
      * 
      * @return the health value.
      */
+    @Generated
     public SapHealthState health() {
         return this.health;
     }

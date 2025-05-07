@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class AdditionalCapabilities implements JsonSerializable<Additional
      * Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale
      * set only if this property is enabled.
      */
+    @Generated
     private Boolean ultraSSDEnabled;
 
     /*
      * The flag that enables or disables hibernation capability on the VM.
      */
+    @Generated
     private Boolean hibernationEnabled;
 
     /**
      * Creates an instance of AdditionalCapabilities class.
      */
+    @Generated
     public AdditionalCapabilities() {
     }
 
@@ -43,6 +47,7 @@ public final class AdditionalCapabilities implements JsonSerializable<Additional
      * 
      * @return the ultraSSDEnabled value.
      */
+    @Generated
     public Boolean ultraSSDEnabled() {
         return this.ultraSSDEnabled;
     }
@@ -56,6 +61,7 @@ public final class AdditionalCapabilities implements JsonSerializable<Additional
      * @param ultraSSDEnabled the ultraSSDEnabled value to set.
      * @return the AdditionalCapabilities object itself.
      */
+    @Generated
     public AdditionalCapabilities withUltraSSDEnabled(Boolean ultraSSDEnabled) {
         this.ultraSSDEnabled = ultraSSDEnabled;
         return this;
@@ -66,6 +72,7 @@ public final class AdditionalCapabilities implements JsonSerializable<Additional
      * 
      * @return the hibernationEnabled value.
      */
+    @Generated
     public Boolean hibernationEnabled() {
         return this.hibernationEnabled;
     }
@@ -76,6 +83,7 @@ public final class AdditionalCapabilities implements JsonSerializable<Additional
      * @param hibernationEnabled the hibernationEnabled value to set.
      * @return the AdditionalCapabilities object itself.
      */
+    @Generated
     public AdditionalCapabilities withHibernationEnabled(Boolean hibernationEnabled) {
         this.hibernationEnabled = hibernationEnabled;
         return this;

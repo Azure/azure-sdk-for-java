@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.onlineexperimentation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,21 +16,25 @@ public final class OnlineExperimentationWorkspaceSkuTier
     /**
      * The Free service tier.
      */
+    @Generated
     public static final OnlineExperimentationWorkspaceSkuTier FREE = fromString("Free");
 
     /**
      * The Standard service tier.
      */
+    @Generated
     public static final OnlineExperimentationWorkspaceSkuTier STANDARD = fromString("Standard");
 
     /**
      * The Premium service tier.
      */
+    @Generated
     public static final OnlineExperimentationWorkspaceSkuTier PREMIUM = fromString("Premium");
 
     /**
      * The Developer service tier.
      */
+    @Generated
     public static final OnlineExperimentationWorkspaceSkuTier DEVELOPER = fromString("Developer");
 
     /**
@@ -37,6 +42,7 @@ public final class OnlineExperimentationWorkspaceSkuTier
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OnlineExperimentationWorkspaceSkuTier() {
     }
@@ -47,6 +53,7 @@ public final class OnlineExperimentationWorkspaceSkuTier
      * @param name a name to look for.
      * @return the corresponding OnlineExperimentationWorkspaceSkuTier.
      */
+    @Generated
     public static OnlineExperimentationWorkspaceSkuTier fromString(String name) {
         return fromString(name, OnlineExperimentationWorkspaceSkuTier.class);
     }
@@ -56,6 +63,7 @@ public final class OnlineExperimentationWorkspaceSkuTier
      * 
      * @return known OnlineExperimentationWorkspaceSkuTier values.
      */
+    @Generated
     public static Collection<OnlineExperimentationWorkspaceSkuTier> values() {
         return values(OnlineExperimentationWorkspaceSkuTier.class);
     }

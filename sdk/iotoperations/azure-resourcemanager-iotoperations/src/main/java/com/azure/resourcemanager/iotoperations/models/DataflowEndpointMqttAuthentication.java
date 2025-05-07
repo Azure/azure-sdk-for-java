@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,31 +21,37 @@ public final class DataflowEndpointMqttAuthentication implements JsonSerializabl
     /*
      * Mode of Authentication.
      */
+    @Generated
     private MqttAuthMethod method;
 
     /*
      * System-assigned managed identity authentication.
      */
+    @Generated
     private DataflowEndpointAuthenticationSystemAssignedManagedIdentity systemAssignedManagedIdentitySettings;
 
     /*
      * User-assigned managed identity authentication.
      */
+    @Generated
     private DataflowEndpointAuthenticationUserAssignedManagedIdentity userAssignedManagedIdentitySettings;
 
     /*
      * Kubernetes service account token authentication. Default audience if not set is aio-internal
      */
+    @Generated
     private DataflowEndpointAuthenticationServiceAccountToken serviceAccountTokenSettings;
 
     /*
      * X.509 certificate authentication.
      */
+    @Generated
     private DataflowEndpointAuthenticationX509 x509CertificateSettings;
 
     /**
      * Creates an instance of DataflowEndpointMqttAuthentication class.
      */
+    @Generated
     public DataflowEndpointMqttAuthentication() {
     }
 
@@ -53,6 +60,7 @@ public final class DataflowEndpointMqttAuthentication implements JsonSerializabl
      * 
      * @return the method value.
      */
+    @Generated
     public MqttAuthMethod method() {
         return this.method;
     }
@@ -63,6 +71,7 @@ public final class DataflowEndpointMqttAuthentication implements JsonSerializabl
      * @param method the method value to set.
      * @return the DataflowEndpointMqttAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointMqttAuthentication withMethod(MqttAuthMethod method) {
         this.method = method;
         return this;
@@ -73,6 +82,7 @@ public final class DataflowEndpointMqttAuthentication implements JsonSerializabl
      * 
      * @return the systemAssignedManagedIdentitySettings value.
      */
+    @Generated
     public DataflowEndpointAuthenticationSystemAssignedManagedIdentity systemAssignedManagedIdentitySettings() {
         return this.systemAssignedManagedIdentitySettings;
     }
@@ -83,6 +93,7 @@ public final class DataflowEndpointMqttAuthentication implements JsonSerializabl
      * @param systemAssignedManagedIdentitySettings the systemAssignedManagedIdentitySettings value to set.
      * @return the DataflowEndpointMqttAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointMqttAuthentication withSystemAssignedManagedIdentitySettings(
         DataflowEndpointAuthenticationSystemAssignedManagedIdentity systemAssignedManagedIdentitySettings) {
         this.systemAssignedManagedIdentitySettings = systemAssignedManagedIdentitySettings;
@@ -94,6 +105,7 @@ public final class DataflowEndpointMqttAuthentication implements JsonSerializabl
      * 
      * @return the userAssignedManagedIdentitySettings value.
      */
+    @Generated
     public DataflowEndpointAuthenticationUserAssignedManagedIdentity userAssignedManagedIdentitySettings() {
         return this.userAssignedManagedIdentitySettings;
     }
@@ -104,6 +116,7 @@ public final class DataflowEndpointMqttAuthentication implements JsonSerializabl
      * @param userAssignedManagedIdentitySettings the userAssignedManagedIdentitySettings value to set.
      * @return the DataflowEndpointMqttAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointMqttAuthentication withUserAssignedManagedIdentitySettings(
         DataflowEndpointAuthenticationUserAssignedManagedIdentity userAssignedManagedIdentitySettings) {
         this.userAssignedManagedIdentitySettings = userAssignedManagedIdentitySettings;
@@ -116,6 +129,7 @@ public final class DataflowEndpointMqttAuthentication implements JsonSerializabl
      * 
      * @return the serviceAccountTokenSettings value.
      */
+    @Generated
     public DataflowEndpointAuthenticationServiceAccountToken serviceAccountTokenSettings() {
         return this.serviceAccountTokenSettings;
     }
@@ -127,6 +141,7 @@ public final class DataflowEndpointMqttAuthentication implements JsonSerializabl
      * @param serviceAccountTokenSettings the serviceAccountTokenSettings value to set.
      * @return the DataflowEndpointMqttAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointMqttAuthentication
         withServiceAccountTokenSettings(DataflowEndpointAuthenticationServiceAccountToken serviceAccountTokenSettings) {
         this.serviceAccountTokenSettings = serviceAccountTokenSettings;
@@ -138,6 +153,7 @@ public final class DataflowEndpointMqttAuthentication implements JsonSerializabl
      * 
      * @return the x509CertificateSettings value.
      */
+    @Generated
     public DataflowEndpointAuthenticationX509 x509CertificateSettings() {
         return this.x509CertificateSettings;
     }
@@ -148,6 +164,7 @@ public final class DataflowEndpointMqttAuthentication implements JsonSerializabl
      * @param x509CertificateSettings the x509CertificateSettings value to set.
      * @return the DataflowEndpointMqttAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointMqttAuthentication
         withX509CertificateSettings(DataflowEndpointAuthenticationX509 x509CertificateSettings) {
         this.x509CertificateSettings = x509CertificateSettings;

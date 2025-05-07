@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.durabletask.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class SchedulerSkuUpdate implements JsonSerializable<SchedulerSkuUp
     /*
      * The name of the SKU
      */
+    @Generated
     private String name;
 
     /*
      * The SKU capacity. This allows scale out/in for the resource and impacts zone redundancy
      */
+    @Generated
     private Integer capacity;
 
     /*
      * Indicates whether the current SKU configuration is zone redundant
      */
+    @Generated
     private RedundancyState redundancyState;
 
     /**
      * Creates an instance of SchedulerSkuUpdate class.
      */
+    @Generated
     public SchedulerSkuUpdate() {
     }
 
@@ -42,6 +47,7 @@ public final class SchedulerSkuUpdate implements JsonSerializable<SchedulerSkuUp
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -52,6 +58,7 @@ public final class SchedulerSkuUpdate implements JsonSerializable<SchedulerSkuUp
      * @param name the name value to set.
      * @return the SchedulerSkuUpdate object itself.
      */
+    @Generated
     public SchedulerSkuUpdate withName(String name) {
         this.name = name;
         return this;
@@ -63,6 +70,7 @@ public final class SchedulerSkuUpdate implements JsonSerializable<SchedulerSkuUp
      * 
      * @return the capacity value.
      */
+    @Generated
     public Integer capacity() {
         return this.capacity;
     }
@@ -74,6 +82,7 @@ public final class SchedulerSkuUpdate implements JsonSerializable<SchedulerSkuUp
      * @param capacity the capacity value to set.
      * @return the SchedulerSkuUpdate object itself.
      */
+    @Generated
     public SchedulerSkuUpdate withCapacity(Integer capacity) {
         this.capacity = capacity;
         return this;
@@ -84,6 +93,7 @@ public final class SchedulerSkuUpdate implements JsonSerializable<SchedulerSkuUp
      * 
      * @return the redundancyState value.
      */
+    @Generated
     public RedundancyState redundancyState() {
         return this.redundancyState;
     }

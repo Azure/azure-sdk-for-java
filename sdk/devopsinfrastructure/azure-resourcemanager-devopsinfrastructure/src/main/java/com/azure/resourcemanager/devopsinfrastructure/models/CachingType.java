@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class CachingType extends ExpandableStringEnum<CachingType> {
     /**
      * Don't use host caching.
      */
+    @Generated
     public static final CachingType NONE = fromString("None");
 
     /**
      * For workloads that only do read operations.
      */
+    @Generated
     public static final CachingType READ_ONLY = fromString("ReadOnly");
 
     /**
      * For workloads that do a balance of read and write operations.
      */
+    @Generated
     public static final CachingType READ_WRITE = fromString("ReadWrite");
 
     /**
@@ -31,6 +35,7 @@ public final class CachingType extends ExpandableStringEnum<CachingType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CachingType() {
     }
@@ -41,6 +46,7 @@ public final class CachingType extends ExpandableStringEnum<CachingType> {
      * @param name a name to look for.
      * @return the corresponding CachingType.
      */
+    @Generated
     public static CachingType fromString(String name) {
         return fromString(name, CachingType.class);
     }
@@ -50,6 +56,7 @@ public final class CachingType extends ExpandableStringEnum<CachingType> {
      * 
      * @return known CachingType values.
      */
+    @Generated
     public static Collection<CachingType> values() {
         return values(CachingType.class);
     }

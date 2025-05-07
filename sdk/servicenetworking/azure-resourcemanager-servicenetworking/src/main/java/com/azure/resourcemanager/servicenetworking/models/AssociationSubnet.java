@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class AssociationSubnet implements JsonSerializable<AssociationSubn
     /*
      * Association ID.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of AssociationSubnet class.
      */
+    @Generated
     public AssociationSubnet() {
     }
 
@@ -33,6 +36,7 @@ public final class AssociationSubnet implements JsonSerializable<AssociationSubn
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }
@@ -43,6 +47,7 @@ public final class AssociationSubnet implements JsonSerializable<AssociationSubn
      * @param id the id value to set.
      * @return the AssociationSubnet object itself.
      */
+    @Generated
     public AssociationSubnet withId(String id) {
         this.id = id;
         return this;

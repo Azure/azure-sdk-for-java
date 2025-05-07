@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,26 +22,31 @@ public final class BrokerListenerProperties implements JsonSerializable<BrokerLi
     /*
      * Kubernetes Service name of this listener.
      */
+    @Generated
     private String serviceName;
 
     /*
      * Ports on which this listener accepts client connections.
      */
+    @Generated
     private List<ListenerPort> ports;
 
     /*
      * Kubernetes Service type of this listener.
      */
+    @Generated
     private ServiceType serviceType;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of BrokerListenerProperties class.
      */
+    @Generated
     public BrokerListenerProperties() {
     }
 
@@ -49,6 +55,7 @@ public final class BrokerListenerProperties implements JsonSerializable<BrokerLi
      * 
      * @return the serviceName value.
      */
+    @Generated
     public String serviceName() {
         return this.serviceName;
     }
@@ -59,6 +66,7 @@ public final class BrokerListenerProperties implements JsonSerializable<BrokerLi
      * @param serviceName the serviceName value to set.
      * @return the BrokerListenerProperties object itself.
      */
+    @Generated
     public BrokerListenerProperties withServiceName(String serviceName) {
         this.serviceName = serviceName;
         return this;
@@ -69,6 +77,7 @@ public final class BrokerListenerProperties implements JsonSerializable<BrokerLi
      * 
      * @return the ports value.
      */
+    @Generated
     public List<ListenerPort> ports() {
         return this.ports;
     }
@@ -79,6 +88,7 @@ public final class BrokerListenerProperties implements JsonSerializable<BrokerLi
      * @param ports the ports value to set.
      * @return the BrokerListenerProperties object itself.
      */
+    @Generated
     public BrokerListenerProperties withPorts(List<ListenerPort> ports) {
         this.ports = ports;
         return this;
@@ -89,6 +99,7 @@ public final class BrokerListenerProperties implements JsonSerializable<BrokerLi
      * 
      * @return the serviceType value.
      */
+    @Generated
     public ServiceType serviceType() {
         return this.serviceType;
     }
@@ -99,6 +110,7 @@ public final class BrokerListenerProperties implements JsonSerializable<BrokerLi
      * @param serviceType the serviceType value to set.
      * @return the BrokerListenerProperties object itself.
      */
+    @Generated
     public BrokerListenerProperties withServiceType(ServiceType serviceType) {
         this.serviceType = serviceType;
         return this;
@@ -109,6 +121,7 @@ public final class BrokerListenerProperties implements JsonSerializable<BrokerLi
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

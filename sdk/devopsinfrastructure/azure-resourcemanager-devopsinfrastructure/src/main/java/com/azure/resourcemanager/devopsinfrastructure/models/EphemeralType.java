@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class EphemeralType extends ExpandableStringEnum<EphemeralType> {
     /**
      * Ephemeral is handled by Managed DevOps Pools service.
      */
+    @Generated
     public static final EphemeralType AUTOMATIC = fromString("Automatic");
 
     /**
      * CacheDisk ephemeral only, requires that the SKU has a cache that is large enough for the image.
      */
+    @Generated
     public static final EphemeralType CACHE_DISK = fromString("CacheDisk");
 
     /**
      * ResourceDisk ephemeral only, requires only that the SKU supports it.
      */
+    @Generated
     public static final EphemeralType RESOURCE_DISK = fromString("ResourceDisk");
 
     /**
@@ -31,6 +35,7 @@ public final class EphemeralType extends ExpandableStringEnum<EphemeralType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public EphemeralType() {
     }
@@ -41,6 +46,7 @@ public final class EphemeralType extends ExpandableStringEnum<EphemeralType> {
      * @param name a name to look for.
      * @return the corresponding EphemeralType.
      */
+    @Generated
     public static EphemeralType fromString(String name) {
         return fromString(name, EphemeralType.class);
     }
@@ -50,6 +56,7 @@ public final class EphemeralType extends ExpandableStringEnum<EphemeralType> {
      * 
      * @return known EphemeralType values.
      */
+    @Generated
     public static Collection<EphemeralType> values() {
         return values(EphemeralType.class);
     }

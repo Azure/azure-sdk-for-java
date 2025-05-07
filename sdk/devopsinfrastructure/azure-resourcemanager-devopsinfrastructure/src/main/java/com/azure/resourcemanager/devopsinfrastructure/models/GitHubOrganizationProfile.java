@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class GitHubOrganizationProfile extends OrganizationProfile {
     /*
      * Discriminator property for OrganizationProfile.
      */
+    @Generated
     private String kind = "GitHub";
 
     /*
      * The list of GitHub organizations/repositories the pool should be present in.
      */
+    @Generated
     private List<GitHubOrganization> organizations;
 
     /**
      * Creates an instance of GitHubOrganizationProfile class.
      */
+    @Generated
     public GitHubOrganizationProfile() {
     }
 
@@ -38,6 +42,7 @@ public final class GitHubOrganizationProfile extends OrganizationProfile {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public String kind() {
         return this.kind;
@@ -48,6 +53,7 @@ public final class GitHubOrganizationProfile extends OrganizationProfile {
      * 
      * @return the organizations value.
      */
+    @Generated
     public List<GitHubOrganization> organizations() {
         return this.organizations;
     }
@@ -58,6 +64,7 @@ public final class GitHubOrganizationProfile extends OrganizationProfile {
      * @param organizations the organizations value to set.
      * @return the GitHubOrganizationProfile object itself.
      */
+    @Generated
     public GitHubOrganizationProfile withOrganizations(List<GitHubOrganization> organizations) {
         this.organizations = organizations;
         return this;

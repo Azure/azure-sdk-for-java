@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class ResourceSkuRestrictionInfo implements JsonSerializable<Resour
     /*
      * Locations where the SKU is restricted
      */
+    @Generated
     private List<String> locations;
 
     /*
      * List of availability zones where the SKU is restricted.
      */
+    @Generated
     private List<String> zones;
 
     /**
      * Creates an instance of ResourceSkuRestrictionInfo class.
      */
+    @Generated
     private ResourceSkuRestrictionInfo() {
     }
 
@@ -38,6 +42,7 @@ public final class ResourceSkuRestrictionInfo implements JsonSerializable<Resour
      * 
      * @return the locations value.
      */
+    @Generated
     public List<String> locations() {
         return this.locations;
     }
@@ -47,6 +52,7 @@ public final class ResourceSkuRestrictionInfo implements JsonSerializable<Resour
      * 
      * @return the zones value.
      */
+    @Generated
     public List<String> zones() {
         return this.zones;
     }

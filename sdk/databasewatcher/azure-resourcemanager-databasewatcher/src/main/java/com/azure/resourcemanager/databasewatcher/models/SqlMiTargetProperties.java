@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,27 +20,32 @@ public final class SqlMiTargetProperties extends TargetProperties {
     /*
      * Discriminator property for TargetProperties.
      */
+    @Generated
     private String targetType = "SqlMi";
 
     /*
      * The Azure resource ID of an Azure SQL Managed Instance target.
      */
+    @Generated
     private String sqlMiResourceId;
 
     /*
      * The TCP port number to optionally use in the connection string when connecting to an Azure SQL Managed Instance
      * target.
      */
+    @Generated
     private Integer connectionTcpPort;
 
     /*
      * Set to true to monitor a high availability replica of specified target, if any.
      */
+    @Generated
     private Boolean readIntent;
 
     /**
      * Creates an instance of SqlMiTargetProperties class.
      */
+    @Generated
     public SqlMiTargetProperties() {
     }
 
@@ -48,6 +54,7 @@ public final class SqlMiTargetProperties extends TargetProperties {
      * 
      * @return the targetType value.
      */
+    @Generated
     @Override
     public String targetType() {
         return this.targetType;
@@ -58,6 +65,7 @@ public final class SqlMiTargetProperties extends TargetProperties {
      * 
      * @return the sqlMiResourceId value.
      */
+    @Generated
     public String sqlMiResourceId() {
         return this.sqlMiResourceId;
     }
@@ -68,6 +76,7 @@ public final class SqlMiTargetProperties extends TargetProperties {
      * @param sqlMiResourceId the sqlMiResourceId value to set.
      * @return the SqlMiTargetProperties object itself.
      */
+    @Generated
     public SqlMiTargetProperties withSqlMiResourceId(String sqlMiResourceId) {
         this.sqlMiResourceId = sqlMiResourceId;
         return this;
@@ -79,6 +88,7 @@ public final class SqlMiTargetProperties extends TargetProperties {
      * 
      * @return the connectionTcpPort value.
      */
+    @Generated
     public Integer connectionTcpPort() {
         return this.connectionTcpPort;
     }
@@ -90,6 +100,7 @@ public final class SqlMiTargetProperties extends TargetProperties {
      * @param connectionTcpPort the connectionTcpPort value to set.
      * @return the SqlMiTargetProperties object itself.
      */
+    @Generated
     public SqlMiTargetProperties withConnectionTcpPort(Integer connectionTcpPort) {
         this.connectionTcpPort = connectionTcpPort;
         return this;
@@ -100,6 +111,7 @@ public final class SqlMiTargetProperties extends TargetProperties {
      * 
      * @return the readIntent value.
      */
+    @Generated
     public Boolean readIntent() {
         return this.readIntent;
     }
@@ -110,6 +122,7 @@ public final class SqlMiTargetProperties extends TargetProperties {
      * @param readIntent the readIntent value to set.
      * @return the SqlMiTargetProperties object itself.
      */
+    @Generated
     public SqlMiTargetProperties withReadIntent(Boolean readIntent) {
         this.readIntent = readIntent;
         return this;
@@ -118,6 +131,7 @@ public final class SqlMiTargetProperties extends TargetProperties {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlMiTargetProperties withTargetAuthenticationType(TargetAuthenticationType targetAuthenticationType) {
         super.withTargetAuthenticationType(targetAuthenticationType);
@@ -127,6 +141,7 @@ public final class SqlMiTargetProperties extends TargetProperties {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlMiTargetProperties withTargetVault(VaultSecret targetVault) {
         super.withTargetVault(targetVault);
@@ -136,6 +151,7 @@ public final class SqlMiTargetProperties extends TargetProperties {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlMiTargetProperties withConnectionServerName(String connectionServerName) {
         super.withConnectionServerName(connectionServerName);

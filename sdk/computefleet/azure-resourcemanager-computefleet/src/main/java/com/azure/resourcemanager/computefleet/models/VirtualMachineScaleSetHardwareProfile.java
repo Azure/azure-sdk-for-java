@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,11 +23,13 @@ public final class VirtualMachineScaleSetHardwareProfile
      * Minimum api-version: 2021-11-01. Please follow the instructions in [VM
      * Customization](https://aka.ms/vmcustomization) for more details.
      */
+    @Generated
     private VMSizeProperties vmSizeProperties;
 
     /**
      * Creates an instance of VirtualMachineScaleSetHardwareProfile class.
      */
+    @Generated
     public VirtualMachineScaleSetHardwareProfile() {
     }
 
@@ -37,6 +40,7 @@ public final class VirtualMachineScaleSetHardwareProfile
      * 
      * @return the vmSizeProperties value.
      */
+    @Generated
     public VMSizeProperties vmSizeProperties() {
         return this.vmSizeProperties;
     }
@@ -49,6 +53,7 @@ public final class VirtualMachineScaleSetHardwareProfile
      * @param vmSizeProperties the vmSizeProperties value to set.
      * @return the VirtualMachineScaleSetHardwareProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetHardwareProfile withVmSizeProperties(VMSizeProperties vmSizeProperties) {
         this.vmSizeProperties = vmSizeProperties;
         return this;

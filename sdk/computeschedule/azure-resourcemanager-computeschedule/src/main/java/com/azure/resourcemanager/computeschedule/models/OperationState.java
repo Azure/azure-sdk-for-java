@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,46 +15,55 @@ public final class OperationState extends ExpandableStringEnum<OperationState> {
     /**
      * The default value for the operation state enum.
      */
+    @Generated
     public static final OperationState UNKNOWN = fromString("Unknown");
 
     /**
      * Operations that are pending scheduling.
      */
+    @Generated
     public static final OperationState PENDING_SCHEDULING = fromString("PendingScheduling");
 
     /**
      * Operations that have been scheduled.
      */
+    @Generated
     public static final OperationState SCHEDULED = fromString("Scheduled");
 
     /**
      * Operations that are waiting to be executed.
      */
+    @Generated
     public static final OperationState PENDING_EXECUTION = fromString("PendingExecution");
 
     /**
      * Operations that are in the process of being executed.
      */
+    @Generated
     public static final OperationState EXECUTING = fromString("Executing");
 
     /**
      * Operations that suceeded.
      */
+    @Generated
     public static final OperationState SUCCEEDED = fromString("Succeeded");
 
     /**
      * Operations that have failed.
      */
+    @Generated
     public static final OperationState FAILED = fromString("Failed");
 
     /**
      * Operations that have been Cancelled by the user.
      */
+    @Generated
     public static final OperationState CANCELLED = fromString("Cancelled");
 
     /**
      * Operations that are blocked.
      */
+    @Generated
     public static final OperationState BLOCKED = fromString("Blocked");
 
     /**
@@ -61,6 +71,7 @@ public final class OperationState extends ExpandableStringEnum<OperationState> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OperationState() {
     }
@@ -71,6 +82,7 @@ public final class OperationState extends ExpandableStringEnum<OperationState> {
      * @param name a name to look for.
      * @return the corresponding OperationState.
      */
+    @Generated
     public static OperationState fromString(String name) {
         return fromString(name, OperationState.class);
     }
@@ -80,6 +92,7 @@ public final class OperationState extends ExpandableStringEnum<OperationState> {
      * 
      * @return known OperationState values.
      */
+    @Generated
     public static Collection<OperationState> values() {
         return values(OperationState.class);
     }

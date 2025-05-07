@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
     /*
      * The virtual machine size.
      */
+    @Generated
     private String vmSize;
 
     /*
      * The image reference.
      */
+    @Generated
     private ImageReference imageReference;
 
     /*
      * The OS profile.
      */
+    @Generated
     private OSProfile osProfile;
 
     /**
      * Creates an instance of VirtualMachineConfiguration class.
      */
+    @Generated
     public VirtualMachineConfiguration() {
     }
 
@@ -43,6 +48,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * 
      * @return the vmSize value.
      */
+    @Generated
     public String vmSize() {
         return this.vmSize;
     }
@@ -53,6 +59,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * @param vmSize the vmSize value to set.
      * @return the VirtualMachineConfiguration object itself.
      */
+    @Generated
     public VirtualMachineConfiguration withVmSize(String vmSize) {
         this.vmSize = vmSize;
         return this;
@@ -63,6 +70,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * 
      * @return the imageReference value.
      */
+    @Generated
     public ImageReference imageReference() {
         return this.imageReference;
     }
@@ -73,6 +81,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * @param imageReference the imageReference value to set.
      * @return the VirtualMachineConfiguration object itself.
      */
+    @Generated
     public VirtualMachineConfiguration withImageReference(ImageReference imageReference) {
         this.imageReference = imageReference;
         return this;
@@ -83,6 +92,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * 
      * @return the osProfile value.
      */
+    @Generated
     public OSProfile osProfile() {
         return this.osProfile;
     }
@@ -93,6 +103,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachineConfiguration object itself.
      */
+    @Generated
     public VirtualMachineConfiguration withOsProfile(OSProfile osProfile) {
         this.osProfile = osProfile;
         return this;

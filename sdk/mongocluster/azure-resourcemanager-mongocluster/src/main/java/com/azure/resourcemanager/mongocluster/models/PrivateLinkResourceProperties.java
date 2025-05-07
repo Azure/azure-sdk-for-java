@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class PrivateLinkResourceProperties implements JsonSerializable<Pri
     /*
      * The private link resource group id.
      */
+    @Generated
     private String groupId;
 
     /*
      * The private link resource required member names.
      */
+    @Generated
     private List<String> requiredMembers;
 
     /*
      * The private link resource private link DNS zone name.
      */
+    @Generated
     private List<String> requiredZoneNames;
 
     /**
      * Creates an instance of PrivateLinkResourceProperties class.
      */
+    @Generated
     private PrivateLinkResourceProperties() {
     }
 
@@ -43,6 +48,7 @@ public final class PrivateLinkResourceProperties implements JsonSerializable<Pri
      * 
      * @return the groupId value.
      */
+    @Generated
     public String groupId() {
         return this.groupId;
     }
@@ -52,6 +58,7 @@ public final class PrivateLinkResourceProperties implements JsonSerializable<Pri
      * 
      * @return the requiredMembers value.
      */
+    @Generated
     public List<String> requiredMembers() {
         return this.requiredMembers;
     }
@@ -61,6 +68,7 @@ public final class PrivateLinkResourceProperties implements JsonSerializable<Pri
      * 
      * @return the requiredZoneNames value.
      */
+    @Generated
     public List<String> requiredZoneNames() {
         return this.requiredZoneNames;
     }

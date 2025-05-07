@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceregistry.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,16 +23,19 @@ public final class BillingContainerListResult implements JsonSerializable<Billin
     /*
      * The BillingContainer items on this page
      */
+    @Generated
     private List<BillingContainerInner> value;
 
     /*
      * The link to the next page of items
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of BillingContainerListResult class.
      */
+    @Generated
     private BillingContainerListResult() {
     }
 
@@ -40,6 +44,7 @@ public final class BillingContainerListResult implements JsonSerializable<Billin
      * 
      * @return the value value.
      */
+    @Generated
     public List<BillingContainerInner> value() {
         return this.value;
     }
@@ -49,6 +54,7 @@ public final class BillingContainerListResult implements JsonSerializable<Billin
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String nextLink() {
         return this.nextLink;
     }

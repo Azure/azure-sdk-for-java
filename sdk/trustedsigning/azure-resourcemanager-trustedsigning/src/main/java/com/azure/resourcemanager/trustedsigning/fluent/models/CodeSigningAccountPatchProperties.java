@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.trustedsigning.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class CodeSigningAccountPatchProperties implements JsonSerializable
     /*
      * SKU of the trusted signing account.
      */
+    @Generated
     private AccountSkuPatch sku;
 
     /**
      * Creates an instance of CodeSigningAccountPatchProperties class.
      */
+    @Generated
     public CodeSigningAccountPatchProperties() {
     }
 
@@ -33,6 +36,7 @@ public final class CodeSigningAccountPatchProperties implements JsonSerializable
      * 
      * @return the sku value.
      */
+    @Generated
     public AccountSkuPatch sku() {
         return this.sku;
     }
@@ -43,6 +47,7 @@ public final class CodeSigningAccountPatchProperties implements JsonSerializable
      * @param sku the sku value to set.
      * @return the CodeSigningAccountPatchProperties object itself.
      */
+    @Generated
     public CodeSigningAccountPatchProperties withSku(AccountSkuPatch sku) {
         this.sku = sku;
         return this;

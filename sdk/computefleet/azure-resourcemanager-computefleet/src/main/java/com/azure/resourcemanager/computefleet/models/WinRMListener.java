@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,6 +21,7 @@ public final class WinRMListener implements JsonSerializable<WinRMListener> {
      * Specifies the protocol of WinRM listener. Possible values are: **http,**
      * **https.**
      */
+    @Generated
     private ProtocolTypes protocol;
 
     /*
@@ -37,11 +39,13 @@ public final class WinRMListener implements JsonSerializable<WinRMListener> {
      * or the [Azure Key Vault virtual machine extension for
      * Windows](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      */
+    @Generated
     private String certificateUrl;
 
     /**
      * Creates an instance of WinRMListener class.
      */
+    @Generated
     public WinRMListener() {
     }
 
@@ -51,6 +55,7 @@ public final class WinRMListener implements JsonSerializable<WinRMListener> {
      * 
      * @return the protocol value.
      */
+    @Generated
     public ProtocolTypes protocol() {
         return this.protocol;
     }
@@ -62,6 +67,7 @@ public final class WinRMListener implements JsonSerializable<WinRMListener> {
      * @param protocol the protocol value to set.
      * @return the WinRMListener object itself.
      */
+    @Generated
     public WinRMListener withProtocol(ProtocolTypes protocol) {
         this.protocol = protocol;
         return this;
@@ -84,6 +90,7 @@ public final class WinRMListener implements JsonSerializable<WinRMListener> {
      * 
      * @return the certificateUrl value.
      */
+    @Generated
     public String certificateUrl() {
         return this.certificateUrl;
     }
@@ -106,6 +113,7 @@ public final class WinRMListener implements JsonSerializable<WinRMListener> {
      * @param certificateUrl the certificateUrl value to set.
      * @return the WinRMListener object itself.
      */
+    @Generated
     public WinRMListener withCertificateUrl(String certificateUrl) {
         this.certificateUrl = certificateUrl;
         return this;

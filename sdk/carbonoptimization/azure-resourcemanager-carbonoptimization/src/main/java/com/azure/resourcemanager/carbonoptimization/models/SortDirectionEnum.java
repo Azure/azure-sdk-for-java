@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SortDirectionEnum extends ExpandableStringEnum<SortDirectionE
     /**
      * Descending order for query result.
      */
+    @Generated
     public static final SortDirectionEnum DESC = fromString("Desc");
 
     /**
      * Ascending order for query result.
      */
+    @Generated
     public static final SortDirectionEnum ASC = fromString("Asc");
 
     /**
@@ -26,6 +29,7 @@ public final class SortDirectionEnum extends ExpandableStringEnum<SortDirectionE
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SortDirectionEnum() {
     }
@@ -36,6 +40,7 @@ public final class SortDirectionEnum extends ExpandableStringEnum<SortDirectionE
      * @param name a name to look for.
      * @return the corresponding SortDirectionEnum.
      */
+    @Generated
     public static SortDirectionEnum fromString(String name) {
         return fromString(name, SortDirectionEnum.class);
     }
@@ -45,6 +50,7 @@ public final class SortDirectionEnum extends ExpandableStringEnum<SortDirectionE
      * 
      * @return known SortDirectionEnum values.
      */
+    @Generated
     public static Collection<SortDirectionEnum> values() {
         return values(SortDirectionEnum.class);
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class VMGalleryApplication implements JsonSerializable<VMGalleryApp
     /*
      * Optional, Specifies a passthrough value for more generic context.
      */
+    @Generated
     private String tags;
 
     /*
      * Optional, Specifies the order in which the packages have to be installed
      */
+    @Generated
     private Integer order;
 
     /*
@@ -33,29 +36,34 @@ public final class VMGalleryApplication implements JsonSerializable<VMGalleryApp
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{
      * galleryName}/applications/{application}/versions/{version}
      */
+    @Generated
     private String packageReferenceId;
 
     /*
      * Optional, Specifies the uri to an azure blob that will replace the default
      * configuration for the package if provided
      */
+    @Generated
     private String configurationReference;
 
     /*
      * Optional, If true, any failure for any operation in the VmApplication will fail
      * the deployment
      */
+    @Generated
     private Boolean treatFailureAsDeploymentFailure;
 
     /*
      * If set to true, when a new Gallery Application version is available in PIR/SIG,
      * it will be automatically updated for the VM/VMSS
      */
+    @Generated
     private Boolean enableAutomaticUpgrade;
 
     /**
      * Creates an instance of VMGalleryApplication class.
      */
+    @Generated
     public VMGalleryApplication() {
     }
 
@@ -64,6 +72,7 @@ public final class VMGalleryApplication implements JsonSerializable<VMGalleryApp
      * 
      * @return the tags value.
      */
+    @Generated
     public String tags() {
         return this.tags;
     }
@@ -74,6 +83,7 @@ public final class VMGalleryApplication implements JsonSerializable<VMGalleryApp
      * @param tags the tags value to set.
      * @return the VMGalleryApplication object itself.
      */
+    @Generated
     public VMGalleryApplication withTags(String tags) {
         this.tags = tags;
         return this;
@@ -84,6 +94,7 @@ public final class VMGalleryApplication implements JsonSerializable<VMGalleryApp
      * 
      * @return the order value.
      */
+    @Generated
     public Integer order() {
         return this.order;
     }
@@ -94,6 +105,7 @@ public final class VMGalleryApplication implements JsonSerializable<VMGalleryApp
      * @param order the order value to set.
      * @return the VMGalleryApplication object itself.
      */
+    @Generated
     public VMGalleryApplication withOrder(Integer order) {
         this.order = order;
         return this;
@@ -105,6 +117,7 @@ public final class VMGalleryApplication implements JsonSerializable<VMGalleryApp
      * 
      * @return the packageReferenceId value.
      */
+    @Generated
     public String packageReferenceId() {
         return this.packageReferenceId;
     }
@@ -116,6 +129,7 @@ public final class VMGalleryApplication implements JsonSerializable<VMGalleryApp
      * @param packageReferenceId the packageReferenceId value to set.
      * @return the VMGalleryApplication object itself.
      */
+    @Generated
     public VMGalleryApplication withPackageReferenceId(String packageReferenceId) {
         this.packageReferenceId = packageReferenceId;
         return this;
@@ -128,6 +142,7 @@ public final class VMGalleryApplication implements JsonSerializable<VMGalleryApp
      * 
      * @return the configurationReference value.
      */
+    @Generated
     public String configurationReference() {
         return this.configurationReference;
     }
@@ -140,6 +155,7 @@ public final class VMGalleryApplication implements JsonSerializable<VMGalleryApp
      * @param configurationReference the configurationReference value to set.
      * @return the VMGalleryApplication object itself.
      */
+    @Generated
     public VMGalleryApplication withConfigurationReference(String configurationReference) {
         this.configurationReference = configurationReference;
         return this;
@@ -152,6 +168,7 @@ public final class VMGalleryApplication implements JsonSerializable<VMGalleryApp
      * 
      * @return the treatFailureAsDeploymentFailure value.
      */
+    @Generated
     public Boolean treatFailureAsDeploymentFailure() {
         return this.treatFailureAsDeploymentFailure;
     }
@@ -164,6 +181,7 @@ public final class VMGalleryApplication implements JsonSerializable<VMGalleryApp
      * @param treatFailureAsDeploymentFailure the treatFailureAsDeploymentFailure value to set.
      * @return the VMGalleryApplication object itself.
      */
+    @Generated
     public VMGalleryApplication withTreatFailureAsDeploymentFailure(Boolean treatFailureAsDeploymentFailure) {
         this.treatFailureAsDeploymentFailure = treatFailureAsDeploymentFailure;
         return this;
@@ -176,6 +194,7 @@ public final class VMGalleryApplication implements JsonSerializable<VMGalleryApp
      * 
      * @return the enableAutomaticUpgrade value.
      */
+    @Generated
     public Boolean enableAutomaticUpgrade() {
         return this.enableAutomaticUpgrade;
     }
@@ -188,6 +207,7 @@ public final class VMGalleryApplication implements JsonSerializable<VMGalleryApp
      * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
      * @return the VMGalleryApplication object itself.
      */
+    @Generated
     public VMGalleryApplication withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
         this.enableAutomaticUpgrade = enableAutomaticUpgrade;
         return this;

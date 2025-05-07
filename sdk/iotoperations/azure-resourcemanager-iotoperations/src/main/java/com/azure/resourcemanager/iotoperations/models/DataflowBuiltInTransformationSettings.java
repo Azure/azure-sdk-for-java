@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,31 +22,37 @@ public final class DataflowBuiltInTransformationSettings
     /*
      * Serialization format. Optional; defaults to JSON. Allowed value JSON Schema/draft-7, Parquet. Default: Json
      */
+    @Generated
     private TransformationSerializationFormat serializationFormat;
 
     /*
      * Reference to the schema that describes the output of the transformation.
      */
+    @Generated
     private String schemaRef;
 
     /*
      * Enrich data from Broker State Store. Dataset references a key in Broker State Store.
      */
+    @Generated
     private List<DataflowBuiltInTransformationDataset> datasets;
 
     /*
      * Filters input record or datapoints based on condition.
      */
+    @Generated
     private List<DataflowBuiltInTransformationFilter> filter;
 
     /*
      * Maps input to output message.
      */
+    @Generated
     private List<DataflowBuiltInTransformationMap> map;
 
     /**
      * Creates an instance of DataflowBuiltInTransformationSettings class.
      */
+    @Generated
     public DataflowBuiltInTransformationSettings() {
     }
 
@@ -55,6 +62,7 @@ public final class DataflowBuiltInTransformationSettings
      * 
      * @return the serializationFormat value.
      */
+    @Generated
     public TransformationSerializationFormat serializationFormat() {
         return this.serializationFormat;
     }
@@ -66,6 +74,7 @@ public final class DataflowBuiltInTransformationSettings
      * @param serializationFormat the serializationFormat value to set.
      * @return the DataflowBuiltInTransformationSettings object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationSettings
         withSerializationFormat(TransformationSerializationFormat serializationFormat) {
         this.serializationFormat = serializationFormat;
@@ -77,6 +86,7 @@ public final class DataflowBuiltInTransformationSettings
      * 
      * @return the schemaRef value.
      */
+    @Generated
     public String schemaRef() {
         return this.schemaRef;
     }
@@ -87,6 +97,7 @@ public final class DataflowBuiltInTransformationSettings
      * @param schemaRef the schemaRef value to set.
      * @return the DataflowBuiltInTransformationSettings object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationSettings withSchemaRef(String schemaRef) {
         this.schemaRef = schemaRef;
         return this;
@@ -97,6 +108,7 @@ public final class DataflowBuiltInTransformationSettings
      * 
      * @return the datasets value.
      */
+    @Generated
     public List<DataflowBuiltInTransformationDataset> datasets() {
         return this.datasets;
     }
@@ -107,6 +119,7 @@ public final class DataflowBuiltInTransformationSettings
      * @param datasets the datasets value to set.
      * @return the DataflowBuiltInTransformationSettings object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationSettings withDatasets(List<DataflowBuiltInTransformationDataset> datasets) {
         this.datasets = datasets;
         return this;
@@ -117,6 +130,7 @@ public final class DataflowBuiltInTransformationSettings
      * 
      * @return the filter value.
      */
+    @Generated
     public List<DataflowBuiltInTransformationFilter> filter() {
         return this.filter;
     }
@@ -127,6 +141,7 @@ public final class DataflowBuiltInTransformationSettings
      * @param filter the filter value to set.
      * @return the DataflowBuiltInTransformationSettings object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationSettings withFilter(List<DataflowBuiltInTransformationFilter> filter) {
         this.filter = filter;
         return this;
@@ -137,6 +152,7 @@ public final class DataflowBuiltInTransformationSettings
      * 
      * @return the map value.
      */
+    @Generated
     public List<DataflowBuiltInTransformationMap> map() {
         return this.map;
     }
@@ -147,6 +163,7 @@ public final class DataflowBuiltInTransformationSettings
      * @param map the map value to set.
      * @return the DataflowBuiltInTransformationSettings object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationSettings withMap(List<DataflowBuiltInTransformationMap> map) {
         this.map = map;
         return this;

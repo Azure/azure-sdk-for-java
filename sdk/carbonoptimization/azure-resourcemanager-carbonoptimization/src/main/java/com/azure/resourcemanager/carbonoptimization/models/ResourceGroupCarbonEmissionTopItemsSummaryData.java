@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -19,31 +20,37 @@ public final class ResourceGroupCarbonEmissionTopItemsSummaryData extends Carbon
     /*
      * The data type of the query result, indicating the format of the returned response.
      */
+    @Generated
     private ResponseDataTypeEnum dataType = ResponseDataTypeEnum.RESOURCE_GROUP_TOP_ITEMS_SUMMARY_DATA;
 
     /*
      * The resourceGroup name of the resource for ResourceGroup Category
      */
+    @Generated
     private String itemName;
 
     /*
      * ResourceGroup Item category
      */
+    @Generated
     private CategoryTypeEnum categoryType;
 
     /*
      * Subscription Id
      */
+    @Generated
     private String subscriptionId;
 
     /*
      * Resource Group url, value format is '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroup}'
      */
+    @Generated
     private String resourceGroupUrl;
 
     /**
      * Creates an instance of ResourceGroupCarbonEmissionTopItemsSummaryData class.
      */
+    @Generated
     private ResourceGroupCarbonEmissionTopItemsSummaryData() {
     }
 
@@ -52,6 +59,7 @@ public final class ResourceGroupCarbonEmissionTopItemsSummaryData extends Carbon
      * 
      * @return the dataType value.
      */
+    @Generated
     @Override
     public ResponseDataTypeEnum dataType() {
         return this.dataType;
@@ -62,6 +70,7 @@ public final class ResourceGroupCarbonEmissionTopItemsSummaryData extends Carbon
      * 
      * @return the itemName value.
      */
+    @Generated
     public String itemName() {
         return this.itemName;
     }
@@ -71,6 +80,7 @@ public final class ResourceGroupCarbonEmissionTopItemsSummaryData extends Carbon
      * 
      * @return the categoryType value.
      */
+    @Generated
     public CategoryTypeEnum categoryType() {
         return this.categoryType;
     }
@@ -80,6 +90,7 @@ public final class ResourceGroupCarbonEmissionTopItemsSummaryData extends Carbon
      * 
      * @return the subscriptionId value.
      */
+    @Generated
     public String subscriptionId() {
         return this.subscriptionId;
     }
@@ -90,6 +101,7 @@ public final class ResourceGroupCarbonEmissionTopItemsSummaryData extends Carbon
      * 
      * @return the resourceGroupUrl value.
      */
+    @Generated
     public String resourceGroupUrl() {
         return this.resourceGroupUrl;
     }

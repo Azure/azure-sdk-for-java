@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class EvictionPolicy extends ExpandableStringEnum<EvictionPolicy> {
     /**
      * When evicted, the Spot VM will be deleted and the corresponding capacity will be updated to reflect this.
      */
+    @Generated
     public static final EvictionPolicy DELETE = fromString("Delete");
 
     /**
      * When evicted, the Spot VM will be deallocated/stopped.
      */
+    @Generated
     public static final EvictionPolicy DEALLOCATE = fromString("Deallocate");
 
     /**
@@ -26,6 +29,7 @@ public final class EvictionPolicy extends ExpandableStringEnum<EvictionPolicy> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public EvictionPolicy() {
     }
@@ -36,6 +40,7 @@ public final class EvictionPolicy extends ExpandableStringEnum<EvictionPolicy> {
      * @param name a name to look for.
      * @return the corresponding EvictionPolicy.
      */
+    @Generated
     public static EvictionPolicy fromString(String name) {
         return fromString(name, EvictionPolicy.class);
     }
@@ -45,6 +50,7 @@ public final class EvictionPolicy extends ExpandableStringEnum<EvictionPolicy> {
      * 
      * @return known EvictionPolicy values.
      */
+    @Generated
     public static Collection<EvictionPolicy> values() {
         return values(EvictionPolicy.class);
     }

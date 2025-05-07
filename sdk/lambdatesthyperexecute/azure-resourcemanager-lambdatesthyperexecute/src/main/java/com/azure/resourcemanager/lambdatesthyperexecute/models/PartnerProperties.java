@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.lambdatesthyperexecute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
     /*
      * The number of licenses subscribed
      */
+    @Generated
     private int licensesSubscribed;
 
     /**
      * Creates an instance of PartnerProperties class.
      */
+    @Generated
     public PartnerProperties() {
     }
 
@@ -32,6 +35,7 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
      * 
      * @return the licensesSubscribed value.
      */
+    @Generated
     public int licensesSubscribed() {
         return this.licensesSubscribed;
     }
@@ -42,6 +46,7 @@ public final class PartnerProperties implements JsonSerializable<PartnerProperti
      * @param licensesSubscribed the licensesSubscribed value to set.
      * @return the PartnerProperties object itself.
      */
+    @Generated
     public PartnerProperties withLicensesSubscribed(int licensesSubscribed) {
         this.licensesSubscribed = licensesSubscribed;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class DataflowEndpointLocalStorage implements JsonSerializable<Data
     /*
      * Persistent volume claim name.
      */
+    @Generated
     private String persistentVolumeClaimRef;
 
     /**
      * Creates an instance of DataflowEndpointLocalStorage class.
      */
+    @Generated
     public DataflowEndpointLocalStorage() {
     }
 
@@ -33,6 +36,7 @@ public final class DataflowEndpointLocalStorage implements JsonSerializable<Data
      * 
      * @return the persistentVolumeClaimRef value.
      */
+    @Generated
     public String persistentVolumeClaimRef() {
         return this.persistentVolumeClaimRef;
     }
@@ -43,6 +47,7 @@ public final class DataflowEndpointLocalStorage implements JsonSerializable<Data
      * @param persistentVolumeClaimRef the persistentVolumeClaimRef value to set.
      * @return the DataflowEndpointLocalStorage object itself.
      */
+    @Generated
     public DataflowEndpointLocalStorage withPersistentVolumeClaimRef(String persistentVolumeClaimRef) {
         this.persistentVolumeClaimRef = persistentVolumeClaimRef;
         return this;

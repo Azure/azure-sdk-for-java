@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class Frontend implements JsonSerializable<Frontend> {
     /*
      * The desired number of frontend instances (pods).
      */
+    @Generated
     private int replicas;
 
     /*
      * Number of logical frontend workers per instance (pod).
      */
+    @Generated
     private Integer workers;
 
     /**
      * Creates an instance of Frontend class.
      */
+    @Generated
     public Frontend() {
     }
 
@@ -37,6 +41,7 @@ public final class Frontend implements JsonSerializable<Frontend> {
      * 
      * @return the replicas value.
      */
+    @Generated
     public int replicas() {
         return this.replicas;
     }
@@ -47,6 +52,7 @@ public final class Frontend implements JsonSerializable<Frontend> {
      * @param replicas the replicas value to set.
      * @return the Frontend object itself.
      */
+    @Generated
     public Frontend withReplicas(int replicas) {
         this.replicas = replicas;
         return this;
@@ -57,6 +63,7 @@ public final class Frontend implements JsonSerializable<Frontend> {
      * 
      * @return the workers value.
      */
+    @Generated
     public Integer workers() {
         return this.workers;
     }
@@ -67,6 +74,7 @@ public final class Frontend implements JsonSerializable<Frontend> {
      * @param workers the workers value to set.
      * @return the Frontend object itself.
      */
+    @Generated
     public Frontend withWorkers(Integer workers) {
         this.workers = workers;
         return this;

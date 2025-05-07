@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.trustedsigning.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class RevocationStatus extends ExpandableStringEnum<RevocationStatu
     /**
      * Certificate revocation succeeded.
      */
+    @Generated
     public static final RevocationStatus SUCCEEDED = fromString("Succeeded");
 
     /**
      * Certificate revocation is in progress.
      */
+    @Generated
     public static final RevocationStatus IN_PROGRESS = fromString("InProgress");
 
     /**
      * Certificate revocation failed.
      */
+    @Generated
     public static final RevocationStatus FAILED = fromString("Failed");
 
     /**
@@ -31,6 +35,7 @@ public final class RevocationStatus extends ExpandableStringEnum<RevocationStatu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RevocationStatus() {
     }
@@ -41,6 +46,7 @@ public final class RevocationStatus extends ExpandableStringEnum<RevocationStatu
      * @param name a name to look for.
      * @return the corresponding RevocationStatus.
      */
+    @Generated
     public static RevocationStatus fromString(String name) {
         return fromString(name, RevocationStatus.class);
     }
@@ -50,6 +56,7 @@ public final class RevocationStatus extends ExpandableStringEnum<RevocationStatu
      * 
      * @return known RevocationStatus values.
      */
+    @Generated
     public static Collection<RevocationStatus> values() {
         return values(RevocationStatus.class);
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class UpdateSapVirtualInstanceRequest implements JsonSerializable<U
     /*
      * Gets or sets the Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * Managed service identity (user assigned identities)
      */
+    @Generated
     private SAPVirtualInstanceIdentity identity;
 
     /*
      * The update properties.
      */
+    @Generated
     private UpdateSapVirtualInstanceProperties properties;
 
     /**
      * Creates an instance of UpdateSapVirtualInstanceRequest class.
      */
+    @Generated
     public UpdateSapVirtualInstanceRequest() {
     }
 
@@ -43,6 +48,7 @@ public final class UpdateSapVirtualInstanceRequest implements JsonSerializable<U
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -53,6 +59,7 @@ public final class UpdateSapVirtualInstanceRequest implements JsonSerializable<U
      * @param tags the tags value to set.
      * @return the UpdateSapVirtualInstanceRequest object itself.
      */
+    @Generated
     public UpdateSapVirtualInstanceRequest withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -63,6 +70,7 @@ public final class UpdateSapVirtualInstanceRequest implements JsonSerializable<U
      * 
      * @return the identity value.
      */
+    @Generated
     public SAPVirtualInstanceIdentity identity() {
         return this.identity;
     }
@@ -73,6 +81,7 @@ public final class UpdateSapVirtualInstanceRequest implements JsonSerializable<U
      * @param identity the identity value to set.
      * @return the UpdateSapVirtualInstanceRequest object itself.
      */
+    @Generated
     public UpdateSapVirtualInstanceRequest withIdentity(SAPVirtualInstanceIdentity identity) {
         this.identity = identity;
         return this;
@@ -83,6 +92,7 @@ public final class UpdateSapVirtualInstanceRequest implements JsonSerializable<U
      * 
      * @return the properties value.
      */
+    @Generated
     public UpdateSapVirtualInstanceProperties properties() {
         return this.properties;
     }
@@ -93,6 +103,7 @@ public final class UpdateSapVirtualInstanceRequest implements JsonSerializable<U
      * @param properties the properties value to set.
      * @return the UpdateSapVirtualInstanceRequest object itself.
      */
+    @Generated
     public UpdateSapVirtualInstanceRequest withProperties(UpdateSapVirtualInstanceProperties properties) {
         this.properties = properties;
         return this;

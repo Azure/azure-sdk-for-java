@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,11 +23,13 @@ public final class SapAvailabilityZoneDetailsResultInner
     /*
      * Gets the list of availability zone pairs.
      */
+    @Generated
     private List<SapAvailabilityZonePair> availabilityZonePairs;
 
     /**
      * Creates an instance of SapAvailabilityZoneDetailsResultInner class.
      */
+    @Generated
     private SapAvailabilityZoneDetailsResultInner() {
     }
 
@@ -35,6 +38,7 @@ public final class SapAvailabilityZoneDetailsResultInner
      * 
      * @return the availabilityZonePairs value.
      */
+    @Generated
     public List<SapAvailabilityZonePair> availabilityZonePairs() {
         return this.availabilityZonePairs;
     }

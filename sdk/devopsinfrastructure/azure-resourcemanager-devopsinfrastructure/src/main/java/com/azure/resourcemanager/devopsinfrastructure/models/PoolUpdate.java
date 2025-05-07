@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class PoolUpdate implements JsonSerializable<PoolUpdate> {
     /*
      * The managed service identities assigned to this resource.
      */
+    @Generated
     private ManagedServiceIdentity identity;
 
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private PoolUpdateProperties properties;
 
     /**
      * Creates an instance of PoolUpdate class.
      */
+    @Generated
     public PoolUpdate() {
     }
 
@@ -43,6 +48,7 @@ public final class PoolUpdate implements JsonSerializable<PoolUpdate> {
      * 
      * @return the identity value.
      */
+    @Generated
     public ManagedServiceIdentity identity() {
         return this.identity;
     }
@@ -53,6 +59,7 @@ public final class PoolUpdate implements JsonSerializable<PoolUpdate> {
      * @param identity the identity value to set.
      * @return the PoolUpdate object itself.
      */
+    @Generated
     public PoolUpdate withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
@@ -63,6 +70,7 @@ public final class PoolUpdate implements JsonSerializable<PoolUpdate> {
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -73,6 +81,7 @@ public final class PoolUpdate implements JsonSerializable<PoolUpdate> {
      * @param tags the tags value to set.
      * @return the PoolUpdate object itself.
      */
+    @Generated
     public PoolUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -83,6 +92,7 @@ public final class PoolUpdate implements JsonSerializable<PoolUpdate> {
      * 
      * @return the properties value.
      */
+    @Generated
     public PoolUpdateProperties properties() {
         return this.properties;
     }
@@ -93,6 +103,7 @@ public final class PoolUpdate implements JsonSerializable<PoolUpdate> {
      * @param properties the properties value to set.
      * @return the PoolUpdate object itself.
      */
+    @Generated
     public PoolUpdate withProperties(PoolUpdateProperties properties) {
         this.properties = properties;
         return this;

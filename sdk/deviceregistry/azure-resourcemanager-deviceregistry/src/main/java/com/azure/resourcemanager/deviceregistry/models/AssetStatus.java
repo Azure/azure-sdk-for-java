@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,6 +21,7 @@ public final class AssetStatus implements JsonSerializable<AssetStatus> {
     /*
      * Array object to transfer and persist errors that originate from the Edge.
      */
+    @Generated
     private List<AssetStatusError> errors;
 
     /*
@@ -27,21 +29,25 @@ public final class AssetStatus implements JsonSerializable<AssetStatus> {
      * perspective of the current actual (Edge) state of the Asset. Edge would be the only writer of this value and
      * would sync back up to the cloud. In steady state, this should equal version.
      */
+    @Generated
     private Long version;
 
     /*
      * Array of dataset statuses that describe the status of each dataset.
      */
+    @Generated
     private List<AssetStatusDataset> datasets;
 
     /*
      * Array of event statuses that describe the status of each event.
      */
+    @Generated
     private List<AssetStatusEvent> events;
 
     /**
      * Creates an instance of AssetStatus class.
      */
+    @Generated
     private AssetStatus() {
     }
 
@@ -50,6 +56,7 @@ public final class AssetStatus implements JsonSerializable<AssetStatus> {
      * 
      * @return the errors value.
      */
+    @Generated
     public List<AssetStatusError> errors() {
         return this.errors;
     }
@@ -61,6 +68,7 @@ public final class AssetStatus implements JsonSerializable<AssetStatus> {
      * 
      * @return the version value.
      */
+    @Generated
     public Long version() {
         return this.version;
     }
@@ -70,6 +78,7 @@ public final class AssetStatus implements JsonSerializable<AssetStatus> {
      * 
      * @return the datasets value.
      */
+    @Generated
     public List<AssetStatusDataset> datasets() {
         return this.datasets;
     }
@@ -79,6 +88,7 @@ public final class AssetStatus implements JsonSerializable<AssetStatus> {
      * 
      * @return the events value.
      */
+    @Generated
     public List<AssetStatusEvent> events() {
         return this.events;
     }

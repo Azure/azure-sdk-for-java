@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,17 +16,20 @@ public final class HighAvailabilityMode extends ExpandableStringEnum<HighAvailab
      * High availability mode is disabled. This mode is can see availability impact during faults or maintenance and is
      * not recommended for production.
      */
+    @Generated
     public static final HighAvailabilityMode DISABLED = fromString("Disabled");
 
     /**
      * High availability mode is enabled, where each server in a shard is placed in the same availability zone.
      */
+    @Generated
     public static final HighAvailabilityMode SAME_ZONE = fromString("SameZone");
 
     /**
      * High availability mode is enabled and preferences ZoneRedundant if availability zones capacity is available in
      * the region, otherwise falls-back to provisioning with SameZone.
      */
+    @Generated
     public static final HighAvailabilityMode ZONE_REDUNDANT_PREFERRED = fromString("ZoneRedundantPreferred");
 
     /**
@@ -33,6 +37,7 @@ public final class HighAvailabilityMode extends ExpandableStringEnum<HighAvailab
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public HighAvailabilityMode() {
     }
@@ -43,6 +48,7 @@ public final class HighAvailabilityMode extends ExpandableStringEnum<HighAvailab
      * @param name a name to look for.
      * @return the corresponding HighAvailabilityMode.
      */
+    @Generated
     public static HighAvailabilityMode fromString(String name) {
         return fromString(name, HighAvailabilityMode.class);
     }
@@ -52,6 +58,7 @@ public final class HighAvailabilityMode extends ExpandableStringEnum<HighAvailab
      * 
      * @return known HighAvailabilityMode values.
      */
+    @Generated
     public static Collection<HighAvailabilityMode> values() {
         return values(HighAvailabilityMode.class);
     }

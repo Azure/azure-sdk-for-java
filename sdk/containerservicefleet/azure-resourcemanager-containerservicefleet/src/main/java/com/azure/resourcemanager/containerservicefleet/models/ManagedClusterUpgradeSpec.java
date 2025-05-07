@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class ManagedClusterUpgradeSpec implements JsonSerializable<Managed
     /*
      * ManagedClusterUpgradeType is the type of upgrade to be applied.
      */
+    @Generated
     private ManagedClusterUpgradeType type;
 
     /*
      * The Kubernetes version to upgrade the member clusters to.
      */
+    @Generated
     private String kubernetesVersion;
 
     /**
      * Creates an instance of ManagedClusterUpgradeSpec class.
      */
+    @Generated
     public ManagedClusterUpgradeSpec() {
     }
 
@@ -38,6 +42,7 @@ public final class ManagedClusterUpgradeSpec implements JsonSerializable<Managed
      * 
      * @return the type value.
      */
+    @Generated
     public ManagedClusterUpgradeType type() {
         return this.type;
     }
@@ -48,6 +53,7 @@ public final class ManagedClusterUpgradeSpec implements JsonSerializable<Managed
      * @param type the type value to set.
      * @return the ManagedClusterUpgradeSpec object itself.
      */
+    @Generated
     public ManagedClusterUpgradeSpec withType(ManagedClusterUpgradeType type) {
         this.type = type;
         return this;
@@ -58,6 +64,7 @@ public final class ManagedClusterUpgradeSpec implements JsonSerializable<Managed
      * 
      * @return the kubernetesVersion value.
      */
+    @Generated
     public String kubernetesVersion() {
         return this.kubernetesVersion;
     }
@@ -68,6 +75,7 @@ public final class ManagedClusterUpgradeSpec implements JsonSerializable<Managed
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterUpgradeSpec object itself.
      */
+    @Generated
     public ManagedClusterUpgradeSpec withKubernetesVersion(String kubernetesVersion) {
         this.kubernetesVersion = kubernetesVersion;
         return this;

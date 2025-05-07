@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class TlsCertMethodMode extends ExpandableStringEnum<TlsCertMethodM
     /**
      * Automatic TLS server certificate configuration.
      */
+    @Generated
     public static final TlsCertMethodMode AUTOMATIC = fromString("Automatic");
 
     /**
      * Manual TLS server certificate configuration.
      */
+    @Generated
     public static final TlsCertMethodMode MANUAL = fromString("Manual");
 
     /**
@@ -26,6 +29,7 @@ public final class TlsCertMethodMode extends ExpandableStringEnum<TlsCertMethodM
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TlsCertMethodMode() {
     }
@@ -36,6 +40,7 @@ public final class TlsCertMethodMode extends ExpandableStringEnum<TlsCertMethodM
      * @param name a name to look for.
      * @return the corresponding TlsCertMethodMode.
      */
+    @Generated
     public static TlsCertMethodMode fromString(String name) {
         return fromString(name, TlsCertMethodMode.class);
     }
@@ -45,6 +50,7 @@ public final class TlsCertMethodMode extends ExpandableStringEnum<TlsCertMethodM
      * 
      * @return known TlsCertMethodMode values.
      */
+    @Generated
     public static Collection<TlsCertMethodMode> values() {
         return values(TlsCertMethodMode.class);
     }

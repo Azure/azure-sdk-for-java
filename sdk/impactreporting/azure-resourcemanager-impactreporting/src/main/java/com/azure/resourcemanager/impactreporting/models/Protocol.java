@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.impactreporting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,41 +15,49 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
     /**
      * When communication protocol is TCP.
      */
+    @Generated
     public static final Protocol TCP = fromString("TCP");
 
     /**
      * When communication protocol is UDP.
      */
+    @Generated
     public static final Protocol UDP = fromString("UDP");
 
     /**
      * When communication protocol is HTTP.
      */
+    @Generated
     public static final Protocol HTTP = fromString("HTTP");
 
     /**
      * When communication protocol is HTTPS.
      */
+    @Generated
     public static final Protocol HTTPS = fromString("HTTPS");
 
     /**
      * When communication protocol is RDP.
      */
+    @Generated
     public static final Protocol RDP = fromString("RDP");
 
     /**
      * When communication protocol is FTP.
      */
+    @Generated
     public static final Protocol FTP = fromString("FTP");
 
     /**
      * When communication protocol is SSH.
      */
+    @Generated
     public static final Protocol SSH = fromString("SSH");
 
     /**
      * When communication protocol is Other.
      */
+    @Generated
     public static final Protocol OTHER = fromString("Other");
 
     /**
@@ -56,6 +65,7 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public Protocol() {
     }
@@ -66,6 +76,7 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
      * @param name a name to look for.
      * @return the corresponding Protocol.
      */
+    @Generated
     public static Protocol fromString(String name) {
         return fromString(name, Protocol.class);
     }
@@ -75,6 +86,7 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
      * 
      * @return known Protocol values.
      */
+    @Generated
     public static Collection<Protocol> values() {
         return values(Protocol.class);
     }

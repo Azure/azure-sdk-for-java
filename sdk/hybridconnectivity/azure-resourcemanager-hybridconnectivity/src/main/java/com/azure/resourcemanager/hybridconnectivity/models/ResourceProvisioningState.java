@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class ResourceProvisioningState extends ExpandableStringEnum<Resour
     /**
      * Resource has been created.
      */
+    @Generated
     public static final ResourceProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
      * Resource creation failed.
      */
+    @Generated
     public static final ResourceProvisioningState FAILED = fromString("Failed");
 
     /**
      * Resource creation was canceled.
      */
+    @Generated
     public static final ResourceProvisioningState CANCELED = fromString("Canceled");
 
     /**
@@ -31,6 +35,7 @@ public final class ResourceProvisioningState extends ExpandableStringEnum<Resour
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ResourceProvisioningState() {
     }
@@ -41,6 +46,7 @@ public final class ResourceProvisioningState extends ExpandableStringEnum<Resour
      * @param name a name to look for.
      * @return the corresponding ResourceProvisioningState.
      */
+    @Generated
     public static ResourceProvisioningState fromString(String name) {
         return fromString(name, ResourceProvisioningState.class);
     }
@@ -50,6 +56,7 @@ public final class ResourceProvisioningState extends ExpandableStringEnum<Resour
      * 
      * @return known ResourceProvisioningState values.
      */
+    @Generated
     public static Collection<ResourceProvisioningState> values() {
         return values(ResourceProvisioningState.class);
     }

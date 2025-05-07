@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,6 +22,7 @@ public final class VolumeClaimResourceRequirements implements JsonSerializable<V
      * Limits describes the maximum amount of compute resources allowed. More info:
      * https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
      */
+    @Generated
     private Map<String, String> limits;
 
     /*
@@ -28,11 +30,13 @@ public final class VolumeClaimResourceRequirements implements JsonSerializable<V
      * defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info:
      * https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
      */
+    @Generated
     private Map<String, String> requests;
 
     /**
      * Creates an instance of VolumeClaimResourceRequirements class.
      */
+    @Generated
     public VolumeClaimResourceRequirements() {
     }
 
@@ -42,6 +46,7 @@ public final class VolumeClaimResourceRequirements implements JsonSerializable<V
      * 
      * @return the limits value.
      */
+    @Generated
     public Map<String, String> limits() {
         return this.limits;
     }
@@ -53,6 +58,7 @@ public final class VolumeClaimResourceRequirements implements JsonSerializable<V
      * @param limits the limits value to set.
      * @return the VolumeClaimResourceRequirements object itself.
      */
+    @Generated
     public VolumeClaimResourceRequirements withLimits(Map<String, String> limits) {
         this.limits = limits;
         return this;
@@ -66,6 +72,7 @@ public final class VolumeClaimResourceRequirements implements JsonSerializable<V
      * 
      * @return the requests value.
      */
+    @Generated
     public Map<String, String> requests() {
         return this.requests;
     }
@@ -79,6 +86,7 @@ public final class VolumeClaimResourceRequirements implements JsonSerializable<V
      * @param requests the requests value to set.
      * @return the VolumeClaimResourceRequirements object itself.
      */
+    @Generated
     public VolumeClaimResourceRequirements withRequests(Map<String, String> requests) {
         this.requests = requests;
         return this;

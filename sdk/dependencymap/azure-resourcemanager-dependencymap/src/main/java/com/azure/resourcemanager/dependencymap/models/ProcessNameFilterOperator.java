@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.dependencymap.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ProcessNameFilterOperator extends ExpandableStringEnum<Proces
     /**
      * Operator to include items in the result.
      */
+    @Generated
     public static final ProcessNameFilterOperator CONTAINS = fromString("contains");
 
     /**
      * Operator to exclude items in the result.
      */
+    @Generated
     public static final ProcessNameFilterOperator NOT_CONTAINS = fromString("notContains");
 
     /**
@@ -26,6 +29,7 @@ public final class ProcessNameFilterOperator extends ExpandableStringEnum<Proces
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ProcessNameFilterOperator() {
     }
@@ -36,6 +40,7 @@ public final class ProcessNameFilterOperator extends ExpandableStringEnum<Proces
      * @param name a name to look for.
      * @return the corresponding ProcessNameFilterOperator.
      */
+    @Generated
     public static ProcessNameFilterOperator fromString(String name) {
         return fromString(name, ProcessNameFilterOperator.class);
     }
@@ -45,6 +50,7 @@ public final class ProcessNameFilterOperator extends ExpandableStringEnum<Proces
      * 
      * @return known ProcessNameFilterOperator values.
      */
+    @Generated
     public static Collection<ProcessNameFilterOperator> values() {
         return values(ProcessNameFilterOperator.class);
     }

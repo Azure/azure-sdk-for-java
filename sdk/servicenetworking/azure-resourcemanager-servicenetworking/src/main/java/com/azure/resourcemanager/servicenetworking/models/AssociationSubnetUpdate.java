@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class AssociationSubnetUpdate implements JsonSerializable<Associati
     /*
      * Association ID.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of AssociationSubnetUpdate class.
      */
+    @Generated
     public AssociationSubnetUpdate() {
     }
 
@@ -32,6 +35,7 @@ public final class AssociationSubnetUpdate implements JsonSerializable<Associati
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }
@@ -42,6 +46,7 @@ public final class AssociationSubnetUpdate implements JsonSerializable<Associati
      * @param id the id value to set.
      * @return the AssociationSubnetUpdate object itself.
      */
+    @Generated
     public AssociationSubnetUpdate withId(String id) {
         this.id = id;
         return this;

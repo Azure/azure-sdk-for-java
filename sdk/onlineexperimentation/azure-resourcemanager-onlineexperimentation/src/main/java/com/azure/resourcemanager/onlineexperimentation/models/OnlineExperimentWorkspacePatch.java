@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.onlineexperimentation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class OnlineExperimentWorkspacePatch implements JsonSerializable<On
     /*
      * The managed service identities assigned to this resource.
      */
+    @Generated
     private ManagedServiceIdentity identity;
 
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The SKU (Stock Keeping Unit) assigned to this resource.
      */
+    @Generated
     private OnlineExperimentationWorkspaceSku sku;
 
     /*
      * Updatable properties of the online experiment workspace resource.
      */
+    @Generated
     private OnlineExperimentWorkspacePatchProperties properties;
 
     /**
      * Creates an instance of OnlineExperimentWorkspacePatch class.
      */
+    @Generated
     public OnlineExperimentWorkspacePatch() {
     }
 
@@ -48,6 +54,7 @@ public final class OnlineExperimentWorkspacePatch implements JsonSerializable<On
      * 
      * @return the identity value.
      */
+    @Generated
     public ManagedServiceIdentity identity() {
         return this.identity;
     }
@@ -58,6 +65,7 @@ public final class OnlineExperimentWorkspacePatch implements JsonSerializable<On
      * @param identity the identity value to set.
      * @return the OnlineExperimentWorkspacePatch object itself.
      */
+    @Generated
     public OnlineExperimentWorkspacePatch withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
@@ -68,6 +76,7 @@ public final class OnlineExperimentWorkspacePatch implements JsonSerializable<On
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -78,6 +87,7 @@ public final class OnlineExperimentWorkspacePatch implements JsonSerializable<On
      * @param tags the tags value to set.
      * @return the OnlineExperimentWorkspacePatch object itself.
      */
+    @Generated
     public OnlineExperimentWorkspacePatch withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -88,6 +98,7 @@ public final class OnlineExperimentWorkspacePatch implements JsonSerializable<On
      * 
      * @return the sku value.
      */
+    @Generated
     public OnlineExperimentationWorkspaceSku sku() {
         return this.sku;
     }
@@ -98,6 +109,7 @@ public final class OnlineExperimentWorkspacePatch implements JsonSerializable<On
      * @param sku the sku value to set.
      * @return the OnlineExperimentWorkspacePatch object itself.
      */
+    @Generated
     public OnlineExperimentWorkspacePatch withSku(OnlineExperimentationWorkspaceSku sku) {
         this.sku = sku;
         return this;
@@ -108,6 +120,7 @@ public final class OnlineExperimentWorkspacePatch implements JsonSerializable<On
      * 
      * @return the properties value.
      */
+    @Generated
     public OnlineExperimentWorkspacePatchProperties properties() {
         return this.properties;
     }
@@ -118,6 +131,7 @@ public final class OnlineExperimentWorkspacePatch implements JsonSerializable<On
      * @param properties the properties value to set.
      * @return the OnlineExperimentWorkspacePatch object itself.
      */
+    @Generated
     public OnlineExperimentWorkspacePatch withProperties(OnlineExperimentWorkspacePatchProperties properties) {
         this.properties = properties;
         return this;

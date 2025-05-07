@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
     /*
      * The subnet id on which to put all machines created in the pool.
      */
+    @Generated
     private String subnetId;
 
     /**
      * Creates an instance of NetworkProfile class.
      */
+    @Generated
     public NetworkProfile() {
     }
 
@@ -33,6 +36,7 @@ public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
      * 
      * @return the subnetId value.
      */
+    @Generated
     public String subnetId() {
         return this.subnetId;
     }
@@ -43,6 +47,7 @@ public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
      * @param subnetId the subnetId value to set.
      * @return the NetworkProfile object itself.
      */
+    @Generated
     public NetworkProfile withSubnetId(String subnetId) {
         this.subnetId = subnetId;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databasewatcher.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class DatabaseWatcherProvisioningState extends ExpandableStringEnum
     /**
      * Resource has been created.
      */
+    @Generated
     public static final DatabaseWatcherProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
      * Resource creation failed.
      */
+    @Generated
     public static final DatabaseWatcherProvisioningState FAILED = fromString("Failed");
 
     /**
      * Resource creation was canceled.
      */
+    @Generated
     public static final DatabaseWatcherProvisioningState CANCELED = fromString("Canceled");
 
     /**
@@ -31,6 +35,7 @@ public final class DatabaseWatcherProvisioningState extends ExpandableStringEnum
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DatabaseWatcherProvisioningState() {
     }
@@ -41,6 +46,7 @@ public final class DatabaseWatcherProvisioningState extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding DatabaseWatcherProvisioningState.
      */
+    @Generated
     public static DatabaseWatcherProvisioningState fromString(String name) {
         return fromString(name, DatabaseWatcherProvisioningState.class);
     }
@@ -50,6 +56,7 @@ public final class DatabaseWatcherProvisioningState extends ExpandableStringEnum
      * 
      * @return known DatabaseWatcherProvisioningState values.
      */
+    @Generated
     public static Collection<DatabaseWatcherProvisioningState> values() {
         return values(DatabaseWatcherProvisioningState.class);
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,26 +23,31 @@ public final class ServiceConfigurationProperties implements JsonSerializable<Se
     /*
      * Name of the service.
      */
+    @Generated
     private ServiceName serviceName;
 
     /*
      * The resource Id of the connectivity endpoint (optional).
      */
+    @Generated
     private String resourceId;
 
     /*
      * The port on which service is enabled.
      */
+    @Generated
     private Long port;
 
     /*
      * The resource provisioning state.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of ServiceConfigurationProperties class.
      */
+    @Generated
     public ServiceConfigurationProperties() {
     }
 
@@ -50,6 +56,7 @@ public final class ServiceConfigurationProperties implements JsonSerializable<Se
      * 
      * @return the serviceName value.
      */
+    @Generated
     public ServiceName serviceName() {
         return this.serviceName;
     }
@@ -60,6 +67,7 @@ public final class ServiceConfigurationProperties implements JsonSerializable<Se
      * @param serviceName the serviceName value to set.
      * @return the ServiceConfigurationProperties object itself.
      */
+    @Generated
     public ServiceConfigurationProperties withServiceName(ServiceName serviceName) {
         this.serviceName = serviceName;
         return this;
@@ -70,6 +78,7 @@ public final class ServiceConfigurationProperties implements JsonSerializable<Se
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String resourceId() {
         return this.resourceId;
     }
@@ -80,6 +89,7 @@ public final class ServiceConfigurationProperties implements JsonSerializable<Se
      * @param resourceId the resourceId value to set.
      * @return the ServiceConfigurationProperties object itself.
      */
+    @Generated
     public ServiceConfigurationProperties withResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
@@ -90,6 +100,7 @@ public final class ServiceConfigurationProperties implements JsonSerializable<Se
      * 
      * @return the port value.
      */
+    @Generated
     public Long port() {
         return this.port;
     }
@@ -100,6 +111,7 @@ public final class ServiceConfigurationProperties implements JsonSerializable<Se
      * @param port the port value to set.
      * @return the ServiceConfigurationProperties object itself.
      */
+    @Generated
     public ServiceConfigurationProperties withPort(Long port) {
         this.port = port;
         return this;
@@ -110,6 +122,7 @@ public final class ServiceConfigurationProperties implements JsonSerializable<Se
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class SAPVirtualInstanceIdentity implements JsonSerializable<SAPVir
     /*
      * The type of managed identity assigned to this resource.
      */
+    @Generated
     private SAPVirtualInstanceIdentityType type;
 
     /*
      * The identities assigned to this resource by the user.
      */
+    @Generated
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
     /**
      * Creates an instance of SAPVirtualInstanceIdentity class.
      */
+    @Generated
     public SAPVirtualInstanceIdentity() {
     }
 
@@ -39,6 +43,7 @@ public final class SAPVirtualInstanceIdentity implements JsonSerializable<SAPVir
      * 
      * @return the type value.
      */
+    @Generated
     public SAPVirtualInstanceIdentityType type() {
         return this.type;
     }
@@ -49,6 +54,7 @@ public final class SAPVirtualInstanceIdentity implements JsonSerializable<SAPVir
      * @param type the type value to set.
      * @return the SAPVirtualInstanceIdentity object itself.
      */
+    @Generated
     public SAPVirtualInstanceIdentity withType(SAPVirtualInstanceIdentityType type) {
         this.type = type;
         return this;
@@ -59,6 +65,7 @@ public final class SAPVirtualInstanceIdentity implements JsonSerializable<SAPVir
      * 
      * @return the userAssignedIdentities value.
      */
+    @Generated
     public Map<String, UserAssignedIdentity> userAssignedIdentities() {
         return this.userAssignedIdentities;
     }
@@ -69,6 +76,7 @@ public final class SAPVirtualInstanceIdentity implements JsonSerializable<SAPVir
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the SAPVirtualInstanceIdentity object itself.
      */
+    @Generated
     public SAPVirtualInstanceIdentity
         withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;

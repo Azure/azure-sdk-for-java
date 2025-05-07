@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,76 +21,91 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
     /*
      * The central services instance number.
      */
+    @Generated
     private String instanceNo;
 
     /*
      * The central services instance subnet.
      */
+    @Generated
     private String subnet;
 
     /*
      * Defines the SAP message server properties.
      */
+    @Generated
     private MessageServerProperties messageServerProperties;
 
     /*
      * Defines the SAP Enqueue Server properties.
      */
+    @Generated
     private EnqueueServerProperties enqueueServerProperties;
 
     /*
      * Defines the SAP Gateway Server properties.
      */
+    @Generated
     private GatewayServerProperties gatewayServerProperties;
 
     /*
      * Defines the SAP Enqueue Replication Server (ERS) properties.
      */
+    @Generated
     private EnqueueReplicationServerProperties enqueueReplicationServerProperties;
 
     /*
      * The central services instance Kernel Version.
      */
+    @Generated
     private String kernelVersion;
 
     /*
      * The central services instance Kernel Patch level.
      */
+    @Generated
     private String kernelPatch;
 
     /*
      * The Load Balancer details such as LoadBalancer ID attached to ASCS Virtual Machines
      */
+    @Generated
     private LoadBalancerDetails loadBalancerDetails;
 
     /*
      * The list of virtual machines corresponding to the Central Services instance.
      */
+    @Generated
     private List<CentralServerVmDetails> vmDetails;
 
     /*
      * Defines the SAP Instance status.
      */
+    @Generated
     private SapVirtualInstanceStatus status;
 
     /*
      * Defines the health of SAP Instances.
      */
+    @Generated
     private SapHealthState health;
 
     /*
      * Defines the provisioning states.
      */
+    @Generated
     private SapVirtualInstanceProvisioningState provisioningState;
 
     /*
      * Defines the errors related to SAP Central Services Instance resource.
      */
+    @Generated
     private SapVirtualInstanceError errors;
 
     /**
      * Creates an instance of SapCentralServerProperties class.
      */
+    @Generated
     public SapCentralServerProperties() {
     }
 
@@ -98,6 +114,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * 
      * @return the instanceNo value.
      */
+    @Generated
     public String instanceNo() {
         return this.instanceNo;
     }
@@ -107,6 +124,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * 
      * @return the subnet value.
      */
+    @Generated
     public String subnet() {
         return this.subnet;
     }
@@ -116,6 +134,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * 
      * @return the messageServerProperties value.
      */
+    @Generated
     public MessageServerProperties messageServerProperties() {
         return this.messageServerProperties;
     }
@@ -126,6 +145,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * @param messageServerProperties the messageServerProperties value to set.
      * @return the SapCentralServerProperties object itself.
      */
+    @Generated
     public SapCentralServerProperties withMessageServerProperties(MessageServerProperties messageServerProperties) {
         this.messageServerProperties = messageServerProperties;
         return this;
@@ -136,6 +156,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * 
      * @return the enqueueServerProperties value.
      */
+    @Generated
     public EnqueueServerProperties enqueueServerProperties() {
         return this.enqueueServerProperties;
     }
@@ -146,6 +167,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * @param enqueueServerProperties the enqueueServerProperties value to set.
      * @return the SapCentralServerProperties object itself.
      */
+    @Generated
     public SapCentralServerProperties withEnqueueServerProperties(EnqueueServerProperties enqueueServerProperties) {
         this.enqueueServerProperties = enqueueServerProperties;
         return this;
@@ -156,6 +178,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * 
      * @return the gatewayServerProperties value.
      */
+    @Generated
     public GatewayServerProperties gatewayServerProperties() {
         return this.gatewayServerProperties;
     }
@@ -166,6 +189,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * @param gatewayServerProperties the gatewayServerProperties value to set.
      * @return the SapCentralServerProperties object itself.
      */
+    @Generated
     public SapCentralServerProperties withGatewayServerProperties(GatewayServerProperties gatewayServerProperties) {
         this.gatewayServerProperties = gatewayServerProperties;
         return this;
@@ -176,6 +200,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * 
      * @return the enqueueReplicationServerProperties value.
      */
+    @Generated
     public EnqueueReplicationServerProperties enqueueReplicationServerProperties() {
         return this.enqueueReplicationServerProperties;
     }
@@ -186,6 +211,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * @param enqueueReplicationServerProperties the enqueueReplicationServerProperties value to set.
      * @return the SapCentralServerProperties object itself.
      */
+    @Generated
     public SapCentralServerProperties
         withEnqueueReplicationServerProperties(EnqueueReplicationServerProperties enqueueReplicationServerProperties) {
         this.enqueueReplicationServerProperties = enqueueReplicationServerProperties;
@@ -197,6 +223,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * 
      * @return the kernelVersion value.
      */
+    @Generated
     public String kernelVersion() {
         return this.kernelVersion;
     }
@@ -206,6 +233,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * 
      * @return the kernelPatch value.
      */
+    @Generated
     public String kernelPatch() {
         return this.kernelPatch;
     }
@@ -216,6 +244,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * 
      * @return the loadBalancerDetails value.
      */
+    @Generated
     public LoadBalancerDetails loadBalancerDetails() {
         return this.loadBalancerDetails;
     }
@@ -225,6 +254,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * 
      * @return the vmDetails value.
      */
+    @Generated
     public List<CentralServerVmDetails> vmDetails() {
         return this.vmDetails;
     }
@@ -234,6 +264,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * 
      * @return the status value.
      */
+    @Generated
     public SapVirtualInstanceStatus status() {
         return this.status;
     }
@@ -243,6 +274,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * 
      * @return the health value.
      */
+    @Generated
     public SapHealthState health() {
         return this.health;
     }
@@ -252,6 +284,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public SapVirtualInstanceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -261,6 +294,7 @@ public final class SapCentralServerProperties implements JsonSerializable<SapCen
      * 
      * @return the errors value.
      */
+    @Generated
     public SapVirtualInstanceError errors() {
         return this.errors;
     }

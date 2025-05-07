@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,22 +21,26 @@ public final class CentralServerVmDetails implements JsonSerializable<CentralSer
     /*
      * Defines the type of central server VM.
      */
+    @Generated
     private CentralServerVirtualMachineType type;
 
     /*
      * The virtual machine id.
      */
+    @Generated
     private String virtualMachineId;
 
     /*
      * Storage details of all the Storage Accounts attached to the ASCS Virtual Machine. For e.g. NFS on AFS Shared
      * Storage.
      */
+    @Generated
     private List<StorageInformation> storageDetails;
 
     /**
      * Creates an instance of CentralServerVmDetails class.
      */
+    @Generated
     private CentralServerVmDetails() {
     }
 
@@ -44,6 +49,7 @@ public final class CentralServerVmDetails implements JsonSerializable<CentralSer
      * 
      * @return the type value.
      */
+    @Generated
     public CentralServerVirtualMachineType type() {
         return this.type;
     }
@@ -53,6 +59,7 @@ public final class CentralServerVmDetails implements JsonSerializable<CentralSer
      * 
      * @return the virtualMachineId value.
      */
+    @Generated
     public String virtualMachineId() {
         return this.virtualMachineId;
     }
@@ -63,6 +70,7 @@ public final class CentralServerVmDetails implements JsonSerializable<CentralSer
      * 
      * @return the storageDetails value.
      */
+    @Generated
     public List<StorageInformation> storageDetails() {
         return this.storageDetails;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class ServiceConfigurationResourcePatch implements JsonSerializable
     /*
      * The service configuration properties.
      */
+    @Generated
     private ServiceConfigurationPropertiesPatch innerProperties;
 
     /**
      * Creates an instance of ServiceConfigurationResourcePatch class.
      */
+    @Generated
     public ServiceConfigurationResourcePatch() {
     }
 
@@ -33,6 +36,7 @@ public final class ServiceConfigurationResourcePatch implements JsonSerializable
      * 
      * @return the innerProperties value.
      */
+    @Generated
     private ServiceConfigurationPropertiesPatch innerProperties() {
         return this.innerProperties;
     }
@@ -42,6 +46,7 @@ public final class ServiceConfigurationResourcePatch implements JsonSerializable
      * 
      * @return the port value.
      */
+    @Generated
     public Long port() {
         return this.innerProperties() == null ? null : this.innerProperties().port();
     }
@@ -52,6 +57,7 @@ public final class ServiceConfigurationResourcePatch implements JsonSerializable
      * @param port the port value to set.
      * @return the ServiceConfigurationResourcePatch object itself.
      */
+    @Generated
     public ServiceConfigurationResourcePatch withPort(Long port) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServiceConfigurationPropertiesPatch();

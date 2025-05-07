@@ -90,7 +90,6 @@ import com.azure.compute.batch.models.GetBatchPoolOptions;
 import com.azure.compute.batch.models.GetBatchTaskFileOptions;
 import com.azure.compute.batch.models.GetBatchTaskFilePropertiesOptions;
 import com.azure.compute.batch.models.GetBatchTaskOptions;
-import com.azure.compute.batch.models.GetCertificateResponse;
 import com.azure.compute.batch.models.ListBatchApplicationsOptions;
 import com.azure.compute.batch.models.ListBatchCertificatesOptions;
 import com.azure.compute.batch.models.ListBatchJobPreparationAndReleaseTaskStatusOptions;
@@ -5780,6 +5779,9 @@ public final class BatchClient {
      *             }
      *         ]
      *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
      * }
      * }
      * </pre>
@@ -13418,7 +13420,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetCertificateResponse getCertificate(String thumbprintAlgorithm, String thumbprint,
+    public BatchCertificate getCertificate(String thumbprintAlgorithm, String thumbprint,
         GetBatchCertificateOptions options) {
         // Generated convenience method for getCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -13435,7 +13437,7 @@ public final class BatchClient {
                 false);
         }
         return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue()
-            .toObject(GetCertificateResponse.class);
+            .toObject(BatchCertificate.class);
     }
 
     /**
@@ -13453,11 +13455,11 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetCertificateResponse getCertificate(String thumbprintAlgorithm, String thumbprint) {
+    public BatchCertificate getCertificate(String thumbprintAlgorithm, String thumbprint) {
         // Generated convenience method for getCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue()
-            .toObject(GetCertificateResponse.class);
+            .toObject(BatchCertificate.class);
     }
 
     /**

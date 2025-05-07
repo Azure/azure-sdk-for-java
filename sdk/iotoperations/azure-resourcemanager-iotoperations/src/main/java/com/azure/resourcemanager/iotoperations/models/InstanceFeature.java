@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class InstanceFeature implements JsonSerializable<InstanceFeature> 
     /*
      * The state of the feature.
      */
+    @Generated
     private InstanceFeatureMode mode;
 
     /*
      * The settings of the feature.
      */
+    @Generated
     private Map<String, OperationalMode> settings;
 
     /**
      * Creates an instance of InstanceFeature class.
      */
+    @Generated
     public InstanceFeature() {
     }
 
@@ -38,6 +42,7 @@ public final class InstanceFeature implements JsonSerializable<InstanceFeature> 
      * 
      * @return the mode value.
      */
+    @Generated
     public InstanceFeatureMode mode() {
         return this.mode;
     }
@@ -48,6 +53,7 @@ public final class InstanceFeature implements JsonSerializable<InstanceFeature> 
      * @param mode the mode value to set.
      * @return the InstanceFeature object itself.
      */
+    @Generated
     public InstanceFeature withMode(InstanceFeatureMode mode) {
         this.mode = mode;
         return this;
@@ -58,6 +64,7 @@ public final class InstanceFeature implements JsonSerializable<InstanceFeature> 
      * 
      * @return the settings value.
      */
+    @Generated
     public Map<String, OperationalMode> settings() {
         return this.settings;
     }
@@ -68,6 +75,7 @@ public final class InstanceFeature implements JsonSerializable<InstanceFeature> 
      * @param settings the settings value to set.
      * @return the InstanceFeature object itself.
      */
+    @Generated
     public InstanceFeature withSettings(Map<String, OperationalMode> settings) {
         this.settings = settings;
         return this;

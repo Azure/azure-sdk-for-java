@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
      * Specifies whether a secondary IP address should be added to the network interface on all VMs of the SAP system
      * being deployed
      */
+    @Generated
     private Boolean isSecondaryIpEnabled;
 
     /**
      * Creates an instance of NetworkConfiguration class.
      */
+    @Generated
     public NetworkConfiguration() {
     }
 
@@ -34,6 +37,7 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
      * 
      * @return the isSecondaryIpEnabled value.
      */
+    @Generated
     public Boolean isSecondaryIpEnabled() {
         return this.isSecondaryIpEnabled;
     }
@@ -45,6 +49,7 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
      * @param isSecondaryIpEnabled the isSecondaryIpEnabled value to set.
      * @return the NetworkConfiguration object itself.
      */
+    @Generated
     public NetworkConfiguration withIsSecondaryIpEnabled(Boolean isSecondaryIpEnabled) {
         this.isSecondaryIpEnabled = isSecondaryIpEnabled;
         return this;

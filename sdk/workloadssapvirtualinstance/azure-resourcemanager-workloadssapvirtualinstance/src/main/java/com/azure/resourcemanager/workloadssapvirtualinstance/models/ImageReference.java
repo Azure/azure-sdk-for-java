@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
     /*
      * The image publisher.
      */
+    @Generated
     private String publisher;
 
     /*
      * Specifies the offer of the platform image or marketplace image used to create the virtual machine.
      */
+    @Generated
     private String offer;
 
     /*
      * The image SKU.
      */
+    @Generated
     private String sku;
 
     /*
@@ -40,6 +44,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * the latest version of an image available at deploy time. Even if you use 'latest', the VM image will not
      * automatically update after deploy time even if a new version becomes available.
      */
+    @Generated
     private String version;
 
     /*
@@ -47,11 +52,13 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * need to provide this input when you choose to deploy virtual machines in ACSS with OS image from the Azure
      * Compute gallery.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of ImageReference class.
      */
+    @Generated
     public ImageReference() {
     }
 
@@ -60,6 +67,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * 
      * @return the publisher value.
      */
+    @Generated
     public String publisher() {
         return this.publisher;
     }
@@ -70,6 +78,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * @param publisher the publisher value to set.
      * @return the ImageReference object itself.
      */
+    @Generated
     public ImageReference withPublisher(String publisher) {
         this.publisher = publisher;
         return this;
@@ -81,6 +90,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * 
      * @return the offer value.
      */
+    @Generated
     public String offer() {
         return this.offer;
     }
@@ -92,6 +102,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * @param offer the offer value to set.
      * @return the ImageReference object itself.
      */
+    @Generated
     public ImageReference withOffer(String offer) {
         this.offer = offer;
         return this;
@@ -102,6 +113,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * 
      * @return the sku value.
      */
+    @Generated
     public String sku() {
         return this.sku;
     }
@@ -112,6 +124,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * @param sku the sku value to set.
      * @return the ImageReference object itself.
      */
+    @Generated
     public ImageReference withSku(String sku) {
         this.sku = sku;
         return this;
@@ -125,6 +138,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * 
      * @return the version value.
      */
+    @Generated
     public String version() {
         return this.version;
     }
@@ -138,6 +152,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * @param version the version value to set.
      * @return the ImageReference object itself.
      */
+    @Generated
     public ImageReference withVersion(String version) {
         this.version = version;
         return this;
@@ -150,6 +165,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }
@@ -162,6 +178,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * @param id the id value to set.
      * @return the ImageReference object itself.
      */
+    @Generated
     public ImageReference withId(String id) {
         this.id = id;
         return this;

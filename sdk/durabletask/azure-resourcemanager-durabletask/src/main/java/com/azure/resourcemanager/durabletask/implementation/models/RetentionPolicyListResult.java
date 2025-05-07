@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.durabletask.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,16 +23,19 @@ public final class RetentionPolicyListResult implements JsonSerializable<Retenti
     /*
      * The RetentionPolicy items on this page
      */
+    @Generated
     private List<RetentionPolicyInner> value;
 
     /*
      * The link to the next page of items
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of RetentionPolicyListResult class.
      */
+    @Generated
     private RetentionPolicyListResult() {
     }
 
@@ -40,6 +44,7 @@ public final class RetentionPolicyListResult implements JsonSerializable<Retenti
      * 
      * @return the value value.
      */
+    @Generated
     public List<RetentionPolicyInner> value() {
         return this.value;
     }
@@ -49,6 +54,7 @@ public final class RetentionPolicyListResult implements JsonSerializable<Retenti
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String nextLink() {
         return this.nextLink;
     }

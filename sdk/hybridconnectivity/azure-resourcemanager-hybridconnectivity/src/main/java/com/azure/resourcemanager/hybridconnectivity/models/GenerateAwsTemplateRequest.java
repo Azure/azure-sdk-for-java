@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class GenerateAwsTemplateRequest implements JsonSerializable<Genera
     /*
      * The name of public cloud connector
      */
+    @Generated
     private String connectorId;
 
     /*
      * The list of solution types and their settings
      */
+    @Generated
     private List<SolutionTypeSettings> solutionTypes;
 
     /**
      * Creates an instance of GenerateAwsTemplateRequest class.
      */
+    @Generated
     public GenerateAwsTemplateRequest() {
     }
 
@@ -39,6 +43,7 @@ public final class GenerateAwsTemplateRequest implements JsonSerializable<Genera
      * 
      * @return the connectorId value.
      */
+    @Generated
     public String connectorId() {
         return this.connectorId;
     }
@@ -49,6 +54,7 @@ public final class GenerateAwsTemplateRequest implements JsonSerializable<Genera
      * @param connectorId the connectorId value to set.
      * @return the GenerateAwsTemplateRequest object itself.
      */
+    @Generated
     public GenerateAwsTemplateRequest withConnectorId(String connectorId) {
         this.connectorId = connectorId;
         return this;
@@ -59,6 +65,7 @@ public final class GenerateAwsTemplateRequest implements JsonSerializable<Genera
      * 
      * @return the solutionTypes value.
      */
+    @Generated
     public List<SolutionTypeSettings> solutionTypes() {
         return this.solutionTypes;
     }
@@ -69,6 +76,7 @@ public final class GenerateAwsTemplateRequest implements JsonSerializable<Genera
      * @param solutionTypes the solutionTypes value to set.
      * @return the GenerateAwsTemplateRequest object itself.
      */
+    @Generated
     public GenerateAwsTemplateRequest withSolutionTypes(List<SolutionTypeSettings> solutionTypes) {
         this.solutionTypes = solutionTypes;
         return this;

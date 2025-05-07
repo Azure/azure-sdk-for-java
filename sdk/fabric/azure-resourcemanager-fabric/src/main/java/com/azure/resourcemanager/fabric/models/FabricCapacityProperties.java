@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.fabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,22 +22,26 @@ public final class FabricCapacityProperties implements JsonSerializable<FabricCa
      * The current deployment state of Microsoft Fabric resource. The provisioningState is to indicate states for
      * resource provisioning.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * The current state of Microsoft Fabric resource. The state is to indicate more states outside of resource
      * provisioning.
      */
+    @Generated
     private ResourceState state;
 
     /*
      * The capacity administration
      */
+    @Generated
     private CapacityAdministration administration;
 
     /**
      * Creates an instance of FabricCapacityProperties class.
      */
+    @Generated
     public FabricCapacityProperties() {
     }
 
@@ -46,6 +51,7 @@ public final class FabricCapacityProperties implements JsonSerializable<FabricCa
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -56,6 +62,7 @@ public final class FabricCapacityProperties implements JsonSerializable<FabricCa
      * 
      * @return the state value.
      */
+    @Generated
     public ResourceState state() {
         return this.state;
     }
@@ -65,6 +72,7 @@ public final class FabricCapacityProperties implements JsonSerializable<FabricCa
      * 
      * @return the administration value.
      */
+    @Generated
     public CapacityAdministration administration() {
         return this.administration;
     }
@@ -75,6 +83,7 @@ public final class FabricCapacityProperties implements JsonSerializable<FabricCa
      * @param administration the administration value to set.
      * @return the FabricCapacityProperties object itself.
      */
+    @Generated
     public FabricCapacityProperties withAdministration(CapacityAdministration administration) {
         this.administration = administration;
         return this;

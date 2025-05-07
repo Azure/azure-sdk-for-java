@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -22,6 +23,7 @@ public final class FleetMemberInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private FleetMemberProperties innerProperties;
 
     /*
@@ -30,31 +32,37 @@ public final class FleetMemberInner extends ProxyResource {
      * tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section
      * 14.27) header fields.
      */
+    @Generated
     private String etag;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of FleetMemberInner class.
      */
+    @Generated
     public FleetMemberInner() {
     }
 
@@ -63,6 +71,7 @@ public final class FleetMemberInner extends ProxyResource {
      * 
      * @return the innerProperties value.
      */
+    @Generated
     private FleetMemberProperties innerProperties() {
         return this.innerProperties;
     }
@@ -75,6 +84,7 @@ public final class FleetMemberInner extends ProxyResource {
      * 
      * @return the etag value.
      */
+    @Generated
     public String etag() {
         return this.etag;
     }
@@ -84,6 +94,7 @@ public final class FleetMemberInner extends ProxyResource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -93,6 +104,7 @@ public final class FleetMemberInner extends ProxyResource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -103,6 +115,7 @@ public final class FleetMemberInner extends ProxyResource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -113,6 +126,7 @@ public final class FleetMemberInner extends ProxyResource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;
@@ -125,6 +139,7 @@ public final class FleetMemberInner extends ProxyResource {
      * 
      * @return the clusterResourceId value.
      */
+    @Generated
     public String clusterResourceId() {
         return this.innerProperties() == null ? null : this.innerProperties().clusterResourceId();
     }
@@ -137,6 +152,7 @@ public final class FleetMemberInner extends ProxyResource {
      * @param clusterResourceId the clusterResourceId value to set.
      * @return the FleetMemberInner object itself.
      */
+    @Generated
     public FleetMemberInner withClusterResourceId(String clusterResourceId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FleetMemberProperties();
@@ -150,6 +166,7 @@ public final class FleetMemberInner extends ProxyResource {
      * 
      * @return the group value.
      */
+    @Generated
     public String group() {
         return this.innerProperties() == null ? null : this.innerProperties().group();
     }
@@ -160,6 +177,7 @@ public final class FleetMemberInner extends ProxyResource {
      * @param group the group value to set.
      * @return the FleetMemberInner object itself.
      */
+    @Generated
     public FleetMemberInner withGroup(String group) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FleetMemberProperties();
@@ -173,6 +191,7 @@ public final class FleetMemberInner extends ProxyResource {
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public FleetMemberProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
@@ -182,6 +201,7 @@ public final class FleetMemberInner extends ProxyResource {
      * 
      * @return the status value.
      */
+    @Generated
     public FleetMemberStatus status() {
         return this.innerProperties() == null ? null : this.innerProperties().status();
     }

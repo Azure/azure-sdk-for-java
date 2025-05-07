@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SapDatabaseType extends ExpandableStringEnum<SapDatabaseType>
     /**
      * HANA Database type of SAP system.
      */
+    @Generated
     public static final SapDatabaseType HANA = fromString("HANA");
 
     /**
      * DB2 database type of the SAP system.
      */
+    @Generated
     public static final SapDatabaseType DB2 = fromString("DB2");
 
     /**
@@ -26,6 +29,7 @@ public final class SapDatabaseType extends ExpandableStringEnum<SapDatabaseType>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SapDatabaseType() {
     }
@@ -36,6 +40,7 @@ public final class SapDatabaseType extends ExpandableStringEnum<SapDatabaseType>
      * @param name a name to look for.
      * @return the corresponding SapDatabaseType.
      */
+    @Generated
     public static SapDatabaseType fromString(String name) {
         return fromString(name, SapDatabaseType.class);
     }
@@ -45,6 +50,7 @@ public final class SapDatabaseType extends ExpandableStringEnum<SapDatabaseType>
      * 
      * @return known SapDatabaseType values.
      */
+    @Generated
     public static Collection<SapDatabaseType> values() {
         return values(SapDatabaseType.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class CloudEventAttributeType extends ExpandableStringEnum<CloudEve
     /**
      * Propagate type.
      */
+    @Generated
     public static final CloudEventAttributeType PROPAGATE = fromString("Propagate");
 
     /**
      * CreateOrRemap type.
      */
+    @Generated
     public static final CloudEventAttributeType CREATE_OR_REMAP = fromString("CreateOrRemap");
 
     /**
@@ -26,6 +29,7 @@ public final class CloudEventAttributeType extends ExpandableStringEnum<CloudEve
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CloudEventAttributeType() {
     }
@@ -36,6 +40,7 @@ public final class CloudEventAttributeType extends ExpandableStringEnum<CloudEve
      * @param name a name to look for.
      * @return the corresponding CloudEventAttributeType.
      */
+    @Generated
     public static CloudEventAttributeType fromString(String name) {
         return fromString(name, CloudEventAttributeType.class);
     }
@@ -45,6 +50,7 @@ public final class CloudEventAttributeType extends ExpandableStringEnum<CloudEve
      * 
      * @return known CloudEventAttributeType values.
      */
+    @Generated
     public static Collection<CloudEventAttributeType> values() {
         return values(CloudEventAttributeType.class);
     }

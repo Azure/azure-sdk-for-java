@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -18,11 +19,13 @@ public final class ManualResourcePredictionsProfile extends ResourcePredictionsP
     /*
      * Determines how the stand-by scheme should be provided.
      */
+    @Generated
     private ResourcePredictionsProfileType kind = ResourcePredictionsProfileType.MANUAL;
 
     /**
      * Creates an instance of ManualResourcePredictionsProfile class.
      */
+    @Generated
     public ManualResourcePredictionsProfile() {
     }
 
@@ -31,6 +34,7 @@ public final class ManualResourcePredictionsProfile extends ResourcePredictionsP
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public ResourcePredictionsProfileType kind() {
         return this.kind;

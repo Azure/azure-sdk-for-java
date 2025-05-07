@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class PublicIPAddressSku implements JsonSerializable<PublicIPAddres
     /*
      * Specify public IP sku name
      */
+    @Generated
     private PublicIPAddressSkuName name;
 
     /*
      * Specify public IP sku tier
      */
+    @Generated
     private PublicIPAddressSkuTier tier;
 
     /**
      * Creates an instance of PublicIPAddressSku class.
      */
+    @Generated
     public PublicIPAddressSku() {
     }
 
@@ -38,6 +42,7 @@ public final class PublicIPAddressSku implements JsonSerializable<PublicIPAddres
      * 
      * @return the name value.
      */
+    @Generated
     public PublicIPAddressSkuName name() {
         return this.name;
     }
@@ -48,6 +53,7 @@ public final class PublicIPAddressSku implements JsonSerializable<PublicIPAddres
      * @param name the name value to set.
      * @return the PublicIPAddressSku object itself.
      */
+    @Generated
     public PublicIPAddressSku withName(PublicIPAddressSkuName name) {
         this.name = name;
         return this;
@@ -58,6 +64,7 @@ public final class PublicIPAddressSku implements JsonSerializable<PublicIPAddres
      * 
      * @return the tier value.
      */
+    @Generated
     public PublicIPAddressSkuTier tier() {
         return this.tier;
     }
@@ -68,6 +75,7 @@ public final class PublicIPAddressSku implements JsonSerializable<PublicIPAddres
      * @param tier the tier value to set.
      * @return the PublicIPAddressSku object itself.
      */
+    @Generated
     public PublicIPAddressSku withTier(PublicIPAddressSkuTier tier) {
         this.tier = tier;
         return this;

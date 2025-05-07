@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class ListIngressGatewayCredentialsRequest
     /*
      * The name of the service. If not provided, the request will by pass the generation of service configuration token.
      */
+    @Generated
     private ServiceName serviceName;
 
     /**
      * Creates an instance of ListIngressGatewayCredentialsRequest class.
      */
+    @Generated
     public ListIngressGatewayCredentialsRequest() {
     }
 
@@ -34,6 +37,7 @@ public final class ListIngressGatewayCredentialsRequest
      * 
      * @return the serviceName value.
      */
+    @Generated
     public ServiceName serviceName() {
         return this.serviceName;
     }
@@ -45,6 +49,7 @@ public final class ListIngressGatewayCredentialsRequest
      * @param serviceName the serviceName value to set.
      * @return the ListIngressGatewayCredentialsRequest object itself.
      */
+    @Generated
     public ListIngressGatewayCredentialsRequest withServiceName(ServiceName serviceName) {
         this.serviceName = serviceName;
         return this;

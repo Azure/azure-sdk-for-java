@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.connectedcache.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ConfigurationState extends ExpandableStringEnum<Configuration
     /**
      * connected cache setup configured.
      */
+    @Generated
     public static final ConfigurationState CONFIGURED = fromString("Configured");
 
     /**
      * connected cache setup not configured.
      */
+    @Generated
     public static final ConfigurationState NOT_CONFIGURED_IP = fromString("NotConfigured_Ip");
 
     /**
@@ -26,6 +29,7 @@ public final class ConfigurationState extends ExpandableStringEnum<Configuration
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ConfigurationState() {
     }
@@ -36,6 +40,7 @@ public final class ConfigurationState extends ExpandableStringEnum<Configuration
      * @param name a name to look for.
      * @return the corresponding ConfigurationState.
      */
+    @Generated
     public static ConfigurationState fromString(String name) {
         return fromString(name, ConfigurationState.class);
     }
@@ -45,6 +50,7 @@ public final class ConfigurationState extends ExpandableStringEnum<Configuration
      * 
      * @return known ConfigurationState values.
      */
+    @Generated
     public static Collection<ConfigurationState> values() {
         return values(ConfigurationState.class);
     }

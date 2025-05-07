@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,26 +21,31 @@ public final class SolutionTypeProperties implements JsonSerializable<SolutionTy
     /*
      * The name of the solution type.
      */
+    @Generated
     private String solutionType;
 
     /*
      * Short description of solution type.
      */
+    @Generated
     private String description;
 
     /*
      * The locations this solution is supported in.
      */
+    @Generated
     private List<String> supportedAzureRegions;
 
     /*
      * Array of solution settings and its description.
      */
+    @Generated
     private List<SolutionTypeSettingsProperties> solutionSettings;
 
     /**
      * Creates an instance of SolutionTypeProperties class.
      */
+    @Generated
     private SolutionTypeProperties() {
     }
 
@@ -48,6 +54,7 @@ public final class SolutionTypeProperties implements JsonSerializable<SolutionTy
      * 
      * @return the solutionType value.
      */
+    @Generated
     public String solutionType() {
         return this.solutionType;
     }
@@ -57,6 +64,7 @@ public final class SolutionTypeProperties implements JsonSerializable<SolutionTy
      * 
      * @return the description value.
      */
+    @Generated
     public String description() {
         return this.description;
     }
@@ -66,6 +74,7 @@ public final class SolutionTypeProperties implements JsonSerializable<SolutionTy
      * 
      * @return the supportedAzureRegions value.
      */
+    @Generated
     public List<String> supportedAzureRegions() {
         return this.supportedAzureRegions;
     }
@@ -75,6 +84,7 @@ public final class SolutionTypeProperties implements JsonSerializable<SolutionTy
      * 
      * @return the solutionSettings value.
      */
+    @Generated
     public List<SolutionTypeSettingsProperties> solutionSettings() {
         return this.solutionSettings;
     }

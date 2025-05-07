@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class FleetMemberUpdate implements JsonSerializable<FleetMemberUpda
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private FleetMemberUpdateProperties innerProperties;
 
     /**
      * Creates an instance of FleetMemberUpdate class.
      */
+    @Generated
     public FleetMemberUpdate() {
     }
 
@@ -33,6 +36,7 @@ public final class FleetMemberUpdate implements JsonSerializable<FleetMemberUpda
      * 
      * @return the innerProperties value.
      */
+    @Generated
     private FleetMemberUpdateProperties innerProperties() {
         return this.innerProperties;
     }
@@ -42,6 +46,7 @@ public final class FleetMemberUpdate implements JsonSerializable<FleetMemberUpda
      * 
      * @return the group value.
      */
+    @Generated
     public String group() {
         return this.innerProperties() == null ? null : this.innerProperties().group();
     }
@@ -52,6 +57,7 @@ public final class FleetMemberUpdate implements JsonSerializable<FleetMemberUpda
      * @param group the group value to set.
      * @return the FleetMemberUpdate object itself.
      */
+    @Generated
     public FleetMemberUpdate withGroup(String group) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FleetMemberUpdateProperties();

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class AssetEndpointProfileStatus implements JsonSerializable<AssetE
     /*
      * Array object to transfer and persist errors that originate from the Edge.
      */
+    @Generated
     private List<AssetEndpointProfileStatusError> errors;
 
     /**
      * Creates an instance of AssetEndpointProfileStatus class.
      */
+    @Generated
     private AssetEndpointProfileStatus() {
     }
 
@@ -33,6 +36,7 @@ public final class AssetEndpointProfileStatus implements JsonSerializable<AssetE
      * 
      * @return the errors value.
      */
+    @Generated
     public List<AssetEndpointProfileStatusError> errors() {
         return this.errors;
     }

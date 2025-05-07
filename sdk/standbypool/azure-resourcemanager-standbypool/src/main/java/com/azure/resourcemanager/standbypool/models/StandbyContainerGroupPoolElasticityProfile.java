@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class StandbyContainerGroupPoolElasticityProfile
     /*
      * Specifies maximum number of standby container groups in the standby pool.
      */
+    @Generated
     private long maxReadyCapacity;
 
     /*
      * Specifies refill policy of the pool.
      */
+    @Generated
     private RefillPolicy refillPolicy;
 
     /**
      * Creates an instance of StandbyContainerGroupPoolElasticityProfile class.
      */
+    @Generated
     public StandbyContainerGroupPoolElasticityProfile() {
     }
 
@@ -38,6 +42,7 @@ public final class StandbyContainerGroupPoolElasticityProfile
      * 
      * @return the maxReadyCapacity value.
      */
+    @Generated
     public long maxReadyCapacity() {
         return this.maxReadyCapacity;
     }
@@ -48,6 +53,7 @@ public final class StandbyContainerGroupPoolElasticityProfile
      * @param maxReadyCapacity the maxReadyCapacity value to set.
      * @return the StandbyContainerGroupPoolElasticityProfile object itself.
      */
+    @Generated
     public StandbyContainerGroupPoolElasticityProfile withMaxReadyCapacity(long maxReadyCapacity) {
         this.maxReadyCapacity = maxReadyCapacity;
         return this;
@@ -58,6 +64,7 @@ public final class StandbyContainerGroupPoolElasticityProfile
      * 
      * @return the refillPolicy value.
      */
+    @Generated
     public RefillPolicy refillPolicy() {
         return this.refillPolicy;
     }
@@ -68,6 +75,7 @@ public final class StandbyContainerGroupPoolElasticityProfile
      * @param refillPolicy the refillPolicy value to set.
      * @return the StandbyContainerGroupPoolElasticityProfile object itself.
      */
+    @Generated
     public StandbyContainerGroupPoolElasticityProfile withRefillPolicy(RefillPolicy refillPolicy) {
         this.refillPolicy = refillPolicy;
         return this;

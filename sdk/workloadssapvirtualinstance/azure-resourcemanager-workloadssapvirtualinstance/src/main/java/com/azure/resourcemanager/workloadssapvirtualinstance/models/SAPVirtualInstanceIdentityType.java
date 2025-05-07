@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SAPVirtualInstanceIdentityType extends ExpandableStringEnum<S
     /**
      * No managed identity.
      */
+    @Generated
     public static final SAPVirtualInstanceIdentityType NONE = fromString("None");
 
     /**
      * User assigned managed identity.
      */
+    @Generated
     public static final SAPVirtualInstanceIdentityType USER_ASSIGNED = fromString("UserAssigned");
 
     /**
@@ -26,6 +29,7 @@ public final class SAPVirtualInstanceIdentityType extends ExpandableStringEnum<S
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SAPVirtualInstanceIdentityType() {
     }
@@ -36,6 +40,7 @@ public final class SAPVirtualInstanceIdentityType extends ExpandableStringEnum<S
      * @param name a name to look for.
      * @return the corresponding SAPVirtualInstanceIdentityType.
      */
+    @Generated
     public static SAPVirtualInstanceIdentityType fromString(String name) {
         return fromString(name, SAPVirtualInstanceIdentityType.class);
     }
@@ -45,6 +50,7 @@ public final class SAPVirtualInstanceIdentityType extends ExpandableStringEnum<S
      * 
      * @return known SAPVirtualInstanceIdentityType values.
      */
+    @Generated
     public static Collection<SAPVirtualInstanceIdentityType> values() {
         return values(SAPVirtualInstanceIdentityType.class);
     }

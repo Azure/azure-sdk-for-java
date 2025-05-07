@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class SolutionTypeSettings implements JsonSerializable<SolutionType
     /*
      * The type of the solution
      */
+    @Generated
     private String solutionType;
 
     /*
      * Solution settings
      */
+    @Generated
     private SolutionSettings solutionSettings;
 
     /**
      * Creates an instance of SolutionTypeSettings class.
      */
+    @Generated
     public SolutionTypeSettings() {
     }
 
@@ -38,6 +42,7 @@ public final class SolutionTypeSettings implements JsonSerializable<SolutionType
      * 
      * @return the solutionType value.
      */
+    @Generated
     public String solutionType() {
         return this.solutionType;
     }
@@ -48,6 +53,7 @@ public final class SolutionTypeSettings implements JsonSerializable<SolutionType
      * @param solutionType the solutionType value to set.
      * @return the SolutionTypeSettings object itself.
      */
+    @Generated
     public SolutionTypeSettings withSolutionType(String solutionType) {
         this.solutionType = solutionType;
         return this;
@@ -58,6 +64,7 @@ public final class SolutionTypeSettings implements JsonSerializable<SolutionType
      * 
      * @return the solutionSettings value.
      */
+    @Generated
     public SolutionSettings solutionSettings() {
         return this.solutionSettings;
     }
@@ -68,6 +75,7 @@ public final class SolutionTypeSettings implements JsonSerializable<SolutionType
      * @param solutionSettings the solutionSettings value to set.
      * @return the SolutionTypeSettings object itself.
      */
+    @Generated
     public SolutionTypeSettings withSolutionSettings(SolutionSettings solutionSettings) {
         this.solutionSettings = solutionSettings;
         return this;

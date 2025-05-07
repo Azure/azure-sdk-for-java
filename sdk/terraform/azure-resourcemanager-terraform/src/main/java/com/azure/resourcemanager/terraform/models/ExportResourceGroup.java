@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.terraform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class ExportResourceGroup extends BaseExportModel {
     /*
      * The parameter type
      */
+    @Generated
     private Type type = Type.EXPORT_RESOURCE_GROUP;
 
     /*
      * The name of the resource group to be exported
      */
+    @Generated
     private String resourceGroupName;
 
     /*
      * The name pattern of the Terraform resources
      */
+    @Generated
     private String namePattern;
 
     /**
      * Creates an instance of ExportResourceGroup class.
      */
+    @Generated
     public ExportResourceGroup() {
     }
 
@@ -42,6 +47,7 @@ public final class ExportResourceGroup extends BaseExportModel {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public Type type() {
         return this.type;
@@ -52,6 +58,7 @@ public final class ExportResourceGroup extends BaseExportModel {
      * 
      * @return the resourceGroupName value.
      */
+    @Generated
     public String resourceGroupName() {
         return this.resourceGroupName;
     }
@@ -62,6 +69,7 @@ public final class ExportResourceGroup extends BaseExportModel {
      * @param resourceGroupName the resourceGroupName value to set.
      * @return the ExportResourceGroup object itself.
      */
+    @Generated
     public ExportResourceGroup withResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -72,6 +80,7 @@ public final class ExportResourceGroup extends BaseExportModel {
      * 
      * @return the namePattern value.
      */
+    @Generated
     public String namePattern() {
         return this.namePattern;
     }
@@ -82,6 +91,7 @@ public final class ExportResourceGroup extends BaseExportModel {
      * @param namePattern the namePattern value to set.
      * @return the ExportResourceGroup object itself.
      */
+    @Generated
     public ExportResourceGroup withNamePattern(String namePattern) {
         this.namePattern = namePattern;
         return this;
@@ -90,6 +100,7 @@ public final class ExportResourceGroup extends BaseExportModel {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExportResourceGroup withTargetProvider(TargetProvider targetProvider) {
         super.withTargetProvider(targetProvider);
@@ -99,6 +110,7 @@ public final class ExportResourceGroup extends BaseExportModel {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExportResourceGroup withFullProperties(Boolean fullProperties) {
         super.withFullProperties(fullProperties);
@@ -108,6 +120,7 @@ public final class ExportResourceGroup extends BaseExportModel {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExportResourceGroup withMaskSensitive(Boolean maskSensitive) {
         super.withMaskSensitive(maskSensitive);

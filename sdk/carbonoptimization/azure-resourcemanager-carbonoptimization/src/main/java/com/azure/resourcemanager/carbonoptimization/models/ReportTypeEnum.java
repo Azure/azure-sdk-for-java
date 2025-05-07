@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -18,6 +19,7 @@ public final class ReportTypeEnum extends ExpandableStringEnum<ReportTypeEnum> {
      * as comparative values for a high-level overview. This report type can accept different values in the start and
      * end fields within DateRange (e.g., start: 2024-03-01 and end: 2024-06-01).
      */
+    @Generated
     public static final ReportTypeEnum OVERALL_SUMMARY_REPORT = fromString("OverallSummaryReport");
 
     /**
@@ -25,6 +27,7 @@ public final class ReportTypeEnum extends ExpandableStringEnum<ReportTypeEnum> {
      * can accept different values in the start and end fields within DateRange (e.g., start: 2024-03-01 and end:
      * 2024-06-01).
      */
+    @Generated
     public static final ReportTypeEnum MONTHLY_SUMMARY_REPORT = fromString("MonthlySummaryReport");
 
     /**
@@ -32,6 +35,7 @@ public final class ReportTypeEnum extends ExpandableStringEnum<ReportTypeEnum> {
      * data for a single month at a time, so it requires the same values for the start and end fields within DateRange.
      * A maximum of N=10 items can be returned at a time.
      */
+    @Generated
     public static final ReportTypeEnum TOP_ITEMS_SUMMARY_REPORT = fromString("TopItemsSummaryReport");
 
     /**
@@ -39,6 +43,7 @@ public final class ReportTypeEnum extends ExpandableStringEnum<ReportTypeEnum> {
      * emissions data for the top N items by month within the given date range. A maximum of N=10 items can be returned
      * at a time.
      */
+    @Generated
     public static final ReportTypeEnum TOP_ITEMS_MONTHLY_SUMMARY_REPORT = fromString("TopItemsMonthlySummaryReport");
 
     /**
@@ -46,6 +51,7 @@ public final class ReportTypeEnum extends ExpandableStringEnum<ReportTypeEnum> {
      * ResourceGroup, ResourceType, Location, or Subscription) for the query filter. This report can be queried for only
      * one month at a time, requiring the same values in the start and end fields within DateRange.
      */
+    @Generated
     public static final ReportTypeEnum ITEM_DETAILS_REPORT = fromString("ItemDetailsReport");
 
     /**
@@ -53,6 +59,7 @@ public final class ReportTypeEnum extends ExpandableStringEnum<ReportTypeEnum> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ReportTypeEnum() {
     }
@@ -63,6 +70,7 @@ public final class ReportTypeEnum extends ExpandableStringEnum<ReportTypeEnum> {
      * @param name a name to look for.
      * @return the corresponding ReportTypeEnum.
      */
+    @Generated
     public static ReportTypeEnum fromString(String name) {
         return fromString(name, ReportTypeEnum.class);
     }
@@ -72,6 +80,7 @@ public final class ReportTypeEnum extends ExpandableStringEnum<ReportTypeEnum> {
      * 
      * @return known ReportTypeEnum values.
      */
+    @Generated
     public static Collection<ReportTypeEnum> values() {
         return values(ReportTypeEnum.class);
     }

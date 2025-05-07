@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,11 +24,13 @@ public final class ServiceArtifactReference implements JsonSerializable<ServiceA
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName
      * }/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of ServiceArtifactReference class.
      */
+    @Generated
     public ServiceArtifactReference() {
     }
 
@@ -37,6 +40,7 @@ public final class ServiceArtifactReference implements JsonSerializable<ServiceA
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }
@@ -48,6 +52,7 @@ public final class ServiceArtifactReference implements JsonSerializable<ServiceA
      * @param id the id value to set.
      * @return the ServiceArtifactReference object itself.
      */
+    @Generated
     public ServiceArtifactReference withId(String id) {
         this.id = id;
         return this;

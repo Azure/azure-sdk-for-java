@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -20,11 +21,13 @@ public final class ImageVersionProperties implements JsonSerializable<ImageVersi
     /*
      * Version of the image.
      */
+    @Generated
     private String version;
 
     /**
      * Creates an instance of ImageVersionProperties class.
      */
+    @Generated
     private ImageVersionProperties() {
     }
 
@@ -33,6 +36,7 @@ public final class ImageVersionProperties implements JsonSerializable<ImageVersi
      * 
      * @return the version value.
      */
+    @Generated
     public String version() {
         return this.version;
     }

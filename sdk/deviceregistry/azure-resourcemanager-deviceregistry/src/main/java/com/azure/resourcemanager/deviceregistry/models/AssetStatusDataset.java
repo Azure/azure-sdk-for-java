@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class AssetStatusDataset implements JsonSerializable<AssetStatusDat
      * The name of the dataset. Must be unique within the status.datasets array. This name is used to correlate between
      * the spec and status dataset information.
      */
+    @Generated
     private String name;
 
     /*
      * The message schema reference object.
      */
+    @Generated
     private MessageSchemaReference messageSchemaReference;
 
     /**
      * Creates an instance of AssetStatusDataset class.
      */
+    @Generated
     private AssetStatusDataset() {
     }
 
@@ -39,6 +43,7 @@ public final class AssetStatusDataset implements JsonSerializable<AssetStatusDat
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -48,6 +53,7 @@ public final class AssetStatusDataset implements JsonSerializable<AssetStatusDat
      * 
      * @return the messageSchemaReference value.
      */
+    @Generated
     public MessageSchemaReference messageSchemaReference() {
         return this.messageSchemaReference;
     }

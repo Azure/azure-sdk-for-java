@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,22 +20,26 @@ public final class ApiServerAccessProfile implements JsonSerializable<ApiServerA
     /*
      * Whether to create the Fleet hub as a private cluster or not.
      */
+    @Generated
     private Boolean enablePrivateCluster;
 
     /*
      * Whether to enable apiserver vnet integration for the Fleet hub or not.
      */
+    @Generated
     private Boolean enableVnetIntegration;
 
     /*
      * The subnet to be used when apiserver vnet integration is enabled. It is required when creating a new Fleet with
      * BYO vnet.
      */
+    @Generated
     private String subnetId;
 
     /**
      * Creates an instance of ApiServerAccessProfile class.
      */
+    @Generated
     public ApiServerAccessProfile() {
     }
 
@@ -43,6 +48,7 @@ public final class ApiServerAccessProfile implements JsonSerializable<ApiServerA
      * 
      * @return the enablePrivateCluster value.
      */
+    @Generated
     public Boolean enablePrivateCluster() {
         return this.enablePrivateCluster;
     }
@@ -53,6 +59,7 @@ public final class ApiServerAccessProfile implements JsonSerializable<ApiServerA
      * @param enablePrivateCluster the enablePrivateCluster value to set.
      * @return the ApiServerAccessProfile object itself.
      */
+    @Generated
     public ApiServerAccessProfile withEnablePrivateCluster(Boolean enablePrivateCluster) {
         this.enablePrivateCluster = enablePrivateCluster;
         return this;
@@ -63,6 +70,7 @@ public final class ApiServerAccessProfile implements JsonSerializable<ApiServerA
      * 
      * @return the enableVnetIntegration value.
      */
+    @Generated
     public Boolean enableVnetIntegration() {
         return this.enableVnetIntegration;
     }
@@ -73,6 +81,7 @@ public final class ApiServerAccessProfile implements JsonSerializable<ApiServerA
      * @param enableVnetIntegration the enableVnetIntegration value to set.
      * @return the ApiServerAccessProfile object itself.
      */
+    @Generated
     public ApiServerAccessProfile withEnableVnetIntegration(Boolean enableVnetIntegration) {
         this.enableVnetIntegration = enableVnetIntegration;
         return this;
@@ -84,6 +93,7 @@ public final class ApiServerAccessProfile implements JsonSerializable<ApiServerA
      * 
      * @return the subnetId value.
      */
+    @Generated
     public String subnetId() {
         return this.subnetId;
     }
@@ -95,6 +105,7 @@ public final class ApiServerAccessProfile implements JsonSerializable<ApiServerA
      * @param subnetId the subnetId value to set.
      * @return the ApiServerAccessProfile object itself.
      */
+    @Generated
     public ApiServerAccessProfile withSubnetId(String subnetId) {
         this.subnetId = subnetId;
         return this;

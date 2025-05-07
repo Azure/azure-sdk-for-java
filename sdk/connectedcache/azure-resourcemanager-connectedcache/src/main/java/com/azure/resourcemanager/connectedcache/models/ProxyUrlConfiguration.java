@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.connectedcache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class ProxyUrlConfiguration implements JsonSerializable<ProxyUrlCon
      * Host Proxy Address configuration along with port number. This can be a proxy or ip address. ex: xx.xx.xx.xxxx:80
      * or host name http://exampleproxy.com:80
      */
+    @Generated
     private String proxyUrl;
 
     /**
      * Creates an instance of ProxyUrlConfiguration class.
      */
+    @Generated
     public ProxyUrlConfiguration() {
     }
 
@@ -34,6 +37,7 @@ public final class ProxyUrlConfiguration implements JsonSerializable<ProxyUrlCon
      * 
      * @return the proxyUrl value.
      */
+    @Generated
     public String proxyUrl() {
         return this.proxyUrl;
     }
@@ -45,6 +49,7 @@ public final class ProxyUrlConfiguration implements JsonSerializable<ProxyUrlCon
      * @param proxyUrl the proxyUrl value to set.
      * @return the ProxyUrlConfiguration object itself.
      */
+    @Generated
     public ProxyUrlConfiguration withProxyUrl(String proxyUrl) {
         this.proxyUrl = proxyUrl;
         return this;

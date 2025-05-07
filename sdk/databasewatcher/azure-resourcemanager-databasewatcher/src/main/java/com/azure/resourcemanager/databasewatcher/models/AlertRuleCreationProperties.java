@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databasewatcher.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class AlertRuleCreationProperties extends ExpandableStringEnum<Aler
     /**
      * The alert rule was created with an action group.
      */
+    @Generated
     public static final AlertRuleCreationProperties CREATED_WITH_ACTION_GROUP = fromString("CreatedWithActionGroup");
 
     /**
      * The alert rule was created with no properties.
      */
+    @Generated
     public static final AlertRuleCreationProperties NONE = fromString("None");
 
     /**
@@ -26,6 +29,7 @@ public final class AlertRuleCreationProperties extends ExpandableStringEnum<Aler
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AlertRuleCreationProperties() {
     }
@@ -36,6 +40,7 @@ public final class AlertRuleCreationProperties extends ExpandableStringEnum<Aler
      * @param name a name to look for.
      * @return the corresponding AlertRuleCreationProperties.
      */
+    @Generated
     public static AlertRuleCreationProperties fromString(String name) {
         return fromString(name, AlertRuleCreationProperties.class);
     }
@@ -45,6 +50,7 @@ public final class AlertRuleCreationProperties extends ExpandableStringEnum<Aler
      * 
      * @return known AlertRuleCreationProperties values.
      */
+    @Generated
     public static Collection<AlertRuleCreationProperties> values() {
         return values(AlertRuleCreationProperties.class);
     }

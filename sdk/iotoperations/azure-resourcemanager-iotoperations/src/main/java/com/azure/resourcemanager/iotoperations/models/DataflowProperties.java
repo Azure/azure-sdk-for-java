@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,21 +22,25 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
     /*
      * Mode for Dataflow. Optional; defaults to Enabled.
      */
+    @Generated
     private OperationalMode mode;
 
     /*
      * List of operations including source and destination references as well as transformation.
      */
+    @Generated
     private List<DataflowOperation> operations;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of DataflowProperties class.
      */
+    @Generated
     public DataflowProperties() {
     }
 
@@ -44,6 +49,7 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
      * 
      * @return the mode value.
      */
+    @Generated
     public OperationalMode mode() {
         return this.mode;
     }
@@ -54,6 +60,7 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
      * @param mode the mode value to set.
      * @return the DataflowProperties object itself.
      */
+    @Generated
     public DataflowProperties withMode(OperationalMode mode) {
         this.mode = mode;
         return this;
@@ -65,6 +72,7 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
      * 
      * @return the operations value.
      */
+    @Generated
     public List<DataflowOperation> operations() {
         return this.operations;
     }
@@ -76,6 +84,7 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
      * @param operations the operations value to set.
      * @return the DataflowProperties object itself.
      */
+    @Generated
     public DataflowProperties withOperations(List<DataflowOperation> operations) {
         this.operations = operations;
         return this;
@@ -86,6 +95,7 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

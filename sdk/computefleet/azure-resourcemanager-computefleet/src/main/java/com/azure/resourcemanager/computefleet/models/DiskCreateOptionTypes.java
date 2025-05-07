@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,26 +18,31 @@ public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreate
      * described above. If you are using a marketplace image, you also use the
      * plan element previously described.
      */
+    @Generated
     public static final DiskCreateOptionTypes FROM_IMAGE = fromString("FromImage");
 
     /**
      * This value is used when creating an empty data disk.
      */
+    @Generated
     public static final DiskCreateOptionTypes EMPTY = fromString("Empty");
 
     /**
      * This value is used when you are using a specialized disk to create the virtual machine.
      */
+    @Generated
     public static final DiskCreateOptionTypes ATTACH = fromString("Attach");
 
     /**
      * This value is used to create a data disk from a snapshot or another disk.
      */
+    @Generated
     public static final DiskCreateOptionTypes COPY = fromString("Copy");
 
     /**
      * This value is used to create a data disk from a disk restore point.
      */
+    @Generated
     public static final DiskCreateOptionTypes RESTORE = fromString("Restore");
 
     /**
@@ -44,6 +50,7 @@ public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreate
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DiskCreateOptionTypes() {
     }
@@ -54,6 +61,7 @@ public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreate
      * @param name a name to look for.
      * @return the corresponding DiskCreateOptionTypes.
      */
+    @Generated
     public static DiskCreateOptionTypes fromString(String name) {
         return fromString(name, DiskCreateOptionTypes.class);
     }
@@ -63,6 +71,7 @@ public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreate
      * 
      * @return known DiskCreateOptionTypes values.
      */
+    @Generated
     public static Collection<DiskCreateOptionTypes> values() {
         return values(DiskCreateOptionTypes.class);
     }

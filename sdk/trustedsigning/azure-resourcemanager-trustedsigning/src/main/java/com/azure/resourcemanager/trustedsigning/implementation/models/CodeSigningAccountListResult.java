@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.trustedsigning.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,16 +23,19 @@ public final class CodeSigningAccountListResult implements JsonSerializable<Code
     /*
      * The CodeSigningAccount items on this page
      */
+    @Generated
     private List<CodeSigningAccountInner> value;
 
     /*
      * The link to the next page of items
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of CodeSigningAccountListResult class.
      */
+    @Generated
     private CodeSigningAccountListResult() {
     }
 
@@ -40,6 +44,7 @@ public final class CodeSigningAccountListResult implements JsonSerializable<Code
      * 
      * @return the value value.
      */
+    @Generated
     public List<CodeSigningAccountInner> value() {
         return this.value;
     }
@@ -49,6 +54,7 @@ public final class CodeSigningAccountListResult implements JsonSerializable<Code
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String nextLink() {
         return this.nextLink;
     }

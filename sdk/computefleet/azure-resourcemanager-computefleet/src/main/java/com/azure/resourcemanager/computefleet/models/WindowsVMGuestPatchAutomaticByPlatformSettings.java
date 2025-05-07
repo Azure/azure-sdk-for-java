@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class WindowsVMGuestPatchAutomaticByPlatformSettings
      * Specifies the reboot setting for all AutomaticByPlatform patch installation
      * operations.
      */
+    @Generated
     private WindowsVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting;
 
     /*
      * Enables customer to schedule patching without accidental upgrades
      */
+    @Generated
     private Boolean bypassPlatformSafetyChecksOnUserSchedule;
 
     /**
      * Creates an instance of WindowsVMGuestPatchAutomaticByPlatformSettings class.
      */
+    @Generated
     public WindowsVMGuestPatchAutomaticByPlatformSettings() {
     }
 
@@ -41,6 +45,7 @@ public final class WindowsVMGuestPatchAutomaticByPlatformSettings
      * 
      * @return the rebootSetting value.
      */
+    @Generated
     public WindowsVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting() {
         return this.rebootSetting;
     }
@@ -52,6 +57,7 @@ public final class WindowsVMGuestPatchAutomaticByPlatformSettings
      * @param rebootSetting the rebootSetting value to set.
      * @return the WindowsVMGuestPatchAutomaticByPlatformSettings object itself.
      */
+    @Generated
     public WindowsVMGuestPatchAutomaticByPlatformSettings
         withRebootSetting(WindowsVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting) {
         this.rebootSetting = rebootSetting;
@@ -64,6 +70,7 @@ public final class WindowsVMGuestPatchAutomaticByPlatformSettings
      * 
      * @return the bypassPlatformSafetyChecksOnUserSchedule value.
      */
+    @Generated
     public Boolean bypassPlatformSafetyChecksOnUserSchedule() {
         return this.bypassPlatformSafetyChecksOnUserSchedule;
     }
@@ -75,6 +82,7 @@ public final class WindowsVMGuestPatchAutomaticByPlatformSettings
      * @param bypassPlatformSafetyChecksOnUserSchedule the bypassPlatformSafetyChecksOnUserSchedule value to set.
      * @return the WindowsVMGuestPatchAutomaticByPlatformSettings object itself.
      */
+    @Generated
     public WindowsVMGuestPatchAutomaticByPlatformSettings
         withBypassPlatformSafetyChecksOnUserSchedule(Boolean bypassPlatformSafetyChecksOnUserSchedule) {
         this.bypassPlatformSafetyChecksOnUserSchedule = bypassPlatformSafetyChecksOnUserSchedule;

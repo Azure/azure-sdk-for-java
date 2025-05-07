@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class AdditionalLocationsProfile implements JsonSerializable<Additi
     /*
      * The list of location profiles.
      */
+    @Generated
     private List<LocationProfile> locationProfiles;
 
     /**
      * Creates an instance of AdditionalLocationsProfile class.
      */
+    @Generated
     public AdditionalLocationsProfile() {
     }
 
@@ -34,6 +37,7 @@ public final class AdditionalLocationsProfile implements JsonSerializable<Additi
      * 
      * @return the locationProfiles value.
      */
+    @Generated
     public List<LocationProfile> locationProfiles() {
         return this.locationProfiles;
     }
@@ -44,6 +48,7 @@ public final class AdditionalLocationsProfile implements JsonSerializable<Additi
      * @param locationProfiles the locationProfiles value to set.
      * @return the AdditionalLocationsProfile object itself.
      */
+    @Generated
     public AdditionalLocationsProfile withLocationProfiles(List<LocationProfile> locationProfiles) {
         this.locationProfiles = locationProfiles;
         return this;

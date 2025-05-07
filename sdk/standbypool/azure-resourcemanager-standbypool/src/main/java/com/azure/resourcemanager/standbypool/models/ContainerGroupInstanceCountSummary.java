@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -21,16 +22,19 @@ public final class ContainerGroupInstanceCountSummary implements JsonSerializabl
     /*
      * The zone that the provided counts are in. It will not have a value if zones are not enabled.
      */
+    @Generated
     private Long zone;
 
     /*
      * The count of pooled container groups in each state for the given zone.
      */
+    @Generated
     private List<PoolContainerGroupStateCount> instanceCountsByState;
 
     /**
      * Creates an instance of ContainerGroupInstanceCountSummary class.
      */
+    @Generated
     private ContainerGroupInstanceCountSummary() {
     }
 
@@ -40,6 +44,7 @@ public final class ContainerGroupInstanceCountSummary implements JsonSerializabl
      * 
      * @return the zone value.
      */
+    @Generated
     public Long zone() {
         return this.zone;
     }
@@ -49,6 +54,7 @@ public final class ContainerGroupInstanceCountSummary implements JsonSerializabl
      * 
      * @return the instanceCountsByState value.
      */
+    @Generated
     public List<PoolContainerGroupStateCount> instanceCountsByState() {
         return this.instanceCountsByState;
     }

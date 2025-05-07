@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public class FabricProfile implements JsonSerializable<FabricProfile> {
     /*
      * Discriminator property for FabricProfile.
      */
+    @Generated
     private String kind = "FabricProfile";
 
     /**
      * Creates an instance of FabricProfile class.
      */
+    @Generated
     public FabricProfile() {
     }
 
@@ -32,6 +35,7 @@ public class FabricProfile implements JsonSerializable<FabricProfile> {
      * 
      * @return the kind value.
      */
+    @Generated
     public String kind() {
         return this.kind;
     }

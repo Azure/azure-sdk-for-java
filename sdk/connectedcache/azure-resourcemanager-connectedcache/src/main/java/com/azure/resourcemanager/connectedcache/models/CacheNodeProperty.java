@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.connectedcache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,46 +21,55 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
     /*
      * The provisioned state of the resource
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * Mcc cache node resource (cache node entity).
      */
+    @Generated
     private CacheNodeEntity cacheNode;
 
     /*
      * Mcc cache node resource additional properties.
      */
+    @Generated
     private AdditionalCacheNodeProperties additionalCacheNodeProperties;
 
     /*
      * Mcc response status code.
      */
+    @Generated
     private String statusCode;
 
     /*
      * Mcc response status text as string for retrieving status details.
      */
+    @Generated
     private String statusText;
 
     /*
      * Mcc response status details for retrieving response inner details.
      */
+    @Generated
     private String statusDetails;
 
     /*
      * HTTP error status code.
      */
+    @Generated
     private String status;
 
     /*
      * Mcc response error details.
      */
+    @Generated
     private ManagementError error;
 
     /**
      * Creates an instance of CacheNodeProperty class.
      */
+    @Generated
     public CacheNodeProperty() {
     }
 
@@ -68,6 +78,7 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -77,6 +88,7 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
      * 
      * @return the cacheNode value.
      */
+    @Generated
     public CacheNodeEntity cacheNode() {
         return this.cacheNode;
     }
@@ -87,6 +99,7 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
      * @param cacheNode the cacheNode value to set.
      * @return the CacheNodeProperty object itself.
      */
+    @Generated
     public CacheNodeProperty withCacheNode(CacheNodeEntity cacheNode) {
         this.cacheNode = cacheNode;
         return this;
@@ -97,6 +110,7 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
      * 
      * @return the additionalCacheNodeProperties value.
      */
+    @Generated
     public AdditionalCacheNodeProperties additionalCacheNodeProperties() {
         return this.additionalCacheNodeProperties;
     }
@@ -107,6 +121,7 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
      * @param additionalCacheNodeProperties the additionalCacheNodeProperties value to set.
      * @return the CacheNodeProperty object itself.
      */
+    @Generated
     public CacheNodeProperty
         withAdditionalCacheNodeProperties(AdditionalCacheNodeProperties additionalCacheNodeProperties) {
         this.additionalCacheNodeProperties = additionalCacheNodeProperties;
@@ -118,6 +133,7 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
      * 
      * @return the statusCode value.
      */
+    @Generated
     public String statusCode() {
         return this.statusCode;
     }
@@ -128,6 +144,7 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
      * @param statusCode the statusCode value to set.
      * @return the CacheNodeProperty object itself.
      */
+    @Generated
     public CacheNodeProperty withStatusCode(String statusCode) {
         this.statusCode = statusCode;
         return this;
@@ -138,6 +155,7 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
      * 
      * @return the statusText value.
      */
+    @Generated
     public String statusText() {
         return this.statusText;
     }
@@ -148,6 +166,7 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
      * @param statusText the statusText value to set.
      * @return the CacheNodeProperty object itself.
      */
+    @Generated
     public CacheNodeProperty withStatusText(String statusText) {
         this.statusText = statusText;
         return this;
@@ -158,6 +177,7 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
      * 
      * @return the statusDetails value.
      */
+    @Generated
     public String statusDetails() {
         return this.statusDetails;
     }
@@ -168,6 +188,7 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
      * @param statusDetails the statusDetails value to set.
      * @return the CacheNodeProperty object itself.
      */
+    @Generated
     public CacheNodeProperty withStatusDetails(String statusDetails) {
         this.statusDetails = statusDetails;
         return this;
@@ -178,6 +199,7 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
      * 
      * @return the status value.
      */
+    @Generated
     public String status() {
         return this.status;
     }
@@ -187,6 +209,7 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
      * 
      * @return the error value.
      */
+    @Generated
     public ManagementError error() {
         return this.error;
     }
@@ -197,6 +220,7 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
      * @param error the error value to set.
      * @return the CacheNodeProperty object itself.
      */
+    @Generated
     public CacheNodeProperty withError(ManagementError error) {
         this.error = error;
         return this;

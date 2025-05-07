@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class DataflowEndpointAuthenticationX509 implements JsonSerializabl
     /*
      * Secret reference of the X.509 certificate.
      */
+    @Generated
     private String secretRef;
 
     /**
      * Creates an instance of DataflowEndpointAuthenticationX509 class.
      */
+    @Generated
     public DataflowEndpointAuthenticationX509() {
     }
 
@@ -33,6 +36,7 @@ public final class DataflowEndpointAuthenticationX509 implements JsonSerializabl
      * 
      * @return the secretRef value.
      */
+    @Generated
     public String secretRef() {
         return this.secretRef;
     }
@@ -43,6 +47,7 @@ public final class DataflowEndpointAuthenticationX509 implements JsonSerializabl
      * @param secretRef the secretRef value to set.
      * @return the DataflowEndpointAuthenticationX509 object itself.
      */
+    @Generated
     public DataflowEndpointAuthenticationX509 withSecretRef(String secretRef) {
         this.secretRef = secretRef;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
     /*
      * The execution parameters for the request
      */
+    @Generated
     private ExecutionParameters executionParameters;
 
     /*
      * The resources for the request
      */
+    @Generated
     private Resources resources;
 
     /*
      * CorrelationId item
      */
+    @Generated
     private String correlationid;
 
     /**
      * Creates an instance of ExecuteDeallocateRequest class.
      */
+    @Generated
     public ExecuteDeallocateRequest() {
     }
 
@@ -43,6 +48,7 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
      * 
      * @return the executionParameters value.
      */
+    @Generated
     public ExecutionParameters executionParameters() {
         return this.executionParameters;
     }
@@ -53,6 +59,7 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
      * @param executionParameters the executionParameters value to set.
      * @return the ExecuteDeallocateRequest object itself.
      */
+    @Generated
     public ExecuteDeallocateRequest withExecutionParameters(ExecutionParameters executionParameters) {
         this.executionParameters = executionParameters;
         return this;
@@ -63,6 +70,7 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
      * 
      * @return the resources value.
      */
+    @Generated
     public Resources resources() {
         return this.resources;
     }
@@ -73,6 +81,7 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
      * @param resources the resources value to set.
      * @return the ExecuteDeallocateRequest object itself.
      */
+    @Generated
     public ExecuteDeallocateRequest withResources(Resources resources) {
         this.resources = resources;
         return this;
@@ -83,6 +92,7 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
      * 
      * @return the correlationid value.
      */
+    @Generated
     public String correlationid() {
         return this.correlationid;
     }
@@ -93,6 +103,7 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
      * @param correlationid the correlationid value to set.
      * @return the ExecuteDeallocateRequest object itself.
      */
+    @Generated
     public ExecuteDeallocateRequest withCorrelationid(String correlationid) {
         this.correlationid = correlationid;
         return this;

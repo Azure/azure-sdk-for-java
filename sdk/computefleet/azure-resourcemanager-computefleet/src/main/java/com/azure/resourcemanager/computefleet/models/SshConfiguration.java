@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class SshConfiguration implements JsonSerializable<SshConfiguration
     /*
      * The list of SSH public keys used to authenticate with linux based VMs.
      */
+    @Generated
     private List<SshPublicKey> publicKeys;
 
     /**
      * Creates an instance of SshConfiguration class.
      */
+    @Generated
     public SshConfiguration() {
     }
 
@@ -33,6 +36,7 @@ public final class SshConfiguration implements JsonSerializable<SshConfiguration
      * 
      * @return the publicKeys value.
      */
+    @Generated
     public List<SshPublicKey> publicKeys() {
         return this.publicKeys;
     }
@@ -43,6 +47,7 @@ public final class SshConfiguration implements JsonSerializable<SshConfiguration
      * @param publicKeys the publicKeys value to set.
      * @return the SshConfiguration object itself.
      */
+    @Generated
     public SshConfiguration withPublicKeys(List<SshPublicKey> publicKeys) {
         this.publicKeys = publicKeys;
         return this;

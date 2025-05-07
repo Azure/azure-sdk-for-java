@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,36 +20,43 @@ public final class FleetHubProfile implements JsonSerializable<FleetHubProfile> 
     /*
      * DNS prefix used to create the FQDN for the Fleet hub.
      */
+    @Generated
     private String dnsPrefix;
 
     /*
      * The access profile for the Fleet hub API server.
      */
+    @Generated
     private ApiServerAccessProfile apiServerAccessProfile;
 
     /*
      * The agent profile for the Fleet hub.
      */
+    @Generated
     private AgentProfile agentProfile;
 
     /*
      * The FQDN of the Fleet hub.
      */
+    @Generated
     private String fqdn;
 
     /*
      * The Kubernetes version of the Fleet hub.
      */
+    @Generated
     private String kubernetesVersion;
 
     /*
      * The Azure Portal FQDN of the Fleet hub.
      */
+    @Generated
     private String portalFqdn;
 
     /**
      * Creates an instance of FleetHubProfile class.
      */
+    @Generated
     public FleetHubProfile() {
     }
 
@@ -57,6 +65,7 @@ public final class FleetHubProfile implements JsonSerializable<FleetHubProfile> 
      * 
      * @return the dnsPrefix value.
      */
+    @Generated
     public String dnsPrefix() {
         return this.dnsPrefix;
     }
@@ -67,6 +76,7 @@ public final class FleetHubProfile implements JsonSerializable<FleetHubProfile> 
      * @param dnsPrefix the dnsPrefix value to set.
      * @return the FleetHubProfile object itself.
      */
+    @Generated
     public FleetHubProfile withDnsPrefix(String dnsPrefix) {
         this.dnsPrefix = dnsPrefix;
         return this;
@@ -77,6 +87,7 @@ public final class FleetHubProfile implements JsonSerializable<FleetHubProfile> 
      * 
      * @return the apiServerAccessProfile value.
      */
+    @Generated
     public ApiServerAccessProfile apiServerAccessProfile() {
         return this.apiServerAccessProfile;
     }
@@ -87,6 +98,7 @@ public final class FleetHubProfile implements JsonSerializable<FleetHubProfile> 
      * @param apiServerAccessProfile the apiServerAccessProfile value to set.
      * @return the FleetHubProfile object itself.
      */
+    @Generated
     public FleetHubProfile withApiServerAccessProfile(ApiServerAccessProfile apiServerAccessProfile) {
         this.apiServerAccessProfile = apiServerAccessProfile;
         return this;
@@ -97,6 +109,7 @@ public final class FleetHubProfile implements JsonSerializable<FleetHubProfile> 
      * 
      * @return the agentProfile value.
      */
+    @Generated
     public AgentProfile agentProfile() {
         return this.agentProfile;
     }
@@ -107,6 +120,7 @@ public final class FleetHubProfile implements JsonSerializable<FleetHubProfile> 
      * @param agentProfile the agentProfile value to set.
      * @return the FleetHubProfile object itself.
      */
+    @Generated
     public FleetHubProfile withAgentProfile(AgentProfile agentProfile) {
         this.agentProfile = agentProfile;
         return this;
@@ -117,6 +131,7 @@ public final class FleetHubProfile implements JsonSerializable<FleetHubProfile> 
      * 
      * @return the fqdn value.
      */
+    @Generated
     public String fqdn() {
         return this.fqdn;
     }
@@ -126,6 +141,7 @@ public final class FleetHubProfile implements JsonSerializable<FleetHubProfile> 
      * 
      * @return the kubernetesVersion value.
      */
+    @Generated
     public String kubernetesVersion() {
         return this.kubernetesVersion;
     }
@@ -135,6 +151,7 @@ public final class FleetHubProfile implements JsonSerializable<FleetHubProfile> 
      * 
      * @return the portalFqdn value.
      */
+    @Generated
     public String portalFqdn() {
         return this.portalFqdn;
     }

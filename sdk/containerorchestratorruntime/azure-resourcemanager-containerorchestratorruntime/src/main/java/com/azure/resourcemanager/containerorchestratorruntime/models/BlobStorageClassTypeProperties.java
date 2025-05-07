@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class BlobStorageClassTypeProperties extends StorageClassTypeProper
     /*
      * Type of the storage class.
      */
+    @Generated
     private SCType type = SCType.BLOB;
 
     /*
      * Azure Storage Account Name
      */
+    @Generated
     private String azureStorageAccountName;
 
     /*
      * Azure Storage Account Key
      */
+    @Generated
     private String azureStorageAccountKey;
 
     /**
      * Creates an instance of BlobStorageClassTypeProperties class.
      */
+    @Generated
     public BlobStorageClassTypeProperties() {
     }
 
@@ -42,6 +47,7 @@ public final class BlobStorageClassTypeProperties extends StorageClassTypeProper
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public SCType type() {
         return this.type;
@@ -52,6 +58,7 @@ public final class BlobStorageClassTypeProperties extends StorageClassTypeProper
      * 
      * @return the azureStorageAccountName value.
      */
+    @Generated
     public String azureStorageAccountName() {
         return this.azureStorageAccountName;
     }
@@ -62,6 +69,7 @@ public final class BlobStorageClassTypeProperties extends StorageClassTypeProper
      * @param azureStorageAccountName the azureStorageAccountName value to set.
      * @return the BlobStorageClassTypeProperties object itself.
      */
+    @Generated
     public BlobStorageClassTypeProperties withAzureStorageAccountName(String azureStorageAccountName) {
         this.azureStorageAccountName = azureStorageAccountName;
         return this;
@@ -72,6 +80,7 @@ public final class BlobStorageClassTypeProperties extends StorageClassTypeProper
      * 
      * @return the azureStorageAccountKey value.
      */
+    @Generated
     public String azureStorageAccountKey() {
         return this.azureStorageAccountKey;
     }
@@ -82,6 +91,7 @@ public final class BlobStorageClassTypeProperties extends StorageClassTypeProper
      * @param azureStorageAccountKey the azureStorageAccountKey value to set.
      * @return the BlobStorageClassTypeProperties object itself.
      */
+    @Generated
     public BlobStorageClassTypeProperties withAzureStorageAccountKey(String azureStorageAccountKey) {
         this.azureStorageAccountKey = azureStorageAccountKey;
         return this;

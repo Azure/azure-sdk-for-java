@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,11 +23,13 @@ public final class DiskEncryptionSetParameters implements JsonSerializable<DiskE
     /*
      * Resource Id
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of DiskEncryptionSetParameters class.
      */
+    @Generated
     public DiskEncryptionSetParameters() {
     }
 
@@ -35,6 +38,7 @@ public final class DiskEncryptionSetParameters implements JsonSerializable<DiskE
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }
@@ -45,6 +49,7 @@ public final class DiskEncryptionSetParameters implements JsonSerializable<DiskE
      * @param id the id value to set.
      * @return the DiskEncryptionSetParameters object itself.
      */
+    @Generated
     public DiskEncryptionSetParameters withId(String id) {
         this.id = id;
         return this;

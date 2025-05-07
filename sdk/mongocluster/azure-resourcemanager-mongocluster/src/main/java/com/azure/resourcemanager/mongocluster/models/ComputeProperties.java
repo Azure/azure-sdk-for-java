@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,11 +22,13 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * The compute tier to assign to the cluster, where each tier maps to a virtual-core and memory size. Example
      * values: 'M30', 'M40'.
      */
+    @Generated
     private String tier;
 
     /**
      * Creates an instance of ComputeProperties class.
      */
+    @Generated
     public ComputeProperties() {
     }
 
@@ -35,6 +38,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * 
      * @return the tier value.
      */
+    @Generated
     public String tier() {
         return this.tier;
     }
@@ -46,6 +50,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      * @param tier the tier value to set.
      * @return the ComputeProperties object itself.
      */
+    @Generated
     public ComputeProperties withTier(String tier) {
         this.tier = tier;
         return this;

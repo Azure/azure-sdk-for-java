@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
     /*
      * The type of endpoint.
      */
+    @Generated
     private Type type;
 
     /*
      * The resource Id of the connectivity endpoint (optional).
      */
+    @Generated
     private String resourceId;
 
     /*
      * The resource provisioning state.
      */
+    @Generated
     private String provisioningState;
 
     /**
      * Creates an instance of EndpointProperties class.
      */
+    @Generated
     public EndpointProperties() {
     }
 
@@ -43,6 +48,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * 
      * @return the type value.
      */
+    @Generated
     public Type type() {
         return this.type;
     }
@@ -53,6 +59,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * @param type the type value to set.
      * @return the EndpointProperties object itself.
      */
+    @Generated
     public EndpointProperties withType(Type type) {
         this.type = type;
         return this;
@@ -63,6 +70,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String resourceId() {
         return this.resourceId;
     }
@@ -73,6 +81,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * @param resourceId the resourceId value to set.
      * @return the EndpointProperties object itself.
      */
+    @Generated
     public EndpointProperties withResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
@@ -83,6 +92,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public String provisioningState() {
         return this.provisioningState;
     }

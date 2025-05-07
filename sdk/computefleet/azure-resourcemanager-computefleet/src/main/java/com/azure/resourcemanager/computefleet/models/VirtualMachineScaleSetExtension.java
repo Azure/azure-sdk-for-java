@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class VirtualMachineScaleSetExtension implements JsonSerializable<V
     /*
      * Resource Id
      */
+    @Generated
     private String id;
 
     /*
      * The name of the extension.
      */
+    @Generated
     private String name;
 
     /*
      * Resource type
      */
+    @Generated
     private String type;
 
     /*
      * Describes the properties of a Virtual Machine Scale Set Extension.
      */
+    @Generated
     private VirtualMachineScaleSetExtensionProperties properties;
 
     /**
      * Creates an instance of VirtualMachineScaleSetExtension class.
      */
+    @Generated
     public VirtualMachineScaleSetExtension() {
     }
 
@@ -47,6 +53,7 @@ public final class VirtualMachineScaleSetExtension implements JsonSerializable<V
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }
@@ -56,6 +63,7 @@ public final class VirtualMachineScaleSetExtension implements JsonSerializable<V
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -66,6 +74,7 @@ public final class VirtualMachineScaleSetExtension implements JsonSerializable<V
      * @param name the name value to set.
      * @return the VirtualMachineScaleSetExtension object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtension withName(String name) {
         this.name = name;
         return this;
@@ -76,6 +85,7 @@ public final class VirtualMachineScaleSetExtension implements JsonSerializable<V
      * 
      * @return the type value.
      */
+    @Generated
     public String type() {
         return this.type;
     }
@@ -85,6 +95,7 @@ public final class VirtualMachineScaleSetExtension implements JsonSerializable<V
      * 
      * @return the properties value.
      */
+    @Generated
     public VirtualMachineScaleSetExtensionProperties properties() {
         return this.properties;
     }
@@ -95,6 +106,7 @@ public final class VirtualMachineScaleSetExtension implements JsonSerializable<V
      * @param properties the properties value to set.
      * @return the VirtualMachineScaleSetExtension object itself.
      */
+    @Generated
     public VirtualMachineScaleSetExtension withProperties(VirtualMachineScaleSetExtensionProperties properties) {
         this.properties = properties;
         return this;

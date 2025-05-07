@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class GitHubOrganization implements JsonSerializable<GitHubOrganiza
     /*
      * The GitHub organization URL in which the pool should be created.
      */
+    @Generated
     private String url;
 
     /*
      * Optional list of repositories in which the pool should be created.
      */
+    @Generated
     private List<String> repositories;
 
     /**
      * Creates an instance of GitHubOrganization class.
      */
+    @Generated
     public GitHubOrganization() {
     }
 
@@ -39,6 +43,7 @@ public final class GitHubOrganization implements JsonSerializable<GitHubOrganiza
      * 
      * @return the url value.
      */
+    @Generated
     public String url() {
         return this.url;
     }
@@ -49,6 +54,7 @@ public final class GitHubOrganization implements JsonSerializable<GitHubOrganiza
      * @param url the url value to set.
      * @return the GitHubOrganization object itself.
      */
+    @Generated
     public GitHubOrganization withUrl(String url) {
         this.url = url;
         return this;
@@ -59,6 +65,7 @@ public final class GitHubOrganization implements JsonSerializable<GitHubOrganiza
      * 
      * @return the repositories value.
      */
+    @Generated
     public List<String> repositories() {
         return this.repositories;
     }
@@ -69,6 +76,7 @@ public final class GitHubOrganization implements JsonSerializable<GitHubOrganiza
      * @param repositories the repositories value to set.
      * @return the GitHubOrganization object itself.
      */
+    @Generated
     public GitHubOrganization withRepositories(List<String> repositories) {
         this.repositories = repositories;
         return this;

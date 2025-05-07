@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,22 +22,26 @@ public final class AwsCloudProfile implements JsonSerializable<AwsCloudProfile> 
     /*
      * Account id for the AWS account.
      */
+    @Generated
     private String accountId;
 
     /*
      * List of AWS accounts which need to be excluded.
      */
+    @Generated
     private List<String> excludedAccounts;
 
     /*
      * Boolean value that indicates whether the account is organizational or not. True represents organization account,
      * whereas false represents a single account.
      */
+    @Generated
     private Boolean isOrganizationalAccount;
 
     /**
      * Creates an instance of AwsCloudProfile class.
      */
+    @Generated
     public AwsCloudProfile() {
     }
 
@@ -45,6 +50,7 @@ public final class AwsCloudProfile implements JsonSerializable<AwsCloudProfile> 
      * 
      * @return the accountId value.
      */
+    @Generated
     public String accountId() {
         return this.accountId;
     }
@@ -55,6 +61,7 @@ public final class AwsCloudProfile implements JsonSerializable<AwsCloudProfile> 
      * @param accountId the accountId value to set.
      * @return the AwsCloudProfile object itself.
      */
+    @Generated
     public AwsCloudProfile withAccountId(String accountId) {
         this.accountId = accountId;
         return this;
@@ -65,6 +72,7 @@ public final class AwsCloudProfile implements JsonSerializable<AwsCloudProfile> 
      * 
      * @return the excludedAccounts value.
      */
+    @Generated
     public List<String> excludedAccounts() {
         return this.excludedAccounts;
     }
@@ -75,6 +83,7 @@ public final class AwsCloudProfile implements JsonSerializable<AwsCloudProfile> 
      * @param excludedAccounts the excludedAccounts value to set.
      * @return the AwsCloudProfile object itself.
      */
+    @Generated
     public AwsCloudProfile withExcludedAccounts(List<String> excludedAccounts) {
         this.excludedAccounts = excludedAccounts;
         return this;
@@ -86,6 +95,7 @@ public final class AwsCloudProfile implements JsonSerializable<AwsCloudProfile> 
      * 
      * @return the isOrganizationalAccount value.
      */
+    @Generated
     public Boolean isOrganizationalAccount() {
         return this.isOrganizationalAccount;
     }
@@ -97,6 +107,7 @@ public final class AwsCloudProfile implements JsonSerializable<AwsCloudProfile> 
      * @param isOrganizationalAccount the isOrganizationalAccount value to set.
      * @return the AwsCloudProfile object itself.
      */
+    @Generated
     public AwsCloudProfile withIsOrganizationalAccount(Boolean isOrganizationalAccount) {
         this.isOrganizationalAccount = isOrganizationalAccount;
         return this;

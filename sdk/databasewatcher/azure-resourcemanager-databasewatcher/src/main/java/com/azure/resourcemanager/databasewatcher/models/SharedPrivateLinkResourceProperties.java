@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class SharedPrivateLinkResourceProperties
     /*
      * The resource ID of the resource the shared private link resource is for.
      */
+    @Generated
     private String privateLinkResourceId;
 
     /*
      * The group id from the provider of resource the shared private link resource is for.
      */
+    @Generated
     private String groupId;
 
     /*
      * The request message for requesting approval of the shared private link resource.
      */
+    @Generated
     private String requestMessage;
 
     /*
@@ -40,21 +44,25 @@ public final class SharedPrivateLinkResourceProperties
      * For example: if the host name is 'adx-cluster-21187695.eastus.kusto.windows.net', then the value is 'eastus'; if
      * the host name is 'sql-mi-23961134.767d5869f605.database.windows.net', then the value is '767d5869f605'.
      */
+    @Generated
     private String dnsZone;
 
     /*
      * Status of the shared private link resource. Can be Pending, Approved, Rejected or Disconnected.
      */
+    @Generated
     private SharedPrivateLinkResourceStatus status;
 
     /*
      * The provisioning state of the resource.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /**
      * Creates an instance of SharedPrivateLinkResourceProperties class.
      */
+    @Generated
     public SharedPrivateLinkResourceProperties() {
     }
 
@@ -63,6 +71,7 @@ public final class SharedPrivateLinkResourceProperties
      * 
      * @return the privateLinkResourceId value.
      */
+    @Generated
     public String privateLinkResourceId() {
         return this.privateLinkResourceId;
     }
@@ -73,6 +82,7 @@ public final class SharedPrivateLinkResourceProperties
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
+    @Generated
     public SharedPrivateLinkResourceProperties withPrivateLinkResourceId(String privateLinkResourceId) {
         this.privateLinkResourceId = privateLinkResourceId;
         return this;
@@ -83,6 +93,7 @@ public final class SharedPrivateLinkResourceProperties
      * 
      * @return the groupId value.
      */
+    @Generated
     public String groupId() {
         return this.groupId;
     }
@@ -93,6 +104,7 @@ public final class SharedPrivateLinkResourceProperties
      * @param groupId the groupId value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
+    @Generated
     public SharedPrivateLinkResourceProperties withGroupId(String groupId) {
         this.groupId = groupId;
         return this;
@@ -103,6 +115,7 @@ public final class SharedPrivateLinkResourceProperties
      * 
      * @return the requestMessage value.
      */
+    @Generated
     public String requestMessage() {
         return this.requestMessage;
     }
@@ -113,6 +126,7 @@ public final class SharedPrivateLinkResourceProperties
      * @param requestMessage the requestMessage value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
+    @Generated
     public SharedPrivateLinkResourceProperties withRequestMessage(String requestMessage) {
         this.requestMessage = requestMessage;
         return this;
@@ -128,6 +142,7 @@ public final class SharedPrivateLinkResourceProperties
      * 
      * @return the dnsZone value.
      */
+    @Generated
     public String dnsZone() {
         return this.dnsZone;
     }
@@ -143,6 +158,7 @@ public final class SharedPrivateLinkResourceProperties
      * @param dnsZone the dnsZone value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
+    @Generated
     public SharedPrivateLinkResourceProperties withDnsZone(String dnsZone) {
         this.dnsZone = dnsZone;
         return this;
@@ -154,6 +170,7 @@ public final class SharedPrivateLinkResourceProperties
      * 
      * @return the status value.
      */
+    @Generated
     public SharedPrivateLinkResourceStatus status() {
         return this.status;
     }
@@ -163,6 +180,7 @@ public final class SharedPrivateLinkResourceProperties
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }

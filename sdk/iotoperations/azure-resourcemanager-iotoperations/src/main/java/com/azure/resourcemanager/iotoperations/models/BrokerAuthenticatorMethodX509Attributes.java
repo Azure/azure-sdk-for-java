@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,16 +23,19 @@ public final class BrokerAuthenticatorMethodX509Attributes
     /*
      * Attributes object.
      */
+    @Generated
     private Map<String, String> attributes;
 
     /*
      * Subject of the X509 attribute.
      */
+    @Generated
     private String subject;
 
     /**
      * Creates an instance of BrokerAuthenticatorMethodX509Attributes class.
      */
+    @Generated
     public BrokerAuthenticatorMethodX509Attributes() {
     }
 
@@ -40,6 +44,7 @@ public final class BrokerAuthenticatorMethodX509Attributes
      * 
      * @return the attributes value.
      */
+    @Generated
     public Map<String, String> attributes() {
         return this.attributes;
     }
@@ -50,6 +55,7 @@ public final class BrokerAuthenticatorMethodX509Attributes
      * @param attributes the attributes value to set.
      * @return the BrokerAuthenticatorMethodX509Attributes object itself.
      */
+    @Generated
     public BrokerAuthenticatorMethodX509Attributes withAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
         return this;
@@ -60,6 +66,7 @@ public final class BrokerAuthenticatorMethodX509Attributes
      * 
      * @return the subject value.
      */
+    @Generated
     public String subject() {
         return this.subject;
     }
@@ -70,6 +77,7 @@ public final class BrokerAuthenticatorMethodX509Attributes
      * @param subject the subject value to set.
      * @return the BrokerAuthenticatorMethodX509Attributes object itself.
      */
+    @Generated
     public BrokerAuthenticatorMethodX509Attributes withSubject(String subject) {
         this.subject = subject;
         return this;

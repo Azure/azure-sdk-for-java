@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,38 +22,45 @@ public final class CertManagerCertificateSpec implements JsonSerializable<CertMa
      * Lifetime of certificate. Must be specified using a Go time.Duration format (h|m|s). E.g. 240h for 240 hours and
      * 45m for 45 minutes.
      */
+    @Generated
     private String duration;
 
     /*
      * Secret for storing server certificate. Any existing data will be overwritten. This is a reference to the secret
      * through an identifying name, not the secret itself.
      */
+    @Generated
     private String secretName;
 
     /*
      * When to begin renewing certificate. Must be specified using a Go time.Duration format (h|m|s). E.g. 240h for 240
      * hours and 45m for 45 minutes.
      */
+    @Generated
     private String renewBefore;
 
     /*
      * cert-manager issuerRef.
      */
+    @Generated
     private CertManagerIssuerRef issuerRef;
 
     /*
      * Type of certificate private key.
      */
+    @Generated
     private CertManagerPrivateKey privateKey;
 
     /*
      * Additional Subject Alternative Names (SANs) to include in the certificate.
      */
+    @Generated
     private SanForCert san;
 
     /**
      * Creates an instance of CertManagerCertificateSpec class.
      */
+    @Generated
     public CertManagerCertificateSpec() {
     }
 
@@ -62,6 +70,7 @@ public final class CertManagerCertificateSpec implements JsonSerializable<CertMa
      * 
      * @return the duration value.
      */
+    @Generated
     public String duration() {
         return this.duration;
     }
@@ -73,6 +82,7 @@ public final class CertManagerCertificateSpec implements JsonSerializable<CertMa
      * @param duration the duration value to set.
      * @return the CertManagerCertificateSpec object itself.
      */
+    @Generated
     public CertManagerCertificateSpec withDuration(String duration) {
         this.duration = duration;
         return this;
@@ -84,6 +94,7 @@ public final class CertManagerCertificateSpec implements JsonSerializable<CertMa
      * 
      * @return the secretName value.
      */
+    @Generated
     public String secretName() {
         return this.secretName;
     }
@@ -95,6 +106,7 @@ public final class CertManagerCertificateSpec implements JsonSerializable<CertMa
      * @param secretName the secretName value to set.
      * @return the CertManagerCertificateSpec object itself.
      */
+    @Generated
     public CertManagerCertificateSpec withSecretName(String secretName) {
         this.secretName = secretName;
         return this;
@@ -106,6 +118,7 @@ public final class CertManagerCertificateSpec implements JsonSerializable<CertMa
      * 
      * @return the renewBefore value.
      */
+    @Generated
     public String renewBefore() {
         return this.renewBefore;
     }
@@ -117,6 +130,7 @@ public final class CertManagerCertificateSpec implements JsonSerializable<CertMa
      * @param renewBefore the renewBefore value to set.
      * @return the CertManagerCertificateSpec object itself.
      */
+    @Generated
     public CertManagerCertificateSpec withRenewBefore(String renewBefore) {
         this.renewBefore = renewBefore;
         return this;
@@ -127,6 +141,7 @@ public final class CertManagerCertificateSpec implements JsonSerializable<CertMa
      * 
      * @return the issuerRef value.
      */
+    @Generated
     public CertManagerIssuerRef issuerRef() {
         return this.issuerRef;
     }
@@ -137,6 +152,7 @@ public final class CertManagerCertificateSpec implements JsonSerializable<CertMa
      * @param issuerRef the issuerRef value to set.
      * @return the CertManagerCertificateSpec object itself.
      */
+    @Generated
     public CertManagerCertificateSpec withIssuerRef(CertManagerIssuerRef issuerRef) {
         this.issuerRef = issuerRef;
         return this;
@@ -147,6 +163,7 @@ public final class CertManagerCertificateSpec implements JsonSerializable<CertMa
      * 
      * @return the privateKey value.
      */
+    @Generated
     public CertManagerPrivateKey privateKey() {
         return this.privateKey;
     }
@@ -157,6 +174,7 @@ public final class CertManagerCertificateSpec implements JsonSerializable<CertMa
      * @param privateKey the privateKey value to set.
      * @return the CertManagerCertificateSpec object itself.
      */
+    @Generated
     public CertManagerCertificateSpec withPrivateKey(CertManagerPrivateKey privateKey) {
         this.privateKey = privateKey;
         return this;
@@ -167,6 +185,7 @@ public final class CertManagerCertificateSpec implements JsonSerializable<CertMa
      * 
      * @return the san value.
      */
+    @Generated
     public SanForCert san() {
         return this.san;
     }
@@ -177,6 +196,7 @@ public final class CertManagerCertificateSpec implements JsonSerializable<CertMa
      * @param san the san value to set.
      * @return the CertManagerCertificateSpec object itself.
      */
+    @Generated
     public CertManagerCertificateSpec withSan(SanForCert san) {
         this.san = san;
         return this;

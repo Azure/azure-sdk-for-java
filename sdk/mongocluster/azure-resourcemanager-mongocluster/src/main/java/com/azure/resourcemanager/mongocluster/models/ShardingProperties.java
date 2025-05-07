@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class ShardingProperties implements JsonSerializable<ShardingProper
     /*
      * Number of shards to provision on the cluster.
      */
+    @Generated
     private Integer shardCount;
 
     /**
      * Creates an instance of ShardingProperties class.
      */
+    @Generated
     public ShardingProperties() {
     }
 
@@ -32,6 +35,7 @@ public final class ShardingProperties implements JsonSerializable<ShardingProper
      * 
      * @return the shardCount value.
      */
+    @Generated
     public Integer shardCount() {
         return this.shardCount;
     }
@@ -42,6 +46,7 @@ public final class ShardingProperties implements JsonSerializable<ShardingProper
      * @param shardCount the shardCount value to set.
      * @return the ShardingProperties object itself.
      */
+    @Generated
     public ShardingProperties withShardCount(Integer shardCount) {
         this.shardCount = shardCount;
         return this;

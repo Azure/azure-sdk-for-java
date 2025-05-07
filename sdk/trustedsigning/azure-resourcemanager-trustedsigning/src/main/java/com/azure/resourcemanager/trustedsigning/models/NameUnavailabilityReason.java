@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.trustedsigning.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,11 +16,13 @@ public final class NameUnavailabilityReason extends ExpandableStringEnum<NameUna
     /**
      * Account name is invalid.
      */
+    @Generated
     public static final NameUnavailabilityReason ACCOUNT_NAME_INVALID = fromString("AccountNameInvalid");
 
     /**
      * Account name already exists.
      */
+    @Generated
     public static final NameUnavailabilityReason ALREADY_EXISTS = fromString("AlreadyExists");
 
     /**
@@ -27,6 +30,7 @@ public final class NameUnavailabilityReason extends ExpandableStringEnum<NameUna
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public NameUnavailabilityReason() {
     }
@@ -37,6 +41,7 @@ public final class NameUnavailabilityReason extends ExpandableStringEnum<NameUna
      * @param name a name to look for.
      * @return the corresponding NameUnavailabilityReason.
      */
+    @Generated
     public static NameUnavailabilityReason fromString(String name) {
         return fromString(name, NameUnavailabilityReason.class);
     }
@@ -46,6 +51,7 @@ public final class NameUnavailabilityReason extends ExpandableStringEnum<NameUna
      * 
      * @return known NameUnavailabilityReason values.
      */
+    @Generated
     public static Collection<NameUnavailabilityReason> values() {
         return values(NameUnavailabilityReason.class);
     }

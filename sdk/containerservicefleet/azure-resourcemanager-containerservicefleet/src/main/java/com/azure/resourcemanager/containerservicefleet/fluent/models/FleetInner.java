@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -25,6 +26,7 @@ public final class FleetInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private FleetProperties innerProperties;
 
     /*
@@ -33,36 +35,43 @@ public final class FleetInner extends Resource {
      * tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section
      * 14.27) header fields.
      */
+    @Generated
     private String etag;
 
     /*
      * Managed identity.
      */
+    @Generated
     private ManagedServiceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of FleetInner class.
      */
+    @Generated
     public FleetInner() {
     }
 
@@ -71,6 +80,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the innerProperties value.
      */
+    @Generated
     private FleetProperties innerProperties() {
         return this.innerProperties;
     }
@@ -83,6 +93,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the etag value.
      */
+    @Generated
     public String etag() {
         return this.etag;
     }
@@ -92,6 +103,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the identity value.
      */
+    @Generated
     public ManagedServiceIdentity identity() {
         return this.identity;
     }
@@ -102,6 +114,7 @@ public final class FleetInner extends Resource {
      * @param identity the identity value to set.
      * @return the FleetInner object itself.
      */
+    @Generated
     public FleetInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
@@ -112,6 +125,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -121,6 +135,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -131,6 +146,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -141,6 +157,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;
@@ -149,6 +166,7 @@ public final class FleetInner extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FleetInner withLocation(String location) {
         super.withLocation(location);
@@ -158,6 +176,7 @@ public final class FleetInner extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FleetInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -169,6 +188,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public FleetProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
@@ -178,6 +198,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the hubProfile value.
      */
+    @Generated
     public FleetHubProfile hubProfile() {
         return this.innerProperties() == null ? null : this.innerProperties().hubProfile();
     }
@@ -188,6 +209,7 @@ public final class FleetInner extends Resource {
      * @param hubProfile the hubProfile value to set.
      * @return the FleetInner object itself.
      */
+    @Generated
     public FleetInner withHubProfile(FleetHubProfile hubProfile) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FleetProperties();
@@ -201,6 +223,7 @@ public final class FleetInner extends Resource {
      * 
      * @return the status value.
      */
+    @Generated
     public FleetStatus status() {
         return this.innerProperties() == null ? null : this.innerProperties().status();
     }

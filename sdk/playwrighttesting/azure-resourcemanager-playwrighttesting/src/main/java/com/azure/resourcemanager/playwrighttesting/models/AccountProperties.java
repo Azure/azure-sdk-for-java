@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.playwrighttesting.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,6 +20,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     /*
      * The Playwright testing dashboard URI for the account resource.
      */
+    @Generated
     private String dashboardUri;
 
     /*
@@ -26,34 +28,40 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * workers connect to browsers in the closest Azure region, ensuring lower latency. If disabled, workers connect to
      * browsers in the Azure region in which the workspace was initially created.
      */
+    @Generated
     private EnablementStatus regionalAffinity;
 
     /*
      * When enabled, Playwright client workers can connect to cloud-hosted browsers. This can increase the number of
      * parallel workers for a test run, significantly minimizing test completion durations.
      */
+    @Generated
     private EnablementStatus scalableExecution;
 
     /*
      * When enabled, this feature allows the workspace to upload and display test results, including artifacts like
      * traces and screenshots, in the Playwright portal. This enables faster and more efficient troubleshooting.
      */
+    @Generated
     private EnablementStatus reporting;
 
     /*
      * When enabled, this feature allows the workspace to use local auth (through service access token) for executing
      * operations.
      */
+    @Generated
     private EnablementStatus localAuth;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of AccountProperties class.
      */
+    @Generated
     public AccountProperties() {
     }
 
@@ -62,6 +70,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * 
      * @return the dashboardUri value.
      */
+    @Generated
     public String dashboardUri() {
         return this.dashboardUri;
     }
@@ -74,6 +83,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * 
      * @return the regionalAffinity value.
      */
+    @Generated
     public EnablementStatus regionalAffinity() {
         return this.regionalAffinity;
     }
@@ -87,6 +97,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * @param regionalAffinity the regionalAffinity value to set.
      * @return the AccountProperties object itself.
      */
+    @Generated
     public AccountProperties withRegionalAffinity(EnablementStatus regionalAffinity) {
         this.regionalAffinity = regionalAffinity;
         return this;
@@ -99,6 +110,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * 
      * @return the scalableExecution value.
      */
+    @Generated
     public EnablementStatus scalableExecution() {
         return this.scalableExecution;
     }
@@ -111,6 +123,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * @param scalableExecution the scalableExecution value to set.
      * @return the AccountProperties object itself.
      */
+    @Generated
     public AccountProperties withScalableExecution(EnablementStatus scalableExecution) {
         this.scalableExecution = scalableExecution;
         return this;
@@ -123,6 +136,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * 
      * @return the reporting value.
      */
+    @Generated
     public EnablementStatus reporting() {
         return this.reporting;
     }
@@ -135,6 +149,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * @param reporting the reporting value to set.
      * @return the AccountProperties object itself.
      */
+    @Generated
     public AccountProperties withReporting(EnablementStatus reporting) {
         this.reporting = reporting;
         return this;
@@ -146,6 +161,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * 
      * @return the localAuth value.
      */
+    @Generated
     public EnablementStatus localAuth() {
         return this.localAuth;
     }
@@ -157,6 +173,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * @param localAuth the localAuth value to set.
      * @return the AccountProperties object itself.
      */
+    @Generated
     public AccountProperties withLocalAuth(EnablementStatus localAuth) {
         this.localAuth = localAuth;
         return this;
@@ -167,6 +184,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class SapAvailabilityZoneDetailsRequest implements JsonSerializable
     /*
      * The geo-location where the SAP resources will be created.
      */
+    @Generated
     private String appLocation;
 
     /*
      * Defines the SAP Product type.
      */
+    @Generated
     private SapProductType sapProduct;
 
     /*
      * The database type. Eg: HANA, DB2, etc
      */
+    @Generated
     private SapDatabaseType databaseType;
 
     /**
      * Creates an instance of SapAvailabilityZoneDetailsRequest class.
      */
+    @Generated
     public SapAvailabilityZoneDetailsRequest() {
     }
 
@@ -43,6 +48,7 @@ public final class SapAvailabilityZoneDetailsRequest implements JsonSerializable
      * 
      * @return the appLocation value.
      */
+    @Generated
     public String appLocation() {
         return this.appLocation;
     }
@@ -53,6 +59,7 @@ public final class SapAvailabilityZoneDetailsRequest implements JsonSerializable
      * @param appLocation the appLocation value to set.
      * @return the SapAvailabilityZoneDetailsRequest object itself.
      */
+    @Generated
     public SapAvailabilityZoneDetailsRequest withAppLocation(String appLocation) {
         this.appLocation = appLocation;
         return this;
@@ -63,6 +70,7 @@ public final class SapAvailabilityZoneDetailsRequest implements JsonSerializable
      * 
      * @return the sapProduct value.
      */
+    @Generated
     public SapProductType sapProduct() {
         return this.sapProduct;
     }
@@ -73,6 +81,7 @@ public final class SapAvailabilityZoneDetailsRequest implements JsonSerializable
      * @param sapProduct the sapProduct value to set.
      * @return the SapAvailabilityZoneDetailsRequest object itself.
      */
+    @Generated
     public SapAvailabilityZoneDetailsRequest withSapProduct(SapProductType sapProduct) {
         this.sapProduct = sapProduct;
         return this;
@@ -83,6 +92,7 @@ public final class SapAvailabilityZoneDetailsRequest implements JsonSerializable
      * 
      * @return the databaseType value.
      */
+    @Generated
     public SapDatabaseType databaseType() {
         return this.databaseType;
     }
@@ -93,6 +103,7 @@ public final class SapAvailabilityZoneDetailsRequest implements JsonSerializable
      * @param databaseType the databaseType value to set.
      * @return the SapAvailabilityZoneDetailsRequest object itself.
      */
+    @Generated
     public SapAvailabilityZoneDetailsRequest withDatabaseType(SapDatabaseType databaseType) {
         this.databaseType = databaseType;
         return this;

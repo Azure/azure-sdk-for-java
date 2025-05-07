@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class BackendChain implements JsonSerializable<BackendChain> {
     /*
      * The desired number of physical backend partitions.
      */
+    @Generated
     private int partitions;
 
     /*
      * The desired numbers of backend replicas (pods) in a physical partition.
      */
+    @Generated
     private int redundancyFactor;
 
     /*
      * Number of logical backend workers per replica (pod).
      */
+    @Generated
     private Integer workers;
 
     /**
      * Creates an instance of BackendChain class.
      */
+    @Generated
     public BackendChain() {
     }
 
@@ -42,6 +47,7 @@ public final class BackendChain implements JsonSerializable<BackendChain> {
      * 
      * @return the partitions value.
      */
+    @Generated
     public int partitions() {
         return this.partitions;
     }
@@ -52,6 +58,7 @@ public final class BackendChain implements JsonSerializable<BackendChain> {
      * @param partitions the partitions value to set.
      * @return the BackendChain object itself.
      */
+    @Generated
     public BackendChain withPartitions(int partitions) {
         this.partitions = partitions;
         return this;
@@ -62,6 +69,7 @@ public final class BackendChain implements JsonSerializable<BackendChain> {
      * 
      * @return the redundancyFactor value.
      */
+    @Generated
     public int redundancyFactor() {
         return this.redundancyFactor;
     }
@@ -72,6 +80,7 @@ public final class BackendChain implements JsonSerializable<BackendChain> {
      * @param redundancyFactor the redundancyFactor value to set.
      * @return the BackendChain object itself.
      */
+    @Generated
     public BackendChain withRedundancyFactor(int redundancyFactor) {
         this.redundancyFactor = redundancyFactor;
         return this;
@@ -82,6 +91,7 @@ public final class BackendChain implements JsonSerializable<BackendChain> {
      * 
      * @return the workers value.
      */
+    @Generated
     public Integer workers() {
         return this.workers;
     }
@@ -92,6 +102,7 @@ public final class BackendChain implements JsonSerializable<BackendChain> {
      * @param workers the workers value to set.
      * @return the BackendChain object itself.
      */
+    @Generated
     public BackendChain withWorkers(Integer workers) {
         this.workers = workers;
         return this;

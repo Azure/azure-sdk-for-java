@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.connectedcache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,36 +21,43 @@ public final class CacheNodeOldResponse implements JsonSerializable<CacheNodeOld
     /*
      * The provisioned state of the resource
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * statusCode used to get code details of Mcc response object
      */
+    @Generated
     private String statusCode;
 
     /*
      * statusText used to get status details in string format of Mcc response object
      */
+    @Generated
     private String statusText;
 
     /*
      * statusDetails used to get inner details of Mcc response object
      */
+    @Generated
     private String statusDetails;
 
     /*
      * status of the HTTP error code
      */
+    @Generated
     private String status;
 
     /*
      * The error details
      */
+    @Generated
     private ManagementError error;
 
     /**
      * Creates an instance of CacheNodeOldResponse class.
      */
+    @Generated
     public CacheNodeOldResponse() {
     }
 
@@ -58,6 +66,7 @@ public final class CacheNodeOldResponse implements JsonSerializable<CacheNodeOld
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -67,6 +76,7 @@ public final class CacheNodeOldResponse implements JsonSerializable<CacheNodeOld
      * 
      * @return the statusCode value.
      */
+    @Generated
     public String statusCode() {
         return this.statusCode;
     }
@@ -77,6 +87,7 @@ public final class CacheNodeOldResponse implements JsonSerializable<CacheNodeOld
      * @param statusCode the statusCode value to set.
      * @return the CacheNodeOldResponse object itself.
      */
+    @Generated
     public CacheNodeOldResponse withStatusCode(String statusCode) {
         this.statusCode = statusCode;
         return this;
@@ -87,6 +98,7 @@ public final class CacheNodeOldResponse implements JsonSerializable<CacheNodeOld
      * 
      * @return the statusText value.
      */
+    @Generated
     public String statusText() {
         return this.statusText;
     }
@@ -97,6 +109,7 @@ public final class CacheNodeOldResponse implements JsonSerializable<CacheNodeOld
      * @param statusText the statusText value to set.
      * @return the CacheNodeOldResponse object itself.
      */
+    @Generated
     public CacheNodeOldResponse withStatusText(String statusText) {
         this.statusText = statusText;
         return this;
@@ -107,6 +120,7 @@ public final class CacheNodeOldResponse implements JsonSerializable<CacheNodeOld
      * 
      * @return the statusDetails value.
      */
+    @Generated
     public String statusDetails() {
         return this.statusDetails;
     }
@@ -117,6 +131,7 @@ public final class CacheNodeOldResponse implements JsonSerializable<CacheNodeOld
      * @param statusDetails the statusDetails value to set.
      * @return the CacheNodeOldResponse object itself.
      */
+    @Generated
     public CacheNodeOldResponse withStatusDetails(String statusDetails) {
         this.statusDetails = statusDetails;
         return this;
@@ -127,6 +142,7 @@ public final class CacheNodeOldResponse implements JsonSerializable<CacheNodeOld
      * 
      * @return the status value.
      */
+    @Generated
     public String status() {
         return this.status;
     }
@@ -136,6 +152,7 @@ public final class CacheNodeOldResponse implements JsonSerializable<CacheNodeOld
      * 
      * @return the error value.
      */
+    @Generated
     public ManagementError error() {
         return this.error;
     }
@@ -146,6 +163,7 @@ public final class CacheNodeOldResponse implements JsonSerializable<CacheNodeOld
      * @param error the error value to set.
      * @return the CacheNodeOldResponse object itself.
      */
+    @Generated
     public CacheNodeOldResponse withError(ManagementError error) {
         this.error = error;
         return this;

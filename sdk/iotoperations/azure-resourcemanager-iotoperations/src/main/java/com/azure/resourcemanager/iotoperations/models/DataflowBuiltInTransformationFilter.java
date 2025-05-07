@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,27 +23,32 @@ public final class DataflowBuiltInTransformationFilter
     /*
      * The type of dataflow operation.
      */
+    @Generated
     private FilterType type;
 
     /*
      * A user provided optional description of the filter.
      */
+    @Generated
     private String description;
 
     /*
      * List of fields for filtering in JSON path expression.
      */
+    @Generated
     private List<String> inputs;
 
     /*
      * Condition to filter data. Can reference input fields with {n} where n is the index of the input field starting
      * from 1. Example: $1 < 0 || $1 > $2 (Assuming inputs section $1 and $2 are provided)
      */
+    @Generated
     private String expression;
 
     /**
      * Creates an instance of DataflowBuiltInTransformationFilter class.
      */
+    @Generated
     public DataflowBuiltInTransformationFilter() {
     }
 
@@ -51,6 +57,7 @@ public final class DataflowBuiltInTransformationFilter
      * 
      * @return the type value.
      */
+    @Generated
     public FilterType type() {
         return this.type;
     }
@@ -61,6 +68,7 @@ public final class DataflowBuiltInTransformationFilter
      * @param type the type value to set.
      * @return the DataflowBuiltInTransformationFilter object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationFilter withType(FilterType type) {
         this.type = type;
         return this;
@@ -71,6 +79,7 @@ public final class DataflowBuiltInTransformationFilter
      * 
      * @return the description value.
      */
+    @Generated
     public String description() {
         return this.description;
     }
@@ -81,6 +90,7 @@ public final class DataflowBuiltInTransformationFilter
      * @param description the description value to set.
      * @return the DataflowBuiltInTransformationFilter object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationFilter withDescription(String description) {
         this.description = description;
         return this;
@@ -91,6 +101,7 @@ public final class DataflowBuiltInTransformationFilter
      * 
      * @return the inputs value.
      */
+    @Generated
     public List<String> inputs() {
         return this.inputs;
     }
@@ -101,6 +112,7 @@ public final class DataflowBuiltInTransformationFilter
      * @param inputs the inputs value to set.
      * @return the DataflowBuiltInTransformationFilter object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationFilter withInputs(List<String> inputs) {
         this.inputs = inputs;
         return this;
@@ -113,6 +125,7 @@ public final class DataflowBuiltInTransformationFilter
      * 
      * @return the expression value.
      */
+    @Generated
     public String expression() {
         return this.expression;
     }
@@ -125,6 +138,7 @@ public final class DataflowBuiltInTransformationFilter
      * @param expression the expression value to set.
      * @return the DataflowBuiltInTransformationFilter object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationFilter withExpression(String expression) {
         this.expression = expression;
         return this;

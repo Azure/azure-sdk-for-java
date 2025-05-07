@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,26 +22,31 @@ public final class DataflowEndpointDataLakeStorageAuthentication
     /*
      * Mode of Authentication.
      */
+    @Generated
     private DataLakeStorageAuthMethod method;
 
     /*
      * SAS token authentication.
      */
+    @Generated
     private DataflowEndpointAuthenticationAccessToken accessTokenSettings;
 
     /*
      * System-assigned managed identity authentication.
      */
+    @Generated
     private DataflowEndpointAuthenticationSystemAssignedManagedIdentity systemAssignedManagedIdentitySettings;
 
     /*
      * User-assigned managed identity authentication.
      */
+    @Generated
     private DataflowEndpointAuthenticationUserAssignedManagedIdentity userAssignedManagedIdentitySettings;
 
     /**
      * Creates an instance of DataflowEndpointDataLakeStorageAuthentication class.
      */
+    @Generated
     public DataflowEndpointDataLakeStorageAuthentication() {
     }
 
@@ -49,6 +55,7 @@ public final class DataflowEndpointDataLakeStorageAuthentication
      * 
      * @return the method value.
      */
+    @Generated
     public DataLakeStorageAuthMethod method() {
         return this.method;
     }
@@ -59,6 +66,7 @@ public final class DataflowEndpointDataLakeStorageAuthentication
      * @param method the method value to set.
      * @return the DataflowEndpointDataLakeStorageAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointDataLakeStorageAuthentication withMethod(DataLakeStorageAuthMethod method) {
         this.method = method;
         return this;
@@ -69,6 +77,7 @@ public final class DataflowEndpointDataLakeStorageAuthentication
      * 
      * @return the accessTokenSettings value.
      */
+    @Generated
     public DataflowEndpointAuthenticationAccessToken accessTokenSettings() {
         return this.accessTokenSettings;
     }
@@ -79,6 +88,7 @@ public final class DataflowEndpointDataLakeStorageAuthentication
      * @param accessTokenSettings the accessTokenSettings value to set.
      * @return the DataflowEndpointDataLakeStorageAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointDataLakeStorageAuthentication
         withAccessTokenSettings(DataflowEndpointAuthenticationAccessToken accessTokenSettings) {
         this.accessTokenSettings = accessTokenSettings;
@@ -90,6 +100,7 @@ public final class DataflowEndpointDataLakeStorageAuthentication
      * 
      * @return the systemAssignedManagedIdentitySettings value.
      */
+    @Generated
     public DataflowEndpointAuthenticationSystemAssignedManagedIdentity systemAssignedManagedIdentitySettings() {
         return this.systemAssignedManagedIdentitySettings;
     }
@@ -100,6 +111,7 @@ public final class DataflowEndpointDataLakeStorageAuthentication
      * @param systemAssignedManagedIdentitySettings the systemAssignedManagedIdentitySettings value to set.
      * @return the DataflowEndpointDataLakeStorageAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointDataLakeStorageAuthentication withSystemAssignedManagedIdentitySettings(
         DataflowEndpointAuthenticationSystemAssignedManagedIdentity systemAssignedManagedIdentitySettings) {
         this.systemAssignedManagedIdentitySettings = systemAssignedManagedIdentitySettings;
@@ -111,6 +123,7 @@ public final class DataflowEndpointDataLakeStorageAuthentication
      * 
      * @return the userAssignedManagedIdentitySettings value.
      */
+    @Generated
     public DataflowEndpointAuthenticationUserAssignedManagedIdentity userAssignedManagedIdentitySettings() {
         return this.userAssignedManagedIdentitySettings;
     }
@@ -121,6 +134,7 @@ public final class DataflowEndpointDataLakeStorageAuthentication
      * @param userAssignedManagedIdentitySettings the userAssignedManagedIdentitySettings value to set.
      * @return the DataflowEndpointDataLakeStorageAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointDataLakeStorageAuthentication withUserAssignedManagedIdentitySettings(
         DataflowEndpointAuthenticationUserAssignedManagedIdentity userAssignedManagedIdentitySettings) {
         this.userAssignedManagedIdentitySettings = userAssignedManagedIdentitySettings;

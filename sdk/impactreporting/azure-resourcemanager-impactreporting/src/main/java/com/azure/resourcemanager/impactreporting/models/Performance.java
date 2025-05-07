@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public final class Performance implements JsonSerializable<Performance> {
     /*
      * Name of the Metric examples: Disk, IOPs, CPU, GPU, Memory, details can be found from /impactCategories API
      */
+    @Generated
     private String metricName;
 
     /*
      * Threshold value for the metric
      */
+    @Generated
     private Double expected;
 
     /*
      * Observed value for the metric
      */
+    @Generated
     private Double actual;
 
     /*
      * Max and Min Threshold values for the metric
      */
+    @Generated
     private ExpectedValueRange expectedValueRange;
 
     /*
      * Unit of the metric ex: Bytes, Percentage, Count, Seconds, Milliseconds, Bytes/Second, Count/Second, etc.., Other
      */
+    @Generated
     private MetricUnit unit;
 
     /**
      * Creates an instance of Performance class.
      */
+    @Generated
     public Performance() {
     }
 
@@ -53,6 +60,7 @@ public final class Performance implements JsonSerializable<Performance> {
      * 
      * @return the metricName value.
      */
+    @Generated
     public String metricName() {
         return this.metricName;
     }
@@ -64,6 +72,7 @@ public final class Performance implements JsonSerializable<Performance> {
      * @param metricName the metricName value to set.
      * @return the Performance object itself.
      */
+    @Generated
     public Performance withMetricName(String metricName) {
         this.metricName = metricName;
         return this;
@@ -74,6 +83,7 @@ public final class Performance implements JsonSerializable<Performance> {
      * 
      * @return the expected value.
      */
+    @Generated
     public Double expected() {
         return this.expected;
     }
@@ -84,6 +94,7 @@ public final class Performance implements JsonSerializable<Performance> {
      * @param expected the expected value to set.
      * @return the Performance object itself.
      */
+    @Generated
     public Performance withExpected(Double expected) {
         this.expected = expected;
         return this;
@@ -94,6 +105,7 @@ public final class Performance implements JsonSerializable<Performance> {
      * 
      * @return the actual value.
      */
+    @Generated
     public Double actual() {
         return this.actual;
     }
@@ -104,6 +116,7 @@ public final class Performance implements JsonSerializable<Performance> {
      * @param actual the actual value to set.
      * @return the Performance object itself.
      */
+    @Generated
     public Performance withActual(Double actual) {
         this.actual = actual;
         return this;
@@ -114,6 +127,7 @@ public final class Performance implements JsonSerializable<Performance> {
      * 
      * @return the expectedValueRange value.
      */
+    @Generated
     public ExpectedValueRange expectedValueRange() {
         return this.expectedValueRange;
     }
@@ -124,6 +138,7 @@ public final class Performance implements JsonSerializable<Performance> {
      * @param expectedValueRange the expectedValueRange value to set.
      * @return the Performance object itself.
      */
+    @Generated
     public Performance withExpectedValueRange(ExpectedValueRange expectedValueRange) {
         this.expectedValueRange = expectedValueRange;
         return this;
@@ -135,6 +150,7 @@ public final class Performance implements JsonSerializable<Performance> {
      * 
      * @return the unit value.
      */
+    @Generated
     public MetricUnit unit() {
         return this.unit;
     }
@@ -146,6 +162,7 @@ public final class Performance implements JsonSerializable<Performance> {
      * @param unit the unit value to set.
      * @return the Performance object itself.
      */
+    @Generated
     public Performance withUnit(MetricUnit unit) {
         this.unit = unit;
         return this;

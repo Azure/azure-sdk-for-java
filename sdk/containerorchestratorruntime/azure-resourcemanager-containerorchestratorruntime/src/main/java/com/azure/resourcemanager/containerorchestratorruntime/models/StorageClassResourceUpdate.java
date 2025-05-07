@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class StorageClassResourceUpdate implements JsonSerializable<Storag
     /*
      * The properties of StorageClass
      */
+    @Generated
     private StorageClassPropertiesUpdate properties;
 
     /**
      * Creates an instance of StorageClassResourceUpdate class.
      */
+    @Generated
     public StorageClassResourceUpdate() {
     }
 
@@ -32,6 +35,7 @@ public final class StorageClassResourceUpdate implements JsonSerializable<Storag
      * 
      * @return the properties value.
      */
+    @Generated
     public StorageClassPropertiesUpdate properties() {
         return this.properties;
     }
@@ -42,6 +46,7 @@ public final class StorageClassResourceUpdate implements JsonSerializable<Storag
      * @param properties the properties value to set.
      * @return the StorageClassResourceUpdate object itself.
      */
+    @Generated
     public StorageClassResourceUpdate withProperties(StorageClassPropertiesUpdate properties) {
         this.properties = properties;
         return this;

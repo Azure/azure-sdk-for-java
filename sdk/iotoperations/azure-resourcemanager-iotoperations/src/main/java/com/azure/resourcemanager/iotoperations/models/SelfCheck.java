@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class SelfCheck implements JsonSerializable<SelfCheck> {
     /*
      * The toggle to enable/disable self check.
      */
+    @Generated
     private OperationalMode mode;
 
     /*
      * The self check interval.
      */
+    @Generated
     private Integer intervalSeconds;
 
     /*
      * The timeout for self check.
      */
+    @Generated
     private Integer timeoutSeconds;
 
     /**
      * Creates an instance of SelfCheck class.
      */
+    @Generated
     public SelfCheck() {
     }
 
@@ -42,6 +47,7 @@ public final class SelfCheck implements JsonSerializable<SelfCheck> {
      * 
      * @return the mode value.
      */
+    @Generated
     public OperationalMode mode() {
         return this.mode;
     }
@@ -52,6 +58,7 @@ public final class SelfCheck implements JsonSerializable<SelfCheck> {
      * @param mode the mode value to set.
      * @return the SelfCheck object itself.
      */
+    @Generated
     public SelfCheck withMode(OperationalMode mode) {
         this.mode = mode;
         return this;
@@ -62,6 +69,7 @@ public final class SelfCheck implements JsonSerializable<SelfCheck> {
      * 
      * @return the intervalSeconds value.
      */
+    @Generated
     public Integer intervalSeconds() {
         return this.intervalSeconds;
     }
@@ -72,6 +80,7 @@ public final class SelfCheck implements JsonSerializable<SelfCheck> {
      * @param intervalSeconds the intervalSeconds value to set.
      * @return the SelfCheck object itself.
      */
+    @Generated
     public SelfCheck withIntervalSeconds(Integer intervalSeconds) {
         this.intervalSeconds = intervalSeconds;
         return this;
@@ -82,6 +91,7 @@ public final class SelfCheck implements JsonSerializable<SelfCheck> {
      * 
      * @return the timeoutSeconds value.
      */
+    @Generated
     public Integer timeoutSeconds() {
         return this.timeoutSeconds;
     }
@@ -92,6 +102,7 @@ public final class SelfCheck implements JsonSerializable<SelfCheck> {
      * @param timeoutSeconds the timeoutSeconds value to set.
      * @return the SelfCheck object itself.
      */
+    @Generated
     public SelfCheck withTimeoutSeconds(Integer timeoutSeconds) {
         this.timeoutSeconds = timeoutSeconds;
         return this;

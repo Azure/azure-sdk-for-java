@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,26 +21,31 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
     /*
      * Cloud profile for AWS.
      */
+    @Generated
     private AwsCloudProfile awsCloudProfile;
 
     /*
      * Host cloud the public cloud connector.
      */
+    @Generated
     private HostType hostType;
 
     /*
      * The resource provisioning state.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /*
      * Connector primary identifier.
      */
+    @Generated
     private String connectorPrimaryIdentifier;
 
     /**
      * Creates an instance of PublicCloudConnectorProperties class.
      */
+    @Generated
     public PublicCloudConnectorProperties() {
     }
 
@@ -48,6 +54,7 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
      * 
      * @return the awsCloudProfile value.
      */
+    @Generated
     public AwsCloudProfile awsCloudProfile() {
         return this.awsCloudProfile;
     }
@@ -58,6 +65,7 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
      * @param awsCloudProfile the awsCloudProfile value to set.
      * @return the PublicCloudConnectorProperties object itself.
      */
+    @Generated
     public PublicCloudConnectorProperties withAwsCloudProfile(AwsCloudProfile awsCloudProfile) {
         this.awsCloudProfile = awsCloudProfile;
         return this;
@@ -68,6 +76,7 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
      * 
      * @return the hostType value.
      */
+    @Generated
     public HostType hostType() {
         return this.hostType;
     }
@@ -78,6 +87,7 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
      * @param hostType the hostType value to set.
      * @return the PublicCloudConnectorProperties object itself.
      */
+    @Generated
     public PublicCloudConnectorProperties withHostType(HostType hostType) {
         this.hostType = hostType;
         return this;
@@ -88,6 +98,7 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -97,6 +108,7 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
      * 
      * @return the connectorPrimaryIdentifier value.
      */
+    @Generated
     public String connectorPrimaryIdentifier() {
         return this.connectorPrimaryIdentifier;
     }

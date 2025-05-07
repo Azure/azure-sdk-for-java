@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,16 +16,19 @@ public final class NetworkInterfaceAuxiliaryMode extends ExpandableStringEnum<Ne
     /**
      * None Mode.
      */
+    @Generated
     public static final NetworkInterfaceAuxiliaryMode NONE = fromString("None");
 
     /**
      * AcceleratedConnections Mode.
      */
+    @Generated
     public static final NetworkInterfaceAuxiliaryMode ACCELERATED_CONNECTIONS = fromString("AcceleratedConnections");
 
     /**
      * Floating Mode.
      */
+    @Generated
     public static final NetworkInterfaceAuxiliaryMode FLOATING = fromString("Floating");
 
     /**
@@ -32,6 +36,7 @@ public final class NetworkInterfaceAuxiliaryMode extends ExpandableStringEnum<Ne
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public NetworkInterfaceAuxiliaryMode() {
     }
@@ -42,6 +47,7 @@ public final class NetworkInterfaceAuxiliaryMode extends ExpandableStringEnum<Ne
      * @param name a name to look for.
      * @return the corresponding NetworkInterfaceAuxiliaryMode.
      */
+    @Generated
     public static NetworkInterfaceAuxiliaryMode fromString(String name) {
         return fromString(name, NetworkInterfaceAuxiliaryMode.class);
     }
@@ -51,6 +57,7 @@ public final class NetworkInterfaceAuxiliaryMode extends ExpandableStringEnum<Ne
      * 
      * @return known NetworkInterfaceAuxiliaryMode values.
      */
+    @Generated
     public static Collection<NetworkInterfaceAuxiliaryMode> values() {
         return values(NetworkInterfaceAuxiliaryMode.class);
     }

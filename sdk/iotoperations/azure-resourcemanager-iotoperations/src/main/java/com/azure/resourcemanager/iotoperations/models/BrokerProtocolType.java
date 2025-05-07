@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class BrokerProtocolType extends ExpandableStringEnum<BrokerProtoco
     /**
      * protocol broker.
      */
+    @Generated
     public static final BrokerProtocolType MQTT = fromString("Mqtt");
 
     /**
      * protocol websocket.
      */
+    @Generated
     public static final BrokerProtocolType WEB_SOCKETS = fromString("WebSockets");
 
     /**
@@ -26,6 +29,7 @@ public final class BrokerProtocolType extends ExpandableStringEnum<BrokerProtoco
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public BrokerProtocolType() {
     }
@@ -36,6 +40,7 @@ public final class BrokerProtocolType extends ExpandableStringEnum<BrokerProtoco
      * @param name a name to look for.
      * @return the corresponding BrokerProtocolType.
      */
+    @Generated
     public static BrokerProtocolType fromString(String name) {
         return fromString(name, BrokerProtocolType.class);
     }
@@ -45,6 +50,7 @@ public final class BrokerProtocolType extends ExpandableStringEnum<BrokerProtoco
      * 
      * @return known BrokerProtocolType values.
      */
+    @Generated
     public static Collection<BrokerProtocolType> values() {
         return values(BrokerProtocolType.class);
     }

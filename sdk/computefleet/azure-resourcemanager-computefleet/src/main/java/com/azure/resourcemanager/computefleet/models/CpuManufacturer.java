@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class CpuManufacturer extends ExpandableStringEnum<CpuManufacturer>
     /**
      * Intel CPU.
      */
+    @Generated
     public static final CpuManufacturer INTEL = fromString("Intel");
 
     /**
      * AMD CPU.
      */
+    @Generated
     public static final CpuManufacturer AMD = fromString("AMD");
 
     /**
      * Microsoft CPU.
      */
+    @Generated
     public static final CpuManufacturer MICROSOFT = fromString("Microsoft");
 
     /**
      * Ampere CPU.
      */
+    @Generated
     public static final CpuManufacturer AMPERE = fromString("Ampere");
 
     /**
@@ -36,6 +41,7 @@ public final class CpuManufacturer extends ExpandableStringEnum<CpuManufacturer>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CpuManufacturer() {
     }
@@ -46,6 +52,7 @@ public final class CpuManufacturer extends ExpandableStringEnum<CpuManufacturer>
      * @param name a name to look for.
      * @return the corresponding CpuManufacturer.
      */
+    @Generated
     public static CpuManufacturer fromString(String name) {
         return fromString(name, CpuManufacturer.class);
     }
@@ -55,6 +62,7 @@ public final class CpuManufacturer extends ExpandableStringEnum<CpuManufacturer>
      * 
      * @return known CpuManufacturer values.
      */
+    @Generated
     public static Collection<CpuManufacturer> values() {
         return values(CpuManufacturer.class);
     }

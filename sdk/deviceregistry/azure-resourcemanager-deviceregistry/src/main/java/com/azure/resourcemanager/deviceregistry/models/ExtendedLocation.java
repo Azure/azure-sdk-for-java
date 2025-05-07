@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class ExtendedLocation implements JsonSerializable<ExtendedLocation
     /*
      * The extended location type.
      */
+    @Generated
     private String type;
 
     /*
      * The extended location name.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of ExtendedLocation class.
      */
+    @Generated
     public ExtendedLocation() {
     }
 
@@ -38,6 +42,7 @@ public final class ExtendedLocation implements JsonSerializable<ExtendedLocation
      * 
      * @return the type value.
      */
+    @Generated
     public String type() {
         return this.type;
     }
@@ -48,6 +53,7 @@ public final class ExtendedLocation implements JsonSerializable<ExtendedLocation
      * @param type the type value to set.
      * @return the ExtendedLocation object itself.
      */
+    @Generated
     public ExtendedLocation withType(String type) {
         this.type = type;
         return this;
@@ -58,6 +64,7 @@ public final class ExtendedLocation implements JsonSerializable<ExtendedLocation
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -68,6 +75,7 @@ public final class ExtendedLocation implements JsonSerializable<ExtendedLocation
      * @param name the name value to set.
      * @return the ExtendedLocation object itself.
      */
+    @Generated
     public ExtendedLocation withName(String name) {
         this.name = name;
         return this;

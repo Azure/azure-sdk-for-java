@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class SshKeyPair implements JsonSerializable<SshKeyPair> {
     /*
      * SSH public key
      */
+    @Generated
     private String publicKey;
 
     /*
      * SSH private key.
      */
+    @Generated
     private String privateKey;
 
     /**
      * Creates an instance of SshKeyPair class.
      */
+    @Generated
     public SshKeyPair() {
     }
 
@@ -39,6 +43,7 @@ public final class SshKeyPair implements JsonSerializable<SshKeyPair> {
      * 
      * @return the publicKey value.
      */
+    @Generated
     public String publicKey() {
         return this.publicKey;
     }
@@ -49,6 +54,7 @@ public final class SshKeyPair implements JsonSerializable<SshKeyPair> {
      * @param publicKey the publicKey value to set.
      * @return the SshKeyPair object itself.
      */
+    @Generated
     public SshKeyPair withPublicKey(String publicKey) {
         this.publicKey = publicKey;
         return this;
@@ -59,6 +65,7 @@ public final class SshKeyPair implements JsonSerializable<SshKeyPair> {
      * 
      * @return the privateKey value.
      */
+    @Generated
     public String privateKey() {
         return this.privateKey;
     }
@@ -69,6 +76,7 @@ public final class SshKeyPair implements JsonSerializable<SshKeyPair> {
      * @param privateKey the privateKey value to set.
      * @return the SshKeyPair object itself.
      */
+    @Generated
     public SshKeyPair withPrivateKey(String privateKey) {
         this.privateKey = privateKey;
         return this;

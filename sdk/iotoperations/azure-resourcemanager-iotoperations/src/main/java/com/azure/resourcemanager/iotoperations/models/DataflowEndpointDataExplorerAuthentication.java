@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,21 +22,25 @@ public final class DataflowEndpointDataExplorerAuthentication
     /*
      * Mode of Authentication.
      */
+    @Generated
     private DataExplorerAuthMethod method;
 
     /*
      * System-assigned managed identity authentication.
      */
+    @Generated
     private DataflowEndpointAuthenticationSystemAssignedManagedIdentity systemAssignedManagedIdentitySettings;
 
     /*
      * User-assigned managed identity authentication.
      */
+    @Generated
     private DataflowEndpointAuthenticationUserAssignedManagedIdentity userAssignedManagedIdentitySettings;
 
     /**
      * Creates an instance of DataflowEndpointDataExplorerAuthentication class.
      */
+    @Generated
     public DataflowEndpointDataExplorerAuthentication() {
     }
 
@@ -44,6 +49,7 @@ public final class DataflowEndpointDataExplorerAuthentication
      * 
      * @return the method value.
      */
+    @Generated
     public DataExplorerAuthMethod method() {
         return this.method;
     }
@@ -54,6 +60,7 @@ public final class DataflowEndpointDataExplorerAuthentication
      * @param method the method value to set.
      * @return the DataflowEndpointDataExplorerAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointDataExplorerAuthentication withMethod(DataExplorerAuthMethod method) {
         this.method = method;
         return this;
@@ -64,6 +71,7 @@ public final class DataflowEndpointDataExplorerAuthentication
      * 
      * @return the systemAssignedManagedIdentitySettings value.
      */
+    @Generated
     public DataflowEndpointAuthenticationSystemAssignedManagedIdentity systemAssignedManagedIdentitySettings() {
         return this.systemAssignedManagedIdentitySettings;
     }
@@ -74,6 +82,7 @@ public final class DataflowEndpointDataExplorerAuthentication
      * @param systemAssignedManagedIdentitySettings the systemAssignedManagedIdentitySettings value to set.
      * @return the DataflowEndpointDataExplorerAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointDataExplorerAuthentication withSystemAssignedManagedIdentitySettings(
         DataflowEndpointAuthenticationSystemAssignedManagedIdentity systemAssignedManagedIdentitySettings) {
         this.systemAssignedManagedIdentitySettings = systemAssignedManagedIdentitySettings;
@@ -85,6 +94,7 @@ public final class DataflowEndpointDataExplorerAuthentication
      * 
      * @return the userAssignedManagedIdentitySettings value.
      */
+    @Generated
     public DataflowEndpointAuthenticationUserAssignedManagedIdentity userAssignedManagedIdentitySettings() {
         return this.userAssignedManagedIdentitySettings;
     }
@@ -95,6 +105,7 @@ public final class DataflowEndpointDataExplorerAuthentication
      * @param userAssignedManagedIdentitySettings the userAssignedManagedIdentitySettings value to set.
      * @return the DataflowEndpointDataExplorerAuthentication object itself.
      */
+    @Generated
     public DataflowEndpointDataExplorerAuthentication withUserAssignedManagedIdentitySettings(
         DataflowEndpointAuthenticationUserAssignedManagedIdentity userAssignedManagedIdentitySettings) {
         this.userAssignedManagedIdentitySettings = userAssignedManagedIdentitySettings;

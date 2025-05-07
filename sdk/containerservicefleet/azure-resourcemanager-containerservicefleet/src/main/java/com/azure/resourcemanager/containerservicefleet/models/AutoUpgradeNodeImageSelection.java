@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class AutoUpgradeNodeImageSelection implements JsonSerializable<Aut
     /*
      * The node image upgrade type.
      */
+    @Generated
     private AutoUpgradeNodeImageSelectionType type;
 
     /**
      * Creates an instance of AutoUpgradeNodeImageSelection class.
      */
+    @Generated
     public AutoUpgradeNodeImageSelection() {
     }
 
@@ -33,6 +36,7 @@ public final class AutoUpgradeNodeImageSelection implements JsonSerializable<Aut
      * 
      * @return the type value.
      */
+    @Generated
     public AutoUpgradeNodeImageSelectionType type() {
         return this.type;
     }
@@ -43,6 +47,7 @@ public final class AutoUpgradeNodeImageSelection implements JsonSerializable<Aut
      * @param type the type value to set.
      * @return the AutoUpgradeNodeImageSelection object itself.
      */
+    @Generated
     public AutoUpgradeNodeImageSelection withType(AutoUpgradeNodeImageSelectionType type) {
         this.type = type;
         return this;

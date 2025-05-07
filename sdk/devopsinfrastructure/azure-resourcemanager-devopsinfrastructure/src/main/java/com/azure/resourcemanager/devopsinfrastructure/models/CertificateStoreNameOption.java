@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class CertificateStoreNameOption extends ExpandableStringEnum<Certi
     /**
      * The X.509 certificate store for personal certificates.
      */
+    @Generated
     public static final CertificateStoreNameOption MY = fromString("My");
 
     /**
      * The X.509 certificate store for trusted root certificate authorities (CAs).
      */
+    @Generated
     public static final CertificateStoreNameOption ROOT = fromString("Root");
 
     /**
@@ -26,6 +29,7 @@ public final class CertificateStoreNameOption extends ExpandableStringEnum<Certi
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CertificateStoreNameOption() {
     }
@@ -36,6 +40,7 @@ public final class CertificateStoreNameOption extends ExpandableStringEnum<Certi
      * @param name a name to look for.
      * @return the corresponding CertificateStoreNameOption.
      */
+    @Generated
     public static CertificateStoreNameOption fromString(String name) {
         return fromString(name, CertificateStoreNameOption.class);
     }
@@ -45,6 +50,7 @@ public final class CertificateStoreNameOption extends ExpandableStringEnum<Certi
      * 
      * @return known CertificateStoreNameOption values.
      */
+    @Generated
     public static Collection<CertificateStoreNameOption> values() {
         return values(CertificateStoreNameOption.class);
     }

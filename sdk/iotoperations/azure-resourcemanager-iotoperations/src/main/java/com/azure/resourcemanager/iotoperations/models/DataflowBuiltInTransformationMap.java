@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,31 +22,37 @@ public final class DataflowBuiltInTransformationMap implements JsonSerializable<
     /*
      * Type of transformation.
      */
+    @Generated
     private DataflowMappingType type;
 
     /*
      * A user provided optional description of the mapping function.
      */
+    @Generated
     private String description;
 
     /*
      * List of fields for mapping in JSON path expression.
      */
+    @Generated
     private List<String> inputs;
 
     /*
      * Modify the inputs field(s) to the final output field. Example: $1 * 2.2 (Assuming inputs section $1 is provided)
      */
+    @Generated
     private String expression;
 
     /*
      * Where and how the input fields to be organized in the output record.
      */
+    @Generated
     private String output;
 
     /**
      * Creates an instance of DataflowBuiltInTransformationMap class.
      */
+    @Generated
     public DataflowBuiltInTransformationMap() {
     }
 
@@ -54,6 +61,7 @@ public final class DataflowBuiltInTransformationMap implements JsonSerializable<
      * 
      * @return the type value.
      */
+    @Generated
     public DataflowMappingType type() {
         return this.type;
     }
@@ -64,6 +72,7 @@ public final class DataflowBuiltInTransformationMap implements JsonSerializable<
      * @param type the type value to set.
      * @return the DataflowBuiltInTransformationMap object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationMap withType(DataflowMappingType type) {
         this.type = type;
         return this;
@@ -74,6 +83,7 @@ public final class DataflowBuiltInTransformationMap implements JsonSerializable<
      * 
      * @return the description value.
      */
+    @Generated
     public String description() {
         return this.description;
     }
@@ -84,6 +94,7 @@ public final class DataflowBuiltInTransformationMap implements JsonSerializable<
      * @param description the description value to set.
      * @return the DataflowBuiltInTransformationMap object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationMap withDescription(String description) {
         this.description = description;
         return this;
@@ -94,6 +105,7 @@ public final class DataflowBuiltInTransformationMap implements JsonSerializable<
      * 
      * @return the inputs value.
      */
+    @Generated
     public List<String> inputs() {
         return this.inputs;
     }
@@ -104,6 +116,7 @@ public final class DataflowBuiltInTransformationMap implements JsonSerializable<
      * @param inputs the inputs value to set.
      * @return the DataflowBuiltInTransformationMap object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationMap withInputs(List<String> inputs) {
         this.inputs = inputs;
         return this;
@@ -115,6 +128,7 @@ public final class DataflowBuiltInTransformationMap implements JsonSerializable<
      * 
      * @return the expression value.
      */
+    @Generated
     public String expression() {
         return this.expression;
     }
@@ -126,6 +140,7 @@ public final class DataflowBuiltInTransformationMap implements JsonSerializable<
      * @param expression the expression value to set.
      * @return the DataflowBuiltInTransformationMap object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationMap withExpression(String expression) {
         this.expression = expression;
         return this;
@@ -136,6 +151,7 @@ public final class DataflowBuiltInTransformationMap implements JsonSerializable<
      * 
      * @return the output value.
      */
+    @Generated
     public String output() {
         return this.output;
     }
@@ -146,6 +162,7 @@ public final class DataflowBuiltInTransformationMap implements JsonSerializable<
      * @param output the output value to set.
      * @return the DataflowBuiltInTransformationMap object itself.
      */
+    @Generated
     public DataflowBuiltInTransformationMap withOutput(String output) {
         this.output = output;
         return this;

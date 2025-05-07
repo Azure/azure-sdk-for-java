@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,41 +20,49 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
     /*
      * The SAP software installation type.
      */
+    @Generated
     private SapSoftwareInstallationType softwareInstallationType = SapSoftwareInstallationType.SERVICE_INITIATED;
 
     /*
      * The URL to the SAP Build of Materials(BOM) file.
      */
+    @Generated
     private String bomUrl;
 
     /*
      * The software version to install.
      */
+    @Generated
     private String softwareVersion;
 
     /*
      * The SAP bits storage account id.
      */
+    @Generated
     private String sapBitsStorageAccountId;
 
     /*
      * The FQDN to set for the SAP system during install.
      */
+    @Generated
     private String sapFqdn;
 
     /*
      * The SSH private key.
      */
+    @Generated
     private String sshPrivateKey;
 
     /*
      * Gets or sets the HA software configuration.
      */
+    @Generated
     private HighAvailabilitySoftwareConfiguration highAvailabilitySoftwareConfiguration;
 
     /**
      * Creates an instance of ServiceInitiatedSoftwareConfiguration class.
      */
+    @Generated
     public ServiceInitiatedSoftwareConfiguration() {
     }
 
@@ -62,6 +71,7 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
      * 
      * @return the softwareInstallationType value.
      */
+    @Generated
     @Override
     public SapSoftwareInstallationType softwareInstallationType() {
         return this.softwareInstallationType;
@@ -72,6 +82,7 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
      * 
      * @return the bomUrl value.
      */
+    @Generated
     public String bomUrl() {
         return this.bomUrl;
     }
@@ -82,6 +93,7 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
      * @param bomUrl the bomUrl value to set.
      * @return the ServiceInitiatedSoftwareConfiguration object itself.
      */
+    @Generated
     public ServiceInitiatedSoftwareConfiguration withBomUrl(String bomUrl) {
         this.bomUrl = bomUrl;
         return this;
@@ -92,6 +104,7 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
      * 
      * @return the softwareVersion value.
      */
+    @Generated
     public String softwareVersion() {
         return this.softwareVersion;
     }
@@ -102,6 +115,7 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
      * @param softwareVersion the softwareVersion value to set.
      * @return the ServiceInitiatedSoftwareConfiguration object itself.
      */
+    @Generated
     public ServiceInitiatedSoftwareConfiguration withSoftwareVersion(String softwareVersion) {
         this.softwareVersion = softwareVersion;
         return this;
@@ -112,6 +126,7 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
      * 
      * @return the sapBitsStorageAccountId value.
      */
+    @Generated
     public String sapBitsStorageAccountId() {
         return this.sapBitsStorageAccountId;
     }
@@ -122,6 +137,7 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
      * @param sapBitsStorageAccountId the sapBitsStorageAccountId value to set.
      * @return the ServiceInitiatedSoftwareConfiguration object itself.
      */
+    @Generated
     public ServiceInitiatedSoftwareConfiguration withSapBitsStorageAccountId(String sapBitsStorageAccountId) {
         this.sapBitsStorageAccountId = sapBitsStorageAccountId;
         return this;
@@ -132,6 +148,7 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
      * 
      * @return the sapFqdn value.
      */
+    @Generated
     public String sapFqdn() {
         return this.sapFqdn;
     }
@@ -142,6 +159,7 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
      * @param sapFqdn the sapFqdn value to set.
      * @return the ServiceInitiatedSoftwareConfiguration object itself.
      */
+    @Generated
     public ServiceInitiatedSoftwareConfiguration withSapFqdn(String sapFqdn) {
         this.sapFqdn = sapFqdn;
         return this;
@@ -152,6 +170,7 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
      * 
      * @return the sshPrivateKey value.
      */
+    @Generated
     public String sshPrivateKey() {
         return this.sshPrivateKey;
     }
@@ -162,6 +181,7 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
      * @param sshPrivateKey the sshPrivateKey value to set.
      * @return the ServiceInitiatedSoftwareConfiguration object itself.
      */
+    @Generated
     public ServiceInitiatedSoftwareConfiguration withSshPrivateKey(String sshPrivateKey) {
         this.sshPrivateKey = sshPrivateKey;
         return this;
@@ -172,6 +192,7 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
      * 
      * @return the highAvailabilitySoftwareConfiguration value.
      */
+    @Generated
     public HighAvailabilitySoftwareConfiguration highAvailabilitySoftwareConfiguration() {
         return this.highAvailabilitySoftwareConfiguration;
     }
@@ -182,6 +203,7 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
      * @param highAvailabilitySoftwareConfiguration the highAvailabilitySoftwareConfiguration value to set.
      * @return the ServiceInitiatedSoftwareConfiguration object itself.
      */
+    @Generated
     public ServiceInitiatedSoftwareConfiguration withHighAvailabilitySoftwareConfiguration(
         HighAvailabilitySoftwareConfiguration highAvailabilitySoftwareConfiguration) {
         this.highAvailabilitySoftwareConfiguration = highAvailabilitySoftwareConfiguration;

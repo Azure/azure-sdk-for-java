@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,6 +20,7 @@ public final class ResourcePredictions implements JsonSerializable<ResourcePredi
     /**
      * Creates an instance of ResourcePredictions class.
      */
+    @Generated
     public ResourcePredictions() {
     }
 

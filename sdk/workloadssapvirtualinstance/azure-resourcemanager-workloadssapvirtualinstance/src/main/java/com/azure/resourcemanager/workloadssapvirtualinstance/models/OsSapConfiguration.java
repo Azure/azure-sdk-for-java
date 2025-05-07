@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class OsSapConfiguration implements JsonSerializable<OsSapConfigura
     /*
      * The url and storage account ID where deployer VM packages are uploaded
      */
+    @Generated
     private DeployerVmPackages deployerVmPackages;
 
     /*
      * The FQDN to set for the SAP system
      */
+    @Generated
     private String sapFqdn;
 
     /**
      * Creates an instance of OsSapConfiguration class.
      */
+    @Generated
     public OsSapConfiguration() {
     }
 
@@ -37,6 +41,7 @@ public final class OsSapConfiguration implements JsonSerializable<OsSapConfigura
      * 
      * @return the deployerVmPackages value.
      */
+    @Generated
     public DeployerVmPackages deployerVmPackages() {
         return this.deployerVmPackages;
     }
@@ -47,6 +52,7 @@ public final class OsSapConfiguration implements JsonSerializable<OsSapConfigura
      * @param deployerVmPackages the deployerVmPackages value to set.
      * @return the OsSapConfiguration object itself.
      */
+    @Generated
     public OsSapConfiguration withDeployerVmPackages(DeployerVmPackages deployerVmPackages) {
         this.deployerVmPackages = deployerVmPackages;
         return this;
@@ -57,6 +63,7 @@ public final class OsSapConfiguration implements JsonSerializable<OsSapConfigura
      * 
      * @return the sapFqdn value.
      */
+    @Generated
     public String sapFqdn() {
         return this.sapFqdn;
     }
@@ -67,6 +74,7 @@ public final class OsSapConfiguration implements JsonSerializable<OsSapConfigura
      * @param sapFqdn the sapFqdn value to set.
      * @return the OsSapConfiguration object itself.
      */
+    @Generated
     public OsSapConfiguration withSapFqdn(String sapFqdn) {
         this.sapFqdn = sapFqdn;
         return this;

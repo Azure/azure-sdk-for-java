@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,21 +22,25 @@ public final class DataflowEndpointAuthenticationUserAssignedManagedIdentity
     /*
      * Client ID for the user-assigned managed identity.
      */
+    @Generated
     private String clientId;
 
     /*
      * Resource identifier (application ID URI) of the resource, affixed with the .default suffix.
      */
+    @Generated
     private String scope;
 
     /*
      * Tenant ID.
      */
+    @Generated
     private String tenantId;
 
     /**
      * Creates an instance of DataflowEndpointAuthenticationUserAssignedManagedIdentity class.
      */
+    @Generated
     public DataflowEndpointAuthenticationUserAssignedManagedIdentity() {
     }
 
@@ -44,6 +49,7 @@ public final class DataflowEndpointAuthenticationUserAssignedManagedIdentity
      * 
      * @return the clientId value.
      */
+    @Generated
     public String clientId() {
         return this.clientId;
     }
@@ -54,6 +60,7 @@ public final class DataflowEndpointAuthenticationUserAssignedManagedIdentity
      * @param clientId the clientId value to set.
      * @return the DataflowEndpointAuthenticationUserAssignedManagedIdentity object itself.
      */
+    @Generated
     public DataflowEndpointAuthenticationUserAssignedManagedIdentity withClientId(String clientId) {
         this.clientId = clientId;
         return this;
@@ -65,6 +72,7 @@ public final class DataflowEndpointAuthenticationUserAssignedManagedIdentity
      * 
      * @return the scope value.
      */
+    @Generated
     public String scope() {
         return this.scope;
     }
@@ -76,6 +84,7 @@ public final class DataflowEndpointAuthenticationUserAssignedManagedIdentity
      * @param scope the scope value to set.
      * @return the DataflowEndpointAuthenticationUserAssignedManagedIdentity object itself.
      */
+    @Generated
     public DataflowEndpointAuthenticationUserAssignedManagedIdentity withScope(String scope) {
         this.scope = scope;
         return this;
@@ -86,6 +95,7 @@ public final class DataflowEndpointAuthenticationUserAssignedManagedIdentity
      * 
      * @return the tenantId value.
      */
+    @Generated
     public String tenantId() {
         return this.tenantId;
     }
@@ -96,6 +106,7 @@ public final class DataflowEndpointAuthenticationUserAssignedManagedIdentity
      * @param tenantId the tenantId value to set.
      * @return the DataflowEndpointAuthenticationUserAssignedManagedIdentity object itself.
      */
+    @Generated
     public DataflowEndpointAuthenticationUserAssignedManagedIdentity withTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;

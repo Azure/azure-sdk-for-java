@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.impactreporting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -21,31 +22,37 @@ public final class ImpactCategoryProperties implements JsonSerializable<ImpactCa
     /*
      * Resource provisioning state.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * Unique ID of the category
      */
+    @Generated
     private String categoryId;
 
     /*
      * Unique ID of the parent category
      */
+    @Generated
     private String parentCategoryId;
 
     /*
      * Description of the category
      */
+    @Generated
     private String description;
 
     /*
      * The workloadImpact properties which are required when reporting with the impact category
      */
+    @Generated
     private List<RequiredImpactProperties> requiredImpactProperties;
 
     /**
      * Creates an instance of ImpactCategoryProperties class.
      */
+    @Generated
     private ImpactCategoryProperties() {
     }
 
@@ -54,6 +61,7 @@ public final class ImpactCategoryProperties implements JsonSerializable<ImpactCa
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -63,6 +71,7 @@ public final class ImpactCategoryProperties implements JsonSerializable<ImpactCa
      * 
      * @return the categoryId value.
      */
+    @Generated
     public String categoryId() {
         return this.categoryId;
     }
@@ -72,6 +81,7 @@ public final class ImpactCategoryProperties implements JsonSerializable<ImpactCa
      * 
      * @return the parentCategoryId value.
      */
+    @Generated
     public String parentCategoryId() {
         return this.parentCategoryId;
     }
@@ -81,6 +91,7 @@ public final class ImpactCategoryProperties implements JsonSerializable<ImpactCa
      * 
      * @return the description value.
      */
+    @Generated
     public String description() {
         return this.description;
     }
@@ -91,6 +102,7 @@ public final class ImpactCategoryProperties implements JsonSerializable<ImpactCa
      * 
      * @return the requiredImpactProperties value.
      */
+    @Generated
     public List<RequiredImpactProperties> requiredImpactProperties() {
         return this.requiredImpactProperties;
     }

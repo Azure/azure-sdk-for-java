@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dependencymap.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class GetDependencyViewForFocusedMachineRequest
     /*
      * Machine arm id
      */
+    @Generated
     private String focusedMachineId;
 
     /*
      * Filters for GetSingleMachineDependencyView
      */
+    @Generated
     private DependencyMapVisualizationFilter filters;
 
     /**
      * Creates an instance of GetDependencyViewForFocusedMachineRequest class.
      */
+    @Generated
     public GetDependencyViewForFocusedMachineRequest() {
     }
 
@@ -39,6 +43,7 @@ public final class GetDependencyViewForFocusedMachineRequest
      * 
      * @return the focusedMachineId value.
      */
+    @Generated
     public String focusedMachineId() {
         return this.focusedMachineId;
     }
@@ -49,6 +54,7 @@ public final class GetDependencyViewForFocusedMachineRequest
      * @param focusedMachineId the focusedMachineId value to set.
      * @return the GetDependencyViewForFocusedMachineRequest object itself.
      */
+    @Generated
     public GetDependencyViewForFocusedMachineRequest withFocusedMachineId(String focusedMachineId) {
         this.focusedMachineId = focusedMachineId;
         return this;
@@ -59,6 +65,7 @@ public final class GetDependencyViewForFocusedMachineRequest
      * 
      * @return the filters value.
      */
+    @Generated
     public DependencyMapVisualizationFilter filters() {
         return this.filters;
     }
@@ -69,6 +76,7 @@ public final class GetDependencyViewForFocusedMachineRequest
      * @param filters the filters value to set.
      * @return the GetDependencyViewForFocusedMachineRequest object itself.
      */
+    @Generated
     public GetDependencyViewForFocusedMachineRequest withFilters(DependencyMapVisualizationFilter filters) {
         this.filters = filters;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,29 +22,34 @@ public final class LoadBalancerResourceNames implements JsonSerializable<LoadBal
      * The full resource name for load balancer. If this value is not provided, load balancer will be name as
      * {ASCS/DB}-loadBalancer.
      */
+    @Generated
     private String loadBalancerName;
 
     /*
      * The list of frontend IP configuration names. If provided as input, size of this list should be 2 for cs layer and
      * should be 1 for database layer.
      */
+    @Generated
     private List<String> frontendIpConfigurationNames;
 
     /*
      * The list of backend pool names. Currently, ACSS deploys only one backend pool and hence, size of this list should
      * be 1
      */
+    @Generated
     private List<String> backendPoolNames;
 
     /*
      * The list of health probe names. If provided as input, size of this list should be 2 for cs layer and should be 1
      * for database layer.
      */
+    @Generated
     private List<String> healthProbeNames;
 
     /**
      * Creates an instance of LoadBalancerResourceNames class.
      */
+    @Generated
     public LoadBalancerResourceNames() {
     }
 
@@ -53,6 +59,7 @@ public final class LoadBalancerResourceNames implements JsonSerializable<LoadBal
      * 
      * @return the loadBalancerName value.
      */
+    @Generated
     public String loadBalancerName() {
         return this.loadBalancerName;
     }
@@ -64,6 +71,7 @@ public final class LoadBalancerResourceNames implements JsonSerializable<LoadBal
      * @param loadBalancerName the loadBalancerName value to set.
      * @return the LoadBalancerResourceNames object itself.
      */
+    @Generated
     public LoadBalancerResourceNames withLoadBalancerName(String loadBalancerName) {
         this.loadBalancerName = loadBalancerName;
         return this;
@@ -75,6 +83,7 @@ public final class LoadBalancerResourceNames implements JsonSerializable<LoadBal
      * 
      * @return the frontendIpConfigurationNames value.
      */
+    @Generated
     public List<String> frontendIpConfigurationNames() {
         return this.frontendIpConfigurationNames;
     }
@@ -86,6 +95,7 @@ public final class LoadBalancerResourceNames implements JsonSerializable<LoadBal
      * @param frontendIpConfigurationNames the frontendIpConfigurationNames value to set.
      * @return the LoadBalancerResourceNames object itself.
      */
+    @Generated
     public LoadBalancerResourceNames withFrontendIpConfigurationNames(List<String> frontendIpConfigurationNames) {
         this.frontendIpConfigurationNames = frontendIpConfigurationNames;
         return this;
@@ -97,6 +107,7 @@ public final class LoadBalancerResourceNames implements JsonSerializable<LoadBal
      * 
      * @return the backendPoolNames value.
      */
+    @Generated
     public List<String> backendPoolNames() {
         return this.backendPoolNames;
     }
@@ -108,6 +119,7 @@ public final class LoadBalancerResourceNames implements JsonSerializable<LoadBal
      * @param backendPoolNames the backendPoolNames value to set.
      * @return the LoadBalancerResourceNames object itself.
      */
+    @Generated
     public LoadBalancerResourceNames withBackendPoolNames(List<String> backendPoolNames) {
         this.backendPoolNames = backendPoolNames;
         return this;
@@ -119,6 +131,7 @@ public final class LoadBalancerResourceNames implements JsonSerializable<LoadBal
      * 
      * @return the healthProbeNames value.
      */
+    @Generated
     public List<String> healthProbeNames() {
         return this.healthProbeNames;
     }
@@ -130,6 +143,7 @@ public final class LoadBalancerResourceNames implements JsonSerializable<LoadBal
      * @param healthProbeNames the healthProbeNames value to set.
      * @return the LoadBalancerResourceNames object itself.
      */
+    @Generated
     public LoadBalancerResourceNames withHealthProbeNames(List<String> healthProbeNames) {
         this.healthProbeNames = healthProbeNames;
         return this;

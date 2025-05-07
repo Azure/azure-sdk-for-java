@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class VolumeBindingMode extends ExpandableStringEnum<VolumeBindingM
     /**
      * Immediate binding mode.
      */
+    @Generated
     public static final VolumeBindingMode IMMEDIATE = fromString("Immediate");
 
     /**
      * Wait for first consumer binding mode.
      */
+    @Generated
     public static final VolumeBindingMode WAIT_FOR_FIRST_CONSUMER = fromString("WaitForFirstConsumer");
 
     /**
@@ -26,6 +29,7 @@ public final class VolumeBindingMode extends ExpandableStringEnum<VolumeBindingM
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VolumeBindingMode() {
     }
@@ -36,6 +40,7 @@ public final class VolumeBindingMode extends ExpandableStringEnum<VolumeBindingM
      * @param name a name to look for.
      * @return the corresponding VolumeBindingMode.
      */
+    @Generated
     public static VolumeBindingMode fromString(String name) {
         return fromString(name, VolumeBindingMode.class);
     }
@@ -45,6 +50,7 @@ public final class VolumeBindingMode extends ExpandableStringEnum<VolumeBindingM
      * 
      * @return known VolumeBindingMode values.
      */
+    @Generated
     public static Collection<VolumeBindingMode> values() {
         return values(VolumeBindingMode.class);
     }

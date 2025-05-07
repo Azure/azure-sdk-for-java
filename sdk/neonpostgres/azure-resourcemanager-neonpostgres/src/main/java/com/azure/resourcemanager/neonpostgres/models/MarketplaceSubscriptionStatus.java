@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.neonpostgres.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class MarketplaceSubscriptionStatus extends ExpandableStringEnum<Ma
     /**
      * Purchased but not yet activated.
      */
+    @Generated
     public static final MarketplaceSubscriptionStatus PENDING_FULFILLMENT_START = fromString("PendingFulfillmentStart");
 
     /**
      * Marketplace subscription is activated.
      */
+    @Generated
     public static final MarketplaceSubscriptionStatus SUBSCRIBED = fromString("Subscribed");
 
     /**
      * This state indicates that a customer's payment for the Marketplace service was not received.
      */
+    @Generated
     public static final MarketplaceSubscriptionStatus SUSPENDED = fromString("Suspended");
 
     /**
      * Customer has cancelled the subscription.
      */
+    @Generated
     public static final MarketplaceSubscriptionStatus UNSUBSCRIBED = fromString("Unsubscribed");
 
     /**
@@ -36,6 +41,7 @@ public final class MarketplaceSubscriptionStatus extends ExpandableStringEnum<Ma
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MarketplaceSubscriptionStatus() {
     }
@@ -46,6 +52,7 @@ public final class MarketplaceSubscriptionStatus extends ExpandableStringEnum<Ma
      * @param name a name to look for.
      * @return the corresponding MarketplaceSubscriptionStatus.
      */
+    @Generated
     public static MarketplaceSubscriptionStatus fromString(String name) {
         return fromString(name, MarketplaceSubscriptionStatus.class);
     }
@@ -55,6 +62,7 @@ public final class MarketplaceSubscriptionStatus extends ExpandableStringEnum<Ma
      * 
      * @return known MarketplaceSubscriptionStatus values.
      */
+    @Generated
     public static Collection<MarketplaceSubscriptionStatus> values() {
         return values(MarketplaceSubscriptionStatus.class);
     }

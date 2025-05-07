@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,31 +20,37 @@ public final class MemberUpdateStatus implements JsonSerializable<MemberUpdateSt
     /*
      * The status of the MemberUpdate operation.
      */
+    @Generated
     private UpdateStatus status;
 
     /*
      * The name of the FleetMember.
      */
+    @Generated
     private String name;
 
     /*
      * The Azure resource id of the target Kubernetes cluster.
      */
+    @Generated
     private String clusterResourceId;
 
     /*
      * The operation resource id of the latest attempt to perform the operation.
      */
+    @Generated
     private String operationId;
 
     /*
      * The status message after processing the member update operation.
      */
+    @Generated
     private String message;
 
     /**
      * Creates an instance of MemberUpdateStatus class.
      */
+    @Generated
     private MemberUpdateStatus() {
     }
 
@@ -52,6 +59,7 @@ public final class MemberUpdateStatus implements JsonSerializable<MemberUpdateSt
      * 
      * @return the status value.
      */
+    @Generated
     public UpdateStatus status() {
         return this.status;
     }
@@ -61,6 +69,7 @@ public final class MemberUpdateStatus implements JsonSerializable<MemberUpdateSt
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -70,6 +79,7 @@ public final class MemberUpdateStatus implements JsonSerializable<MemberUpdateSt
      * 
      * @return the clusterResourceId value.
      */
+    @Generated
     public String clusterResourceId() {
         return this.clusterResourceId;
     }
@@ -79,6 +89,7 @@ public final class MemberUpdateStatus implements JsonSerializable<MemberUpdateSt
      * 
      * @return the operationId value.
      */
+    @Generated
     public String operationId() {
         return this.operationId;
     }
@@ -88,6 +99,7 @@ public final class MemberUpdateStatus implements JsonSerializable<MemberUpdateSt
      * 
      * @return the message value.
      */
+    @Generated
     public String message() {
         return this.message;
     }

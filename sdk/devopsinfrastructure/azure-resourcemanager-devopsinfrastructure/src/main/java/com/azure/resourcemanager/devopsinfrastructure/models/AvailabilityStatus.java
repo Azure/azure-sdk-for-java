@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class AvailabilityStatus extends ExpandableStringEnum<AvailabilityS
     /**
      * The name is available.
      */
+    @Generated
     public static final AvailabilityStatus AVAILABLE = fromString("Available");
 
     /**
      * The name is unavailable.
      */
+    @Generated
     public static final AvailabilityStatus UNAVAILABLE = fromString("Unavailable");
 
     /**
@@ -26,6 +29,7 @@ public final class AvailabilityStatus extends ExpandableStringEnum<AvailabilityS
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AvailabilityStatus() {
     }
@@ -36,6 +40,7 @@ public final class AvailabilityStatus extends ExpandableStringEnum<AvailabilityS
      * @param name a name to look for.
      * @return the corresponding AvailabilityStatus.
      */
+    @Generated
     public static AvailabilityStatus fromString(String name) {
         return fromString(name, AvailabilityStatus.class);
     }
@@ -45,6 +50,7 @@ public final class AvailabilityStatus extends ExpandableStringEnum<AvailabilityS
      * 
      * @return known AvailabilityStatus values.
      */
+    @Generated
     public static Collection<AvailabilityStatus> values() {
         return values(AvailabilityStatus.class);
     }

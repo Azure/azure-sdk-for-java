@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,11 +16,13 @@ public final class ProtocolTypes extends ExpandableStringEnum<ProtocolTypes> {
     /**
      * Http protocol.
      */
+    @Generated
     public static final ProtocolTypes HTTP = fromString("Http");
 
     /**
      * Https protocol.
      */
+    @Generated
     public static final ProtocolTypes HTTPS = fromString("Https");
 
     /**
@@ -27,6 +30,7 @@ public final class ProtocolTypes extends ExpandableStringEnum<ProtocolTypes> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ProtocolTypes() {
     }
@@ -37,6 +41,7 @@ public final class ProtocolTypes extends ExpandableStringEnum<ProtocolTypes> {
      * @param name a name to look for.
      * @return the corresponding ProtocolTypes.
      */
+    @Generated
     public static ProtocolTypes fromString(String name) {
         return fromString(name, ProtocolTypes.class);
     }
@@ -46,6 +51,7 @@ public final class ProtocolTypes extends ExpandableStringEnum<ProtocolTypes> {
      * 
      * @return known ProtocolTypes values.
      */
+    @Generated
     public static Collection<ProtocolTypes> values() {
         return values(ProtocolTypes.class);
     }

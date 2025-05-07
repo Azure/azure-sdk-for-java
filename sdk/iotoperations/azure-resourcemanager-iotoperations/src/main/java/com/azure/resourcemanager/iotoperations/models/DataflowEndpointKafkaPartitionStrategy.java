@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,21 +16,25 @@ public final class DataflowEndpointKafkaPartitionStrategy
     /**
      * Default: Assigns messages to random partitions, using a round-robin algorithm.
      */
+    @Generated
     public static final DataflowEndpointKafkaPartitionStrategy DEFAULT = fromString("Default");
 
     /**
      * Static: Assigns messages to a fixed partition number that's derived from the instance ID of the dataflow.
      */
+    @Generated
     public static final DataflowEndpointKafkaPartitionStrategy STATIC = fromString("Static");
 
     /**
      * TOPIC Option.
      */
+    @Generated
     public static final DataflowEndpointKafkaPartitionStrategy TOPIC = fromString("Topic");
 
     /**
      * PROPERTY Option.
      */
+    @Generated
     public static final DataflowEndpointKafkaPartitionStrategy PROPERTY = fromString("Property");
 
     /**
@@ -37,6 +42,7 @@ public final class DataflowEndpointKafkaPartitionStrategy
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataflowEndpointKafkaPartitionStrategy() {
     }
@@ -47,6 +53,7 @@ public final class DataflowEndpointKafkaPartitionStrategy
      * @param name a name to look for.
      * @return the corresponding DataflowEndpointKafkaPartitionStrategy.
      */
+    @Generated
     public static DataflowEndpointKafkaPartitionStrategy fromString(String name) {
         return fromString(name, DataflowEndpointKafkaPartitionStrategy.class);
     }
@@ -56,6 +63,7 @@ public final class DataflowEndpointKafkaPartitionStrategy
      * 
      * @return known DataflowEndpointKafkaPartitionStrategy values.
      */
+    @Generated
     public static Collection<DataflowEndpointKafkaPartitionStrategy> values() {
         return values(DataflowEndpointKafkaPartitionStrategy.class);
     }

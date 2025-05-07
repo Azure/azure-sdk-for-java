@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class ExternalInstallationSoftwareConfiguration extends SoftwareCon
     /*
      * The SAP software installation type.
      */
+    @Generated
     private SapSoftwareInstallationType softwareInstallationType = SapSoftwareInstallationType.EXTERNAL;
 
     /*
      * The resource ID of the virtual machine containing the central server instance.
      */
+    @Generated
     private String centralServerVmId;
 
     /**
      * Creates an instance of ExternalInstallationSoftwareConfiguration class.
      */
+    @Generated
     public ExternalInstallationSoftwareConfiguration() {
     }
 
@@ -36,6 +40,7 @@ public final class ExternalInstallationSoftwareConfiguration extends SoftwareCon
      * 
      * @return the softwareInstallationType value.
      */
+    @Generated
     @Override
     public SapSoftwareInstallationType softwareInstallationType() {
         return this.softwareInstallationType;
@@ -47,6 +52,7 @@ public final class ExternalInstallationSoftwareConfiguration extends SoftwareCon
      * 
      * @return the centralServerVmId value.
      */
+    @Generated
     public String centralServerVmId() {
         return this.centralServerVmId;
     }
@@ -58,6 +64,7 @@ public final class ExternalInstallationSoftwareConfiguration extends SoftwareCon
      * @param centralServerVmId the centralServerVmId value to set.
      * @return the ExternalInstallationSoftwareConfiguration object itself.
      */
+    @Generated
     public ExternalInstallationSoftwareConfiguration withCentralServerVmId(String centralServerVmId) {
         this.centralServerVmId = centralServerVmId;
         return this;

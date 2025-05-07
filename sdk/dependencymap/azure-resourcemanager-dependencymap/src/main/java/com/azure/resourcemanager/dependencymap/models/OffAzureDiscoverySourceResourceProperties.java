@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dependencymap.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class OffAzureDiscoverySourceResourceProperties extends DiscoverySo
     /*
      * Source type of Discovery Source resource.
      */
+    @Generated
     private SourceType sourceType = SourceType.OFF_AZURE;
 
     /**
      * Creates an instance of OffAzureDiscoverySourceResourceProperties class.
      */
+    @Generated
     public OffAzureDiscoverySourceResourceProperties() {
     }
 
@@ -32,6 +35,7 @@ public final class OffAzureDiscoverySourceResourceProperties extends DiscoverySo
      * 
      * @return the sourceType value.
      */
+    @Generated
     @Override
     public SourceType sourceType() {
         return this.sourceType;
@@ -40,6 +44,7 @@ public final class OffAzureDiscoverySourceResourceProperties extends DiscoverySo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OffAzureDiscoverySourceResourceProperties withSourceId(String sourceId) {
         super.withSourceId(sourceId);

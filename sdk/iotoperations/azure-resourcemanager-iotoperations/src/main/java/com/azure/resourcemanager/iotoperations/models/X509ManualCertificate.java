@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class X509ManualCertificate implements JsonSerializable<X509ManualC
      * Kubernetes secret containing an X.509 client certificate. This is a reference to the secret through an
      * identifying name, not the secret itself.
      */
+    @Generated
     private String secretRef;
 
     /**
      * Creates an instance of X509ManualCertificate class.
      */
+    @Generated
     public X509ManualCertificate() {
     }
 
@@ -35,6 +38,7 @@ public final class X509ManualCertificate implements JsonSerializable<X509ManualC
      * 
      * @return the secretRef value.
      */
+    @Generated
     public String secretRef() {
         return this.secretRef;
     }
@@ -46,6 +50,7 @@ public final class X509ManualCertificate implements JsonSerializable<X509ManualC
      * @param secretRef the secretRef value to set.
      * @return the X509ManualCertificate object itself.
      */
+    @Generated
     public X509ManualCertificate withSecretRef(String secretRef) {
         this.secretRef = secretRef;
         return this;

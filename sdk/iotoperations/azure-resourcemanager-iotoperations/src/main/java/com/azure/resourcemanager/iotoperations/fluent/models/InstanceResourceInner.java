@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -25,41 +26,49 @@ public final class InstanceResourceInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private InstanceProperties properties;
 
     /*
      * Edge location of the resource.
      */
+    @Generated
     private ExtendedLocation extendedLocation;
 
     /*
      * The managed service identities assigned to this resource.
      */
+    @Generated
     private ManagedServiceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of InstanceResourceInner class.
      */
+    @Generated
     public InstanceResourceInner() {
     }
 
@@ -68,6 +77,7 @@ public final class InstanceResourceInner extends Resource {
      * 
      * @return the properties value.
      */
+    @Generated
     public InstanceProperties properties() {
         return this.properties;
     }
@@ -78,6 +88,7 @@ public final class InstanceResourceInner extends Resource {
      * @param properties the properties value to set.
      * @return the InstanceResourceInner object itself.
      */
+    @Generated
     public InstanceResourceInner withProperties(InstanceProperties properties) {
         this.properties = properties;
         return this;
@@ -88,6 +99,7 @@ public final class InstanceResourceInner extends Resource {
      * 
      * @return the extendedLocation value.
      */
+    @Generated
     public ExtendedLocation extendedLocation() {
         return this.extendedLocation;
     }
@@ -98,6 +110,7 @@ public final class InstanceResourceInner extends Resource {
      * @param extendedLocation the extendedLocation value to set.
      * @return the InstanceResourceInner object itself.
      */
+    @Generated
     public InstanceResourceInner withExtendedLocation(ExtendedLocation extendedLocation) {
         this.extendedLocation = extendedLocation;
         return this;
@@ -108,6 +121,7 @@ public final class InstanceResourceInner extends Resource {
      * 
      * @return the identity value.
      */
+    @Generated
     public ManagedServiceIdentity identity() {
         return this.identity;
     }
@@ -118,6 +132,7 @@ public final class InstanceResourceInner extends Resource {
      * @param identity the identity value to set.
      * @return the InstanceResourceInner object itself.
      */
+    @Generated
     public InstanceResourceInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
@@ -128,6 +143,7 @@ public final class InstanceResourceInner extends Resource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -137,6 +153,7 @@ public final class InstanceResourceInner extends Resource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -147,6 +164,7 @@ public final class InstanceResourceInner extends Resource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -157,6 +175,7 @@ public final class InstanceResourceInner extends Resource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;
@@ -165,6 +184,7 @@ public final class InstanceResourceInner extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InstanceResourceInner withLocation(String location) {
         super.withLocation(location);
@@ -174,6 +194,7 @@ public final class InstanceResourceInner extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InstanceResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);

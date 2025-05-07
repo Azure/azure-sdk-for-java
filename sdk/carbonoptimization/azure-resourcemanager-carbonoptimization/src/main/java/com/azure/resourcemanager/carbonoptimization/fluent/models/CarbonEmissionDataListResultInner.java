@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -23,21 +24,25 @@ public final class CarbonEmissionDataListResultInner implements JsonSerializable
     /*
      * The CarbonEmissionData items on this page
      */
+    @Generated
     private List<CarbonEmissionData> value;
 
     /*
      * The pagination token to fetch next page data, it's null or empty if it doesn't have next page data
      */
+    @Generated
     private String skipToken;
 
     /*
      * The access decision list for each input subscription
      */
+    @Generated
     private List<SubscriptionAccessDecision> subscriptionAccessDecisionList;
 
     /**
      * Creates an instance of CarbonEmissionDataListResultInner class.
      */
+    @Generated
     private CarbonEmissionDataListResultInner() {
     }
 
@@ -46,6 +51,7 @@ public final class CarbonEmissionDataListResultInner implements JsonSerializable
      * 
      * @return the value value.
      */
+    @Generated
     public List<CarbonEmissionData> value() {
         return this.value;
     }
@@ -56,6 +62,7 @@ public final class CarbonEmissionDataListResultInner implements JsonSerializable
      * 
      * @return the skipToken value.
      */
+    @Generated
     public String skipToken() {
         return this.skipToken;
     }
@@ -65,6 +72,7 @@ public final class CarbonEmissionDataListResultInner implements JsonSerializable
      * 
      * @return the subscriptionAccessDecisionList value.
      */
+    @Generated
     public List<SubscriptionAccessDecision> subscriptionAccessDecisionList() {
         return this.subscriptionAccessDecisionList;
     }

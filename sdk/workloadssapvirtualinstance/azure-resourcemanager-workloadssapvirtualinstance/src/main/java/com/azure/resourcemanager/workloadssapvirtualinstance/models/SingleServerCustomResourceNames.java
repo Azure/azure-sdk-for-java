@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public class SingleServerCustomResourceNames implements JsonSerializable<SingleS
     /*
      * The naming pattern type.
      */
+    @Generated
     private NamingPatternType namingPatternType = NamingPatternType.fromString("SingleServerCustomResourceNames");
 
     /**
      * Creates an instance of SingleServerCustomResourceNames class.
      */
+    @Generated
     public SingleServerCustomResourceNames() {
     }
 
@@ -33,6 +36,7 @@ public class SingleServerCustomResourceNames implements JsonSerializable<SingleS
      * 
      * @return the namingPatternType value.
      */
+    @Generated
     public NamingPatternType namingPatternType() {
         return this.namingPatternType;
     }

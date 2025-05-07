@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,22 +21,26 @@ public final class DatabaseVmDetails implements JsonSerializable<DatabaseVmDetai
     /*
      * The virtual machine id.
      */
+    @Generated
     private String virtualMachineId;
 
     /*
      * Defines the SAP Instance status.
      */
+    @Generated
     private SapVirtualInstanceStatus status;
 
     /*
      * Storage details of all the Storage Accounts attached to the Database Virtual Machine. For e.g. NFS on AFS Shared
      * Storage.
      */
+    @Generated
     private List<StorageInformation> storageDetails;
 
     /**
      * Creates an instance of DatabaseVmDetails class.
      */
+    @Generated
     private DatabaseVmDetails() {
     }
 
@@ -44,6 +49,7 @@ public final class DatabaseVmDetails implements JsonSerializable<DatabaseVmDetai
      * 
      * @return the virtualMachineId value.
      */
+    @Generated
     public String virtualMachineId() {
         return this.virtualMachineId;
     }
@@ -53,6 +59,7 @@ public final class DatabaseVmDetails implements JsonSerializable<DatabaseVmDetai
      * 
      * @return the status value.
      */
+    @Generated
     public SapVirtualInstanceStatus status() {
         return this.status;
     }
@@ -63,6 +70,7 @@ public final class DatabaseVmDetails implements JsonSerializable<DatabaseVmDetai
      * 
      * @return the storageDetails value.
      */
+    @Generated
     public List<StorageInformation> storageDetails() {
         return this.storageDetails;
     }

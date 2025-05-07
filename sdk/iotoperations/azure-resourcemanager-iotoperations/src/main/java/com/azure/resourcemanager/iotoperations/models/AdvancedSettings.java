@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class AdvancedSettings implements JsonSerializable<AdvancedSettings
     /*
      * Configurations related to All Clients.
      */
+    @Generated
     private ClientConfig clients;
 
     /*
      * The setting to enable or disable encryption of internal Traffic.
      */
+    @Generated
     private OperationalMode encryptInternalTraffic;
 
     /*
      * Certificate rotation and private key configuration.
      */
+    @Generated
     private CertManagerCertOptions internalCerts;
 
     /**
      * Creates an instance of AdvancedSettings class.
      */
+    @Generated
     public AdvancedSettings() {
     }
 
@@ -42,6 +47,7 @@ public final class AdvancedSettings implements JsonSerializable<AdvancedSettings
      * 
      * @return the clients value.
      */
+    @Generated
     public ClientConfig clients() {
         return this.clients;
     }
@@ -52,6 +58,7 @@ public final class AdvancedSettings implements JsonSerializable<AdvancedSettings
      * @param clients the clients value to set.
      * @return the AdvancedSettings object itself.
      */
+    @Generated
     public AdvancedSettings withClients(ClientConfig clients) {
         this.clients = clients;
         return this;
@@ -62,6 +69,7 @@ public final class AdvancedSettings implements JsonSerializable<AdvancedSettings
      * 
      * @return the encryptInternalTraffic value.
      */
+    @Generated
     public OperationalMode encryptInternalTraffic() {
         return this.encryptInternalTraffic;
     }
@@ -72,6 +80,7 @@ public final class AdvancedSettings implements JsonSerializable<AdvancedSettings
      * @param encryptInternalTraffic the encryptInternalTraffic value to set.
      * @return the AdvancedSettings object itself.
      */
+    @Generated
     public AdvancedSettings withEncryptInternalTraffic(OperationalMode encryptInternalTraffic) {
         this.encryptInternalTraffic = encryptInternalTraffic;
         return this;
@@ -82,6 +91,7 @@ public final class AdvancedSettings implements JsonSerializable<AdvancedSettings
      * 
      * @return the internalCerts value.
      */
+    @Generated
     public CertManagerCertOptions internalCerts() {
         return this.internalCerts;
     }
@@ -92,6 +102,7 @@ public final class AdvancedSettings implements JsonSerializable<AdvancedSettings
      * @param internalCerts the internalCerts value to set.
      * @return the AdvancedSettings object itself.
      */
+    @Generated
     public AdvancedSettings withInternalCerts(CertManagerCertOptions internalCerts) {
         this.internalCerts = internalCerts;
         return this;

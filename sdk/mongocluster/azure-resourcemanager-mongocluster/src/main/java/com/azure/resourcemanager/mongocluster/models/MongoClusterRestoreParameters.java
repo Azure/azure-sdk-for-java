@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,16 +23,19 @@ public final class MongoClusterRestoreParameters implements JsonSerializable<Mon
     /*
      * UTC point in time to restore a mongo cluster
      */
+    @Generated
     private OffsetDateTime pointInTimeUTC;
 
     /*
      * Resource ID to locate the source cluster to restore
      */
+    @Generated
     private String sourceResourceId;
 
     /**
      * Creates an instance of MongoClusterRestoreParameters class.
      */
+    @Generated
     public MongoClusterRestoreParameters() {
     }
 
@@ -40,6 +44,7 @@ public final class MongoClusterRestoreParameters implements JsonSerializable<Mon
      * 
      * @return the pointInTimeUTC value.
      */
+    @Generated
     public OffsetDateTime pointInTimeUTC() {
         return this.pointInTimeUTC;
     }
@@ -50,6 +55,7 @@ public final class MongoClusterRestoreParameters implements JsonSerializable<Mon
      * @param pointInTimeUTC the pointInTimeUTC value to set.
      * @return the MongoClusterRestoreParameters object itself.
      */
+    @Generated
     public MongoClusterRestoreParameters withPointInTimeUTC(OffsetDateTime pointInTimeUTC) {
         this.pointInTimeUTC = pointInTimeUTC;
         return this;
@@ -60,6 +66,7 @@ public final class MongoClusterRestoreParameters implements JsonSerializable<Mon
      * 
      * @return the sourceResourceId value.
      */
+    @Generated
     public String sourceResourceId() {
         return this.sourceResourceId;
     }
@@ -70,6 +77,7 @@ public final class MongoClusterRestoreParameters implements JsonSerializable<Mon
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the MongoClusterRestoreParameters object itself.
      */
+    @Generated
     public MongoClusterRestoreParameters withSourceResourceId(String sourceResourceId) {
         this.sourceResourceId = sourceResourceId;
         return this;

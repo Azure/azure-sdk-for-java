@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class AssetEndpointProfileUpdate implements JsonSerializable<AssetE
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private AssetEndpointProfileUpdateProperties properties;
 
     /**
      * Creates an instance of AssetEndpointProfileUpdate class.
      */
+    @Generated
     public AssetEndpointProfileUpdate() {
     }
 
@@ -38,6 +42,7 @@ public final class AssetEndpointProfileUpdate implements JsonSerializable<AssetE
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -48,6 +53,7 @@ public final class AssetEndpointProfileUpdate implements JsonSerializable<AssetE
      * @param tags the tags value to set.
      * @return the AssetEndpointProfileUpdate object itself.
      */
+    @Generated
     public AssetEndpointProfileUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -58,6 +64,7 @@ public final class AssetEndpointProfileUpdate implements JsonSerializable<AssetE
      * 
      * @return the properties value.
      */
+    @Generated
     public AssetEndpointProfileUpdateProperties properties() {
         return this.properties;
     }
@@ -68,6 +75,7 @@ public final class AssetEndpointProfileUpdate implements JsonSerializable<AssetE
      * @param properties the properties value to set.
      * @return the AssetEndpointProfileUpdate object itself.
      */
+    @Generated
     public AssetEndpointProfileUpdate withProperties(AssetEndpointProfileUpdateProperties properties) {
         this.properties = properties;
         return this;

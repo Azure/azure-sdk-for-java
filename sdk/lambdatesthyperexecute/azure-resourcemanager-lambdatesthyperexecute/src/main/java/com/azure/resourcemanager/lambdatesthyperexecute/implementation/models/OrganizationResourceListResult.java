@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.lambdatesthyperexecute.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,16 +23,19 @@ public final class OrganizationResourceListResult implements JsonSerializable<Or
     /*
      * The OrganizationResource items on this page
      */
+    @Generated
     private List<OrganizationResourceInner> value;
 
     /*
      * The link to the next page of items
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of OrganizationResourceListResult class.
      */
+    @Generated
     private OrganizationResourceListResult() {
     }
 
@@ -40,6 +44,7 @@ public final class OrganizationResourceListResult implements JsonSerializable<Or
      * 
      * @return the value value.
      */
+    @Generated
     public List<OrganizationResourceInner> value() {
         return this.value;
     }
@@ -49,6 +54,7 @@ public final class OrganizationResourceListResult implements JsonSerializable<Or
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String nextLink() {
         return this.nextLink;
     }

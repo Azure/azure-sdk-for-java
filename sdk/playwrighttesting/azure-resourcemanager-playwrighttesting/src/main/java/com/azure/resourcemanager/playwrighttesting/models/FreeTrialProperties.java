@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.playwrighttesting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class FreeTrialProperties implements JsonSerializable<FreeTrialProp
     /*
      * The Playwright service account id.
      */
+    @Generated
     private String accountId;
 
     /*
      * The free-trial state.
      */
+    @Generated
     private FreeTrialState state;
 
     /**
      * Creates an instance of FreeTrialProperties class.
      */
+    @Generated
     private FreeTrialProperties() {
     }
 
@@ -37,6 +41,7 @@ public final class FreeTrialProperties implements JsonSerializable<FreeTrialProp
      * 
      * @return the accountId value.
      */
+    @Generated
     public String accountId() {
         return this.accountId;
     }
@@ -46,6 +51,7 @@ public final class FreeTrialProperties implements JsonSerializable<FreeTrialProp
      * 
      * @return the state value.
      */
+    @Generated
     public FreeTrialState state() {
         return this.state;
     }

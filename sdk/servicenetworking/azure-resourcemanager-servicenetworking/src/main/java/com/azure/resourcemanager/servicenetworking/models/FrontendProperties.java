@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class FrontendProperties implements JsonSerializable<FrontendProper
     /*
      * The Fully Qualified Domain Name of the DNS record associated to a Traffic Controller frontend.
      */
+    @Generated
     private String fqdn;
 
     /*
      * Frontend Security Policy Configuration
      */
+    @Generated
     private SecurityPolicyConfigurations securityPolicyConfigurations;
 
     /*
      * Provisioning State of Traffic Controller Frontend Resource
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of FrontendProperties class.
      */
+    @Generated
     public FrontendProperties() {
     }
 
@@ -43,6 +48,7 @@ public final class FrontendProperties implements JsonSerializable<FrontendProper
      * 
      * @return the fqdn value.
      */
+    @Generated
     public String fqdn() {
         return this.fqdn;
     }
@@ -52,6 +58,7 @@ public final class FrontendProperties implements JsonSerializable<FrontendProper
      * 
      * @return the securityPolicyConfigurations value.
      */
+    @Generated
     public SecurityPolicyConfigurations securityPolicyConfigurations() {
         return this.securityPolicyConfigurations;
     }
@@ -62,6 +69,7 @@ public final class FrontendProperties implements JsonSerializable<FrontendProper
      * @param securityPolicyConfigurations the securityPolicyConfigurations value to set.
      * @return the FrontendProperties object itself.
      */
+    @Generated
     public FrontendProperties
         withSecurityPolicyConfigurations(SecurityPolicyConfigurations securityPolicyConfigurations) {
         this.securityPolicyConfigurations = securityPolicyConfigurations;
@@ -73,6 +81,7 @@ public final class FrontendProperties implements JsonSerializable<FrontendProper
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

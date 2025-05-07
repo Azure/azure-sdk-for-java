@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class LogonType extends ExpandableStringEnum<LogonType> {
     /**
      * Run as a service.
      */
+    @Generated
     public static final LogonType SERVICE = fromString("Service");
 
     /**
      * Run in interactive mode.
      */
+    @Generated
     public static final LogonType INTERACTIVE = fromString("Interactive");
 
     /**
@@ -26,6 +29,7 @@ public final class LogonType extends ExpandableStringEnum<LogonType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public LogonType() {
     }
@@ -36,6 +40,7 @@ public final class LogonType extends ExpandableStringEnum<LogonType> {
      * @param name a name to look for.
      * @return the corresponding LogonType.
      */
+    @Generated
     public static LogonType fromString(String name) {
         return fromString(name, LogonType.class);
     }
@@ -45,6 +50,7 @@ public final class LogonType extends ExpandableStringEnum<LogonType> {
      * 
      * @return known LogonType values.
      */
+    @Generated
     public static Collection<LogonType> values() {
         return values(LogonType.class);
     }

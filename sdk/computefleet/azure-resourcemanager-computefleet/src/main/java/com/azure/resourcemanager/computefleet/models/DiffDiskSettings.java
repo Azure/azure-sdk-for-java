@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,6 +22,7 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
     /*
      * Specifies the ephemeral disk settings for operating system disk.
      */
+    @Generated
     private DiffDiskOptions option;
 
     /*
@@ -32,11 +34,13 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
      * https://learn.microsoft.com/azure/virtual-machines/linux/sizes to check which VM
      * sizes exposes a cache disk.
      */
+    @Generated
     private DiffDiskPlacement placement;
 
     /**
      * Creates an instance of DiffDiskSettings class.
      */
+    @Generated
     public DiffDiskSettings() {
     }
 
@@ -45,6 +49,7 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
      * 
      * @return the option value.
      */
+    @Generated
     public DiffDiskOptions option() {
         return this.option;
     }
@@ -55,6 +60,7 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
      * @param option the option value to set.
      * @return the DiffDiskSettings object itself.
      */
+    @Generated
     public DiffDiskSettings withOption(DiffDiskOptions option) {
         this.option = option;
         return this;
@@ -71,6 +77,7 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
      * 
      * @return the placement value.
      */
+    @Generated
     public DiffDiskPlacement placement() {
         return this.placement;
     }
@@ -87,6 +94,7 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
      * @param placement the placement value to set.
      * @return the DiffDiskSettings object itself.
      */
+    @Generated
     public DiffDiskSettings withPlacement(DiffDiskPlacement placement) {
         this.placement = placement;
         return this;

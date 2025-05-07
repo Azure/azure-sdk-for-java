@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -20,41 +21,49 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
     /*
      * The SAP deployment type. Eg: SingleServer/ThreeTier.
      */
+    @Generated
     private SapDeploymentType deploymentType = SapDeploymentType.SINGLE_SERVER;
 
     /*
      * Network configuration for the server
      */
+    @Generated
     private NetworkConfiguration networkConfiguration;
 
     /*
      * The database type.
      */
+    @Generated
     private SapDatabaseType databaseType;
 
     /*
      * The subnet id.
      */
+    @Generated
     private String subnetId;
 
     /*
      * Gets or sets the virtual machine configuration.
      */
+    @Generated
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /*
      * Gets or sets the disk configuration.
      */
+    @Generated
     private DiskConfiguration dbDiskConfiguration;
 
     /*
      * The set of custom names to be used for underlying azure resources that are part of the SAP system.
      */
+    @Generated
     private SingleServerCustomResourceNames customResourceNames;
 
     /**
      * Creates an instance of SingleServerConfiguration class.
      */
+    @Generated
     public SingleServerConfiguration() {
     }
 
@@ -63,6 +72,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
      * 
      * @return the deploymentType value.
      */
+    @Generated
     @Override
     public SapDeploymentType deploymentType() {
         return this.deploymentType;
@@ -73,6 +83,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
      * 
      * @return the networkConfiguration value.
      */
+    @Generated
     public NetworkConfiguration networkConfiguration() {
         return this.networkConfiguration;
     }
@@ -83,6 +94,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
      * @param networkConfiguration the networkConfiguration value to set.
      * @return the SingleServerConfiguration object itself.
      */
+    @Generated
     public SingleServerConfiguration withNetworkConfiguration(NetworkConfiguration networkConfiguration) {
         this.networkConfiguration = networkConfiguration;
         return this;
@@ -93,6 +105,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
      * 
      * @return the databaseType value.
      */
+    @Generated
     public SapDatabaseType databaseType() {
         return this.databaseType;
     }
@@ -103,6 +116,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
      * @param databaseType the databaseType value to set.
      * @return the SingleServerConfiguration object itself.
      */
+    @Generated
     public SingleServerConfiguration withDatabaseType(SapDatabaseType databaseType) {
         this.databaseType = databaseType;
         return this;
@@ -113,6 +127,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
      * 
      * @return the subnetId value.
      */
+    @Generated
     public String subnetId() {
         return this.subnetId;
     }
@@ -123,6 +138,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
      * @param subnetId the subnetId value to set.
      * @return the SingleServerConfiguration object itself.
      */
+    @Generated
     public SingleServerConfiguration withSubnetId(String subnetId) {
         this.subnetId = subnetId;
         return this;
@@ -133,6 +149,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
      * 
      * @return the virtualMachineConfiguration value.
      */
+    @Generated
     public VirtualMachineConfiguration virtualMachineConfiguration() {
         return this.virtualMachineConfiguration;
     }
@@ -143,6 +160,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the SingleServerConfiguration object itself.
      */
+    @Generated
     public SingleServerConfiguration
         withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
@@ -154,6 +172,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
      * 
      * @return the dbDiskConfiguration value.
      */
+    @Generated
     public DiskConfiguration dbDiskConfiguration() {
         return this.dbDiskConfiguration;
     }
@@ -164,6 +183,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
      * @param dbDiskConfiguration the dbDiskConfiguration value to set.
      * @return the SingleServerConfiguration object itself.
      */
+    @Generated
     public SingleServerConfiguration withDbDiskConfiguration(DiskConfiguration dbDiskConfiguration) {
         this.dbDiskConfiguration = dbDiskConfiguration;
         return this;
@@ -175,6 +195,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
      * 
      * @return the customResourceNames value.
      */
+    @Generated
     public SingleServerCustomResourceNames customResourceNames() {
         return this.customResourceNames;
     }
@@ -186,6 +207,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
      * @param customResourceNames the customResourceNames value to set.
      * @return the SingleServerConfiguration object itself.
      */
+    @Generated
     public SingleServerConfiguration withCustomResourceNames(SingleServerCustomResourceNames customResourceNames) {
         this.customResourceNames = customResourceNames;
         return this;
@@ -194,6 +216,7 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SingleServerConfiguration withAppResourceGroup(String appResourceGroup) {
         super.withAppResourceGroup(appResourceGroup);

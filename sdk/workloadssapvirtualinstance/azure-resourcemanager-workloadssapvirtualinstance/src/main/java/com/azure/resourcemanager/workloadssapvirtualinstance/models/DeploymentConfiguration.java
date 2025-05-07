@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,26 +19,31 @@ public final class DeploymentConfiguration extends SapConfiguration {
     /*
      * The configuration type. Eg: Deployment/Discovery
      */
+    @Generated
     private SapConfigurationType configurationType = SapConfigurationType.DEPLOYMENT;
 
     /*
      * The geo-location where the SAP system is to be created.
      */
+    @Generated
     private String appLocation;
 
     /*
      * The infrastructure configuration.
      */
+    @Generated
     private InfrastructureConfiguration infrastructureConfiguration;
 
     /*
      * The software configuration.
      */
+    @Generated
     private SoftwareConfiguration softwareConfiguration;
 
     /**
      * Creates an instance of DeploymentConfiguration class.
      */
+    @Generated
     public DeploymentConfiguration() {
     }
 
@@ -46,6 +52,7 @@ public final class DeploymentConfiguration extends SapConfiguration {
      * 
      * @return the configurationType value.
      */
+    @Generated
     @Override
     public SapConfigurationType configurationType() {
         return this.configurationType;
@@ -56,6 +63,7 @@ public final class DeploymentConfiguration extends SapConfiguration {
      * 
      * @return the appLocation value.
      */
+    @Generated
     public String appLocation() {
         return this.appLocation;
     }
@@ -66,6 +74,7 @@ public final class DeploymentConfiguration extends SapConfiguration {
      * @param appLocation the appLocation value to set.
      * @return the DeploymentConfiguration object itself.
      */
+    @Generated
     public DeploymentConfiguration withAppLocation(String appLocation) {
         this.appLocation = appLocation;
         return this;
@@ -76,6 +85,7 @@ public final class DeploymentConfiguration extends SapConfiguration {
      * 
      * @return the infrastructureConfiguration value.
      */
+    @Generated
     public InfrastructureConfiguration infrastructureConfiguration() {
         return this.infrastructureConfiguration;
     }
@@ -86,6 +96,7 @@ public final class DeploymentConfiguration extends SapConfiguration {
      * @param infrastructureConfiguration the infrastructureConfiguration value to set.
      * @return the DeploymentConfiguration object itself.
      */
+    @Generated
     public DeploymentConfiguration
         withInfrastructureConfiguration(InfrastructureConfiguration infrastructureConfiguration) {
         this.infrastructureConfiguration = infrastructureConfiguration;
@@ -97,6 +108,7 @@ public final class DeploymentConfiguration extends SapConfiguration {
      * 
      * @return the softwareConfiguration value.
      */
+    @Generated
     public SoftwareConfiguration softwareConfiguration() {
         return this.softwareConfiguration;
     }
@@ -107,6 +119,7 @@ public final class DeploymentConfiguration extends SapConfiguration {
      * @param softwareConfiguration the softwareConfiguration value to set.
      * @return the DeploymentConfiguration object itself.
      */
+    @Generated
     public DeploymentConfiguration withSoftwareConfiguration(SoftwareConfiguration softwareConfiguration) {
         this.softwareConfiguration = softwareConfiguration;
         return this;

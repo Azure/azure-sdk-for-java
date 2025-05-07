@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class WaitStatus implements JsonSerializable<WaitStatus> {
     /*
      * The status of the wait duration.
      */
+    @Generated
     private UpdateStatus status;
 
     /*
      * The wait duration configured in seconds.
      */
+    @Generated
     private Integer waitDurationInSeconds;
 
     /**
      * Creates an instance of WaitStatus class.
      */
+    @Generated
     private WaitStatus() {
     }
 
@@ -37,6 +41,7 @@ public final class WaitStatus implements JsonSerializable<WaitStatus> {
      * 
      * @return the status value.
      */
+    @Generated
     public UpdateStatus status() {
         return this.status;
     }
@@ -46,6 +51,7 @@ public final class WaitStatus implements JsonSerializable<WaitStatus> {
      * 
      * @return the waitDurationInSeconds value.
      */
+    @Generated
     public Integer waitDurationInSeconds() {
         return this.waitDurationInSeconds;
     }

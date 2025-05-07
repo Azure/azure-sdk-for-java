@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,18 +16,21 @@ public final class ManagedClusterUpgradeType extends ExpandableStringEnum<Manage
      * Full upgrades the control plane and all agent pools of the target ManagedClusters. Requires the
      * ManagedClusterUpgradeSpec.KubernetesVersion property to be set.
      */
+    @Generated
     public static final ManagedClusterUpgradeType FULL = fromString("Full");
 
     /**
      * NodeImageOnly upgrades only the node images of the target ManagedClusters. Requires the
      * ManagedClusterUpgradeSpec.KubernetesVersion property to NOT be set.
      */
+    @Generated
     public static final ManagedClusterUpgradeType NODE_IMAGE_ONLY = fromString("NodeImageOnly");
 
     /**
      * ControlPlaneOnly upgrades only targets the KubernetesVersion of the ManagedClusters and will not be applied to
      * the AgentPool. Requires the ManagedClusterUpgradeSpec.KubernetesVersion property to be set.
      */
+    @Generated
     public static final ManagedClusterUpgradeType CONTROL_PLANE_ONLY = fromString("ControlPlaneOnly");
 
     /**
@@ -34,6 +38,7 @@ public final class ManagedClusterUpgradeType extends ExpandableStringEnum<Manage
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ManagedClusterUpgradeType() {
     }
@@ -44,6 +49,7 @@ public final class ManagedClusterUpgradeType extends ExpandableStringEnum<Manage
      * @param name a name to look for.
      * @return the corresponding ManagedClusterUpgradeType.
      */
+    @Generated
     public static ManagedClusterUpgradeType fromString(String name) {
         return fromString(name, ManagedClusterUpgradeType.class);
     }
@@ -53,6 +59,7 @@ public final class ManagedClusterUpgradeType extends ExpandableStringEnum<Manage
      * 
      * @return known ManagedClusterUpgradeType values.
      */
+    @Generated
     public static Collection<ManagedClusterUpgradeType> values() {
         return values(ManagedClusterUpgradeType.class);
     }

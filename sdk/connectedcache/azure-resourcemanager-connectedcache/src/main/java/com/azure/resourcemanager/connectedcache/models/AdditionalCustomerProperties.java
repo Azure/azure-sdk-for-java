@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.connectedcache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,161 +23,193 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
     /*
      * Customer resource last PeeringDB update timestamp.
      */
+    @Generated
     private OffsetDateTime peeringDbLastUpdateTime;
 
     /*
      * Customer resource cache efficiency.
      */
+    @Generated
     private Double customerPropertiesOverviewCacheEfficiency;
 
     /*
      * Customer resource average egress in Mbps.
      */
+    @Generated
     private Double customerPropertiesOverviewAverageEgressMbps;
 
     /*
      * Customer resource average cache miss throughput in Mbps.
      */
+    @Generated
     private Double customerPropertiesOverviewAverageMissMbps;
 
     /*
      * Customer resource maximum egress in Mbps.
      */
+    @Generated
     private Double customerPropertiesOverviewEgressMbpsMax;
 
     /*
      * Customer resource peak egress timestamp.
      */
+    @Generated
     private OffsetDateTime customerPropertiesOverviewEgressMbpsMaxDateTime;
 
     /*
      * Customer resource maximum cache miss throughput in Mbps.
      */
+    @Generated
     private Double customerPropertiesOverviewMissMbpsMax;
 
     /*
      * Customer resource peak cache miss throughput timestamp.
      */
+    @Generated
     private OffsetDateTime customerPropertiesOverviewMissMbpsMaxDateTime;
 
     /*
      * Customer resource total healthy cache nodes.
      */
+    @Generated
     private Integer customerPropertiesOverviewCacheNodesHealthyCount;
 
     /*
      * Customer resource total unhealthy cache nodes.
      */
+    @Generated
     private Integer customerPropertiesOverviewCacheNodesUnhealthyCount;
 
     /*
      * Customer resource signup status as boolean.
      */
+    @Generated
     private Boolean signupStatus;
 
     /*
      * Customer resource signup status as integer code.
      */
+    @Generated
     private Integer signupStatusCode;
 
     /*
      * Customer resource signup status as string text.
      */
+    @Generated
     private String signupStatusText;
 
     /*
      * Customer resource signup phase status code as integer.
      */
+    @Generated
     private Integer signupPhaseStatusCode;
 
     /*
      * Customer resource signup phase status as string text.
      */
+    @Generated
     private String signupPhaseStatusText;
 
     /*
      * Customer resource last PeeringDB update timestamp.
      */
+    @Generated
     private OffsetDateTime peeringDbLastUpdateDate;
 
     /*
      * Customer resource owner organization name.
      */
+    @Generated
     private String customerOrgName;
 
     /*
      * Customer resource contact email.
      */
+    @Generated
     private String customerEmail;
 
     /*
      * Customer resource transit Asn (autonomous system number).
      */
+    @Generated
     private String customerTransitAsn;
 
     /*
      * Customer resource transit state.
      */
+    @Generated
     private CustomerTransitState customerTransitState;
 
     /*
      * Customer resource Asn (autonomous system number).
      */
+    @Generated
     private String customerAsn;
 
     /*
      * Customer resource estimated Asn peering peak in Gbps.
      */
+    @Generated
     private Double customerAsnEstimatedEgressPeekGbps;
 
     /*
      * Customer resource entitlement Sku Id.
      */
+    @Generated
     private String customerEntitlementSkuId;
 
     /*
      * Customer resource entitlement Sku Guid.
      */
+    @Generated
     private String customerEntitlementSkuGuid;
 
     /*
      * Customer resource entitlement Sku name.
      */
+    @Generated
     private String customerEntitlementSkuName;
 
     /*
      * Customer resource entitlement expiration date string.
      */
+    @Generated
     private OffsetDateTime customerEntitlementExpiration;
 
     /*
      * Optional property #1 of Mcc response object.
      */
+    @Generated
     private String optionalProperty1;
 
     /*
      * Optional property #2 of Mcc response object.
      */
+    @Generated
     private String optionalProperty2;
 
     /*
      * Optional property #3 of Mcc response object.
      */
+    @Generated
     private String optionalProperty3;
 
     /*
      * Optional property #4 of Mcc response object.
      */
+    @Generated
     private String optionalProperty4;
 
     /*
      * Optional property #5 of Mcc response object.
      */
+    @Generated
     private String optionalProperty5;
 
     /**
      * Creates an instance of AdditionalCustomerProperties class.
      */
+    @Generated
     public AdditionalCustomerProperties() {
     }
 
@@ -185,6 +218,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the peeringDbLastUpdateTime value.
      */
+    @Generated
     public OffsetDateTime peeringDbLastUpdateTime() {
         return this.peeringDbLastUpdateTime;
     }
@@ -194,6 +228,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerPropertiesOverviewCacheEfficiency value.
      */
+    @Generated
     public Double customerPropertiesOverviewCacheEfficiency() {
         return this.customerPropertiesOverviewCacheEfficiency;
     }
@@ -203,6 +238,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerPropertiesOverviewAverageEgressMbps value.
      */
+    @Generated
     public Double customerPropertiesOverviewAverageEgressMbps() {
         return this.customerPropertiesOverviewAverageEgressMbps;
     }
@@ -213,6 +249,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerPropertiesOverviewAverageMissMbps value.
      */
+    @Generated
     public Double customerPropertiesOverviewAverageMissMbps() {
         return this.customerPropertiesOverviewAverageMissMbps;
     }
@@ -222,6 +259,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerPropertiesOverviewEgressMbpsMax value.
      */
+    @Generated
     public Double customerPropertiesOverviewEgressMbpsMax() {
         return this.customerPropertiesOverviewEgressMbpsMax;
     }
@@ -231,6 +269,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerPropertiesOverviewEgressMbpsMaxDateTime value.
      */
+    @Generated
     public OffsetDateTime customerPropertiesOverviewEgressMbpsMaxDateTime() {
         return this.customerPropertiesOverviewEgressMbpsMaxDateTime;
     }
@@ -240,6 +279,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerPropertiesOverviewMissMbpsMax value.
      */
+    @Generated
     public Double customerPropertiesOverviewMissMbpsMax() {
         return this.customerPropertiesOverviewMissMbpsMax;
     }
@@ -250,6 +290,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerPropertiesOverviewMissMbpsMaxDateTime value.
      */
+    @Generated
     public OffsetDateTime customerPropertiesOverviewMissMbpsMaxDateTime() {
         return this.customerPropertiesOverviewMissMbpsMaxDateTime;
     }
@@ -259,6 +300,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerPropertiesOverviewCacheNodesHealthyCount value.
      */
+    @Generated
     public Integer customerPropertiesOverviewCacheNodesHealthyCount() {
         return this.customerPropertiesOverviewCacheNodesHealthyCount;
     }
@@ -269,6 +311,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerPropertiesOverviewCacheNodesUnhealthyCount value.
      */
+    @Generated
     public Integer customerPropertiesOverviewCacheNodesUnhealthyCount() {
         return this.customerPropertiesOverviewCacheNodesUnhealthyCount;
     }
@@ -278,6 +321,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the signupStatus value.
      */
+    @Generated
     public Boolean signupStatus() {
         return this.signupStatus;
     }
@@ -287,6 +331,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the signupStatusCode value.
      */
+    @Generated
     public Integer signupStatusCode() {
         return this.signupStatusCode;
     }
@@ -296,6 +341,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the signupStatusText value.
      */
+    @Generated
     public String signupStatusText() {
         return this.signupStatusText;
     }
@@ -305,6 +351,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the signupPhaseStatusCode value.
      */
+    @Generated
     public Integer signupPhaseStatusCode() {
         return this.signupPhaseStatusCode;
     }
@@ -314,6 +361,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the signupPhaseStatusText value.
      */
+    @Generated
     public String signupPhaseStatusText() {
         return this.signupPhaseStatusText;
     }
@@ -323,6 +371,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the peeringDbLastUpdateDate value.
      */
+    @Generated
     public OffsetDateTime peeringDbLastUpdateDate() {
         return this.peeringDbLastUpdateDate;
     }
@@ -332,6 +381,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerOrgName value.
      */
+    @Generated
     public String customerOrgName() {
         return this.customerOrgName;
     }
@@ -341,6 +391,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerEmail value.
      */
+    @Generated
     public String customerEmail() {
         return this.customerEmail;
     }
@@ -351,6 +402,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * @param customerEmail the customerEmail value to set.
      * @return the AdditionalCustomerProperties object itself.
      */
+    @Generated
     public AdditionalCustomerProperties withCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
         return this;
@@ -361,6 +413,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerTransitAsn value.
      */
+    @Generated
     public String customerTransitAsn() {
         return this.customerTransitAsn;
     }
@@ -371,6 +424,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * @param customerTransitAsn the customerTransitAsn value to set.
      * @return the AdditionalCustomerProperties object itself.
      */
+    @Generated
     public AdditionalCustomerProperties withCustomerTransitAsn(String customerTransitAsn) {
         this.customerTransitAsn = customerTransitAsn;
         return this;
@@ -381,6 +435,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerTransitState value.
      */
+    @Generated
     public CustomerTransitState customerTransitState() {
         return this.customerTransitState;
     }
@@ -391,6 +446,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * @param customerTransitState the customerTransitState value to set.
      * @return the AdditionalCustomerProperties object itself.
      */
+    @Generated
     public AdditionalCustomerProperties withCustomerTransitState(CustomerTransitState customerTransitState) {
         this.customerTransitState = customerTransitState;
         return this;
@@ -401,6 +457,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerAsn value.
      */
+    @Generated
     public String customerAsn() {
         return this.customerAsn;
     }
@@ -411,6 +468,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * @param customerAsn the customerAsn value to set.
      * @return the AdditionalCustomerProperties object itself.
      */
+    @Generated
     public AdditionalCustomerProperties withCustomerAsn(String customerAsn) {
         this.customerAsn = customerAsn;
         return this;
@@ -421,6 +479,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerAsnEstimatedEgressPeekGbps value.
      */
+    @Generated
     public Double customerAsnEstimatedEgressPeekGbps() {
         return this.customerAsnEstimatedEgressPeekGbps;
     }
@@ -430,6 +489,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerEntitlementSkuId value.
      */
+    @Generated
     public String customerEntitlementSkuId() {
         return this.customerEntitlementSkuId;
     }
@@ -440,6 +500,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * @param customerEntitlementSkuId the customerEntitlementSkuId value to set.
      * @return the AdditionalCustomerProperties object itself.
      */
+    @Generated
     public AdditionalCustomerProperties withCustomerEntitlementSkuId(String customerEntitlementSkuId) {
         this.customerEntitlementSkuId = customerEntitlementSkuId;
         return this;
@@ -450,6 +511,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerEntitlementSkuGuid value.
      */
+    @Generated
     public String customerEntitlementSkuGuid() {
         return this.customerEntitlementSkuGuid;
     }
@@ -460,6 +522,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * @param customerEntitlementSkuGuid the customerEntitlementSkuGuid value to set.
      * @return the AdditionalCustomerProperties object itself.
      */
+    @Generated
     public AdditionalCustomerProperties withCustomerEntitlementSkuGuid(String customerEntitlementSkuGuid) {
         this.customerEntitlementSkuGuid = customerEntitlementSkuGuid;
         return this;
@@ -470,6 +533,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerEntitlementSkuName value.
      */
+    @Generated
     public String customerEntitlementSkuName() {
         return this.customerEntitlementSkuName;
     }
@@ -480,6 +544,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * @param customerEntitlementSkuName the customerEntitlementSkuName value to set.
      * @return the AdditionalCustomerProperties object itself.
      */
+    @Generated
     public AdditionalCustomerProperties withCustomerEntitlementSkuName(String customerEntitlementSkuName) {
         this.customerEntitlementSkuName = customerEntitlementSkuName;
         return this;
@@ -490,6 +555,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the customerEntitlementExpiration value.
      */
+    @Generated
     public OffsetDateTime customerEntitlementExpiration() {
         return this.customerEntitlementExpiration;
     }
@@ -500,6 +566,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * @param customerEntitlementExpiration the customerEntitlementExpiration value to set.
      * @return the AdditionalCustomerProperties object itself.
      */
+    @Generated
     public AdditionalCustomerProperties
         withCustomerEntitlementExpiration(OffsetDateTime customerEntitlementExpiration) {
         this.customerEntitlementExpiration = customerEntitlementExpiration;
@@ -511,6 +578,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the optionalProperty1 value.
      */
+    @Generated
     public String optionalProperty1() {
         return this.optionalProperty1;
     }
@@ -521,6 +589,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * @param optionalProperty1 the optionalProperty1 value to set.
      * @return the AdditionalCustomerProperties object itself.
      */
+    @Generated
     public AdditionalCustomerProperties withOptionalProperty1(String optionalProperty1) {
         this.optionalProperty1 = optionalProperty1;
         return this;
@@ -531,6 +600,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the optionalProperty2 value.
      */
+    @Generated
     public String optionalProperty2() {
         return this.optionalProperty2;
     }
@@ -541,6 +611,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * @param optionalProperty2 the optionalProperty2 value to set.
      * @return the AdditionalCustomerProperties object itself.
      */
+    @Generated
     public AdditionalCustomerProperties withOptionalProperty2(String optionalProperty2) {
         this.optionalProperty2 = optionalProperty2;
         return this;
@@ -551,6 +622,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the optionalProperty3 value.
      */
+    @Generated
     public String optionalProperty3() {
         return this.optionalProperty3;
     }
@@ -561,6 +633,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * @param optionalProperty3 the optionalProperty3 value to set.
      * @return the AdditionalCustomerProperties object itself.
      */
+    @Generated
     public AdditionalCustomerProperties withOptionalProperty3(String optionalProperty3) {
         this.optionalProperty3 = optionalProperty3;
         return this;
@@ -571,6 +644,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the optionalProperty4 value.
      */
+    @Generated
     public String optionalProperty4() {
         return this.optionalProperty4;
     }
@@ -581,6 +655,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * @param optionalProperty4 the optionalProperty4 value to set.
      * @return the AdditionalCustomerProperties object itself.
      */
+    @Generated
     public AdditionalCustomerProperties withOptionalProperty4(String optionalProperty4) {
         this.optionalProperty4 = optionalProperty4;
         return this;
@@ -591,6 +666,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * 
      * @return the optionalProperty5 value.
      */
+    @Generated
     public String optionalProperty5() {
         return this.optionalProperty5;
     }
@@ -601,6 +677,7 @@ public final class AdditionalCustomerProperties implements JsonSerializable<Addi
      * @param optionalProperty5 the optionalProperty5 value to set.
      * @return the AdditionalCustomerProperties object itself.
      */
+    @Generated
     public AdditionalCustomerProperties withOptionalProperty5(String optionalProperty5) {
         this.optionalProperty5 = optionalProperty5;
         return this;

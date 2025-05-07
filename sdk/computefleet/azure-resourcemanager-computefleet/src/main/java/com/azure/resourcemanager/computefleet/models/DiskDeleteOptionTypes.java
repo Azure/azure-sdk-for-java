@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -18,11 +19,13 @@ public final class DiskDeleteOptionTypes extends ExpandableStringEnum<DiskDelete
     /**
      * If this value is used, the managed disk is deleted when VM gets deleted.
      */
+    @Generated
     public static final DiskDeleteOptionTypes DELETE = fromString("Delete");
 
     /**
      * If this value is used, the managed disk is retained after VM gets deleted.
      */
+    @Generated
     public static final DiskDeleteOptionTypes DETACH = fromString("Detach");
 
     /**
@@ -30,6 +33,7 @@ public final class DiskDeleteOptionTypes extends ExpandableStringEnum<DiskDelete
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DiskDeleteOptionTypes() {
     }
@@ -40,6 +44,7 @@ public final class DiskDeleteOptionTypes extends ExpandableStringEnum<DiskDelete
      * @param name a name to look for.
      * @return the corresponding DiskDeleteOptionTypes.
      */
+    @Generated
     public static DiskDeleteOptionTypes fromString(String name) {
         return fromString(name, DiskDeleteOptionTypes.class);
     }
@@ -49,6 +54,7 @@ public final class DiskDeleteOptionTypes extends ExpandableStringEnum<DiskDelete
      * 
      * @return known DiskDeleteOptionTypes values.
      */
+    @Generated
     public static Collection<DiskDeleteOptionTypes> values() {
         return values(DiskDeleteOptionTypes.class);
     }

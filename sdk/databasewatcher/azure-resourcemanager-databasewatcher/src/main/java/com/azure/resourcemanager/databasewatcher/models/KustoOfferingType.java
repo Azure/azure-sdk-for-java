@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databasewatcher.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class KustoOfferingType extends ExpandableStringEnum<KustoOfferingT
     /**
      * The Azure Data Explorer cluster Kusto offering.
      */
+    @Generated
     public static final KustoOfferingType ADX = fromString("adx");
 
     /**
      * The free Azure Data Explorer cluster Kusto offering.
      */
+    @Generated
     public static final KustoOfferingType FREE = fromString("free");
 
     /**
      * The Fabric Real-Time Analytics Kusto offering.
      */
+    @Generated
     public static final KustoOfferingType FABRIC = fromString("fabric");
 
     /**
@@ -31,6 +35,7 @@ public final class KustoOfferingType extends ExpandableStringEnum<KustoOfferingT
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public KustoOfferingType() {
     }
@@ -41,6 +46,7 @@ public final class KustoOfferingType extends ExpandableStringEnum<KustoOfferingT
      * @param name a name to look for.
      * @return the corresponding KustoOfferingType.
      */
+    @Generated
     public static KustoOfferingType fromString(String name) {
         return fromString(name, KustoOfferingType.class);
     }
@@ -50,6 +56,7 @@ public final class KustoOfferingType extends ExpandableStringEnum<KustoOfferingT
      * 
      * @return known KustoOfferingType values.
      */
+    @Generated
     public static Collection<KustoOfferingType> values() {
         return values(KustoOfferingType.class);
     }

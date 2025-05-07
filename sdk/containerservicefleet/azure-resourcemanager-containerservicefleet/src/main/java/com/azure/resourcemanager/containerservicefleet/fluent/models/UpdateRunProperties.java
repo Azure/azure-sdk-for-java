@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,6 +25,7 @@ public final class UpdateRunProperties implements JsonSerializable<UpdateRunProp
     /*
      * The provisioning state of the UpdateRun resource.
      */
+    @Generated
     private UpdateRunProvisioningState provisioningState;
 
     /*
@@ -42,6 +44,7 @@ public final class UpdateRunProperties implements JsonSerializable<UpdateRunProp
      * Subsequent changes to the referenced FleetUpdateStrategy resource do not propagate.
      * UpdateRunStrategy changes can be made directly on the "strategy" field before launching the UpdateRun.
      */
+    @Generated
     private String updateStrategyId;
 
     /*
@@ -50,27 +53,32 @@ public final class UpdateRunProperties implements JsonSerializable<UpdateRunProp
      * single UpdateGroup targeting all members.
      * The strategy of the UpdateRun can be modified until the run is started.
      */
+    @Generated
     private UpdateRunStrategy strategy;
 
     /*
      * The update to be applied to all clusters in the UpdateRun. The managedClusterUpdate can be modified until the run
      * is started.
      */
+    @Generated
     private ManagedClusterUpdate managedClusterUpdate;
 
     /*
      * The status of the UpdateRun.
      */
+    @Generated
     private UpdateRunStatus status;
 
     /*
      * AutoUpgradeProfileId is the id of an auto upgrade profile resource.
      */
+    @Generated
     private String autoUpgradeProfileId;
 
     /**
      * Creates an instance of UpdateRunProperties class.
      */
+    @Generated
     public UpdateRunProperties() {
     }
 
@@ -79,6 +87,7 @@ public final class UpdateRunProperties implements JsonSerializable<UpdateRunProp
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public UpdateRunProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -101,6 +110,7 @@ public final class UpdateRunProperties implements JsonSerializable<UpdateRunProp
      * 
      * @return the updateStrategyId value.
      */
+    @Generated
     public String updateStrategyId() {
         return this.updateStrategyId;
     }
@@ -124,6 +134,7 @@ public final class UpdateRunProperties implements JsonSerializable<UpdateRunProp
      * @param updateStrategyId the updateStrategyId value to set.
      * @return the UpdateRunProperties object itself.
      */
+    @Generated
     public UpdateRunProperties withUpdateStrategyId(String updateStrategyId) {
         this.updateStrategyId = updateStrategyId;
         return this;
@@ -137,6 +148,7 @@ public final class UpdateRunProperties implements JsonSerializable<UpdateRunProp
      * 
      * @return the strategy value.
      */
+    @Generated
     public UpdateRunStrategy strategy() {
         return this.strategy;
     }
@@ -150,6 +162,7 @@ public final class UpdateRunProperties implements JsonSerializable<UpdateRunProp
      * @param strategy the strategy value to set.
      * @return the UpdateRunProperties object itself.
      */
+    @Generated
     public UpdateRunProperties withStrategy(UpdateRunStrategy strategy) {
         this.strategy = strategy;
         return this;
@@ -161,6 +174,7 @@ public final class UpdateRunProperties implements JsonSerializable<UpdateRunProp
      * 
      * @return the managedClusterUpdate value.
      */
+    @Generated
     public ManagedClusterUpdate managedClusterUpdate() {
         return this.managedClusterUpdate;
     }
@@ -172,6 +186,7 @@ public final class UpdateRunProperties implements JsonSerializable<UpdateRunProp
      * @param managedClusterUpdate the managedClusterUpdate value to set.
      * @return the UpdateRunProperties object itself.
      */
+    @Generated
     public UpdateRunProperties withManagedClusterUpdate(ManagedClusterUpdate managedClusterUpdate) {
         this.managedClusterUpdate = managedClusterUpdate;
         return this;
@@ -182,6 +197,7 @@ public final class UpdateRunProperties implements JsonSerializable<UpdateRunProp
      * 
      * @return the status value.
      */
+    @Generated
     public UpdateRunStatus status() {
         return this.status;
     }
@@ -191,6 +207,7 @@ public final class UpdateRunProperties implements JsonSerializable<UpdateRunProp
      * 
      * @return the autoUpgradeProfileId value.
      */
+    @Generated
     public String autoUpgradeProfileId() {
         return this.autoUpgradeProfileId;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,46 +21,55 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
     /*
      * Unique identifier for the entity
      */
+    @Generated
     private String entityId;
 
     /*
      * Name of the resource
      */
+    @Generated
     private String entityName;
 
     /*
      * Timestamp indicating when the entity was created
      */
+    @Generated
     private String createdAt;
 
     /*
      * Provisioning state of the resource.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /*
      * Additional attributes for the entity
      */
+    @Generated
     private List<Attributes> attributes;
 
     /*
      * The ID of the project this endpoint belongs to
      */
+    @Generated
     private String projectId;
 
     /*
      * The ID of the branch this endpoint belongs to
      */
+    @Generated
     private String branchId;
 
     /*
      * The type of the endpoint
      */
+    @Generated
     private EndpointType endpointType;
 
     /**
      * Creates an instance of EndpointProperties class.
      */
+    @Generated
     public EndpointProperties() {
     }
 
@@ -68,6 +78,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * 
      * @return the entityId value.
      */
+    @Generated
     public String entityId() {
         return this.entityId;
     }
@@ -77,6 +88,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * 
      * @return the entityName value.
      */
+    @Generated
     public String entityName() {
         return this.entityName;
     }
@@ -87,6 +99,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * @param entityName the entityName value to set.
      * @return the EndpointProperties object itself.
      */
+    @Generated
     public EndpointProperties withEntityName(String entityName) {
         this.entityName = entityName;
         return this;
@@ -97,6 +110,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * 
      * @return the createdAt value.
      */
+    @Generated
     public String createdAt() {
         return this.createdAt;
     }
@@ -106,6 +120,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -115,6 +130,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * 
      * @return the attributes value.
      */
+    @Generated
     public List<Attributes> attributes() {
         return this.attributes;
     }
@@ -125,6 +141,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * @param attributes the attributes value to set.
      * @return the EndpointProperties object itself.
      */
+    @Generated
     public EndpointProperties withAttributes(List<Attributes> attributes) {
         this.attributes = attributes;
         return this;
@@ -135,6 +152,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * 
      * @return the projectId value.
      */
+    @Generated
     public String projectId() {
         return this.projectId;
     }
@@ -145,6 +163,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * @param projectId the projectId value to set.
      * @return the EndpointProperties object itself.
      */
+    @Generated
     public EndpointProperties withProjectId(String projectId) {
         this.projectId = projectId;
         return this;
@@ -155,6 +174,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * 
      * @return the branchId value.
      */
+    @Generated
     public String branchId() {
         return this.branchId;
     }
@@ -165,6 +185,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * @param branchId the branchId value to set.
      * @return the EndpointProperties object itself.
      */
+    @Generated
     public EndpointProperties withBranchId(String branchId) {
         this.branchId = branchId;
         return this;
@@ -175,6 +196,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * 
      * @return the endpointType value.
      */
+    @Generated
     public EndpointType endpointType() {
         return this.endpointType;
     }
@@ -185,6 +207,7 @@ public final class EndpointProperties implements JsonSerializable<EndpointProper
      * @param endpointType the endpointType value to set.
      * @return the EndpointProperties object itself.
      */
+    @Generated
     public EndpointProperties withEndpointType(EndpointType endpointType) {
         this.endpointType = endpointType;
         return this;

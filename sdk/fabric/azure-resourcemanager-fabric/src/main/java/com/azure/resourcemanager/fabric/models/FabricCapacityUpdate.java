@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.fabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class FabricCapacityUpdate implements JsonSerializable<FabricCapaci
     /*
      * The SKU details
      */
+    @Generated
     private RpSku sku;
 
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private FabricCapacityUpdateProperties properties;
 
     /**
      * Creates an instance of FabricCapacityUpdate class.
      */
+    @Generated
     public FabricCapacityUpdate() {
     }
 
@@ -43,6 +48,7 @@ public final class FabricCapacityUpdate implements JsonSerializable<FabricCapaci
      * 
      * @return the sku value.
      */
+    @Generated
     public RpSku sku() {
         return this.sku;
     }
@@ -53,6 +59,7 @@ public final class FabricCapacityUpdate implements JsonSerializable<FabricCapaci
      * @param sku the sku value to set.
      * @return the FabricCapacityUpdate object itself.
      */
+    @Generated
     public FabricCapacityUpdate withSku(RpSku sku) {
         this.sku = sku;
         return this;
@@ -63,6 +70,7 @@ public final class FabricCapacityUpdate implements JsonSerializable<FabricCapaci
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -73,6 +81,7 @@ public final class FabricCapacityUpdate implements JsonSerializable<FabricCapaci
      * @param tags the tags value to set.
      * @return the FabricCapacityUpdate object itself.
      */
+    @Generated
     public FabricCapacityUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -83,6 +92,7 @@ public final class FabricCapacityUpdate implements JsonSerializable<FabricCapaci
      * 
      * @return the properties value.
      */
+    @Generated
     public FabricCapacityUpdateProperties properties() {
         return this.properties;
     }
@@ -93,6 +103,7 @@ public final class FabricCapacityUpdate implements JsonSerializable<FabricCapaci
      * @param properties the properties value to set.
      * @return the FabricCapacityUpdate object itself.
      */
+    @Generated
     public FabricCapacityUpdate withProperties(FabricCapacityUpdateProperties properties) {
         this.properties = properties;
         return this;

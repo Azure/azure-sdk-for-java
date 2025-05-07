@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,24 +16,28 @@ public final class OrderByColumnEnum extends ExpandableStringEnum<OrderByColumnE
     /**
      * The itemName filed in ItemDetailsReport result, see CarbonEmissionItemDetailData for more information.
      */
+    @Generated
     public static final OrderByColumnEnum ITEM_NAME = fromString("ItemName");
 
     /**
      * The latestMonthEmissions filed in ItemDetailsReport result, see CarbonEmissionItemDetailData for more
      * information.
      */
+    @Generated
     public static final OrderByColumnEnum LATEST_MONTH_EMISSIONS = fromString("LatestMonthEmissions");
 
     /**
      * The previousMonthEmissions filed in ItemDetailsReport result, see CarbonEmissionItemDetailData for more
      * information.
      */
+    @Generated
     public static final OrderByColumnEnum PREVIOUS_MONTH_EMISSIONS = fromString("PreviousMonthEmissions");
 
     /**
      * The monthOverMonthEmissionsChangeRatio filed in ItemDetailsReport result, see CarbonEmissionItemDetailData for
      * more information.
      */
+    @Generated
     public static final OrderByColumnEnum MONTH_OVER_MONTH_EMISSIONS_CHANGE_RATIO
         = fromString("MonthOverMonthEmissionsChangeRatio");
 
@@ -40,12 +45,14 @@ public final class OrderByColumnEnum extends ExpandableStringEnum<OrderByColumnE
      * The monthlyEmissionsChangeValue filed in ItemDetailsReport result, see CarbonEmissionItemDetailData for more
      * information.
      */
+    @Generated
     public static final OrderByColumnEnum MONTHLY_EMISSIONS_CHANGE_VALUE = fromString("MonthlyEmissionsChangeValue");
 
     /**
      * The resourceGroup filed in ResourceCarbonEmissionItemDetailData result, see ResourceCarbonEmissionItemDetailData
      * for more information.
      */
+    @Generated
     public static final OrderByColumnEnum RESOURCE_GROUP = fromString("ResourceGroup");
 
     /**
@@ -53,6 +60,7 @@ public final class OrderByColumnEnum extends ExpandableStringEnum<OrderByColumnE
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OrderByColumnEnum() {
     }
@@ -63,6 +71,7 @@ public final class OrderByColumnEnum extends ExpandableStringEnum<OrderByColumnE
      * @param name a name to look for.
      * @return the corresponding OrderByColumnEnum.
      */
+    @Generated
     public static OrderByColumnEnum fromString(String name) {
         return fromString(name, OrderByColumnEnum.class);
     }
@@ -72,6 +81,7 @@ public final class OrderByColumnEnum extends ExpandableStringEnum<OrderByColumnE
      * 
      * @return known OrderByColumnEnum values.
      */
+    @Generated
     public static Collection<OrderByColumnEnum> values() {
         return values(OrderByColumnEnum.class);
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class MountFileShareConfiguration extends FileShareConfiguration {
     /*
      * The type of file share config, eg: Mount/CreateAndMount/Skip.
      */
+    @Generated
     private FileShareConfigurationType configurationType = FileShareConfigurationType.MOUNT;
 
     /*
      * The fileshare resource ID
      */
+    @Generated
     private String id;
 
     /*
      * The private endpoint resource ID
      */
+    @Generated
     private String privateEndpointId;
 
     /**
      * Creates an instance of MountFileShareConfiguration class.
      */
+    @Generated
     public MountFileShareConfiguration() {
     }
 
@@ -43,6 +48,7 @@ public final class MountFileShareConfiguration extends FileShareConfiguration {
      * 
      * @return the configurationType value.
      */
+    @Generated
     @Override
     public FileShareConfigurationType configurationType() {
         return this.configurationType;
@@ -53,6 +59,7 @@ public final class MountFileShareConfiguration extends FileShareConfiguration {
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }
@@ -63,6 +70,7 @@ public final class MountFileShareConfiguration extends FileShareConfiguration {
      * @param id the id value to set.
      * @return the MountFileShareConfiguration object itself.
      */
+    @Generated
     public MountFileShareConfiguration withId(String id) {
         this.id = id;
         return this;
@@ -73,6 +81,7 @@ public final class MountFileShareConfiguration extends FileShareConfiguration {
      * 
      * @return the privateEndpointId value.
      */
+    @Generated
     public String privateEndpointId() {
         return this.privateEndpointId;
     }
@@ -83,6 +92,7 @@ public final class MountFileShareConfiguration extends FileShareConfiguration {
      * @param privateEndpointId the privateEndpointId value to set.
      * @return the MountFileShareConfiguration object itself.
      */
+    @Generated
     public MountFileShareConfiguration withPrivateEndpointId(String privateEndpointId) {
         this.privateEndpointId = privateEndpointId;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -29,6 +30,7 @@ public final class PatchSettings implements JsonSerializable<PatchSettings> {
      * automatically updated by the platform. The properties provisionVMAgent and
      * WindowsConfiguration.enableAutomaticUpdates must be true
      */
+    @Generated
     private WindowsVMGuestPatchMode patchMode;
 
     /*
@@ -36,6 +38,7 @@ public final class PatchSettings implements JsonSerializable<PatchSettings> {
      * enableHotpatching, the 'provisionVMAgent' must be set to true and 'patchMode'
      * must be set to 'AutomaticByPlatform'.
      */
+    @Generated
     private Boolean enableHotpatching;
 
     /*
@@ -45,17 +48,20 @@ public final class PatchSettings implements JsonSerializable<PatchSettings> {
      * **AutomaticByPlatform** - The platform will trigger periodic patch assessments.
      * The property provisionVMAgent must be true.
      */
+    @Generated
     private WindowsPatchAssessmentMode assessmentMode;
 
     /*
      * Specifies additional settings for patch mode AutomaticByPlatform in VM Guest
      * Patching on Windows.
      */
+    @Generated
     private WindowsVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings;
 
     /**
      * Creates an instance of PatchSettings class.
      */
+    @Generated
     public PatchSettings() {
     }
 
@@ -74,6 +80,7 @@ public final class PatchSettings implements JsonSerializable<PatchSettings> {
      * 
      * @return the patchMode value.
      */
+    @Generated
     public WindowsVMGuestPatchMode patchMode() {
         return this.patchMode;
     }
@@ -94,6 +101,7 @@ public final class PatchSettings implements JsonSerializable<PatchSettings> {
      * @param patchMode the patchMode value to set.
      * @return the PatchSettings object itself.
      */
+    @Generated
     public PatchSettings withPatchMode(WindowsVMGuestPatchMode patchMode) {
         this.patchMode = patchMode;
         return this;
@@ -106,6 +114,7 @@ public final class PatchSettings implements JsonSerializable<PatchSettings> {
      * 
      * @return the enableHotpatching value.
      */
+    @Generated
     public Boolean enableHotpatching() {
         return this.enableHotpatching;
     }
@@ -118,6 +127,7 @@ public final class PatchSettings implements JsonSerializable<PatchSettings> {
      * @param enableHotpatching the enableHotpatching value to set.
      * @return the PatchSettings object itself.
      */
+    @Generated
     public PatchSettings withEnableHotpatching(Boolean enableHotpatching) {
         this.enableHotpatching = enableHotpatching;
         return this;
@@ -132,6 +142,7 @@ public final class PatchSettings implements JsonSerializable<PatchSettings> {
      * 
      * @return the assessmentMode value.
      */
+    @Generated
     public WindowsPatchAssessmentMode assessmentMode() {
         return this.assessmentMode;
     }
@@ -146,6 +157,7 @@ public final class PatchSettings implements JsonSerializable<PatchSettings> {
      * @param assessmentMode the assessmentMode value to set.
      * @return the PatchSettings object itself.
      */
+    @Generated
     public PatchSettings withAssessmentMode(WindowsPatchAssessmentMode assessmentMode) {
         this.assessmentMode = assessmentMode;
         return this;
@@ -158,6 +170,7 @@ public final class PatchSettings implements JsonSerializable<PatchSettings> {
      * 
      * @return the automaticByPlatformSettings value.
      */
+    @Generated
     public WindowsVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings() {
         return this.automaticByPlatformSettings;
     }
@@ -170,6 +183,7 @@ public final class PatchSettings implements JsonSerializable<PatchSettings> {
      * @param automaticByPlatformSettings the automaticByPlatformSettings value to set.
      * @return the PatchSettings object itself.
      */
+    @Generated
     public PatchSettings
         withAutomaticByPlatformSettings(WindowsVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings) {
         this.automaticByPlatformSettings = automaticByPlatformSettings;

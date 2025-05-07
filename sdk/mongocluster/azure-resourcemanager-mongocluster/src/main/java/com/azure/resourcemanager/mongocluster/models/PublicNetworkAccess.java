@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,11 +16,13 @@ public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetwor
     /**
      * If set, mongo cluster can be accessed through private and public methods.
      */
+    @Generated
     public static final PublicNetworkAccess ENABLED = fromString("Enabled");
 
     /**
      * If set, the private endpoints are the exclusive access method.
      */
+    @Generated
     public static final PublicNetworkAccess DISABLED = fromString("Disabled");
 
     /**
@@ -27,6 +30,7 @@ public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetwor
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PublicNetworkAccess() {
     }
@@ -37,6 +41,7 @@ public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetwor
      * @param name a name to look for.
      * @return the corresponding PublicNetworkAccess.
      */
+    @Generated
     public static PublicNetworkAccess fromString(String name) {
         return fromString(name, PublicNetworkAccess.class);
     }
@@ -46,6 +51,7 @@ public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetwor
      * 
      * @return known PublicNetworkAccess values.
      */
+    @Generated
     public static Collection<PublicNetworkAccess> values() {
         return values(PublicNetworkAccess.class);
     }

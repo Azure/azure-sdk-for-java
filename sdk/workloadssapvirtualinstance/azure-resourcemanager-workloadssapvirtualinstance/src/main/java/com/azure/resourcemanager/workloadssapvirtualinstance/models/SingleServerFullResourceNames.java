@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,16 +20,19 @@ public final class SingleServerFullResourceNames extends SingleServerCustomResou
     /*
      * The naming pattern type.
      */
+    @Generated
     private NamingPatternType namingPatternType = NamingPatternType.FULL_RESOURCE_NAME;
 
     /*
      * The resource names object for virtual machine and related resources.
      */
+    @Generated
     private VirtualMachineResourceNames virtualMachine;
 
     /**
      * Creates an instance of SingleServerFullResourceNames class.
      */
+    @Generated
     public SingleServerFullResourceNames() {
     }
 
@@ -37,6 +41,7 @@ public final class SingleServerFullResourceNames extends SingleServerCustomResou
      * 
      * @return the namingPatternType value.
      */
+    @Generated
     @Override
     public NamingPatternType namingPatternType() {
         return this.namingPatternType;
@@ -47,6 +52,7 @@ public final class SingleServerFullResourceNames extends SingleServerCustomResou
      * 
      * @return the virtualMachine value.
      */
+    @Generated
     public VirtualMachineResourceNames virtualMachine() {
         return this.virtualMachine;
     }
@@ -57,6 +63,7 @@ public final class SingleServerFullResourceNames extends SingleServerCustomResou
      * @param virtualMachine the virtualMachine value to set.
      * @return the SingleServerFullResourceNames object itself.
      */
+    @Generated
     public SingleServerFullResourceNames withVirtualMachine(VirtualMachineResourceNames virtualMachine) {
         this.virtualMachine = virtualMachine;
         return this;

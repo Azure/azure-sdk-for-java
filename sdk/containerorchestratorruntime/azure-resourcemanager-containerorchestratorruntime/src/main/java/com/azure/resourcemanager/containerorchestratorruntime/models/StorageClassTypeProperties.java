@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public class StorageClassTypeProperties implements JsonSerializable<StorageClass
     /*
      * Type of the storage class.
      */
+    @Generated
     private SCType type = SCType.fromString("StorageClassTypeProperties");
 
     /**
      * Creates an instance of StorageClassTypeProperties class.
      */
+    @Generated
     public StorageClassTypeProperties() {
     }
 
@@ -32,6 +35,7 @@ public class StorageClassTypeProperties implements JsonSerializable<StorageClass
      * 
      * @return the type value.
      */
+    @Generated
     public SCType type() {
         return this.type;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class DataflowEndpointKafkaBatching implements JsonSerializable<Dat
     /*
      * Mode for batching.
      */
+    @Generated
     private OperationalMode mode;
 
     /*
      * Batching latency in milliseconds.
      */
+    @Generated
     private Integer latencyMs;
 
     /*
      * Maximum number of bytes in a batch.
      */
+    @Generated
     private Integer maxBytes;
 
     /*
      * Maximum number of messages in a batch.
      */
+    @Generated
     private Integer maxMessages;
 
     /**
      * Creates an instance of DataflowEndpointKafkaBatching class.
      */
+    @Generated
     public DataflowEndpointKafkaBatching() {
     }
 
@@ -47,6 +53,7 @@ public final class DataflowEndpointKafkaBatching implements JsonSerializable<Dat
      * 
      * @return the mode value.
      */
+    @Generated
     public OperationalMode mode() {
         return this.mode;
     }
@@ -57,6 +64,7 @@ public final class DataflowEndpointKafkaBatching implements JsonSerializable<Dat
      * @param mode the mode value to set.
      * @return the DataflowEndpointKafkaBatching object itself.
      */
+    @Generated
     public DataflowEndpointKafkaBatching withMode(OperationalMode mode) {
         this.mode = mode;
         return this;
@@ -67,6 +75,7 @@ public final class DataflowEndpointKafkaBatching implements JsonSerializable<Dat
      * 
      * @return the latencyMs value.
      */
+    @Generated
     public Integer latencyMs() {
         return this.latencyMs;
     }
@@ -77,6 +86,7 @@ public final class DataflowEndpointKafkaBatching implements JsonSerializable<Dat
      * @param latencyMs the latencyMs value to set.
      * @return the DataflowEndpointKafkaBatching object itself.
      */
+    @Generated
     public DataflowEndpointKafkaBatching withLatencyMs(Integer latencyMs) {
         this.latencyMs = latencyMs;
         return this;
@@ -87,6 +97,7 @@ public final class DataflowEndpointKafkaBatching implements JsonSerializable<Dat
      * 
      * @return the maxBytes value.
      */
+    @Generated
     public Integer maxBytes() {
         return this.maxBytes;
     }
@@ -97,6 +108,7 @@ public final class DataflowEndpointKafkaBatching implements JsonSerializable<Dat
      * @param maxBytes the maxBytes value to set.
      * @return the DataflowEndpointKafkaBatching object itself.
      */
+    @Generated
     public DataflowEndpointKafkaBatching withMaxBytes(Integer maxBytes) {
         this.maxBytes = maxBytes;
         return this;
@@ -107,6 +119,7 @@ public final class DataflowEndpointKafkaBatching implements JsonSerializable<Dat
      * 
      * @return the maxMessages value.
      */
+    @Generated
     public Integer maxMessages() {
         return this.maxMessages;
     }
@@ -117,6 +130,7 @@ public final class DataflowEndpointKafkaBatching implements JsonSerializable<Dat
      * @param maxMessages the maxMessages value to set.
      * @return the DataflowEndpointKafkaBatching object itself.
      */
+    @Generated
     public DataflowEndpointKafkaBatching withMaxMessages(Integer maxMessages) {
         this.maxMessages = maxMessages;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class AccessMode extends ExpandableStringEnum<AccessMode> {
     /**
      * Read Write Once (RWO) access mode.
      */
+    @Generated
     public static final AccessMode READ_WRITE_ONCE = fromString("ReadWriteOnce");
 
     /**
      * Read Write Many (RWX) access mode.
      */
+    @Generated
     public static final AccessMode READ_WRITE_MANY = fromString("ReadWriteMany");
 
     /**
@@ -26,6 +29,7 @@ public final class AccessMode extends ExpandableStringEnum<AccessMode> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AccessMode() {
     }
@@ -36,6 +40,7 @@ public final class AccessMode extends ExpandableStringEnum<AccessMode> {
      * @param name a name to look for.
      * @return the corresponding AccessMode.
      */
+    @Generated
     public static AccessMode fromString(String name) {
         return fromString(name, AccessMode.class);
     }
@@ -45,6 +50,7 @@ public final class AccessMode extends ExpandableStringEnum<AccessMode> {
      * 
      * @return known AccessMode values.
      */
+    @Generated
     public static Collection<AccessMode> values() {
         return values(AccessMode.class);
     }

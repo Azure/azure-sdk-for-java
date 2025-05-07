@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,26 +23,31 @@ public final class AssetEndpointProfileUpdateProperties
      * targetAddress URI specifies the type of the device. The additionalConfiguration field holds further connector
      * type specific configuration.
      */
+    @Generated
     private String targetAddress;
 
     /*
      * Defines the configuration for the connector type that is being used with the endpoint profile.
      */
+    @Generated
     private String endpointProfileType;
 
     /*
      * Defines the client authentication mechanism to the server.
      */
+    @Generated
     private Authentication authentication;
 
     /*
      * Stringified JSON that contains connectivity type specific further configuration (e.g. OPC UA, Modbus, ONVIF).
      */
+    @Generated
     private String additionalConfiguration;
 
     /**
      * Creates an instance of AssetEndpointProfileUpdateProperties class.
      */
+    @Generated
     public AssetEndpointProfileUpdateProperties() {
     }
 
@@ -52,6 +58,7 @@ public final class AssetEndpointProfileUpdateProperties
      * 
      * @return the targetAddress value.
      */
+    @Generated
     public String targetAddress() {
         return this.targetAddress;
     }
@@ -64,6 +71,7 @@ public final class AssetEndpointProfileUpdateProperties
      * @param targetAddress the targetAddress value to set.
      * @return the AssetEndpointProfileUpdateProperties object itself.
      */
+    @Generated
     public AssetEndpointProfileUpdateProperties withTargetAddress(String targetAddress) {
         this.targetAddress = targetAddress;
         return this;
@@ -75,6 +83,7 @@ public final class AssetEndpointProfileUpdateProperties
      * 
      * @return the endpointProfileType value.
      */
+    @Generated
     public String endpointProfileType() {
         return this.endpointProfileType;
     }
@@ -86,6 +95,7 @@ public final class AssetEndpointProfileUpdateProperties
      * @param endpointProfileType the endpointProfileType value to set.
      * @return the AssetEndpointProfileUpdateProperties object itself.
      */
+    @Generated
     public AssetEndpointProfileUpdateProperties withEndpointProfileType(String endpointProfileType) {
         this.endpointProfileType = endpointProfileType;
         return this;
@@ -96,6 +106,7 @@ public final class AssetEndpointProfileUpdateProperties
      * 
      * @return the authentication value.
      */
+    @Generated
     public Authentication authentication() {
         return this.authentication;
     }
@@ -106,6 +117,7 @@ public final class AssetEndpointProfileUpdateProperties
      * @param authentication the authentication value to set.
      * @return the AssetEndpointProfileUpdateProperties object itself.
      */
+    @Generated
     public AssetEndpointProfileUpdateProperties withAuthentication(Authentication authentication) {
         this.authentication = authentication;
         return this;
@@ -117,6 +129,7 @@ public final class AssetEndpointProfileUpdateProperties
      * 
      * @return the additionalConfiguration value.
      */
+    @Generated
     public String additionalConfiguration() {
         return this.additionalConfiguration;
     }
@@ -128,6 +141,7 @@ public final class AssetEndpointProfileUpdateProperties
      * @param additionalConfiguration the additionalConfiguration value to set.
      * @return the AssetEndpointProfileUpdateProperties object itself.
      */
+    @Generated
     public AssetEndpointProfileUpdateProperties withAdditionalConfiguration(String additionalConfiguration) {
         this.additionalConfiguration = additionalConfiguration;
         return this;

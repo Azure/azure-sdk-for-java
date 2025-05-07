@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class SapDiskConfiguration implements JsonSerializable<SapDiskConfi
     /*
      * The recommended disk details for a given VM Sku.
      */
+    @Generated
     private DiskVolumeConfiguration recommendedConfiguration;
 
     /*
      * The list of supported disks for a given VM Sku.
      */
+    @Generated
     private List<DiskDetails> supportedConfigurations;
 
     /**
      * Creates an instance of SapDiskConfiguration class.
      */
+    @Generated
     private SapDiskConfiguration() {
     }
 
@@ -38,6 +42,7 @@ public final class SapDiskConfiguration implements JsonSerializable<SapDiskConfi
      * 
      * @return the recommendedConfiguration value.
      */
+    @Generated
     public DiskVolumeConfiguration recommendedConfiguration() {
         return this.recommendedConfiguration;
     }
@@ -47,6 +52,7 @@ public final class SapDiskConfiguration implements JsonSerializable<SapDiskConfi
      * 
      * @return the supportedConfigurations value.
      */
+    @Generated
     public List<DiskDetails> supportedConfigurations() {
         return this.supportedConfigurations;
     }

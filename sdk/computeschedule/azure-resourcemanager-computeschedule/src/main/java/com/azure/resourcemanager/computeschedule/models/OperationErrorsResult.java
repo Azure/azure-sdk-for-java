@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -23,41 +24,49 @@ public final class OperationErrorsResult implements JsonSerializable<OperationEr
     /*
      * The operationId identifying a vm operation
      */
+    @Generated
     private String operationId;
 
     /*
      * The creation time of the error result
      */
+    @Generated
     private OffsetDateTime creationTime;
 
     /*
      * The activation time of a vm operation
      */
+    @Generated
     private OffsetDateTime activationTime;
 
     /*
      * The completion time of the operation if the operation was completed
      */
+    @Generated
     private OffsetDateTime completedAt;
 
     /*
      * A list of errors associated with the operationid
      */
+    @Generated
     private List<OperationErrorDetails> operationErrors;
 
     /*
      * Request level error code
      */
+    @Generated
     private String requestErrorCode;
 
     /*
      * Request level error details
      */
+    @Generated
     private String requestErrorDetails;
 
     /**
      * Creates an instance of OperationErrorsResult class.
      */
+    @Generated
     private OperationErrorsResult() {
     }
 
@@ -66,6 +75,7 @@ public final class OperationErrorsResult implements JsonSerializable<OperationEr
      * 
      * @return the operationId value.
      */
+    @Generated
     public String operationId() {
         return this.operationId;
     }
@@ -75,6 +85,7 @@ public final class OperationErrorsResult implements JsonSerializable<OperationEr
      * 
      * @return the creationTime value.
      */
+    @Generated
     public OffsetDateTime creationTime() {
         return this.creationTime;
     }
@@ -84,6 +95,7 @@ public final class OperationErrorsResult implements JsonSerializable<OperationEr
      * 
      * @return the activationTime value.
      */
+    @Generated
     public OffsetDateTime activationTime() {
         return this.activationTime;
     }
@@ -93,6 +105,7 @@ public final class OperationErrorsResult implements JsonSerializable<OperationEr
      * 
      * @return the completedAt value.
      */
+    @Generated
     public OffsetDateTime completedAt() {
         return this.completedAt;
     }
@@ -102,6 +115,7 @@ public final class OperationErrorsResult implements JsonSerializable<OperationEr
      * 
      * @return the operationErrors value.
      */
+    @Generated
     public List<OperationErrorDetails> operationErrors() {
         return this.operationErrors;
     }
@@ -111,6 +125,7 @@ public final class OperationErrorsResult implements JsonSerializable<OperationEr
      * 
      * @return the requestErrorCode value.
      */
+    @Generated
     public String requestErrorCode() {
         return this.requestErrorCode;
     }
@@ -120,6 +135,7 @@ public final class OperationErrorsResult implements JsonSerializable<OperationEr
      * 
      * @return the requestErrorDetails value.
      */
+    @Generated
     public String requestErrorDetails() {
         return this.requestErrorDetails;
     }

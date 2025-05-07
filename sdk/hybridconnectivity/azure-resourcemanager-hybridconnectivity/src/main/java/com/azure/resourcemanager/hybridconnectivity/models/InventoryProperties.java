@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,36 +20,43 @@ public final class InventoryProperties implements JsonSerializable<InventoryProp
     /*
      * Gets or sets the cloud native resource type.
      */
+    @Generated
     private CloudNativeType cloudNativeType;
 
     /*
      * Gets or sets the cloud native resource name.
      */
+    @Generated
     private String cloudNativeResourceId;
 
     /*
      * Gets or sets the mapped azure resource id.
      */
+    @Generated
     private String azureResourceId;
 
     /*
      * Gets or sets the status of the inventory.
      */
+    @Generated
     private SolutionConfigurationStatus status;
 
     /*
      * Gets or sets the status details.
      */
+    @Generated
     private String statusDetails;
 
     /*
      * The resource provisioning state.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /**
      * Creates an instance of InventoryProperties class.
      */
+    @Generated
     private InventoryProperties() {
     }
 
@@ -57,6 +65,7 @@ public final class InventoryProperties implements JsonSerializable<InventoryProp
      * 
      * @return the cloudNativeType value.
      */
+    @Generated
     public CloudNativeType cloudNativeType() {
         return this.cloudNativeType;
     }
@@ -66,6 +75,7 @@ public final class InventoryProperties implements JsonSerializable<InventoryProp
      * 
      * @return the cloudNativeResourceId value.
      */
+    @Generated
     public String cloudNativeResourceId() {
         return this.cloudNativeResourceId;
     }
@@ -75,6 +85,7 @@ public final class InventoryProperties implements JsonSerializable<InventoryProp
      * 
      * @return the azureResourceId value.
      */
+    @Generated
     public String azureResourceId() {
         return this.azureResourceId;
     }
@@ -84,6 +95,7 @@ public final class InventoryProperties implements JsonSerializable<InventoryProp
      * 
      * @return the status value.
      */
+    @Generated
     public SolutionConfigurationStatus status() {
         return this.status;
     }
@@ -93,6 +105,7 @@ public final class InventoryProperties implements JsonSerializable<InventoryProp
      * 
      * @return the statusDetails value.
      */
+    @Generated
     public String statusDetails() {
         return this.statusDetails;
     }
@@ -102,6 +115,7 @@ public final class InventoryProperties implements JsonSerializable<InventoryProp
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }

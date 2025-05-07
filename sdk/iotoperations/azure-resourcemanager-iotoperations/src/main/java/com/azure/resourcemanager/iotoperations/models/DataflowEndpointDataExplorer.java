@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,26 +21,31 @@ public final class DataflowEndpointDataExplorer implements JsonSerializable<Data
     /*
      * Authentication configuration. NOTE - only authentication property is allowed per entry.
      */
+    @Generated
     private DataflowEndpointDataExplorerAuthentication authentication;
 
     /*
      * Database name.
      */
+    @Generated
     private String database;
 
     /*
      * Host of the Azure Data Explorer in the form of <cluster>.<region>.kusto.windows.net .
      */
+    @Generated
     private String host;
 
     /*
      * Azure Data Explorer endpoint batching configuration.
      */
+    @Generated
     private BatchingConfiguration batching;
 
     /**
      * Creates an instance of DataflowEndpointDataExplorer class.
      */
+    @Generated
     public DataflowEndpointDataExplorer() {
     }
 
@@ -49,6 +55,7 @@ public final class DataflowEndpointDataExplorer implements JsonSerializable<Data
      * 
      * @return the authentication value.
      */
+    @Generated
     public DataflowEndpointDataExplorerAuthentication authentication() {
         return this.authentication;
     }
@@ -60,6 +67,7 @@ public final class DataflowEndpointDataExplorer implements JsonSerializable<Data
      * @param authentication the authentication value to set.
      * @return the DataflowEndpointDataExplorer object itself.
      */
+    @Generated
     public DataflowEndpointDataExplorer withAuthentication(DataflowEndpointDataExplorerAuthentication authentication) {
         this.authentication = authentication;
         return this;
@@ -70,6 +78,7 @@ public final class DataflowEndpointDataExplorer implements JsonSerializable<Data
      * 
      * @return the database value.
      */
+    @Generated
     public String database() {
         return this.database;
     }
@@ -80,6 +89,7 @@ public final class DataflowEndpointDataExplorer implements JsonSerializable<Data
      * @param database the database value to set.
      * @return the DataflowEndpointDataExplorer object itself.
      */
+    @Generated
     public DataflowEndpointDataExplorer withDatabase(String database) {
         this.database = database;
         return this;
@@ -91,6 +101,7 @@ public final class DataflowEndpointDataExplorer implements JsonSerializable<Data
      * 
      * @return the host value.
      */
+    @Generated
     public String host() {
         return this.host;
     }
@@ -102,6 +113,7 @@ public final class DataflowEndpointDataExplorer implements JsonSerializable<Data
      * @param host the host value to set.
      * @return the DataflowEndpointDataExplorer object itself.
      */
+    @Generated
     public DataflowEndpointDataExplorer withHost(String host) {
         this.host = host;
         return this;
@@ -112,6 +124,7 @@ public final class DataflowEndpointDataExplorer implements JsonSerializable<Data
      * 
      * @return the batching value.
      */
+    @Generated
     public BatchingConfiguration batching() {
         return this.batching;
     }
@@ -122,6 +135,7 @@ public final class DataflowEndpointDataExplorer implements JsonSerializable<Data
      * @param batching the batching value to set.
      * @return the DataflowEndpointDataExplorer object itself.
      */
+    @Generated
     public DataflowEndpointDataExplorer withBatching(BatchingConfiguration batching) {
         this.batching = batching;
         return this;

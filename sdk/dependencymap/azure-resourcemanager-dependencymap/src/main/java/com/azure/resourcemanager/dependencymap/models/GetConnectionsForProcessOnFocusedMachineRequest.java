@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dependencymap.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,21 +22,25 @@ public final class GetConnectionsForProcessOnFocusedMachineRequest
     /*
      * Machine arm id
      */
+    @Generated
     private String focusedMachineId;
 
     /*
      * Process id
      */
+    @Generated
     private String processIdOnFocusedMachine;
 
     /*
      * Filters for GetProcessNetworkConnections
      */
+    @Generated
     private DependencyMapVisualizationFilter filters;
 
     /**
      * Creates an instance of GetConnectionsForProcessOnFocusedMachineRequest class.
      */
+    @Generated
     public GetConnectionsForProcessOnFocusedMachineRequest() {
     }
 
@@ -44,6 +49,7 @@ public final class GetConnectionsForProcessOnFocusedMachineRequest
      * 
      * @return the focusedMachineId value.
      */
+    @Generated
     public String focusedMachineId() {
         return this.focusedMachineId;
     }
@@ -54,6 +60,7 @@ public final class GetConnectionsForProcessOnFocusedMachineRequest
      * @param focusedMachineId the focusedMachineId value to set.
      * @return the GetConnectionsForProcessOnFocusedMachineRequest object itself.
      */
+    @Generated
     public GetConnectionsForProcessOnFocusedMachineRequest withFocusedMachineId(String focusedMachineId) {
         this.focusedMachineId = focusedMachineId;
         return this;
@@ -64,6 +71,7 @@ public final class GetConnectionsForProcessOnFocusedMachineRequest
      * 
      * @return the processIdOnFocusedMachine value.
      */
+    @Generated
     public String processIdOnFocusedMachine() {
         return this.processIdOnFocusedMachine;
     }
@@ -74,6 +82,7 @@ public final class GetConnectionsForProcessOnFocusedMachineRequest
      * @param processIdOnFocusedMachine the processIdOnFocusedMachine value to set.
      * @return the GetConnectionsForProcessOnFocusedMachineRequest object itself.
      */
+    @Generated
     public GetConnectionsForProcessOnFocusedMachineRequest
         withProcessIdOnFocusedMachine(String processIdOnFocusedMachine) {
         this.processIdOnFocusedMachine = processIdOnFocusedMachine;
@@ -85,6 +94,7 @@ public final class GetConnectionsForProcessOnFocusedMachineRequest
      * 
      * @return the filters value.
      */
+    @Generated
     public DependencyMapVisualizationFilter filters() {
         return this.filters;
     }
@@ -95,6 +105,7 @@ public final class GetConnectionsForProcessOnFocusedMachineRequest
      * @param filters the filters value to set.
      * @return the GetConnectionsForProcessOnFocusedMachineRequest object itself.
      */
+    @Generated
     public GetConnectionsForProcessOnFocusedMachineRequest withFilters(DependencyMapVisualizationFilter filters) {
         this.filters = filters;
         return this;

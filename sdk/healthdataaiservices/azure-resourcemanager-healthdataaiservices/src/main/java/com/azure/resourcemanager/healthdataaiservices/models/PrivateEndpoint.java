@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.healthdataaiservices.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public final class PrivateEndpoint implements JsonSerializable<PrivateEndpoint> 
     /*
      * The resource identifier for private endpoint
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of PrivateEndpoint class.
      */
+    @Generated
     public PrivateEndpoint() {
     }
 
@@ -32,6 +35,7 @@ public final class PrivateEndpoint implements JsonSerializable<PrivateEndpoint> 
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }

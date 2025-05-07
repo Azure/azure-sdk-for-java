@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -19,23 +20,27 @@ public final class CarbonEmissionTopItemsSummaryData extends CarbonEmissionData 
     /*
      * The data type of the query result, indicating the format of the returned response.
      */
+    @Generated
     private ResponseDataTypeEnum dataType = ResponseDataTypeEnum.TOP_ITEMS_SUMMARY_DATA;
 
     /*
      * The identifier of the item being reported on, which could refer to the resource name, resource type name,
      * location, resource group name, or subscription ID, depending on the specified category type.
      */
+    @Generated
     private String itemName;
 
     /*
      * The category type of the item. This defines which dimension the emissions are aggregated by, and the supported
      * values are defined in CategoryTypeEnum (e.g., Subscription, ResourceGroup, Resource, etc.).
      */
+    @Generated
     private CategoryTypeEnum categoryType;
 
     /**
      * Creates an instance of CarbonEmissionTopItemsSummaryData class.
      */
+    @Generated
     private CarbonEmissionTopItemsSummaryData() {
     }
 
@@ -44,6 +49,7 @@ public final class CarbonEmissionTopItemsSummaryData extends CarbonEmissionData 
      * 
      * @return the dataType value.
      */
+    @Generated
     @Override
     public ResponseDataTypeEnum dataType() {
         return this.dataType;
@@ -55,6 +61,7 @@ public final class CarbonEmissionTopItemsSummaryData extends CarbonEmissionData 
      * 
      * @return the itemName value.
      */
+    @Generated
     public String itemName() {
         return this.itemName;
     }
@@ -66,6 +73,7 @@ public final class CarbonEmissionTopItemsSummaryData extends CarbonEmissionData 
      * 
      * @return the categoryType value.
      */
+    @Generated
     public CategoryTypeEnum categoryType() {
         return this.categoryType;
     }

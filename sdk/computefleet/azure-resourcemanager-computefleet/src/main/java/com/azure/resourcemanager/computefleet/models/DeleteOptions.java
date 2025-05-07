@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class DeleteOptions extends ExpandableStringEnum<DeleteOptions> {
     /**
      * Delete Option.
      */
+    @Generated
     public static final DeleteOptions DELETE = fromString("Delete");
 
     /**
      * Detach Option.
      */
+    @Generated
     public static final DeleteOptions DETACH = fromString("Detach");
 
     /**
@@ -26,6 +29,7 @@ public final class DeleteOptions extends ExpandableStringEnum<DeleteOptions> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DeleteOptions() {
     }
@@ -36,6 +40,7 @@ public final class DeleteOptions extends ExpandableStringEnum<DeleteOptions> {
      * @param name a name to look for.
      * @return the corresponding DeleteOptions.
      */
+    @Generated
     public static DeleteOptions fromString(String name) {
         return fromString(name, DeleteOptions.class);
     }
@@ -45,6 +50,7 @@ public final class DeleteOptions extends ExpandableStringEnum<DeleteOptions> {
      * 
      * @return known DeleteOptions values.
      */
+    @Generated
     public static Collection<DeleteOptions> values() {
         return values(DeleteOptions.class);
     }

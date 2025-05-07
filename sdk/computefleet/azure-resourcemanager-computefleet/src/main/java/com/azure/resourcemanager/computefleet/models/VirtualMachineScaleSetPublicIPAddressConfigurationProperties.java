@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,21 +24,25 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
     /*
      * The idle timeout of the public IP address.
      */
+    @Generated
     private Integer idleTimeoutInMinutes;
 
     /*
      * The dns settings to be applied on the publicIP addresses .
      */
+    @Generated
     private VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings dnsSettings;
 
     /*
      * The list of IP tags associated with the public IP address.
      */
+    @Generated
     private List<VirtualMachineScaleSetIpTag> ipTags;
 
     /*
      * The PublicIPPrefix from which to allocate publicIP addresses.
      */
+    @Generated
     private SubResource publicIPPrefix;
 
     /*
@@ -45,16 +50,19 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
      * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible
      * values are: 'IPv4' and 'IPv6'.
      */
+    @Generated
     private IPVersion publicIPAddressVersion;
 
     /*
      * Specify what happens to the public IP when the VM is deleted
      */
+    @Generated
     private DeleteOptions deleteOption;
 
     /**
      * Creates an instance of VirtualMachineScaleSetPublicIPAddressConfigurationProperties class.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfigurationProperties() {
     }
 
@@ -63,6 +71,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
      * 
      * @return the idleTimeoutInMinutes value.
      */
+    @Generated
     public Integer idleTimeoutInMinutes() {
         return this.idleTimeoutInMinutes;
     }
@@ -73,6 +82,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the VirtualMachineScaleSetPublicIPAddressConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfigurationProperties
         withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
         this.idleTimeoutInMinutes = idleTimeoutInMinutes;
@@ -84,6 +94,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
      * 
      * @return the dnsSettings value.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings dnsSettings() {
         return this.dnsSettings;
     }
@@ -94,6 +105,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
      * @param dnsSettings the dnsSettings value to set.
      * @return the VirtualMachineScaleSetPublicIPAddressConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfigurationProperties
         withDnsSettings(VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
@@ -105,6 +117,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
      * 
      * @return the ipTags value.
      */
+    @Generated
     public List<VirtualMachineScaleSetIpTag> ipTags() {
         return this.ipTags;
     }
@@ -115,6 +128,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
      * @param ipTags the ipTags value to set.
      * @return the VirtualMachineScaleSetPublicIPAddressConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfigurationProperties
         withIpTags(List<VirtualMachineScaleSetIpTag> ipTags) {
         this.ipTags = ipTags;
@@ -126,6 +140,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
      * 
      * @return the publicIPPrefix value.
      */
+    @Generated
     public SubResource publicIPPrefix() {
         return this.publicIPPrefix;
     }
@@ -136,6 +151,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
      * @param publicIPPrefix the publicIPPrefix value to set.
      * @return the VirtualMachineScaleSetPublicIPAddressConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfigurationProperties withPublicIPPrefix(SubResource publicIPPrefix) {
         this.publicIPPrefix = publicIPPrefix;
         return this;
@@ -148,6 +164,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
      * 
      * @return the publicIPAddressVersion value.
      */
+    @Generated
     public IPVersion publicIPAddressVersion() {
         return this.publicIPAddressVersion;
     }
@@ -160,6 +177,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
      * @param publicIPAddressVersion the publicIPAddressVersion value to set.
      * @return the VirtualMachineScaleSetPublicIPAddressConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfigurationProperties
         withPublicIPAddressVersion(IPVersion publicIPAddressVersion) {
         this.publicIPAddressVersion = publicIPAddressVersion;
@@ -171,6 +189,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
      * 
      * @return the deleteOption value.
      */
+    @Generated
     public DeleteOptions deleteOption() {
         return this.deleteOption;
     }
@@ -181,6 +200,7 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
      * @param deleteOption the deleteOption value to set.
      * @return the VirtualMachineScaleSetPublicIPAddressConfigurationProperties object itself.
      */
+    @Generated
     public VirtualMachineScaleSetPublicIPAddressConfigurationProperties withDeleteOption(DeleteOptions deleteOption) {
         this.deleteOption = deleteOption;
         return this;

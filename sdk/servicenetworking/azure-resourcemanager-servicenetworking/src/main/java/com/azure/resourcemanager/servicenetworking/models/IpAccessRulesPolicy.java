@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class IpAccessRulesPolicy implements JsonSerializable<IpAccessRules
     /*
      * Ip Access Policy Rules List
      */
+    @Generated
     private List<IpAccessRule> rules;
 
     /**
      * Creates an instance of IpAccessRulesPolicy class.
      */
+    @Generated
     public IpAccessRulesPolicy() {
     }
 
@@ -33,6 +36,7 @@ public final class IpAccessRulesPolicy implements JsonSerializable<IpAccessRules
      * 
      * @return the rules value.
      */
+    @Generated
     public List<IpAccessRule> rules() {
         return this.rules;
     }
@@ -43,6 +47,7 @@ public final class IpAccessRulesPolicy implements JsonSerializable<IpAccessRules
      * @param rules the rules value to set.
      * @return the IpAccessRulesPolicy object itself.
      */
+    @Generated
     public IpAccessRulesPolicy withRules(List<IpAccessRule> rules) {
         this.rules = rules;
         return this;

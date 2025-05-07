@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,26 +21,31 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
     /*
      * The status of the UpdateStage.
      */
+    @Generated
     private UpdateStatus status;
 
     /*
      * The name of the UpdateStage.
      */
+    @Generated
     private String name;
 
     /*
      * The list of groups to be updated as part of this UpdateStage.
      */
+    @Generated
     private List<UpdateGroupStatus> groups;
 
     /*
      * The status of the wait period configured on the UpdateStage.
      */
+    @Generated
     private WaitStatus afterStageWaitStatus;
 
     /**
      * Creates an instance of UpdateStageStatus class.
      */
+    @Generated
     private UpdateStageStatus() {
     }
 
@@ -48,6 +54,7 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
      * 
      * @return the status value.
      */
+    @Generated
     public UpdateStatus status() {
         return this.status;
     }
@@ -57,6 +64,7 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -66,6 +74,7 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
      * 
      * @return the groups value.
      */
+    @Generated
     public List<UpdateGroupStatus> groups() {
         return this.groups;
     }
@@ -75,6 +84,7 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
      * 
      * @return the afterStageWaitStatus value.
      */
+    @Generated
     public WaitStatus afterStageWaitStatus() {
         return this.afterStageWaitStatus;
     }

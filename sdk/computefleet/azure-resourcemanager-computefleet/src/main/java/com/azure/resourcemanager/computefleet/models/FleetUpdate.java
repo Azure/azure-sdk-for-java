@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class FleetUpdate implements JsonSerializable<FleetUpdate> {
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * Updatable managed service identity
      */
+    @Generated
     private ManagedServiceIdentityUpdate identity;
 
     /*
      * Updatable resource plan
      */
+    @Generated
     private ResourcePlanUpdate plan;
 
     /*
      * RP-specific updatable properties
      */
+    @Generated
     private FleetProperties properties;
 
     /**
      * Creates an instance of FleetUpdate class.
      */
+    @Generated
     public FleetUpdate() {
     }
 
@@ -48,6 +54,7 @@ public final class FleetUpdate implements JsonSerializable<FleetUpdate> {
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -58,6 +65,7 @@ public final class FleetUpdate implements JsonSerializable<FleetUpdate> {
      * @param tags the tags value to set.
      * @return the FleetUpdate object itself.
      */
+    @Generated
     public FleetUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -68,6 +76,7 @@ public final class FleetUpdate implements JsonSerializable<FleetUpdate> {
      * 
      * @return the identity value.
      */
+    @Generated
     public ManagedServiceIdentityUpdate identity() {
         return this.identity;
     }
@@ -78,6 +87,7 @@ public final class FleetUpdate implements JsonSerializable<FleetUpdate> {
      * @param identity the identity value to set.
      * @return the FleetUpdate object itself.
      */
+    @Generated
     public FleetUpdate withIdentity(ManagedServiceIdentityUpdate identity) {
         this.identity = identity;
         return this;
@@ -88,6 +98,7 @@ public final class FleetUpdate implements JsonSerializable<FleetUpdate> {
      * 
      * @return the plan value.
      */
+    @Generated
     public ResourcePlanUpdate plan() {
         return this.plan;
     }
@@ -98,6 +109,7 @@ public final class FleetUpdate implements JsonSerializable<FleetUpdate> {
      * @param plan the plan value to set.
      * @return the FleetUpdate object itself.
      */
+    @Generated
     public FleetUpdate withPlan(ResourcePlanUpdate plan) {
         this.plan = plan;
         return this;
@@ -108,6 +120,7 @@ public final class FleetUpdate implements JsonSerializable<FleetUpdate> {
      * 
      * @return the properties value.
      */
+    @Generated
     public FleetProperties properties() {
         return this.properties;
     }
@@ -118,6 +131,7 @@ public final class FleetUpdate implements JsonSerializable<FleetUpdate> {
      * @param properties the properties value to set.
      * @return the FleetUpdate object itself.
      */
+    @Generated
     public FleetUpdate withProperties(FleetProperties properties) {
         this.properties = properties;
         return this;

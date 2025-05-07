@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class Workload implements JsonSerializable<Workload> {
     /*
      * the scenario for the workload
      */
+    @Generated
     private String context;
 
     /*
      * Tool used to interact with Azure. SDK, AzPortal, etc.., Other
      */
+    @Generated
     private Toolset toolset;
 
     /**
      * Creates an instance of Workload class.
      */
+    @Generated
     public Workload() {
     }
 
@@ -37,6 +41,7 @@ public final class Workload implements JsonSerializable<Workload> {
      * 
      * @return the context value.
      */
+    @Generated
     public String context() {
         return this.context;
     }
@@ -47,6 +52,7 @@ public final class Workload implements JsonSerializable<Workload> {
      * @param context the context value to set.
      * @return the Workload object itself.
      */
+    @Generated
     public Workload withContext(String context) {
         this.context = context;
         return this;
@@ -57,6 +63,7 @@ public final class Workload implements JsonSerializable<Workload> {
      * 
      * @return the toolset value.
      */
+    @Generated
     public Toolset toolset() {
         return this.toolset;
     }
@@ -67,6 +74,7 @@ public final class Workload implements JsonSerializable<Workload> {
      * @param toolset the toolset value to set.
      * @return the Workload object itself.
      */
+    @Generated
     public Workload withToolset(Toolset toolset) {
         this.toolset = toolset;
         return this;

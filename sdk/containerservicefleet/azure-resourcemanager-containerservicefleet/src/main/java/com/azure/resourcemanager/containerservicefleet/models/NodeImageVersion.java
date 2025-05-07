@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public final class NodeImageVersion implements JsonSerializable<NodeImageVersion
     /*
      * The image version to upgrade the nodes to (e.g., 'AKSUbuntu-1804gen2containerd-2022.12.13').
      */
+    @Generated
     private String version;
 
     /**
      * Creates an instance of NodeImageVersion class.
      */
+    @Generated
     public NodeImageVersion() {
     }
 
@@ -33,6 +36,7 @@ public final class NodeImageVersion implements JsonSerializable<NodeImageVersion
      * 
      * @return the version value.
      */
+    @Generated
     public String version() {
         return this.version;
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,11 +18,13 @@ public final class Mode extends ExpandableStringEnum<Mode> {
     /**
      * Audit Mode.
      */
+    @Generated
     public static final Mode AUDIT = fromString("Audit");
 
     /**
      * Enforce Mode.
      */
+    @Generated
     public static final Mode ENFORCE = fromString("Enforce");
 
     /**
@@ -29,6 +32,7 @@ public final class Mode extends ExpandableStringEnum<Mode> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public Mode() {
     }
@@ -39,6 +43,7 @@ public final class Mode extends ExpandableStringEnum<Mode> {
      * @param name a name to look for.
      * @return the corresponding Mode.
      */
+    @Generated
     public static Mode fromString(String name) {
         return fromString(name, Mode.class);
     }
@@ -48,6 +53,7 @@ public final class Mode extends ExpandableStringEnum<Mode> {
      * 
      * @return known Mode values.
      */
+    @Generated
     public static Collection<Mode> values() {
         return values(Mode.class);
     }

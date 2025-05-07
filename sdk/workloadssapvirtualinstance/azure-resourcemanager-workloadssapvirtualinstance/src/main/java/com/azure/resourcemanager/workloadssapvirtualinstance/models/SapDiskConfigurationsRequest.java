@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,36 +21,43 @@ public final class SapDiskConfigurationsRequest implements JsonSerializable<SapD
     /*
      * The geo-location where the SAP resources will be created.
      */
+    @Generated
     private String appLocation;
 
     /*
      * Defines the environment type - Production/Non Production.
      */
+    @Generated
     private SapEnvironmentType environment;
 
     /*
      * Defines the SAP Product type.
      */
+    @Generated
     private SapProductType sapProduct;
 
     /*
      * The database type. Eg: HANA, DB2, etc
      */
+    @Generated
     private SapDatabaseType databaseType;
 
     /*
      * The deployment type. Eg: SingleServer/ThreeTier
      */
+    @Generated
     private SapDeploymentType deploymentType;
 
     /*
      * The VM SKU for database instance.
      */
+    @Generated
     private String dbVmSku;
 
     /**
      * Creates an instance of SapDiskConfigurationsRequest class.
      */
+    @Generated
     public SapDiskConfigurationsRequest() {
     }
 
@@ -58,6 +66,7 @@ public final class SapDiskConfigurationsRequest implements JsonSerializable<SapD
      * 
      * @return the appLocation value.
      */
+    @Generated
     public String appLocation() {
         return this.appLocation;
     }
@@ -68,6 +77,7 @@ public final class SapDiskConfigurationsRequest implements JsonSerializable<SapD
      * @param appLocation the appLocation value to set.
      * @return the SapDiskConfigurationsRequest object itself.
      */
+    @Generated
     public SapDiskConfigurationsRequest withAppLocation(String appLocation) {
         this.appLocation = appLocation;
         return this;
@@ -78,6 +88,7 @@ public final class SapDiskConfigurationsRequest implements JsonSerializable<SapD
      * 
      * @return the environment value.
      */
+    @Generated
     public SapEnvironmentType environment() {
         return this.environment;
     }
@@ -88,6 +99,7 @@ public final class SapDiskConfigurationsRequest implements JsonSerializable<SapD
      * @param environment the environment value to set.
      * @return the SapDiskConfigurationsRequest object itself.
      */
+    @Generated
     public SapDiskConfigurationsRequest withEnvironment(SapEnvironmentType environment) {
         this.environment = environment;
         return this;
@@ -98,6 +110,7 @@ public final class SapDiskConfigurationsRequest implements JsonSerializable<SapD
      * 
      * @return the sapProduct value.
      */
+    @Generated
     public SapProductType sapProduct() {
         return this.sapProduct;
     }
@@ -108,6 +121,7 @@ public final class SapDiskConfigurationsRequest implements JsonSerializable<SapD
      * @param sapProduct the sapProduct value to set.
      * @return the SapDiskConfigurationsRequest object itself.
      */
+    @Generated
     public SapDiskConfigurationsRequest withSapProduct(SapProductType sapProduct) {
         this.sapProduct = sapProduct;
         return this;
@@ -118,6 +132,7 @@ public final class SapDiskConfigurationsRequest implements JsonSerializable<SapD
      * 
      * @return the databaseType value.
      */
+    @Generated
     public SapDatabaseType databaseType() {
         return this.databaseType;
     }
@@ -128,6 +143,7 @@ public final class SapDiskConfigurationsRequest implements JsonSerializable<SapD
      * @param databaseType the databaseType value to set.
      * @return the SapDiskConfigurationsRequest object itself.
      */
+    @Generated
     public SapDiskConfigurationsRequest withDatabaseType(SapDatabaseType databaseType) {
         this.databaseType = databaseType;
         return this;
@@ -138,6 +154,7 @@ public final class SapDiskConfigurationsRequest implements JsonSerializable<SapD
      * 
      * @return the deploymentType value.
      */
+    @Generated
     public SapDeploymentType deploymentType() {
         return this.deploymentType;
     }
@@ -148,6 +165,7 @@ public final class SapDiskConfigurationsRequest implements JsonSerializable<SapD
      * @param deploymentType the deploymentType value to set.
      * @return the SapDiskConfigurationsRequest object itself.
      */
+    @Generated
     public SapDiskConfigurationsRequest withDeploymentType(SapDeploymentType deploymentType) {
         this.deploymentType = deploymentType;
         return this;
@@ -158,6 +176,7 @@ public final class SapDiskConfigurationsRequest implements JsonSerializable<SapD
      * 
      * @return the dbVmSku value.
      */
+    @Generated
     public String dbVmSku() {
         return this.dbVmSku;
     }
@@ -168,6 +187,7 @@ public final class SapDiskConfigurationsRequest implements JsonSerializable<SapD
      * @param dbVmSku the dbVmSku value to set.
      * @return the SapDiskConfigurationsRequest object itself.
      */
+    @Generated
     public SapDiskConfigurationsRequest withDbVmSku(String dbVmSku) {
         this.dbVmSku = dbVmSku;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public final class BillingContainerProperties implements JsonSerializable<Billin
     /*
      * Provisioning state of the resource.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of BillingContainerProperties class.
      */
+    @Generated
     private BillingContainerProperties() {
     }
 
@@ -32,6 +35,7 @@ public final class BillingContainerProperties implements JsonSerializable<Billin
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

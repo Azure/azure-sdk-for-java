@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class DataflowEndpointAuthenticationAccessToken
     /*
      * Token secret name.
      */
+    @Generated
     private String secretRef;
 
     /**
      * Creates an instance of DataflowEndpointAuthenticationAccessToken class.
      */
+    @Generated
     public DataflowEndpointAuthenticationAccessToken() {
     }
 
@@ -34,6 +37,7 @@ public final class DataflowEndpointAuthenticationAccessToken
      * 
      * @return the secretRef value.
      */
+    @Generated
     public String secretRef() {
         return this.secretRef;
     }
@@ -44,6 +48,7 @@ public final class DataflowEndpointAuthenticationAccessToken
      * @param secretRef the secretRef value to set.
      * @return the DataflowEndpointAuthenticationAccessToken object itself.
      */
+    @Generated
     public DataflowEndpointAuthenticationAccessToken withSecretRef(String secretRef) {
         this.secretRef = secretRef;
         return this;

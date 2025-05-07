@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class DataflowProfileProperties implements JsonSerializable<Dataflo
     /*
      * Spec defines the desired identities of NBC diagnostics settings.
      */
+    @Generated
     private ProfileDiagnostics diagnostics;
 
     /*
      * To manually scale the dataflow profile, specify the maximum number of instances you want to run.
      */
+    @Generated
     private Integer instanceCount;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of DataflowProfileProperties class.
      */
+    @Generated
     public DataflowProfileProperties() {
     }
 
@@ -42,6 +47,7 @@ public final class DataflowProfileProperties implements JsonSerializable<Dataflo
      * 
      * @return the diagnostics value.
      */
+    @Generated
     public ProfileDiagnostics diagnostics() {
         return this.diagnostics;
     }
@@ -52,6 +58,7 @@ public final class DataflowProfileProperties implements JsonSerializable<Dataflo
      * @param diagnostics the diagnostics value to set.
      * @return the DataflowProfileProperties object itself.
      */
+    @Generated
     public DataflowProfileProperties withDiagnostics(ProfileDiagnostics diagnostics) {
         this.diagnostics = diagnostics;
         return this;
@@ -63,6 +70,7 @@ public final class DataflowProfileProperties implements JsonSerializable<Dataflo
      * 
      * @return the instanceCount value.
      */
+    @Generated
     public Integer instanceCount() {
         return this.instanceCount;
     }
@@ -74,6 +82,7 @@ public final class DataflowProfileProperties implements JsonSerializable<Dataflo
      * @param instanceCount the instanceCount value to set.
      * @return the DataflowProfileProperties object itself.
      */
+    @Generated
     public DataflowProfileProperties withInstanceCount(Integer instanceCount) {
         this.instanceCount = instanceCount;
         return this;
@@ -84,6 +93,7 @@ public final class DataflowProfileProperties implements JsonSerializable<Dataflo
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

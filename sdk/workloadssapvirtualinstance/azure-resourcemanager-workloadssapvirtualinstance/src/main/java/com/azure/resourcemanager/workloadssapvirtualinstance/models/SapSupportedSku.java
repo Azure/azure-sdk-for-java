@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,21 +20,25 @@ public final class SapSupportedSku implements JsonSerializable<SapSupportedSku> 
     /*
      * The VM Sku.
      */
+    @Generated
     private String vmSku;
 
     /*
      * True if the Sku is certified for App server in the SAP system.
      */
+    @Generated
     private Boolean isAppServerCertified;
 
     /*
      * True if the Sku is certified for Database server in the SAP system.
      */
+    @Generated
     private Boolean isDatabaseCertified;
 
     /**
      * Creates an instance of SapSupportedSku class.
      */
+    @Generated
     private SapSupportedSku() {
     }
 
@@ -42,6 +47,7 @@ public final class SapSupportedSku implements JsonSerializable<SapSupportedSku> 
      * 
      * @return the vmSku value.
      */
+    @Generated
     public String vmSku() {
         return this.vmSku;
     }
@@ -51,6 +57,7 @@ public final class SapSupportedSku implements JsonSerializable<SapSupportedSku> 
      * 
      * @return the isAppServerCertified value.
      */
+    @Generated
     public Boolean isAppServerCertified() {
         return this.isAppServerCertified;
     }
@@ -60,6 +67,7 @@ public final class SapSupportedSku implements JsonSerializable<SapSupportedSku> 
      * 
      * @return the isDatabaseCertified value.
      */
+    @Generated
     public Boolean isDatabaseCertified() {
         return this.isDatabaseCertified;
     }

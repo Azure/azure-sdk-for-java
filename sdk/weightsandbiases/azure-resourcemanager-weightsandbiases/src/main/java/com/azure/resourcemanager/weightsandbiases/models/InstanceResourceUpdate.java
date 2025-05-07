@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.weightsandbiases.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class InstanceResourceUpdate implements JsonSerializable<InstanceRe
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The managed service identities assigned to this resource.
      */
+    @Generated
     private ManagedServiceIdentity identity;
 
     /**
      * Creates an instance of InstanceResourceUpdate class.
      */
+    @Generated
     public InstanceResourceUpdate() {
     }
 
@@ -38,6 +42,7 @@ public final class InstanceResourceUpdate implements JsonSerializable<InstanceRe
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -48,6 +53,7 @@ public final class InstanceResourceUpdate implements JsonSerializable<InstanceRe
      * @param tags the tags value to set.
      * @return the InstanceResourceUpdate object itself.
      */
+    @Generated
     public InstanceResourceUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -58,6 +64,7 @@ public final class InstanceResourceUpdate implements JsonSerializable<InstanceRe
      * 
      * @return the identity value.
      */
+    @Generated
     public ManagedServiceIdentity identity() {
         return this.identity;
     }
@@ -68,6 +75,7 @@ public final class InstanceResourceUpdate implements JsonSerializable<InstanceRe
      * @param identity the identity value to set.
      * @return the InstanceResourceUpdate object itself.
      */
+    @Generated
     public InstanceResourceUpdate withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;

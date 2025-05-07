@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -18,11 +19,13 @@ public final class LinuxPatchAssessmentMode extends ExpandableStringEnum<LinuxPa
     /**
      * You control the timing of patch assessments on a virtual machine.
      */
+    @Generated
     public static final LinuxPatchAssessmentMode IMAGE_DEFAULT = fromString("ImageDefault");
 
     /**
      * The platform will trigger periodic patch assessments.The property provisionVMAgent must be true.
      */
+    @Generated
     public static final LinuxPatchAssessmentMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 
     /**
@@ -30,6 +33,7 @@ public final class LinuxPatchAssessmentMode extends ExpandableStringEnum<LinuxPa
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public LinuxPatchAssessmentMode() {
     }
@@ -40,6 +44,7 @@ public final class LinuxPatchAssessmentMode extends ExpandableStringEnum<LinuxPa
      * @param name a name to look for.
      * @return the corresponding LinuxPatchAssessmentMode.
      */
+    @Generated
     public static LinuxPatchAssessmentMode fromString(String name) {
         return fromString(name, LinuxPatchAssessmentMode.class);
     }
@@ -49,6 +54,7 @@ public final class LinuxPatchAssessmentMode extends ExpandableStringEnum<LinuxPa
      * 
      * @return known LinuxPatchAssessmentMode values.
      */
+    @Generated
     public static Collection<LinuxPatchAssessmentMode> values() {
         return values(LinuxPatchAssessmentMode.class);
     }

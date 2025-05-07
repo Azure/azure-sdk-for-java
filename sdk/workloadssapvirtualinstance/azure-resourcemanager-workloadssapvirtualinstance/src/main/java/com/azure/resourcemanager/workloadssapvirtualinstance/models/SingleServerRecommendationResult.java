@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class SingleServerRecommendationResult extends SapSizingRecommendat
     /*
      * The deployment type. Eg: SingleServer/ThreeTier
      */
+    @Generated
     private SapDeploymentType deploymentType = SapDeploymentType.SINGLE_SERVER;
 
     /*
      * The recommended VM SKU for single server.
      */
+    @Generated
     private String vmSku;
 
     /**
      * Creates an instance of SingleServerRecommendationResult class.
      */
+    @Generated
     private SingleServerRecommendationResult() {
     }
 
@@ -37,6 +41,7 @@ public final class SingleServerRecommendationResult extends SapSizingRecommendat
      * 
      * @return the deploymentType value.
      */
+    @Generated
     @Override
     public SapDeploymentType deploymentType() {
         return this.deploymentType;
@@ -47,6 +52,7 @@ public final class SingleServerRecommendationResult extends SapSizingRecommendat
      * 
      * @return the vmSku value.
      */
+    @Generated
     public String vmSku() {
         return this.vmSku;
     }

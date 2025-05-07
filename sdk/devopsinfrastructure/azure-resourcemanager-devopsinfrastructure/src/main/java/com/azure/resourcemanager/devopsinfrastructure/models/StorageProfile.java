@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
     /*
      * The Azure SKU name of the machines in the pool.
      */
+    @Generated
     private OsDiskStorageAccountType osDiskStorageAccountType;
 
     /*
      * A list of empty data disks to attach.
      */
+    @Generated
     private List<DataDisk> dataDisks;
 
     /**
      * Creates an instance of StorageProfile class.
      */
+    @Generated
     public StorageProfile() {
     }
 
@@ -38,6 +42,7 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
      * 
      * @return the osDiskStorageAccountType value.
      */
+    @Generated
     public OsDiskStorageAccountType osDiskStorageAccountType() {
         return this.osDiskStorageAccountType;
     }
@@ -48,6 +53,7 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
      * @param osDiskStorageAccountType the osDiskStorageAccountType value to set.
      * @return the StorageProfile object itself.
      */
+    @Generated
     public StorageProfile withOsDiskStorageAccountType(OsDiskStorageAccountType osDiskStorageAccountType) {
         this.osDiskStorageAccountType = osDiskStorageAccountType;
         return this;
@@ -58,6 +64,7 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
      * 
      * @return the dataDisks value.
      */
+    @Generated
     public List<DataDisk> dataDisks() {
         return this.dataDisks;
     }
@@ -68,6 +75,7 @@ public final class StorageProfile implements JsonSerializable<StorageProfile> {
      * @param dataDisks the dataDisks value to set.
      * @return the StorageProfile object itself.
      */
+    @Generated
     public StorageProfile withDataDisks(List<DataDisk> dataDisks) {
         this.dataDisks = dataDisks;
         return this;

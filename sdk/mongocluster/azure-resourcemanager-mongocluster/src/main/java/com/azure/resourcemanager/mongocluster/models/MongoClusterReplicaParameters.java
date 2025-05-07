@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class MongoClusterReplicaParameters implements JsonSerializable<Mon
     /*
      * The id of the replication source cluster.
      */
+    @Generated
     private String sourceResourceId;
 
     /*
      * The location of the source cluster
      */
+    @Generated
     private String sourceLocation;
 
     /**
      * Creates an instance of MongoClusterReplicaParameters class.
      */
+    @Generated
     public MongoClusterReplicaParameters() {
     }
 
@@ -38,6 +42,7 @@ public final class MongoClusterReplicaParameters implements JsonSerializable<Mon
      * 
      * @return the sourceResourceId value.
      */
+    @Generated
     public String sourceResourceId() {
         return this.sourceResourceId;
     }
@@ -48,6 +53,7 @@ public final class MongoClusterReplicaParameters implements JsonSerializable<Mon
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the MongoClusterReplicaParameters object itself.
      */
+    @Generated
     public MongoClusterReplicaParameters withSourceResourceId(String sourceResourceId) {
         this.sourceResourceId = sourceResourceId;
         return this;
@@ -58,6 +64,7 @@ public final class MongoClusterReplicaParameters implements JsonSerializable<Mon
      * 
      * @return the sourceLocation value.
      */
+    @Generated
     public String sourceLocation() {
         return this.sourceLocation;
     }
@@ -68,6 +75,7 @@ public final class MongoClusterReplicaParameters implements JsonSerializable<Mon
      * @param sourceLocation the sourceLocation value to set.
      * @return the MongoClusterReplicaParameters object itself.
      */
+    @Generated
     public MongoClusterReplicaParameters withSourceLocation(String sourceLocation) {
         this.sourceLocation = sourceLocation;
         return this;

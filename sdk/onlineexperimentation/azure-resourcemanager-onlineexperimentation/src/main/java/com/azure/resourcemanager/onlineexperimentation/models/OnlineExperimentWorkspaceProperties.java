@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.onlineexperimentation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,44 +22,52 @@ public final class OnlineExperimentWorkspaceProperties
     /*
      * The Id of the workspace.
      */
+    @Generated
     private String workspaceId;
 
     /*
      * The provisioning state for the resource
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /*
      * The resource identifier of the Log Analytics workspace which online experiment workspace uses for generating
      * experiment analysis results.
      */
+    @Generated
     private String logAnalyticsWorkspaceResourceId;
 
     /*
      * The resource identifier of storage account where logs are exported from Log Analytics workspace. Online
      * Experiment workspace uses it generating experiment analysis results.
      */
+    @Generated
     private String logsExporterStorageAccountResourceId;
 
     /*
      * The resource identifier of App Configuration with which this online experiment workspace is tied for
      * experimentation. This is a required field for creating an online experiment workspace.
      */
+    @Generated
     private String appConfigurationResourceId;
 
     /*
      * The encryption configuration for the online experiment workspace resource.
      */
+    @Generated
     private ResourceEncryptionConfiguration encryption;
 
     /*
      * The data plane endpoint for the online experiment workspace resource.
      */
+    @Generated
     private String endpoint;
 
     /**
      * Creates an instance of OnlineExperimentWorkspaceProperties class.
      */
+    @Generated
     public OnlineExperimentWorkspaceProperties() {
     }
 
@@ -67,6 +76,7 @@ public final class OnlineExperimentWorkspaceProperties
      * 
      * @return the workspaceId value.
      */
+    @Generated
     public String workspaceId() {
         return this.workspaceId;
     }
@@ -76,6 +86,7 @@ public final class OnlineExperimentWorkspaceProperties
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -86,6 +97,7 @@ public final class OnlineExperimentWorkspaceProperties
      * 
      * @return the logAnalyticsWorkspaceResourceId value.
      */
+    @Generated
     public String logAnalyticsWorkspaceResourceId() {
         return this.logAnalyticsWorkspaceResourceId;
     }
@@ -97,6 +109,7 @@ public final class OnlineExperimentWorkspaceProperties
      * @param logAnalyticsWorkspaceResourceId the logAnalyticsWorkspaceResourceId value to set.
      * @return the OnlineExperimentWorkspaceProperties object itself.
      */
+    @Generated
     public OnlineExperimentWorkspaceProperties
         withLogAnalyticsWorkspaceResourceId(String logAnalyticsWorkspaceResourceId) {
         this.logAnalyticsWorkspaceResourceId = logAnalyticsWorkspaceResourceId;
@@ -110,6 +123,7 @@ public final class OnlineExperimentWorkspaceProperties
      * 
      * @return the logsExporterStorageAccountResourceId value.
      */
+    @Generated
     public String logsExporterStorageAccountResourceId() {
         return this.logsExporterStorageAccountResourceId;
     }
@@ -122,6 +136,7 @@ public final class OnlineExperimentWorkspaceProperties
      * @param logsExporterStorageAccountResourceId the logsExporterStorageAccountResourceId value to set.
      * @return the OnlineExperimentWorkspaceProperties object itself.
      */
+    @Generated
     public OnlineExperimentWorkspaceProperties
         withLogsExporterStorageAccountResourceId(String logsExporterStorageAccountResourceId) {
         this.logsExporterStorageAccountResourceId = logsExporterStorageAccountResourceId;
@@ -135,6 +150,7 @@ public final class OnlineExperimentWorkspaceProperties
      * 
      * @return the appConfigurationResourceId value.
      */
+    @Generated
     public String appConfigurationResourceId() {
         return this.appConfigurationResourceId;
     }
@@ -147,6 +163,7 @@ public final class OnlineExperimentWorkspaceProperties
      * @param appConfigurationResourceId the appConfigurationResourceId value to set.
      * @return the OnlineExperimentWorkspaceProperties object itself.
      */
+    @Generated
     public OnlineExperimentWorkspaceProperties withAppConfigurationResourceId(String appConfigurationResourceId) {
         this.appConfigurationResourceId = appConfigurationResourceId;
         return this;
@@ -157,6 +174,7 @@ public final class OnlineExperimentWorkspaceProperties
      * 
      * @return the encryption value.
      */
+    @Generated
     public ResourceEncryptionConfiguration encryption() {
         return this.encryption;
     }
@@ -167,6 +185,7 @@ public final class OnlineExperimentWorkspaceProperties
      * @param encryption the encryption value to set.
      * @return the OnlineExperimentWorkspaceProperties object itself.
      */
+    @Generated
     public OnlineExperimentWorkspaceProperties withEncryption(ResourceEncryptionConfiguration encryption) {
         this.encryption = encryption;
         return this;
@@ -177,6 +196,7 @@ public final class OnlineExperimentWorkspaceProperties
      * 
      * @return the endpoint value.
      */
+    @Generated
     public String endpoint() {
         return this.endpoint;
     }

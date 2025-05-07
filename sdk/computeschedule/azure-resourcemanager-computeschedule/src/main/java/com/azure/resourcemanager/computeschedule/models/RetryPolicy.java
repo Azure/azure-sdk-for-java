@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
     /*
      * Retry count for user request
      */
+    @Generated
     private Integer retryCount;
 
     /*
      * Retry window in minutes for user request
      */
+    @Generated
     private Integer retryWindowInMinutes;
 
     /**
      * Creates an instance of RetryPolicy class.
      */
+    @Generated
     public RetryPolicy() {
     }
 
@@ -37,6 +41,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
      * 
      * @return the retryCount value.
      */
+    @Generated
     public Integer retryCount() {
         return this.retryCount;
     }
@@ -47,6 +52,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
      * @param retryCount the retryCount value to set.
      * @return the RetryPolicy object itself.
      */
+    @Generated
     public RetryPolicy withRetryCount(Integer retryCount) {
         this.retryCount = retryCount;
         return this;
@@ -57,6 +63,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
      * 
      * @return the retryWindowInMinutes value.
      */
+    @Generated
     public Integer retryWindowInMinutes() {
         return this.retryWindowInMinutes;
     }
@@ -67,6 +74,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
      * @param retryWindowInMinutes the retryWindowInMinutes value to set.
      * @return the RetryPolicy object itself.
      */
+    @Generated
     public RetryPolicy withRetryWindowInMinutes(Integer retryWindowInMinutes) {
         this.retryWindowInMinutes = retryWindowInMinutes;
         return this;

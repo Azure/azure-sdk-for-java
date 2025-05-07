@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class AzureDevOpsPermissionType extends ExpandableStringEnum<AzureD
     /**
      * Pool will inherit permissions from the project or organization.
      */
+    @Generated
     public static final AzureDevOpsPermissionType INHERIT = fromString("Inherit");
 
     /**
      * Only the pool creator will be an admin of the pool.
      */
+    @Generated
     public static final AzureDevOpsPermissionType CREATOR_ONLY = fromString("CreatorOnly");
 
     /**
      * Only the specified accounts will be admins of the pool.
      */
+    @Generated
     public static final AzureDevOpsPermissionType SPECIFIC_ACCOUNTS = fromString("SpecificAccounts");
 
     /**
@@ -31,6 +35,7 @@ public final class AzureDevOpsPermissionType extends ExpandableStringEnum<AzureD
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AzureDevOpsPermissionType() {
     }
@@ -41,6 +46,7 @@ public final class AzureDevOpsPermissionType extends ExpandableStringEnum<AzureD
      * @param name a name to look for.
      * @return the corresponding AzureDevOpsPermissionType.
      */
+    @Generated
     public static AzureDevOpsPermissionType fromString(String name) {
         return fromString(name, AzureDevOpsPermissionType.class);
     }
@@ -50,6 +56,7 @@ public final class AzureDevOpsPermissionType extends ExpandableStringEnum<AzureD
      * 
      * @return known AzureDevOpsPermissionType values.
      */
+    @Generated
     public static Collection<AzureDevOpsPermissionType> values() {
         return values(AzureDevOpsPermissionType.class);
     }

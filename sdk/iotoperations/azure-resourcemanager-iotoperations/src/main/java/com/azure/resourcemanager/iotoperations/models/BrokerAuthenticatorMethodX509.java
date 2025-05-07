@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class BrokerAuthenticatorMethodX509 implements JsonSerializable<Bro
     /*
      * X509 authorization attributes properties.
      */
+    @Generated
     private Map<String, BrokerAuthenticatorMethodX509Attributes> authorizationAttributes;
 
     /*
      * Name of the trusted client ca cert resource.
      */
+    @Generated
     private String trustedClientCaCert;
 
     /**
      * Creates an instance of BrokerAuthenticatorMethodX509 class.
      */
+    @Generated
     public BrokerAuthenticatorMethodX509() {
     }
 
@@ -38,6 +42,7 @@ public final class BrokerAuthenticatorMethodX509 implements JsonSerializable<Bro
      * 
      * @return the authorizationAttributes value.
      */
+    @Generated
     public Map<String, BrokerAuthenticatorMethodX509Attributes> authorizationAttributes() {
         return this.authorizationAttributes;
     }
@@ -48,6 +53,7 @@ public final class BrokerAuthenticatorMethodX509 implements JsonSerializable<Bro
      * @param authorizationAttributes the authorizationAttributes value to set.
      * @return the BrokerAuthenticatorMethodX509 object itself.
      */
+    @Generated
     public BrokerAuthenticatorMethodX509
         withAuthorizationAttributes(Map<String, BrokerAuthenticatorMethodX509Attributes> authorizationAttributes) {
         this.authorizationAttributes = authorizationAttributes;
@@ -59,6 +65,7 @@ public final class BrokerAuthenticatorMethodX509 implements JsonSerializable<Bro
      * 
      * @return the trustedClientCaCert value.
      */
+    @Generated
     public String trustedClientCaCert() {
         return this.trustedClientCaCert;
     }
@@ -69,6 +76,7 @@ public final class BrokerAuthenticatorMethodX509 implements JsonSerializable<Bro
      * @param trustedClientCaCert the trustedClientCaCert value to set.
      * @return the BrokerAuthenticatorMethodX509 object itself.
      */
+    @Generated
     public BrokerAuthenticatorMethodX509 withTrustedClientCaCert(String trustedClientCaCert) {
         this.trustedClientCaCert = trustedClientCaCert;
         return this;

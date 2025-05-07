@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.connectedcache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class ConnectedCachePatchResource implements JsonSerializable<Conne
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /**
      * Creates an instance of ConnectedCachePatchResource class.
      */
+    @Generated
     public ConnectedCachePatchResource() {
     }
 
@@ -33,6 +36,7 @@ public final class ConnectedCachePatchResource implements JsonSerializable<Conne
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -43,6 +47,7 @@ public final class ConnectedCachePatchResource implements JsonSerializable<Conne
      * @param tags the tags value to set.
      * @return the ConnectedCachePatchResource object itself.
      */
+    @Generated
     public ConnectedCachePatchResource withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;

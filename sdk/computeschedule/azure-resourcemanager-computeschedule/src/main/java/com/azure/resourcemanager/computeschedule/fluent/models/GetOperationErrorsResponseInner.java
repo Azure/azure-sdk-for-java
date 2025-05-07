@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,11 +23,13 @@ public final class GetOperationErrorsResponseInner implements JsonSerializable<G
     /*
      * An array of operationids and their corresponding errors if any
      */
+    @Generated
     private List<OperationErrorsResult> results;
 
     /**
      * Creates an instance of GetOperationErrorsResponseInner class.
      */
+    @Generated
     private GetOperationErrorsResponseInner() {
     }
 
@@ -35,6 +38,7 @@ public final class GetOperationErrorsResponseInner implements JsonSerializable<G
      * 
      * @return the results value.
      */
+    @Generated
     public List<OperationErrorsResult> results() {
         return this.results;
     }

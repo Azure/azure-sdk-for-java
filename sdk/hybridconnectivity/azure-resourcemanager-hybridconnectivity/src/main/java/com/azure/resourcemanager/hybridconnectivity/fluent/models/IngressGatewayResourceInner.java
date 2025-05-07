@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class IngressGatewayResourceInner implements JsonSerializable<Ingre
     /*
      * Azure relay hybrid connection access properties
      */
+    @Generated
     private RelayNamespaceAccessProperties innerRelay;
 
     /*
      * Ingress gateway profile
      */
+    @Generated
     private IngressProfileProperties innerIngress;
 
     /**
      * Creates an instance of IngressGatewayResourceInner class.
      */
+    @Generated
     private IngressGatewayResourceInner() {
     }
 
@@ -37,6 +41,7 @@ public final class IngressGatewayResourceInner implements JsonSerializable<Ingre
      * 
      * @return the innerRelay value.
      */
+    @Generated
     private RelayNamespaceAccessProperties innerRelay() {
         return this.innerRelay;
     }
@@ -46,6 +51,7 @@ public final class IngressGatewayResourceInner implements JsonSerializable<Ingre
      * 
      * @return the innerIngress value.
      */
+    @Generated
     private IngressProfileProperties innerIngress() {
         return this.innerIngress;
     }
@@ -55,6 +61,7 @@ public final class IngressGatewayResourceInner implements JsonSerializable<Ingre
      * 
      * @return the namespaceName value.
      */
+    @Generated
     public String namespaceName() {
         return this.innerRelay() == null ? null : this.innerRelay().namespaceName();
     }
@@ -64,6 +71,7 @@ public final class IngressGatewayResourceInner implements JsonSerializable<Ingre
      * 
      * @return the namespaceNameSuffix value.
      */
+    @Generated
     public String namespaceNameSuffix() {
         return this.innerRelay() == null ? null : this.innerRelay().namespaceNameSuffix();
     }
@@ -73,6 +81,7 @@ public final class IngressGatewayResourceInner implements JsonSerializable<Ingre
      * 
      * @return the hybridConnectionName value.
      */
+    @Generated
     public String hybridConnectionName() {
         return this.innerRelay() == null ? null : this.innerRelay().hybridConnectionName();
     }
@@ -82,6 +91,7 @@ public final class IngressGatewayResourceInner implements JsonSerializable<Ingre
      * 
      * @return the accessKey value.
      */
+    @Generated
     public String accessKey() {
         return this.innerRelay() == null ? null : this.innerRelay().accessKey();
     }
@@ -91,6 +101,7 @@ public final class IngressGatewayResourceInner implements JsonSerializable<Ingre
      * 
      * @return the expiresOn value.
      */
+    @Generated
     public Long expiresOn() {
         return this.innerRelay() == null ? null : this.innerRelay().expiresOn();
     }
@@ -100,6 +111,7 @@ public final class IngressGatewayResourceInner implements JsonSerializable<Ingre
      * 
      * @return the serviceConfigurationToken value.
      */
+    @Generated
     public String serviceConfigurationToken() {
         return this.innerRelay() == null ? null : this.innerRelay().serviceConfigurationToken();
     }
@@ -109,6 +121,7 @@ public final class IngressGatewayResourceInner implements JsonSerializable<Ingre
      * 
      * @return the hostname value.
      */
+    @Generated
     public String hostname() {
         return this.innerIngress() == null ? null : this.innerIngress().hostname();
     }
@@ -118,6 +131,7 @@ public final class IngressGatewayResourceInner implements JsonSerializable<Ingre
      * 
      * @return the serverId value.
      */
+    @Generated
     public String serverId() {
         return this.innerIngress() == null ? null : this.innerIngress().serverId();
     }
@@ -127,6 +141,7 @@ public final class IngressGatewayResourceInner implements JsonSerializable<Ingre
      * 
      * @return the tenantId value.
      */
+    @Generated
     public String tenantId() {
         return this.innerIngress() == null ? null : this.innerIngress().tenantId();
     }

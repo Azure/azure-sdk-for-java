@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class OperatorValues extends ExpandableStringEnum<OperatorValues> {
     /**
      * In operator.
      */
+    @Generated
     public static final OperatorValues IN = fromString("In");
 
     /**
      * NotIn operator.
      */
+    @Generated
     public static final OperatorValues NOT_IN = fromString("NotIn");
 
     /**
      * Exists operator.
      */
+    @Generated
     public static final OperatorValues EXISTS = fromString("Exists");
 
     /**
      * DoesNotExist operator.
      */
+    @Generated
     public static final OperatorValues DOES_NOT_EXIST = fromString("DoesNotExist");
 
     /**
@@ -36,6 +41,7 @@ public final class OperatorValues extends ExpandableStringEnum<OperatorValues> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OperatorValues() {
     }
@@ -46,6 +52,7 @@ public final class OperatorValues extends ExpandableStringEnum<OperatorValues> {
      * @param name a name to look for.
      * @return the corresponding OperatorValues.
      */
+    @Generated
     public static OperatorValues fromString(String name) {
         return fromString(name, OperatorValues.class);
     }
@@ -55,6 +62,7 @@ public final class OperatorValues extends ExpandableStringEnum<OperatorValues> {
      * 
      * @return known OperatorValues values.
      */
+    @Generated
     public static Collection<OperatorValues> values() {
         return values(OperatorValues.class);
     }

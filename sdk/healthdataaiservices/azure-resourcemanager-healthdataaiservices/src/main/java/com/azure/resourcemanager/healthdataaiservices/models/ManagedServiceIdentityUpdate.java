@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.healthdataaiservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class ManagedServiceIdentityUpdate implements JsonSerializable<Mana
     /*
      * The type of managed identity assigned to this resource.
      */
+    @Generated
     private ManagedServiceIdentityType type;
 
     /*
      * The identities assigned to this resource by the user.
      */
+    @Generated
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
     /**
      * Creates an instance of ManagedServiceIdentityUpdate class.
      */
+    @Generated
     public ManagedServiceIdentityUpdate() {
     }
 
@@ -38,6 +42,7 @@ public final class ManagedServiceIdentityUpdate implements JsonSerializable<Mana
      * 
      * @return the type value.
      */
+    @Generated
     public ManagedServiceIdentityType type() {
         return this.type;
     }
@@ -48,6 +53,7 @@ public final class ManagedServiceIdentityUpdate implements JsonSerializable<Mana
      * @param type the type value to set.
      * @return the ManagedServiceIdentityUpdate object itself.
      */
+    @Generated
     public ManagedServiceIdentityUpdate withType(ManagedServiceIdentityType type) {
         this.type = type;
         return this;
@@ -58,6 +64,7 @@ public final class ManagedServiceIdentityUpdate implements JsonSerializable<Mana
      * 
      * @return the userAssignedIdentities value.
      */
+    @Generated
     public Map<String, UserAssignedIdentity> userAssignedIdentities() {
         return this.userAssignedIdentities;
     }
@@ -68,6 +75,7 @@ public final class ManagedServiceIdentityUpdate implements JsonSerializable<Mana
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ManagedServiceIdentityUpdate object itself.
      */
+    @Generated
     public ManagedServiceIdentityUpdate
         withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;

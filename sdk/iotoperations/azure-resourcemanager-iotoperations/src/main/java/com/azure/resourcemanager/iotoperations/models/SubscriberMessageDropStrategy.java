@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SubscriberMessageDropStrategy extends ExpandableStringEnum<Su
     /**
      * Messages are never dropped.
      */
+    @Generated
     public static final SubscriberMessageDropStrategy NONE = fromString("None");
 
     /**
      * The oldest message is dropped.
      */
+    @Generated
     public static final SubscriberMessageDropStrategy DROP_OLDEST = fromString("DropOldest");
 
     /**
@@ -26,6 +29,7 @@ public final class SubscriberMessageDropStrategy extends ExpandableStringEnum<Su
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SubscriberMessageDropStrategy() {
     }
@@ -36,6 +40,7 @@ public final class SubscriberMessageDropStrategy extends ExpandableStringEnum<Su
      * @param name a name to look for.
      * @return the corresponding SubscriberMessageDropStrategy.
      */
+    @Generated
     public static SubscriberMessageDropStrategy fromString(String name) {
         return fromString(name, SubscriberMessageDropStrategy.class);
     }
@@ -45,6 +50,7 @@ public final class SubscriberMessageDropStrategy extends ExpandableStringEnum<Su
      * 
      * @return known SubscriberMessageDropStrategy values.
      */
+    @Generated
     public static Collection<SubscriberMessageDropStrategy> values() {
         return values(SubscriberMessageDropStrategy.class);
     }

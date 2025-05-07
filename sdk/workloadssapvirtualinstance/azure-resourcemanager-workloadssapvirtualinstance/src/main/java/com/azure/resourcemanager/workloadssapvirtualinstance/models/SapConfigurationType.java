@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class SapConfigurationType extends ExpandableStringEnum<SapConfigur
     /**
      * SAP system will be deployed by service. No OS configurations will be done.
      */
+    @Generated
     public static final SapConfigurationType DEPLOYMENT = fromString("Deployment");
 
     /**
      * Existing SAP system will be registered.
      */
+    @Generated
     public static final SapConfigurationType DISCOVERY = fromString("Discovery");
 
     /**
      * SAP system will be deployed by service. OS configurations will be done.
      */
+    @Generated
     public static final SapConfigurationType DEPLOYMENT_WITH_OSCONFIG = fromString("DeploymentWithOSConfig");
 
     /**
@@ -31,6 +35,7 @@ public final class SapConfigurationType extends ExpandableStringEnum<SapConfigur
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SapConfigurationType() {
     }
@@ -41,6 +46,7 @@ public final class SapConfigurationType extends ExpandableStringEnum<SapConfigur
      * @param name a name to look for.
      * @return the corresponding SapConfigurationType.
      */
+    @Generated
     public static SapConfigurationType fromString(String name) {
         return fromString(name, SapConfigurationType.class);
     }
@@ -50,6 +56,7 @@ public final class SapConfigurationType extends ExpandableStringEnum<SapConfigur
      * 
      * @return known SapConfigurationType values.
      */
+    @Generated
     public static Collection<SapConfigurationType> values() {
         return values(SapConfigurationType.class);
     }

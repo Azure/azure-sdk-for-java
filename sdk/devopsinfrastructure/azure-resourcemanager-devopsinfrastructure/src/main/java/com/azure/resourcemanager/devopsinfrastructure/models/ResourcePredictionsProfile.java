@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,12 +20,14 @@ public class ResourcePredictionsProfile implements JsonSerializable<ResourcePred
     /*
      * Determines how the stand-by scheme should be provided.
      */
+    @Generated
     private ResourcePredictionsProfileType kind
         = ResourcePredictionsProfileType.fromString("ResourcePredictionsProfile");
 
     /**
      * Creates an instance of ResourcePredictionsProfile class.
      */
+    @Generated
     public ResourcePredictionsProfile() {
     }
 
@@ -33,6 +36,7 @@ public class ResourcePredictionsProfile implements JsonSerializable<ResourcePred
      * 
      * @return the kind value.
      */
+    @Generated
     public ResourcePredictionsProfileType kind() {
         return this.kind;
     }

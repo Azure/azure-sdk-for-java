@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class Event extends EventBase {
     /*
      * An indication of how the event should be mapped to OpenTelemetry.
      */
+    @Generated
     private EventObservabilityMode observabilityMode;
 
     /**
      * Creates an instance of Event class.
      */
+    @Generated
     public Event() {
     }
 
@@ -32,6 +35,7 @@ public final class Event extends EventBase {
      * 
      * @return the observabilityMode value.
      */
+    @Generated
     public EventObservabilityMode observabilityMode() {
         return this.observabilityMode;
     }
@@ -42,6 +46,7 @@ public final class Event extends EventBase {
      * @param observabilityMode the observabilityMode value to set.
      * @return the Event object itself.
      */
+    @Generated
     public Event withObservabilityMode(EventObservabilityMode observabilityMode) {
         this.observabilityMode = observabilityMode;
         return this;
@@ -50,6 +55,7 @@ public final class Event extends EventBase {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Event withName(String name) {
         super.withName(name);
@@ -59,6 +65,7 @@ public final class Event extends EventBase {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Event withEventNotifier(String eventNotifier) {
         super.withEventNotifier(eventNotifier);
@@ -68,6 +75,7 @@ public final class Event extends EventBase {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Event withEventConfiguration(String eventConfiguration) {
         super.withEventConfiguration(eventConfiguration);
@@ -77,6 +85,7 @@ public final class Event extends EventBase {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Event withTopic(Topic topic) {
         super.withTopic(topic);

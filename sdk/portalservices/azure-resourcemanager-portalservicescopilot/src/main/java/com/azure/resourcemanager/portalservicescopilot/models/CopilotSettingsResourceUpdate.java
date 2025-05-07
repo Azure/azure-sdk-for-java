@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.portalservicescopilot.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class CopilotSettingsResourceUpdate implements JsonSerializable<Cop
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private CopilotSettingsResourceUpdateProperties properties;
 
     /**
      * Creates an instance of CopilotSettingsResourceUpdate class.
      */
+    @Generated
     public CopilotSettingsResourceUpdate() {
     }
 
@@ -32,6 +35,7 @@ public final class CopilotSettingsResourceUpdate implements JsonSerializable<Cop
      * 
      * @return the properties value.
      */
+    @Generated
     public CopilotSettingsResourceUpdateProperties properties() {
         return this.properties;
     }
@@ -42,6 +46,7 @@ public final class CopilotSettingsResourceUpdate implements JsonSerializable<Cop
      * @param properties the properties value to set.
      * @return the CopilotSettingsResourceUpdate object itself.
      */
+    @Generated
     public CopilotSettingsResourceUpdate withProperties(CopilotSettingsResourceUpdateProperties properties) {
         this.properties = properties;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,26 +25,31 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/
      * managedClusters/{clusterName}'.
      */
+    @Generated
     private String clusterResourceId;
 
     /*
      * The group this member belongs to for multi-cluster update management.
      */
+    @Generated
     private String group;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private FleetMemberProvisioningState provisioningState;
 
     /*
      * Status information of the last operation for fleet member.
      */
+    @Generated
     private FleetMemberStatus status;
 
     /**
      * Creates an instance of FleetMemberProperties class.
      */
+    @Generated
     public FleetMemberProperties() {
     }
 
@@ -54,6 +60,7 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
      * 
      * @return the clusterResourceId value.
      */
+    @Generated
     public String clusterResourceId() {
         return this.clusterResourceId;
     }
@@ -66,6 +73,7 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
      * @param clusterResourceId the clusterResourceId value to set.
      * @return the FleetMemberProperties object itself.
      */
+    @Generated
     public FleetMemberProperties withClusterResourceId(String clusterResourceId) {
         this.clusterResourceId = clusterResourceId;
         return this;
@@ -76,6 +84,7 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
      * 
      * @return the group value.
      */
+    @Generated
     public String group() {
         return this.group;
     }
@@ -86,6 +95,7 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
      * @param group the group value to set.
      * @return the FleetMemberProperties object itself.
      */
+    @Generated
     public FleetMemberProperties withGroup(String group) {
         this.group = group;
         return this;
@@ -96,6 +106,7 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public FleetMemberProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -105,6 +116,7 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
      * 
      * @return the status value.
      */
+    @Generated
     public FleetMemberStatus status() {
         return this.status;
     }

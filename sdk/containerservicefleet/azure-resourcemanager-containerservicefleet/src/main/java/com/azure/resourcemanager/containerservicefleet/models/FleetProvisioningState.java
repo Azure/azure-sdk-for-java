@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class FleetProvisioningState extends ExpandableStringEnum<FleetProv
     /**
      * Resource has been created.
      */
+    @Generated
     public static final FleetProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
      * Resource creation failed.
      */
+    @Generated
     public static final FleetProvisioningState FAILED = fromString("Failed");
 
     /**
      * Resource creation was canceled.
      */
+    @Generated
     public static final FleetProvisioningState CANCELED = fromString("Canceled");
 
     /**
      * The provisioning state of a fleet being created.
      */
+    @Generated
     public static final FleetProvisioningState CREATING = fromString("Creating");
 
     /**
      * The provisioning state of a fleet being updated.
      */
+    @Generated
     public static final FleetProvisioningState UPDATING = fromString("Updating");
 
     /**
      * The provisioning state of a fleet being deleted.
      */
+    @Generated
     public static final FleetProvisioningState DELETING = fromString("Deleting");
 
     /**
@@ -46,6 +53,7 @@ public final class FleetProvisioningState extends ExpandableStringEnum<FleetProv
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public FleetProvisioningState() {
     }
@@ -56,6 +64,7 @@ public final class FleetProvisioningState extends ExpandableStringEnum<FleetProv
      * @param name a name to look for.
      * @return the corresponding FleetProvisioningState.
      */
+    @Generated
     public static FleetProvisioningState fromString(String name) {
         return fromString(name, FleetProvisioningState.class);
     }
@@ -65,6 +74,7 @@ public final class FleetProvisioningState extends ExpandableStringEnum<FleetProv
      * 
      * @return known FleetProvisioningState values.
      */
+    @Generated
     public static Collection<FleetProvisioningState> values() {
         return values(FleetProvisioningState.class);
     }

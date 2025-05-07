@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,6 +24,7 @@ public final class VMSizeProperties implements JsonSerializable<VMSizeProperties
      * virtual machine sizes in a
      * region](https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list).
      */
+    @Generated
     private Integer vCPUsAvailable;
 
     /*
@@ -33,11 +35,13 @@ public final class VMSizeProperties implements JsonSerializable<VMSizeProperties
      * region](https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list).
      * **Setting this property to 1 also means that hyper-threading is disabled.**
      */
+    @Generated
     private Integer vCPUsPerCore;
 
     /**
      * Creates an instance of VMSizeProperties class.
      */
+    @Generated
     public VMSizeProperties() {
     }
 
@@ -50,6 +54,7 @@ public final class VMSizeProperties implements JsonSerializable<VMSizeProperties
      * 
      * @return the vCPUsAvailable value.
      */
+    @Generated
     public Integer vCPUsAvailable() {
         return this.vCPUsAvailable;
     }
@@ -64,6 +69,7 @@ public final class VMSizeProperties implements JsonSerializable<VMSizeProperties
      * @param vCPUsAvailable the vCPUsAvailable value to set.
      * @return the VMSizeProperties object itself.
      */
+    @Generated
     public VMSizeProperties withVCPUsAvailable(Integer vCPUsAvailable) {
         this.vCPUsAvailable = vCPUsAvailable;
         return this;
@@ -79,6 +85,7 @@ public final class VMSizeProperties implements JsonSerializable<VMSizeProperties
      * 
      * @return the vCPUsPerCore value.
      */
+    @Generated
     public Integer vCPUsPerCore() {
         return this.vCPUsPerCore;
     }
@@ -94,6 +101,7 @@ public final class VMSizeProperties implements JsonSerializable<VMSizeProperties
      * @param vCPUsPerCore the vCPUsPerCore value to set.
      * @return the VMSizeProperties object itself.
      */
+    @Generated
     public VMSizeProperties withVCPUsPerCore(Integer vCPUsPerCore) {
         this.vCPUsPerCore = vCPUsPerCore;
         return this;

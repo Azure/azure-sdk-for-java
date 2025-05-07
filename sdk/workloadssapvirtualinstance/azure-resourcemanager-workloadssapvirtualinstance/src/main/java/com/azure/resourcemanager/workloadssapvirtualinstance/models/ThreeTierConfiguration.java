@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -20,46 +21,55 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
     /*
      * The SAP deployment type. Eg: SingleServer/ThreeTier.
      */
+    @Generated
     private SapDeploymentType deploymentType = SapDeploymentType.THREE_TIER;
 
     /*
      * Network configuration common to all servers
      */
+    @Generated
     private NetworkConfiguration networkConfiguration;
 
     /*
      * The central server configuration.
      */
+    @Generated
     private CentralServerConfiguration centralServer;
 
     /*
      * The application server configuration.
      */
+    @Generated
     private ApplicationServerConfiguration applicationServer;
 
     /*
      * The database configuration.
      */
+    @Generated
     private DatabaseConfiguration databaseServer;
 
     /*
      * The high availability configuration.
      */
+    @Generated
     private HighAvailabilityConfiguration highAvailabilityConfig;
 
     /*
      * The storage configuration.
      */
+    @Generated
     private StorageConfiguration storageConfiguration;
 
     /*
      * The set of custom names to be used for underlying azure resources that are part of the SAP system.
      */
+    @Generated
     private ThreeTierCustomResourceNames customResourceNames;
 
     /**
      * Creates an instance of ThreeTierConfiguration class.
      */
+    @Generated
     public ThreeTierConfiguration() {
     }
 
@@ -68,6 +78,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * 
      * @return the deploymentType value.
      */
+    @Generated
     @Override
     public SapDeploymentType deploymentType() {
         return this.deploymentType;
@@ -78,6 +89,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * 
      * @return the networkConfiguration value.
      */
+    @Generated
     public NetworkConfiguration networkConfiguration() {
         return this.networkConfiguration;
     }
@@ -88,6 +100,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * @param networkConfiguration the networkConfiguration value to set.
      * @return the ThreeTierConfiguration object itself.
      */
+    @Generated
     public ThreeTierConfiguration withNetworkConfiguration(NetworkConfiguration networkConfiguration) {
         this.networkConfiguration = networkConfiguration;
         return this;
@@ -98,6 +111,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * 
      * @return the centralServer value.
      */
+    @Generated
     public CentralServerConfiguration centralServer() {
         return this.centralServer;
     }
@@ -108,6 +122,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * @param centralServer the centralServer value to set.
      * @return the ThreeTierConfiguration object itself.
      */
+    @Generated
     public ThreeTierConfiguration withCentralServer(CentralServerConfiguration centralServer) {
         this.centralServer = centralServer;
         return this;
@@ -118,6 +133,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * 
      * @return the applicationServer value.
      */
+    @Generated
     public ApplicationServerConfiguration applicationServer() {
         return this.applicationServer;
     }
@@ -128,6 +144,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * @param applicationServer the applicationServer value to set.
      * @return the ThreeTierConfiguration object itself.
      */
+    @Generated
     public ThreeTierConfiguration withApplicationServer(ApplicationServerConfiguration applicationServer) {
         this.applicationServer = applicationServer;
         return this;
@@ -138,6 +155,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * 
      * @return the databaseServer value.
      */
+    @Generated
     public DatabaseConfiguration databaseServer() {
         return this.databaseServer;
     }
@@ -148,6 +166,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * @param databaseServer the databaseServer value to set.
      * @return the ThreeTierConfiguration object itself.
      */
+    @Generated
     public ThreeTierConfiguration withDatabaseServer(DatabaseConfiguration databaseServer) {
         this.databaseServer = databaseServer;
         return this;
@@ -158,6 +177,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * 
      * @return the highAvailabilityConfig value.
      */
+    @Generated
     public HighAvailabilityConfiguration highAvailabilityConfig() {
         return this.highAvailabilityConfig;
     }
@@ -168,6 +188,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * @param highAvailabilityConfig the highAvailabilityConfig value to set.
      * @return the ThreeTierConfiguration object itself.
      */
+    @Generated
     public ThreeTierConfiguration withHighAvailabilityConfig(HighAvailabilityConfiguration highAvailabilityConfig) {
         this.highAvailabilityConfig = highAvailabilityConfig;
         return this;
@@ -178,6 +199,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * 
      * @return the storageConfiguration value.
      */
+    @Generated
     public StorageConfiguration storageConfiguration() {
         return this.storageConfiguration;
     }
@@ -188,6 +210,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * @param storageConfiguration the storageConfiguration value to set.
      * @return the ThreeTierConfiguration object itself.
      */
+    @Generated
     public ThreeTierConfiguration withStorageConfiguration(StorageConfiguration storageConfiguration) {
         this.storageConfiguration = storageConfiguration;
         return this;
@@ -199,6 +222,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * 
      * @return the customResourceNames value.
      */
+    @Generated
     public ThreeTierCustomResourceNames customResourceNames() {
         return this.customResourceNames;
     }
@@ -210,6 +234,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
      * @param customResourceNames the customResourceNames value to set.
      * @return the ThreeTierConfiguration object itself.
      */
+    @Generated
     public ThreeTierConfiguration withCustomResourceNames(ThreeTierCustomResourceNames customResourceNames) {
         this.customResourceNames = customResourceNames;
         return this;
@@ -218,6 +243,7 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ThreeTierConfiguration withAppResourceGroup(String appResourceGroup) {
         super.withAppResourceGroup(appResourceGroup);

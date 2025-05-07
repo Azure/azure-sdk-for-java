@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class DataflowEndpointFabricPathType extends ExpandableStringEnum<D
     /**
      * FILES Type.
      */
+    @Generated
     public static final DataflowEndpointFabricPathType FILES = fromString("Files");
 
     /**
      * TABLES Type.
      */
+    @Generated
     public static final DataflowEndpointFabricPathType TABLES = fromString("Tables");
 
     /**
@@ -26,6 +29,7 @@ public final class DataflowEndpointFabricPathType extends ExpandableStringEnum<D
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataflowEndpointFabricPathType() {
     }
@@ -36,6 +40,7 @@ public final class DataflowEndpointFabricPathType extends ExpandableStringEnum<D
      * @param name a name to look for.
      * @return the corresponding DataflowEndpointFabricPathType.
      */
+    @Generated
     public static DataflowEndpointFabricPathType fromString(String name) {
         return fromString(name, DataflowEndpointFabricPathType.class);
     }
@@ -45,6 +50,7 @@ public final class DataflowEndpointFabricPathType extends ExpandableStringEnum<D
      * 
      * @return known DataflowEndpointFabricPathType values.
      */
+    @Generated
     public static Collection<DataflowEndpointFabricPathType> values() {
         return values(DataflowEndpointFabricPathType.class);
     }

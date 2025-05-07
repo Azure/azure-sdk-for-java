@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,11 +23,13 @@ public final class SapDiskConfigurationsResultInner implements JsonSerializable<
      * The disk configuration for the db volume. For HANA, Required volumes are: ['hana/data', 'hana/log', hana/shared',
      * 'usr/sap', 'os'], Optional volume : ['backup'].
      */
+    @Generated
     private Map<String, SapDiskConfiguration> volumeConfigurations;
 
     /**
      * Creates an instance of SapDiskConfigurationsResultInner class.
      */
+    @Generated
     private SapDiskConfigurationsResultInner() {
     }
 
@@ -36,6 +39,7 @@ public final class SapDiskConfigurationsResultInner implements JsonSerializable<
      * 
      * @return the volumeConfigurations value.
      */
+    @Generated
     public Map<String, SapDiskConfiguration> volumeConfigurations() {
         return this.volumeConfigurations;
     }

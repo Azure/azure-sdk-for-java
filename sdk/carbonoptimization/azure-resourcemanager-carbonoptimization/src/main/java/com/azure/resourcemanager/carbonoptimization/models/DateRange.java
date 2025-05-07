@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.carbonoptimization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,16 +24,19 @@ public final class DateRange implements JsonSerializable<DateRange> {
     /*
      * Start date parameter in yyyy-MM-01 format. Only the first day of each month is accepted.
      */
+    @Generated
     private LocalDate start;
 
     /*
      * End date parameter in yyyy-MM-01 format. Only the first day of each month is accepted.
      */
+    @Generated
     private LocalDate end;
 
     /**
      * Creates an instance of DateRange class.
      */
+    @Generated
     public DateRange() {
     }
 
@@ -41,6 +45,7 @@ public final class DateRange implements JsonSerializable<DateRange> {
      * 
      * @return the start value.
      */
+    @Generated
     public LocalDate start() {
         return this.start;
     }
@@ -51,6 +56,7 @@ public final class DateRange implements JsonSerializable<DateRange> {
      * @param start the start value to set.
      * @return the DateRange object itself.
      */
+    @Generated
     public DateRange withStart(LocalDate start) {
         this.start = start;
         return this;
@@ -61,6 +67,7 @@ public final class DateRange implements JsonSerializable<DateRange> {
      * 
      * @return the end value.
      */
+    @Generated
     public LocalDate end() {
         return this.end;
     }
@@ -71,6 +78,7 @@ public final class DateRange implements JsonSerializable<DateRange> {
      * @param end the end value to set.
      * @return the DateRange object itself.
      */
+    @Generated
     public DateRange withEnd(LocalDate end) {
         this.end = end;
         return this;

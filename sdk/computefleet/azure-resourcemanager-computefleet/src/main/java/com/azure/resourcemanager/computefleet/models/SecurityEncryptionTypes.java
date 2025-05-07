@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,18 +17,21 @@ public final class SecurityEncryptionTypes extends ExpandableStringEnum<Security
      * EncryptionType of the managed disk is set to VMGuestStateOnly for encryption
      * of just the VMGuestState blob.
      */
+    @Generated
     public static final SecurityEncryptionTypes VMGUEST_STATE_ONLY = fromString("VMGuestStateOnly");
 
     /**
      * EncryptionType of the managed disk is set to DiskWithVMGuestState for encryption
      * of the managed disk along with VMGuestState blob.
      */
+    @Generated
     public static final SecurityEncryptionTypes DISK_WITH_VMGUEST_STATE = fromString("DiskWithVMGuestState");
 
     /**
      * EncryptionType of the managed disk is set to NonPersistedTPM for not persisting
      * firmware state in the VMGuestState blob.
      */
+    @Generated
     public static final SecurityEncryptionTypes NON_PERSISTED_TPM = fromString("NonPersistedTPM");
 
     /**
@@ -35,6 +39,7 @@ public final class SecurityEncryptionTypes extends ExpandableStringEnum<Security
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SecurityEncryptionTypes() {
     }
@@ -45,6 +50,7 @@ public final class SecurityEncryptionTypes extends ExpandableStringEnum<Security
      * @param name a name to look for.
      * @return the corresponding SecurityEncryptionTypes.
      */
+    @Generated
     public static SecurityEncryptionTypes fromString(String name) {
         return fromString(name, SecurityEncryptionTypes.class);
     }
@@ -54,6 +60,7 @@ public final class SecurityEncryptionTypes extends ExpandableStringEnum<Security
      * 
      * @return known SecurityEncryptionTypes values.
      */
+    @Generated
     public static Collection<SecurityEncryptionTypes> values() {
         return values(SecurityEncryptionTypes.class);
     }

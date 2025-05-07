@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class DiskVolumeConfiguration implements JsonSerializable<DiskVolum
     /*
      * The total number of disks required for the concerned volume.
      */
+    @Generated
     private Long count;
 
     /*
      * The disk size in GB.
      */
+    @Generated
     private Long sizeGB;
 
     /*
      * The disk SKU details.
      */
+    @Generated
     private DiskSku sku;
 
     /**
      * Creates an instance of DiskVolumeConfiguration class.
      */
+    @Generated
     public DiskVolumeConfiguration() {
     }
 
@@ -42,6 +47,7 @@ public final class DiskVolumeConfiguration implements JsonSerializable<DiskVolum
      * 
      * @return the count value.
      */
+    @Generated
     public Long count() {
         return this.count;
     }
@@ -52,6 +58,7 @@ public final class DiskVolumeConfiguration implements JsonSerializable<DiskVolum
      * @param count the count value to set.
      * @return the DiskVolumeConfiguration object itself.
      */
+    @Generated
     public DiskVolumeConfiguration withCount(Long count) {
         this.count = count;
         return this;
@@ -62,6 +69,7 @@ public final class DiskVolumeConfiguration implements JsonSerializable<DiskVolum
      * 
      * @return the sizeGB value.
      */
+    @Generated
     public Long sizeGB() {
         return this.sizeGB;
     }
@@ -72,6 +80,7 @@ public final class DiskVolumeConfiguration implements JsonSerializable<DiskVolum
      * @param sizeGB the sizeGB value to set.
      * @return the DiskVolumeConfiguration object itself.
      */
+    @Generated
     public DiskVolumeConfiguration withSizeGB(Long sizeGB) {
         this.sizeGB = sizeGB;
         return this;
@@ -82,6 +91,7 @@ public final class DiskVolumeConfiguration implements JsonSerializable<DiskVolum
      * 
      * @return the sku value.
      */
+    @Generated
     public DiskSku sku() {
         return this.sku;
     }
@@ -92,6 +102,7 @@ public final class DiskVolumeConfiguration implements JsonSerializable<DiskVolum
      * @param sku the sku value to set.
      * @return the DiskVolumeConfiguration object itself.
      */
+    @Generated
     public DiskVolumeConfiguration withSku(DiskSku sku) {
         this.sku = sku;
         return this;

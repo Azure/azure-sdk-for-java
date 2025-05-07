@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,26 +22,31 @@ public final class Organization implements JsonSerializable<Organization> {
     /*
      * The Azure DevOps organization URL in which the pool should be created.
      */
+    @Generated
     private String url;
 
     /*
      * Optional list of projects in which the pool should be created.
      */
+    @Generated
     private List<String> projects;
 
     /*
      * How many machines can be created at maximum in this organization out of the maximumConcurrency of the pool.
      */
+    @Generated
     private Integer parallelism;
 
     /*
      * Determines if the pool should have open access to all projects in this organization.
      */
+    @Generated
     private Boolean openAccess;
 
     /**
      * Creates an instance of Organization class.
      */
+    @Generated
     public Organization() {
     }
 
@@ -49,6 +55,7 @@ public final class Organization implements JsonSerializable<Organization> {
      * 
      * @return the url value.
      */
+    @Generated
     public String url() {
         return this.url;
     }
@@ -59,6 +66,7 @@ public final class Organization implements JsonSerializable<Organization> {
      * @param url the url value to set.
      * @return the Organization object itself.
      */
+    @Generated
     public Organization withUrl(String url) {
         this.url = url;
         return this;
@@ -69,6 +77,7 @@ public final class Organization implements JsonSerializable<Organization> {
      * 
      * @return the projects value.
      */
+    @Generated
     public List<String> projects() {
         return this.projects;
     }
@@ -79,6 +88,7 @@ public final class Organization implements JsonSerializable<Organization> {
      * @param projects the projects value to set.
      * @return the Organization object itself.
      */
+    @Generated
     public Organization withProjects(List<String> projects) {
         this.projects = projects;
         return this;
@@ -90,6 +100,7 @@ public final class Organization implements JsonSerializable<Organization> {
      * 
      * @return the parallelism value.
      */
+    @Generated
     public Integer parallelism() {
         return this.parallelism;
     }
@@ -101,6 +112,7 @@ public final class Organization implements JsonSerializable<Organization> {
      * @param parallelism the parallelism value to set.
      * @return the Organization object itself.
      */
+    @Generated
     public Organization withParallelism(Integer parallelism) {
         this.parallelism = parallelism;
         return this;
@@ -111,6 +123,7 @@ public final class Organization implements JsonSerializable<Organization> {
      * 
      * @return the openAccess value.
      */
+    @Generated
     public Boolean openAccess() {
         return this.openAccess;
     }
@@ -121,6 +134,7 @@ public final class Organization implements JsonSerializable<Organization> {
      * @param openAccess the openAccess value to set.
      * @return the Organization object itself.
      */
+    @Generated
     public Organization withOpenAccess(Boolean openAccess) {
         this.openAccess = openAccess;
         return this;

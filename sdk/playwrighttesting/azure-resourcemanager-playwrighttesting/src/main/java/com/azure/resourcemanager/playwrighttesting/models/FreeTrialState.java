@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.playwrighttesting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class FreeTrialState extends ExpandableStringEnum<FreeTrialState> {
     /**
      * The free-trial is Active.
      */
+    @Generated
     public static final FreeTrialState ACTIVE = fromString("Active");
 
     /**
      * The free-trial is Expired.
      */
+    @Generated
     public static final FreeTrialState EXPIRED = fromString("Expired");
 
     /**
      * The free-trial is Not Eligible.
      */
+    @Generated
     public static final FreeTrialState NOT_ELIGIBLE = fromString("NotEligible");
 
     /**
      * The free-trial is Not Registered.
      */
+    @Generated
     public static final FreeTrialState NOT_REGISTERED = fromString("NotRegistered");
 
     /**
@@ -36,6 +41,7 @@ public final class FreeTrialState extends ExpandableStringEnum<FreeTrialState> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public FreeTrialState() {
     }
@@ -46,6 +52,7 @@ public final class FreeTrialState extends ExpandableStringEnum<FreeTrialState> {
      * @param name a name to look for.
      * @return the corresponding FreeTrialState.
      */
+    @Generated
     public static FreeTrialState fromString(String name) {
         return fromString(name, FreeTrialState.class);
     }
@@ -55,6 +62,7 @@ public final class FreeTrialState extends ExpandableStringEnum<FreeTrialState> {
      * 
      * @return known FreeTrialState values.
      */
+    @Generated
     public static Collection<FreeTrialState> values() {
         return values(FreeTrialState.class);
     }

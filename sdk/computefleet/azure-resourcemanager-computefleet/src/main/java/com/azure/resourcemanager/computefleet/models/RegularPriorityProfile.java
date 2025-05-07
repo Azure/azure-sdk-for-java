@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,22 +20,26 @@ public final class RegularPriorityProfile implements JsonSerializable<RegularPri
     /*
      * Total capacity to achieve. It is currently in terms of number of VMs.
      */
+    @Generated
     private Integer capacity;
 
     /*
      * Minimum capacity to achieve which cannot be updated. If we will not be able to "guarantee" minimum capacity, we
      * will reject the request in the sync path itself.
      */
+    @Generated
     private Integer minCapacity;
 
     /*
      * Allocation strategy to follow when determining the VM sizes distribution for Regular VMs.
      */
+    @Generated
     private RegularPriorityAllocationStrategy allocationStrategy;
 
     /**
      * Creates an instance of RegularPriorityProfile class.
      */
+    @Generated
     public RegularPriorityProfile() {
     }
 
@@ -43,6 +48,7 @@ public final class RegularPriorityProfile implements JsonSerializable<RegularPri
      * 
      * @return the capacity value.
      */
+    @Generated
     public Integer capacity() {
         return this.capacity;
     }
@@ -53,6 +59,7 @@ public final class RegularPriorityProfile implements JsonSerializable<RegularPri
      * @param capacity the capacity value to set.
      * @return the RegularPriorityProfile object itself.
      */
+    @Generated
     public RegularPriorityProfile withCapacity(Integer capacity) {
         this.capacity = capacity;
         return this;
@@ -64,6 +71,7 @@ public final class RegularPriorityProfile implements JsonSerializable<RegularPri
      * 
      * @return the minCapacity value.
      */
+    @Generated
     public Integer minCapacity() {
         return this.minCapacity;
     }
@@ -75,6 +83,7 @@ public final class RegularPriorityProfile implements JsonSerializable<RegularPri
      * @param minCapacity the minCapacity value to set.
      * @return the RegularPriorityProfile object itself.
      */
+    @Generated
     public RegularPriorityProfile withMinCapacity(Integer minCapacity) {
         this.minCapacity = minCapacity;
         return this;
@@ -86,6 +95,7 @@ public final class RegularPriorityProfile implements JsonSerializable<RegularPri
      * 
      * @return the allocationStrategy value.
      */
+    @Generated
     public RegularPriorityAllocationStrategy allocationStrategy() {
         return this.allocationStrategy;
     }
@@ -97,6 +107,7 @@ public final class RegularPriorityProfile implements JsonSerializable<RegularPri
      * @param allocationStrategy the allocationStrategy value to set.
      * @return the RegularPriorityProfile object itself.
      */
+    @Generated
     public RegularPriorityProfile withAllocationStrategy(RegularPriorityAllocationStrategy allocationStrategy) {
         this.allocationStrategy = allocationStrategy;
         return this;

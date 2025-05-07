@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,16 +23,19 @@ public final class EndpointsList implements JsonSerializable<EndpointsList> {
     /*
      * The list of endpoint.
      */
+    @Generated
     private List<EndpointResourceInner> value;
 
     /*
      * The link used to get the next page of endpoints list.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of EndpointsList class.
      */
+    @Generated
     private EndpointsList() {
     }
 
@@ -40,6 +44,7 @@ public final class EndpointsList implements JsonSerializable<EndpointsList> {
      * 
      * @return the value value.
      */
+    @Generated
     public List<EndpointResourceInner> value() {
         return this.value;
     }
@@ -49,6 +54,7 @@ public final class EndpointsList implements JsonSerializable<EndpointsList> {
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String nextLink() {
         return this.nextLink;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
     /*
      * Discriminator property for OrganizationProfile.
      */
+    @Generated
     private String kind = "AzureDevOps";
 
     /*
      * The list of Azure DevOps organizations the pool should be present in.
      */
+    @Generated
     private List<Organization> organizations;
 
     /*
      * The type of permission which determines which accounts are admins on the Azure DevOps pool.
      */
+    @Generated
     private AzureDevOpsPermissionProfile permissionProfile;
 
     /**
      * Creates an instance of AzureDevOpsOrganizationProfile class.
      */
+    @Generated
     public AzureDevOpsOrganizationProfile() {
     }
 
@@ -43,6 +48,7 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public String kind() {
         return this.kind;
@@ -53,6 +59,7 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
      * 
      * @return the organizations value.
      */
+    @Generated
     public List<Organization> organizations() {
         return this.organizations;
     }
@@ -63,6 +70,7 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
      * @param organizations the organizations value to set.
      * @return the AzureDevOpsOrganizationProfile object itself.
      */
+    @Generated
     public AzureDevOpsOrganizationProfile withOrganizations(List<Organization> organizations) {
         this.organizations = organizations;
         return this;
@@ -74,6 +82,7 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
      * 
      * @return the permissionProfile value.
      */
+    @Generated
     public AzureDevOpsPermissionProfile permissionProfile() {
         return this.permissionProfile;
     }
@@ -85,6 +94,7 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
      * @param permissionProfile the permissionProfile value to set.
      * @return the AzureDevOpsOrganizationProfile object itself.
      */
+    @Generated
     public AzureDevOpsOrganizationProfile withPermissionProfile(AzureDevOpsPermissionProfile permissionProfile) {
         this.permissionProfile = permissionProfile;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class SkipFileShareConfiguration extends FileShareConfiguration {
     /*
      * The type of file share config, eg: Mount/CreateAndMount/Skip.
      */
+    @Generated
     private FileShareConfigurationType configurationType = FileShareConfigurationType.SKIP;
 
     /**
      * Creates an instance of SkipFileShareConfiguration class.
      */
+    @Generated
     public SkipFileShareConfiguration() {
     }
 
@@ -32,6 +35,7 @@ public final class SkipFileShareConfiguration extends FileShareConfiguration {
      * 
      * @return the configurationType value.
      */
+    @Generated
     @Override
     public FileShareConfigurationType configurationType() {
         return this.configurationType;

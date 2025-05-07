@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class DataflowEndpointDataLakeStorage implements JsonSerializable<D
     /*
      * Authentication configuration. NOTE - only authentication property is allowed per entry.
      */
+    @Generated
     private DataflowEndpointDataLakeStorageAuthentication authentication;
 
     /*
      * Host of the Azure Data Lake in the form of <account>.blob.core.windows.net .
      */
+    @Generated
     private String host;
 
     /*
      * Azure Data Lake endpoint batching configuration.
      */
+    @Generated
     private BatchingConfiguration batching;
 
     /**
      * Creates an instance of DataflowEndpointDataLakeStorage class.
      */
+    @Generated
     public DataflowEndpointDataLakeStorage() {
     }
 
@@ -44,6 +49,7 @@ public final class DataflowEndpointDataLakeStorage implements JsonSerializable<D
      * 
      * @return the authentication value.
      */
+    @Generated
     public DataflowEndpointDataLakeStorageAuthentication authentication() {
         return this.authentication;
     }
@@ -55,6 +61,7 @@ public final class DataflowEndpointDataLakeStorage implements JsonSerializable<D
      * @param authentication the authentication value to set.
      * @return the DataflowEndpointDataLakeStorage object itself.
      */
+    @Generated
     public DataflowEndpointDataLakeStorage
         withAuthentication(DataflowEndpointDataLakeStorageAuthentication authentication) {
         this.authentication = authentication;
@@ -66,6 +73,7 @@ public final class DataflowEndpointDataLakeStorage implements JsonSerializable<D
      * 
      * @return the host value.
      */
+    @Generated
     public String host() {
         return this.host;
     }
@@ -76,6 +84,7 @@ public final class DataflowEndpointDataLakeStorage implements JsonSerializable<D
      * @param host the host value to set.
      * @return the DataflowEndpointDataLakeStorage object itself.
      */
+    @Generated
     public DataflowEndpointDataLakeStorage withHost(String host) {
         this.host = host;
         return this;
@@ -86,6 +95,7 @@ public final class DataflowEndpointDataLakeStorage implements JsonSerializable<D
      * 
      * @return the batching value.
      */
+    @Generated
     public BatchingConfiguration batching() {
         return this.batching;
     }
@@ -96,6 +106,7 @@ public final class DataflowEndpointDataLakeStorage implements JsonSerializable<D
      * @param batching the batching value to set.
      * @return the DataflowEndpointDataLakeStorage object itself.
      */
+    @Generated
     public DataflowEndpointDataLakeStorage withBatching(BatchingConfiguration batching) {
         this.batching = batching;
         return this;

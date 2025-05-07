@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public final class LoadBalancerDetails implements JsonSerializable<LoadBalancerD
     /*
      * Fully qualified resource ID for the load balancer.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of LoadBalancerDetails class.
      */
+    @Generated
     private LoadBalancerDetails() {
     }
 
@@ -32,6 +35,7 @@ public final class LoadBalancerDetails implements JsonSerializable<LoadBalancerD
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }

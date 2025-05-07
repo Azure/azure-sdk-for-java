@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -20,16 +21,19 @@ public final class ResourceOperationError implements JsonSerializable<ResourceOp
     /*
      * Code for the error eg 404, 500
      */
+    @Generated
     private String errorCode;
 
     /*
      * Detailed message about the error
      */
+    @Generated
     private String errorDetails;
 
     /**
      * Creates an instance of ResourceOperationError class.
      */
+    @Generated
     private ResourceOperationError() {
     }
 
@@ -38,6 +42,7 @@ public final class ResourceOperationError implements JsonSerializable<ResourceOp
      * 
      * @return the errorCode value.
      */
+    @Generated
     public String errorCode() {
         return this.errorCode;
     }
@@ -47,6 +52,7 @@ public final class ResourceOperationError implements JsonSerializable<ResourceOp
      * 
      * @return the errorDetails value.
      */
+    @Generated
     public String errorDetails() {
         return this.errorDetails;
     }

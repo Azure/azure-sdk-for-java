@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -21,36 +22,43 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
     /*
      * The name of the solution setting property.
      */
+    @Generated
     private String name;
 
     /*
      * The UI friendly name of the solution setting property.
      */
+    @Generated
     private String displayName;
 
     /*
      * Type of the solution setting property, represented as a string.
      */
+    @Generated
     private String type;
 
     /*
      * Description of solution setting property.
      */
+    @Generated
     private String description;
 
     /*
      * Array of allowed values for this solution settings property.
      */
+    @Generated
     private List<String> allowedValues;
 
     /*
      * Default value for this solution settings property.
      */
+    @Generated
     private String defaultValue;
 
     /**
      * Creates an instance of SolutionTypeSettingsProperties class.
      */
+    @Generated
     private SolutionTypeSettingsProperties() {
     }
 
@@ -59,6 +67,7 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -68,6 +77,7 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
      * 
      * @return the displayName value.
      */
+    @Generated
     public String displayName() {
         return this.displayName;
     }
@@ -77,6 +87,7 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
      * 
      * @return the type value.
      */
+    @Generated
     public String type() {
         return this.type;
     }
@@ -86,6 +97,7 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
      * 
      * @return the description value.
      */
+    @Generated
     public String description() {
         return this.description;
     }
@@ -95,6 +107,7 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
      * 
      * @return the allowedValues value.
      */
+    @Generated
     public List<String> allowedValues() {
         return this.allowedValues;
     }
@@ -104,6 +117,7 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
      * 
      * @return the defaultValue value.
      */
+    @Generated
     public String defaultValue() {
         return this.defaultValue;
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -23,31 +24,37 @@ public final class Schedule implements JsonSerializable<Schedule> {
     /*
      * The deadline for the operation
      */
+    @Generated
     private OffsetDateTime deadline;
 
     /*
      * The deadline for the operation
      */
+    @Generated
     private OffsetDateTime deadLine;
 
     /*
      * The timezone for the operation
      */
+    @Generated
     private String timezone;
 
     /*
      * The timezone for the operation
      */
+    @Generated
     private String timeZone;
 
     /*
      * The deadlinetype of the operation, this can either be InitiateAt or CompleteBy
      */
+    @Generated
     private DeadlineType deadlineType;
 
     /**
      * Creates an instance of Schedule class.
      */
+    @Generated
     public Schedule() {
     }
 
@@ -56,6 +63,7 @@ public final class Schedule implements JsonSerializable<Schedule> {
      * 
      * @return the deadline value.
      */
+    @Generated
     public OffsetDateTime deadline() {
         return this.deadline;
     }
@@ -66,6 +74,7 @@ public final class Schedule implements JsonSerializable<Schedule> {
      * @param deadline the deadline value to set.
      * @return the Schedule object itself.
      */
+    @Generated
     public Schedule withDeadline(OffsetDateTime deadline) {
         this.deadline = deadline;
         return this;
@@ -76,6 +85,7 @@ public final class Schedule implements JsonSerializable<Schedule> {
      * 
      * @return the deadLine value.
      */
+    @Generated
     public OffsetDateTime deadLine() {
         return this.deadLine;
     }
@@ -86,6 +96,7 @@ public final class Schedule implements JsonSerializable<Schedule> {
      * @param deadLine the deadLine value to set.
      * @return the Schedule object itself.
      */
+    @Generated
     public Schedule withDeadLine(OffsetDateTime deadLine) {
         this.deadLine = deadLine;
         return this;
@@ -96,6 +107,7 @@ public final class Schedule implements JsonSerializable<Schedule> {
      * 
      * @return the timezone value.
      */
+    @Generated
     public String timezone() {
         return this.timezone;
     }
@@ -106,6 +118,7 @@ public final class Schedule implements JsonSerializable<Schedule> {
      * @param timezone the timezone value to set.
      * @return the Schedule object itself.
      */
+    @Generated
     public Schedule withTimezone(String timezone) {
         this.timezone = timezone;
         return this;
@@ -116,6 +129,7 @@ public final class Schedule implements JsonSerializable<Schedule> {
      * 
      * @return the timeZone value.
      */
+    @Generated
     public String timeZone() {
         return this.timeZone;
     }
@@ -126,6 +140,7 @@ public final class Schedule implements JsonSerializable<Schedule> {
      * @param timeZone the timeZone value to set.
      * @return the Schedule object itself.
      */
+    @Generated
     public Schedule withTimeZone(String timeZone) {
         this.timeZone = timeZone;
         return this;
@@ -136,6 +151,7 @@ public final class Schedule implements JsonSerializable<Schedule> {
      * 
      * @return the deadlineType value.
      */
+    @Generated
     public DeadlineType deadlineType() {
         return this.deadlineType;
     }
@@ -146,6 +162,7 @@ public final class Schedule implements JsonSerializable<Schedule> {
      * @param deadlineType the deadlineType value to set.
      * @return the Schedule object itself.
      */
+    @Generated
     public Schedule withDeadlineType(DeadlineType deadlineType) {
         this.deadlineType = deadlineType;
         return this;

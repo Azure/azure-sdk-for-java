@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.onlineexperimentation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,22 +22,26 @@ public final class OnlineExperimentWorkspacePatchProperties
      * The resource identifier of the Log Analytics workspace which online experiment workspace uses for generating
      * experiment analysis results.
      */
+    @Generated
     private String logAnalyticsWorkspaceResourceId;
 
     /*
      * The resource identifier of storage account where logs are exported from Log Analytics workspace. Online
      * Experiment workspace uses it generating experiment analysis results.
      */
+    @Generated
     private String logsExporterStorageAccountResourceId;
 
     /*
      * The encryption configuration for the online experiment workspace resource.
      */
+    @Generated
     private ResourceEncryptionConfiguration encryption;
 
     /**
      * Creates an instance of OnlineExperimentWorkspacePatchProperties class.
      */
+    @Generated
     public OnlineExperimentWorkspacePatchProperties() {
     }
 
@@ -46,6 +51,7 @@ public final class OnlineExperimentWorkspacePatchProperties
      * 
      * @return the logAnalyticsWorkspaceResourceId value.
      */
+    @Generated
     public String logAnalyticsWorkspaceResourceId() {
         return this.logAnalyticsWorkspaceResourceId;
     }
@@ -57,6 +63,7 @@ public final class OnlineExperimentWorkspacePatchProperties
      * @param logAnalyticsWorkspaceResourceId the logAnalyticsWorkspaceResourceId value to set.
      * @return the OnlineExperimentWorkspacePatchProperties object itself.
      */
+    @Generated
     public OnlineExperimentWorkspacePatchProperties
         withLogAnalyticsWorkspaceResourceId(String logAnalyticsWorkspaceResourceId) {
         this.logAnalyticsWorkspaceResourceId = logAnalyticsWorkspaceResourceId;
@@ -70,6 +77,7 @@ public final class OnlineExperimentWorkspacePatchProperties
      * 
      * @return the logsExporterStorageAccountResourceId value.
      */
+    @Generated
     public String logsExporterStorageAccountResourceId() {
         return this.logsExporterStorageAccountResourceId;
     }
@@ -82,6 +90,7 @@ public final class OnlineExperimentWorkspacePatchProperties
      * @param logsExporterStorageAccountResourceId the logsExporterStorageAccountResourceId value to set.
      * @return the OnlineExperimentWorkspacePatchProperties object itself.
      */
+    @Generated
     public OnlineExperimentWorkspacePatchProperties
         withLogsExporterStorageAccountResourceId(String logsExporterStorageAccountResourceId) {
         this.logsExporterStorageAccountResourceId = logsExporterStorageAccountResourceId;
@@ -93,6 +102,7 @@ public final class OnlineExperimentWorkspacePatchProperties
      * 
      * @return the encryption value.
      */
+    @Generated
     public ResourceEncryptionConfiguration encryption() {
         return this.encryption;
     }
@@ -103,6 +113,7 @@ public final class OnlineExperimentWorkspacePatchProperties
      * @param encryption the encryption value to set.
      * @return the OnlineExperimentWorkspacePatchProperties object itself.
      */
+    @Generated
     public OnlineExperimentWorkspacePatchProperties withEncryption(ResourceEncryptionConfiguration encryption) {
         this.encryption = encryption;
         return this;

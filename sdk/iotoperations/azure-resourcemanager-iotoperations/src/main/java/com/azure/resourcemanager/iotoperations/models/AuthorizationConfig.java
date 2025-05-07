@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class AuthorizationConfig implements JsonSerializable<Authorization
     /*
      * Enable caching of the authorization rules.
      */
+    @Generated
     private OperationalMode cache;
 
     /*
      * The authorization rules to follow. If no rule is set, but Authorization Resource is used that would mean DenyAll.
      */
+    @Generated
     private List<AuthorizationRule> rules;
 
     /**
      * Creates an instance of AuthorizationConfig class.
      */
+    @Generated
     public AuthorizationConfig() {
     }
 
@@ -38,6 +42,7 @@ public final class AuthorizationConfig implements JsonSerializable<Authorization
      * 
      * @return the cache value.
      */
+    @Generated
     public OperationalMode cache() {
         return this.cache;
     }
@@ -48,6 +53,7 @@ public final class AuthorizationConfig implements JsonSerializable<Authorization
      * @param cache the cache value to set.
      * @return the AuthorizationConfig object itself.
      */
+    @Generated
     public AuthorizationConfig withCache(OperationalMode cache) {
         this.cache = cache;
         return this;
@@ -59,6 +65,7 @@ public final class AuthorizationConfig implements JsonSerializable<Authorization
      * 
      * @return the rules value.
      */
+    @Generated
     public List<AuthorizationRule> rules() {
         return this.rules;
     }
@@ -70,6 +77,7 @@ public final class AuthorizationConfig implements JsonSerializable<Authorization
      * @param rules the rules value to set.
      * @return the AuthorizationConfig object itself.
      */
+    @Generated
     public AuthorizationConfig withRules(List<AuthorizationRule> rules) {
         this.rules = rules;
         return this;

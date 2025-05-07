@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,46 +21,55 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
     /*
      * Endpoint Type.
      */
+    @Generated
     private EndpointType endpointType;
 
     /*
      * Azure Data Explorer endpoint.
      */
+    @Generated
     private DataflowEndpointDataExplorer dataExplorerSettings;
 
     /*
      * Azure Data Lake endpoint.
      */
+    @Generated
     private DataflowEndpointDataLakeStorage dataLakeStorageSettings;
 
     /*
      * Microsoft Fabric endpoint.
      */
+    @Generated
     private DataflowEndpointFabricOneLake fabricOneLakeSettings;
 
     /*
      * Kafka endpoint.
      */
+    @Generated
     private DataflowEndpointKafka kafkaSettings;
 
     /*
      * Local persistent volume endpoint.
      */
+    @Generated
     private DataflowEndpointLocalStorage localStorageSettings;
 
     /*
      * Broker endpoint.
      */
+    @Generated
     private DataflowEndpointMqtt mqttSettings;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of DataflowEndpointProperties class.
      */
+    @Generated
     public DataflowEndpointProperties() {
     }
 
@@ -68,6 +78,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * 
      * @return the endpointType value.
      */
+    @Generated
     public EndpointType endpointType() {
         return this.endpointType;
     }
@@ -78,6 +89,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * @param endpointType the endpointType value to set.
      * @return the DataflowEndpointProperties object itself.
      */
+    @Generated
     public DataflowEndpointProperties withEndpointType(EndpointType endpointType) {
         this.endpointType = endpointType;
         return this;
@@ -88,6 +100,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * 
      * @return the dataExplorerSettings value.
      */
+    @Generated
     public DataflowEndpointDataExplorer dataExplorerSettings() {
         return this.dataExplorerSettings;
     }
@@ -98,6 +111,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * @param dataExplorerSettings the dataExplorerSettings value to set.
      * @return the DataflowEndpointProperties object itself.
      */
+    @Generated
     public DataflowEndpointProperties withDataExplorerSettings(DataflowEndpointDataExplorer dataExplorerSettings) {
         this.dataExplorerSettings = dataExplorerSettings;
         return this;
@@ -108,6 +122,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * 
      * @return the dataLakeStorageSettings value.
      */
+    @Generated
     public DataflowEndpointDataLakeStorage dataLakeStorageSettings() {
         return this.dataLakeStorageSettings;
     }
@@ -118,6 +133,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * @param dataLakeStorageSettings the dataLakeStorageSettings value to set.
      * @return the DataflowEndpointProperties object itself.
      */
+    @Generated
     public DataflowEndpointProperties
         withDataLakeStorageSettings(DataflowEndpointDataLakeStorage dataLakeStorageSettings) {
         this.dataLakeStorageSettings = dataLakeStorageSettings;
@@ -129,6 +145,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * 
      * @return the fabricOneLakeSettings value.
      */
+    @Generated
     public DataflowEndpointFabricOneLake fabricOneLakeSettings() {
         return this.fabricOneLakeSettings;
     }
@@ -139,6 +156,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * @param fabricOneLakeSettings the fabricOneLakeSettings value to set.
      * @return the DataflowEndpointProperties object itself.
      */
+    @Generated
     public DataflowEndpointProperties withFabricOneLakeSettings(DataflowEndpointFabricOneLake fabricOneLakeSettings) {
         this.fabricOneLakeSettings = fabricOneLakeSettings;
         return this;
@@ -149,6 +167,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * 
      * @return the kafkaSettings value.
      */
+    @Generated
     public DataflowEndpointKafka kafkaSettings() {
         return this.kafkaSettings;
     }
@@ -159,6 +178,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * @param kafkaSettings the kafkaSettings value to set.
      * @return the DataflowEndpointProperties object itself.
      */
+    @Generated
     public DataflowEndpointProperties withKafkaSettings(DataflowEndpointKafka kafkaSettings) {
         this.kafkaSettings = kafkaSettings;
         return this;
@@ -169,6 +189,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * 
      * @return the localStorageSettings value.
      */
+    @Generated
     public DataflowEndpointLocalStorage localStorageSettings() {
         return this.localStorageSettings;
     }
@@ -179,6 +200,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * @param localStorageSettings the localStorageSettings value to set.
      * @return the DataflowEndpointProperties object itself.
      */
+    @Generated
     public DataflowEndpointProperties withLocalStorageSettings(DataflowEndpointLocalStorage localStorageSettings) {
         this.localStorageSettings = localStorageSettings;
         return this;
@@ -189,6 +211,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * 
      * @return the mqttSettings value.
      */
+    @Generated
     public DataflowEndpointMqtt mqttSettings() {
         return this.mqttSettings;
     }
@@ -199,6 +222,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * @param mqttSettings the mqttSettings value to set.
      * @return the DataflowEndpointProperties object itself.
      */
+    @Generated
     public DataflowEndpointProperties withMqttSettings(DataflowEndpointMqtt mqttSettings) {
         this.mqttSettings = mqttSettings;
         return this;
@@ -209,6 +233,7 @@ public final class DataflowEndpointProperties implements JsonSerializable<Datafl
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

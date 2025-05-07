@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.carbonoptimization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -21,38 +22,45 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
      * The ReportType requested for carbon emissions data. Required. Specifies how data is aggregated and displayed in
      * the output, as explained in the ReportTypeEnum.
      */
+    @Generated
     private ReportTypeEnum reportType = ReportTypeEnum.ITEM_DETAILS_REPORT;
 
     /*
      * Specifies the category type for detailed emissions data, such as Resource, ResourceGroup, ResourceType, Location,
      * or Subscription. See supported types in CategoryTypeEnum.
      */
+    @Generated
     private CategoryTypeEnum categoryType;
 
     /*
      * The column name to order the results by. See supported values in OrderByColumnEnum.
      */
+    @Generated
     private OrderByColumnEnum orderBy;
 
     /*
      * Direction for sorting results. See supported values in SortDirectionEnum.
      */
+    @Generated
     private SortDirectionEnum sortDirection;
 
     /*
      * Number of items to return in one request, max value is 5000.
      */
+    @Generated
     private int pageSize;
 
     /*
      * Pagination token for fetching the next page of data. This token is nullable and will be returned in the previous
      * response if additional data pages are available.
      */
+    @Generated
     private String skipToken;
 
     /**
      * Creates an instance of ItemDetailsQueryFilter class.
      */
+    @Generated
     public ItemDetailsQueryFilter() {
     }
 
@@ -62,6 +70,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
      * 
      * @return the reportType value.
      */
+    @Generated
     @Override
     public ReportTypeEnum reportType() {
         return this.reportType;
@@ -73,6 +82,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
      * 
      * @return the categoryType value.
      */
+    @Generated
     public CategoryTypeEnum categoryType() {
         return this.categoryType;
     }
@@ -84,6 +94,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
      * @param categoryType the categoryType value to set.
      * @return the ItemDetailsQueryFilter object itself.
      */
+    @Generated
     public ItemDetailsQueryFilter withCategoryType(CategoryTypeEnum categoryType) {
         this.categoryType = categoryType;
         return this;
@@ -94,6 +105,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
      * 
      * @return the orderBy value.
      */
+    @Generated
     public OrderByColumnEnum orderBy() {
         return this.orderBy;
     }
@@ -104,6 +116,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
      * @param orderBy the orderBy value to set.
      * @return the ItemDetailsQueryFilter object itself.
      */
+    @Generated
     public ItemDetailsQueryFilter withOrderBy(OrderByColumnEnum orderBy) {
         this.orderBy = orderBy;
         return this;
@@ -114,6 +127,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
      * 
      * @return the sortDirection value.
      */
+    @Generated
     public SortDirectionEnum sortDirection() {
         return this.sortDirection;
     }
@@ -124,6 +138,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
      * @param sortDirection the sortDirection value to set.
      * @return the ItemDetailsQueryFilter object itself.
      */
+    @Generated
     public ItemDetailsQueryFilter withSortDirection(SortDirectionEnum sortDirection) {
         this.sortDirection = sortDirection;
         return this;
@@ -134,6 +149,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
      * 
      * @return the pageSize value.
      */
+    @Generated
     public int pageSize() {
         return this.pageSize;
     }
@@ -144,6 +160,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
      * @param pageSize the pageSize value to set.
      * @return the ItemDetailsQueryFilter object itself.
      */
+    @Generated
     public ItemDetailsQueryFilter withPageSize(int pageSize) {
         this.pageSize = pageSize;
         return this;
@@ -155,6 +172,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
      * 
      * @return the skipToken value.
      */
+    @Generated
     public String skipToken() {
         return this.skipToken;
     }
@@ -166,6 +184,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
      * @param skipToken the skipToken value to set.
      * @return the ItemDetailsQueryFilter object itself.
      */
+    @Generated
     public ItemDetailsQueryFilter withSkipToken(String skipToken) {
         this.skipToken = skipToken;
         return this;
@@ -174,6 +193,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ItemDetailsQueryFilter withDateRange(DateRange dateRange) {
         super.withDateRange(dateRange);
@@ -183,6 +203,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ItemDetailsQueryFilter withSubscriptionList(List<String> subscriptionList) {
         super.withSubscriptionList(subscriptionList);
@@ -192,6 +213,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ItemDetailsQueryFilter withResourceGroupUrlList(List<String> resourceGroupUrlList) {
         super.withResourceGroupUrlList(resourceGroupUrlList);
@@ -201,6 +223,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ItemDetailsQueryFilter withResourceTypeList(List<String> resourceTypeList) {
         super.withResourceTypeList(resourceTypeList);
@@ -210,6 +233,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ItemDetailsQueryFilter withLocationList(List<String> locationList) {
         super.withLocationList(locationList);
@@ -219,6 +243,7 @@ public final class ItemDetailsQueryFilter extends QueryFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ItemDetailsQueryFilter withCarbonScopeList(List<EmissionScopeEnum> carbonScopeList) {
         super.withCarbonScopeList(carbonScopeList);

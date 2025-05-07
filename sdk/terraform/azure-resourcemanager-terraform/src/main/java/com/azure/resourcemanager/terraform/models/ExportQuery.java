@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.terraform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,37 +20,44 @@ public final class ExportQuery extends BaseExportModel {
     /*
      * The parameter type
      */
+    @Generated
     private Type type = Type.EXPORT_QUERY;
 
     /*
      * The ARG where predicate. Note that you can combine multiple conditions in one `where` predicate, e.g.
      * `resourceGroup =~ "my-rg" and type =~ "microsoft.network/virtualnetworks"`
      */
+    @Generated
     private String query;
 
     /*
      * The name pattern of the Terraform resources
      */
+    @Generated
     private String namePattern;
 
     /*
      * Whether to recursively list child resources of the query result
      */
+    @Generated
     private Boolean recursive;
 
     /*
      * The ARG table name
      */
+    @Generated
     private String table;
 
     /*
      * The ARG Scope Filter parameter
      */
+    @Generated
     private AuthorizationScopeFilter authorizationScopeFilter;
 
     /**
      * Creates an instance of ExportQuery class.
      */
+    @Generated
     public ExportQuery() {
     }
 
@@ -58,6 +66,7 @@ public final class ExportQuery extends BaseExportModel {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public Type type() {
         return this.type;
@@ -69,6 +78,7 @@ public final class ExportQuery extends BaseExportModel {
      * 
      * @return the query value.
      */
+    @Generated
     public String query() {
         return this.query;
     }
@@ -80,6 +90,7 @@ public final class ExportQuery extends BaseExportModel {
      * @param query the query value to set.
      * @return the ExportQuery object itself.
      */
+    @Generated
     public ExportQuery withQuery(String query) {
         this.query = query;
         return this;
@@ -90,6 +101,7 @@ public final class ExportQuery extends BaseExportModel {
      * 
      * @return the namePattern value.
      */
+    @Generated
     public String namePattern() {
         return this.namePattern;
     }
@@ -100,6 +112,7 @@ public final class ExportQuery extends BaseExportModel {
      * @param namePattern the namePattern value to set.
      * @return the ExportQuery object itself.
      */
+    @Generated
     public ExportQuery withNamePattern(String namePattern) {
         this.namePattern = namePattern;
         return this;
@@ -110,6 +123,7 @@ public final class ExportQuery extends BaseExportModel {
      * 
      * @return the recursive value.
      */
+    @Generated
     public Boolean recursive() {
         return this.recursive;
     }
@@ -120,6 +134,7 @@ public final class ExportQuery extends BaseExportModel {
      * @param recursive the recursive value to set.
      * @return the ExportQuery object itself.
      */
+    @Generated
     public ExportQuery withRecursive(Boolean recursive) {
         this.recursive = recursive;
         return this;
@@ -130,6 +145,7 @@ public final class ExportQuery extends BaseExportModel {
      * 
      * @return the table value.
      */
+    @Generated
     public String table() {
         return this.table;
     }
@@ -140,6 +156,7 @@ public final class ExportQuery extends BaseExportModel {
      * @param table the table value to set.
      * @return the ExportQuery object itself.
      */
+    @Generated
     public ExportQuery withTable(String table) {
         this.table = table;
         return this;
@@ -150,6 +167,7 @@ public final class ExportQuery extends BaseExportModel {
      * 
      * @return the authorizationScopeFilter value.
      */
+    @Generated
     public AuthorizationScopeFilter authorizationScopeFilter() {
         return this.authorizationScopeFilter;
     }
@@ -160,6 +178,7 @@ public final class ExportQuery extends BaseExportModel {
      * @param authorizationScopeFilter the authorizationScopeFilter value to set.
      * @return the ExportQuery object itself.
      */
+    @Generated
     public ExportQuery withAuthorizationScopeFilter(AuthorizationScopeFilter authorizationScopeFilter) {
         this.authorizationScopeFilter = authorizationScopeFilter;
         return this;
@@ -168,6 +187,7 @@ public final class ExportQuery extends BaseExportModel {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExportQuery withTargetProvider(TargetProvider targetProvider) {
         super.withTargetProvider(targetProvider);
@@ -177,6 +197,7 @@ public final class ExportQuery extends BaseExportModel {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExportQuery withFullProperties(Boolean fullProperties) {
         super.withFullProperties(fullProperties);
@@ -186,6 +207,7 @@ public final class ExportQuery extends BaseExportModel {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExportQuery withMaskSensitive(Boolean maskSensitive) {
         super.withMaskSensitive(maskSensitive);

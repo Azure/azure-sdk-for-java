@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class ExecuteStartRequest implements JsonSerializable<ExecuteStartR
     /*
      * The execution parameters for the request
      */
+    @Generated
     private ExecutionParameters executionParameters;
 
     /*
      * The resources for the request
      */
+    @Generated
     private Resources resources;
 
     /*
      * CorrelationId item
      */
+    @Generated
     private String correlationid;
 
     /**
      * Creates an instance of ExecuteStartRequest class.
      */
+    @Generated
     public ExecuteStartRequest() {
     }
 
@@ -43,6 +48,7 @@ public final class ExecuteStartRequest implements JsonSerializable<ExecuteStartR
      * 
      * @return the executionParameters value.
      */
+    @Generated
     public ExecutionParameters executionParameters() {
         return this.executionParameters;
     }
@@ -53,6 +59,7 @@ public final class ExecuteStartRequest implements JsonSerializable<ExecuteStartR
      * @param executionParameters the executionParameters value to set.
      * @return the ExecuteStartRequest object itself.
      */
+    @Generated
     public ExecuteStartRequest withExecutionParameters(ExecutionParameters executionParameters) {
         this.executionParameters = executionParameters;
         return this;
@@ -63,6 +70,7 @@ public final class ExecuteStartRequest implements JsonSerializable<ExecuteStartR
      * 
      * @return the resources value.
      */
+    @Generated
     public Resources resources() {
         return this.resources;
     }
@@ -73,6 +81,7 @@ public final class ExecuteStartRequest implements JsonSerializable<ExecuteStartR
      * @param resources the resources value to set.
      * @return the ExecuteStartRequest object itself.
      */
+    @Generated
     public ExecuteStartRequest withResources(Resources resources) {
         this.resources = resources;
         return this;
@@ -83,6 +92,7 @@ public final class ExecuteStartRequest implements JsonSerializable<ExecuteStartR
      * 
      * @return the correlationid value.
      */
+    @Generated
     public String correlationid() {
         return this.correlationid;
     }
@@ -93,6 +103,7 @@ public final class ExecuteStartRequest implements JsonSerializable<ExecuteStartR
      * @param correlationid the correlationid value to set.
      * @return the ExecuteStartRequest object itself.
      */
+    @Generated
     public ExecuteStartRequest withCorrelationid(String correlationid) {
         this.correlationid = correlationid;
         return this;

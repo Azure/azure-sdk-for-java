@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
     /*
      * The provisioning state of the firewall rule.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * The start IP address of the mongo cluster firewall rule. Must be IPv4 format.
      */
+    @Generated
     private String startIpAddress;
 
     /*
      * The end IP address of the mongo cluster firewall rule. Must be IPv4 format.
      */
+    @Generated
     private String endIpAddress;
 
     /**
      * Creates an instance of FirewallRuleProperties class.
      */
+    @Generated
     public FirewallRuleProperties() {
     }
 
@@ -43,6 +48,7 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -52,6 +58,7 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
      * 
      * @return the startIpAddress value.
      */
+    @Generated
     public String startIpAddress() {
         return this.startIpAddress;
     }
@@ -62,6 +69,7 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
      * @param startIpAddress the startIpAddress value to set.
      * @return the FirewallRuleProperties object itself.
      */
+    @Generated
     public FirewallRuleProperties withStartIpAddress(String startIpAddress) {
         this.startIpAddress = startIpAddress;
         return this;
@@ -72,6 +80,7 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
      * 
      * @return the endIpAddress value.
      */
+    @Generated
     public String endIpAddress() {
         return this.endIpAddress;
     }
@@ -82,6 +91,7 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
      * @param endIpAddress the endIpAddress value to set.
      * @return the FirewallRuleProperties object itself.
      */
+    @Generated
     public FirewallRuleProperties withEndIpAddress(String endIpAddress) {
         this.endIpAddress = endIpAddress;
         return this;

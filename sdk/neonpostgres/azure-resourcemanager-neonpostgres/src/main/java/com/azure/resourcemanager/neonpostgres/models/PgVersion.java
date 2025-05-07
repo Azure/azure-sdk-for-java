@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class PgVersion implements JsonSerializable<PgVersion> {
     /*
      * The major PostgreSQL version number
      */
+    @Generated
     private Integer version;
 
     /**
      * Creates an instance of PgVersion class.
      */
+    @Generated
     public PgVersion() {
     }
 
@@ -32,6 +35,7 @@ public final class PgVersion implements JsonSerializable<PgVersion> {
      * 
      * @return the version value.
      */
+    @Generated
     public Integer version() {
         return this.version;
     }
@@ -42,6 +46,7 @@ public final class PgVersion implements JsonSerializable<PgVersion> {
      * @param version the version value to set.
      * @return the PgVersion object itself.
      */
+    @Generated
     public PgVersion withVersion(Integer version) {
         this.version = version;
         return this;

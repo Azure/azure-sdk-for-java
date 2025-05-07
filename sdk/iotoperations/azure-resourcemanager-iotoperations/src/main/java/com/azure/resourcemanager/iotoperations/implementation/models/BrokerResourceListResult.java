@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,16 +23,19 @@ public final class BrokerResourceListResult implements JsonSerializable<BrokerRe
     /*
      * The BrokerResource items on this page
      */
+    @Generated
     private List<BrokerResourceInner> value;
 
     /*
      * The link to the next page of items
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of BrokerResourceListResult class.
      */
+    @Generated
     private BrokerResourceListResult() {
     }
 
@@ -40,6 +44,7 @@ public final class BrokerResourceListResult implements JsonSerializable<BrokerRe
      * 
      * @return the value value.
      */
+    @Generated
     public List<BrokerResourceInner> value() {
         return this.value;
     }
@@ -49,6 +54,7 @@ public final class BrokerResourceListResult implements JsonSerializable<BrokerRe
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String nextLink() {
         return this.nextLink;
     }

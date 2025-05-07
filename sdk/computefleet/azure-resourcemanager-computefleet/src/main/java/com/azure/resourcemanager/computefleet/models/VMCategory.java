@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,18 +18,21 @@ public final class VMCategory extends ExpandableStringEnum<VMCategory> {
      * General purpose VM sizes provide balanced CPU-to-memory ratio. Ideal for testing and development, small to medium
      * databases, and low to medium traffic web servers.
      */
+    @Generated
     public static final VMCategory GENERAL_PURPOSE = fromString("GeneralPurpose");
 
     /**
      * Compute optimized VM sizes have a high CPU-to-memory ratio. These sizes are good for medium traffic web servers,
      * network appliances, batch processes, and application servers.
      */
+    @Generated
     public static final VMCategory COMPUTE_OPTIMIZED = fromString("ComputeOptimized");
 
     /**
      * Memory optimized VM sizes offer a high memory-to-CPU ratio that is great for relational database servers, medium
      * to large caches, and in-memory analytics.
      */
+    @Generated
     public static final VMCategory MEMORY_OPTIMIZED = fromString("MemoryOptimized");
 
     /**
@@ -36,12 +40,14 @@ public final class VMCategory extends ExpandableStringEnum<VMCategory> {
      * NoSQL databases, data warehousing, and large transactional databases.
      * Examples include Cassandra, MongoDB, Cloudera, and Redis.
      */
+    @Generated
     public static final VMCategory STORAGE_OPTIMIZED = fromString("StorageOptimized");
 
     /**
      * GPU optimized VM sizes are specialized virtual machines available with single, multiple, or fractional GPUs.
      * These sizes are designed for compute-intensive, graphics-intensive, and visualization workloads.
      */
+    @Generated
     public static final VMCategory GPU_ACCELERATED = fromString("GpuAccelerated");
 
     /**
@@ -50,6 +56,7 @@ public final class VMCategory extends ExpandableStringEnum<VMCategory> {
      * type of FPGA, vCPUs, data disks, and NICs.
      * Storage throughput and network bandwidth are also included for each size in this grouping.
      */
+    @Generated
     public static final VMCategory FPGA_ACCELERATED = fromString("FpgaAccelerated");
 
     /**
@@ -57,6 +64,7 @@ public final class VMCategory extends ExpandableStringEnum<VMCategory> {
      * finite element analysis, frontend and backend EDA,
      * rendering, molecular dynamics, computational geo science, weather simulation, and financial risk analysis.
      */
+    @Generated
     public static final VMCategory HIGH_PERFORMANCE_COMPUTE = fromString("HighPerformanceCompute");
 
     /**
@@ -64,6 +72,7 @@ public final class VMCategory extends ExpandableStringEnum<VMCategory> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VMCategory() {
     }
@@ -74,6 +83,7 @@ public final class VMCategory extends ExpandableStringEnum<VMCategory> {
      * @param name a name to look for.
      * @return the corresponding VMCategory.
      */
+    @Generated
     public static VMCategory fromString(String name) {
         return fromString(name, VMCategory.class);
     }
@@ -83,6 +93,7 @@ public final class VMCategory extends ExpandableStringEnum<VMCategory> {
      * 
      * @return known VMCategory values.
      */
+    @Generated
     public static Collection<VMCategory> values() {
         return values(VMCategory.class);
     }

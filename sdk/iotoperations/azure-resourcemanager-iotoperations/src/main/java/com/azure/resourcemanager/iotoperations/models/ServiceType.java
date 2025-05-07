@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class ServiceType extends ExpandableStringEnum<ServiceType> {
     /**
      * Cluster IP Service.
      */
+    @Generated
     public static final ServiceType CLUSTER_IP = fromString("ClusterIp");
 
     /**
      * Load Balancer Service.
      */
+    @Generated
     public static final ServiceType LOAD_BALANCER = fromString("LoadBalancer");
 
     /**
      * Node Port Service.
      */
+    @Generated
     public static final ServiceType NODE_PORT = fromString("NodePort");
 
     /**
@@ -31,6 +35,7 @@ public final class ServiceType extends ExpandableStringEnum<ServiceType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ServiceType() {
     }
@@ -41,6 +46,7 @@ public final class ServiceType extends ExpandableStringEnum<ServiceType> {
      * @param name a name to look for.
      * @return the corresponding ServiceType.
      */
+    @Generated
     public static ServiceType fromString(String name) {
         return fromString(name, ServiceType.class);
     }
@@ -50,6 +56,7 @@ public final class ServiceType extends ExpandableStringEnum<ServiceType> {
      * 
      * @return known ServiceType values.
      */
+    @Generated
     public static Collection<ServiceType> values() {
         return values(ServiceType.class);
     }

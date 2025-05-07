@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,26 +21,31 @@ public final class BrokerAuthenticatorMethods implements JsonSerializable<Broker
     /*
      * Custom authentication configuration.
      */
+    @Generated
     private BrokerAuthenticationMethod method;
 
     /*
      * Custom authentication configuration.
      */
+    @Generated
     private BrokerAuthenticatorMethodCustom customSettings;
 
     /*
      * ServiceAccountToken authentication configuration.
      */
+    @Generated
     private BrokerAuthenticatorMethodSat serviceAccountTokenSettings;
 
     /*
      * X.509 authentication configuration.
      */
+    @Generated
     private BrokerAuthenticatorMethodX509 x509Settings;
 
     /**
      * Creates an instance of BrokerAuthenticatorMethods class.
      */
+    @Generated
     public BrokerAuthenticatorMethods() {
     }
 
@@ -48,6 +54,7 @@ public final class BrokerAuthenticatorMethods implements JsonSerializable<Broker
      * 
      * @return the method value.
      */
+    @Generated
     public BrokerAuthenticationMethod method() {
         return this.method;
     }
@@ -58,6 +65,7 @@ public final class BrokerAuthenticatorMethods implements JsonSerializable<Broker
      * @param method the method value to set.
      * @return the BrokerAuthenticatorMethods object itself.
      */
+    @Generated
     public BrokerAuthenticatorMethods withMethod(BrokerAuthenticationMethod method) {
         this.method = method;
         return this;
@@ -68,6 +76,7 @@ public final class BrokerAuthenticatorMethods implements JsonSerializable<Broker
      * 
      * @return the customSettings value.
      */
+    @Generated
     public BrokerAuthenticatorMethodCustom customSettings() {
         return this.customSettings;
     }
@@ -78,6 +87,7 @@ public final class BrokerAuthenticatorMethods implements JsonSerializable<Broker
      * @param customSettings the customSettings value to set.
      * @return the BrokerAuthenticatorMethods object itself.
      */
+    @Generated
     public BrokerAuthenticatorMethods withCustomSettings(BrokerAuthenticatorMethodCustom customSettings) {
         this.customSettings = customSettings;
         return this;
@@ -88,6 +98,7 @@ public final class BrokerAuthenticatorMethods implements JsonSerializable<Broker
      * 
      * @return the serviceAccountTokenSettings value.
      */
+    @Generated
     public BrokerAuthenticatorMethodSat serviceAccountTokenSettings() {
         return this.serviceAccountTokenSettings;
     }
@@ -98,6 +109,7 @@ public final class BrokerAuthenticatorMethods implements JsonSerializable<Broker
      * @param serviceAccountTokenSettings the serviceAccountTokenSettings value to set.
      * @return the BrokerAuthenticatorMethods object itself.
      */
+    @Generated
     public BrokerAuthenticatorMethods
         withServiceAccountTokenSettings(BrokerAuthenticatorMethodSat serviceAccountTokenSettings) {
         this.serviceAccountTokenSettings = serviceAccountTokenSettings;
@@ -109,6 +121,7 @@ public final class BrokerAuthenticatorMethods implements JsonSerializable<Broker
      * 
      * @return the x509Settings value.
      */
+    @Generated
     public BrokerAuthenticatorMethodX509 x509Settings() {
         return this.x509Settings;
     }
@@ -119,6 +132,7 @@ public final class BrokerAuthenticatorMethods implements JsonSerializable<Broker
      * @param x509Settings the x509Settings value to set.
      * @return the BrokerAuthenticatorMethods object itself.
      */
+    @Generated
     public BrokerAuthenticatorMethods withX509Settings(BrokerAuthenticatorMethodX509 x509Settings) {
         this.x509Settings = x509Settings;
         return this;

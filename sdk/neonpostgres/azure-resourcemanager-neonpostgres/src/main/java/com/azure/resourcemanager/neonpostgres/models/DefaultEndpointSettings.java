@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class DefaultEndpointSettings implements JsonSerializable<DefaultEn
     /*
      * Minimum compute units for autoscaling.
      */
+    @Generated
     private double autoscalingLimitMinCu;
 
     /*
      * Maximum compute units for autoscaling.
      */
+    @Generated
     private double autoscalingLimitMaxCu;
 
     /**
      * Creates an instance of DefaultEndpointSettings class.
      */
+    @Generated
     public DefaultEndpointSettings() {
     }
 
@@ -37,6 +41,7 @@ public final class DefaultEndpointSettings implements JsonSerializable<DefaultEn
      * 
      * @return the autoscalingLimitMinCu value.
      */
+    @Generated
     public double autoscalingLimitMinCu() {
         return this.autoscalingLimitMinCu;
     }
@@ -47,6 +52,7 @@ public final class DefaultEndpointSettings implements JsonSerializable<DefaultEn
      * @param autoscalingLimitMinCu the autoscalingLimitMinCu value to set.
      * @return the DefaultEndpointSettings object itself.
      */
+    @Generated
     public DefaultEndpointSettings withAutoscalingLimitMinCu(double autoscalingLimitMinCu) {
         this.autoscalingLimitMinCu = autoscalingLimitMinCu;
         return this;
@@ -57,6 +63,7 @@ public final class DefaultEndpointSettings implements JsonSerializable<DefaultEn
      * 
      * @return the autoscalingLimitMaxCu value.
      */
+    @Generated
     public double autoscalingLimitMaxCu() {
         return this.autoscalingLimitMaxCu;
     }
@@ -67,6 +74,7 @@ public final class DefaultEndpointSettings implements JsonSerializable<DefaultEn
      * @param autoscalingLimitMaxCu the autoscalingLimitMaxCu value to set.
      * @return the DefaultEndpointSettings object itself.
      */
+    @Generated
     public DefaultEndpointSettings withAutoscalingLimitMaxCu(double autoscalingLimitMaxCu) {
         this.autoscalingLimitMaxCu = autoscalingLimitMaxCu;
         return this;

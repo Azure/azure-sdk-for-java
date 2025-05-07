@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class NamingPatternType extends ExpandableStringEnum<NamingPatternT
     /**
      * Full resource names that will be created by service.
      */
+    @Generated
     public static final NamingPatternType FULL_RESOURCE_NAME = fromString("FullResourceName");
 
     /**
@@ -21,6 +23,7 @@ public final class NamingPatternType extends ExpandableStringEnum<NamingPatternT
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public NamingPatternType() {
     }
@@ -31,6 +34,7 @@ public final class NamingPatternType extends ExpandableStringEnum<NamingPatternT
      * @param name a name to look for.
      * @return the corresponding NamingPatternType.
      */
+    @Generated
     public static NamingPatternType fromString(String name) {
         return fromString(name, NamingPatternType.class);
     }
@@ -40,6 +44,7 @@ public final class NamingPatternType extends ExpandableStringEnum<NamingPatternT
      * 
      * @return known NamingPatternType values.
      */
+    @Generated
     public static Collection<NamingPatternType> values() {
         return values(NamingPatternType.class);
     }

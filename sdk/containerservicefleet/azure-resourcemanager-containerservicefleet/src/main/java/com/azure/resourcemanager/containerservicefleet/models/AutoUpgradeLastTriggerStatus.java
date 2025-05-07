@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,11 +16,13 @@ public final class AutoUpgradeLastTriggerStatus extends ExpandableStringEnum<Aut
     /**
      * The last AutoUpgrade trigger was succeeded.
      */
+    @Generated
     public static final AutoUpgradeLastTriggerStatus SUCCEEDED = fromString("Succeeded");
 
     /**
      * The last AutoUpgrade trigger failed.
      */
+    @Generated
     public static final AutoUpgradeLastTriggerStatus FAILED = fromString("Failed");
 
     /**
@@ -27,6 +30,7 @@ public final class AutoUpgradeLastTriggerStatus extends ExpandableStringEnum<Aut
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AutoUpgradeLastTriggerStatus() {
     }
@@ -37,6 +41,7 @@ public final class AutoUpgradeLastTriggerStatus extends ExpandableStringEnum<Aut
      * @param name a name to look for.
      * @return the corresponding AutoUpgradeLastTriggerStatus.
      */
+    @Generated
     public static AutoUpgradeLastTriggerStatus fromString(String name) {
         return fromString(name, AutoUpgradeLastTriggerStatus.class);
     }
@@ -46,6 +51,7 @@ public final class AutoUpgradeLastTriggerStatus extends ExpandableStringEnum<Aut
      * 
      * @return known AutoUpgradeLastTriggerStatus values.
      */
+    @Generated
     public static Collection<AutoUpgradeLastTriggerStatus> values() {
         return values(AutoUpgradeLastTriggerStatus.class);
     }

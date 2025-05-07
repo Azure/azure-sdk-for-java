@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.connectedcache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class BgpConfiguration implements JsonSerializable<BgpConfiguration
     /*
      * Asn to ip address mapping
      */
+    @Generated
     private String asnToIpAddressMapping;
 
     /**
      * Creates an instance of BgpConfiguration class.
      */
+    @Generated
     public BgpConfiguration() {
     }
 
@@ -32,6 +35,7 @@ public final class BgpConfiguration implements JsonSerializable<BgpConfiguration
      * 
      * @return the asnToIpAddressMapping value.
      */
+    @Generated
     public String asnToIpAddressMapping() {
         return this.asnToIpAddressMapping;
     }
@@ -42,6 +46,7 @@ public final class BgpConfiguration implements JsonSerializable<BgpConfiguration
      * @param asnToIpAddressMapping the asnToIpAddressMapping value to set.
      * @return the BgpConfiguration object itself.
      */
+    @Generated
     public BgpConfiguration withAsnToIpAddressMapping(String asnToIpAddressMapping) {
         this.asnToIpAddressMapping = asnToIpAddressMapping;
         return this;

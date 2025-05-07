@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class VirtualHardDisk implements JsonSerializable<VirtualHardDisk> 
     /*
      * Specifies the virtual hard disk's uri.
      */
+    @Generated
     private String uri;
 
     /**
      * Creates an instance of VirtualHardDisk class.
      */
+    @Generated
     public VirtualHardDisk() {
     }
 
@@ -32,6 +35,7 @@ public final class VirtualHardDisk implements JsonSerializable<VirtualHardDisk> 
      * 
      * @return the uri value.
      */
+    @Generated
     public String uri() {
         return this.uri;
     }
@@ -42,6 +46,7 @@ public final class VirtualHardDisk implements JsonSerializable<VirtualHardDisk> 
      * @param uri the uri value to set.
      * @return the VirtualHardDisk object itself.
      */
+    @Generated
     public VirtualHardDisk withUri(String uri) {
         this.uri = uri;
         return this;

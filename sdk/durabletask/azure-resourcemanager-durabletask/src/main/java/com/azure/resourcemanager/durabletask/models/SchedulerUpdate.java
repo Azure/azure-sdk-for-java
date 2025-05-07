@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.durabletask.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class SchedulerUpdate implements JsonSerializable<SchedulerUpdate> 
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private SchedulerPropertiesUpdate properties;
 
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /**
      * Creates an instance of SchedulerUpdate class.
      */
+    @Generated
     public SchedulerUpdate() {
     }
 
@@ -38,6 +42,7 @@ public final class SchedulerUpdate implements JsonSerializable<SchedulerUpdate> 
      * 
      * @return the properties value.
      */
+    @Generated
     public SchedulerPropertiesUpdate properties() {
         return this.properties;
     }
@@ -48,6 +53,7 @@ public final class SchedulerUpdate implements JsonSerializable<SchedulerUpdate> 
      * @param properties the properties value to set.
      * @return the SchedulerUpdate object itself.
      */
+    @Generated
     public SchedulerUpdate withProperties(SchedulerPropertiesUpdate properties) {
         this.properties = properties;
         return this;
@@ -58,6 +64,7 @@ public final class SchedulerUpdate implements JsonSerializable<SchedulerUpdate> 
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -68,6 +75,7 @@ public final class SchedulerUpdate implements JsonSerializable<SchedulerUpdate> 
      * @param tags the tags value to set.
      * @return the SchedulerUpdate object itself.
      */
+    @Generated
     public SchedulerUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;

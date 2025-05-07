@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.fabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class RpSku implements JsonSerializable<RpSku> {
     /*
      * The name of the SKU level.
      */
+    @Generated
     private String name;
 
     /*
      * The name of the Azure pricing tier to which the SKU applies.
      */
+    @Generated
     private RpSkuTier tier;
 
     /**
      * Creates an instance of RpSku class.
      */
+    @Generated
     public RpSku() {
     }
 
@@ -38,6 +42,7 @@ public final class RpSku implements JsonSerializable<RpSku> {
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -48,6 +53,7 @@ public final class RpSku implements JsonSerializable<RpSku> {
      * @param name the name value to set.
      * @return the RpSku object itself.
      */
+    @Generated
     public RpSku withName(String name) {
         this.name = name;
         return this;
@@ -58,6 +64,7 @@ public final class RpSku implements JsonSerializable<RpSku> {
      * 
      * @return the tier value.
      */
+    @Generated
     public RpSkuTier tier() {
         return this.tier;
     }
@@ -68,6 +75,7 @@ public final class RpSku implements JsonSerializable<RpSku> {
      * @param tier the tier value to set.
      * @return the RpSku object itself.
      */
+    @Generated
     public RpSku withTier(RpSkuTier tier) {
         this.tier = tier;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class ServiceConfigurationPropertiesPatch
     /*
      * The port on which service is enabled.
      */
+    @Generated
     private Long port;
 
     /**
      * Creates an instance of ServiceConfigurationPropertiesPatch class.
      */
+    @Generated
     public ServiceConfigurationPropertiesPatch() {
     }
 
@@ -33,6 +36,7 @@ public final class ServiceConfigurationPropertiesPatch
      * 
      * @return the port value.
      */
+    @Generated
     public Long port() {
         return this.port;
     }
@@ -43,6 +47,7 @@ public final class ServiceConfigurationPropertiesPatch
      * @param port the port value to set.
      * @return the ServiceConfigurationPropertiesPatch object itself.
      */
+    @Generated
     public ServiceConfigurationPropertiesPatch withPort(Long port) {
         this.port = port;
         return this;

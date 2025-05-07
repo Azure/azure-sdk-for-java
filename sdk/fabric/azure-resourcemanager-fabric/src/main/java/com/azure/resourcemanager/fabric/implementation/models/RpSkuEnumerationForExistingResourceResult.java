@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.fabric.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -23,16 +24,19 @@ public final class RpSkuEnumerationForExistingResourceResult
     /*
      * The SKU details
      */
+    @Generated
     private List<RpSkuDetailsForExistingResourceInner> value;
 
     /*
      * Url for the next page. Null if no more pages available
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of RpSkuEnumerationForExistingResourceResult class.
      */
+    @Generated
     private RpSkuEnumerationForExistingResourceResult() {
     }
 
@@ -41,6 +45,7 @@ public final class RpSkuEnumerationForExistingResourceResult
      * 
      * @return the value value.
      */
+    @Generated
     public List<RpSkuDetailsForExistingResourceInner> value() {
         return this.value;
     }
@@ -50,6 +55,7 @@ public final class RpSkuEnumerationForExistingResourceResult
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String nextLink() {
         return this.nextLink;
     }

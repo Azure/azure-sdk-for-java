@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class SqlDbElasticPoolTargetProperties extends TargetProperties {
     /*
      * Discriminator property for TargetProperties.
      */
+    @Generated
     private String targetType = "SqlEp";
 
     /*
      * The Azure resource ID of an Azure SQL DB elastic pool target.
      */
+    @Generated
     private String sqlEpResourceId;
 
     /*
      * The Azure resource ID of the anchor database used to connect to an elastic pool.
      */
+    @Generated
     private String anchorDatabaseResourceId;
 
     /*
      * Set to true to monitor a high availability replica of specified target, if any.
      */
+    @Generated
     private Boolean readIntent;
 
     /**
      * Creates an instance of SqlDbElasticPoolTargetProperties class.
      */
+    @Generated
     public SqlDbElasticPoolTargetProperties() {
     }
 
@@ -47,6 +53,7 @@ public final class SqlDbElasticPoolTargetProperties extends TargetProperties {
      * 
      * @return the targetType value.
      */
+    @Generated
     @Override
     public String targetType() {
         return this.targetType;
@@ -57,6 +64,7 @@ public final class SqlDbElasticPoolTargetProperties extends TargetProperties {
      * 
      * @return the sqlEpResourceId value.
      */
+    @Generated
     public String sqlEpResourceId() {
         return this.sqlEpResourceId;
     }
@@ -67,6 +75,7 @@ public final class SqlDbElasticPoolTargetProperties extends TargetProperties {
      * @param sqlEpResourceId the sqlEpResourceId value to set.
      * @return the SqlDbElasticPoolTargetProperties object itself.
      */
+    @Generated
     public SqlDbElasticPoolTargetProperties withSqlEpResourceId(String sqlEpResourceId) {
         this.sqlEpResourceId = sqlEpResourceId;
         return this;
@@ -78,6 +87,7 @@ public final class SqlDbElasticPoolTargetProperties extends TargetProperties {
      * 
      * @return the anchorDatabaseResourceId value.
      */
+    @Generated
     public String anchorDatabaseResourceId() {
         return this.anchorDatabaseResourceId;
     }
@@ -89,6 +99,7 @@ public final class SqlDbElasticPoolTargetProperties extends TargetProperties {
      * @param anchorDatabaseResourceId the anchorDatabaseResourceId value to set.
      * @return the SqlDbElasticPoolTargetProperties object itself.
      */
+    @Generated
     public SqlDbElasticPoolTargetProperties withAnchorDatabaseResourceId(String anchorDatabaseResourceId) {
         this.anchorDatabaseResourceId = anchorDatabaseResourceId;
         return this;
@@ -99,6 +110,7 @@ public final class SqlDbElasticPoolTargetProperties extends TargetProperties {
      * 
      * @return the readIntent value.
      */
+    @Generated
     public Boolean readIntent() {
         return this.readIntent;
     }
@@ -109,6 +121,7 @@ public final class SqlDbElasticPoolTargetProperties extends TargetProperties {
      * @param readIntent the readIntent value to set.
      * @return the SqlDbElasticPoolTargetProperties object itself.
      */
+    @Generated
     public SqlDbElasticPoolTargetProperties withReadIntent(Boolean readIntent) {
         this.readIntent = readIntent;
         return this;
@@ -117,6 +130,7 @@ public final class SqlDbElasticPoolTargetProperties extends TargetProperties {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlDbElasticPoolTargetProperties
         withTargetAuthenticationType(TargetAuthenticationType targetAuthenticationType) {
@@ -127,6 +141,7 @@ public final class SqlDbElasticPoolTargetProperties extends TargetProperties {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlDbElasticPoolTargetProperties withTargetVault(VaultSecret targetVault) {
         super.withTargetVault(targetVault);
@@ -136,6 +151,7 @@ public final class SqlDbElasticPoolTargetProperties extends TargetProperties {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlDbElasticPoolTargetProperties withConnectionServerName(String connectionServerName) {
         super.withConnectionServerName(connectionServerName);

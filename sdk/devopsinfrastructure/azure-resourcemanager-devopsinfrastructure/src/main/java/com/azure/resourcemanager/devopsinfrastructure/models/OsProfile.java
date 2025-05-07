@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class OsProfile implements JsonSerializable<OsProfile> {
     /*
      * The secret management settings of the machines in the pool.
      */
+    @Generated
     private SecretsManagementSettings secretsManagementSettings;
 
     /*
      * Determines how the service should be run. By default, this will be set to Service.
      */
+    @Generated
     private LogonType logonType;
 
     /**
      * Creates an instance of OsProfile class.
      */
+    @Generated
     public OsProfile() {
     }
 
@@ -37,6 +41,7 @@ public final class OsProfile implements JsonSerializable<OsProfile> {
      * 
      * @return the secretsManagementSettings value.
      */
+    @Generated
     public SecretsManagementSettings secretsManagementSettings() {
         return this.secretsManagementSettings;
     }
@@ -47,6 +52,7 @@ public final class OsProfile implements JsonSerializable<OsProfile> {
      * @param secretsManagementSettings the secretsManagementSettings value to set.
      * @return the OsProfile object itself.
      */
+    @Generated
     public OsProfile withSecretsManagementSettings(SecretsManagementSettings secretsManagementSettings) {
         this.secretsManagementSettings = secretsManagementSettings;
         return this;
@@ -57,6 +63,7 @@ public final class OsProfile implements JsonSerializable<OsProfile> {
      * 
      * @return the logonType value.
      */
+    @Generated
     public LogonType logonType() {
         return this.logonType;
     }
@@ -67,6 +74,7 @@ public final class OsProfile implements JsonSerializable<OsProfile> {
      * @param logonType the logonType value to set.
      * @return the OsProfile object itself.
      */
+    @Generated
     public OsProfile withLogonType(LogonType logonType) {
         this.logonType = logonType;
         return this;

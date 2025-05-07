@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class AuthenticationMethod extends ExpandableStringEnum<Authenticat
     /**
      * The user authentication method is anonymous.
      */
+    @Generated
     public static final AuthenticationMethod ANONYMOUS = fromString("Anonymous");
 
     /**
      * The user authentication method is an x509 certificate.
      */
+    @Generated
     public static final AuthenticationMethod CERTIFICATE = fromString("Certificate");
 
     /**
      * The user authentication method is a username and password.
      */
+    @Generated
     public static final AuthenticationMethod USERNAME_PASSWORD = fromString("UsernamePassword");
 
     /**
@@ -31,6 +35,7 @@ public final class AuthenticationMethod extends ExpandableStringEnum<Authenticat
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AuthenticationMethod() {
     }
@@ -41,6 +46,7 @@ public final class AuthenticationMethod extends ExpandableStringEnum<Authenticat
      * @param name a name to look for.
      * @return the corresponding AuthenticationMethod.
      */
+    @Generated
     public static AuthenticationMethod fromString(String name) {
         return fromString(name, AuthenticationMethod.class);
     }
@@ -50,6 +56,7 @@ public final class AuthenticationMethod extends ExpandableStringEnum<Authenticat
      * 
      * @return known AuthenticationMethod values.
      */
+    @Generated
     public static Collection<AuthenticationMethod> values() {
         return values(AuthenticationMethod.class);
     }

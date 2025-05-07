@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class BrokerAuthorizationProperties implements JsonSerializable<Bro
     /*
      * The list of authorization policies supported by the Authorization Resource.
      */
+    @Generated
     private AuthorizationConfig authorizationPolicies;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of BrokerAuthorizationProperties class.
      */
+    @Generated
     public BrokerAuthorizationProperties() {
     }
 
@@ -39,6 +43,7 @@ public final class BrokerAuthorizationProperties implements JsonSerializable<Bro
      * 
      * @return the authorizationPolicies value.
      */
+    @Generated
     public AuthorizationConfig authorizationPolicies() {
         return this.authorizationPolicies;
     }
@@ -50,6 +55,7 @@ public final class BrokerAuthorizationProperties implements JsonSerializable<Bro
      * @param authorizationPolicies the authorizationPolicies value to set.
      * @return the BrokerAuthorizationProperties object itself.
      */
+    @Generated
     public BrokerAuthorizationProperties withAuthorizationPolicies(AuthorizationConfig authorizationPolicies) {
         this.authorizationPolicies = authorizationPolicies;
         return this;
@@ -60,6 +66,7 @@ public final class BrokerAuthorizationProperties implements JsonSerializable<Bro
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

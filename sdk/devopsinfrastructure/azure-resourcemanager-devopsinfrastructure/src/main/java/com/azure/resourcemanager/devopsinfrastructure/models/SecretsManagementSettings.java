@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,26 +22,31 @@ public final class SecretsManagementSettings implements JsonSerializable<Secrets
     /*
      * Where to store certificates on the machine.
      */
+    @Generated
     private String certificateStoreLocation;
 
     /*
      * Name of the certificate store to use on the machine, currently 'My' and 'Root' are supported.
      */
+    @Generated
     private CertificateStoreNameOption certificateStoreName;
 
     /*
      * The list of certificates to install on all machines in the pool.
      */
+    @Generated
     private List<String> observedCertificates;
 
     /*
      * Defines if the key of the certificates should be exportable.
      */
+    @Generated
     private boolean keyExportable;
 
     /**
      * Creates an instance of SecretsManagementSettings class.
      */
+    @Generated
     public SecretsManagementSettings() {
     }
 
@@ -49,6 +55,7 @@ public final class SecretsManagementSettings implements JsonSerializable<Secrets
      * 
      * @return the certificateStoreLocation value.
      */
+    @Generated
     public String certificateStoreLocation() {
         return this.certificateStoreLocation;
     }
@@ -59,6 +66,7 @@ public final class SecretsManagementSettings implements JsonSerializable<Secrets
      * @param certificateStoreLocation the certificateStoreLocation value to set.
      * @return the SecretsManagementSettings object itself.
      */
+    @Generated
     public SecretsManagementSettings withCertificateStoreLocation(String certificateStoreLocation) {
         this.certificateStoreLocation = certificateStoreLocation;
         return this;
@@ -70,6 +78,7 @@ public final class SecretsManagementSettings implements JsonSerializable<Secrets
      * 
      * @return the certificateStoreName value.
      */
+    @Generated
     public CertificateStoreNameOption certificateStoreName() {
         return this.certificateStoreName;
     }
@@ -81,6 +90,7 @@ public final class SecretsManagementSettings implements JsonSerializable<Secrets
      * @param certificateStoreName the certificateStoreName value to set.
      * @return the SecretsManagementSettings object itself.
      */
+    @Generated
     public SecretsManagementSettings withCertificateStoreName(CertificateStoreNameOption certificateStoreName) {
         this.certificateStoreName = certificateStoreName;
         return this;
@@ -91,6 +101,7 @@ public final class SecretsManagementSettings implements JsonSerializable<Secrets
      * 
      * @return the observedCertificates value.
      */
+    @Generated
     public List<String> observedCertificates() {
         return this.observedCertificates;
     }
@@ -101,6 +112,7 @@ public final class SecretsManagementSettings implements JsonSerializable<Secrets
      * @param observedCertificates the observedCertificates value to set.
      * @return the SecretsManagementSettings object itself.
      */
+    @Generated
     public SecretsManagementSettings withObservedCertificates(List<String> observedCertificates) {
         this.observedCertificates = observedCertificates;
         return this;
@@ -111,6 +123,7 @@ public final class SecretsManagementSettings implements JsonSerializable<Secrets
      * 
      * @return the keyExportable value.
      */
+    @Generated
     public boolean keyExportable() {
         return this.keyExportable;
     }
@@ -121,6 +134,7 @@ public final class SecretsManagementSettings implements JsonSerializable<Secrets
      * @param keyExportable the keyExportable value to set.
      * @return the SecretsManagementSettings object itself.
      */
+    @Generated
     public SecretsManagementSettings withKeyExportable(boolean keyExportable) {
         this.keyExportable = keyExportable;
         return this;

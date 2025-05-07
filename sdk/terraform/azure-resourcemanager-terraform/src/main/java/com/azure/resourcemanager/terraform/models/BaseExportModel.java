@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.terraform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,27 +20,32 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
     /*
      * The parameter type
      */
+    @Generated
     private Type type = Type.fromString("BaseExportModel");
 
     /*
      * The target Azure Terraform Provider
      */
+    @Generated
     private TargetProvider targetProvider;
 
     /*
      * Whether to output all non-computed properties in the generated Terraform configuration? This probably needs
      * manual modifications to make it valid
      */
+    @Generated
     private Boolean fullProperties;
 
     /*
      * Mask sensitive attributes in the Terraform configuration
      */
+    @Generated
     private Boolean maskSensitive;
 
     /**
      * Creates an instance of BaseExportModel class.
      */
+    @Generated
     public BaseExportModel() {
     }
 
@@ -48,6 +54,7 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
      * 
      * @return the type value.
      */
+    @Generated
     public Type type() {
         return this.type;
     }
@@ -57,6 +64,7 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
      * 
      * @return the targetProvider value.
      */
+    @Generated
     public TargetProvider targetProvider() {
         return this.targetProvider;
     }
@@ -67,6 +75,7 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
      * @param targetProvider the targetProvider value to set.
      * @return the BaseExportModel object itself.
      */
+    @Generated
     public BaseExportModel withTargetProvider(TargetProvider targetProvider) {
         this.targetProvider = targetProvider;
         return this;
@@ -78,6 +87,7 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
      * 
      * @return the fullProperties value.
      */
+    @Generated
     public Boolean fullProperties() {
         return this.fullProperties;
     }
@@ -89,6 +99,7 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
      * @param fullProperties the fullProperties value to set.
      * @return the BaseExportModel object itself.
      */
+    @Generated
     public BaseExportModel withFullProperties(Boolean fullProperties) {
         this.fullProperties = fullProperties;
         return this;
@@ -99,6 +110,7 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
      * 
      * @return the maskSensitive value.
      */
+    @Generated
     public Boolean maskSensitive() {
         return this.maskSensitive;
     }
@@ -109,6 +121,7 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
      * @param maskSensitive the maskSensitive value to set.
      * @return the BaseExportModel object itself.
      */
+    @Generated
     public BaseExportModel withMaskSensitive(Boolean maskSensitive) {
         this.maskSensitive = maskSensitive;
         return this;

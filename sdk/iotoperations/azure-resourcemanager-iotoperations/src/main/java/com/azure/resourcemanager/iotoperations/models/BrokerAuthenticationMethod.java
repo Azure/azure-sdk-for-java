@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.iotoperations.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class BrokerAuthenticationMethod extends ExpandableStringEnum<Broke
     /**
      * Custom authentication configuration.
      */
+    @Generated
     public static final BrokerAuthenticationMethod CUSTOM = fromString("Custom");
 
     /**
      * ServiceAccountToken authentication configuration.
      */
+    @Generated
     public static final BrokerAuthenticationMethod SERVICE_ACCOUNT_TOKEN = fromString("ServiceAccountToken");
 
     /**
      * X.509 authentication configuration.
      */
+    @Generated
     public static final BrokerAuthenticationMethod X509 = fromString("X509");
 
     /**
@@ -31,6 +35,7 @@ public final class BrokerAuthenticationMethod extends ExpandableStringEnum<Broke
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public BrokerAuthenticationMethod() {
     }
@@ -41,6 +46,7 @@ public final class BrokerAuthenticationMethod extends ExpandableStringEnum<Broke
      * @param name a name to look for.
      * @return the corresponding BrokerAuthenticationMethod.
      */
+    @Generated
     public static BrokerAuthenticationMethod fromString(String name) {
         return fromString(name, BrokerAuthenticationMethod.class);
     }
@@ -50,6 +56,7 @@ public final class BrokerAuthenticationMethod extends ExpandableStringEnum<Broke
      * 
      * @return known BrokerAuthenticationMethod values.
      */
+    @Generated
     public static Collection<BrokerAuthenticationMethod> values() {
         return values(BrokerAuthenticationMethod.class);
     }

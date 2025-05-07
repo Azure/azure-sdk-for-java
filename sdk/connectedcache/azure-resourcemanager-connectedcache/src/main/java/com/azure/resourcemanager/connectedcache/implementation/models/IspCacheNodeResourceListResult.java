@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.connectedcache.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,16 +23,19 @@ public final class IspCacheNodeResourceListResult implements JsonSerializable<Is
     /*
      * The IspCacheNodeResource items on this page
      */
+    @Generated
     private List<IspCacheNodeResourceInner> value;
 
     /*
      * The link to the next page of items
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of IspCacheNodeResourceListResult class.
      */
+    @Generated
     private IspCacheNodeResourceListResult() {
     }
 
@@ -40,6 +44,7 @@ public final class IspCacheNodeResourceListResult implements JsonSerializable<Is
      * 
      * @return the value value.
      */
+    @Generated
     public List<IspCacheNodeResourceInner> value() {
         return this.value;
     }
@@ -49,6 +54,7 @@ public final class IspCacheNodeResourceListResult implements JsonSerializable<Is
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String nextLink() {
         return this.nextLink;
     }

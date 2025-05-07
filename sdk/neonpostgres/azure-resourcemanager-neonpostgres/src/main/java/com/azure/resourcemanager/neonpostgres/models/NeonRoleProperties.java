@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,46 +21,55 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
     /*
      * Unique identifier for the entity
      */
+    @Generated
     private String entityId;
 
     /*
      * Name of the resource
      */
+    @Generated
     private String entityName;
 
     /*
      * Timestamp indicating when the entity was created
      */
+    @Generated
     private String createdAt;
 
     /*
      * Provisioning state of the resource.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /*
      * Additional attributes for the entity
      */
+    @Generated
     private List<Attributes> attributes;
 
     /*
      * The ID of the branch this role belongs to
      */
+    @Generated
     private String branchId;
 
     /*
      * Permissions assigned to the role
      */
+    @Generated
     private List<String> permissions;
 
     /*
      * Indicates whether the role has superuser privileges
      */
+    @Generated
     private Boolean isSuperUser;
 
     /**
      * Creates an instance of NeonRoleProperties class.
      */
+    @Generated
     public NeonRoleProperties() {
     }
 
@@ -68,6 +78,7 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
      * 
      * @return the entityId value.
      */
+    @Generated
     public String entityId() {
         return this.entityId;
     }
@@ -77,6 +88,7 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
      * 
      * @return the entityName value.
      */
+    @Generated
     public String entityName() {
         return this.entityName;
     }
@@ -87,6 +99,7 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
      * @param entityName the entityName value to set.
      * @return the NeonRoleProperties object itself.
      */
+    @Generated
     public NeonRoleProperties withEntityName(String entityName) {
         this.entityName = entityName;
         return this;
@@ -97,6 +110,7 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
      * 
      * @return the createdAt value.
      */
+    @Generated
     public String createdAt() {
         return this.createdAt;
     }
@@ -106,6 +120,7 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -115,6 +130,7 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
      * 
      * @return the attributes value.
      */
+    @Generated
     public List<Attributes> attributes() {
         return this.attributes;
     }
@@ -125,6 +141,7 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
      * @param attributes the attributes value to set.
      * @return the NeonRoleProperties object itself.
      */
+    @Generated
     public NeonRoleProperties withAttributes(List<Attributes> attributes) {
         this.attributes = attributes;
         return this;
@@ -135,6 +152,7 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
      * 
      * @return the branchId value.
      */
+    @Generated
     public String branchId() {
         return this.branchId;
     }
@@ -145,6 +163,7 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
      * @param branchId the branchId value to set.
      * @return the NeonRoleProperties object itself.
      */
+    @Generated
     public NeonRoleProperties withBranchId(String branchId) {
         this.branchId = branchId;
         return this;
@@ -155,6 +174,7 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
      * 
      * @return the permissions value.
      */
+    @Generated
     public List<String> permissions() {
         return this.permissions;
     }
@@ -165,6 +185,7 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
      * @param permissions the permissions value to set.
      * @return the NeonRoleProperties object itself.
      */
+    @Generated
     public NeonRoleProperties withPermissions(List<String> permissions) {
         this.permissions = permissions;
         return this;
@@ -175,6 +196,7 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
      * 
      * @return the isSuperUser value.
      */
+    @Generated
     public Boolean isSuperUser() {
         return this.isSuperUser;
     }
@@ -185,6 +207,7 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
      * @param isSuperUser the isSuperUser value to set.
      * @return the NeonRoleProperties object itself.
      */
+    @Generated
     public NeonRoleProperties withIsSuperUser(Boolean isSuperUser) {
         this.isSuperUser = isSuperUser;
         return this;

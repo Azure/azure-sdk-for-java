@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,51 +21,61 @@ public final class SapDatabaseProperties implements JsonSerializable<SapDatabase
     /*
      * Database subnet.
      */
+    @Generated
     private String subnet;
 
     /*
      * Database SID name.
      */
+    @Generated
     private String databaseSid;
 
     /*
      * Database type, that is if the DB is HANA, DB2, Oracle, SAP ASE, Max DB or MS SQL Server.
      */
+    @Generated
     private String databaseType;
 
     /*
      * Database IP Address.
      */
+    @Generated
     private String ipAddress;
 
     /*
      * The Load Balancer details such as LoadBalancer ID attached to Database Virtual Machines
      */
+    @Generated
     private LoadBalancerDetails loadBalancerDetails;
 
     /*
      * The list of virtual machines corresponding to the Database resource.
      */
+    @Generated
     private List<DatabaseVmDetails> vmDetails;
 
     /*
      * Defines the SAP Instance status.
      */
+    @Generated
     private SapVirtualInstanceStatus status;
 
     /*
      * Defines the provisioning states.
      */
+    @Generated
     private SapVirtualInstanceProvisioningState provisioningState;
 
     /*
      * Defines the errors related to Database resource.
      */
+    @Generated
     private SapVirtualInstanceError errors;
 
     /**
      * Creates an instance of SapDatabaseProperties class.
      */
+    @Generated
     public SapDatabaseProperties() {
     }
 
@@ -73,6 +84,7 @@ public final class SapDatabaseProperties implements JsonSerializable<SapDatabase
      * 
      * @return the subnet value.
      */
+    @Generated
     public String subnet() {
         return this.subnet;
     }
@@ -82,6 +94,7 @@ public final class SapDatabaseProperties implements JsonSerializable<SapDatabase
      * 
      * @return the databaseSid value.
      */
+    @Generated
     public String databaseSid() {
         return this.databaseSid;
     }
@@ -92,6 +105,7 @@ public final class SapDatabaseProperties implements JsonSerializable<SapDatabase
      * 
      * @return the databaseType value.
      */
+    @Generated
     public String databaseType() {
         return this.databaseType;
     }
@@ -101,6 +115,7 @@ public final class SapDatabaseProperties implements JsonSerializable<SapDatabase
      * 
      * @return the ipAddress value.
      */
+    @Generated
     public String ipAddress() {
         return this.ipAddress;
     }
@@ -111,6 +126,7 @@ public final class SapDatabaseProperties implements JsonSerializable<SapDatabase
      * 
      * @return the loadBalancerDetails value.
      */
+    @Generated
     public LoadBalancerDetails loadBalancerDetails() {
         return this.loadBalancerDetails;
     }
@@ -120,6 +136,7 @@ public final class SapDatabaseProperties implements JsonSerializable<SapDatabase
      * 
      * @return the vmDetails value.
      */
+    @Generated
     public List<DatabaseVmDetails> vmDetails() {
         return this.vmDetails;
     }
@@ -129,6 +146,7 @@ public final class SapDatabaseProperties implements JsonSerializable<SapDatabase
      * 
      * @return the status value.
      */
+    @Generated
     public SapVirtualInstanceStatus status() {
         return this.status;
     }
@@ -138,6 +156,7 @@ public final class SapDatabaseProperties implements JsonSerializable<SapDatabase
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public SapVirtualInstanceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -147,6 +166,7 @@ public final class SapDatabaseProperties implements JsonSerializable<SapDatabase
      * 
      * @return the errors value.
      */
+    @Generated
     public SapVirtualInstanceError errors() {
         return this.errors;
     }

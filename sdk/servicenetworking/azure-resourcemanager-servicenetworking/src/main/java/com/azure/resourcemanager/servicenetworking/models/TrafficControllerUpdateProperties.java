@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class TrafficControllerUpdateProperties implements JsonSerializable
     /*
      * Security Policy Configuration
      */
+    @Generated
     private SecurityPolicyConfigurations securityPolicyConfigurations;
 
     /**
      * Creates an instance of TrafficControllerUpdateProperties class.
      */
+    @Generated
     public TrafficControllerUpdateProperties() {
     }
 
@@ -32,6 +35,7 @@ public final class TrafficControllerUpdateProperties implements JsonSerializable
      * 
      * @return the securityPolicyConfigurations value.
      */
+    @Generated
     public SecurityPolicyConfigurations securityPolicyConfigurations() {
         return this.securityPolicyConfigurations;
     }
@@ -42,6 +46,7 @@ public final class TrafficControllerUpdateProperties implements JsonSerializable
      * @param securityPolicyConfigurations the securityPolicyConfigurations value to set.
      * @return the TrafficControllerUpdateProperties object itself.
      */
+    @Generated
     public TrafficControllerUpdateProperties
         withSecurityPolicyConfigurations(SecurityPolicyConfigurations securityPolicyConfigurations) {
         this.securityPolicyConfigurations = securityPolicyConfigurations;

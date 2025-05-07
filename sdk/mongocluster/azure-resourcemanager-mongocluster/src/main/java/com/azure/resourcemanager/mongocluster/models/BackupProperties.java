@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
     /*
      * Earliest restore timestamp in UTC ISO8601 format.
      */
+    @Generated
     private String earliestRestoreTime;
 
     /**
      * Creates an instance of BackupProperties class.
      */
+    @Generated
     public BackupProperties() {
     }
 
@@ -32,6 +35,7 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
      * 
      * @return the earliestRestoreTime value.
      */
+    @Generated
     public String earliestRestoreTime() {
         return this.earliestRestoreTime;
     }

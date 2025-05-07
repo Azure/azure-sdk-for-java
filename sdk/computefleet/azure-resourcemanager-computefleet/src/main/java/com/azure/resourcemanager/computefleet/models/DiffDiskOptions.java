@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class DiffDiskOptions extends ExpandableStringEnum<DiffDiskOptions>
     /**
      * Local Option.
      */
+    @Generated
     public static final DiffDiskOptions LOCAL = fromString("Local");
 
     /**
@@ -21,6 +23,7 @@ public final class DiffDiskOptions extends ExpandableStringEnum<DiffDiskOptions>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DiffDiskOptions() {
     }
@@ -31,6 +34,7 @@ public final class DiffDiskOptions extends ExpandableStringEnum<DiffDiskOptions>
      * @param name a name to look for.
      * @return the corresponding DiffDiskOptions.
      */
+    @Generated
     public static DiffDiskOptions fromString(String name) {
         return fromString(name, DiffDiskOptions.class);
     }
@@ -40,6 +44,7 @@ public final class DiffDiskOptions extends ExpandableStringEnum<DiffDiskOptions>
      * 
      * @return known DiffDiskOptions values.
      */
+    @Generated
     public static Collection<DiffDiskOptions> values() {
         return values(DiffDiskOptions.class);
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -24,6 +25,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private AutoUpgradeProfileProperties innerProperties;
 
     /*
@@ -32,31 +34,37 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section
      * 14.27) header fields.
      */
+    @Generated
     private String etag;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of AutoUpgradeProfileInner class.
      */
+    @Generated
     public AutoUpgradeProfileInner() {
     }
 
@@ -65,6 +73,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * 
      * @return the innerProperties value.
      */
+    @Generated
     private AutoUpgradeProfileProperties innerProperties() {
         return this.innerProperties;
     }
@@ -77,6 +86,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * 
      * @return the etag value.
      */
+    @Generated
     public String etag() {
         return this.etag;
     }
@@ -86,6 +96,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -95,6 +106,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -105,6 +117,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -115,6 +128,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;
@@ -125,6 +139,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public AutoUpgradeProfileProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
@@ -135,6 +150,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * 
      * @return the updateStrategyId value.
      */
+    @Generated
     public String updateStrategyId() {
         return this.innerProperties() == null ? null : this.innerProperties().updateStrategyId();
     }
@@ -146,6 +162,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * @param updateStrategyId the updateStrategyId value to set.
      * @return the AutoUpgradeProfileInner object itself.
      */
+    @Generated
     public AutoUpgradeProfileInner withUpdateStrategyId(String updateStrategyId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AutoUpgradeProfileProperties();
@@ -159,6 +176,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * 
      * @return the channel value.
      */
+    @Generated
     public UpgradeChannel channel() {
         return this.innerProperties() == null ? null : this.innerProperties().channel();
     }
@@ -169,6 +187,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * @param channel the channel value to set.
      * @return the AutoUpgradeProfileInner object itself.
      */
+    @Generated
     public AutoUpgradeProfileInner withChannel(UpgradeChannel channel) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AutoUpgradeProfileProperties();
@@ -182,6 +201,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * 
      * @return the nodeImageSelection value.
      */
+    @Generated
     public AutoUpgradeNodeImageSelection nodeImageSelection() {
         return this.innerProperties() == null ? null : this.innerProperties().nodeImageSelection();
     }
@@ -192,6 +212,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * @param nodeImageSelection the nodeImageSelection value to set.
      * @return the AutoUpgradeProfileInner object itself.
      */
+    @Generated
     public AutoUpgradeProfileInner withNodeImageSelection(AutoUpgradeNodeImageSelection nodeImageSelection) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AutoUpgradeProfileProperties();
@@ -209,6 +230,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * 
      * @return the disabled value.
      */
+    @Generated
     public Boolean disabled() {
         return this.innerProperties() == null ? null : this.innerProperties().disabled();
     }
@@ -223,6 +245,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * @param disabled the disabled value to set.
      * @return the AutoUpgradeProfileInner object itself.
      */
+    @Generated
     public AutoUpgradeProfileInner withDisabled(Boolean disabled) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AutoUpgradeProfileProperties();
@@ -236,6 +259,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * 
      * @return the autoUpgradeProfileStatus value.
      */
+    @Generated
     public AutoUpgradeProfileStatus autoUpgradeProfileStatus() {
         return this.innerProperties() == null ? null : this.innerProperties().autoUpgradeProfileStatus();
     }
@@ -246,6 +270,7 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
      * @param autoUpgradeProfileStatus the autoUpgradeProfileStatus value to set.
      * @return the AutoUpgradeProfileInner object itself.
      */
+    @Generated
     public AutoUpgradeProfileInner withAutoUpgradeProfileStatus(AutoUpgradeProfileStatus autoUpgradeProfileStatus) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AutoUpgradeProfileProperties();

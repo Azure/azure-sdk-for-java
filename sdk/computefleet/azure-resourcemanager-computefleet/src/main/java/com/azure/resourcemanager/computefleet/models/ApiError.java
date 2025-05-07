@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,31 +21,37 @@ public final class ApiError implements JsonSerializable<ApiError> {
     /*
      * The error code.
      */
+    @Generated
     private String code;
 
     /*
      * The target of the particular error.
      */
+    @Generated
     private String target;
 
     /*
      * The error message.
      */
+    @Generated
     private String message;
 
     /*
      * The API error details
      */
+    @Generated
     private List<ApiErrorBase> details;
 
     /*
      * The API inner error
      */
+    @Generated
     private InnerError innererror;
 
     /**
      * Creates an instance of ApiError class.
      */
+    @Generated
     private ApiError() {
     }
 
@@ -53,6 +60,7 @@ public final class ApiError implements JsonSerializable<ApiError> {
      * 
      * @return the code value.
      */
+    @Generated
     public String code() {
         return this.code;
     }
@@ -62,6 +70,7 @@ public final class ApiError implements JsonSerializable<ApiError> {
      * 
      * @return the target value.
      */
+    @Generated
     public String target() {
         return this.target;
     }
@@ -71,6 +80,7 @@ public final class ApiError implements JsonSerializable<ApiError> {
      * 
      * @return the message value.
      */
+    @Generated
     public String message() {
         return this.message;
     }
@@ -80,6 +90,7 @@ public final class ApiError implements JsonSerializable<ApiError> {
      * 
      * @return the details value.
      */
+    @Generated
     public List<ApiErrorBase> details() {
         return this.details;
     }
@@ -89,6 +100,7 @@ public final class ApiError implements JsonSerializable<ApiError> {
      * 
      * @return the innererror value.
      */
+    @Generated
     public InnerError innererror() {
         return this.innererror;
     }

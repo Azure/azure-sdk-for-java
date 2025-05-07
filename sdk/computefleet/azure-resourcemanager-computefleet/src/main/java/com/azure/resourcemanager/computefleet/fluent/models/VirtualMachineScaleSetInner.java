@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,27 +23,32 @@ public final class VirtualMachineScaleSetInner implements JsonSerializable<Virtu
      * The compute RP resource id of the virtualMachineScaleSet
      * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}"
      */
+    @Generated
     private String id;
 
     /*
      * Type of the virtualMachineScaleSet
      */
+    @Generated
     private String type;
 
     /*
      * This represents the operationStatus of the VMSS in response to the last operation that was performed on it by
      * Azure Fleet resource.
      */
+    @Generated
     private ProvisioningState operationStatus;
 
     /*
      * Error Information when `operationStatus` is `Failed`
      */
+    @Generated
     private ApiError error;
 
     /**
      * Creates an instance of VirtualMachineScaleSetInner class.
      */
+    @Generated
     private VirtualMachineScaleSetInner() {
     }
 
@@ -52,6 +58,7 @@ public final class VirtualMachineScaleSetInner implements JsonSerializable<Virtu
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }
@@ -61,6 +68,7 @@ public final class VirtualMachineScaleSetInner implements JsonSerializable<Virtu
      * 
      * @return the type value.
      */
+    @Generated
     public String type() {
         return this.type;
     }
@@ -71,6 +79,7 @@ public final class VirtualMachineScaleSetInner implements JsonSerializable<Virtu
      * 
      * @return the operationStatus value.
      */
+    @Generated
     public ProvisioningState operationStatus() {
         return this.operationStatus;
     }
@@ -80,6 +89,7 @@ public final class VirtualMachineScaleSetInner implements JsonSerializable<Virtu
      * 
      * @return the error value.
      */
+    @Generated
     public ApiError error() {
         return this.error;
     }

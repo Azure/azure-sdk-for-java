@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,11 +17,13 @@ public final class IPVersion extends ExpandableStringEnum<IPVersion> {
     /**
      * IPv4 version.
      */
+    @Generated
     public static final IPVersion IPV4 = fromString("IPv4");
 
     /**
      * IPv6 version.
      */
+    @Generated
     public static final IPVersion IPV6 = fromString("IPv6");
 
     /**
@@ -28,6 +31,7 @@ public final class IPVersion extends ExpandableStringEnum<IPVersion> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IPVersion() {
     }
@@ -38,6 +42,7 @@ public final class IPVersion extends ExpandableStringEnum<IPVersion> {
      * @param name a name to look for.
      * @return the corresponding IPVersion.
      */
+    @Generated
     public static IPVersion fromString(String name) {
         return fromString(name, IPVersion.class);
     }
@@ -47,6 +52,7 @@ public final class IPVersion extends ExpandableStringEnum<IPVersion> {
      * 
      * @return known IPVersion values.
      */
+    @Generated
     public static Collection<IPVersion> values() {
         return values(IPVersion.class);
     }

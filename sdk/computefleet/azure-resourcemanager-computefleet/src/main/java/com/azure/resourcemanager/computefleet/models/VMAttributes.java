@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,30 +23,35 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * The range of vCpuCount specified from Min to Max. Must be specified if VMAttributes are specified, either Min or
      * Max is required if specified.
      */
+    @Generated
     private VMAttributeMinMaxInteger vCpuCount;
 
     /*
      * The range of memory specified from Min to Max. Must be specified if VMAttributes are specified, either Min or Max
      * is required if specified.
      */
+    @Generated
     private VMAttributeMinMaxDouble memoryInGiB;
 
     /*
      * The range of memory in GiB per vCPU specified from min to max. Optional parameter. Either Min or Max is required
      * if specified.
      */
+    @Generated
     private VMAttributeMinMaxDouble memoryInGiBPerVCpu;
 
     /*
      * Specifies whether the VMSize supporting local storage should be used to build Fleet or not.
      * Included - Default if not specified as most Azure VMs support local storage.
      */
+    @Generated
     private VMAttributeSupport localStorageSupport;
 
     /*
      * LocalStorageSupport should be set to "Included" or "Required" to use this VMAttribute.
      * If localStorageSupport is "Excluded", this VMAttribute can not be used.
      */
+    @Generated
     private VMAttributeMinMaxDouble localStorageInGiB;
 
     /*
@@ -53,29 +59,34 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * to use this VMAttribute.
      * If localStorageSupport is "Excluded", this VMAttribute can not be used.
      */
+    @Generated
     private List<LocalStorageDiskType> localStorageDiskTypes;
 
     /*
      * The range of data disk count specified from Min to Max. Optional parameter. Either Min or Max is required if
      * specified.
      */
+    @Generated
     private VMAttributeMinMaxInteger dataDiskCount;
 
     /*
      * The range of network interface count specified from Min to Max. Optional parameter. Either Min or Max is required
      * if specified.
      */
+    @Generated
     private VMAttributeMinMaxInteger networkInterfaceCount;
 
     /*
      * The range of network bandwidth in Mbps specified from Min to Max. Optional parameter. Either Min or Max is
      * required if specified.
      */
+    @Generated
     private VMAttributeMinMaxDouble networkBandwidthInMbps;
 
     /*
      * Specifies whether the VMSize supporting RDMA (Remote Direct Memory Access) should be used to build Fleet or not.
      */
+    @Generated
     private VMAttributeSupport rdmaSupport;
 
     /*
@@ -84,6 +95,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * rdmaSupport should be set to "Included" or "Required" to use this VMAttribute.
      * If rdmaSupport is "Excluded", this VMAttribute can not be used.
      */
+    @Generated
     private VMAttributeMinMaxInteger rdmaNetworkInterfaceCount;
 
     /*
@@ -91,6 +103,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * acceleratorSupport should be set to "Included" or "Required" to use this VMAttribute.
      * If acceleratorSupport is "Excluded", this VMAttribute can not be used.
      */
+    @Generated
     private VMAttributeSupport acceleratorSupport;
 
     /*
@@ -98,6 +111,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * acceleratorSupport should be set to "Included" or "Required" to use this VMAttribute.
      * If acceleratorSupport is "Excluded", this VMAttribute can not be used.
      */
+    @Generated
     private List<AcceleratorManufacturer> acceleratorManufacturers;
 
     /*
@@ -105,6 +119,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * this VMAttribute.
      * If acceleratorSupport is "Excluded", this VMAttribute can not be used.
      */
+    @Generated
     private List<AcceleratorType> acceleratorTypes;
 
     /*
@@ -113,36 +128,43 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * acceleratorSupport should be set to "Included" or "Required" to use this VMAttribute.
      * If acceleratorSupport is "Excluded", this VMAttribute can not be used.
      */
+    @Generated
     private VMAttributeMinMaxInteger acceleratorCount;
 
     /*
      * The VM category specified as a list. Optional parameter.
      */
+    @Generated
     private List<VMCategory> vmCategories;
 
     /*
      * The VM architecture types specified as a list. Optional parameter.
      */
+    @Generated
     private List<ArchitectureType> architectureTypes;
 
     /*
      * The VM CPU manufacturers specified as a list. Optional parameter.
      */
+    @Generated
     private List<CpuManufacturer> cpuManufacturers;
 
     /*
      * Specifies whether the VMSize supporting burstable capability should be used to build Fleet or not.
      */
+    @Generated
     private VMAttributeSupport burstableSupport;
 
     /*
      * Specifies which VMSizes should be excluded while building Fleet. Optional parameter.
      */
+    @Generated
     private List<String> excludedVMSizes;
 
     /**
      * Creates an instance of VMAttributes class.
      */
+    @Generated
     public VMAttributes() {
     }
 
@@ -152,6 +174,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the vCpuCount value.
      */
+    @Generated
     public VMAttributeMinMaxInteger vCpuCount() {
         return this.vCpuCount;
     }
@@ -163,6 +186,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param vCpuCount the vCpuCount value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withVCpuCount(VMAttributeMinMaxInteger vCpuCount) {
         this.vCpuCount = vCpuCount;
         return this;
@@ -174,6 +198,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the memoryInGiB value.
      */
+    @Generated
     public VMAttributeMinMaxDouble memoryInGiB() {
         return this.memoryInGiB;
     }
@@ -185,6 +210,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param memoryInGiB the memoryInGiB value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withMemoryInGiB(VMAttributeMinMaxDouble memoryInGiB) {
         this.memoryInGiB = memoryInGiB;
         return this;
@@ -196,6 +222,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the memoryInGiBPerVCpu value.
      */
+    @Generated
     public VMAttributeMinMaxDouble memoryInGiBPerVCpu() {
         return this.memoryInGiBPerVCpu;
     }
@@ -207,6 +234,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param memoryInGiBPerVCpu the memoryInGiBPerVCpu value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withMemoryInGiBPerVCpu(VMAttributeMinMaxDouble memoryInGiBPerVCpu) {
         this.memoryInGiBPerVCpu = memoryInGiBPerVCpu;
         return this;
@@ -219,6 +247,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the localStorageSupport value.
      */
+    @Generated
     public VMAttributeSupport localStorageSupport() {
         return this.localStorageSupport;
     }
@@ -231,6 +260,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param localStorageSupport the localStorageSupport value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withLocalStorageSupport(VMAttributeSupport localStorageSupport) {
         this.localStorageSupport = localStorageSupport;
         return this;
@@ -243,6 +273,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the localStorageInGiB value.
      */
+    @Generated
     public VMAttributeMinMaxDouble localStorageInGiB() {
         return this.localStorageInGiB;
     }
@@ -255,6 +286,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param localStorageInGiB the localStorageInGiB value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withLocalStorageInGiB(VMAttributeMinMaxDouble localStorageInGiB) {
         this.localStorageInGiB = localStorageInGiB;
         return this;
@@ -267,6 +299,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the localStorageDiskTypes value.
      */
+    @Generated
     public List<LocalStorageDiskType> localStorageDiskTypes() {
         return this.localStorageDiskTypes;
     }
@@ -279,6 +312,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param localStorageDiskTypes the localStorageDiskTypes value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withLocalStorageDiskTypes(List<LocalStorageDiskType> localStorageDiskTypes) {
         this.localStorageDiskTypes = localStorageDiskTypes;
         return this;
@@ -290,6 +324,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the dataDiskCount value.
      */
+    @Generated
     public VMAttributeMinMaxInteger dataDiskCount() {
         return this.dataDiskCount;
     }
@@ -301,6 +336,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param dataDiskCount the dataDiskCount value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withDataDiskCount(VMAttributeMinMaxInteger dataDiskCount) {
         this.dataDiskCount = dataDiskCount;
         return this;
@@ -312,6 +348,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the networkInterfaceCount value.
      */
+    @Generated
     public VMAttributeMinMaxInteger networkInterfaceCount() {
         return this.networkInterfaceCount;
     }
@@ -323,6 +360,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param networkInterfaceCount the networkInterfaceCount value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withNetworkInterfaceCount(VMAttributeMinMaxInteger networkInterfaceCount) {
         this.networkInterfaceCount = networkInterfaceCount;
         return this;
@@ -334,6 +372,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the networkBandwidthInMbps value.
      */
+    @Generated
     public VMAttributeMinMaxDouble networkBandwidthInMbps() {
         return this.networkBandwidthInMbps;
     }
@@ -345,6 +384,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param networkBandwidthInMbps the networkBandwidthInMbps value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withNetworkBandwidthInMbps(VMAttributeMinMaxDouble networkBandwidthInMbps) {
         this.networkBandwidthInMbps = networkBandwidthInMbps;
         return this;
@@ -356,6 +396,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the rdmaSupport value.
      */
+    @Generated
     public VMAttributeSupport rdmaSupport() {
         return this.rdmaSupport;
     }
@@ -367,6 +408,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param rdmaSupport the rdmaSupport value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withRdmaSupport(VMAttributeSupport rdmaSupport) {
         this.rdmaSupport = rdmaSupport;
         return this;
@@ -380,6 +422,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the rdmaNetworkInterfaceCount value.
      */
+    @Generated
     public VMAttributeMinMaxInteger rdmaNetworkInterfaceCount() {
         return this.rdmaNetworkInterfaceCount;
     }
@@ -393,6 +436,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param rdmaNetworkInterfaceCount the rdmaNetworkInterfaceCount value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withRdmaNetworkInterfaceCount(VMAttributeMinMaxInteger rdmaNetworkInterfaceCount) {
         this.rdmaNetworkInterfaceCount = rdmaNetworkInterfaceCount;
         return this;
@@ -406,6 +450,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the acceleratorSupport value.
      */
+    @Generated
     public VMAttributeSupport acceleratorSupport() {
         return this.acceleratorSupport;
     }
@@ -419,6 +464,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param acceleratorSupport the acceleratorSupport value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withAcceleratorSupport(VMAttributeSupport acceleratorSupport) {
         this.acceleratorSupport = acceleratorSupport;
         return this;
@@ -431,6 +477,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the acceleratorManufacturers value.
      */
+    @Generated
     public List<AcceleratorManufacturer> acceleratorManufacturers() {
         return this.acceleratorManufacturers;
     }
@@ -443,6 +490,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param acceleratorManufacturers the acceleratorManufacturers value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withAcceleratorManufacturers(List<AcceleratorManufacturer> acceleratorManufacturers) {
         this.acceleratorManufacturers = acceleratorManufacturers;
         return this;
@@ -455,6 +503,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the acceleratorTypes value.
      */
+    @Generated
     public List<AcceleratorType> acceleratorTypes() {
         return this.acceleratorTypes;
     }
@@ -467,6 +516,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param acceleratorTypes the acceleratorTypes value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withAcceleratorTypes(List<AcceleratorType> acceleratorTypes) {
         this.acceleratorTypes = acceleratorTypes;
         return this;
@@ -480,6 +530,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the acceleratorCount value.
      */
+    @Generated
     public VMAttributeMinMaxInteger acceleratorCount() {
         return this.acceleratorCount;
     }
@@ -493,6 +544,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param acceleratorCount the acceleratorCount value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withAcceleratorCount(VMAttributeMinMaxInteger acceleratorCount) {
         this.acceleratorCount = acceleratorCount;
         return this;
@@ -503,6 +555,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the vmCategories value.
      */
+    @Generated
     public List<VMCategory> vmCategories() {
         return this.vmCategories;
     }
@@ -513,6 +566,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param vmCategories the vmCategories value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withVmCategories(List<VMCategory> vmCategories) {
         this.vmCategories = vmCategories;
         return this;
@@ -523,6 +577,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the architectureTypes value.
      */
+    @Generated
     public List<ArchitectureType> architectureTypes() {
         return this.architectureTypes;
     }
@@ -533,6 +588,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param architectureTypes the architectureTypes value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withArchitectureTypes(List<ArchitectureType> architectureTypes) {
         this.architectureTypes = architectureTypes;
         return this;
@@ -543,6 +599,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the cpuManufacturers value.
      */
+    @Generated
     public List<CpuManufacturer> cpuManufacturers() {
         return this.cpuManufacturers;
     }
@@ -553,6 +610,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param cpuManufacturers the cpuManufacturers value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withCpuManufacturers(List<CpuManufacturer> cpuManufacturers) {
         this.cpuManufacturers = cpuManufacturers;
         return this;
@@ -564,6 +622,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the burstableSupport value.
      */
+    @Generated
     public VMAttributeSupport burstableSupport() {
         return this.burstableSupport;
     }
@@ -575,6 +634,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param burstableSupport the burstableSupport value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withBurstableSupport(VMAttributeSupport burstableSupport) {
         this.burstableSupport = burstableSupport;
         return this;
@@ -586,6 +646,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * 
      * @return the excludedVMSizes value.
      */
+    @Generated
     public List<String> excludedVMSizes() {
         return this.excludedVMSizes;
     }
@@ -597,6 +658,7 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
      * @param excludedVMSizes the excludedVMSizes value to set.
      * @return the VMAttributes object itself.
      */
+    @Generated
     public VMAttributes withExcludedVMSizes(List<String> excludedVMSizes) {
         this.excludedVMSizes = excludedVMSizes;
         return this;

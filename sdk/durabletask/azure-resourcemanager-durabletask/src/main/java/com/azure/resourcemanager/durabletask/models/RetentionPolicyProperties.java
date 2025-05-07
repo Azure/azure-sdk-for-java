@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.durabletask.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class RetentionPolicyProperties implements JsonSerializable<Retenti
     /*
      * The status of the last operation
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * The orchestration retention policies
      */
+    @Generated
     private List<RetentionPolicyDetails> retentionPolicies;
 
     /**
      * Creates an instance of RetentionPolicyProperties class.
      */
+    @Generated
     public RetentionPolicyProperties() {
     }
 
@@ -38,6 +42,7 @@ public final class RetentionPolicyProperties implements JsonSerializable<Retenti
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -47,6 +52,7 @@ public final class RetentionPolicyProperties implements JsonSerializable<Retenti
      * 
      * @return the retentionPolicies value.
      */
+    @Generated
     public List<RetentionPolicyDetails> retentionPolicies() {
         return this.retentionPolicies;
     }
@@ -57,6 +63,7 @@ public final class RetentionPolicyProperties implements JsonSerializable<Retenti
      * @param retentionPolicies the retentionPolicies value to set.
      * @return the RetentionPolicyProperties object itself.
      */
+    @Generated
     public RetentionPolicyProperties withRetentionPolicies(List<RetentionPolicyDetails> retentionPolicies) {
         this.retentionPolicies = retentionPolicies;
         return this;

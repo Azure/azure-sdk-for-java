@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.trustedsigning.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,46 +22,55 @@ public final class Certificate implements JsonSerializable<Certificate> {
     /*
      * Serial number of the certificate.
      */
+    @Generated
     private String serialNumber;
 
     /*
      * Enhanced key usage of the certificate.
      */
+    @Generated
     private String enhancedKeyUsage;
 
     /*
      * Subject name of the certificate.
      */
+    @Generated
     private String subjectName;
 
     /*
      * Thumbprint of the certificate.
      */
+    @Generated
     private String thumbprint;
 
     /*
      * Certificate created date.
      */
+    @Generated
     private String createdDate;
 
     /*
      * Certificate expiry date.
      */
+    @Generated
     private String expiryDate;
 
     /*
      * Status of the certificate.
      */
+    @Generated
     private CertificateStatus status;
 
     /*
      * Revocations history of a certificate.
      */
+    @Generated
     private Revocation innerRevocation;
 
     /**
      * Creates an instance of Certificate class.
      */
+    @Generated
     private Certificate() {
     }
 
@@ -69,6 +79,7 @@ public final class Certificate implements JsonSerializable<Certificate> {
      * 
      * @return the serialNumber value.
      */
+    @Generated
     public String serialNumber() {
         return this.serialNumber;
     }
@@ -78,6 +89,7 @@ public final class Certificate implements JsonSerializable<Certificate> {
      * 
      * @return the enhancedKeyUsage value.
      */
+    @Generated
     public String enhancedKeyUsage() {
         return this.enhancedKeyUsage;
     }
@@ -87,6 +99,7 @@ public final class Certificate implements JsonSerializable<Certificate> {
      * 
      * @return the subjectName value.
      */
+    @Generated
     public String subjectName() {
         return this.subjectName;
     }
@@ -96,6 +109,7 @@ public final class Certificate implements JsonSerializable<Certificate> {
      * 
      * @return the thumbprint value.
      */
+    @Generated
     public String thumbprint() {
         return this.thumbprint;
     }
@@ -105,6 +119,7 @@ public final class Certificate implements JsonSerializable<Certificate> {
      * 
      * @return the createdDate value.
      */
+    @Generated
     public String createdDate() {
         return this.createdDate;
     }
@@ -114,6 +129,7 @@ public final class Certificate implements JsonSerializable<Certificate> {
      * 
      * @return the expiryDate value.
      */
+    @Generated
     public String expiryDate() {
         return this.expiryDate;
     }
@@ -123,6 +139,7 @@ public final class Certificate implements JsonSerializable<Certificate> {
      * 
      * @return the status value.
      */
+    @Generated
     public CertificateStatus status() {
         return this.status;
     }
@@ -132,6 +149,7 @@ public final class Certificate implements JsonSerializable<Certificate> {
      * 
      * @return the innerRevocation value.
      */
+    @Generated
     private Revocation innerRevocation() {
         return this.innerRevocation;
     }
@@ -141,6 +159,7 @@ public final class Certificate implements JsonSerializable<Certificate> {
      * 
      * @return the requestedAt value.
      */
+    @Generated
     public OffsetDateTime requestedAt() {
         return this.innerRevocation() == null ? null : this.innerRevocation().requestedAt();
     }
@@ -150,6 +169,7 @@ public final class Certificate implements JsonSerializable<Certificate> {
      * 
      * @return the effectiveAt value.
      */
+    @Generated
     public OffsetDateTime effectiveAt() {
         return this.innerRevocation() == null ? null : this.innerRevocation().effectiveAt();
     }
@@ -159,6 +179,7 @@ public final class Certificate implements JsonSerializable<Certificate> {
      * 
      * @return the reason value.
      */
+    @Generated
     public String reason() {
         return this.innerRevocation() == null ? null : this.innerRevocation().reason();
     }
@@ -168,6 +189,7 @@ public final class Certificate implements JsonSerializable<Certificate> {
      * 
      * @return the remarks value.
      */
+    @Generated
     public String remarks() {
         return this.innerRevocation() == null ? null : this.innerRevocation().remarks();
     }
@@ -177,6 +199,7 @@ public final class Certificate implements JsonSerializable<Certificate> {
      * 
      * @return the status value.
      */
+    @Generated
     public RevocationStatus statusRevocationStatus() {
         return this.innerRevocation() == null ? null : this.innerRevocation().status();
     }
@@ -186,6 +209,7 @@ public final class Certificate implements JsonSerializable<Certificate> {
      * 
      * @return the failureReason value.
      */
+    @Generated
     public String failureReason() {
         return this.innerRevocation() == null ? null : this.innerRevocation().failureReason();
     }

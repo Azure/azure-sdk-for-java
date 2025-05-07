@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -20,16 +21,19 @@ public final class FleetCredentialResult implements JsonSerializable<FleetCreden
     /*
      * The name of the credential.
      */
+    @Generated
     private String name;
 
     /*
      * Base64-encoded Kubernetes configuration file.
      */
+    @Generated
     private byte[] value;
 
     /**
      * Creates an instance of FleetCredentialResult class.
      */
+    @Generated
     private FleetCredentialResult() {
     }
 
@@ -38,6 +42,7 @@ public final class FleetCredentialResult implements JsonSerializable<FleetCreden
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -47,6 +52,7 @@ public final class FleetCredentialResult implements JsonSerializable<FleetCreden
      * 
      * @return the value value.
      */
+    @Generated
     public byte[] value() {
         return CoreUtils.clone(this.value);
     }

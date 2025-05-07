@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,28 +20,33 @@ public final class SecurityPolicyProperties implements JsonSerializable<Security
     /*
      * Type of the Traffic Controller Security Policy
      */
+    @Generated
     private PolicyType policyType;
 
     /*
      * Web Application Firewall Policy of the Traffic Controller Security Policy. Single Security Policy can have only
      * one policy type set.
      */
+    @Generated
     private WafPolicy wafPolicy;
 
     /*
      * Ip Access Policy of the Traffic Controller Security Policy. Single Security Policy can have only one policy type
      * set.
      */
+    @Generated
     private IpAccessRulesPolicy ipAccessRulesPolicy;
 
     /*
      * Provisioning State of Traffic Controller SecurityPolicy Resource
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of SecurityPolicyProperties class.
      */
+    @Generated
     public SecurityPolicyProperties() {
     }
 
@@ -49,6 +55,7 @@ public final class SecurityPolicyProperties implements JsonSerializable<Security
      * 
      * @return the policyType value.
      */
+    @Generated
     public PolicyType policyType() {
         return this.policyType;
     }
@@ -59,6 +66,7 @@ public final class SecurityPolicyProperties implements JsonSerializable<Security
      * 
      * @return the wafPolicy value.
      */
+    @Generated
     public WafPolicy wafPolicy() {
         return this.wafPolicy;
     }
@@ -70,6 +78,7 @@ public final class SecurityPolicyProperties implements JsonSerializable<Security
      * @param wafPolicy the wafPolicy value to set.
      * @return the SecurityPolicyProperties object itself.
      */
+    @Generated
     public SecurityPolicyProperties withWafPolicy(WafPolicy wafPolicy) {
         this.wafPolicy = wafPolicy;
         return this;
@@ -81,6 +90,7 @@ public final class SecurityPolicyProperties implements JsonSerializable<Security
      * 
      * @return the ipAccessRulesPolicy value.
      */
+    @Generated
     public IpAccessRulesPolicy ipAccessRulesPolicy() {
         return this.ipAccessRulesPolicy;
     }
@@ -92,6 +102,7 @@ public final class SecurityPolicyProperties implements JsonSerializable<Security
      * @param ipAccessRulesPolicy the ipAccessRulesPolicy value to set.
      * @return the SecurityPolicyProperties object itself.
      */
+    @Generated
     public SecurityPolicyProperties withIpAccessRulesPolicy(IpAccessRulesPolicy ipAccessRulesPolicy) {
         this.ipAccessRulesPolicy = ipAccessRulesPolicy;
         return this;
@@ -102,6 +113,7 @@ public final class SecurityPolicyProperties implements JsonSerializable<Security
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

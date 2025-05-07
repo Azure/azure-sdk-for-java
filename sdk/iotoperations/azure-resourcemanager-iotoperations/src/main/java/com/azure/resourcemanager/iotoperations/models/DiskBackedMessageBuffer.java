@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,22 +24,26 @@ public final class DiskBackedMessageBuffer implements JsonSerializable<DiskBacke
      * ephemeralVolumeClaimSpec nor persistentVolumeClaimSpec are specified, then an emptyDir volume is mounted with
      * this size as its limit. See <https://kubernetes.io/docs/concepts/storage/volumes/#emptydir> for details.
      */
+    @Generated
     private String maxSize;
 
     /*
      * Use the specified persistent volume claim template to mount a "generic ephemeral volume" for the message buffer.
      * See <https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes> for details.
      */
+    @Generated
     private VolumeClaimSpec ephemeralVolumeClaimSpec;
 
     /*
      * Use the specified persistent volume claim template to mount a persistent volume for the message buffer.
      */
+    @Generated
     private VolumeClaimSpec persistentVolumeClaimSpec;
 
     /**
      * Creates an instance of DiskBackedMessageBuffer class.
      */
+    @Generated
     public DiskBackedMessageBuffer() {
     }
 
@@ -51,6 +56,7 @@ public final class DiskBackedMessageBuffer implements JsonSerializable<DiskBacke
      * 
      * @return the maxSize value.
      */
+    @Generated
     public String maxSize() {
         return this.maxSize;
     }
@@ -65,6 +71,7 @@ public final class DiskBackedMessageBuffer implements JsonSerializable<DiskBacke
      * @param maxSize the maxSize value to set.
      * @return the DiskBackedMessageBuffer object itself.
      */
+    @Generated
     public DiskBackedMessageBuffer withMaxSize(String maxSize) {
         this.maxSize = maxSize;
         return this;
@@ -77,6 +84,7 @@ public final class DiskBackedMessageBuffer implements JsonSerializable<DiskBacke
      * 
      * @return the ephemeralVolumeClaimSpec value.
      */
+    @Generated
     public VolumeClaimSpec ephemeralVolumeClaimSpec() {
         return this.ephemeralVolumeClaimSpec;
     }
@@ -89,6 +97,7 @@ public final class DiskBackedMessageBuffer implements JsonSerializable<DiskBacke
      * @param ephemeralVolumeClaimSpec the ephemeralVolumeClaimSpec value to set.
      * @return the DiskBackedMessageBuffer object itself.
      */
+    @Generated
     public DiskBackedMessageBuffer withEphemeralVolumeClaimSpec(VolumeClaimSpec ephemeralVolumeClaimSpec) {
         this.ephemeralVolumeClaimSpec = ephemeralVolumeClaimSpec;
         return this;
@@ -100,6 +109,7 @@ public final class DiskBackedMessageBuffer implements JsonSerializable<DiskBacke
      * 
      * @return the persistentVolumeClaimSpec value.
      */
+    @Generated
     public VolumeClaimSpec persistentVolumeClaimSpec() {
         return this.persistentVolumeClaimSpec;
     }
@@ -111,6 +121,7 @@ public final class DiskBackedMessageBuffer implements JsonSerializable<DiskBacke
      * @param persistentVolumeClaimSpec the persistentVolumeClaimSpec value to set.
      * @return the DiskBackedMessageBuffer object itself.
      */
+    @Generated
     public DiskBackedMessageBuffer withPersistentVolumeClaimSpec(VolumeClaimSpec persistentVolumeClaimSpec) {
         this.persistentVolumeClaimSpec = persistentVolumeClaimSpec;
         return this;

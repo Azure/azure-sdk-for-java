@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,36 +23,43 @@ public final class SolutionConfigurationProperties implements JsonSerializable<S
     /*
      * The resource provisioning state.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /*
      * The type of the solution
      */
+    @Generated
     private String solutionType;
 
     /*
      * Solution settings
      */
+    @Generated
     private SolutionSettings solutionSettings;
 
     /*
      * The status of solution configurations
      */
+    @Generated
     private SolutionConfigurationStatus status;
 
     /*
      * The detailed message of status details
      */
+    @Generated
     private String statusDetails;
 
     /*
      * The last time resources were inventoried
      */
+    @Generated
     private OffsetDateTime lastSyncTime;
 
     /**
      * Creates an instance of SolutionConfigurationProperties class.
      */
+    @Generated
     public SolutionConfigurationProperties() {
     }
 
@@ -60,6 +68,7 @@ public final class SolutionConfigurationProperties implements JsonSerializable<S
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -69,6 +78,7 @@ public final class SolutionConfigurationProperties implements JsonSerializable<S
      * 
      * @return the solutionType value.
      */
+    @Generated
     public String solutionType() {
         return this.solutionType;
     }
@@ -79,6 +89,7 @@ public final class SolutionConfigurationProperties implements JsonSerializable<S
      * @param solutionType the solutionType value to set.
      * @return the SolutionConfigurationProperties object itself.
      */
+    @Generated
     public SolutionConfigurationProperties withSolutionType(String solutionType) {
         this.solutionType = solutionType;
         return this;
@@ -89,6 +100,7 @@ public final class SolutionConfigurationProperties implements JsonSerializable<S
      * 
      * @return the solutionSettings value.
      */
+    @Generated
     public SolutionSettings solutionSettings() {
         return this.solutionSettings;
     }
@@ -99,6 +111,7 @@ public final class SolutionConfigurationProperties implements JsonSerializable<S
      * @param solutionSettings the solutionSettings value to set.
      * @return the SolutionConfigurationProperties object itself.
      */
+    @Generated
     public SolutionConfigurationProperties withSolutionSettings(SolutionSettings solutionSettings) {
         this.solutionSettings = solutionSettings;
         return this;
@@ -109,6 +122,7 @@ public final class SolutionConfigurationProperties implements JsonSerializable<S
      * 
      * @return the status value.
      */
+    @Generated
     public SolutionConfigurationStatus status() {
         return this.status;
     }
@@ -118,6 +132,7 @@ public final class SolutionConfigurationProperties implements JsonSerializable<S
      * 
      * @return the statusDetails value.
      */
+    @Generated
     public String statusDetails() {
         return this.statusDetails;
     }
@@ -127,6 +142,7 @@ public final class SolutionConfigurationProperties implements JsonSerializable<S
      * 
      * @return the lastSyncTime value.
      */
+    @Generated
     public OffsetDateTime lastSyncTime() {
         return this.lastSyncTime;
     }

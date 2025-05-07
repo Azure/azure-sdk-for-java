@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -20,21 +21,25 @@ public final class SubscriptionAccessDecision implements JsonSerializable<Subscr
     /*
      * Id of Subscription
      */
+    @Generated
     private String subscriptionId;
 
     /*
      * Access decision to subscription
      */
+    @Generated
     private AccessDecisionEnum decision;
 
     /*
      * The reason why access request got denied
      */
+    @Generated
     private String denialReason;
 
     /**
      * Creates an instance of SubscriptionAccessDecision class.
      */
+    @Generated
     private SubscriptionAccessDecision() {
     }
 
@@ -43,6 +48,7 @@ public final class SubscriptionAccessDecision implements JsonSerializable<Subscr
      * 
      * @return the subscriptionId value.
      */
+    @Generated
     public String subscriptionId() {
         return this.subscriptionId;
     }
@@ -52,6 +58,7 @@ public final class SubscriptionAccessDecision implements JsonSerializable<Subscr
      * 
      * @return the decision value.
      */
+    @Generated
     public AccessDecisionEnum decision() {
         return this.decision;
     }
@@ -61,6 +68,7 @@ public final class SubscriptionAccessDecision implements JsonSerializable<Subscr
      * 
      * @return the denialReason value.
      */
+    @Generated
     public String denialReason() {
         return this.denialReason;
     }

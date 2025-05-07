@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,36 +21,43 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
     /*
      * Marketplace details of the resource.
      */
+    @Generated
     private MarketplaceDetails marketplaceDetails;
 
     /*
      * Details of the user.
      */
+    @Generated
     private UserDetails userDetails;
 
     /*
      * Details of the company.
      */
+    @Generated
     private CompanyDetails companyDetails;
 
     /*
      * Provisioning state of the resource.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /*
      * Neon Organization properties
      */
+    @Generated
     private PartnerOrganizationProperties partnerOrganizationProperties;
 
     /*
      * Neon Project Properties
      */
+    @Generated
     private ProjectProperties projectProperties;
 
     /**
      * Creates an instance of OrganizationProperties class.
      */
+    @Generated
     public OrganizationProperties() {
     }
 
@@ -58,6 +66,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
      * 
      * @return the marketplaceDetails value.
      */
+    @Generated
     public MarketplaceDetails marketplaceDetails() {
         return this.marketplaceDetails;
     }
@@ -68,6 +77,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
      * @param marketplaceDetails the marketplaceDetails value to set.
      * @return the OrganizationProperties object itself.
      */
+    @Generated
     public OrganizationProperties withMarketplaceDetails(MarketplaceDetails marketplaceDetails) {
         this.marketplaceDetails = marketplaceDetails;
         return this;
@@ -78,6 +88,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
      * 
      * @return the userDetails value.
      */
+    @Generated
     public UserDetails userDetails() {
         return this.userDetails;
     }
@@ -88,6 +99,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
      * @param userDetails the userDetails value to set.
      * @return the OrganizationProperties object itself.
      */
+    @Generated
     public OrganizationProperties withUserDetails(UserDetails userDetails) {
         this.userDetails = userDetails;
         return this;
@@ -98,6 +110,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
      * 
      * @return the companyDetails value.
      */
+    @Generated
     public CompanyDetails companyDetails() {
         return this.companyDetails;
     }
@@ -108,6 +121,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
      * @param companyDetails the companyDetails value to set.
      * @return the OrganizationProperties object itself.
      */
+    @Generated
     public OrganizationProperties withCompanyDetails(CompanyDetails companyDetails) {
         this.companyDetails = companyDetails;
         return this;
@@ -118,6 +132,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -127,6 +142,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
      * 
      * @return the partnerOrganizationProperties value.
      */
+    @Generated
     public PartnerOrganizationProperties partnerOrganizationProperties() {
         return this.partnerOrganizationProperties;
     }
@@ -137,6 +153,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
      * @param partnerOrganizationProperties the partnerOrganizationProperties value to set.
      * @return the OrganizationProperties object itself.
      */
+    @Generated
     public OrganizationProperties
         withPartnerOrganizationProperties(PartnerOrganizationProperties partnerOrganizationProperties) {
         this.partnerOrganizationProperties = partnerOrganizationProperties;
@@ -148,6 +165,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
      * 
      * @return the projectProperties value.
      */
+    @Generated
     public ProjectProperties projectProperties() {
         return this.projectProperties;
     }
@@ -158,6 +176,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
      * @param projectProperties the projectProperties value to set.
      * @return the OrganizationProperties object itself.
      */
+    @Generated
     public OrganizationProperties withProjectProperties(ProjectProperties projectProperties) {
         this.projectProperties = projectProperties;
         return this;

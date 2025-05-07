@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.fabric.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class RpSkuTier extends ExpandableStringEnum<RpSkuTier> {
     /**
      * Fabric tier.
      */
+    @Generated
     public static final RpSkuTier FABRIC = fromString("Fabric");
 
     /**
@@ -21,6 +23,7 @@ public final class RpSkuTier extends ExpandableStringEnum<RpSkuTier> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RpSkuTier() {
     }
@@ -31,6 +34,7 @@ public final class RpSkuTier extends ExpandableStringEnum<RpSkuTier> {
      * @param name a name to look for.
      * @return the corresponding RpSkuTier.
      */
+    @Generated
     public static RpSkuTier fromString(String name) {
         return fromString(name, RpSkuTier.class);
     }
@@ -40,6 +44,7 @@ public final class RpSkuTier extends ExpandableStringEnum<RpSkuTier> {
      * 
      * @return known RpSkuTier values.
      */
+    @Generated
     public static Collection<RpSkuTier> values() {
         return values(RpSkuTier.class);
     }

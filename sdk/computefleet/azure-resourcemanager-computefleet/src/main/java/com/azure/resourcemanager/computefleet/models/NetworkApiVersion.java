@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,6 +17,7 @@ public final class NetworkApiVersion extends ExpandableStringEnum<NetworkApiVers
     /**
      * Initial version supported. Later versions are supported as well.
      */
+    @Generated
     public static final NetworkApiVersion V2020_11_01 = fromString("2020-11-01");
 
     /**
@@ -23,6 +25,7 @@ public final class NetworkApiVersion extends ExpandableStringEnum<NetworkApiVers
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public NetworkApiVersion() {
     }
@@ -33,6 +36,7 @@ public final class NetworkApiVersion extends ExpandableStringEnum<NetworkApiVers
      * @param name a name to look for.
      * @return the corresponding NetworkApiVersion.
      */
+    @Generated
     public static NetworkApiVersion fromString(String name) {
         return fromString(name, NetworkApiVersion.class);
     }
@@ -42,6 +46,7 @@ public final class NetworkApiVersion extends ExpandableStringEnum<NetworkApiVers
      * 
      * @return known NetworkApiVersion values.
      */
+    @Generated
     public static Collection<NetworkApiVersion> values() {
         return values(NetworkApiVersion.class);
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.onlineexperimentation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -24,41 +25,49 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private OnlineExperimentWorkspaceProperties properties;
 
     /*
      * The managed service identities assigned to this resource.
      */
+    @Generated
     private ManagedServiceIdentity identity;
 
     /*
      * The SKU (Stock Keeping Unit) assigned to this resource.
      */
+    @Generated
     private OnlineExperimentationWorkspaceSku sku;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of OnlineExperimentWorkspaceInner class.
      */
+    @Generated
     public OnlineExperimentWorkspaceInner() {
     }
 
@@ -67,6 +76,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * 
      * @return the properties value.
      */
+    @Generated
     public OnlineExperimentWorkspaceProperties properties() {
         return this.properties;
     }
@@ -77,6 +87,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * @param properties the properties value to set.
      * @return the OnlineExperimentWorkspaceInner object itself.
      */
+    @Generated
     public OnlineExperimentWorkspaceInner withProperties(OnlineExperimentWorkspaceProperties properties) {
         this.properties = properties;
         return this;
@@ -87,6 +98,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * 
      * @return the identity value.
      */
+    @Generated
     public ManagedServiceIdentity identity() {
         return this.identity;
     }
@@ -97,6 +109,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * @param identity the identity value to set.
      * @return the OnlineExperimentWorkspaceInner object itself.
      */
+    @Generated
     public OnlineExperimentWorkspaceInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
@@ -107,6 +120,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * 
      * @return the sku value.
      */
+    @Generated
     public OnlineExperimentationWorkspaceSku sku() {
         return this.sku;
     }
@@ -117,6 +131,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * @param sku the sku value to set.
      * @return the OnlineExperimentWorkspaceInner object itself.
      */
+    @Generated
     public OnlineExperimentWorkspaceInner withSku(OnlineExperimentationWorkspaceSku sku) {
         this.sku = sku;
         return this;
@@ -127,6 +142,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -136,6 +152,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -146,6 +163,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -156,6 +174,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;
@@ -164,6 +183,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OnlineExperimentWorkspaceInner withLocation(String location) {
         super.withLocation(location);
@@ -173,6 +193,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OnlineExperimentWorkspaceInner withTags(Map<String, String> tags) {
         super.withTags(tags);

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.trustedsigning.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class CertificateStatus extends ExpandableStringEnum<CertificateSta
     /**
      * The certificate is active.
      */
+    @Generated
     public static final CertificateStatus ACTIVE = fromString("Active");
 
     /**
      * The certificate is expired.
      */
+    @Generated
     public static final CertificateStatus EXPIRED = fromString("Expired");
 
     /**
      * The certificate is revoked.
      */
+    @Generated
     public static final CertificateStatus REVOKED = fromString("Revoked");
 
     /**
@@ -31,6 +35,7 @@ public final class CertificateStatus extends ExpandableStringEnum<CertificateSta
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CertificateStatus() {
     }
@@ -41,6 +46,7 @@ public final class CertificateStatus extends ExpandableStringEnum<CertificateSta
      * @param name a name to look for.
      * @return the corresponding CertificateStatus.
      */
+    @Generated
     public static CertificateStatus fromString(String name) {
         return fromString(name, CertificateStatus.class);
     }
@@ -50,6 +56,7 @@ public final class CertificateStatus extends ExpandableStringEnum<CertificateSta
      * 
      * @return known CertificateStatus values.
      */
+    @Generated
     public static Collection<CertificateStatus> values() {
         return values(CertificateStatus.class);
     }

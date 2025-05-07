@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class SanForCert implements JsonSerializable<SanForCert> {
     /*
      * DNS SANs.
      */
+    @Generated
     private List<String> dns;
 
     /*
      * IP address SANs.
      */
+    @Generated
     private List<String> ip;
 
     /**
      * Creates an instance of SanForCert class.
      */
+    @Generated
     public SanForCert() {
     }
 
@@ -39,6 +43,7 @@ public final class SanForCert implements JsonSerializable<SanForCert> {
      * 
      * @return the dns value.
      */
+    @Generated
     public List<String> dns() {
         return this.dns;
     }
@@ -49,6 +54,7 @@ public final class SanForCert implements JsonSerializable<SanForCert> {
      * @param dns the dns value to set.
      * @return the SanForCert object itself.
      */
+    @Generated
     public SanForCert withDns(List<String> dns) {
         this.dns = dns;
         return this;
@@ -59,6 +65,7 @@ public final class SanForCert implements JsonSerializable<SanForCert> {
      * 
      * @return the ip value.
      */
+    @Generated
     public List<String> ip() {
         return this.ip;
     }
@@ -69,6 +76,7 @@ public final class SanForCert implements JsonSerializable<SanForCert> {
      * @param ip the ip value to set.
      * @return the SanForCert object itself.
      */
+    @Generated
     public SanForCert withIp(List<String> ip) {
         this.ip = ip;
         return this;

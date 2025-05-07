@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,18 +22,21 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
     /*
      * The pass name. Currently, the only allowable value is OobeSystem.
      */
+    @Generated
     private AdditionalUnattendContentPassName passName;
 
     /*
      * The component name. Currently, the only allowable value is
      * Microsoft-Windows-Shell-Setup.
      */
+    @Generated
     private AdditionalUnattendContentComponentName componentName;
 
     /*
      * Specifies the name of the setting to which the content applies. Possible values
      * are: FirstLogonCommands and AutoLogon.
      */
+    @Generated
     private SettingNames settingName;
 
     /*
@@ -40,11 +44,13 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
      * the specified path and component. The XML must be less than 4KB and must
      * include the root element for the setting or feature that is being inserted.
      */
+    @Generated
     private String content;
 
     /**
      * Creates an instance of AdditionalUnattendContent class.
      */
+    @Generated
     public AdditionalUnattendContent() {
     }
 
@@ -53,6 +59,7 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
      * 
      * @return the passName value.
      */
+    @Generated
     public AdditionalUnattendContentPassName passName() {
         return this.passName;
     }
@@ -63,6 +70,7 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
      * @param passName the passName value to set.
      * @return the AdditionalUnattendContent object itself.
      */
+    @Generated
     public AdditionalUnattendContent withPassName(AdditionalUnattendContentPassName passName) {
         this.passName = passName;
         return this;
@@ -74,6 +82,7 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
      * 
      * @return the componentName value.
      */
+    @Generated
     public AdditionalUnattendContentComponentName componentName() {
         return this.componentName;
     }
@@ -85,6 +94,7 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
      * @param componentName the componentName value to set.
      * @return the AdditionalUnattendContent object itself.
      */
+    @Generated
     public AdditionalUnattendContent withComponentName(AdditionalUnattendContentComponentName componentName) {
         this.componentName = componentName;
         return this;
@@ -96,6 +106,7 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
      * 
      * @return the settingName value.
      */
+    @Generated
     public SettingNames settingName() {
         return this.settingName;
     }
@@ -107,6 +118,7 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
      * @param settingName the settingName value to set.
      * @return the AdditionalUnattendContent object itself.
      */
+    @Generated
     public AdditionalUnattendContent withSettingName(SettingNames settingName) {
         this.settingName = settingName;
         return this;
@@ -119,6 +131,7 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
      * 
      * @return the content value.
      */
+    @Generated
     public String content() {
         return this.content;
     }
@@ -131,6 +144,7 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
      * @param content the content value to set.
      * @return the AdditionalUnattendContent object itself.
      */
+    @Generated
     public AdditionalUnattendContent withContent(String content) {
         this.content = content;
         return this;

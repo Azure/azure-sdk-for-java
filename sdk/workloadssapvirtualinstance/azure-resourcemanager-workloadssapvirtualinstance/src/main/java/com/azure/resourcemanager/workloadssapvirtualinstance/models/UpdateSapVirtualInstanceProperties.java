@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,11 +24,13 @@ public final class UpdateSapVirtualInstanceProperties implements JsonSerializabl
      * extensions and the managed resource group storage account. This setting is currently applicable only to Storage
      * Account. Learn more here https://go.microsoft.com/fwlink/?linkid=2247228
      */
+    @Generated
     private ManagedResourcesNetworkAccessType managedResourcesNetworkAccessType;
 
     /**
      * Creates an instance of UpdateSapVirtualInstanceProperties class.
      */
+    @Generated
     public UpdateSapVirtualInstanceProperties() {
     }
 
@@ -41,6 +44,7 @@ public final class UpdateSapVirtualInstanceProperties implements JsonSerializabl
      * 
      * @return the managedResourcesNetworkAccessType value.
      */
+    @Generated
     public ManagedResourcesNetworkAccessType managedResourcesNetworkAccessType() {
         return this.managedResourcesNetworkAccessType;
     }
@@ -56,6 +60,7 @@ public final class UpdateSapVirtualInstanceProperties implements JsonSerializabl
      * @param managedResourcesNetworkAccessType the managedResourcesNetworkAccessType value to set.
      * @return the UpdateSapVirtualInstanceProperties object itself.
      */
+    @Generated
     public UpdateSapVirtualInstanceProperties
         withManagedResourcesNetworkAccessType(ManagedResourcesNetworkAccessType managedResourcesNetworkAccessType) {
         this.managedResourcesNetworkAccessType = managedResourcesNetworkAccessType;

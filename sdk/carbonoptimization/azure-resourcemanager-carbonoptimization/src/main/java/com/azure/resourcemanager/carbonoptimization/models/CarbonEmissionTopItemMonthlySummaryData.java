@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -19,28 +20,33 @@ public final class CarbonEmissionTopItemMonthlySummaryData extends CarbonEmissio
     /*
      * The data type of the query result, indicating the format of the returned response.
      */
+    @Generated
     private ResponseDataTypeEnum dataType = ResponseDataTypeEnum.TOP_ITEMS_MONTHLY_SUMMARY_DATA;
 
     /*
      * Item name, it can be resource name, resource type name, location, resource group name or subscriptionId. It
      * depends on category type.
      */
+    @Generated
     private String itemName;
 
     /*
      * Item category, see supported type value defined in CategoryTypeEnum
      */
+    @Generated
     private CategoryTypeEnum categoryType;
 
     /*
      * The date, representing the month, for which the emissions data is reported, formatted as yyyy-MM-dd (e.g.,
      * 2024-03-01)
      */
+    @Generated
     private String date;
 
     /**
      * Creates an instance of CarbonEmissionTopItemMonthlySummaryData class.
      */
+    @Generated
     private CarbonEmissionTopItemMonthlySummaryData() {
     }
 
@@ -49,6 +55,7 @@ public final class CarbonEmissionTopItemMonthlySummaryData extends CarbonEmissio
      * 
      * @return the dataType value.
      */
+    @Generated
     @Override
     public ResponseDataTypeEnum dataType() {
         return this.dataType;
@@ -60,6 +67,7 @@ public final class CarbonEmissionTopItemMonthlySummaryData extends CarbonEmissio
      * 
      * @return the itemName value.
      */
+    @Generated
     public String itemName() {
         return this.itemName;
     }
@@ -69,6 +77,7 @@ public final class CarbonEmissionTopItemMonthlySummaryData extends CarbonEmissio
      * 
      * @return the categoryType value.
      */
+    @Generated
     public CategoryTypeEnum categoryType() {
         return this.categoryType;
     }
@@ -79,6 +88,7 @@ public final class CarbonEmissionTopItemMonthlySummaryData extends CarbonEmissio
      * 
      * @return the date value.
      */
+    @Generated
     public String date() {
         return this.date;
     }

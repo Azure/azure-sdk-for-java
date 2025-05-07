@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -23,66 +24,79 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     /*
      * Operation identifier for the unique operation
      */
+    @Generated
     private String operationId;
 
     /*
      * Unique identifier for the resource involved in the operation, eg ArmId
      */
+    @Generated
     private String resourceId;
 
     /*
      * Type of operation performed on the resources
      */
+    @Generated
     private ResourceOperationType opType;
 
     /*
      * Subscription id attached to the request
      */
+    @Generated
     private String subscriptionId;
 
     /*
      * Deadline for the operation
      */
+    @Generated
     private OffsetDateTime deadline;
 
     /*
      * Type of deadline of the operation
      */
+    @Generated
     private DeadlineType deadlineType;
 
     /*
      * Current state of the operation
      */
+    @Generated
     private OperationState state;
 
     /*
      * Timezone for the operation
      */
+    @Generated
     private String timezone;
 
     /*
      * Timezone for the operation
      */
+    @Generated
     private String timeZone;
 
     /*
      * Operation level errors if they exist
      */
+    @Generated
     private ResourceOperationError resourceOperationError;
 
     /*
      * Time the operation was complete if errors are null
      */
+    @Generated
     private OffsetDateTime completedAt;
 
     /*
      * Retry policy the user can pass
      */
+    @Generated
     private RetryPolicy retryPolicy;
 
     /**
      * Creates an instance of ResourceOperationDetails class.
      */
+    @Generated
     private ResourceOperationDetails() {
     }
 
@@ -91,6 +105,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      * 
      * @return the operationId value.
      */
+    @Generated
     public String operationId() {
         return this.operationId;
     }
@@ -100,6 +115,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String resourceId() {
         return this.resourceId;
     }
@@ -109,6 +125,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      * 
      * @return the opType value.
      */
+    @Generated
     public ResourceOperationType opType() {
         return this.opType;
     }
@@ -118,6 +135,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      * 
      * @return the subscriptionId value.
      */
+    @Generated
     public String subscriptionId() {
         return this.subscriptionId;
     }
@@ -127,6 +145,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      * 
      * @return the deadline value.
      */
+    @Generated
     public OffsetDateTime deadline() {
         return this.deadline;
     }
@@ -136,6 +155,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      * 
      * @return the deadlineType value.
      */
+    @Generated
     public DeadlineType deadlineType() {
         return this.deadlineType;
     }
@@ -145,6 +165,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      * 
      * @return the state value.
      */
+    @Generated
     public OperationState state() {
         return this.state;
     }
@@ -154,6 +175,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      * 
      * @return the timezone value.
      */
+    @Generated
     public String timezone() {
         return this.timezone;
     }
@@ -163,6 +185,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      * 
      * @return the timeZone value.
      */
+    @Generated
     public String timeZone() {
         return this.timeZone;
     }
@@ -172,6 +195,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      * 
      * @return the resourceOperationError value.
      */
+    @Generated
     public ResourceOperationError resourceOperationError() {
         return this.resourceOperationError;
     }
@@ -181,6 +205,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      * 
      * @return the completedAt value.
      */
+    @Generated
     public OffsetDateTime completedAt() {
         return this.completedAt;
     }
@@ -190,6 +215,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      * 
      * @return the retryPolicy value.
      */
+    @Generated
     public RetryPolicy retryPolicy() {
         return this.retryPolicy;
     }

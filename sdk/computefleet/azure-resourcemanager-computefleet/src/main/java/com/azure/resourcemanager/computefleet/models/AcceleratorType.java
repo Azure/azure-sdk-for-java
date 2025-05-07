@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class AcceleratorType extends ExpandableStringEnum<AcceleratorType>
     /**
      * GPU Accelerator.
      */
+    @Generated
     public static final AcceleratorType GPU = fromString("GPU");
 
     /**
      * FPGA Accelerator.
      */
+    @Generated
     public static final AcceleratorType FPGA = fromString("FPGA");
 
     /**
@@ -26,6 +29,7 @@ public final class AcceleratorType extends ExpandableStringEnum<AcceleratorType>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AcceleratorType() {
     }
@@ -36,6 +40,7 @@ public final class AcceleratorType extends ExpandableStringEnum<AcceleratorType>
      * @param name a name to look for.
      * @return the corresponding AcceleratorType.
      */
+    @Generated
     public static AcceleratorType fromString(String name) {
         return fromString(name, AcceleratorType.class);
     }
@@ -45,6 +50,7 @@ public final class AcceleratorType extends ExpandableStringEnum<AcceleratorType>
      * 
      * @return known AcceleratorType values.
      */
+    @Generated
     public static Collection<AcceleratorType> values() {
         return values(AcceleratorType.class);
     }

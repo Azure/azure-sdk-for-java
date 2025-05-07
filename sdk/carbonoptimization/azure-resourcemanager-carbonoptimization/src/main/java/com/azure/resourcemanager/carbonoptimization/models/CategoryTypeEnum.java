@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,26 +16,31 @@ public final class CategoryTypeEnum extends ExpandableStringEnum<CategoryTypeEnu
     /**
      * Emissions aggregated at the subscription level.
      */
+    @Generated
     public static final CategoryTypeEnum SUBSCRIPTION = fromString("Subscription");
 
     /**
      * Emissions aggregated at the resource group level.
      */
+    @Generated
     public static final CategoryTypeEnum RESOURCE_GROUP = fromString("ResourceGroup");
 
     /**
      * Emissions aggregated at the location level.
      */
+    @Generated
     public static final CategoryTypeEnum LOCATION = fromString("Location");
 
     /**
      * Emissions aggregated at the resource level.
      */
+    @Generated
     public static final CategoryTypeEnum RESOURCE = fromString("Resource");
 
     /**
      * Emissions aggregated at the resource type level.
      */
+    @Generated
     public static final CategoryTypeEnum RESOURCE_TYPE = fromString("ResourceType");
 
     /**
@@ -42,6 +48,7 @@ public final class CategoryTypeEnum extends ExpandableStringEnum<CategoryTypeEnu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CategoryTypeEnum() {
     }
@@ -52,6 +59,7 @@ public final class CategoryTypeEnum extends ExpandableStringEnum<CategoryTypeEnu
      * @param name a name to look for.
      * @return the corresponding CategoryTypeEnum.
      */
+    @Generated
     public static CategoryTypeEnum fromString(String name) {
         return fromString(name, CategoryTypeEnum.class);
     }
@@ -61,6 +69,7 @@ public final class CategoryTypeEnum extends ExpandableStringEnum<CategoryTypeEnu
      * 
      * @return known CategoryTypeEnum values.
      */
+    @Generated
     public static Collection<CategoryTypeEnum> values() {
         return values(CategoryTypeEnum.class);
     }

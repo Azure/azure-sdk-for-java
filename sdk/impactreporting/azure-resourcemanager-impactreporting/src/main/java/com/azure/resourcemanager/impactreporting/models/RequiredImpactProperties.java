@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.impactreporting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -21,16 +22,19 @@ public final class RequiredImpactProperties implements JsonSerializable<Required
     /*
      * Name of the property
      */
+    @Generated
     private String name;
 
     /*
      * Allowed values values for the property
      */
+    @Generated
     private List<String> allowedValues;
 
     /**
      * Creates an instance of RequiredImpactProperties class.
      */
+    @Generated
     private RequiredImpactProperties() {
     }
 
@@ -39,6 +43,7 @@ public final class RequiredImpactProperties implements JsonSerializable<Required
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -48,6 +53,7 @@ public final class RequiredImpactProperties implements JsonSerializable<Required
      * 
      * @return the allowedValues value.
      */
+    @Generated
     public List<String> allowedValues() {
         return this.allowedValues;
     }

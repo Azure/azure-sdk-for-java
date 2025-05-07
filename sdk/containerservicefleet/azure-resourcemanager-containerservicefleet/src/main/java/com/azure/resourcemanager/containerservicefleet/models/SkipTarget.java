@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,6 +21,7 @@ public final class SkipTarget implements JsonSerializable<SkipTarget> {
     /*
      * The skip target type.
      */
+    @Generated
     private TargetType type;
 
     /*
@@ -27,11 +29,13 @@ public final class SkipTarget implements JsonSerializable<SkipTarget> {
      * To skip a member/group/stage, use the member/group/stage's name;
      * Tp skip an after stage wait, use the parent stage's name.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of SkipTarget class.
      */
+    @Generated
     public SkipTarget() {
     }
 
@@ -40,6 +44,7 @@ public final class SkipTarget implements JsonSerializable<SkipTarget> {
      * 
      * @return the type value.
      */
+    @Generated
     public TargetType type() {
         return this.type;
     }
@@ -50,6 +55,7 @@ public final class SkipTarget implements JsonSerializable<SkipTarget> {
      * @param type the type value to set.
      * @return the SkipTarget object itself.
      */
+    @Generated
     public SkipTarget withType(TargetType type) {
         this.type = type;
         return this;
@@ -62,6 +68,7 @@ public final class SkipTarget implements JsonSerializable<SkipTarget> {
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -74,6 +81,7 @@ public final class SkipTarget implements JsonSerializable<SkipTarget> {
      * @param name the name value to set.
      * @return the SkipTarget object itself.
      */
+    @Generated
     public SkipTarget withName(String name) {
         this.name = name;
         return this;

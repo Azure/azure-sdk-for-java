@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class PoolVirtualMachineState extends ExpandableStringEnum<PoolVirt
     /**
      * The virtual machine is up and running.
      */
+    @Generated
     public static final PoolVirtualMachineState RUNNING = fromString("Running");
 
     /**
      * The virtual machine is creating.
      */
+    @Generated
     public static final PoolVirtualMachineState CREATING = fromString("Creating");
 
     /**
      * The virtual machine is starting.
      */
+    @Generated
     public static final PoolVirtualMachineState STARTING = fromString("Starting");
 
     /**
      * The virtual machine is deleting.
      */
+    @Generated
     public static final PoolVirtualMachineState DELETING = fromString("Deleting");
 
     /**
      * The virtual machine has released the lease on the underlying hardware and is powered off.
      */
+    @Generated
     public static final PoolVirtualMachineState DEALLOCATED = fromString("Deallocated");
 
     /**
      * The virtual machine is releasing the lease on the underlying hardware and is powered off.
      */
+    @Generated
     public static final PoolVirtualMachineState DEALLOCATING = fromString("Deallocating");
 
     /**
@@ -46,11 +53,13 @@ public final class PoolVirtualMachineState extends ExpandableStringEnum<PoolVirt
      * VM are stored in the OS disk. When started again, applications and processes that were previously running in your
      * VM resume from the state prior to hibernation.
      */
+    @Generated
     public static final PoolVirtualMachineState HIBERNATED = fromString("Hibernated");
 
     /**
      * The virtual machine is hibernating.
      */
+    @Generated
     public static final PoolVirtualMachineState HIBERNATING = fromString("Hibernating");
 
     /**
@@ -58,6 +67,7 @@ public final class PoolVirtualMachineState extends ExpandableStringEnum<PoolVirt
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PoolVirtualMachineState() {
     }
@@ -68,6 +78,7 @@ public final class PoolVirtualMachineState extends ExpandableStringEnum<PoolVirt
      * @param name a name to look for.
      * @return the corresponding PoolVirtualMachineState.
      */
+    @Generated
     public static PoolVirtualMachineState fromString(String name) {
         return fromString(name, PoolVirtualMachineState.class);
     }
@@ -77,6 +88,7 @@ public final class PoolVirtualMachineState extends ExpandableStringEnum<PoolVirt
      * 
      * @return known PoolVirtualMachineState values.
      */
+    @Generated
     public static Collection<PoolVirtualMachineState> values() {
         return values(PoolVirtualMachineState.class);
     }

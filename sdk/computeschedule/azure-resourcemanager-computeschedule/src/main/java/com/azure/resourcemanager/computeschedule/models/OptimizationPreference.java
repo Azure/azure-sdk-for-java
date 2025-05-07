@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class OptimizationPreference extends ExpandableStringEnum<Optimizat
     /**
      * Optimize while considering cost savings.
      */
+    @Generated
     public static final OptimizationPreference COST = fromString("Cost");
 
     /**
      * Optimize while considering availability of resources.
      */
+    @Generated
     public static final OptimizationPreference AVAILABILITY = fromString("Availability");
 
     /**
      * Optimize while considering a balance of cost and availability.
      */
+    @Generated
     public static final OptimizationPreference COST_AVAILABILITY_BALANCED = fromString("CostAvailabilityBalanced");
 
     /**
@@ -31,6 +35,7 @@ public final class OptimizationPreference extends ExpandableStringEnum<Optimizat
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OptimizationPreference() {
     }
@@ -41,6 +46,7 @@ public final class OptimizationPreference extends ExpandableStringEnum<Optimizat
      * @param name a name to look for.
      * @return the corresponding OptimizationPreference.
      */
+    @Generated
     public static OptimizationPreference fromString(String name) {
         return fromString(name, OptimizationPreference.class);
     }
@@ -50,6 +56,7 @@ public final class OptimizationPreference extends ExpandableStringEnum<Optimizat
      * 
      * @return known OptimizationPreference values.
      */
+    @Generated
     public static Collection<OptimizationPreference> values() {
         return values(OptimizationPreference.class);
     }

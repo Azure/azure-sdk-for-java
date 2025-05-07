@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,36 +20,43 @@ public final class SmbStorageClassTypeProperties extends StorageClassTypePropert
     /*
      * Type of the storage class.
      */
+    @Generated
     private SCType type = SCType.SMB;
 
     /*
      * SMB Source
      */
+    @Generated
     private String source;
 
     /*
      * Sub directory under share. If the sub directory doesn't exist, driver will create it
      */
+    @Generated
     private String subDir;
 
     /*
      * Server username
      */
+    @Generated
     private String username;
 
     /*
      * Server password
      */
+    @Generated
     private String password;
 
     /*
      * Server domain
      */
+    @Generated
     private String domain;
 
     /**
      * Creates an instance of SmbStorageClassTypeProperties class.
      */
+    @Generated
     public SmbStorageClassTypeProperties() {
     }
 
@@ -57,6 +65,7 @@ public final class SmbStorageClassTypeProperties extends StorageClassTypePropert
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public SCType type() {
         return this.type;
@@ -67,6 +76,7 @@ public final class SmbStorageClassTypeProperties extends StorageClassTypePropert
      * 
      * @return the source value.
      */
+    @Generated
     public String source() {
         return this.source;
     }
@@ -77,6 +87,7 @@ public final class SmbStorageClassTypeProperties extends StorageClassTypePropert
      * @param source the source value to set.
      * @return the SmbStorageClassTypeProperties object itself.
      */
+    @Generated
     public SmbStorageClassTypeProperties withSource(String source) {
         this.source = source;
         return this;
@@ -87,6 +98,7 @@ public final class SmbStorageClassTypeProperties extends StorageClassTypePropert
      * 
      * @return the subDir value.
      */
+    @Generated
     public String subDir() {
         return this.subDir;
     }
@@ -97,6 +109,7 @@ public final class SmbStorageClassTypeProperties extends StorageClassTypePropert
      * @param subDir the subDir value to set.
      * @return the SmbStorageClassTypeProperties object itself.
      */
+    @Generated
     public SmbStorageClassTypeProperties withSubDir(String subDir) {
         this.subDir = subDir;
         return this;
@@ -107,6 +120,7 @@ public final class SmbStorageClassTypeProperties extends StorageClassTypePropert
      * 
      * @return the username value.
      */
+    @Generated
     public String username() {
         return this.username;
     }
@@ -117,6 +131,7 @@ public final class SmbStorageClassTypeProperties extends StorageClassTypePropert
      * @param username the username value to set.
      * @return the SmbStorageClassTypeProperties object itself.
      */
+    @Generated
     public SmbStorageClassTypeProperties withUsername(String username) {
         this.username = username;
         return this;
@@ -127,6 +142,7 @@ public final class SmbStorageClassTypeProperties extends StorageClassTypePropert
      * 
      * @return the password value.
      */
+    @Generated
     public String password() {
         return this.password;
     }
@@ -137,6 +153,7 @@ public final class SmbStorageClassTypeProperties extends StorageClassTypePropert
      * @param password the password value to set.
      * @return the SmbStorageClassTypeProperties object itself.
      */
+    @Generated
     public SmbStorageClassTypeProperties withPassword(String password) {
         this.password = password;
         return this;
@@ -147,6 +164,7 @@ public final class SmbStorageClassTypeProperties extends StorageClassTypePropert
      * 
      * @return the domain value.
      */
+    @Generated
     public String domain() {
         return this.domain;
     }
@@ -157,6 +175,7 @@ public final class SmbStorageClassTypeProperties extends StorageClassTypePropert
      * @param domain the domain value to set.
      * @return the SmbStorageClassTypeProperties object itself.
      */
+    @Generated
     public SmbStorageClassTypeProperties withDomain(String domain) {
         this.domain = domain;
         return this;

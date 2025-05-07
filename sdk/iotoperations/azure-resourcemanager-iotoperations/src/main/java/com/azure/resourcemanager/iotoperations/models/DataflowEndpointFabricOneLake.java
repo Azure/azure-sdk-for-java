@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,31 +21,37 @@ public final class DataflowEndpointFabricOneLake implements JsonSerializable<Dat
     /*
      * Authentication configuration. NOTE - only one authentication property is allowed per entry.
      */
+    @Generated
     private DataflowEndpointFabricOneLakeAuthentication authentication;
 
     /*
      * Names of the workspace and lakehouse.
      */
+    @Generated
     private DataflowEndpointFabricOneLakeNames names;
 
     /*
      * Type of location of the data in the workspace. Can be either tables or files.
      */
+    @Generated
     private DataflowEndpointFabricPathType oneLakePathType;
 
     /*
      * Host of the Microsoft Fabric in the form of https://<host>.fabric.microsoft.com.
      */
+    @Generated
     private String host;
 
     /*
      * Batching configuration.
      */
+    @Generated
     private BatchingConfiguration batching;
 
     /**
      * Creates an instance of DataflowEndpointFabricOneLake class.
      */
+    @Generated
     public DataflowEndpointFabricOneLake() {
     }
 
@@ -54,6 +61,7 @@ public final class DataflowEndpointFabricOneLake implements JsonSerializable<Dat
      * 
      * @return the authentication value.
      */
+    @Generated
     public DataflowEndpointFabricOneLakeAuthentication authentication() {
         return this.authentication;
     }
@@ -65,6 +73,7 @@ public final class DataflowEndpointFabricOneLake implements JsonSerializable<Dat
      * @param authentication the authentication value to set.
      * @return the DataflowEndpointFabricOneLake object itself.
      */
+    @Generated
     public DataflowEndpointFabricOneLake
         withAuthentication(DataflowEndpointFabricOneLakeAuthentication authentication) {
         this.authentication = authentication;
@@ -76,6 +85,7 @@ public final class DataflowEndpointFabricOneLake implements JsonSerializable<Dat
      * 
      * @return the names value.
      */
+    @Generated
     public DataflowEndpointFabricOneLakeNames names() {
         return this.names;
     }
@@ -86,6 +96,7 @@ public final class DataflowEndpointFabricOneLake implements JsonSerializable<Dat
      * @param names the names value to set.
      * @return the DataflowEndpointFabricOneLake object itself.
      */
+    @Generated
     public DataflowEndpointFabricOneLake withNames(DataflowEndpointFabricOneLakeNames names) {
         this.names = names;
         return this;
@@ -96,6 +107,7 @@ public final class DataflowEndpointFabricOneLake implements JsonSerializable<Dat
      * 
      * @return the oneLakePathType value.
      */
+    @Generated
     public DataflowEndpointFabricPathType oneLakePathType() {
         return this.oneLakePathType;
     }
@@ -106,6 +118,7 @@ public final class DataflowEndpointFabricOneLake implements JsonSerializable<Dat
      * @param oneLakePathType the oneLakePathType value to set.
      * @return the DataflowEndpointFabricOneLake object itself.
      */
+    @Generated
     public DataflowEndpointFabricOneLake withOneLakePathType(DataflowEndpointFabricPathType oneLakePathType) {
         this.oneLakePathType = oneLakePathType;
         return this;
@@ -116,6 +129,7 @@ public final class DataflowEndpointFabricOneLake implements JsonSerializable<Dat
      * 
      * @return the host value.
      */
+    @Generated
     public String host() {
         return this.host;
     }
@@ -126,6 +140,7 @@ public final class DataflowEndpointFabricOneLake implements JsonSerializable<Dat
      * @param host the host value to set.
      * @return the DataflowEndpointFabricOneLake object itself.
      */
+    @Generated
     public DataflowEndpointFabricOneLake withHost(String host) {
         this.host = host;
         return this;
@@ -136,6 +151,7 @@ public final class DataflowEndpointFabricOneLake implements JsonSerializable<Dat
      * 
      * @return the batching value.
      */
+    @Generated
     public BatchingConfiguration batching() {
         return this.batching;
     }
@@ -146,6 +162,7 @@ public final class DataflowEndpointFabricOneLake implements JsonSerializable<Dat
      * @param batching the batching value to set.
      * @return the DataflowEndpointFabricOneLake object itself.
      */
+    @Generated
     public DataflowEndpointFabricOneLake withBatching(BatchingConfiguration batching) {
         this.batching = batching;
         return this;

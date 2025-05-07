@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.connectedcache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,96 +22,115 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
     /*
      * Customer resource Azure fully qualified resource Id.
      */
+    @Generated
     private String fullyQualifiedResourceId;
 
     /*
      * Customer resource Guid Id.
      */
+    @Generated
     private String customerId;
 
     /*
      * Customer resource name.
      */
+    @Generated
     private String customerName;
 
     /*
      * Customer resource contact email.
      */
+    @Generated
     private String contactEmail;
 
     /*
      * Customer resource contact phone.
      */
+    @Generated
     private String contactPhone;
 
     /*
      * Customer resource contact full name.
      */
+    @Generated
     private String contactName;
 
     /*
      * Customer resource entitlement flag as boolean.
      */
+    @Generated
     private Boolean isEntitled;
 
     /*
      * Customer resource Mcc release version.
      */
+    @Generated
     private Integer releaseVersion;
 
     /*
      * Customer resource create async operation Id.
      */
+    @Generated
     private String createAsyncOperationId;
 
     /*
      * Customer resource deletion async operation Id.
      */
+    @Generated
     private String deleteAsyncOperationId;
 
     /*
      * Customer resource client tenant Id of subscription.
      */
+    @Generated
     private String clientTenantId;
 
     /*
      * Customer resource sync attempts.
      */
+    @Generated
     private Integer synchWithAzureAttemptsCount;
 
     /*
      * Customer resource last Azure sync timestamp.
      */
+    @Generated
     private OffsetDateTime lastSyncWithAzureTimestamp;
 
     /*
      * Customer resource flag for enterprise management as boolean.
      */
+    @Generated
     private Boolean isEnterpriseManaged;
 
     /*
      * Customer resource flag for migration.
      */
+    @Generated
     private Boolean shouldMigrate;
 
     /*
      * Customer resource flag for resending signup code as boolean.
      */
+    @Generated
     private Boolean resendSignupCode;
 
     /*
      * Customer resource flag for requiring verification of signup code as boolean.
      */
+    @Generated
     private Boolean verifySignupCode;
 
     /*
      * Customer resource phrase for verifying signup.
      */
+    @Generated
     private String verifySignupPhrase;
 
     /**
      * Creates an instance of CustomerEntity class.
      */
+    @Generated
     public CustomerEntity() {
     }
 
@@ -119,6 +139,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the fullyQualifiedResourceId value.
      */
+    @Generated
     public String fullyQualifiedResourceId() {
         return this.fullyQualifiedResourceId;
     }
@@ -129,6 +150,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * @param fullyQualifiedResourceId the fullyQualifiedResourceId value to set.
      * @return the CustomerEntity object itself.
      */
+    @Generated
     public CustomerEntity withFullyQualifiedResourceId(String fullyQualifiedResourceId) {
         this.fullyQualifiedResourceId = fullyQualifiedResourceId;
         return this;
@@ -139,6 +161,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the customerId value.
      */
+    @Generated
     public String customerId() {
         return this.customerId;
     }
@@ -148,6 +171,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the customerName value.
      */
+    @Generated
     public String customerName() {
         return this.customerName;
     }
@@ -158,6 +182,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * @param customerName the customerName value to set.
      * @return the CustomerEntity object itself.
      */
+    @Generated
     public CustomerEntity withCustomerName(String customerName) {
         this.customerName = customerName;
         return this;
@@ -168,6 +193,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the contactEmail value.
      */
+    @Generated
     public String contactEmail() {
         return this.contactEmail;
     }
@@ -178,6 +204,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * @param contactEmail the contactEmail value to set.
      * @return the CustomerEntity object itself.
      */
+    @Generated
     public CustomerEntity withContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
         return this;
@@ -188,6 +215,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the contactPhone value.
      */
+    @Generated
     public String contactPhone() {
         return this.contactPhone;
     }
@@ -198,6 +226,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * @param contactPhone the contactPhone value to set.
      * @return the CustomerEntity object itself.
      */
+    @Generated
     public CustomerEntity withContactPhone(String contactPhone) {
         this.contactPhone = contactPhone;
         return this;
@@ -208,6 +237,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the contactName value.
      */
+    @Generated
     public String contactName() {
         return this.contactName;
     }
@@ -218,6 +248,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * @param contactName the contactName value to set.
      * @return the CustomerEntity object itself.
      */
+    @Generated
     public CustomerEntity withContactName(String contactName) {
         this.contactName = contactName;
         return this;
@@ -228,6 +259,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the isEntitled value.
      */
+    @Generated
     public Boolean isEntitled() {
         return this.isEntitled;
     }
@@ -238,6 +270,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * @param isEntitled the isEntitled value to set.
      * @return the CustomerEntity object itself.
      */
+    @Generated
     public CustomerEntity withIsEntitled(Boolean isEntitled) {
         this.isEntitled = isEntitled;
         return this;
@@ -248,6 +281,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the releaseVersion value.
      */
+    @Generated
     public Integer releaseVersion() {
         return this.releaseVersion;
     }
@@ -258,6 +292,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * @param releaseVersion the releaseVersion value to set.
      * @return the CustomerEntity object itself.
      */
+    @Generated
     public CustomerEntity withReleaseVersion(Integer releaseVersion) {
         this.releaseVersion = releaseVersion;
         return this;
@@ -268,6 +303,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the createAsyncOperationId value.
      */
+    @Generated
     public String createAsyncOperationId() {
         return this.createAsyncOperationId;
     }
@@ -277,6 +313,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the deleteAsyncOperationId value.
      */
+    @Generated
     public String deleteAsyncOperationId() {
         return this.deleteAsyncOperationId;
     }
@@ -286,6 +323,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the clientTenantId value.
      */
+    @Generated
     public String clientTenantId() {
         return this.clientTenantId;
     }
@@ -296,6 +334,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * @param clientTenantId the clientTenantId value to set.
      * @return the CustomerEntity object itself.
      */
+    @Generated
     public CustomerEntity withClientTenantId(String clientTenantId) {
         this.clientTenantId = clientTenantId;
         return this;
@@ -306,6 +345,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the synchWithAzureAttemptsCount value.
      */
+    @Generated
     public Integer synchWithAzureAttemptsCount() {
         return this.synchWithAzureAttemptsCount;
     }
@@ -315,6 +355,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the lastSyncWithAzureTimestamp value.
      */
+    @Generated
     public OffsetDateTime lastSyncWithAzureTimestamp() {
         return this.lastSyncWithAzureTimestamp;
     }
@@ -324,6 +365,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the isEnterpriseManaged value.
      */
+    @Generated
     public Boolean isEnterpriseManaged() {
         return this.isEnterpriseManaged;
     }
@@ -334,6 +376,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * @param isEnterpriseManaged the isEnterpriseManaged value to set.
      * @return the CustomerEntity object itself.
      */
+    @Generated
     public CustomerEntity withIsEnterpriseManaged(Boolean isEnterpriseManaged) {
         this.isEnterpriseManaged = isEnterpriseManaged;
         return this;
@@ -344,6 +387,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the shouldMigrate value.
      */
+    @Generated
     public Boolean shouldMigrate() {
         return this.shouldMigrate;
     }
@@ -354,6 +398,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * @param shouldMigrate the shouldMigrate value to set.
      * @return the CustomerEntity object itself.
      */
+    @Generated
     public CustomerEntity withShouldMigrate(Boolean shouldMigrate) {
         this.shouldMigrate = shouldMigrate;
         return this;
@@ -364,6 +409,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the resendSignupCode value.
      */
+    @Generated
     public Boolean resendSignupCode() {
         return this.resendSignupCode;
     }
@@ -374,6 +420,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * @param resendSignupCode the resendSignupCode value to set.
      * @return the CustomerEntity object itself.
      */
+    @Generated
     public CustomerEntity withResendSignupCode(Boolean resendSignupCode) {
         this.resendSignupCode = resendSignupCode;
         return this;
@@ -384,6 +431,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the verifySignupCode value.
      */
+    @Generated
     public Boolean verifySignupCode() {
         return this.verifySignupCode;
     }
@@ -394,6 +442,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * @param verifySignupCode the verifySignupCode value to set.
      * @return the CustomerEntity object itself.
      */
+    @Generated
     public CustomerEntity withVerifySignupCode(Boolean verifySignupCode) {
         this.verifySignupCode = verifySignupCode;
         return this;
@@ -404,6 +453,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * 
      * @return the verifySignupPhrase value.
      */
+    @Generated
     public String verifySignupPhrase() {
         return this.verifySignupPhrase;
     }
@@ -414,6 +464,7 @@ public final class CustomerEntity implements JsonSerializable<CustomerEntity> {
      * @param verifySignupPhrase the verifySignupPhrase value to set.
      * @return the CustomerEntity object itself.
      */
+    @Generated
     public CustomerEntity withVerifySignupPhrase(String verifySignupPhrase) {
         this.verifySignupPhrase = verifySignupPhrase;
         return this;

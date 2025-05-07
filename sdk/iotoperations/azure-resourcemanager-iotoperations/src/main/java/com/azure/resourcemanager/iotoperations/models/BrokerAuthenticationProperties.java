@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,16 +23,19 @@ public final class BrokerAuthenticationProperties implements JsonSerializable<Br
      * Defines a set of Broker authentication methods to be used on `BrokerListeners`. For each array element one
      * authenticator type supported.
      */
+    @Generated
     private List<BrokerAuthenticatorMethods> authenticationMethods;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of BrokerAuthenticationProperties class.
      */
+    @Generated
     public BrokerAuthenticationProperties() {
     }
 
@@ -41,6 +45,7 @@ public final class BrokerAuthenticationProperties implements JsonSerializable<Br
      * 
      * @return the authenticationMethods value.
      */
+    @Generated
     public List<BrokerAuthenticatorMethods> authenticationMethods() {
         return this.authenticationMethods;
     }
@@ -52,6 +57,7 @@ public final class BrokerAuthenticationProperties implements JsonSerializable<Br
      * @param authenticationMethods the authenticationMethods value to set.
      * @return the BrokerAuthenticationProperties object itself.
      */
+    @Generated
     public BrokerAuthenticationProperties
         withAuthenticationMethods(List<BrokerAuthenticatorMethods> authenticationMethods) {
         this.authenticationMethods = authenticationMethods;
@@ -63,6 +69,7 @@ public final class BrokerAuthenticationProperties implements JsonSerializable<Br
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.servicenetworking.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
     /**
      * Resource in Provisioning State.
      */
+    @Generated
     public static final ProvisioningState PROVISIONING = fromString("Provisioning");
 
     /**
      * Resource in Updating State.
      */
+    @Generated
     public static final ProvisioningState UPDATING = fromString("Updating");
 
     /**
      * Resource in Deleting State.
      */
+    @Generated
     public static final ProvisioningState DELETING = fromString("Deleting");
 
     /**
      * Resource in Accepted State.
      */
+    @Generated
     public static final ProvisioningState ACCEPTED = fromString("Accepted");
 
     /**
      * Resource in Succeeded State.
      */
+    @Generated
     public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
      * Resource in Failed State.
      */
+    @Generated
     public static final ProvisioningState FAILED = fromString("Failed");
 
     /**
      * Resource in Canceled State.
      */
+    @Generated
     public static final ProvisioningState CANCELED = fromString("Canceled");
 
     /**
@@ -51,6 +59,7 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ProvisioningState() {
     }
@@ -61,6 +70,7 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
      * @param name a name to look for.
      * @return the corresponding ProvisioningState.
      */
+    @Generated
     public static ProvisioningState fromString(String name) {
         return fromString(name, ProvisioningState.class);
     }
@@ -70,6 +80,7 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
      * 
      * @return known ProvisioningState values.
      */
+    @Generated
     public static Collection<ProvisioningState> values() {
         return values(ProvisioningState.class);
     }

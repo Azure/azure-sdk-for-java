@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class Metrics implements JsonSerializable<Metrics> {
     /*
      * The prometheus port to expose the metrics.
      */
+    @Generated
     private Integer prometheusPort;
 
     /**
      * Creates an instance of Metrics class.
      */
+    @Generated
     public Metrics() {
     }
 
@@ -32,6 +35,7 @@ public final class Metrics implements JsonSerializable<Metrics> {
      * 
      * @return the prometheusPort value.
      */
+    @Generated
     public Integer prometheusPort() {
         return this.prometheusPort;
     }
@@ -42,6 +46,7 @@ public final class Metrics implements JsonSerializable<Metrics> {
      * @param prometheusPort the prometheusPort value to set.
      * @return the Metrics object itself.
      */
+    @Generated
     public Metrics withPrometheusPort(Integer prometheusPort) {
         this.prometheusPort = prometheusPort;
         return this;

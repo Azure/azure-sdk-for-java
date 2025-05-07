@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +21,37 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
     /*
      * The resource id of the image.
      */
+    @Generated
     private String resourceId;
 
     /*
      * The image to use from a well-known set of images made available to customers.
      */
+    @Generated
     private String wellKnownImageName;
 
     /*
      * List of aliases to reference the image by.
      */
+    @Generated
     private List<String> aliases;
 
     /*
      * The percentage of the buffer to be allocated to this image.
      */
+    @Generated
     private String buffer;
 
     /*
      * The ephemeral type of the image.
      */
+    @Generated
     private EphemeralType ephemeralType;
 
     /**
      * Creates an instance of PoolImage class.
      */
+    @Generated
     public PoolImage() {
     }
 
@@ -53,6 +60,7 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String resourceId() {
         return this.resourceId;
     }
@@ -63,6 +71,7 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
      * @param resourceId the resourceId value to set.
      * @return the PoolImage object itself.
      */
+    @Generated
     public PoolImage withResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
@@ -74,6 +83,7 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
      * 
      * @return the wellKnownImageName value.
      */
+    @Generated
     public String wellKnownImageName() {
         return this.wellKnownImageName;
     }
@@ -85,6 +95,7 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
      * @param wellKnownImageName the wellKnownImageName value to set.
      * @return the PoolImage object itself.
      */
+    @Generated
     public PoolImage withWellKnownImageName(String wellKnownImageName) {
         this.wellKnownImageName = wellKnownImageName;
         return this;
@@ -95,6 +106,7 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
      * 
      * @return the aliases value.
      */
+    @Generated
     public List<String> aliases() {
         return this.aliases;
     }
@@ -105,6 +117,7 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
      * @param aliases the aliases value to set.
      * @return the PoolImage object itself.
      */
+    @Generated
     public PoolImage withAliases(List<String> aliases) {
         this.aliases = aliases;
         return this;
@@ -115,6 +128,7 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
      * 
      * @return the buffer value.
      */
+    @Generated
     public String buffer() {
         return this.buffer;
     }
@@ -125,6 +139,7 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
      * @param buffer the buffer value to set.
      * @return the PoolImage object itself.
      */
+    @Generated
     public PoolImage withBuffer(String buffer) {
         this.buffer = buffer;
         return this;
@@ -135,6 +150,7 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
      * 
      * @return the ephemeralType value.
      */
+    @Generated
     public EphemeralType ephemeralType() {
         return this.ephemeralType;
     }
@@ -145,6 +161,7 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
      * @param ephemeralType the ephemeralType value to set.
      * @return the PoolImage object itself.
      */
+    @Generated
     public PoolImage withEphemeralType(EphemeralType ephemeralType) {
         this.ephemeralType = ephemeralType;
         return this;

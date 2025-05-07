@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.neonpostgres.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,11 +23,13 @@ public final class PgVersionsResultInner implements JsonSerializable<PgVersionsR
     /*
      * List of PostgreSQL versions
      */
+    @Generated
     private List<PgVersion> versions;
 
     /**
      * Creates an instance of PgVersionsResultInner class.
      */
+    @Generated
     private PgVersionsResultInner() {
     }
 
@@ -35,6 +38,7 @@ public final class PgVersionsResultInner implements JsonSerializable<PgVersionsR
      * 
      * @return the versions value.
      */
+    @Generated
     public List<PgVersion> versions() {
         return this.versions;
     }

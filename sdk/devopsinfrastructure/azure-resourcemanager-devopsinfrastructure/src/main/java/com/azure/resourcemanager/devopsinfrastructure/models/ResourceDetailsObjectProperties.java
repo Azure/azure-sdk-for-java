@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -20,21 +21,25 @@ public final class ResourceDetailsObjectProperties implements JsonSerializable<R
     /*
      * The status of the resource.
      */
+    @Generated
     private ResourceStatus status;
 
     /*
      * The image name of the resource.
      */
+    @Generated
     private String image;
 
     /*
      * The version of the image running on the resource.
      */
+    @Generated
     private String imageVersion;
 
     /**
      * Creates an instance of ResourceDetailsObjectProperties class.
      */
+    @Generated
     private ResourceDetailsObjectProperties() {
     }
 
@@ -43,6 +48,7 @@ public final class ResourceDetailsObjectProperties implements JsonSerializable<R
      * 
      * @return the status value.
      */
+    @Generated
     public ResourceStatus status() {
         return this.status;
     }
@@ -52,6 +58,7 @@ public final class ResourceDetailsObjectProperties implements JsonSerializable<R
      * 
      * @return the image value.
      */
+    @Generated
     public String image() {
         return this.image;
     }
@@ -61,6 +68,7 @@ public final class ResourceDetailsObjectProperties implements JsonSerializable<R
      * 
      * @return the imageVersion value.
      */
+    @Generated
     public String imageVersion() {
         return this.imageVersion;
     }

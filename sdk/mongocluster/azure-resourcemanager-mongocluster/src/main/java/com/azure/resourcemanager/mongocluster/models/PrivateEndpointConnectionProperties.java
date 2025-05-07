@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,26 +23,31 @@ public final class PrivateEndpointConnectionProperties
     /*
      * The group ids for the private endpoint resource.
      */
+    @Generated
     private List<String> groupIds;
 
     /*
      * The private endpoint resource.
      */
+    @Generated
     private PrivateEndpoint privateEndpoint;
 
     /*
      * A collection of information about the state of the connection between service consumer and provider.
      */
+    @Generated
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
     /*
      * The provisioning state of the private endpoint connection resource.
      */
+    @Generated
     private PrivateEndpointConnectionProvisioningState provisioningState;
 
     /**
      * Creates an instance of PrivateEndpointConnectionProperties class.
      */
+    @Generated
     public PrivateEndpointConnectionProperties() {
     }
 
@@ -50,6 +56,7 @@ public final class PrivateEndpointConnectionProperties
      * 
      * @return the groupIds value.
      */
+    @Generated
     public List<String> groupIds() {
         return this.groupIds;
     }
@@ -59,6 +66,7 @@ public final class PrivateEndpointConnectionProperties
      * 
      * @return the privateEndpoint value.
      */
+    @Generated
     public PrivateEndpoint privateEndpoint() {
         return this.privateEndpoint;
     }
@@ -69,6 +77,7 @@ public final class PrivateEndpointConnectionProperties
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
      */
+    @Generated
     public PrivateEndpointConnectionProperties withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
         this.privateEndpoint = privateEndpoint;
         return this;
@@ -80,6 +89,7 @@ public final class PrivateEndpointConnectionProperties
      * 
      * @return the privateLinkServiceConnectionState value.
      */
+    @Generated
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
         return this.privateLinkServiceConnectionState;
     }
@@ -91,6 +101,7 @@ public final class PrivateEndpointConnectionProperties
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
      */
+    @Generated
     public PrivateEndpointConnectionProperties
         withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
@@ -102,6 +113,7 @@ public final class PrivateEndpointConnectionProperties
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public PrivateEndpointConnectionProvisioningState provisioningState() {
         return this.provisioningState;
     }

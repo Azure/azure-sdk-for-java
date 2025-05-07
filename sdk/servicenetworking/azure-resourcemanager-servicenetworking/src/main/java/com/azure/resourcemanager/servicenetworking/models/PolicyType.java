@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.servicenetworking.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class PolicyType extends ExpandableStringEnum<PolicyType> {
     /**
      * Policy of Type WAF.
      */
+    @Generated
     public static final PolicyType WAF = fromString("waf");
 
     /**
      * Policy of Type IpAccessRules.
      */
+    @Generated
     public static final PolicyType IP_ACCESS_RULES = fromString("ipAccessRules");
 
     /**
@@ -26,6 +29,7 @@ public final class PolicyType extends ExpandableStringEnum<PolicyType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PolicyType() {
     }
@@ -36,6 +40,7 @@ public final class PolicyType extends ExpandableStringEnum<PolicyType> {
      * @param name a name to look for.
      * @return the corresponding PolicyType.
      */
+    @Generated
     public static PolicyType fromString(String name) {
         return fromString(name, PolicyType.class);
     }
@@ -45,6 +50,7 @@ public final class PolicyType extends ExpandableStringEnum<PolicyType> {
      * 
      * @return known PolicyType values.
      */
+    @Generated
     public static Collection<PolicyType> values() {
         return values(PolicyType.class);
     }

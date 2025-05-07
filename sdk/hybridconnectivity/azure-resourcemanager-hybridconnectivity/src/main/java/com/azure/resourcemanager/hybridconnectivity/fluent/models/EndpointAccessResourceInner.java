@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public final class EndpointAccessResourceInner implements JsonSerializable<Endpo
     /*
      * Azure relay hybrid connection access properties
      */
+    @Generated
     private RelayNamespaceAccessProperties innerRelay;
 
     /**
      * Creates an instance of EndpointAccessResourceInner class.
      */
+    @Generated
     private EndpointAccessResourceInner() {
     }
 
@@ -32,6 +35,7 @@ public final class EndpointAccessResourceInner implements JsonSerializable<Endpo
      * 
      * @return the innerRelay value.
      */
+    @Generated
     private RelayNamespaceAccessProperties innerRelay() {
         return this.innerRelay;
     }
@@ -41,6 +45,7 @@ public final class EndpointAccessResourceInner implements JsonSerializable<Endpo
      * 
      * @return the namespaceName value.
      */
+    @Generated
     public String namespaceName() {
         return this.innerRelay() == null ? null : this.innerRelay().namespaceName();
     }
@@ -50,6 +55,7 @@ public final class EndpointAccessResourceInner implements JsonSerializable<Endpo
      * 
      * @return the namespaceNameSuffix value.
      */
+    @Generated
     public String namespaceNameSuffix() {
         return this.innerRelay() == null ? null : this.innerRelay().namespaceNameSuffix();
     }
@@ -59,6 +65,7 @@ public final class EndpointAccessResourceInner implements JsonSerializable<Endpo
      * 
      * @return the hybridConnectionName value.
      */
+    @Generated
     public String hybridConnectionName() {
         return this.innerRelay() == null ? null : this.innerRelay().hybridConnectionName();
     }
@@ -68,6 +75,7 @@ public final class EndpointAccessResourceInner implements JsonSerializable<Endpo
      * 
      * @return the accessKey value.
      */
+    @Generated
     public String accessKey() {
         return this.innerRelay() == null ? null : this.innerRelay().accessKey();
     }
@@ -77,6 +85,7 @@ public final class EndpointAccessResourceInner implements JsonSerializable<Endpo
      * 
      * @return the expiresOn value.
      */
+    @Generated
     public Long expiresOn() {
         return this.innerRelay() == null ? null : this.innerRelay().expiresOn();
     }
@@ -86,6 +95,7 @@ public final class EndpointAccessResourceInner implements JsonSerializable<Endpo
      * 
      * @return the serviceConfigurationToken value.
      */
+    @Generated
     public String serviceConfigurationToken() {
         return this.innerRelay() == null ? null : this.innerRelay().serviceConfigurationToken();
     }

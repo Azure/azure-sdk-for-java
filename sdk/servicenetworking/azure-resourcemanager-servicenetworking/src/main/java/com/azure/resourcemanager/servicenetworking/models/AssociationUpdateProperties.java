@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class AssociationUpdateProperties implements JsonSerializable<Assoc
     /*
      * Association Type
      */
+    @Generated
     private AssociationType associationType;
 
     /*
      * Association Subnet
      */
+    @Generated
     private AssociationSubnetUpdate subnet;
 
     /**
      * Creates an instance of AssociationUpdateProperties class.
      */
+    @Generated
     public AssociationUpdateProperties() {
     }
 
@@ -37,6 +41,7 @@ public final class AssociationUpdateProperties implements JsonSerializable<Assoc
      * 
      * @return the associationType value.
      */
+    @Generated
     public AssociationType associationType() {
         return this.associationType;
     }
@@ -47,6 +52,7 @@ public final class AssociationUpdateProperties implements JsonSerializable<Assoc
      * @param associationType the associationType value to set.
      * @return the AssociationUpdateProperties object itself.
      */
+    @Generated
     public AssociationUpdateProperties withAssociationType(AssociationType associationType) {
         this.associationType = associationType;
         return this;
@@ -57,6 +63,7 @@ public final class AssociationUpdateProperties implements JsonSerializable<Assoc
      * 
      * @return the subnet value.
      */
+    @Generated
     public AssociationSubnetUpdate subnet() {
         return this.subnet;
     }
@@ -67,6 +74,7 @@ public final class AssociationUpdateProperties implements JsonSerializable<Assoc
      * @param subnet the subnet value to set.
      * @return the AssociationUpdateProperties object itself.
      */
+    @Generated
     public AssociationUpdateProperties withSubnet(AssociationSubnetUpdate subnet) {
         this.subnet = subnet;
         return this;

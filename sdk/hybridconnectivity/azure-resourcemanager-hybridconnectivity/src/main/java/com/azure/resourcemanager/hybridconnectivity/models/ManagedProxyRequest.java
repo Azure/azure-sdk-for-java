@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,22 +21,26 @@ public final class ManagedProxyRequest implements JsonSerializable<ManagedProxyR
     /*
      * The name of the service.
      */
+    @Generated
     private String service;
 
     /*
      * The target host name.
      */
+    @Generated
     private String hostname;
 
     /*
      * The name of the service. It is an optional property, if not provided, service configuration tokens issue code
      * would be by passed.
      */
+    @Generated
     private ServiceName serviceName;
 
     /**
      * Creates an instance of ManagedProxyRequest class.
      */
+    @Generated
     public ManagedProxyRequest() {
     }
 
@@ -44,6 +49,7 @@ public final class ManagedProxyRequest implements JsonSerializable<ManagedProxyR
      * 
      * @return the service value.
      */
+    @Generated
     public String service() {
         return this.service;
     }
@@ -54,6 +60,7 @@ public final class ManagedProxyRequest implements JsonSerializable<ManagedProxyR
      * @param service the service value to set.
      * @return the ManagedProxyRequest object itself.
      */
+    @Generated
     public ManagedProxyRequest withService(String service) {
         this.service = service;
         return this;
@@ -64,6 +71,7 @@ public final class ManagedProxyRequest implements JsonSerializable<ManagedProxyR
      * 
      * @return the hostname value.
      */
+    @Generated
     public String hostname() {
         return this.hostname;
     }
@@ -74,6 +82,7 @@ public final class ManagedProxyRequest implements JsonSerializable<ManagedProxyR
      * @param hostname the hostname value to set.
      * @return the ManagedProxyRequest object itself.
      */
+    @Generated
     public ManagedProxyRequest withHostname(String hostname) {
         this.hostname = hostname;
         return this;
@@ -85,6 +94,7 @@ public final class ManagedProxyRequest implements JsonSerializable<ManagedProxyR
      * 
      * @return the serviceName value.
      */
+    @Generated
     public ServiceName serviceName() {
         return this.serviceName;
     }
@@ -96,6 +106,7 @@ public final class ManagedProxyRequest implements JsonSerializable<ManagedProxyR
      * @param serviceName the serviceName value to set.
      * @return the ManagedProxyRequest object itself.
      */
+    @Generated
     public ManagedProxyRequest withServiceName(ServiceName serviceName) {
         this.serviceName = serviceName;
         return this;

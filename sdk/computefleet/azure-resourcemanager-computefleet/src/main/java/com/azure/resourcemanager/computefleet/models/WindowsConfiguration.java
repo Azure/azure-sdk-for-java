@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,6 +24,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * true by default. This will ensure that VM Agent is installed on the VM so that
      * extensions can be added to the VM later.
      */
+    @Generated
     private Boolean provisionVMAgent;
 
     /*
@@ -30,6 +32,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * Default value is true. For virtual machine scale sets, this property can be
      * updated and updates will take effect on OS reprovisioning.
      */
+    @Generated
     private Boolean enableAutomaticUpdates;
 
     /*
@@ -39,34 +42,40 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * value from time zones returned by
      * [TimeZoneInfo.GetSystemTimeZones](https://learn.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
      */
+    @Generated
     private String timeZone;
 
     /*
      * Specifies additional base-64 encoded XML formatted information that can be
      * included in the Unattend.xml file, which is used by Windows Setup.
      */
+    @Generated
     private List<AdditionalUnattendContent> additionalUnattendContent;
 
     /*
      * [Preview Feature] Specifies settings related to VM Guest Patching on Windows.
      */
+    @Generated
     private PatchSettings patchSettings;
 
     /*
      * Specifies the Windows Remote Management listeners. This enables remote Windows
      * PowerShell.
      */
+    @Generated
     private WinRMConfiguration winRM;
 
     /*
      * Indicates whether VMAgent Platform Updates is enabled for the Windows virtual
      * machine. Default value is false.
      */
+    @Generated
     private Boolean enableVMAgentPlatformUpdates;
 
     /**
      * Creates an instance of WindowsConfiguration class.
      */
+    @Generated
     public WindowsConfiguration() {
     }
 
@@ -78,6 +87,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * 
      * @return the provisionVMAgent value.
      */
+    @Generated
     public Boolean provisionVMAgent() {
         return this.provisionVMAgent;
     }
@@ -91,6 +101,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * @param provisionVMAgent the provisionVMAgent value to set.
      * @return the WindowsConfiguration object itself.
      */
+    @Generated
     public WindowsConfiguration withProvisionVMAgent(Boolean provisionVMAgent) {
         this.provisionVMAgent = provisionVMAgent;
         return this;
@@ -104,6 +115,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * 
      * @return the enableAutomaticUpdates value.
      */
+    @Generated
     public Boolean enableAutomaticUpdates() {
         return this.enableAutomaticUpdates;
     }
@@ -117,6 +129,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * @param enableAutomaticUpdates the enableAutomaticUpdates value to set.
      * @return the WindowsConfiguration object itself.
      */
+    @Generated
     public WindowsConfiguration withEnableAutomaticUpdates(Boolean enableAutomaticUpdates) {
         this.enableAutomaticUpdates = enableAutomaticUpdates;
         return this;
@@ -131,6 +144,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * 
      * @return the timeZone value.
      */
+    @Generated
     public String timeZone() {
         return this.timeZone;
     }
@@ -145,6 +159,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * @param timeZone the timeZone value to set.
      * @return the WindowsConfiguration object itself.
      */
+    @Generated
     public WindowsConfiguration withTimeZone(String timeZone) {
         this.timeZone = timeZone;
         return this;
@@ -157,6 +172,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * 
      * @return the additionalUnattendContent value.
      */
+    @Generated
     public List<AdditionalUnattendContent> additionalUnattendContent() {
         return this.additionalUnattendContent;
     }
@@ -169,6 +185,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * @param additionalUnattendContent the additionalUnattendContent value to set.
      * @return the WindowsConfiguration object itself.
      */
+    @Generated
     public WindowsConfiguration
         withAdditionalUnattendContent(List<AdditionalUnattendContent> additionalUnattendContent) {
         this.additionalUnattendContent = additionalUnattendContent;
@@ -180,6 +197,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * 
      * @return the patchSettings value.
      */
+    @Generated
     public PatchSettings patchSettings() {
         return this.patchSettings;
     }
@@ -190,6 +208,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * @param patchSettings the patchSettings value to set.
      * @return the WindowsConfiguration object itself.
      */
+    @Generated
     public WindowsConfiguration withPatchSettings(PatchSettings patchSettings) {
         this.patchSettings = patchSettings;
         return this;
@@ -201,6 +220,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * 
      * @return the winRM value.
      */
+    @Generated
     public WinRMConfiguration winRM() {
         return this.winRM;
     }
@@ -212,6 +232,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * @param winRM the winRM value to set.
      * @return the WindowsConfiguration object itself.
      */
+    @Generated
     public WindowsConfiguration withWinRM(WinRMConfiguration winRM) {
         this.winRM = winRM;
         return this;
@@ -224,6 +245,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * 
      * @return the enableVMAgentPlatformUpdates value.
      */
+    @Generated
     public Boolean enableVMAgentPlatformUpdates() {
         return this.enableVMAgentPlatformUpdates;
     }
@@ -236,6 +258,7 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
      * @param enableVMAgentPlatformUpdates the enableVMAgentPlatformUpdates value to set.
      * @return the WindowsConfiguration object itself.
      */
+    @Generated
     public WindowsConfiguration withEnableVMAgentPlatformUpdates(Boolean enableVMAgentPlatformUpdates) {
         this.enableVMAgentPlatformUpdates = enableVMAgentPlatformUpdates;
         return this;

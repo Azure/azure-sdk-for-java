@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -21,21 +22,25 @@ public final class ResourceSkuLocationInfo implements JsonSerializable<ResourceS
     /*
      * Location of the SKU
      */
+    @Generated
     private String location;
 
     /*
      * List of availability zones where the SKU is supported.
      */
+    @Generated
     private List<String> zones;
 
     /*
      * Gets details of capabilities available to a SKU in specific zones.
      */
+    @Generated
     private List<ResourceSkuZoneDetails> zoneDetails;
 
     /**
      * Creates an instance of ResourceSkuLocationInfo class.
      */
+    @Generated
     private ResourceSkuLocationInfo() {
     }
 
@@ -44,6 +49,7 @@ public final class ResourceSkuLocationInfo implements JsonSerializable<ResourceS
      * 
      * @return the location value.
      */
+    @Generated
     public String location() {
         return this.location;
     }
@@ -53,6 +59,7 @@ public final class ResourceSkuLocationInfo implements JsonSerializable<ResourceS
      * 
      * @return the zones value.
      */
+    @Generated
     public List<String> zones() {
         return this.zones;
     }
@@ -62,6 +69,7 @@ public final class ResourceSkuLocationInfo implements JsonSerializable<ResourceS
      * 
      * @return the zoneDetails value.
      */
+    @Generated
     public List<ResourceSkuZoneDetails> zoneDetails() {
         return this.zoneDetails;
     }

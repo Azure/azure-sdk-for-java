@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.trustedsigning.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class AccountSkuPatch implements JsonSerializable<AccountSkuPatch> 
     /*
      * Name of the SKU.
      */
+    @Generated
     private SkuName name;
 
     /**
      * Creates an instance of AccountSkuPatch class.
      */
+    @Generated
     public AccountSkuPatch() {
     }
 
@@ -32,6 +35,7 @@ public final class AccountSkuPatch implements JsonSerializable<AccountSkuPatch> 
      * 
      * @return the name value.
      */
+    @Generated
     public SkuName name() {
         return this.name;
     }
@@ -42,6 +46,7 @@ public final class AccountSkuPatch implements JsonSerializable<AccountSkuPatch> 
      * @param name the name value to set.
      * @return the AccountSkuPatch object itself.
      */
+    @Generated
     public AccountSkuPatch withName(SkuName name) {
         this.name = name;
         return this;

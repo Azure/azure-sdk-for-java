@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,57 +21,68 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
     /*
      * Authentication configuration. NOTE - only authentication property is allowed per entry.
      */
+    @Generated
     private DataflowEndpointKafkaAuthentication authentication;
 
     /*
      * Consumer group ID.
      */
+    @Generated
     private String consumerGroupId;
 
     /*
      * Kafka endpoint host.
      */
+    @Generated
     private String host;
 
     /*
      * Batching configuration.
      */
+    @Generated
     private DataflowEndpointKafkaBatching batching;
 
     /*
      * Copy Broker properties. No effect if the endpoint is used as a source or if the dataflow doesn't have an Broker
      * source.
      */
+    @Generated
     private OperationalMode copyMqttProperties;
 
     /*
      * Compression. Can be none, gzip, lz4, or snappy. No effect if the endpoint is used as a source.
      */
+    @Generated
     private DataflowEndpointKafkaCompression compression;
 
     /*
      * Kafka acks. Can be all, one, or zero. No effect if the endpoint is used as a source.
      */
+    @Generated
     private DataflowEndpointKafkaAcks kafkaAcks;
 
     /*
      * Partition handling strategy. Can be default or static. No effect if the endpoint is used as a source.
      */
+    @Generated
     private DataflowEndpointKafkaPartitionStrategy partitionStrategy;
 
     /*
      * TLS configuration.
      */
+    @Generated
     private TlsProperties tls;
 
     /*
      * Cloud event mapping config.
      */
+    @Generated
     private CloudEventAttributeType cloudEventAttributes;
 
     /**
      * Creates an instance of DataflowEndpointKafka class.
      */
+    @Generated
     public DataflowEndpointKafka() {
     }
 
@@ -80,6 +92,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * 
      * @return the authentication value.
      */
+    @Generated
     public DataflowEndpointKafkaAuthentication authentication() {
         return this.authentication;
     }
@@ -91,6 +104,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * @param authentication the authentication value to set.
      * @return the DataflowEndpointKafka object itself.
      */
+    @Generated
     public DataflowEndpointKafka withAuthentication(DataflowEndpointKafkaAuthentication authentication) {
         this.authentication = authentication;
         return this;
@@ -101,6 +115,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * 
      * @return the consumerGroupId value.
      */
+    @Generated
     public String consumerGroupId() {
         return this.consumerGroupId;
     }
@@ -111,6 +126,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * @param consumerGroupId the consumerGroupId value to set.
      * @return the DataflowEndpointKafka object itself.
      */
+    @Generated
     public DataflowEndpointKafka withConsumerGroupId(String consumerGroupId) {
         this.consumerGroupId = consumerGroupId;
         return this;
@@ -121,6 +137,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * 
      * @return the host value.
      */
+    @Generated
     public String host() {
         return this.host;
     }
@@ -131,6 +148,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * @param host the host value to set.
      * @return the DataflowEndpointKafka object itself.
      */
+    @Generated
     public DataflowEndpointKafka withHost(String host) {
         this.host = host;
         return this;
@@ -141,6 +159,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * 
      * @return the batching value.
      */
+    @Generated
     public DataflowEndpointKafkaBatching batching() {
         return this.batching;
     }
@@ -151,6 +170,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * @param batching the batching value to set.
      * @return the DataflowEndpointKafka object itself.
      */
+    @Generated
     public DataflowEndpointKafka withBatching(DataflowEndpointKafkaBatching batching) {
         this.batching = batching;
         return this;
@@ -162,6 +182,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * 
      * @return the copyMqttProperties value.
      */
+    @Generated
     public OperationalMode copyMqttProperties() {
         return this.copyMqttProperties;
     }
@@ -173,6 +194,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * @param copyMqttProperties the copyMqttProperties value to set.
      * @return the DataflowEndpointKafka object itself.
      */
+    @Generated
     public DataflowEndpointKafka withCopyMqttProperties(OperationalMode copyMqttProperties) {
         this.copyMqttProperties = copyMqttProperties;
         return this;
@@ -184,6 +206,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * 
      * @return the compression value.
      */
+    @Generated
     public DataflowEndpointKafkaCompression compression() {
         return this.compression;
     }
@@ -195,6 +218,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * @param compression the compression value to set.
      * @return the DataflowEndpointKafka object itself.
      */
+    @Generated
     public DataflowEndpointKafka withCompression(DataflowEndpointKafkaCompression compression) {
         this.compression = compression;
         return this;
@@ -205,6 +229,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * 
      * @return the kafkaAcks value.
      */
+    @Generated
     public DataflowEndpointKafkaAcks kafkaAcks() {
         return this.kafkaAcks;
     }
@@ -215,6 +240,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * @param kafkaAcks the kafkaAcks value to set.
      * @return the DataflowEndpointKafka object itself.
      */
+    @Generated
     public DataflowEndpointKafka withKafkaAcks(DataflowEndpointKafkaAcks kafkaAcks) {
         this.kafkaAcks = kafkaAcks;
         return this;
@@ -226,6 +252,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * 
      * @return the partitionStrategy value.
      */
+    @Generated
     public DataflowEndpointKafkaPartitionStrategy partitionStrategy() {
         return this.partitionStrategy;
     }
@@ -237,6 +264,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * @param partitionStrategy the partitionStrategy value to set.
      * @return the DataflowEndpointKafka object itself.
      */
+    @Generated
     public DataflowEndpointKafka withPartitionStrategy(DataflowEndpointKafkaPartitionStrategy partitionStrategy) {
         this.partitionStrategy = partitionStrategy;
         return this;
@@ -247,6 +275,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * 
      * @return the tls value.
      */
+    @Generated
     public TlsProperties tls() {
         return this.tls;
     }
@@ -257,6 +286,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * @param tls the tls value to set.
      * @return the DataflowEndpointKafka object itself.
      */
+    @Generated
     public DataflowEndpointKafka withTls(TlsProperties tls) {
         this.tls = tls;
         return this;
@@ -267,6 +297,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * 
      * @return the cloudEventAttributes value.
      */
+    @Generated
     public CloudEventAttributeType cloudEventAttributes() {
         return this.cloudEventAttributes;
     }
@@ -277,6 +308,7 @@ public final class DataflowEndpointKafka implements JsonSerializable<DataflowEnd
      * @param cloudEventAttributes the cloudEventAttributes value to set.
      * @return the DataflowEndpointKafka object itself.
      */
+    @Generated
     public DataflowEndpointKafka withCloudEventAttributes(CloudEventAttributeType cloudEventAttributes) {
         this.cloudEventAttributes = cloudEventAttributes;
         return this;

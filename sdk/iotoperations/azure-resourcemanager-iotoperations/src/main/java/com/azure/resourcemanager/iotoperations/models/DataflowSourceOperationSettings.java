@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,31 +22,37 @@ public final class DataflowSourceOperationSettings implements JsonSerializable<D
     /*
      * Reference to the Dataflow Endpoint resource. Can only be of Broker and Kafka type.
      */
+    @Generated
     private String endpointRef;
 
     /*
      * Reference to the resource in Azure Device Registry where the data in the endpoint originates from.
      */
+    @Generated
     private String assetRef;
 
     /*
      * Content is a JSON Schema. Allowed: JSON Schema/draft-7.
      */
+    @Generated
     private SourceSerializationFormat serializationFormat;
 
     /*
      * Schema CR reference. Data will be deserialized according to the schema, and dropped if it doesn't match.
      */
+    @Generated
     private String schemaRef;
 
     /*
      * List of source locations. Can be Broker or Kafka topics. Supports wildcards # and +.
      */
+    @Generated
     private List<String> dataSources;
 
     /**
      * Creates an instance of DataflowSourceOperationSettings class.
      */
+    @Generated
     public DataflowSourceOperationSettings() {
     }
 
@@ -54,6 +61,7 @@ public final class DataflowSourceOperationSettings implements JsonSerializable<D
      * 
      * @return the endpointRef value.
      */
+    @Generated
     public String endpointRef() {
         return this.endpointRef;
     }
@@ -64,6 +72,7 @@ public final class DataflowSourceOperationSettings implements JsonSerializable<D
      * @param endpointRef the endpointRef value to set.
      * @return the DataflowSourceOperationSettings object itself.
      */
+    @Generated
     public DataflowSourceOperationSettings withEndpointRef(String endpointRef) {
         this.endpointRef = endpointRef;
         return this;
@@ -75,6 +84,7 @@ public final class DataflowSourceOperationSettings implements JsonSerializable<D
      * 
      * @return the assetRef value.
      */
+    @Generated
     public String assetRef() {
         return this.assetRef;
     }
@@ -86,6 +96,7 @@ public final class DataflowSourceOperationSettings implements JsonSerializable<D
      * @param assetRef the assetRef value to set.
      * @return the DataflowSourceOperationSettings object itself.
      */
+    @Generated
     public DataflowSourceOperationSettings withAssetRef(String assetRef) {
         this.assetRef = assetRef;
         return this;
@@ -96,6 +107,7 @@ public final class DataflowSourceOperationSettings implements JsonSerializable<D
      * 
      * @return the serializationFormat value.
      */
+    @Generated
     public SourceSerializationFormat serializationFormat() {
         return this.serializationFormat;
     }
@@ -106,6 +118,7 @@ public final class DataflowSourceOperationSettings implements JsonSerializable<D
      * @param serializationFormat the serializationFormat value to set.
      * @return the DataflowSourceOperationSettings object itself.
      */
+    @Generated
     public DataflowSourceOperationSettings withSerializationFormat(SourceSerializationFormat serializationFormat) {
         this.serializationFormat = serializationFormat;
         return this;
@@ -117,6 +130,7 @@ public final class DataflowSourceOperationSettings implements JsonSerializable<D
      * 
      * @return the schemaRef value.
      */
+    @Generated
     public String schemaRef() {
         return this.schemaRef;
     }
@@ -128,6 +142,7 @@ public final class DataflowSourceOperationSettings implements JsonSerializable<D
      * @param schemaRef the schemaRef value to set.
      * @return the DataflowSourceOperationSettings object itself.
      */
+    @Generated
     public DataflowSourceOperationSettings withSchemaRef(String schemaRef) {
         this.schemaRef = schemaRef;
         return this;
@@ -139,6 +154,7 @@ public final class DataflowSourceOperationSettings implements JsonSerializable<D
      * 
      * @return the dataSources value.
      */
+    @Generated
     public List<String> dataSources() {
         return this.dataSources;
     }
@@ -150,6 +166,7 @@ public final class DataflowSourceOperationSettings implements JsonSerializable<D
      * @param dataSources the dataSources value to set.
      * @return the DataflowSourceOperationSettings object itself.
      */
+    @Generated
     public DataflowSourceOperationSettings withDataSources(List<String> dataSources) {
         this.dataSources = dataSources;
         return this;

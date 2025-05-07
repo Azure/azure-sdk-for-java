@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -24,51 +25,61 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
     /*
      * Resource provisioning state.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * Time at which impact was observed
      */
+    @Generated
     private OffsetDateTime startDateTime;
 
     /*
      * Time at which impact has ended
      */
+    @Generated
     private OffsetDateTime endDateTime;
 
     /*
      * Azure resource id of the impacted resource
      */
+    @Generated
     private String impactedResourceId;
 
     /*
      * Unique ID of the impact (UUID)
      */
+    @Generated
     private String impactUniqueId;
 
     /*
      * Time at which impact is reported
      */
+    @Generated
     private OffsetDateTime reportedTimeUtc;
 
     /*
      * Category of the impact, details can found from /impactCategories API
      */
+    @Generated
     private String impactCategory;
 
     /*
      * A detailed description of the impact
      */
+    @Generated
     private String impactDescription;
 
     /*
      * The ARM correlation ids, this is important field for control plane related impacts
      */
+    @Generated
     private List<String> armCorrelationIds;
 
     /*
      * Details about performance issue. Applicable for performance impacts.
      */
+    @Generated
     private List<Performance> performance;
 
     /*
@@ -76,41 +87,49 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * when a VM is impacted due to a network issue, the impacted resource is identified as the VM, but the root cause
      * is the network. In such cases, the connectivity field will have the details about the network issue
      */
+    @Generated
     private Connectivity connectivity;
 
     /*
      * Additional fields related to impact, applicable fields per resource type are list under /impactCategories API
      */
+    @Generated
     private WorkloadImpactPropertiesAdditionalProperties additionalProperties;
 
     /*
      * ARM error code and error message associated with the impact
      */
+    @Generated
     private ErrorDetailProperties errorDetails;
 
     /*
      * Information about the impacted workload
      */
+    @Generated
     private Workload workload;
 
     /*
      * Use this field to group impacts
      */
+    @Generated
     private String impactGroupId;
 
     /*
      * Degree of confidence on the impact being a platform issue
      */
+    @Generated
     private ConfidenceLevel confidenceLevel;
 
     /*
      * Client incident details ex: incidentId , incident source
      */
+    @Generated
     private ClientIncidentDetails clientIncidentDetails;
 
     /**
      * Creates an instance of WorkloadImpactProperties class.
      */
+    @Generated
     public WorkloadImpactProperties() {
     }
 
@@ -119,6 +138,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -128,6 +148,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the startDateTime value.
      */
+    @Generated
     public OffsetDateTime startDateTime() {
         return this.startDateTime;
     }
@@ -138,6 +159,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param startDateTime the startDateTime value to set.
      * @return the WorkloadImpactProperties object itself.
      */
+    @Generated
     public WorkloadImpactProperties withStartDateTime(OffsetDateTime startDateTime) {
         this.startDateTime = startDateTime;
         return this;
@@ -148,6 +170,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the endDateTime value.
      */
+    @Generated
     public OffsetDateTime endDateTime() {
         return this.endDateTime;
     }
@@ -158,6 +181,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param endDateTime the endDateTime value to set.
      * @return the WorkloadImpactProperties object itself.
      */
+    @Generated
     public WorkloadImpactProperties withEndDateTime(OffsetDateTime endDateTime) {
         this.endDateTime = endDateTime;
         return this;
@@ -168,6 +192,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the impactedResourceId value.
      */
+    @Generated
     public String impactedResourceId() {
         return this.impactedResourceId;
     }
@@ -178,6 +203,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param impactedResourceId the impactedResourceId value to set.
      * @return the WorkloadImpactProperties object itself.
      */
+    @Generated
     public WorkloadImpactProperties withImpactedResourceId(String impactedResourceId) {
         this.impactedResourceId = impactedResourceId;
         return this;
@@ -188,6 +214,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the impactUniqueId value.
      */
+    @Generated
     public String impactUniqueId() {
         return this.impactUniqueId;
     }
@@ -197,6 +224,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the reportedTimeUtc value.
      */
+    @Generated
     public OffsetDateTime reportedTimeUtc() {
         return this.reportedTimeUtc;
     }
@@ -206,6 +234,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the impactCategory value.
      */
+    @Generated
     public String impactCategory() {
         return this.impactCategory;
     }
@@ -216,6 +245,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param impactCategory the impactCategory value to set.
      * @return the WorkloadImpactProperties object itself.
      */
+    @Generated
     public WorkloadImpactProperties withImpactCategory(String impactCategory) {
         this.impactCategory = impactCategory;
         return this;
@@ -226,6 +256,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the impactDescription value.
      */
+    @Generated
     public String impactDescription() {
         return this.impactDescription;
     }
@@ -236,6 +267,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param impactDescription the impactDescription value to set.
      * @return the WorkloadImpactProperties object itself.
      */
+    @Generated
     public WorkloadImpactProperties withImpactDescription(String impactDescription) {
         this.impactDescription = impactDescription;
         return this;
@@ -247,6 +279,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the armCorrelationIds value.
      */
+    @Generated
     public List<String> armCorrelationIds() {
         return this.armCorrelationIds;
     }
@@ -258,6 +291,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param armCorrelationIds the armCorrelationIds value to set.
      * @return the WorkloadImpactProperties object itself.
      */
+    @Generated
     public WorkloadImpactProperties withArmCorrelationIds(List<String> armCorrelationIds) {
         this.armCorrelationIds = armCorrelationIds;
         return this;
@@ -268,6 +302,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the performance value.
      */
+    @Generated
     public List<Performance> performance() {
         return this.performance;
     }
@@ -278,6 +313,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param performance the performance value to set.
      * @return the WorkloadImpactProperties object itself.
      */
+    @Generated
     public WorkloadImpactProperties withPerformance(List<Performance> performance) {
         this.performance = performance;
         return this;
@@ -291,6 +327,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the connectivity value.
      */
+    @Generated
     public Connectivity connectivity() {
         return this.connectivity;
     }
@@ -304,6 +341,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param connectivity the connectivity value to set.
      * @return the WorkloadImpactProperties object itself.
      */
+    @Generated
     public WorkloadImpactProperties withConnectivity(Connectivity connectivity) {
         this.connectivity = connectivity;
         return this;
@@ -315,6 +353,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public WorkloadImpactPropertiesAdditionalProperties additionalProperties() {
         return this.additionalProperties;
     }
@@ -326,6 +365,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param additionalProperties the additionalProperties value to set.
      * @return the WorkloadImpactProperties object itself.
      */
+    @Generated
     public WorkloadImpactProperties
         withAdditionalProperties(WorkloadImpactPropertiesAdditionalProperties additionalProperties) {
         this.additionalProperties = additionalProperties;
@@ -337,6 +377,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the errorDetails value.
      */
+    @Generated
     public ErrorDetailProperties errorDetails() {
         return this.errorDetails;
     }
@@ -347,6 +388,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param errorDetails the errorDetails value to set.
      * @return the WorkloadImpactProperties object itself.
      */
+    @Generated
     public WorkloadImpactProperties withErrorDetails(ErrorDetailProperties errorDetails) {
         this.errorDetails = errorDetails;
         return this;
@@ -357,6 +399,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the workload value.
      */
+    @Generated
     public Workload workload() {
         return this.workload;
     }
@@ -367,6 +410,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param workload the workload value to set.
      * @return the WorkloadImpactProperties object itself.
      */
+    @Generated
     public WorkloadImpactProperties withWorkload(Workload workload) {
         this.workload = workload;
         return this;
@@ -377,6 +421,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the impactGroupId value.
      */
+    @Generated
     public String impactGroupId() {
         return this.impactGroupId;
     }
@@ -387,6 +432,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param impactGroupId the impactGroupId value to set.
      * @return the WorkloadImpactProperties object itself.
      */
+    @Generated
     public WorkloadImpactProperties withImpactGroupId(String impactGroupId) {
         this.impactGroupId = impactGroupId;
         return this;
@@ -397,6 +443,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the confidenceLevel value.
      */
+    @Generated
     public ConfidenceLevel confidenceLevel() {
         return this.confidenceLevel;
     }
@@ -407,6 +454,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param confidenceLevel the confidenceLevel value to set.
      * @return the WorkloadImpactProperties object itself.
      */
+    @Generated
     public WorkloadImpactProperties withConfidenceLevel(ConfidenceLevel confidenceLevel) {
         this.confidenceLevel = confidenceLevel;
         return this;
@@ -417,6 +465,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * 
      * @return the clientIncidentDetails value.
      */
+    @Generated
     public ClientIncidentDetails clientIncidentDetails() {
         return this.clientIncidentDetails;
     }
@@ -427,6 +476,7 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
      * @param clientIncidentDetails the clientIncidentDetails value to set.
      * @return the WorkloadImpactProperties object itself.
      */
+    @Generated
     public WorkloadImpactProperties withClientIncidentDetails(ClientIncidentDetails clientIncidentDetails) {
         this.clientIncidentDetails = clientIncidentDetails;
         return this;

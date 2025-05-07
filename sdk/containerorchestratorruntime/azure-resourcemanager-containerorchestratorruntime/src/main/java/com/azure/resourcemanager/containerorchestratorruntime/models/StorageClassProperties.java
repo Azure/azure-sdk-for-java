@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,66 +22,79 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
     /*
      * Volume can be expanded or not
      */
+    @Generated
     private VolumeExpansion allowVolumeExpansion;
 
     /*
      * Additional mount options
      */
+    @Generated
     private List<String> mountOptions;
 
     /*
      * Provisioner name
      */
+    @Generated
     private String provisioner;
 
     /*
      * Binding mode of volumes: Immediate, WaitForFirstConsumer
      */
+    @Generated
     private VolumeBindingMode volumeBindingMode;
 
     /*
      * The access mode: [ReadWriteOnce, ReadWriteMany] or [ReadWriteOnce]
      */
+    @Generated
     private List<AccessMode> accessModes;
 
     /*
      * Allow single data node failure
      */
+    @Generated
     private DataResilienceTier dataResilience;
 
     /*
      * Failover speed: NA, Slow, Fast
      */
+    @Generated
     private FailoverTier failoverSpeed;
 
     /*
      * Limitations of the storage class
      */
+    @Generated
     private List<String> limitations;
 
     /*
      * Performance tier
      */
+    @Generated
     private PerformanceTier performance;
 
     /*
      * Selection priority when multiple storage classes meet the criteria. 0: Highest, -1: Never use
      */
+    @Generated
     private Long priority;
 
     /*
      * Properties of the StorageClass
      */
+    @Generated
     private StorageClassTypeProperties typeProperties;
 
     /*
      * Resource provision state
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of StorageClassProperties class.
      */
+    @Generated
     public StorageClassProperties() {
     }
 
@@ -89,6 +103,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * 
      * @return the allowVolumeExpansion value.
      */
+    @Generated
     public VolumeExpansion allowVolumeExpansion() {
         return this.allowVolumeExpansion;
     }
@@ -99,6 +114,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * @param allowVolumeExpansion the allowVolumeExpansion value to set.
      * @return the StorageClassProperties object itself.
      */
+    @Generated
     public StorageClassProperties withAllowVolumeExpansion(VolumeExpansion allowVolumeExpansion) {
         this.allowVolumeExpansion = allowVolumeExpansion;
         return this;
@@ -109,6 +125,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * 
      * @return the mountOptions value.
      */
+    @Generated
     public List<String> mountOptions() {
         return this.mountOptions;
     }
@@ -119,6 +136,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * @param mountOptions the mountOptions value to set.
      * @return the StorageClassProperties object itself.
      */
+    @Generated
     public StorageClassProperties withMountOptions(List<String> mountOptions) {
         this.mountOptions = mountOptions;
         return this;
@@ -129,6 +147,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * 
      * @return the provisioner value.
      */
+    @Generated
     public String provisioner() {
         return this.provisioner;
     }
@@ -139,6 +158,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * @param provisioner the provisioner value to set.
      * @return the StorageClassProperties object itself.
      */
+    @Generated
     public StorageClassProperties withProvisioner(String provisioner) {
         this.provisioner = provisioner;
         return this;
@@ -149,6 +169,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * 
      * @return the volumeBindingMode value.
      */
+    @Generated
     public VolumeBindingMode volumeBindingMode() {
         return this.volumeBindingMode;
     }
@@ -159,6 +180,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * @param volumeBindingMode the volumeBindingMode value to set.
      * @return the StorageClassProperties object itself.
      */
+    @Generated
     public StorageClassProperties withVolumeBindingMode(VolumeBindingMode volumeBindingMode) {
         this.volumeBindingMode = volumeBindingMode;
         return this;
@@ -169,6 +191,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * 
      * @return the accessModes value.
      */
+    @Generated
     public List<AccessMode> accessModes() {
         return this.accessModes;
     }
@@ -179,6 +202,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * @param accessModes the accessModes value to set.
      * @return the StorageClassProperties object itself.
      */
+    @Generated
     public StorageClassProperties withAccessModes(List<AccessMode> accessModes) {
         this.accessModes = accessModes;
         return this;
@@ -189,6 +213,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * 
      * @return the dataResilience value.
      */
+    @Generated
     public DataResilienceTier dataResilience() {
         return this.dataResilience;
     }
@@ -199,6 +224,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * @param dataResilience the dataResilience value to set.
      * @return the StorageClassProperties object itself.
      */
+    @Generated
     public StorageClassProperties withDataResilience(DataResilienceTier dataResilience) {
         this.dataResilience = dataResilience;
         return this;
@@ -209,6 +235,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * 
      * @return the failoverSpeed value.
      */
+    @Generated
     public FailoverTier failoverSpeed() {
         return this.failoverSpeed;
     }
@@ -219,6 +246,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * @param failoverSpeed the failoverSpeed value to set.
      * @return the StorageClassProperties object itself.
      */
+    @Generated
     public StorageClassProperties withFailoverSpeed(FailoverTier failoverSpeed) {
         this.failoverSpeed = failoverSpeed;
         return this;
@@ -229,6 +257,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * 
      * @return the limitations value.
      */
+    @Generated
     public List<String> limitations() {
         return this.limitations;
     }
@@ -239,6 +268,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * @param limitations the limitations value to set.
      * @return the StorageClassProperties object itself.
      */
+    @Generated
     public StorageClassProperties withLimitations(List<String> limitations) {
         this.limitations = limitations;
         return this;
@@ -249,6 +279,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * 
      * @return the performance value.
      */
+    @Generated
     public PerformanceTier performance() {
         return this.performance;
     }
@@ -259,6 +290,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * @param performance the performance value to set.
      * @return the StorageClassProperties object itself.
      */
+    @Generated
     public StorageClassProperties withPerformance(PerformanceTier performance) {
         this.performance = performance;
         return this;
@@ -270,6 +302,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * 
      * @return the priority value.
      */
+    @Generated
     public Long priority() {
         return this.priority;
     }
@@ -281,6 +314,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * @param priority the priority value to set.
      * @return the StorageClassProperties object itself.
      */
+    @Generated
     public StorageClassProperties withPriority(Long priority) {
         this.priority = priority;
         return this;
@@ -291,6 +325,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * 
      * @return the typeProperties value.
      */
+    @Generated
     public StorageClassTypeProperties typeProperties() {
         return this.typeProperties;
     }
@@ -301,6 +336,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * @param typeProperties the typeProperties value to set.
      * @return the StorageClassProperties object itself.
      */
+    @Generated
     public StorageClassProperties withTypeProperties(StorageClassTypeProperties typeProperties) {
         this.typeProperties = typeProperties;
         return this;
@@ -311,6 +347,7 @@ public final class StorageClassProperties implements JsonSerializable<StorageCla
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.fabric.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class QuotaName implements JsonSerializable<QuotaName> {
     /*
      * The name of the resource.
      */
+    @Generated
     private String value;
 
     /*
      * The localized name of the resource.
      */
+    @Generated
     private String localizedValue;
 
     /**
      * Creates an instance of QuotaName class.
      */
+    @Generated
     private QuotaName() {
     }
 
@@ -37,6 +41,7 @@ public final class QuotaName implements JsonSerializable<QuotaName> {
      * 
      * @return the value value.
      */
+    @Generated
     public String value() {
         return this.value;
     }
@@ -46,6 +51,7 @@ public final class QuotaName implements JsonSerializable<QuotaName> {
      * 
      * @return the localizedValue value.
      */
+    @Generated
     public String localizedValue() {
         return this.localizedValue;
     }

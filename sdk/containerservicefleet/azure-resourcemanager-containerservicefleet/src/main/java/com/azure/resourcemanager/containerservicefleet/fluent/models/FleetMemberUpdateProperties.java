@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class FleetMemberUpdateProperties implements JsonSerializable<Fleet
     /*
      * The group this member belongs to for multi-cluster update management.
      */
+    @Generated
     private String group;
 
     /**
      * Creates an instance of FleetMemberUpdateProperties class.
      */
+    @Generated
     public FleetMemberUpdateProperties() {
     }
 
@@ -32,6 +35,7 @@ public final class FleetMemberUpdateProperties implements JsonSerializable<Fleet
      * 
      * @return the group value.
      */
+    @Generated
     public String group() {
         return this.group;
     }
@@ -42,6 +46,7 @@ public final class FleetMemberUpdateProperties implements JsonSerializable<Fleet
      * @param group the group value to set.
      * @return the FleetMemberUpdateProperties object itself.
      */
+    @Generated
     public FleetMemberUpdateProperties withGroup(String group) {
         this.group = group;
         return this;

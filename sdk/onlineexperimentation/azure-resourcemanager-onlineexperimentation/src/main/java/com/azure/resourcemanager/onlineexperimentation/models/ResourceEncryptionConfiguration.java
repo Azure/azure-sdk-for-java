@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.onlineexperimentation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class ResourceEncryptionConfiguration implements JsonSerializable<R
     /*
      * All Customer-managed key encryption properties for the resource.
      */
+    @Generated
     private CustomerManagedKeyEncryption customerManagedKeyEncryption;
 
     /**
      * Creates an instance of ResourceEncryptionConfiguration class.
      */
+    @Generated
     public ResourceEncryptionConfiguration() {
     }
 
@@ -32,6 +35,7 @@ public final class ResourceEncryptionConfiguration implements JsonSerializable<R
      * 
      * @return the customerManagedKeyEncryption value.
      */
+    @Generated
     public CustomerManagedKeyEncryption customerManagedKeyEncryption() {
         return this.customerManagedKeyEncryption;
     }
@@ -42,6 +46,7 @@ public final class ResourceEncryptionConfiguration implements JsonSerializable<R
      * @param customerManagedKeyEncryption the customerManagedKeyEncryption value to set.
      * @return the ResourceEncryptionConfiguration object itself.
      */
+    @Generated
     public ResourceEncryptionConfiguration
         withCustomerManagedKeyEncryption(CustomerManagedKeyEncryption customerManagedKeyEncryption) {
         this.customerManagedKeyEncryption = customerManagedKeyEncryption;

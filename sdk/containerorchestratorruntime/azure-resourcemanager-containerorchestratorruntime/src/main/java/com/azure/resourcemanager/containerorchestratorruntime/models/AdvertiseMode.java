@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class AdvertiseMode extends ExpandableStringEnum<AdvertiseMode> {
     /**
      * ARP advertise mode.
      */
+    @Generated
     public static final AdvertiseMode ARP = fromString("ARP");
 
     /**
      * BGP advertise mode.
      */
+    @Generated
     public static final AdvertiseMode BGP = fromString("BGP");
 
     /**
      * both ARP and BGP advertise mode.
      */
+    @Generated
     public static final AdvertiseMode BOTH = fromString("Both");
 
     /**
@@ -31,6 +35,7 @@ public final class AdvertiseMode extends ExpandableStringEnum<AdvertiseMode> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AdvertiseMode() {
     }
@@ -41,6 +46,7 @@ public final class AdvertiseMode extends ExpandableStringEnum<AdvertiseMode> {
      * @param name a name to look for.
      * @return the corresponding AdvertiseMode.
      */
+    @Generated
     public static AdvertiseMode fromString(String name) {
         return fromString(name, AdvertiseMode.class);
     }
@@ -50,6 +56,7 @@ public final class AdvertiseMode extends ExpandableStringEnum<AdvertiseMode> {
      * 
      * @return known AdvertiseMode values.
      */
+    @Generated
     public static Collection<AdvertiseMode> values() {
         return values(AdvertiseMode.class);
     }

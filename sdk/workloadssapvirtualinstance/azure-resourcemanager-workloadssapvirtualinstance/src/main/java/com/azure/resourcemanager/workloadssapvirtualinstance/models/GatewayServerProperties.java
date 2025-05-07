@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class GatewayServerProperties implements JsonSerializable<GatewaySe
     /*
      * Gateway Port.
      */
+    @Generated
     private Long port;
 
     /*
      * Defines the health of SAP Instances.
      */
+    @Generated
     private SapHealthState health;
 
     /**
      * Creates an instance of GatewayServerProperties class.
      */
+    @Generated
     public GatewayServerProperties() {
     }
 
@@ -37,6 +41,7 @@ public final class GatewayServerProperties implements JsonSerializable<GatewaySe
      * 
      * @return the port value.
      */
+    @Generated
     public Long port() {
         return this.port;
     }
@@ -46,6 +51,7 @@ public final class GatewayServerProperties implements JsonSerializable<GatewaySe
      * 
      * @return the health value.
      */
+    @Generated
     public SapHealthState health() {
         return this.health;
     }

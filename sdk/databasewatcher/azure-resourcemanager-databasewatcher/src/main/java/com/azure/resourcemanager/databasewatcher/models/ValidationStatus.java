@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databasewatcher.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class ValidationStatus extends ExpandableStringEnum<ValidationStatu
     /**
      * Health validation has not started.
      */
+    @Generated
     public static final ValidationStatus NOT_STARTED = fromString("NotStarted");
 
     /**
      * Health validation is running.
      */
+    @Generated
     public static final ValidationStatus RUNNING = fromString("Running");
 
     /**
      * Health validation completed successfully.
      */
+    @Generated
     public static final ValidationStatus SUCCEEDED = fromString("Succeeded");
 
     /**
      * Health validation failed.
      */
+    @Generated
     public static final ValidationStatus FAILED = fromString("Failed");
 
     /**
      * Health validation was canceled.
      */
+    @Generated
     public static final ValidationStatus CANCELED = fromString("Canceled");
 
     /**
      * Health validation timed out.
      */
+    @Generated
     public static final ValidationStatus TIMED_OUT = fromString("TimedOut");
 
     /**
@@ -46,6 +53,7 @@ public final class ValidationStatus extends ExpandableStringEnum<ValidationStatu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ValidationStatus() {
     }
@@ -56,6 +64,7 @@ public final class ValidationStatus extends ExpandableStringEnum<ValidationStatu
      * @param name a name to look for.
      * @return the corresponding ValidationStatus.
      */
+    @Generated
     public static ValidationStatus fromString(String name) {
         return fromString(name, ValidationStatus.class);
     }
@@ -65,6 +74,7 @@ public final class ValidationStatus extends ExpandableStringEnum<ValidationStatu
      * 
      * @return known ValidationStatus values.
      */
+    @Generated
     public static Collection<ValidationStatus> values() {
         return values(ValidationStatus.class);
     }

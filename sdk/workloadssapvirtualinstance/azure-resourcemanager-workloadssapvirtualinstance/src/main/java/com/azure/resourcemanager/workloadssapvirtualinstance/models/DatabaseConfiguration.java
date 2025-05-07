@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,31 +21,37 @@ public final class DatabaseConfiguration implements JsonSerializable<DatabaseCon
     /*
      * The database type.
      */
+    @Generated
     private SapDatabaseType databaseType;
 
     /*
      * The subnet id.
      */
+    @Generated
     private String subnetId;
 
     /*
      * Gets or sets the virtual machine configuration.
      */
+    @Generated
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /*
      * The number of database VMs.
      */
+    @Generated
     private long instanceCount;
 
     /*
      * Gets or sets the disk configuration.
      */
+    @Generated
     private DiskConfiguration diskConfiguration;
 
     /**
      * Creates an instance of DatabaseConfiguration class.
      */
+    @Generated
     public DatabaseConfiguration() {
     }
 
@@ -53,6 +60,7 @@ public final class DatabaseConfiguration implements JsonSerializable<DatabaseCon
      * 
      * @return the databaseType value.
      */
+    @Generated
     public SapDatabaseType databaseType() {
         return this.databaseType;
     }
@@ -63,6 +71,7 @@ public final class DatabaseConfiguration implements JsonSerializable<DatabaseCon
      * @param databaseType the databaseType value to set.
      * @return the DatabaseConfiguration object itself.
      */
+    @Generated
     public DatabaseConfiguration withDatabaseType(SapDatabaseType databaseType) {
         this.databaseType = databaseType;
         return this;
@@ -73,6 +82,7 @@ public final class DatabaseConfiguration implements JsonSerializable<DatabaseCon
      * 
      * @return the subnetId value.
      */
+    @Generated
     public String subnetId() {
         return this.subnetId;
     }
@@ -83,6 +93,7 @@ public final class DatabaseConfiguration implements JsonSerializable<DatabaseCon
      * @param subnetId the subnetId value to set.
      * @return the DatabaseConfiguration object itself.
      */
+    @Generated
     public DatabaseConfiguration withSubnetId(String subnetId) {
         this.subnetId = subnetId;
         return this;
@@ -93,6 +104,7 @@ public final class DatabaseConfiguration implements JsonSerializable<DatabaseCon
      * 
      * @return the virtualMachineConfiguration value.
      */
+    @Generated
     public VirtualMachineConfiguration virtualMachineConfiguration() {
         return this.virtualMachineConfiguration;
     }
@@ -103,6 +115,7 @@ public final class DatabaseConfiguration implements JsonSerializable<DatabaseCon
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the DatabaseConfiguration object itself.
      */
+    @Generated
     public DatabaseConfiguration
         withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
@@ -114,6 +127,7 @@ public final class DatabaseConfiguration implements JsonSerializable<DatabaseCon
      * 
      * @return the instanceCount value.
      */
+    @Generated
     public long instanceCount() {
         return this.instanceCount;
     }
@@ -124,6 +138,7 @@ public final class DatabaseConfiguration implements JsonSerializable<DatabaseCon
      * @param instanceCount the instanceCount value to set.
      * @return the DatabaseConfiguration object itself.
      */
+    @Generated
     public DatabaseConfiguration withInstanceCount(long instanceCount) {
         this.instanceCount = instanceCount;
         return this;
@@ -134,6 +149,7 @@ public final class DatabaseConfiguration implements JsonSerializable<DatabaseCon
      * 
      * @return the diskConfiguration value.
      */
+    @Generated
     public DiskConfiguration diskConfiguration() {
         return this.diskConfiguration;
     }
@@ -144,6 +160,7 @@ public final class DatabaseConfiguration implements JsonSerializable<DatabaseCon
      * @param diskConfiguration the diskConfiguration value to set.
      * @return the DatabaseConfiguration object itself.
      */
+    @Generated
     public DatabaseConfiguration withDiskConfiguration(DiskConfiguration diskConfiguration) {
         this.diskConfiguration = diskConfiguration;
         return this;

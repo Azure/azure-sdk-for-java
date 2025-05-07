@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.connectedcache.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class BgpCidrsConfiguration implements JsonSerializable<BgpCidrsCon
     /*
      * Mcc cache node Bgp Cidr details.
      */
+    @Generated
     private List<String> bgpCidrs;
 
     /**
      * Creates an instance of BgpCidrsConfiguration class.
      */
+    @Generated
     private BgpCidrsConfiguration() {
     }
 
@@ -33,6 +36,7 @@ public final class BgpCidrsConfiguration implements JsonSerializable<BgpCidrsCon
      * 
      * @return the bgpCidrs value.
      */
+    @Generated
     public List<String> bgpCidrs() {
         return this.bgpCidrs;
     }

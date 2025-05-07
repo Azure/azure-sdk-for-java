@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.fabric.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,16 +23,19 @@ public final class RpSkuDetailsForExistingResourceInner
     /*
      * The resource type
      */
+    @Generated
     private String resourceType;
 
     /*
      * The SKU details
      */
+    @Generated
     private RpSku sku;
 
     /**
      * Creates an instance of RpSkuDetailsForExistingResourceInner class.
      */
+    @Generated
     private RpSkuDetailsForExistingResourceInner() {
     }
 
@@ -40,6 +44,7 @@ public final class RpSkuDetailsForExistingResourceInner
      * 
      * @return the resourceType value.
      */
+    @Generated
     public String resourceType() {
         return this.resourceType;
     }
@@ -49,6 +54,7 @@ public final class RpSkuDetailsForExistingResourceInner
      * 
      * @return the sku value.
      */
+    @Generated
     public RpSku sku() {
         return this.sku;
     }

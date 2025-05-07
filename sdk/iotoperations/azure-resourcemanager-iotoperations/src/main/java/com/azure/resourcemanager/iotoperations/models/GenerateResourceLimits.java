@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class GenerateResourceLimits implements JsonSerializable<GenerateRe
     /*
      * The toggle to enable/disable cpu resource limits.
      */
+    @Generated
     private OperationalMode cpu;
 
     /**
      * Creates an instance of GenerateResourceLimits class.
      */
+    @Generated
     public GenerateResourceLimits() {
     }
 
@@ -32,6 +35,7 @@ public final class GenerateResourceLimits implements JsonSerializable<GenerateRe
      * 
      * @return the cpu value.
      */
+    @Generated
     public OperationalMode cpu() {
         return this.cpu;
     }
@@ -42,6 +46,7 @@ public final class GenerateResourceLimits implements JsonSerializable<GenerateRe
      * @param cpu the cpu value to set.
      * @return the GenerateResourceLimits object itself.
      */
+    @Generated
     public GenerateResourceLimits withCpu(OperationalMode cpu) {
         this.cpu = cpu;
         return this;

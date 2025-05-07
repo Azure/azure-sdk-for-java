@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,26 +23,31 @@ public final class StandbyContainerGroupPoolResourceProperties
     /*
      * Specifies elasticity profile of standby container group pools.
      */
+    @Generated
     private StandbyContainerGroupPoolElasticityProfile elasticityProfile;
 
     /*
      * Specifies container group properties of standby container group pools.
      */
+    @Generated
     private ContainerGroupProperties containerGroupProperties;
 
     /*
      * Specifies zones of standby container group pools.
      */
+    @Generated
     private List<String> zones;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of StandbyContainerGroupPoolResourceProperties class.
      */
+    @Generated
     public StandbyContainerGroupPoolResourceProperties() {
     }
 
@@ -50,6 +56,7 @@ public final class StandbyContainerGroupPoolResourceProperties
      * 
      * @return the elasticityProfile value.
      */
+    @Generated
     public StandbyContainerGroupPoolElasticityProfile elasticityProfile() {
         return this.elasticityProfile;
     }
@@ -60,6 +67,7 @@ public final class StandbyContainerGroupPoolResourceProperties
      * @param elasticityProfile the elasticityProfile value to set.
      * @return the StandbyContainerGroupPoolResourceProperties object itself.
      */
+    @Generated
     public StandbyContainerGroupPoolResourceProperties
         withElasticityProfile(StandbyContainerGroupPoolElasticityProfile elasticityProfile) {
         this.elasticityProfile = elasticityProfile;
@@ -71,6 +79,7 @@ public final class StandbyContainerGroupPoolResourceProperties
      * 
      * @return the containerGroupProperties value.
      */
+    @Generated
     public ContainerGroupProperties containerGroupProperties() {
         return this.containerGroupProperties;
     }
@@ -81,6 +90,7 @@ public final class StandbyContainerGroupPoolResourceProperties
      * @param containerGroupProperties the containerGroupProperties value to set.
      * @return the StandbyContainerGroupPoolResourceProperties object itself.
      */
+    @Generated
     public StandbyContainerGroupPoolResourceProperties
         withContainerGroupProperties(ContainerGroupProperties containerGroupProperties) {
         this.containerGroupProperties = containerGroupProperties;
@@ -92,6 +102,7 @@ public final class StandbyContainerGroupPoolResourceProperties
      * 
      * @return the zones value.
      */
+    @Generated
     public List<String> zones() {
         return this.zones;
     }
@@ -102,6 +113,7 @@ public final class StandbyContainerGroupPoolResourceProperties
      * @param zones the zones value to set.
      * @return the StandbyContainerGroupPoolResourceProperties object itself.
      */
+    @Generated
     public StandbyContainerGroupPoolResourceProperties withZones(List<String> zones) {
         this.zones = zones;
         return this;
@@ -112,6 +124,7 @@ public final class StandbyContainerGroupPoolResourceProperties
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

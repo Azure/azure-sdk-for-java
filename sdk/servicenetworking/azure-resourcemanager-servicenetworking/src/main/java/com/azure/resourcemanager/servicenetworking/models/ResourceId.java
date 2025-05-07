@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.servicenetworking.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -20,11 +21,13 @@ public final class ResourceId implements JsonSerializable<ResourceId> {
     /*
      * Resource ID of child resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of ResourceId class.
      */
+    @Generated
     private ResourceId() {
     }
 
@@ -33,6 +36,7 @@ public final class ResourceId implements JsonSerializable<ResourceId> {
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }

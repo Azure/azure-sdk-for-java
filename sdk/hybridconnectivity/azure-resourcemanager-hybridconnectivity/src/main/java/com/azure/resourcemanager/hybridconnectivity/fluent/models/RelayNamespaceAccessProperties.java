@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridconnectivity.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -20,36 +21,43 @@ public final class RelayNamespaceAccessProperties implements JsonSerializable<Re
     /*
      * The namespace name.
      */
+    @Generated
     private String namespaceName;
 
     /*
      * The suffix domain name of relay namespace.
      */
+    @Generated
     private String namespaceNameSuffix;
 
     /*
      * Azure Relay hybrid connection name for the resource.
      */
+    @Generated
     private String hybridConnectionName;
 
     /*
      * Access key for hybrid connection.
      */
+    @Generated
     private String accessKey;
 
     /*
      * The expiration of access key in unix time.
      */
+    @Generated
     private Long expiresOn;
 
     /*
      * The token to access the enabled service.
      */
+    @Generated
     private String serviceConfigurationToken;
 
     /**
      * Creates an instance of RelayNamespaceAccessProperties class.
      */
+    @Generated
     private RelayNamespaceAccessProperties() {
     }
 
@@ -58,6 +66,7 @@ public final class RelayNamespaceAccessProperties implements JsonSerializable<Re
      * 
      * @return the namespaceName value.
      */
+    @Generated
     public String namespaceName() {
         return this.namespaceName;
     }
@@ -67,6 +76,7 @@ public final class RelayNamespaceAccessProperties implements JsonSerializable<Re
      * 
      * @return the namespaceNameSuffix value.
      */
+    @Generated
     public String namespaceNameSuffix() {
         return this.namespaceNameSuffix;
     }
@@ -76,6 +86,7 @@ public final class RelayNamespaceAccessProperties implements JsonSerializable<Re
      * 
      * @return the hybridConnectionName value.
      */
+    @Generated
     public String hybridConnectionName() {
         return this.hybridConnectionName;
     }
@@ -85,6 +96,7 @@ public final class RelayNamespaceAccessProperties implements JsonSerializable<Re
      * 
      * @return the accessKey value.
      */
+    @Generated
     public String accessKey() {
         return this.accessKey;
     }
@@ -94,6 +106,7 @@ public final class RelayNamespaceAccessProperties implements JsonSerializable<Re
      * 
      * @return the expiresOn value.
      */
+    @Generated
     public Long expiresOn() {
         return this.expiresOn;
     }
@@ -103,6 +116,7 @@ public final class RelayNamespaceAccessProperties implements JsonSerializable<Re
      * 
      * @return the serviceConfigurationToken value.
      */
+    @Generated
     public String serviceConfigurationToken() {
         return this.serviceConfigurationToken;
     }

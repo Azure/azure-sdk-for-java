@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.connectedcache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class CacheNodeDriveConfiguration implements JsonSerializable<Cache
     /*
      * physical path location of the folder used for caching content
      */
+    @Generated
     private String physicalPath;
 
     /*
      * physical size of the drive used for caching content
      */
+    @Generated
     private Integer sizeInGb;
 
     /*
      * corresponding nginx cache number. Valid cache numbers are 1 - 20
      */
+    @Generated
     private Integer cacheNumber;
 
     /*
      * full binding for corresponding nginx cache drive
      */
+    @Generated
     private String nginxMapping;
 
     /**
      * Creates an instance of CacheNodeDriveConfiguration class.
      */
+    @Generated
     public CacheNodeDriveConfiguration() {
     }
 
@@ -47,6 +53,7 @@ public final class CacheNodeDriveConfiguration implements JsonSerializable<Cache
      * 
      * @return the physicalPath value.
      */
+    @Generated
     public String physicalPath() {
         return this.physicalPath;
     }
@@ -57,6 +64,7 @@ public final class CacheNodeDriveConfiguration implements JsonSerializable<Cache
      * @param physicalPath the physicalPath value to set.
      * @return the CacheNodeDriveConfiguration object itself.
      */
+    @Generated
     public CacheNodeDriveConfiguration withPhysicalPath(String physicalPath) {
         this.physicalPath = physicalPath;
         return this;
@@ -67,6 +75,7 @@ public final class CacheNodeDriveConfiguration implements JsonSerializable<Cache
      * 
      * @return the sizeInGb value.
      */
+    @Generated
     public Integer sizeInGb() {
         return this.sizeInGb;
     }
@@ -77,6 +86,7 @@ public final class CacheNodeDriveConfiguration implements JsonSerializable<Cache
      * @param sizeInGb the sizeInGb value to set.
      * @return the CacheNodeDriveConfiguration object itself.
      */
+    @Generated
     public CacheNodeDriveConfiguration withSizeInGb(Integer sizeInGb) {
         this.sizeInGb = sizeInGb;
         return this;
@@ -87,6 +97,7 @@ public final class CacheNodeDriveConfiguration implements JsonSerializable<Cache
      * 
      * @return the cacheNumber value.
      */
+    @Generated
     public Integer cacheNumber() {
         return this.cacheNumber;
     }
@@ -97,6 +108,7 @@ public final class CacheNodeDriveConfiguration implements JsonSerializable<Cache
      * @param cacheNumber the cacheNumber value to set.
      * @return the CacheNodeDriveConfiguration object itself.
      */
+    @Generated
     public CacheNodeDriveConfiguration withCacheNumber(Integer cacheNumber) {
         this.cacheNumber = cacheNumber;
         return this;
@@ -107,6 +119,7 @@ public final class CacheNodeDriveConfiguration implements JsonSerializable<Cache
      * 
      * @return the nginxMapping value.
      */
+    @Generated
     public String nginxMapping() {
         return this.nginxMapping;
     }
@@ -117,6 +130,7 @@ public final class CacheNodeDriveConfiguration implements JsonSerializable<Cache
      * @param nginxMapping the nginxMapping value to set.
      * @return the CacheNodeDriveConfiguration object itself.
      */
+    @Generated
     public CacheNodeDriveConfiguration withNginxMapping(String nginxMapping) {
         this.nginxMapping = nginxMapping;
         return this;

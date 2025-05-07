@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class BatchingConfiguration implements JsonSerializable<BatchingCon
     /*
      * Batching latency in seconds.
      */
+    @Generated
     private Integer latencySeconds;
 
     /*
      * Maximum number of messages in a batch.
      */
+    @Generated
     private Integer maxMessages;
 
     /**
      * Creates an instance of BatchingConfiguration class.
      */
+    @Generated
     public BatchingConfiguration() {
     }
 
@@ -37,6 +41,7 @@ public final class BatchingConfiguration implements JsonSerializable<BatchingCon
      * 
      * @return the latencySeconds value.
      */
+    @Generated
     public Integer latencySeconds() {
         return this.latencySeconds;
     }
@@ -47,6 +52,7 @@ public final class BatchingConfiguration implements JsonSerializable<BatchingCon
      * @param latencySeconds the latencySeconds value to set.
      * @return the BatchingConfiguration object itself.
      */
+    @Generated
     public BatchingConfiguration withLatencySeconds(Integer latencySeconds) {
         this.latencySeconds = latencySeconds;
         return this;
@@ -57,6 +63,7 @@ public final class BatchingConfiguration implements JsonSerializable<BatchingCon
      * 
      * @return the maxMessages value.
      */
+    @Generated
     public Integer maxMessages() {
         return this.maxMessages;
     }
@@ -67,6 +74,7 @@ public final class BatchingConfiguration implements JsonSerializable<BatchingCon
      * @param maxMessages the maxMessages value to set.
      * @return the BatchingConfiguration object itself.
      */
+    @Generated
     public BatchingConfiguration withMaxMessages(Integer maxMessages) {
         this.maxMessages = maxMessages;
         return this;

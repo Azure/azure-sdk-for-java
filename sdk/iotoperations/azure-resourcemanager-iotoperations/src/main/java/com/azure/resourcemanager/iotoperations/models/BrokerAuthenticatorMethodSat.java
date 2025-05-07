@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class BrokerAuthenticatorMethodSat implements JsonSerializable<Brok
     /*
      * List of allowed audience.
      */
+    @Generated
     private List<String> audiences;
 
     /**
      * Creates an instance of BrokerAuthenticatorMethodSat class.
      */
+    @Generated
     public BrokerAuthenticatorMethodSat() {
     }
 
@@ -34,6 +37,7 @@ public final class BrokerAuthenticatorMethodSat implements JsonSerializable<Brok
      * 
      * @return the audiences value.
      */
+    @Generated
     public List<String> audiences() {
         return this.audiences;
     }
@@ -44,6 +48,7 @@ public final class BrokerAuthenticatorMethodSat implements JsonSerializable<Brok
      * @param audiences the audiences value to set.
      * @return the BrokerAuthenticatorMethodSat object itself.
      */
+    @Generated
     public BrokerAuthenticatorMethodSat withAudiences(List<String> audiences) {
         this.audiences = audiences;
         return this;

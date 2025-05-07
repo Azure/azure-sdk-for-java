@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -21,16 +22,19 @@ public final class StandbyVirtualMachineResourceProperties
     /*
      * Resource id of the virtual machine.
      */
+    @Generated
     private String virtualMachineResourceId;
 
     /*
      * The status of the last operation.
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of StandbyVirtualMachineResourceProperties class.
      */
+    @Generated
     private StandbyVirtualMachineResourceProperties() {
     }
 
@@ -39,6 +43,7 @@ public final class StandbyVirtualMachineResourceProperties
      * 
      * @return the virtualMachineResourceId value.
      */
+    @Generated
     public String virtualMachineResourceId() {
         return this.virtualMachineResourceId;
     }
@@ -48,6 +53,7 @@ public final class StandbyVirtualMachineResourceProperties
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.databasewatcher.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -22,31 +23,37 @@ public final class HealthValidationProperties implements JsonSerializable<Health
     /*
      * The start time of health validation, in UTC.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * The end time of health validation, in UTC.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * The current health validation status.
      */
+    @Generated
     private ValidationStatus status;
 
     /*
      * The list of issues found by health validation.
      */
+    @Generated
     private List<ValidationIssue> issues;
 
     /*
      * The provisioning state of the health validation resource.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /**
      * Creates an instance of HealthValidationProperties class.
      */
+    @Generated
     private HealthValidationProperties() {
     }
 
@@ -55,6 +62,7 @@ public final class HealthValidationProperties implements JsonSerializable<Health
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime startTime() {
         return this.startTime;
     }
@@ -64,6 +72,7 @@ public final class HealthValidationProperties implements JsonSerializable<Health
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime endTime() {
         return this.endTime;
     }
@@ -73,6 +82,7 @@ public final class HealthValidationProperties implements JsonSerializable<Health
      * 
      * @return the status value.
      */
+    @Generated
     public ValidationStatus status() {
         return this.status;
     }
@@ -82,6 +92,7 @@ public final class HealthValidationProperties implements JsonSerializable<Health
      * 
      * @return the issues value.
      */
+    @Generated
     public List<ValidationIssue> issues() {
         return this.issues;
     }
@@ -91,6 +102,7 @@ public final class HealthValidationProperties implements JsonSerializable<Health
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }

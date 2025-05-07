@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dependencymap.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class ProcessNameFilter implements JsonSerializable<ProcessNameFilt
     /*
      * Operator for process name filter
      */
+    @Generated
     private ProcessNameFilterOperator operator;
 
     /*
      * List of process names on which the operator should be applied
      */
+    @Generated
     private List<String> processNames;
 
     /**
      * Creates an instance of ProcessNameFilter class.
      */
+    @Generated
     public ProcessNameFilter() {
     }
 
@@ -39,6 +43,7 @@ public final class ProcessNameFilter implements JsonSerializable<ProcessNameFilt
      * 
      * @return the operator value.
      */
+    @Generated
     public ProcessNameFilterOperator operator() {
         return this.operator;
     }
@@ -49,6 +54,7 @@ public final class ProcessNameFilter implements JsonSerializable<ProcessNameFilt
      * @param operator the operator value to set.
      * @return the ProcessNameFilter object itself.
      */
+    @Generated
     public ProcessNameFilter withOperator(ProcessNameFilterOperator operator) {
         this.operator = operator;
         return this;
@@ -59,6 +65,7 @@ public final class ProcessNameFilter implements JsonSerializable<ProcessNameFilt
      * 
      * @return the processNames value.
      */
+    @Generated
     public List<String> processNames() {
         return this.processNames;
     }
@@ -69,6 +76,7 @@ public final class ProcessNameFilter implements JsonSerializable<ProcessNameFilt
      * @param processNames the processNames value to set.
      * @return the ProcessNameFilter object itself.
      */
+    @Generated
     public ProcessNameFilter withProcessNames(List<String> processNames) {
         this.processNames = processNames;
         return this;

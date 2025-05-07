@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class PartnerOrganizationProperties implements JsonSerializable<Par
     /*
      * Organization Id in partner's system
      */
+    @Generated
     private String organizationId;
 
     /*
      * Organization name in partner's system
      */
+    @Generated
     private String organizationName;
 
     /*
      * Single Sign On properties for the organization
      */
+    @Generated
     private SingleSignOnProperties singleSignOnProperties;
 
     /**
      * Creates an instance of PartnerOrganizationProperties class.
      */
+    @Generated
     public PartnerOrganizationProperties() {
     }
 
@@ -43,6 +48,7 @@ public final class PartnerOrganizationProperties implements JsonSerializable<Par
      * 
      * @return the organizationId value.
      */
+    @Generated
     public String organizationId() {
         return this.organizationId;
     }
@@ -53,6 +59,7 @@ public final class PartnerOrganizationProperties implements JsonSerializable<Par
      * @param organizationId the organizationId value to set.
      * @return the PartnerOrganizationProperties object itself.
      */
+    @Generated
     public PartnerOrganizationProperties withOrganizationId(String organizationId) {
         this.organizationId = organizationId;
         return this;
@@ -63,6 +70,7 @@ public final class PartnerOrganizationProperties implements JsonSerializable<Par
      * 
      * @return the organizationName value.
      */
+    @Generated
     public String organizationName() {
         return this.organizationName;
     }
@@ -73,6 +81,7 @@ public final class PartnerOrganizationProperties implements JsonSerializable<Par
      * @param organizationName the organizationName value to set.
      * @return the PartnerOrganizationProperties object itself.
      */
+    @Generated
     public PartnerOrganizationProperties withOrganizationName(String organizationName) {
         this.organizationName = organizationName;
         return this;
@@ -83,6 +92,7 @@ public final class PartnerOrganizationProperties implements JsonSerializable<Par
      * 
      * @return the singleSignOnProperties value.
      */
+    @Generated
     public SingleSignOnProperties singleSignOnProperties() {
         return this.singleSignOnProperties;
     }
@@ -93,6 +103,7 @@ public final class PartnerOrganizationProperties implements JsonSerializable<Par
      * @param singleSignOnProperties the singleSignOnProperties value to set.
      * @return the PartnerOrganizationProperties object itself.
      */
+    @Generated
     public PartnerOrganizationProperties withSingleSignOnProperties(SingleSignOnProperties singleSignOnProperties) {
         this.singleSignOnProperties = singleSignOnProperties;
         return this;

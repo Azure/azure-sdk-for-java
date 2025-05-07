@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.weightsandbiases.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,31 +21,37 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
     /*
      * Marketplace details of the resource.
      */
+    @Generated
     private MarketplaceDetails marketplace;
 
     /*
      * Details of the user.
      */
+    @Generated
     private UserDetails user;
 
     /*
      * Provisioning state of the resource.
      */
+    @Generated
     private ResourceProvisioningState provisioningState;
 
     /*
      * partner properties
      */
+    @Generated
     private PartnerProperties partnerProperties;
 
     /*
      * Single sign-on properties
      */
+    @Generated
     private SingleSignOnPropertiesV2 singleSignOnProperties;
 
     /**
      * Creates an instance of InstanceProperties class.
      */
+    @Generated
     public InstanceProperties() {
     }
 
@@ -53,6 +60,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * 
      * @return the marketplace value.
      */
+    @Generated
     public MarketplaceDetails marketplace() {
         return this.marketplace;
     }
@@ -63,6 +71,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * @param marketplace the marketplace value to set.
      * @return the InstanceProperties object itself.
      */
+    @Generated
     public InstanceProperties withMarketplace(MarketplaceDetails marketplace) {
         this.marketplace = marketplace;
         return this;
@@ -73,6 +82,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * 
      * @return the user value.
      */
+    @Generated
     public UserDetails user() {
         return this.user;
     }
@@ -83,6 +93,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * @param user the user value to set.
      * @return the InstanceProperties object itself.
      */
+    @Generated
     public InstanceProperties withUser(UserDetails user) {
         this.user = user;
         return this;
@@ -93,6 +104,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -102,6 +114,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * 
      * @return the partnerProperties value.
      */
+    @Generated
     public PartnerProperties partnerProperties() {
         return this.partnerProperties;
     }
@@ -112,6 +125,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * @param partnerProperties the partnerProperties value to set.
      * @return the InstanceProperties object itself.
      */
+    @Generated
     public InstanceProperties withPartnerProperties(PartnerProperties partnerProperties) {
         this.partnerProperties = partnerProperties;
         return this;
@@ -122,6 +136,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * 
      * @return the singleSignOnProperties value.
      */
+    @Generated
     public SingleSignOnPropertiesV2 singleSignOnProperties() {
         return this.singleSignOnProperties;
     }
@@ -132,6 +147,7 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * @param singleSignOnProperties the singleSignOnProperties value to set.
      * @return the InstanceProperties object itself.
      */
+    @Generated
     public InstanceProperties withSingleSignOnProperties(SingleSignOnPropertiesV2 singleSignOnProperties) {
         this.singleSignOnProperties = singleSignOnProperties;
         return this;

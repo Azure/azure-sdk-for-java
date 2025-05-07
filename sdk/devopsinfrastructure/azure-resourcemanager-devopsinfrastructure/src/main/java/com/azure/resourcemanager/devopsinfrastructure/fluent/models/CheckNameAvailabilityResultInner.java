@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -22,26 +23,31 @@ public final class CheckNameAvailabilityResultInner implements JsonSerializable<
     /*
      * Availability status of the name.
      */
+    @Generated
     private AvailabilityStatus available;
 
     /*
      * A message explaining why the name is unavailable. Will be null if the name is available.
      */
+    @Generated
     private String message;
 
     /*
      * The name whose availability was checked.
      */
+    @Generated
     private String name;
 
     /*
      * The reason code explaining why the name is unavailable. Will be null if the name is available.
      */
+    @Generated
     private CheckNameAvailabilityReason reason;
 
     /**
      * Creates an instance of CheckNameAvailabilityResultInner class.
      */
+    @Generated
     private CheckNameAvailabilityResultInner() {
     }
 
@@ -50,6 +56,7 @@ public final class CheckNameAvailabilityResultInner implements JsonSerializable<
      * 
      * @return the available value.
      */
+    @Generated
     public AvailabilityStatus available() {
         return this.available;
     }
@@ -60,6 +67,7 @@ public final class CheckNameAvailabilityResultInner implements JsonSerializable<
      * 
      * @return the message value.
      */
+    @Generated
     public String message() {
         return this.message;
     }
@@ -69,6 +77,7 @@ public final class CheckNameAvailabilityResultInner implements JsonSerializable<
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -79,6 +88,7 @@ public final class CheckNameAvailabilityResultInner implements JsonSerializable<
      * 
      * @return the reason value.
      */
+    @Generated
     public CheckNameAvailabilityReason reason() {
         return this.reason;
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,11 +23,13 @@ public class SapSizingRecommendationResultInner implements JsonSerializable<SapS
     /*
      * The deployment type. Eg: SingleServer/ThreeTier
      */
+    @Generated
     private SapDeploymentType deploymentType = SapDeploymentType.fromString("SapSizingRecommendationResult");
 
     /**
      * Creates an instance of SapSizingRecommendationResultInner class.
      */
+    @Generated
     protected SapSizingRecommendationResultInner() {
     }
 
@@ -35,6 +38,7 @@ public class SapSizingRecommendationResultInner implements JsonSerializable<SapS
      * 
      * @return the deploymentType value.
      */
+    @Generated
     public SapDeploymentType deploymentType() {
         return this.deploymentType;
     }

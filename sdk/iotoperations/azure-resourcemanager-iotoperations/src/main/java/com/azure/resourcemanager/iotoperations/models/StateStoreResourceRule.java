@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,22 +23,26 @@ public final class StateStoreResourceRule implements JsonSerializable<StateStore
      * Allowed keyTypes pattern, string, binary. The key type used for matching, for example pattern tries to match the
      * key to a glob-style pattern and string checks key is equal to value provided in keys.
      */
+    @Generated
     private StateStoreResourceKeyTypes keyType;
 
     /*
      * Give access to state store keys for the corresponding principals defined. When key type is pattern set glob-style
      * pattern (e.g., '*', 'clients/*').
      */
+    @Generated
     private List<String> keys;
 
     /*
      * Give access for `Read`, `Write` and `ReadWrite` access level.
      */
+    @Generated
     private StateStoreResourceDefinitionMethods method;
 
     /**
      * Creates an instance of StateStoreResourceRule class.
      */
+    @Generated
     public StateStoreResourceRule() {
     }
 
@@ -47,6 +52,7 @@ public final class StateStoreResourceRule implements JsonSerializable<StateStore
      * 
      * @return the keyType value.
      */
+    @Generated
     public StateStoreResourceKeyTypes keyType() {
         return this.keyType;
     }
@@ -58,6 +64,7 @@ public final class StateStoreResourceRule implements JsonSerializable<StateStore
      * @param keyType the keyType value to set.
      * @return the StateStoreResourceRule object itself.
      */
+    @Generated
     public StateStoreResourceRule withKeyType(StateStoreResourceKeyTypes keyType) {
         this.keyType = keyType;
         return this;
@@ -69,6 +76,7 @@ public final class StateStoreResourceRule implements JsonSerializable<StateStore
      * 
      * @return the keys value.
      */
+    @Generated
     public List<String> keys() {
         return this.keys;
     }
@@ -80,6 +88,7 @@ public final class StateStoreResourceRule implements JsonSerializable<StateStore
      * @param keys the keys value to set.
      * @return the StateStoreResourceRule object itself.
      */
+    @Generated
     public StateStoreResourceRule withKeys(List<String> keys) {
         this.keys = keys;
         return this;
@@ -90,6 +99,7 @@ public final class StateStoreResourceRule implements JsonSerializable<StateStore
      * 
      * @return the method value.
      */
+    @Generated
     public StateStoreResourceDefinitionMethods method() {
         return this.method;
     }
@@ -100,6 +110,7 @@ public final class StateStoreResourceRule implements JsonSerializable<StateStore
      * @param method the method value to set.
      * @return the StateStoreResourceRule object itself.
      */
+    @Generated
     public StateStoreResourceRule withMethod(StateStoreResourceDefinitionMethods method) {
         this.method = method;
         return this;

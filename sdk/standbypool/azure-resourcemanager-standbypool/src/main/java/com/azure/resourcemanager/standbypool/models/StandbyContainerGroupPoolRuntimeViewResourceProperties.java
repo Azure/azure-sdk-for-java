@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,26 +23,31 @@ public final class StandbyContainerGroupPoolRuntimeViewResourceProperties
      * A list containing the counts of container groups in each possible state, as known by the StandbyPool resource
      * provider.
      */
+    @Generated
     private List<ContainerGroupInstanceCountSummary> instanceCountSummary;
 
     /*
      * Display status of the standby pool
      */
+    @Generated
     private PoolStatus status;
 
     /*
      * Displays the provisioning state of the standby pool
      */
+    @Generated
     private ProvisioningState provisioningState;
 
     /*
      * Displays prediction information of the standby pool
      */
+    @Generated
     private StandbyContainerGroupPoolPrediction prediction;
 
     /**
      * Creates an instance of StandbyContainerGroupPoolRuntimeViewResourceProperties class.
      */
+    @Generated
     private StandbyContainerGroupPoolRuntimeViewResourceProperties() {
     }
 
@@ -51,6 +57,7 @@ public final class StandbyContainerGroupPoolRuntimeViewResourceProperties
      * 
      * @return the instanceCountSummary value.
      */
+    @Generated
     public List<ContainerGroupInstanceCountSummary> instanceCountSummary() {
         return this.instanceCountSummary;
     }
@@ -60,6 +67,7 @@ public final class StandbyContainerGroupPoolRuntimeViewResourceProperties
      * 
      * @return the status value.
      */
+    @Generated
     public PoolStatus status() {
         return this.status;
     }
@@ -69,6 +77,7 @@ public final class StandbyContainerGroupPoolRuntimeViewResourceProperties
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
@@ -78,6 +87,7 @@ public final class StandbyContainerGroupPoolRuntimeViewResourceProperties
      * 
      * @return the prediction value.
      */
+    @Generated
     public StandbyContainerGroupPoolPrediction prediction() {
         return this.prediction;
     }

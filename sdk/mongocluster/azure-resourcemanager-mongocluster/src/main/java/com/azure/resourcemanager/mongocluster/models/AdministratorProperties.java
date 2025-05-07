@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class AdministratorProperties implements JsonSerializable<Administr
     /*
      * The administrator user name.
      */
+    @Generated
     private String userName;
 
     /*
      * The administrator password.
      */
+    @Generated
     private String password;
 
     /**
      * Creates an instance of AdministratorProperties class.
      */
+    @Generated
     public AdministratorProperties() {
     }
 
@@ -37,6 +41,7 @@ public final class AdministratorProperties implements JsonSerializable<Administr
      * 
      * @return the userName value.
      */
+    @Generated
     public String userName() {
         return this.userName;
     }
@@ -47,6 +52,7 @@ public final class AdministratorProperties implements JsonSerializable<Administr
      * @param userName the userName value to set.
      * @return the AdministratorProperties object itself.
      */
+    @Generated
     public AdministratorProperties withUserName(String userName) {
         this.userName = userName;
         return this;
@@ -57,6 +63,7 @@ public final class AdministratorProperties implements JsonSerializable<Administr
      * 
      * @return the password value.
      */
+    @Generated
     public String password() {
         return this.password;
     }
@@ -67,6 +74,7 @@ public final class AdministratorProperties implements JsonSerializable<Administr
      * @param password the password value to set.
      * @return the AdministratorProperties object itself.
      */
+    @Generated
     public AdministratorProperties withPassword(String password) {
         this.password = password;
         return this;

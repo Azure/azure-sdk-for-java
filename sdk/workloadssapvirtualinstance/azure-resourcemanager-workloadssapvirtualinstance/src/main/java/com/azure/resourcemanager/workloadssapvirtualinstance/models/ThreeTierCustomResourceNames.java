@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public class ThreeTierCustomResourceNames implements JsonSerializable<ThreeTierC
     /*
      * The pattern type to be used for resource naming.
      */
+    @Generated
     private NamingPatternType namingPatternType = NamingPatternType.fromString("ThreeTierCustomResourceNames");
 
     /**
      * Creates an instance of ThreeTierCustomResourceNames class.
      */
+    @Generated
     public ThreeTierCustomResourceNames() {
     }
 
@@ -33,6 +36,7 @@ public class ThreeTierCustomResourceNames implements JsonSerializable<ThreeTierC
      * 
      * @return the namingPatternType value.
      */
+    @Generated
     public NamingPatternType namingPatternType() {
         return this.namingPatternType;
     }

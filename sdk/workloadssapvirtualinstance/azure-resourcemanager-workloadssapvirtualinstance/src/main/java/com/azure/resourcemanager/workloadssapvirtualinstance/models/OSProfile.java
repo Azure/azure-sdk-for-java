@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -26,6 +27,7 @@ public final class OSProfile implements JsonSerializable<OSProfile> {
      * (Linux):** 1 character <br><br> **Max-length (Linux):** 64 characters <br><br> **Max-length (Windows):** 20
      * characters.
      */
+    @Generated
     private String adminUsername;
 
     /*
@@ -40,16 +42,19 @@ public final class OSProfile implements JsonSerializable<OSProfile> {
      * password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
      * Extension](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
      */
+    @Generated
     private String adminPassword;
 
     /*
      * Specifies Windows operating system settings on the virtual machine.
      */
+    @Generated
     private OSConfiguration osConfiguration;
 
     /**
      * Creates an instance of OSProfile class.
      */
+    @Generated
     public OSProfile() {
     }
 
@@ -64,6 +69,7 @@ public final class OSProfile implements JsonSerializable<OSProfile> {
      * 
      * @return the adminUsername value.
      */
+    @Generated
     public String adminUsername() {
         return this.adminUsername;
     }
@@ -80,6 +86,7 @@ public final class OSProfile implements JsonSerializable<OSProfile> {
      * @param adminUsername the adminUsername value to set.
      * @return the OSProfile object itself.
      */
+    @Generated
     public OSProfile withAdminUsername(String adminUsername) {
         this.adminUsername = adminUsername;
         return this;
@@ -101,6 +108,7 @@ public final class OSProfile implements JsonSerializable<OSProfile> {
      * 
      * @return the adminPassword value.
      */
+    @Generated
     public String adminPassword() {
         return this.adminPassword;
     }
@@ -122,6 +130,7 @@ public final class OSProfile implements JsonSerializable<OSProfile> {
      * @param adminPassword the adminPassword value to set.
      * @return the OSProfile object itself.
      */
+    @Generated
     public OSProfile withAdminPassword(String adminPassword) {
         this.adminPassword = adminPassword;
         return this;
@@ -132,6 +141,7 @@ public final class OSProfile implements JsonSerializable<OSProfile> {
      * 
      * @return the osConfiguration value.
      */
+    @Generated
     public OSConfiguration osConfiguration() {
         return this.osConfiguration;
     }
@@ -142,6 +152,7 @@ public final class OSProfile implements JsonSerializable<OSProfile> {
      * @param osConfiguration the osConfiguration value to set.
      * @return the OSProfile object itself.
      */
+    @Generated
     public OSProfile withOsConfiguration(OSConfiguration osConfiguration) {
         this.osConfiguration = osConfiguration;
         return this;

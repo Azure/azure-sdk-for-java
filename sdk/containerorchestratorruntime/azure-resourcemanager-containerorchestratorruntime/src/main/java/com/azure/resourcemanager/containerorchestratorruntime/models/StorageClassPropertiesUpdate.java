@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,51 +21,61 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
     /*
      * Volume can be expanded or not
      */
+    @Generated
     private VolumeExpansion allowVolumeExpansion;
 
     /*
      * Additional mount options
      */
+    @Generated
     private List<String> mountOptions;
 
     /*
      * The access mode: [ReadWriteOnce, ReadWriteMany] or [ReadWriteOnce]
      */
+    @Generated
     private List<AccessMode> accessModes;
 
     /*
      * Allow single data node failure
      */
+    @Generated
     private DataResilienceTier dataResilience;
 
     /*
      * Failover speed: NA, Slow, Fast
      */
+    @Generated
     private FailoverTier failoverSpeed;
 
     /*
      * Limitations of the storage class
      */
+    @Generated
     private List<String> limitations;
 
     /*
      * Performance tier
      */
+    @Generated
     private PerformanceTier performance;
 
     /*
      * Selection priority when multiple storage classes meet the criteria. 0: Highest, -1: Never use
      */
+    @Generated
     private Long priority;
 
     /*
      * New storage class type of storageClass
      */
+    @Generated
     private StorageClassTypePropertiesUpdate typeProperties;
 
     /**
      * Creates an instance of StorageClassPropertiesUpdate class.
      */
+    @Generated
     public StorageClassPropertiesUpdate() {
     }
 
@@ -73,6 +84,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * 
      * @return the allowVolumeExpansion value.
      */
+    @Generated
     public VolumeExpansion allowVolumeExpansion() {
         return this.allowVolumeExpansion;
     }
@@ -83,6 +95,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * @param allowVolumeExpansion the allowVolumeExpansion value to set.
      * @return the StorageClassPropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassPropertiesUpdate withAllowVolumeExpansion(VolumeExpansion allowVolumeExpansion) {
         this.allowVolumeExpansion = allowVolumeExpansion;
         return this;
@@ -93,6 +106,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * 
      * @return the mountOptions value.
      */
+    @Generated
     public List<String> mountOptions() {
         return this.mountOptions;
     }
@@ -103,6 +117,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * @param mountOptions the mountOptions value to set.
      * @return the StorageClassPropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassPropertiesUpdate withMountOptions(List<String> mountOptions) {
         this.mountOptions = mountOptions;
         return this;
@@ -113,6 +128,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * 
      * @return the accessModes value.
      */
+    @Generated
     public List<AccessMode> accessModes() {
         return this.accessModes;
     }
@@ -123,6 +139,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * @param accessModes the accessModes value to set.
      * @return the StorageClassPropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassPropertiesUpdate withAccessModes(List<AccessMode> accessModes) {
         this.accessModes = accessModes;
         return this;
@@ -133,6 +150,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * 
      * @return the dataResilience value.
      */
+    @Generated
     public DataResilienceTier dataResilience() {
         return this.dataResilience;
     }
@@ -143,6 +161,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * @param dataResilience the dataResilience value to set.
      * @return the StorageClassPropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassPropertiesUpdate withDataResilience(DataResilienceTier dataResilience) {
         this.dataResilience = dataResilience;
         return this;
@@ -153,6 +172,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * 
      * @return the failoverSpeed value.
      */
+    @Generated
     public FailoverTier failoverSpeed() {
         return this.failoverSpeed;
     }
@@ -163,6 +183,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * @param failoverSpeed the failoverSpeed value to set.
      * @return the StorageClassPropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassPropertiesUpdate withFailoverSpeed(FailoverTier failoverSpeed) {
         this.failoverSpeed = failoverSpeed;
         return this;
@@ -173,6 +194,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * 
      * @return the limitations value.
      */
+    @Generated
     public List<String> limitations() {
         return this.limitations;
     }
@@ -183,6 +205,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * @param limitations the limitations value to set.
      * @return the StorageClassPropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassPropertiesUpdate withLimitations(List<String> limitations) {
         this.limitations = limitations;
         return this;
@@ -193,6 +216,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * 
      * @return the performance value.
      */
+    @Generated
     public PerformanceTier performance() {
         return this.performance;
     }
@@ -203,6 +227,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * @param performance the performance value to set.
      * @return the StorageClassPropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassPropertiesUpdate withPerformance(PerformanceTier performance) {
         this.performance = performance;
         return this;
@@ -214,6 +239,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * 
      * @return the priority value.
      */
+    @Generated
     public Long priority() {
         return this.priority;
     }
@@ -225,6 +251,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * @param priority the priority value to set.
      * @return the StorageClassPropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassPropertiesUpdate withPriority(Long priority) {
         this.priority = priority;
         return this;
@@ -235,6 +262,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * 
      * @return the typeProperties value.
      */
+    @Generated
     public StorageClassTypePropertiesUpdate typeProperties() {
         return this.typeProperties;
     }
@@ -245,6 +273,7 @@ public final class StorageClassPropertiesUpdate implements JsonSerializable<Stor
      * @param typeProperties the typeProperties value to set.
      * @return the StorageClassPropertiesUpdate object itself.
      */
+    @Generated
     public StorageClassPropertiesUpdate withTypeProperties(StorageClassTypePropertiesUpdate typeProperties) {
         this.typeProperties = typeProperties;
         return this;

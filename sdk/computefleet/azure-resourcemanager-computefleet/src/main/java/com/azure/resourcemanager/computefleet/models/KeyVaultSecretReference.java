@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -21,16 +22,19 @@ public final class KeyVaultSecretReference implements JsonSerializable<KeyVaultS
     /*
      * The URL referencing a secret in a Key Vault.
      */
+    @Generated
     private String secretUrl;
 
     /*
      * The relative URL of the Key Vault containing the secret.
      */
+    @Generated
     private SubResource sourceVault;
 
     /**
      * Creates an instance of KeyVaultSecretReference class.
      */
+    @Generated
     public KeyVaultSecretReference() {
     }
 
@@ -39,6 +43,7 @@ public final class KeyVaultSecretReference implements JsonSerializable<KeyVaultS
      * 
      * @return the secretUrl value.
      */
+    @Generated
     public String secretUrl() {
         return this.secretUrl;
     }
@@ -49,6 +54,7 @@ public final class KeyVaultSecretReference implements JsonSerializable<KeyVaultS
      * @param secretUrl the secretUrl value to set.
      * @return the KeyVaultSecretReference object itself.
      */
+    @Generated
     public KeyVaultSecretReference withSecretUrl(String secretUrl) {
         this.secretUrl = secretUrl;
         return this;
@@ -59,6 +65,7 @@ public final class KeyVaultSecretReference implements JsonSerializable<KeyVaultS
      * 
      * @return the sourceVault value.
      */
+    @Generated
     public SubResource sourceVault() {
         return this.sourceVault;
     }
@@ -69,6 +76,7 @@ public final class KeyVaultSecretReference implements JsonSerializable<KeyVaultS
      * @param sourceVault the sourceVault value to set.
      * @return the KeyVaultSecretReference object itself.
      */
+    @Generated
     public KeyVaultSecretReference withSourceVault(SubResource sourceVault) {
         this.sourceVault = sourceVault;
         return this;

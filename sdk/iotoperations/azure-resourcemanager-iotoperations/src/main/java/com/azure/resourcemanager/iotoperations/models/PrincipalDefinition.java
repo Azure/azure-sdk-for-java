@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,23 +23,27 @@ public final class PrincipalDefinition implements JsonSerializable<PrincipalDefi
      * A list of key-value pairs that match the attributes of the clients. The attributes are case-sensitive and must
      * match the attributes provided by the clients during authentication.
      */
+    @Generated
     private List<Map<String, String>> attributes;
 
     /*
      * A list of client IDs that match the clients. The client IDs are case-sensitive and must match the client IDs
      * provided by the clients during connection.
      */
+    @Generated
     private List<String> clientIds;
 
     /*
      * A list of usernames that match the clients. The usernames are case-sensitive and must match the usernames
      * provided by the clients during authentication.
      */
+    @Generated
     private List<String> usernames;
 
     /**
      * Creates an instance of PrincipalDefinition class.
      */
+    @Generated
     public PrincipalDefinition() {
     }
 
@@ -48,6 +53,7 @@ public final class PrincipalDefinition implements JsonSerializable<PrincipalDefi
      * 
      * @return the attributes value.
      */
+    @Generated
     public List<Map<String, String>> attributes() {
         return this.attributes;
     }
@@ -59,6 +65,7 @@ public final class PrincipalDefinition implements JsonSerializable<PrincipalDefi
      * @param attributes the attributes value to set.
      * @return the PrincipalDefinition object itself.
      */
+    @Generated
     public PrincipalDefinition withAttributes(List<Map<String, String>> attributes) {
         this.attributes = attributes;
         return this;
@@ -70,6 +77,7 @@ public final class PrincipalDefinition implements JsonSerializable<PrincipalDefi
      * 
      * @return the clientIds value.
      */
+    @Generated
     public List<String> clientIds() {
         return this.clientIds;
     }
@@ -81,6 +89,7 @@ public final class PrincipalDefinition implements JsonSerializable<PrincipalDefi
      * @param clientIds the clientIds value to set.
      * @return the PrincipalDefinition object itself.
      */
+    @Generated
     public PrincipalDefinition withClientIds(List<String> clientIds) {
         this.clientIds = clientIds;
         return this;
@@ -92,6 +101,7 @@ public final class PrincipalDefinition implements JsonSerializable<PrincipalDefi
      * 
      * @return the usernames value.
      */
+    @Generated
     public List<String> usernames() {
         return this.usernames;
     }
@@ -103,6 +113,7 @@ public final class PrincipalDefinition implements JsonSerializable<PrincipalDefi
      * @param usernames the usernames value to set.
      * @return the PrincipalDefinition object itself.
      */
+    @Generated
     public PrincipalDefinition withUsernames(List<String> usernames) {
         this.usernames = usernames;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class FileShareConfigurationType extends ExpandableStringEnum<FileS
     /**
      * Skip creating the file share.
      */
+    @Generated
     public static final FileShareConfigurationType SKIP = fromString("Skip");
 
     /**
      * Fileshare will be created and mounted by service.
      */
+    @Generated
     public static final FileShareConfigurationType CREATE_AND_MOUNT = fromString("CreateAndMount");
 
     /**
      * Existing fileshare provided will be mounted by service.
      */
+    @Generated
     public static final FileShareConfigurationType MOUNT = fromString("Mount");
 
     /**
@@ -31,6 +35,7 @@ public final class FileShareConfigurationType extends ExpandableStringEnum<FileS
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public FileShareConfigurationType() {
     }
@@ -41,6 +46,7 @@ public final class FileShareConfigurationType extends ExpandableStringEnum<FileS
      * @param name a name to look for.
      * @return the corresponding FileShareConfigurationType.
      */
+    @Generated
     public static FileShareConfigurationType fromString(String name) {
         return fromString(name, FileShareConfigurationType.class);
     }
@@ -50,6 +56,7 @@ public final class FileShareConfigurationType extends ExpandableStringEnum<FileS
      * 
      * @return known FileShareConfigurationType values.
      */
+    @Generated
     public static Collection<FileShareConfigurationType> values() {
         return values(FileShareConfigurationType.class);
     }

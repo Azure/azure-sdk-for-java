@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.trustedsigning.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class CodeSigningAccountPatch implements JsonSerializable<CodeSigni
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * Properties of the trusted signing account.
      */
+    @Generated
     private CodeSigningAccountPatchProperties innerProperties;
 
     /**
      * Creates an instance of CodeSigningAccountPatch class.
      */
+    @Generated
     public CodeSigningAccountPatch() {
     }
 
@@ -39,6 +43,7 @@ public final class CodeSigningAccountPatch implements JsonSerializable<CodeSigni
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> tags() {
         return this.tags;
     }
@@ -49,6 +54,7 @@ public final class CodeSigningAccountPatch implements JsonSerializable<CodeSigni
      * @param tags the tags value to set.
      * @return the CodeSigningAccountPatch object itself.
      */
+    @Generated
     public CodeSigningAccountPatch withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -59,6 +65,7 @@ public final class CodeSigningAccountPatch implements JsonSerializable<CodeSigni
      * 
      * @return the innerProperties value.
      */
+    @Generated
     private CodeSigningAccountPatchProperties innerProperties() {
         return this.innerProperties;
     }
@@ -68,6 +75,7 @@ public final class CodeSigningAccountPatch implements JsonSerializable<CodeSigni
      * 
      * @return the sku value.
      */
+    @Generated
     public AccountSkuPatch sku() {
         return this.innerProperties() == null ? null : this.innerProperties().sku();
     }
@@ -78,6 +86,7 @@ public final class CodeSigningAccountPatch implements JsonSerializable<CodeSigni
      * @param sku the sku value to set.
      * @return the CodeSigningAccountPatch object itself.
      */
+    @Generated
     public CodeSigningAccountPatch withSku(AccountSkuPatch sku) {
         if (this.innerProperties() == null) {
             this.innerProperties = new CodeSigningAccountPatchProperties();

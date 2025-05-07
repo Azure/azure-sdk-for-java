@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class ProfileDiagnostics implements JsonSerializable<ProfileDiagnos
     /*
      * Diagnostic log settings for the resource.
      */
+    @Generated
     private DiagnosticsLogs logs;
 
     /*
      * The metrics settings for the resource.
      */
+    @Generated
     private Metrics metrics;
 
     /**
      * Creates an instance of ProfileDiagnostics class.
      */
+    @Generated
     public ProfileDiagnostics() {
     }
 
@@ -37,6 +41,7 @@ public final class ProfileDiagnostics implements JsonSerializable<ProfileDiagnos
      * 
      * @return the logs value.
      */
+    @Generated
     public DiagnosticsLogs logs() {
         return this.logs;
     }
@@ -47,6 +52,7 @@ public final class ProfileDiagnostics implements JsonSerializable<ProfileDiagnos
      * @param logs the logs value to set.
      * @return the ProfileDiagnostics object itself.
      */
+    @Generated
     public ProfileDiagnostics withLogs(DiagnosticsLogs logs) {
         this.logs = logs;
         return this;
@@ -57,6 +63,7 @@ public final class ProfileDiagnostics implements JsonSerializable<ProfileDiagnos
      * 
      * @return the metrics value.
      */
+    @Generated
     public Metrics metrics() {
         return this.metrics;
     }
@@ -67,6 +74,7 @@ public final class ProfileDiagnostics implements JsonSerializable<ProfileDiagnos
      * @param metrics the metrics value to set.
      * @return the ProfileDiagnostics object itself.
      */
+    @Generated
     public ProfileDiagnostics withMetrics(Metrics metrics) {
         this.metrics = metrics;
         return this;

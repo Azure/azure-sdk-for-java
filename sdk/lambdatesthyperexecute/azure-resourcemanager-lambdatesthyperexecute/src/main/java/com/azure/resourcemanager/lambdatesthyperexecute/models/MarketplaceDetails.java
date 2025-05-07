@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.lambdatesthyperexecute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,21 +21,25 @@ public final class MarketplaceDetails implements JsonSerializable<MarketplaceDet
     /*
      * Azure subscription id for the the marketplace offer is purchased from
      */
+    @Generated
     private String subscriptionId;
 
     /*
      * Marketplace subscription status
      */
+    @Generated
     private MarketplaceSubscriptionStatus subscriptionStatus;
 
     /*
      * Offer details for the marketplace that is selected by the user
      */
+    @Generated
     private OfferDetails offerDetails;
 
     /**
      * Creates an instance of MarketplaceDetails class.
      */
+    @Generated
     public MarketplaceDetails() {
     }
 
@@ -43,6 +48,7 @@ public final class MarketplaceDetails implements JsonSerializable<MarketplaceDet
      * 
      * @return the subscriptionId value.
      */
+    @Generated
     public String subscriptionId() {
         return this.subscriptionId;
     }
@@ -53,6 +59,7 @@ public final class MarketplaceDetails implements JsonSerializable<MarketplaceDet
      * @param subscriptionId the subscriptionId value to set.
      * @return the MarketplaceDetails object itself.
      */
+    @Generated
     public MarketplaceDetails withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
@@ -63,6 +70,7 @@ public final class MarketplaceDetails implements JsonSerializable<MarketplaceDet
      * 
      * @return the subscriptionStatus value.
      */
+    @Generated
     public MarketplaceSubscriptionStatus subscriptionStatus() {
         return this.subscriptionStatus;
     }
@@ -72,6 +80,7 @@ public final class MarketplaceDetails implements JsonSerializable<MarketplaceDet
      * 
      * @return the offerDetails value.
      */
+    @Generated
     public OfferDetails offerDetails() {
         return this.offerDetails;
     }
@@ -82,6 +91,7 @@ public final class MarketplaceDetails implements JsonSerializable<MarketplaceDet
      * @param offerDetails the offerDetails value to set.
      * @return the MarketplaceDetails object itself.
      */
+    @Generated
     public MarketplaceDetails withOfferDetails(OfferDetails offerDetails) {
         this.offerDetails = offerDetails;
         return this;

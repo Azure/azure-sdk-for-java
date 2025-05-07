@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.terraform.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class TargetProvider extends ExpandableStringEnum<TargetProvider> {
     /**
      * https://registry.terraform.io/providers/hashicorp/azurerm/latest.
      */
+    @Generated
     public static final TargetProvider AZURERM = fromString("azurerm");
 
     /**
      * https://registry.terraform.io/providers/Azure/azapi/latest.
      */
+    @Generated
     public static final TargetProvider AZAPI = fromString("azapi");
 
     /**
@@ -26,6 +29,7 @@ public final class TargetProvider extends ExpandableStringEnum<TargetProvider> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TargetProvider() {
     }
@@ -36,6 +40,7 @@ public final class TargetProvider extends ExpandableStringEnum<TargetProvider> {
      * @param name a name to look for.
      * @return the corresponding TargetProvider.
      */
+    @Generated
     public static TargetProvider fromString(String name) {
         return fromString(name, TargetProvider.class);
     }
@@ -45,6 +50,7 @@ public final class TargetProvider extends ExpandableStringEnum<TargetProvider> {
      * 
      * @return known TargetProvider values.
      */
+    @Generated
     public static Collection<TargetProvider> values() {
         return values(TargetProvider.class);
     }

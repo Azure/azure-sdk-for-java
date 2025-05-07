@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.onlineexperimentation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class OnlineExperimentationWorkspaceSku implements JsonSerializable
     /*
      * The name of the SKU. Ex - F0, P0. It is typically a letter+number code
      */
+    @Generated
     private OnlineExperimentationWorkspaceSkuName name;
 
     /*
      * The name of the SKU tier
      */
+    @Generated
     private OnlineExperimentationWorkspaceSkuTier tier;
 
     /**
      * Creates an instance of OnlineExperimentationWorkspaceSku class.
      */
+    @Generated
     public OnlineExperimentationWorkspaceSku() {
     }
 
@@ -38,6 +42,7 @@ public final class OnlineExperimentationWorkspaceSku implements JsonSerializable
      * 
      * @return the name value.
      */
+    @Generated
     public OnlineExperimentationWorkspaceSkuName name() {
         return this.name;
     }
@@ -48,6 +53,7 @@ public final class OnlineExperimentationWorkspaceSku implements JsonSerializable
      * @param name the name value to set.
      * @return the OnlineExperimentationWorkspaceSku object itself.
      */
+    @Generated
     public OnlineExperimentationWorkspaceSku withName(OnlineExperimentationWorkspaceSkuName name) {
         this.name = name;
         return this;
@@ -58,6 +64,7 @@ public final class OnlineExperimentationWorkspaceSku implements JsonSerializable
      * 
      * @return the tier value.
      */
+    @Generated
     public OnlineExperimentationWorkspaceSkuTier tier() {
         return this.tier;
     }

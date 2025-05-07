@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,16 +16,19 @@ public final class AutoUpgradeProfileProvisioningState
     /**
      * Resource has been created.
      */
+    @Generated
     public static final AutoUpgradeProfileProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
      * Resource creation failed.
      */
+    @Generated
     public static final AutoUpgradeProfileProvisioningState FAILED = fromString("Failed");
 
     /**
      * Resource creation was canceled.
      */
+    @Generated
     public static final AutoUpgradeProfileProvisioningState CANCELED = fromString("Canceled");
 
     /**
@@ -32,6 +36,7 @@ public final class AutoUpgradeProfileProvisioningState
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AutoUpgradeProfileProvisioningState() {
     }
@@ -42,6 +47,7 @@ public final class AutoUpgradeProfileProvisioningState
      * @param name a name to look for.
      * @return the corresponding AutoUpgradeProfileProvisioningState.
      */
+    @Generated
     public static AutoUpgradeProfileProvisioningState fromString(String name) {
         return fromString(name, AutoUpgradeProfileProvisioningState.class);
     }
@@ -51,6 +57,7 @@ public final class AutoUpgradeProfileProvisioningState
      * 
      * @return known AutoUpgradeProfileProvisioningState values.
      */
+    @Generated
     public static Collection<AutoUpgradeProfileProvisioningState> values() {
         return values(AutoUpgradeProfileProvisioningState.class);
     }

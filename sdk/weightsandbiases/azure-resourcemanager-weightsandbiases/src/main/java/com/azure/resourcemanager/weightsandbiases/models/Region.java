@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.weightsandbiases.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class Region extends ExpandableStringEnum<Region> {
     /**
      * Region: East US.
      */
+    @Generated
     public static final Region EASTUS = fromString("eastus");
 
     /**
      * Region: Central US.
      */
+    @Generated
     public static final Region CENTRALUS = fromString("centralus");
 
     /**
      * Region: West US.
      */
+    @Generated
     public static final Region WESTUS = fromString("westus");
 
     /**
      * Region: West Europe.
      */
+    @Generated
     public static final Region WESTEUROPE = fromString("westeurope");
 
     /**
      * Region: Japan East.
      */
+    @Generated
     public static final Region JAPANEAST = fromString("japaneast");
 
     /**
      * Region: Korea Central.
      */
+    @Generated
     public static final Region KOREACENTRAL = fromString("koreacentral");
 
     /**
@@ -46,6 +53,7 @@ public final class Region extends ExpandableStringEnum<Region> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public Region() {
     }
@@ -56,6 +64,7 @@ public final class Region extends ExpandableStringEnum<Region> {
      * @param name a name to look for.
      * @return the corresponding Region.
      */
+    @Generated
     public static Region fromString(String name) {
         return fromString(name, Region.class);
     }
@@ -65,6 +74,7 @@ public final class Region extends ExpandableStringEnum<Region> {
      * 
      * @return known Region values.
      */
+    @Generated
     public static Collection<Region> values() {
         return values(Region.class);
     }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.fabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class CapacityAdministration implements JsonSerializable<CapacityAd
     /*
      * An array of administrator user identities.
      */
+    @Generated
     private List<String> members;
 
     /**
      * Creates an instance of CapacityAdministration class.
      */
+    @Generated
     public CapacityAdministration() {
     }
 
@@ -34,6 +37,7 @@ public final class CapacityAdministration implements JsonSerializable<CapacityAd
      * 
      * @return the members value.
      */
+    @Generated
     public List<String> members() {
         return this.members;
     }
@@ -44,6 +48,7 @@ public final class CapacityAdministration implements JsonSerializable<CapacityAd
      * @param members the members value to set.
      * @return the CapacityAdministration object itself.
      */
+    @Generated
     public CapacityAdministration withMembers(List<String> members) {
         this.members = members;
         return this;

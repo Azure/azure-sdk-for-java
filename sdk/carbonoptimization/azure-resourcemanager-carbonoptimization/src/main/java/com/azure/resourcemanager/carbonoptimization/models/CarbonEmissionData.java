@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,12 +20,14 @@ public class CarbonEmissionData implements JsonSerializable<CarbonEmissionData> 
     /*
      * The data type of the query result, indicating the format of the returned response.
      */
+    @Generated
     private ResponseDataTypeEnum dataType = ResponseDataTypeEnum.fromString("CarbonEmissionData");
 
     /*
      * Total carbon emissions for the specified query parameters, measured in kgCO2E. This value represents total
      * emissions over the specified date range (e.g., March-June).
      */
+    @Generated
     private double latestMonthEmissions;
 
     /*
@@ -32,23 +35,27 @@ public class CarbonEmissionData implements JsonSerializable<CarbonEmissionData> 
      * but shifted left by one month (e.g., if the specified range is March - June, the previous month’s range will be
      * Feb - May). The value is measured in kgCO2E.
      */
+    @Generated
     private double previousMonthEmissions;
 
     /*
      * The percentage change in carbon emissions between the current and previous DateRange. This is calculated as:
      * (latestMonthEmissions - previousMonthEmissions) / previousMonthEmissions.
      */
+    @Generated
     private Double monthOverMonthEmissionsChangeRatio;
 
     /*
      * The change in carbon emissions between the current and previous period, calculated as: latestMonthEmissions -
      * previousMonthEmissions.
      */
+    @Generated
     private Double monthlyEmissionsChangeValue;
 
     /**
      * Creates an instance of CarbonEmissionData class.
      */
+    @Generated
     protected CarbonEmissionData() {
     }
 
@@ -57,6 +64,7 @@ public class CarbonEmissionData implements JsonSerializable<CarbonEmissionData> 
      * 
      * @return the dataType value.
      */
+    @Generated
     public ResponseDataTypeEnum dataType() {
         return this.dataType;
     }
@@ -67,6 +75,7 @@ public class CarbonEmissionData implements JsonSerializable<CarbonEmissionData> 
      * 
      * @return the latestMonthEmissions value.
      */
+    @Generated
     public double latestMonthEmissions() {
         return this.latestMonthEmissions;
     }
@@ -78,6 +87,7 @@ public class CarbonEmissionData implements JsonSerializable<CarbonEmissionData> 
      * @param latestMonthEmissions the latestMonthEmissions value to set.
      * @return the CarbonEmissionData object itself.
      */
+    @Generated
     CarbonEmissionData withLatestMonthEmissions(double latestMonthEmissions) {
         this.latestMonthEmissions = latestMonthEmissions;
         return this;
@@ -90,6 +100,7 @@ public class CarbonEmissionData implements JsonSerializable<CarbonEmissionData> 
      * 
      * @return the previousMonthEmissions value.
      */
+    @Generated
     public double previousMonthEmissions() {
         return this.previousMonthEmissions;
     }
@@ -102,6 +113,7 @@ public class CarbonEmissionData implements JsonSerializable<CarbonEmissionData> 
      * @param previousMonthEmissions the previousMonthEmissions value to set.
      * @return the CarbonEmissionData object itself.
      */
+    @Generated
     CarbonEmissionData withPreviousMonthEmissions(double previousMonthEmissions) {
         this.previousMonthEmissions = previousMonthEmissions;
         return this;
@@ -114,6 +126,7 @@ public class CarbonEmissionData implements JsonSerializable<CarbonEmissionData> 
      * 
      * @return the monthOverMonthEmissionsChangeRatio value.
      */
+    @Generated
     public Double monthOverMonthEmissionsChangeRatio() {
         return this.monthOverMonthEmissionsChangeRatio;
     }
@@ -126,6 +139,7 @@ public class CarbonEmissionData implements JsonSerializable<CarbonEmissionData> 
      * @param monthOverMonthEmissionsChangeRatio the monthOverMonthEmissionsChangeRatio value to set.
      * @return the CarbonEmissionData object itself.
      */
+    @Generated
     CarbonEmissionData withMonthOverMonthEmissionsChangeRatio(Double monthOverMonthEmissionsChangeRatio) {
         this.monthOverMonthEmissionsChangeRatio = monthOverMonthEmissionsChangeRatio;
         return this;
@@ -137,6 +151,7 @@ public class CarbonEmissionData implements JsonSerializable<CarbonEmissionData> 
      * 
      * @return the monthlyEmissionsChangeValue value.
      */
+    @Generated
     public Double monthlyEmissionsChangeValue() {
         return this.monthlyEmissionsChangeValue;
     }
@@ -148,6 +163,7 @@ public class CarbonEmissionData implements JsonSerializable<CarbonEmissionData> 
      * @param monthlyEmissionsChangeValue the monthlyEmissionsChangeValue value to set.
      * @return the CarbonEmissionData object itself.
      */
+    @Generated
     CarbonEmissionData withMonthlyEmissionsChangeValue(Double monthlyEmissionsChangeValue) {
         this.monthlyEmissionsChangeValue = monthlyEmissionsChangeValue;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.impactreporting.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class SourceOrTarget implements JsonSerializable<SourceOrTarget> {
      * Azure resource id, example
      * /subscription/{subscription}/resourceGroup/{rg}/Microsoft.compute/virtualMachine/{vmName}
      */
+    @Generated
     private String azureResourceId;
 
     /**
      * Creates an instance of SourceOrTarget class.
      */
+    @Generated
     public SourceOrTarget() {
     }
 
@@ -34,6 +37,7 @@ public final class SourceOrTarget implements JsonSerializable<SourceOrTarget> {
      * 
      * @return the azureResourceId value.
      */
+    @Generated
     public String azureResourceId() {
         return this.azureResourceId;
     }
@@ -45,6 +49,7 @@ public final class SourceOrTarget implements JsonSerializable<SourceOrTarget> {
      * @param azureResourceId the azureResourceId value to set.
      * @return the SourceOrTarget object itself.
      */
+    @Generated
     public SourceOrTarget withAzureResourceId(String azureResourceId) {
         this.azureResourceId = azureResourceId;
         return this;

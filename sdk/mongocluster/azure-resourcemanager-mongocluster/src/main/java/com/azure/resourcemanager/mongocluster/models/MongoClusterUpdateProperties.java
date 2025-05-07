@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,56 +21,67 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     /*
      * The local administrator properties for the mongo cluster.
      */
+    @Generated
     private AdministratorProperties administrator;
 
     /*
      * The Mongo DB server version. Defaults to the latest available version if not specified.
      */
+    @Generated
     private String serverVersion;
 
     /*
      * Whether or not public endpoint access is allowed for this mongo cluster.
      */
+    @Generated
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * The high availability properties of the mongo cluster.
      */
+    @Generated
     private HighAvailabilityProperties highAvailability;
 
     /*
      * The storage properties of the mongo cluster.
      */
+    @Generated
     private StorageProperties storage;
 
     /*
      * The sharding properties of the mongo cluster.
      */
+    @Generated
     private ShardingProperties sharding;
 
     /*
      * The compute properties of the mongo cluster.
      */
+    @Generated
     private ComputeProperties compute;
 
     /*
      * The backup properties of the mongo cluster.
      */
+    @Generated
     private BackupProperties backup;
 
     /*
      * The Data API properties of the mongo cluster.
      */
+    @Generated
     private DataApiProperties dataApi;
 
     /*
      * List of private endpoint connections.
      */
+    @Generated
     private List<PreviewFeature> previewFeatures;
 
     /**
      * Creates an instance of MongoClusterUpdateProperties class.
      */
+    @Generated
     public MongoClusterUpdateProperties() {
     }
 
@@ -78,6 +90,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * 
      * @return the administrator value.
      */
+    @Generated
     public AdministratorProperties administrator() {
         return this.administrator;
     }
@@ -88,6 +101,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * @param administrator the administrator value to set.
      * @return the MongoClusterUpdateProperties object itself.
      */
+    @Generated
     public MongoClusterUpdateProperties withAdministrator(AdministratorProperties administrator) {
         this.administrator = administrator;
         return this;
@@ -99,6 +113,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * 
      * @return the serverVersion value.
      */
+    @Generated
     public String serverVersion() {
         return this.serverVersion;
     }
@@ -110,6 +125,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * @param serverVersion the serverVersion value to set.
      * @return the MongoClusterUpdateProperties object itself.
      */
+    @Generated
     public MongoClusterUpdateProperties withServerVersion(String serverVersion) {
         this.serverVersion = serverVersion;
         return this;
@@ -120,6 +136,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * 
      * @return the publicNetworkAccess value.
      */
+    @Generated
     public PublicNetworkAccess publicNetworkAccess() {
         return this.publicNetworkAccess;
     }
@@ -130,6 +147,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the MongoClusterUpdateProperties object itself.
      */
+    @Generated
     public MongoClusterUpdateProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
         return this;
@@ -140,6 +158,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * 
      * @return the highAvailability value.
      */
+    @Generated
     public HighAvailabilityProperties highAvailability() {
         return this.highAvailability;
     }
@@ -150,6 +169,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * @param highAvailability the highAvailability value to set.
      * @return the MongoClusterUpdateProperties object itself.
      */
+    @Generated
     public MongoClusterUpdateProperties withHighAvailability(HighAvailabilityProperties highAvailability) {
         this.highAvailability = highAvailability;
         return this;
@@ -160,6 +180,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * 
      * @return the storage value.
      */
+    @Generated
     public StorageProperties storage() {
         return this.storage;
     }
@@ -170,6 +191,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * @param storage the storage value to set.
      * @return the MongoClusterUpdateProperties object itself.
      */
+    @Generated
     public MongoClusterUpdateProperties withStorage(StorageProperties storage) {
         this.storage = storage;
         return this;
@@ -180,6 +202,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * 
      * @return the sharding value.
      */
+    @Generated
     public ShardingProperties sharding() {
         return this.sharding;
     }
@@ -190,6 +213,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * @param sharding the sharding value to set.
      * @return the MongoClusterUpdateProperties object itself.
      */
+    @Generated
     public MongoClusterUpdateProperties withSharding(ShardingProperties sharding) {
         this.sharding = sharding;
         return this;
@@ -200,6 +224,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * 
      * @return the compute value.
      */
+    @Generated
     public ComputeProperties compute() {
         return this.compute;
     }
@@ -210,6 +235,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * @param compute the compute value to set.
      * @return the MongoClusterUpdateProperties object itself.
      */
+    @Generated
     public MongoClusterUpdateProperties withCompute(ComputeProperties compute) {
         this.compute = compute;
         return this;
@@ -220,6 +246,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * 
      * @return the backup value.
      */
+    @Generated
     public BackupProperties backup() {
         return this.backup;
     }
@@ -230,6 +257,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * @param backup the backup value to set.
      * @return the MongoClusterUpdateProperties object itself.
      */
+    @Generated
     public MongoClusterUpdateProperties withBackup(BackupProperties backup) {
         this.backup = backup;
         return this;
@@ -240,6 +268,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * 
      * @return the dataApi value.
      */
+    @Generated
     public DataApiProperties dataApi() {
         return this.dataApi;
     }
@@ -250,6 +279,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * @param dataApi the dataApi value to set.
      * @return the MongoClusterUpdateProperties object itself.
      */
+    @Generated
     public MongoClusterUpdateProperties withDataApi(DataApiProperties dataApi) {
         this.dataApi = dataApi;
         return this;
@@ -260,6 +290,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * 
      * @return the previewFeatures value.
      */
+    @Generated
     public List<PreviewFeature> previewFeatures() {
         return this.previewFeatures;
     }
@@ -270,6 +301,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      * @param previewFeatures the previewFeatures value to set.
      * @return the MongoClusterUpdateProperties object itself.
      */
+    @Generated
     public MongoClusterUpdateProperties withPreviewFeatures(List<PreviewFeature> previewFeatures) {
         this.previewFeatures = previewFeatures;
         return this;

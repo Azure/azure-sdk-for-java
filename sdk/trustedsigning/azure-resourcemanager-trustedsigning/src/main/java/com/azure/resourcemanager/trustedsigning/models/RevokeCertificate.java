@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.trustedsigning.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -23,31 +24,37 @@ public final class RevokeCertificate implements JsonSerializable<RevokeCertifica
     /*
      * Serial number of the certificate.
      */
+    @Generated
     private String serialNumber;
 
     /*
      * Thumbprint of the certificate.
      */
+    @Generated
     private String thumbprint;
 
     /*
      * The timestamp when the revocation is effective.
      */
+    @Generated
     private OffsetDateTime effectiveAt;
 
     /*
      * Reason for the revocation.
      */
+    @Generated
     private String reason;
 
     /*
      * Remarks for the revocation.
      */
+    @Generated
     private String remarks;
 
     /**
      * Creates an instance of RevokeCertificate class.
      */
+    @Generated
     public RevokeCertificate() {
     }
 
@@ -56,6 +63,7 @@ public final class RevokeCertificate implements JsonSerializable<RevokeCertifica
      * 
      * @return the serialNumber value.
      */
+    @Generated
     public String serialNumber() {
         return this.serialNumber;
     }
@@ -66,6 +74,7 @@ public final class RevokeCertificate implements JsonSerializable<RevokeCertifica
      * @param serialNumber the serialNumber value to set.
      * @return the RevokeCertificate object itself.
      */
+    @Generated
     public RevokeCertificate withSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
         return this;
@@ -76,6 +85,7 @@ public final class RevokeCertificate implements JsonSerializable<RevokeCertifica
      * 
      * @return the thumbprint value.
      */
+    @Generated
     public String thumbprint() {
         return this.thumbprint;
     }
@@ -86,6 +96,7 @@ public final class RevokeCertificate implements JsonSerializable<RevokeCertifica
      * @param thumbprint the thumbprint value to set.
      * @return the RevokeCertificate object itself.
      */
+    @Generated
     public RevokeCertificate withThumbprint(String thumbprint) {
         this.thumbprint = thumbprint;
         return this;
@@ -96,6 +107,7 @@ public final class RevokeCertificate implements JsonSerializable<RevokeCertifica
      * 
      * @return the effectiveAt value.
      */
+    @Generated
     public OffsetDateTime effectiveAt() {
         return this.effectiveAt;
     }
@@ -106,6 +118,7 @@ public final class RevokeCertificate implements JsonSerializable<RevokeCertifica
      * @param effectiveAt the effectiveAt value to set.
      * @return the RevokeCertificate object itself.
      */
+    @Generated
     public RevokeCertificate withEffectiveAt(OffsetDateTime effectiveAt) {
         this.effectiveAt = effectiveAt;
         return this;
@@ -116,6 +129,7 @@ public final class RevokeCertificate implements JsonSerializable<RevokeCertifica
      * 
      * @return the reason value.
      */
+    @Generated
     public String reason() {
         return this.reason;
     }
@@ -126,6 +140,7 @@ public final class RevokeCertificate implements JsonSerializable<RevokeCertifica
      * @param reason the reason value to set.
      * @return the RevokeCertificate object itself.
      */
+    @Generated
     public RevokeCertificate withReason(String reason) {
         this.reason = reason;
         return this;
@@ -136,6 +151,7 @@ public final class RevokeCertificate implements JsonSerializable<RevokeCertifica
      * 
      * @return the remarks value.
      */
+    @Generated
     public String remarks() {
         return this.remarks;
     }
@@ -146,6 +162,7 @@ public final class RevokeCertificate implements JsonSerializable<RevokeCertifica
      * @param remarks the remarks value to set.
      * @return the RevokeCertificate object itself.
      */
+    @Generated
     public RevokeCertificate withRemarks(String remarks) {
         this.remarks = remarks;
         return this;

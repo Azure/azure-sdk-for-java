@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,27 +21,32 @@ public final class LinuxConfiguration extends OSConfiguration {
     /*
      * The OS Type
      */
+    @Generated
     private OSType osType = OSType.LINUX;
 
     /*
      * Specifies whether password authentication should be disabled.
      */
+    @Generated
     private Boolean disablePasswordAuthentication;
 
     /*
      * Specifies the ssh key configuration for a Linux OS. (This property is deprecated, please use 'sshKeyPair'
      * instead)
      */
+    @Generated
     private SshConfiguration ssh;
 
     /*
      * The SSH Key-pair used to authenticate with the VM's.
      */
+    @Generated
     private SshKeyPair sshKeyPair;
 
     /**
      * Creates an instance of LinuxConfiguration class.
      */
+    @Generated
     public LinuxConfiguration() {
     }
 
@@ -49,6 +55,7 @@ public final class LinuxConfiguration extends OSConfiguration {
      * 
      * @return the osType value.
      */
+    @Generated
     @Override
     public OSType osType() {
         return this.osType;
@@ -59,6 +66,7 @@ public final class LinuxConfiguration extends OSConfiguration {
      * 
      * @return the disablePasswordAuthentication value.
      */
+    @Generated
     public Boolean disablePasswordAuthentication() {
         return this.disablePasswordAuthentication;
     }
@@ -69,6 +77,7 @@ public final class LinuxConfiguration extends OSConfiguration {
      * @param disablePasswordAuthentication the disablePasswordAuthentication value to set.
      * @return the LinuxConfiguration object itself.
      */
+    @Generated
     public LinuxConfiguration withDisablePasswordAuthentication(Boolean disablePasswordAuthentication) {
         this.disablePasswordAuthentication = disablePasswordAuthentication;
         return this;
@@ -80,6 +89,7 @@ public final class LinuxConfiguration extends OSConfiguration {
      * 
      * @return the ssh value.
      */
+    @Generated
     public SshConfiguration ssh() {
         return this.ssh;
     }
@@ -91,6 +101,7 @@ public final class LinuxConfiguration extends OSConfiguration {
      * @param ssh the ssh value to set.
      * @return the LinuxConfiguration object itself.
      */
+    @Generated
     public LinuxConfiguration withSsh(SshConfiguration ssh) {
         this.ssh = ssh;
         return this;
@@ -101,6 +112,7 @@ public final class LinuxConfiguration extends OSConfiguration {
      * 
      * @return the sshKeyPair value.
      */
+    @Generated
     public SshKeyPair sshKeyPair() {
         return this.sshKeyPair;
     }
@@ -111,6 +123,7 @@ public final class LinuxConfiguration extends OSConfiguration {
      * @param sshKeyPair the sshKeyPair value to set.
      * @return the LinuxConfiguration object itself.
      */
+    @Generated
     public LinuxConfiguration withSshKeyPair(SshKeyPair sshKeyPair) {
         this.sshKeyPair = sshKeyPair;
         return this;

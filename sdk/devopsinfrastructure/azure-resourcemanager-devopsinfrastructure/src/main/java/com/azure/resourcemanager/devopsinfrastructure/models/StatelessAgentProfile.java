@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,11 +19,13 @@ public final class StatelessAgentProfile extends AgentProfile {
     /*
      * Discriminator property for AgentProfile.
      */
+    @Generated
     private String kind = "Stateless";
 
     /**
      * Creates an instance of StatelessAgentProfile class.
      */
+    @Generated
     public StatelessAgentProfile() {
     }
 
@@ -31,6 +34,7 @@ public final class StatelessAgentProfile extends AgentProfile {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public String kind() {
         return this.kind;
@@ -39,6 +43,7 @@ public final class StatelessAgentProfile extends AgentProfile {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public StatelessAgentProfile withResourcePredictions(ResourcePredictions resourcePredictions) {
         super.withResourcePredictions(resourcePredictions);
@@ -48,6 +53,7 @@ public final class StatelessAgentProfile extends AgentProfile {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public StatelessAgentProfile withResourcePredictionsProfile(ResourcePredictionsProfile resourcePredictionsProfile) {
         super.withResourcePredictionsProfile(resourcePredictionsProfile);

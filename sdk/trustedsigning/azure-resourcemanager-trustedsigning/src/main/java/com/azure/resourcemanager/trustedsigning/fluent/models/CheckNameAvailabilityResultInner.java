@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.trustedsigning.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,22 +22,26 @@ public final class CheckNameAvailabilityResultInner implements JsonSerializable<
      * A boolean value that indicates whether the name is available for you to use. If true, the name is available. If
      * false, the name has already been taken or is invalid and cannot be used.
      */
+    @Generated
     private Boolean nameAvailable;
 
     /*
      * The reason that a trusted signing account name could not be used. The Reason element is only returned if
      * nameAvailable is false.
      */
+    @Generated
     private NameUnavailabilityReason reason;
 
     /*
      * An error message explaining the Reason value in more detail.
      */
+    @Generated
     private String message;
 
     /**
      * Creates an instance of CheckNameAvailabilityResultInner class.
      */
+    @Generated
     private CheckNameAvailabilityResultInner() {
     }
 
@@ -46,6 +51,7 @@ public final class CheckNameAvailabilityResultInner implements JsonSerializable<
      * 
      * @return the nameAvailable value.
      */
+    @Generated
     public Boolean nameAvailable() {
         return this.nameAvailable;
     }
@@ -56,6 +62,7 @@ public final class CheckNameAvailabilityResultInner implements JsonSerializable<
      * 
      * @return the reason value.
      */
+    @Generated
     public NameUnavailabilityReason reason() {
         return this.reason;
     }
@@ -65,6 +72,7 @@ public final class CheckNameAvailabilityResultInner implements JsonSerializable<
      * 
      * @return the message value.
      */
+    @Generated
     public String message() {
         return this.message;
     }

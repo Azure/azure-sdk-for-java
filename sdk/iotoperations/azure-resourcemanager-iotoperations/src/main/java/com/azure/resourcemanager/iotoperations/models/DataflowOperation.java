@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,31 +21,37 @@ public final class DataflowOperation implements JsonSerializable<DataflowOperati
     /*
      * Type of operation.
      */
+    @Generated
     private OperationType operationType;
 
     /*
      * Optional user provided name of the transformation.
      */
+    @Generated
     private String name;
 
     /*
      * Source configuration.
      */
+    @Generated
     private DataflowSourceOperationSettings sourceSettings;
 
     /*
      * Built In Transformation configuration.
      */
+    @Generated
     private DataflowBuiltInTransformationSettings builtInTransformationSettings;
 
     /*
      * Destination configuration.
      */
+    @Generated
     private DataflowDestinationOperationSettings destinationSettings;
 
     /**
      * Creates an instance of DataflowOperation class.
      */
+    @Generated
     public DataflowOperation() {
     }
 
@@ -53,6 +60,7 @@ public final class DataflowOperation implements JsonSerializable<DataflowOperati
      * 
      * @return the operationType value.
      */
+    @Generated
     public OperationType operationType() {
         return this.operationType;
     }
@@ -63,6 +71,7 @@ public final class DataflowOperation implements JsonSerializable<DataflowOperati
      * @param operationType the operationType value to set.
      * @return the DataflowOperation object itself.
      */
+    @Generated
     public DataflowOperation withOperationType(OperationType operationType) {
         this.operationType = operationType;
         return this;
@@ -73,6 +82,7 @@ public final class DataflowOperation implements JsonSerializable<DataflowOperati
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -83,6 +93,7 @@ public final class DataflowOperation implements JsonSerializable<DataflowOperati
      * @param name the name value to set.
      * @return the DataflowOperation object itself.
      */
+    @Generated
     public DataflowOperation withName(String name) {
         this.name = name;
         return this;
@@ -93,6 +104,7 @@ public final class DataflowOperation implements JsonSerializable<DataflowOperati
      * 
      * @return the sourceSettings value.
      */
+    @Generated
     public DataflowSourceOperationSettings sourceSettings() {
         return this.sourceSettings;
     }
@@ -103,6 +115,7 @@ public final class DataflowOperation implements JsonSerializable<DataflowOperati
      * @param sourceSettings the sourceSettings value to set.
      * @return the DataflowOperation object itself.
      */
+    @Generated
     public DataflowOperation withSourceSettings(DataflowSourceOperationSettings sourceSettings) {
         this.sourceSettings = sourceSettings;
         return this;
@@ -113,6 +126,7 @@ public final class DataflowOperation implements JsonSerializable<DataflowOperati
      * 
      * @return the builtInTransformationSettings value.
      */
+    @Generated
     public DataflowBuiltInTransformationSettings builtInTransformationSettings() {
         return this.builtInTransformationSettings;
     }
@@ -123,6 +137,7 @@ public final class DataflowOperation implements JsonSerializable<DataflowOperati
      * @param builtInTransformationSettings the builtInTransformationSettings value to set.
      * @return the DataflowOperation object itself.
      */
+    @Generated
     public DataflowOperation
         withBuiltInTransformationSettings(DataflowBuiltInTransformationSettings builtInTransformationSettings) {
         this.builtInTransformationSettings = builtInTransformationSettings;
@@ -134,6 +149,7 @@ public final class DataflowOperation implements JsonSerializable<DataflowOperati
      * 
      * @return the destinationSettings value.
      */
+    @Generated
     public DataflowDestinationOperationSettings destinationSettings() {
         return this.destinationSettings;
     }
@@ -144,6 +160,7 @@ public final class DataflowOperation implements JsonSerializable<DataflowOperati
      * @param destinationSettings the destinationSettings value to set.
      * @return the DataflowOperation object itself.
      */
+    @Generated
     public DataflowOperation withDestinationSettings(DataflowDestinationOperationSettings destinationSettings) {
         this.destinationSettings = destinationSettings;
         return this;

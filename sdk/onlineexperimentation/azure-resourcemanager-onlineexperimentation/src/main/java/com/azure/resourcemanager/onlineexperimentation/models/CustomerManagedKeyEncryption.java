@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.onlineexperimentation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,6 +21,7 @@ public final class CustomerManagedKeyEncryption implements JsonSerializable<Cust
      * All identity configuration for Customer-managed key settings defining which identity should be used to auth to
      * Key Vault.
      */
+    @Generated
     private KeyEncryptionKeyIdentity keyEncryptionKeyIdentity;
 
     /*
@@ -27,11 +29,13 @@ public final class CustomerManagedKeyEncryption implements JsonSerializable<Cust
      * https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78 or
      * https://contosovault.vault.azure.net/keys/contosokek.
      */
+    @Generated
     private String keyEncryptionKeyUrl;
 
     /**
      * Creates an instance of CustomerManagedKeyEncryption class.
      */
+    @Generated
     public CustomerManagedKeyEncryption() {
     }
 
@@ -41,6 +45,7 @@ public final class CustomerManagedKeyEncryption implements JsonSerializable<Cust
      * 
      * @return the keyEncryptionKeyIdentity value.
      */
+    @Generated
     public KeyEncryptionKeyIdentity keyEncryptionKeyIdentity() {
         return this.keyEncryptionKeyIdentity;
     }
@@ -52,6 +57,7 @@ public final class CustomerManagedKeyEncryption implements JsonSerializable<Cust
      * @param keyEncryptionKeyIdentity the keyEncryptionKeyIdentity value to set.
      * @return the CustomerManagedKeyEncryption object itself.
      */
+    @Generated
     public CustomerManagedKeyEncryption
         withKeyEncryptionKeyIdentity(KeyEncryptionKeyIdentity keyEncryptionKeyIdentity) {
         this.keyEncryptionKeyIdentity = keyEncryptionKeyIdentity;
@@ -65,6 +71,7 @@ public final class CustomerManagedKeyEncryption implements JsonSerializable<Cust
      * 
      * @return the keyEncryptionKeyUrl value.
      */
+    @Generated
     public String keyEncryptionKeyUrl() {
         return this.keyEncryptionKeyUrl;
     }
@@ -77,6 +84,7 @@ public final class CustomerManagedKeyEncryption implements JsonSerializable<Cust
      * @param keyEncryptionKeyUrl the keyEncryptionKeyUrl value to set.
      * @return the CustomerManagedKeyEncryption object itself.
      */
+    @Generated
     public CustomerManagedKeyEncryption withKeyEncryptionKeyUrl(String keyEncryptionKeyUrl) {
         this.keyEncryptionKeyUrl = keyEncryptionKeyUrl;
         return this;

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,32 +15,38 @@ public final class ReplicationState extends ExpandableStringEnum<ReplicationStat
     /**
      * Replication link is active.
      */
+    @Generated
     public static final ReplicationState ACTIVE = fromString("Active");
 
     /**
      * Replica is catching-up with the primary. This can occur after the replica is created or after a promotion is
      * triggered.
      */
+    @Generated
     public static final ReplicationState CATCHUP = fromString("Catchup");
 
     /**
      * Replica and replication link to the primary is being created.
      */
+    @Generated
     public static final ReplicationState PROVISIONING = fromString("Provisioning");
 
     /**
      * Replication link is being updated due to a change on the replica or an upgrade.
      */
+    @Generated
     public static final ReplicationState UPDATING = fromString("Updating");
 
     /**
      * Replication link is broken and the replica may need to be recreated.
      */
+    @Generated
     public static final ReplicationState BROKEN = fromString("Broken");
 
     /**
      * Replication link is re-configuring due to a promotion event.
      */
+    @Generated
     public static final ReplicationState RECONFIGURING = fromString("Reconfiguring");
 
     /**
@@ -47,6 +54,7 @@ public final class ReplicationState extends ExpandableStringEnum<ReplicationStat
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ReplicationState() {
     }
@@ -57,6 +65,7 @@ public final class ReplicationState extends ExpandableStringEnum<ReplicationStat
      * @param name a name to look for.
      * @return the corresponding ReplicationState.
      */
+    @Generated
     public static ReplicationState fromString(String name) {
         return fromString(name, ReplicationState.class);
     }
@@ -66,6 +75,7 @@ public final class ReplicationState extends ExpandableStringEnum<ReplicationStat
      * 
      * @return known ReplicationState values.
      */
+    @Generated
     public static Collection<ReplicationState> values() {
         return values(ReplicationState.class);
     }

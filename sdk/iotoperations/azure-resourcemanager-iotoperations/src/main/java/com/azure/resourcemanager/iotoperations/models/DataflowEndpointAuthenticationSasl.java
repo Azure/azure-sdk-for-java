@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class DataflowEndpointAuthenticationSasl implements JsonSerializabl
     /*
      * Type of SASL authentication. Can be PLAIN, SCRAM-SHA-256, or SCRAM-SHA-512.
      */
+    @Generated
     private DataflowEndpointAuthenticationSaslType saslType;
 
     /*
      * Token secret name.
      */
+    @Generated
     private String secretRef;
 
     /**
      * Creates an instance of DataflowEndpointAuthenticationSasl class.
      */
+    @Generated
     public DataflowEndpointAuthenticationSasl() {
     }
 
@@ -38,6 +42,7 @@ public final class DataflowEndpointAuthenticationSasl implements JsonSerializabl
      * 
      * @return the saslType value.
      */
+    @Generated
     public DataflowEndpointAuthenticationSaslType saslType() {
         return this.saslType;
     }
@@ -48,6 +53,7 @@ public final class DataflowEndpointAuthenticationSasl implements JsonSerializabl
      * @param saslType the saslType value to set.
      * @return the DataflowEndpointAuthenticationSasl object itself.
      */
+    @Generated
     public DataflowEndpointAuthenticationSasl withSaslType(DataflowEndpointAuthenticationSaslType saslType) {
         this.saslType = saslType;
         return this;
@@ -58,6 +64,7 @@ public final class DataflowEndpointAuthenticationSasl implements JsonSerializabl
      * 
      * @return the secretRef value.
      */
+    @Generated
     public String secretRef() {
         return this.secretRef;
     }
@@ -68,6 +75,7 @@ public final class DataflowEndpointAuthenticationSasl implements JsonSerializabl
      * @param secretRef the secretRef value to set.
      * @return the DataflowEndpointAuthenticationSasl object itself.
      */
+    @Generated
     public DataflowEndpointAuthenticationSasl withSecretRef(String secretRef) {
         this.secretRef = secretRef;
         return this;

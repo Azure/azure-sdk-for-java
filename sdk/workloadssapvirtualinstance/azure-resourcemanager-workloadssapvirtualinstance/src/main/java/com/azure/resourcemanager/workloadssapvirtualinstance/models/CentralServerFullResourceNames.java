@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,21 +23,25 @@ public final class CentralServerFullResourceNames implements JsonSerializable<Ce
      * equal to the number VMs to be created for ASCS layer. At maximum, there can be two virtual machines at this
      * layer: ASCS and ERS.
      */
+    @Generated
     private List<VirtualMachineResourceNames> virtualMachines;
 
     /*
      * The full name for availability set. In case name is not provided, it will be defaulted to {SID}-ASCS-AvSet.
      */
+    @Generated
     private String availabilitySetName;
 
     /*
      * The resource names object for load balancer and related resources.
      */
+    @Generated
     private LoadBalancerResourceNames loadBalancer;
 
     /**
      * Creates an instance of CentralServerFullResourceNames class.
      */
+    @Generated
     public CentralServerFullResourceNames() {
     }
 
@@ -47,6 +52,7 @@ public final class CentralServerFullResourceNames implements JsonSerializable<Ce
      * 
      * @return the virtualMachines value.
      */
+    @Generated
     public List<VirtualMachineResourceNames> virtualMachines() {
         return this.virtualMachines;
     }
@@ -59,6 +65,7 @@ public final class CentralServerFullResourceNames implements JsonSerializable<Ce
      * @param virtualMachines the virtualMachines value to set.
      * @return the CentralServerFullResourceNames object itself.
      */
+    @Generated
     public CentralServerFullResourceNames withVirtualMachines(List<VirtualMachineResourceNames> virtualMachines) {
         this.virtualMachines = virtualMachines;
         return this;
@@ -70,6 +77,7 @@ public final class CentralServerFullResourceNames implements JsonSerializable<Ce
      * 
      * @return the availabilitySetName value.
      */
+    @Generated
     public String availabilitySetName() {
         return this.availabilitySetName;
     }
@@ -81,6 +89,7 @@ public final class CentralServerFullResourceNames implements JsonSerializable<Ce
      * @param availabilitySetName the availabilitySetName value to set.
      * @return the CentralServerFullResourceNames object itself.
      */
+    @Generated
     public CentralServerFullResourceNames withAvailabilitySetName(String availabilitySetName) {
         this.availabilitySetName = availabilitySetName;
         return this;
@@ -91,6 +100,7 @@ public final class CentralServerFullResourceNames implements JsonSerializable<Ce
      * 
      * @return the loadBalancer value.
      */
+    @Generated
     public LoadBalancerResourceNames loadBalancer() {
         return this.loadBalancer;
     }
@@ -101,6 +111,7 @@ public final class CentralServerFullResourceNames implements JsonSerializable<Ce
      * @param loadBalancer the loadBalancer value to set.
      * @return the CentralServerFullResourceNames object itself.
      */
+    @Generated
     public CentralServerFullResourceNames withLoadBalancer(LoadBalancerResourceNames loadBalancer) {
         this.loadBalancer = loadBalancer;
         return this;

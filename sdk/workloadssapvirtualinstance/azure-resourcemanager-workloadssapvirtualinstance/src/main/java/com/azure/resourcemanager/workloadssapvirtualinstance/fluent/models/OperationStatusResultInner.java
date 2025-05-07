@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.CoreUtils;
@@ -25,51 +26,61 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
     /*
      * Fully qualified ID for the async operation.
      */
+    @Generated
     private String id;
 
     /*
      * Name of the async operation.
      */
+    @Generated
     private String name;
 
     /*
      * Operation status.
      */
+    @Generated
     private String status;
 
     /*
      * Percent of the operation that is complete.
      */
+    @Generated
     private Double percentComplete;
 
     /*
      * The start time of the operation.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * The end time of the operation.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * The operations list.
      */
+    @Generated
     private List<OperationStatusResultInner> operations;
 
     /*
      * If present, details of the operation error.
      */
+    @Generated
     private ManagementError error;
 
     /*
      * Fully qualified ID of the resource against which the original async operation was started.
      */
+    @Generated
     private String resourceId;
 
     /**
      * Creates an instance of OperationStatusResultInner class.
      */
+    @Generated
     private OperationStatusResultInner() {
     }
 
@@ -78,6 +89,7 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
      * 
      * @return the id value.
      */
+    @Generated
     public String id() {
         return this.id;
     }
@@ -87,6 +99,7 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -96,6 +109,7 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
      * 
      * @return the status value.
      */
+    @Generated
     public String status() {
         return this.status;
     }
@@ -105,6 +119,7 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
      * 
      * @return the percentComplete value.
      */
+    @Generated
     public Double percentComplete() {
         return this.percentComplete;
     }
@@ -114,6 +129,7 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime startTime() {
         return this.startTime;
     }
@@ -123,6 +139,7 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime endTime() {
         return this.endTime;
     }
@@ -132,6 +149,7 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
      * 
      * @return the operations value.
      */
+    @Generated
     public List<OperationStatusResultInner> operations() {
         return this.operations;
     }
@@ -141,6 +159,7 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
      * 
      * @return the error value.
      */
+    @Generated
     public ManagementError error() {
         return this.error;
     }
@@ -151,6 +170,7 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String resourceId() {
         return this.resourceId;
     }

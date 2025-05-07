@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class DataPointObservabilityMode extends ExpandableStringEnum<DataP
     /**
      * No mapping to OpenTelemetry.
      */
+    @Generated
     public static final DataPointObservabilityMode NONE = fromString("None");
 
     /**
      * Map as counter to OpenTelemetry.
      */
+    @Generated
     public static final DataPointObservabilityMode COUNTER = fromString("Counter");
 
     /**
      * Map as gauge to OpenTelemetry.
      */
+    @Generated
     public static final DataPointObservabilityMode GAUGE = fromString("Gauge");
 
     /**
      * Map as histogram to OpenTelemetry.
      */
+    @Generated
     public static final DataPointObservabilityMode HISTOGRAM = fromString("Histogram");
 
     /**
      * Map as log to OpenTelemetry.
      */
+    @Generated
     public static final DataPointObservabilityMode LOG = fromString("Log");
 
     /**
@@ -41,6 +47,7 @@ public final class DataPointObservabilityMode extends ExpandableStringEnum<DataP
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataPointObservabilityMode() {
     }
@@ -51,6 +58,7 @@ public final class DataPointObservabilityMode extends ExpandableStringEnum<DataP
      * @param name a name to look for.
      * @return the corresponding DataPointObservabilityMode.
      */
+    @Generated
     public static DataPointObservabilityMode fromString(String name) {
         return fromString(name, DataPointObservabilityMode.class);
     }
@@ -60,6 +68,7 @@ public final class DataPointObservabilityMode extends ExpandableStringEnum<DataP
      * 
      * @return known DataPointObservabilityMode values.
      */
+    @Generated
     public static Collection<DataPointObservabilityMode> values() {
         return values(DataPointObservabilityMode.class);
     }

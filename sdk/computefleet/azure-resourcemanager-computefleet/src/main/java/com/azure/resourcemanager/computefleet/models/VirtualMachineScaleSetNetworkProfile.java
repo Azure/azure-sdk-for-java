@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,11 +25,13 @@ public final class VirtualMachineScaleSetNetworkProfile
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{
      * loadBalancerName}/probes/{probeName}'.
      */
+    @Generated
     private ApiEntityReference healthProbe;
 
     /*
      * The list of network configurations.
      */
+    @Generated
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
     /*
@@ -36,11 +39,13 @@ public final class VirtualMachineScaleSetNetworkProfile
      * resources in the Network Interface Configurations for Virtual Machine Scale Set
      * with orchestration mode 'Flexible'
      */
+    @Generated
     private NetworkApiVersion networkApiVersion;
 
     /**
      * Creates an instance of VirtualMachineScaleSetNetworkProfile class.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkProfile() {
     }
 
@@ -51,6 +56,7 @@ public final class VirtualMachineScaleSetNetworkProfile
      * 
      * @return the healthProbe value.
      */
+    @Generated
     public ApiEntityReference healthProbe() {
         return this.healthProbe;
     }
@@ -63,6 +69,7 @@ public final class VirtualMachineScaleSetNetworkProfile
      * @param healthProbe the healthProbe value to set.
      * @return the VirtualMachineScaleSetNetworkProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkProfile withHealthProbe(ApiEntityReference healthProbe) {
         this.healthProbe = healthProbe;
         return this;
@@ -73,6 +80,7 @@ public final class VirtualMachineScaleSetNetworkProfile
      * 
      * @return the networkInterfaceConfigurations value.
      */
+    @Generated
     public List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations() {
         return this.networkInterfaceConfigurations;
     }
@@ -83,6 +91,7 @@ public final class VirtualMachineScaleSetNetworkProfile
      * @param networkInterfaceConfigurations the networkInterfaceConfigurations value to set.
      * @return the VirtualMachineScaleSetNetworkProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkProfile withNetworkInterfaceConfigurations(
         List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
         this.networkInterfaceConfigurations = networkInterfaceConfigurations;
@@ -96,6 +105,7 @@ public final class VirtualMachineScaleSetNetworkProfile
      * 
      * @return the networkApiVersion value.
      */
+    @Generated
     public NetworkApiVersion networkApiVersion() {
         return this.networkApiVersion;
     }
@@ -108,6 +118,7 @@ public final class VirtualMachineScaleSetNetworkProfile
      * @param networkApiVersion the networkApiVersion value to set.
      * @return the VirtualMachineScaleSetNetworkProfile object itself.
      */
+    @Generated
     public VirtualMachineScaleSetNetworkProfile withNetworkApiVersion(NetworkApiVersion networkApiVersion) {
         this.networkApiVersion = networkApiVersion;
         return this;

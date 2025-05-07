@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class NodeImageSelectionStatus implements JsonSerializable<NodeImag
     /*
      * The image versions to upgrade the nodes to.
      */
+    @Generated
     private List<NodeImageVersion> selectedNodeImageVersions;
 
     /**
      * Creates an instance of NodeImageSelectionStatus class.
      */
+    @Generated
     private NodeImageSelectionStatus() {
     }
 
@@ -33,6 +36,7 @@ public final class NodeImageSelectionStatus implements JsonSerializable<NodeImag
      * 
      * @return the selectedNodeImageVersions value.
      */
+    @Generated
     public List<NodeImageVersion> selectedNodeImageVersions() {
         return this.selectedNodeImageVersions;
     }

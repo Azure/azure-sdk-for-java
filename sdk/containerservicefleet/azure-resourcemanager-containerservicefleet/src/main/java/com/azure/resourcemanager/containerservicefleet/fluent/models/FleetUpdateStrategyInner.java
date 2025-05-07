@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -22,6 +23,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
+    @Generated
     private FleetUpdateStrategyProperties innerProperties;
 
     /*
@@ -30,31 +32,37 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
      * tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section
      * 14.27) header fields.
      */
+    @Generated
     private String etag;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of FleetUpdateStrategyInner class.
      */
+    @Generated
     public FleetUpdateStrategyInner() {
     }
 
@@ -63,6 +71,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
      * 
      * @return the innerProperties value.
      */
+    @Generated
     private FleetUpdateStrategyProperties innerProperties() {
         return this.innerProperties;
     }
@@ -75,6 +84,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
      * 
      * @return the etag value.
      */
+    @Generated
     public String etag() {
         return this.etag;
     }
@@ -84,6 +94,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -93,6 +104,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -103,6 +115,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -113,6 +126,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;
@@ -123,6 +137,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public FleetUpdateStrategyProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
@@ -132,6 +147,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
      * 
      * @return the strategy value.
      */
+    @Generated
     public UpdateRunStrategy strategy() {
         return this.innerProperties() == null ? null : this.innerProperties().strategy();
     }
@@ -142,6 +158,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
      * @param strategy the strategy value to set.
      * @return the FleetUpdateStrategyInner object itself.
      */
+    @Generated
     public FleetUpdateStrategyInner withStrategy(UpdateRunStrategy strategy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FleetUpdateStrategyProperties();

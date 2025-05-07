@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.onlineexperimentation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,6 +22,7 @@ public final class KeyEncryptionKeyIdentity implements JsonSerializable<KeyEncry
      * The type of identity to use. Values can be systemAssignedIdentity, userAssignedIdentity, or
      * delegatedResourceIdentity.
      */
+    @Generated
     private KeyEncryptionKeyIdentityType identityType;
 
     /*
@@ -29,17 +31,20 @@ public final class KeyEncryptionKeyIdentity implements JsonSerializable<KeyEncry
      * group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType
      * systemAssignedIdentity.
      */
+    @Generated
     private String userAssignedIdentityResourceId;
 
     /*
      * application client identity to use for accessing key encryption key Url in a different tenant. Ex:
      * f83c6b1b-4d34-47e4-bb34-9d83df58b540
      */
+    @Generated
     private String federatedClientId;
 
     /**
      * Creates an instance of KeyEncryptionKeyIdentity class.
      */
+    @Generated
     public KeyEncryptionKeyIdentity() {
     }
 
@@ -49,6 +54,7 @@ public final class KeyEncryptionKeyIdentity implements JsonSerializable<KeyEncry
      * 
      * @return the identityType value.
      */
+    @Generated
     public KeyEncryptionKeyIdentityType identityType() {
         return this.identityType;
     }
@@ -60,6 +66,7 @@ public final class KeyEncryptionKeyIdentity implements JsonSerializable<KeyEncry
      * @param identityType the identityType value to set.
      * @return the KeyEncryptionKeyIdentity object itself.
      */
+    @Generated
     public KeyEncryptionKeyIdentity withIdentityType(KeyEncryptionKeyIdentityType identityType) {
         this.identityType = identityType;
         return this;
@@ -73,6 +80,7 @@ public final class KeyEncryptionKeyIdentity implements JsonSerializable<KeyEncry
      * 
      * @return the userAssignedIdentityResourceId value.
      */
+    @Generated
     public String userAssignedIdentityResourceId() {
         return this.userAssignedIdentityResourceId;
     }
@@ -86,6 +94,7 @@ public final class KeyEncryptionKeyIdentity implements JsonSerializable<KeyEncry
      * @param userAssignedIdentityResourceId the userAssignedIdentityResourceId value to set.
      * @return the KeyEncryptionKeyIdentity object itself.
      */
+    @Generated
     public KeyEncryptionKeyIdentity withUserAssignedIdentityResourceId(String userAssignedIdentityResourceId) {
         this.userAssignedIdentityResourceId = userAssignedIdentityResourceId;
         return this;
@@ -97,6 +106,7 @@ public final class KeyEncryptionKeyIdentity implements JsonSerializable<KeyEncry
      * 
      * @return the federatedClientId value.
      */
+    @Generated
     public String federatedClientId() {
         return this.federatedClientId;
     }
@@ -108,6 +118,7 @@ public final class KeyEncryptionKeyIdentity implements JsonSerializable<KeyEncry
      * @param federatedClientId the federatedClientId value to set.
      * @return the KeyEncryptionKeyIdentity object itself.
      */
+    @Generated
     public KeyEncryptionKeyIdentity withFederatedClientId(String federatedClientId) {
         this.federatedClientId = federatedClientId;
         return this;

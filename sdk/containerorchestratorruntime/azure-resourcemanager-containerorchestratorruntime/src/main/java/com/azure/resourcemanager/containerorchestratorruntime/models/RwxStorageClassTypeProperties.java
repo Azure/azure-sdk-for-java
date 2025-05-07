@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class RwxStorageClassTypeProperties extends StorageClassTypePropert
     /*
      * Type of the storage class.
      */
+    @Generated
     private SCType type = SCType.RWX;
 
     /*
      * The backing storageclass used to create new storageclass
      */
+    @Generated
     private String backingStorageClassName;
 
     /**
      * Creates an instance of RwxStorageClassTypeProperties class.
      */
+    @Generated
     public RwxStorageClassTypeProperties() {
     }
 
@@ -37,6 +41,7 @@ public final class RwxStorageClassTypeProperties extends StorageClassTypePropert
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public SCType type() {
         return this.type;
@@ -47,6 +52,7 @@ public final class RwxStorageClassTypeProperties extends StorageClassTypePropert
      * 
      * @return the backingStorageClassName value.
      */
+    @Generated
     public String backingStorageClassName() {
         return this.backingStorageClassName;
     }
@@ -57,6 +63,7 @@ public final class RwxStorageClassTypeProperties extends StorageClassTypePropert
      * @param backingStorageClassName the backingStorageClassName value to set.
      * @return the RwxStorageClassTypeProperties object itself.
      */
+    @Generated
     public RwxStorageClassTypeProperties withBackingStorageClassName(String backingStorageClassName) {
         this.backingStorageClassName = backingStorageClassName;
         return this;

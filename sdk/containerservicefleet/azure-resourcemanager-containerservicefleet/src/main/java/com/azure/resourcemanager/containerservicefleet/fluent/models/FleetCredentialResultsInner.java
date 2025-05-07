@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class FleetCredentialResultsInner implements JsonSerializable<Fleet
     /*
      * Array of base64-encoded Kubernetes configuration files.
      */
+    @Generated
     private List<FleetCredentialResult> kubeconfigs;
 
     /**
      * Creates an instance of FleetCredentialResultsInner class.
      */
+    @Generated
     private FleetCredentialResultsInner() {
     }
 
@@ -34,6 +37,7 @@ public final class FleetCredentialResultsInner implements JsonSerializable<Fleet
      * 
      * @return the kubeconfigs value.
      */
+    @Generated
     public List<FleetCredentialResult> kubeconfigs() {
         return this.kubeconfigs;
     }

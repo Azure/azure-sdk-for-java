@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mongocluster.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
@@ -20,31 +21,37 @@ public final class PrivateEndpointConnection extends ProxyResource {
     /*
      * The private endpoint connection properties
      */
+    @Generated
     private PrivateEndpointConnectionProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
+    @Generated
     private SystemData systemData;
 
     /*
      * The type of the resource.
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource.
      */
+    @Generated
     private String name;
 
     /*
      * Fully qualified resource Id for the resource.
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of PrivateEndpointConnection class.
      */
+    @Generated
     private PrivateEndpointConnection() {
     }
 
@@ -53,6 +60,7 @@ public final class PrivateEndpointConnection extends ProxyResource {
      * 
      * @return the properties value.
      */
+    @Generated
     public PrivateEndpointConnectionProperties properties() {
         return this.properties;
     }
@@ -62,6 +70,7 @@ public final class PrivateEndpointConnection extends ProxyResource {
      * 
      * @return the systemData value.
      */
+    @Generated
     public SystemData systemData() {
         return this.systemData;
     }
@@ -71,6 +80,7 @@ public final class PrivateEndpointConnection extends ProxyResource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String type() {
         return this.type;
@@ -81,6 +91,7 @@ public final class PrivateEndpointConnection extends ProxyResource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String name() {
         return this.name;
@@ -91,6 +102,7 @@ public final class PrivateEndpointConnection extends ProxyResource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String id() {
         return this.id;

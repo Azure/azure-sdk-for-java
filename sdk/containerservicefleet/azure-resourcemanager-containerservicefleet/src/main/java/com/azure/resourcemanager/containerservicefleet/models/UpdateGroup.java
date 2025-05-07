@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
      * Name of the group.
      * It must match a group name of an existing fleet member.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of UpdateGroup class.
      */
+    @Generated
     public UpdateGroup() {
     }
 
@@ -35,6 +38,7 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -46,6 +50,7 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
      * @param name the name value to set.
      * @return the UpdateGroup object itself.
      */
+    @Generated
     public UpdateGroup withName(String name) {
         this.name = name;
         return this;

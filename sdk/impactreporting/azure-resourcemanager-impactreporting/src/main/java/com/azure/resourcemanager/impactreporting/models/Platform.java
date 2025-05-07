@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.impactreporting.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class Platform extends ExpandableStringEnum<Platform> {
     /**
      * Type of Azure Monitor.
      */
+    @Generated
     public static final Platform AZURE_MONITOR = fromString("AzureMonitor");
 
     /**
@@ -21,6 +23,7 @@ public final class Platform extends ExpandableStringEnum<Platform> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public Platform() {
     }
@@ -31,6 +34,7 @@ public final class Platform extends ExpandableStringEnum<Platform> {
      * @param name a name to look for.
      * @return the corresponding Platform.
      */
+    @Generated
     public static Platform fromString(String name) {
         return fromString(name, Platform.class);
     }
@@ -40,6 +44,7 @@ public final class Platform extends ExpandableStringEnum<Platform> {
      * 
      * @return known Platform values.
      */
+    @Generated
     public static Collection<Platform> values() {
         return values(Platform.class);
     }

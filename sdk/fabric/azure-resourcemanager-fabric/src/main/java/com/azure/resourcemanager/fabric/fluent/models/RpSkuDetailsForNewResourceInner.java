@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.fabric.fluent.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -21,21 +22,25 @@ public final class RpSkuDetailsForNewResourceInner implements JsonSerializable<R
     /*
      * The resource type
      */
+    @Generated
     private String resourceType;
 
     /*
      * The SKU's name
      */
+    @Generated
     private String name;
 
     /*
      * The list of available locations for the SKU
      */
+    @Generated
     private List<String> locations;
 
     /**
      * Creates an instance of RpSkuDetailsForNewResourceInner class.
      */
+    @Generated
     private RpSkuDetailsForNewResourceInner() {
     }
 
@@ -44,6 +49,7 @@ public final class RpSkuDetailsForNewResourceInner implements JsonSerializable<R
      * 
      * @return the resourceType value.
      */
+    @Generated
     public String resourceType() {
         return this.resourceType;
     }
@@ -53,6 +59,7 @@ public final class RpSkuDetailsForNewResourceInner implements JsonSerializable<R
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -62,6 +69,7 @@ public final class RpSkuDetailsForNewResourceInner implements JsonSerializable<R
      * 
      * @return the locations value.
      */
+    @Generated
     public List<String> locations() {
         return this.locations;
     }

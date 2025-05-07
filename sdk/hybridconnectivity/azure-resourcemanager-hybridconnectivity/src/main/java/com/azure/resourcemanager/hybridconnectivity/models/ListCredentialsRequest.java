@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class ListCredentialsRequest implements JsonSerializable<ListCreden
     /*
      * The name of the service. If not provided, the request will by pass the generation of service configuration token
      */
+    @Generated
     private ServiceName serviceName;
 
     /**
      * Creates an instance of ListCredentialsRequest class.
      */
+    @Generated
     public ListCredentialsRequest() {
     }
 
@@ -33,6 +36,7 @@ public final class ListCredentialsRequest implements JsonSerializable<ListCreden
      * 
      * @return the serviceName value.
      */
+    @Generated
     public ServiceName serviceName() {
         return this.serviceName;
     }
@@ -44,6 +48,7 @@ public final class ListCredentialsRequest implements JsonSerializable<ListCreden
      * @param serviceName the serviceName value to set.
      * @return the ListCredentialsRequest object itself.
      */
+    @Generated
     public ListCredentialsRequest withServiceName(ServiceName serviceName) {
         this.serviceName = serviceName;
         return this;

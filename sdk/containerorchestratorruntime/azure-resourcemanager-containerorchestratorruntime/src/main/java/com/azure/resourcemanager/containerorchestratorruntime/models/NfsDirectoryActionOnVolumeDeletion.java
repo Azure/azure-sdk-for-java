@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class NfsDirectoryActionOnVolumeDeletion extends ExpandableStringEn
     /**
      * When the volume is deleted, delete the directory.
      */
+    @Generated
     public static final NfsDirectoryActionOnVolumeDeletion DELETE = fromString("Delete");
 
     /**
      * When the volume is deleted, retain the directory.
      */
+    @Generated
     public static final NfsDirectoryActionOnVolumeDeletion RETAIN = fromString("Retain");
 
     /**
@@ -26,6 +29,7 @@ public final class NfsDirectoryActionOnVolumeDeletion extends ExpandableStringEn
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public NfsDirectoryActionOnVolumeDeletion() {
     }
@@ -36,6 +40,7 @@ public final class NfsDirectoryActionOnVolumeDeletion extends ExpandableStringEn
      * @param name a name to look for.
      * @return the corresponding NfsDirectoryActionOnVolumeDeletion.
      */
+    @Generated
     public static NfsDirectoryActionOnVolumeDeletion fromString(String name) {
         return fromString(name, NfsDirectoryActionOnVolumeDeletion.class);
     }
@@ -45,6 +50,7 @@ public final class NfsDirectoryActionOnVolumeDeletion extends ExpandableStringEn
      * 
      * @return known NfsDirectoryActionOnVolumeDeletion values.
      */
+    @Generated
     public static Collection<NfsDirectoryActionOnVolumeDeletion> values() {
         return values(NfsDirectoryActionOnVolumeDeletion.class);
     }

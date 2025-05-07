@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -20,16 +21,19 @@ public final class ResourceSkuCapabilities implements JsonSerializable<ResourceS
     /*
      * The name of the SKU capability.
      */
+    @Generated
     private String name;
 
     /*
      * The value of the SKU capability.
      */
+    @Generated
     private String value;
 
     /**
      * Creates an instance of ResourceSkuCapabilities class.
      */
+    @Generated
     private ResourceSkuCapabilities() {
     }
 
@@ -38,6 +42,7 @@ public final class ResourceSkuCapabilities implements JsonSerializable<ResourceS
      * 
      * @return the name value.
      */
+    @Generated
     public String name() {
         return this.name;
     }
@@ -47,6 +52,7 @@ public final class ResourceSkuCapabilities implements JsonSerializable<ResourceS
      * 
      * @return the value value.
      */
+    @Generated
     public String value() {
         return this.value;
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
     /**
      * The data disk should use standard locally redundant storage.
      */
+    @Generated
     public static final StorageAccountType STANDARD_LRS = fromString("Standard_LRS");
 
     /**
      * The data disk should use premium locally redundant storage.
      */
+    @Generated
     public static final StorageAccountType PREMIUM_LRS = fromString("Premium_LRS");
 
     /**
      * The data disk should use standard SSD locally redundant storage.
      */
+    @Generated
     public static final StorageAccountType STANDARD_SSDLRS = fromString("StandardSSD_LRS");
 
     /**
      * The data disk should use premium SSD zonal redundant storage.
      */
+    @Generated
     public static final StorageAccountType PREMIUM_ZRS = fromString("Premium_ZRS");
 
     /**
      * The data disk should use standard SSD zonal redundant storage.
      */
+    @Generated
     public static final StorageAccountType STANDARD_SSDZRS = fromString("StandardSSD_ZRS");
 
     /**
@@ -41,6 +47,7 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public StorageAccountType() {
     }
@@ -51,6 +58,7 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
      * @param name a name to look for.
      * @return the corresponding StorageAccountType.
      */
+    @Generated
     public static StorageAccountType fromString(String name) {
         return fromString(name, StorageAccountType.class);
     }
@@ -60,6 +68,7 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
      * 
      * @return known StorageAccountType values.
      */
+    @Generated
     public static Collection<StorageAccountType> values() {
         return values(StorageAccountType.class);
     }
