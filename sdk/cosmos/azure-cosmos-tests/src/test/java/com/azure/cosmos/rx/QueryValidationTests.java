@@ -98,7 +98,7 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(Configs.isQueryPlanCachingEnabled()).isFalse();
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query", "thinclient"}, timeOut = TIMEOUT)
     public void orderByQuery() {
         /*
         The idea here is to query documents in pages, query all the documents(with pagesize as num_documents and compare

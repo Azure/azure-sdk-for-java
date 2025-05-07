@@ -12,28 +12,20 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ThinClientE2ETest {
+public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
     @Test(groups = {"thinclient"})
     public void testThinClientDocumentPointOperations() {
         CosmosAsyncClient client = null;
         try {
-            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            System.setProperty("COSMOS.HTTP2_ENABLED", "true");
-
-            String thinclientTestEndpoint = System.getProperty("COSMOS.THINCLIENT_ENDPOINT");
-            String thinclientTestKey = System.getProperty("COSMOS.THINCLIENT_KEY");
-
             client  = new CosmosClientBuilder()
-                .endpoint(thinclientTestEndpoint)
-                .key(thinclientTestKey)
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
                 .gatewayMode()
                 .consistencyLevel(ConsistencyLevel.SESSION)
                 .buildAsyncClient();
@@ -106,8 +98,6 @@ public class ThinClientE2ETest {
             assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
             assertThat(deleteResponse.getRequestCharge()).isGreaterThan(0.0);
         } finally {
-            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
-            System.clearProperty("COSMOS.HTTP2_ENABLED");
             client.close();
         }
     }
