@@ -72,6 +72,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -91,6 +92,7 @@ public class ClientMetricsTest extends BatchTestBase {
     private Tag clientCorrelationTag;
     private long diagnosticHandlerFailuresBaseline;
     private DiagnosticsProvider diagnosticsProvider;
+    private final AtomicBoolean isCleanedUp = new AtomicBoolean(true);
 
     @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
     public ClientMetricsTest(CosmosClientBuilder clientBuilder) {
@@ -112,6 +114,12 @@ public class ClientMetricsTest extends BatchTestBase {
     public void beforeTest(
         CosmosDiagnosticsThresholds thresholds,
         CosmosMetricCategory... metricCategories) {
+
+        if (!this.isCleanedUp.get()) {
+            this.afterTest();
+        }
+
+        assertThat(this.isCleanedUp.compareAndExchange(true, false)).isTrue();
         assertThat(this.client).isNull();
         assertThat(this.meterRegistry).isNull();
 
@@ -198,6 +206,7 @@ public class ClientMetricsTest extends BatchTestBase {
             }
         }
         this.meterRegistry = null;
+        this.isCleanedUp.set(true);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
