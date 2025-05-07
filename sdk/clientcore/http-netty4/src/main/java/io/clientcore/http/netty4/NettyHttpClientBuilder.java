@@ -59,8 +59,14 @@ public class NettyHttpClientBuilder {
             epollEventLoopGroupClass = Class.forName(EPOLL_EVENT_LOOP_GROUP);
             epollEventLoopGroupCreator = MethodHandles.publicLookup()
                 .unreflectConstructor(epollEventLoopGroupClass.getDeclaredConstructor(ThreadFactory.class));
-            LOGGER.atVerbose().addKeyValue("epollAvailable", isEpollAvailable)
+            LOGGER.atVerbose()
+                .addKeyValue("epollAvailable", isEpollAvailable)
                 .log("Lookup for Epoll completed without error.");
+            if (!isEpollAvailable) {
+                LOGGER.atVerbose()
+                    .setThrowable((Throwable) epollClass.getDeclaredMethod("unavailabilityCause").invoke(null))
+                    .log("Epoll classes were available but can't be used.");
+            }
         } catch (ReflectiveOperationException ignored) {
             LOGGER.atVerbose().log("Epoll is unavailable and won't be used.");
             isEpollAvailable = false;
@@ -86,8 +92,14 @@ public class NettyHttpClientBuilder {
             kqueueEventLoopGroupClass = Class.forName(KQUEUE_EVENT_LOOP_GROUP);
             kqueueEventLoopGroupCreator = MethodHandles.publicLookup()
                 .unreflectConstructor(kqueueEventLoopGroupClass.getDeclaredConstructor(ThreadFactory.class));
-            LOGGER.atVerbose().addKeyValue("kqueueAvailable", isKqueueAvailable)
+            LOGGER.atVerbose()
+                .addKeyValue("kqueueAvailable", isKqueueAvailable)
                 .log("Lookup for KQueue completed without error.");
+            if (!isKqueueAvailable) {
+                LOGGER.atVerbose()
+                    .setThrowable((Throwable) kqueueClass.getDeclaredMethod("unavailabilityCause").invoke(null))
+                    .log("KQueue classes were available but can't be used.");
+            }
         } catch (ReflectiveOperationException ignored) {
             LOGGER.atVerbose().log("Epoll is unavailable and won't be used.");
             isKqueueAvailable = false;
