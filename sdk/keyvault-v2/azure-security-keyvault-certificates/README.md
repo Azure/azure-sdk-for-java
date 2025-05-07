@@ -1,4 +1,5 @@
 # Azure Key Vault Certificates client library for Java
+
 Azure Key Vault allows you to securely manage and tightly control your certificates. The Azure Key Vault Certificates
 client library supports certificates backed by RSA and EC keys.
 
@@ -12,6 +13,7 @@ well as its versions.
 ## Getting started
 
 ### Prerequisites
+
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
   - Here are details about [Java 8 client compatibility with Azure Certificate Authority][azure_ca]
 - An [Azure Subscription][azure_subscription].
@@ -22,6 +24,7 @@ well as its versions.
 ### Adding the package to your product
 
 #### Use the Azure SDK BOM
+
 Please include the `azure-sdk-bom` to your project to take dependency on the General Availability (GA) version of the
 library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number. To learn
 more about the BOM, see the [AZURE SDK BOM README][azure_sdk_bom].
@@ -52,10 +55,12 @@ and then include the direct dependency in the dependencies section without the v
 ```
 
 #### Include direct dependency
+
 If you want to take dependency on a particular version of the library that is not present in the BOM, add the direct
 dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-certificates;current})
+
 ```xml
 <dependency>
     <groupId>com.azure.v2</groupId>
@@ -63,9 +68,11 @@ dependency to your project as follows.
     <version>5.0.0-beta.1</version>
 </dependency>
 ```
+
 [//]: # ({x-version-update-end})
 
 ### Authentication
+
 In order to interact with the Azure Key Vault service, you will need to create an instance of the
 [`CertificateClient`](#create-certificate-client) class, a vault **endpoint** and a credential object. The examples
 shown in this document use a credential object named  [`DefaultAzureCredential`][default_azure_credential], which is
@@ -76,6 +83,7 @@ You can find more information on different ways of authenticating and their corr
 [Azure Identity documentation][azure_identity].
 
 #### Create certificate client
+
 Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced\
 **your-key-vault-endpoint** with the URL for your key vault, you can create the `CertificateClient`:
 
@@ -89,22 +97,27 @@ CertificateClient certificateClient = new CertificateClientBuilder()
 ## Key concepts
 
 ### Certificate
+
 Azure Key Vault supports certificates with secret content types (`PKCS12` & `PEM`). The certificate can be backed by
 keys in Azure Key Vault of types (`EC` & `RSA`). In addition to the certificate policy, the following attributes may be
 specified:
-* **enabled:** Specifies whether the certificate is enabled and usable.
-* **created:** Indicates when this version of the certificate was created.
-* **updated:** Indicates when this version of the certificate was updated.
+
+- **enabled:** Specifies whether the certificate is enabled and usable.
+- **created:** Indicates when this version of the certificate was created.
+- **updated:** Indicates when this version of the certificate was updated.
 
 ### Certificate client
+
 The certificate client performs the interactions with the Azure Key Vault service for getting, setting, updating,
 deleting, and listing certificates and its versions. The client also supports CRUD operations for certificate issuers
 and contacts in the key vault. Once you've initialized a certificate, you can interact with the primary resource types
 in Azure Key Vault.
 
 ## Examples
+
 The following sections provide several code snippets covering some of the most common Azure Key Vault service tasks,
 including:
+
 - [Create a certificate](#create-a-certificate)
 - [Retrieve a certificate](#retrieve-a-certificate)
 - [Update an existing certificate](#update-an-existing-certificate)
@@ -112,9 +125,9 @@ including:
 - [List certificates](#list-certificates)
 
 ### Create a certificate
-Create a certificate to be stored in the key vault.
-- `beginCreateCertificate` creates a new certificate in the key vault. If a certificate with the same name already
-exists then a new version of the certificate is created.
+
+Create a certificate to be stored in the key vault. `beginCreateCertificate` creates a new certificate in the key vault.
+If a certificate with the same name already exists then a new version of the certificate is created.
 
 ```java readme-sample-createCertificate
 // TODO (vcolin7): Uncomment once LROs are available in clientcore.
@@ -126,6 +139,7 @@ System.out.printf("Certificate created with name \"%s\"%n", certificate.getName(
 ```
 
 ### Retrieve a certificate
+
 Retrieve a previously stored certificate by calling `getCertificate` or `getCertificateVersion`.
 
 ```java readme-sample-retrieveCertificate
@@ -135,6 +149,7 @@ System.out.printf("Received certificate with name \"%s\", version %s and secret 
 ```
 
 ### Update an existing certificate
+
 Update an existing certificate by calling `updateCertificateProperties`.
 
 ```java readme-sample-updateCertificate
@@ -148,6 +163,7 @@ System.out.printf("Updated certificate with name \"%s\" and enabled status \"%s\
 ```
 
 ### Delete a certificate
+
 Delete an existing certificate by calling `beginDeleteCertificate`.
 
 ```java readme-sample-deleteCertificate
@@ -167,6 +183,7 @@ deleteCertificatePoller.waitForCompletion();
 ```
 
 ### List certificates
+
 List the certificates in the key vault by calling `listPropertiesOfCertificates`.
 
 ```java readme-sample-listCertificates
@@ -182,9 +199,11 @@ for (CertificateProperties certificateProperties : certificateClient.listPropert
 ```
 
 ## Troubleshooting
+
 See our [troubleshooting guide][troubleshooting_guide] for details on how to diagnose various failure scenarios.
 
 ### General
+
 Azure Key Vault clients raise exceptions. For example, if you try to retrieve a certificate after it is deleted a `404`
 error is returned, indicating the resource was not found. In the following snippet, the error is handled gracefully by
 catching the exception and displaying additional information about the error.
@@ -211,23 +230,27 @@ better performance compared to the default SSL implementation within the JDK. Fo
 reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
+
 Several Azure Key Vault Java client library samples are available to you in the SDK's GitHub repository. These samples
 provide example code for additional scenarios commonly encountered while working with Azure Key Vault.
 
 ## Next steps samples
+
 Samples are explained in detail [here][samples_readme].
 
 ### Additional documentation
-For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
+
+For more extensive documentation on Azure Key Vault, see the [API reference documentation][azure_keyvault_rest].
 
 ## Contributing
+
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License
 Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For
-details, visit https://cla.microsoft.com.
+details, see the [Microsoft CLA][microsoft_cla].
 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate
 the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to
-do this once across all repos using our CLA.
+do this once across all repos using our [CLA][microsoft_cla].
 
 This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_code_of_conduct]. For more information
 see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.
@@ -243,7 +266,7 @@ For details on contributing to this repository, see the [contributing guide][con
 <!-- LINKS -->
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azkeyvault_docs]: https://learn.microsoft.com/azure/key-vault/
-[azkeyvault_rest]: https://learn.microsoft.com/rest/api/keyvault/
+[azure_keyvault_rest]: https://learn.microsoft.com/rest/api/keyvault/
 [azure_ca]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_keyvault]: https://learn.microsoft.com/azure/key-vault/general/overview
@@ -256,6 +279,7 @@ For details on contributing to this repository, see the [contributing guide][con
 [http_clients_wiki]: https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [managed_identity]: https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+[microsoft_cla]: https://cla.microsoft.com
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [certificates_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-certificates/src/samples/java/com/azure/v2/security/keyvault/secrets
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-certificates/src/samples/README.md
