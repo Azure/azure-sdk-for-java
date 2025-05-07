@@ -10,7 +10,7 @@ Arguments to run the tool in this mode.
 		 3. InputDependencies file to override the inputs from the version_client.txt. This is an optional file.
 
         -outputDir=<location_of_outputput_directory>
-        This generates the followibg files in the location.
+        This generates the following files in the location.
 		1. Report log.
 		2. Newly created BOM file
 

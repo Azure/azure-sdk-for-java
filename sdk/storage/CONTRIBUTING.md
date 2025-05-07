@@ -125,7 +125,7 @@ In POM files this is done by inserting a specifically formatted comment on the s
 
 The last element of the tag would be current or dependency depending on the criteria previously explained.
 
-In README files this ends up being slightly different. Because the version tag is inside an XML element that we're explicitly telling a user to copy/paste into their product the comment tag really didn't make sense here. Instead there are tags before and after the XML element tags which effectively says "there's a version somewhere in between these two tags, when you find the line that matches replace it with the appropriate version of the group:artifact defined in the tag."
+In README files this ends up being slightly different. Because the version tag is inside an XML element that we're explicitly telling a user to copy/paste into their product the comment tag really didn't make sense here. Instead there are tags before and after the XML element tags which effectively say "there's a version somewhere in between these two tags, when you find the line that matches replace it with the appropriate version of the group:artifact defined in the tag."
 
     [//]: # ({x-version-update-start;MyGroup:MyArtifact;dependency})
     ```xml
@@ -135,7 +135,7 @@ In README files this ends up being slightly different. Because the version tag i
     ```
     [//]: # ({x-version-update-end})
 
-What if I've got something that, for whatever reason, shoudln't be updated? There's a tag for that.
+What if I've got something that, for whatever reason, shouldn't be updated? There's a tag for that.
 
 `<!-- {x-version-exempt;<groupId>:<artifactId>;reason for excemption} -->`
 
@@ -147,7 +147,7 @@ I need to tick up the version of azure-storage libraries how would I do it? Guid
 
 1. I'd open up eng\versioning\version_client.txt and update the current-versions of the libraries that are built and released as part of the azure storage pipeline. This list can be found in pom.service.xml under the sdk/storage directory. It's worth noting that any module entry starting with "../" are external module dependencies and not something that's released as part of the pipeline. Once we GA, these build dependencies for library components outside of a given area should go away and be replaced with downloading the appropriate dependency from Maven like we do for external dependencies.
 2. Execute the update_versions python script from the root of the enlistment
-`python eng/versioning/update_versions.py --ut libary --bt client`
+`python eng/versioning/update_versions.py --ut library --bt client`
 This will go through the entire source tree and update all of the references in the POM and README files with the updated versions. Git status will show all of the modified files.
 3. Review and submit a PR with the modified files.
 
@@ -156,7 +156,7 @@ This will go through the entire source tree and update all of the references in 
 - External dependencies. Right now there are only version files for client and data (eng\versioning\version_\[client|data\].txt) which only encompass the built binaries for their respective tracks. External dependencies for both client and data are next on the list which should allow modification of the parent/pom.xml to remove the list of version properties and dependency management sections which brings things one step closer to not having to publish the parent pom.
 - Management plane. Management is in the process of being moved to service pipeline builds. The versioning work needs to wait until that work is finished.
 
-### How are versioning and dependencies going to impact development ?
+### How are versioning and dependencies going to impact development?
 
 As mentioned above, in the service pipeline changes, the plan after we GA is to start targeting the released version of the packages and pulling them from Maven. This is going to fundamentally change some aspects of the development process especially when work needs to be done on given library that requires dependency changes in one or more libraries.
 

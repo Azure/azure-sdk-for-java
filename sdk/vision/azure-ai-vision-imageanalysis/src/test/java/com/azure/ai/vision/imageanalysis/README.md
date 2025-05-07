@@ -24,7 +24,7 @@ Configure the test proxy to run live service tests without recordings:
 ```
 set AZURE_TEST_MODE=LIVE
 ```
-Other supported values for this enviroment variable are `RECORD` and `PLAYBACK`.
+Other supported values for this environment variable are `RECORD` and `PLAYBACK`.
 
 ### Run tests
 
