@@ -807,7 +807,7 @@ public class ClientMetricsTest extends BatchTestBase {
             CosmosMetricCategory.OPERATION_DETAILS,
             CosmosMetricCategory.REQUEST_DETAILS);
         try {
-            String id = UUID.randomUUID().toString()
+            String id = UUID.randomUUID().toString();
             InternalObjectNode properties = getDocumentDefinition(id);
             container.createItem(properties);
             verifyExists(
