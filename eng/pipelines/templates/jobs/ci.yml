@@ -400,7 +400,7 @@ jobs:
 
       - task: UseNode@1
         inputs:
-          version 22.x
+          version: 22.x
         displayName: Use Node.js 22.x
 
       - task: PowerShell@2
