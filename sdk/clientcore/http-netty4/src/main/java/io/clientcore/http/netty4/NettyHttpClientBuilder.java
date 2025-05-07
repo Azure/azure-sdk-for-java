@@ -8,7 +8,6 @@ import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.http.netty4.implementation.ChannelInitializationProxyHandler;
-import io.clientcore.http.netty4.implementation.Netty4InitiateOneReadHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
@@ -27,7 +26,7 @@ import java.util.concurrent.ThreadFactory;
  * Builder for creating instances of NettyHttpClient.
  */
 public class NettyHttpClientBuilder {
-    private static final ClientLogger LOGGER = new ClientLogger(Netty4InitiateOneReadHandler.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NettyHttpClientBuilder.class);
 
     private static final String EPOLL = "io.netty.channel.epoll.Epoll";
     private static final String EPOLL_CHANNEL = "io.netty.channel.epoll.EpollSocketChannel";
@@ -56,10 +55,10 @@ public class NettyHttpClientBuilder {
             Class<?> epollClass = Class.forName(EPOLL);
             isEpollAvailable = (boolean) epollClass.getDeclaredMethod("isAvailable").invoke(null);
 
-            epollChannelClass = (Class<? extends Channel>) Class.forName(EPOLL_CHANNEL);
+            epollChannelClass = getChannelClass(EPOLL_CHANNEL);
             epollEventLoopGroupClass = Class.forName(EPOLL_EVENT_LOOP_GROUP);
-            epollEventLoopGroupCreator = MethodHandles.publicLookup().unreflectConstructor(
-                epollEventLoopGroupClass.getDeclaredConstructor(ThreadFactory.class));
+            epollEventLoopGroupCreator = MethodHandles.publicLookup()
+                .unreflectConstructor(epollEventLoopGroupClass.getDeclaredConstructor(ThreadFactory.class));
         } catch (ReflectiveOperationException ignored) {
             LOGGER.atVerbose().log("Epoll is unavailable and won't be used.");
             isEpollAvailable = false;
@@ -81,10 +80,10 @@ public class NettyHttpClientBuilder {
             Class<?> kqueueClass = Class.forName(KQUEUE);
             isKqueueAvailable = (boolean) kqueueClass.getDeclaredMethod("isAvailable").invoke(null);
 
-            kqueueChannelClass = (Class<? extends Channel>) Class.forName(KQUEUE_CHANNEL);
+            kqueueChannelClass = getChannelClass(KQUEUE_CHANNEL);
             kqueueEventLoopGroupClass = Class.forName(KQUEUE_EVENT_LOOP_GROUP);
-            kqueueEventLoopGroupCreator = MethodHandles.publicLookup().unreflectConstructor(
-                kqueueEventLoopGroupClass.getDeclaredConstructor(ThreadFactory.class));
+            kqueueEventLoopGroupCreator = MethodHandles.publicLookup()
+                .unreflectConstructor(kqueueEventLoopGroupClass.getDeclaredConstructor(ThreadFactory.class));
         } catch (ReflectiveOperationException ignored) {
             LOGGER.atVerbose().log("Epoll is unavailable and won't be used.");
             isKqueueAvailable = false;
@@ -97,6 +96,11 @@ public class NettyHttpClientBuilder {
         KQUEUE_CHANNEL_CLASS = kqueueChannelClass;
         KQUEUE_EVENT_LOOP_GROUP_CLASS = kqueueEventLoopGroupClass;
         KQUEUE_EVENT_LOOP_GROUP_CREATOR = kqueueEventLoopGroupCreator;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Class<? extends Channel> getChannelClass(String className) throws ClassNotFoundException {
+        return (Class<? extends Channel>) Class.forName(className);
     }
 
     private EventLoopGroup eventLoopGroup;

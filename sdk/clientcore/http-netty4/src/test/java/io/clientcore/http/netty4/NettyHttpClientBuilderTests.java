@@ -322,10 +322,10 @@ public class NettyHttpClientBuilderTests {
     @EnabledOnOs(OS.MAC)
     public void macUsesNioIfConfigured() {
         // Only the
-        NettyHttpClient nettyHttpClient = (NettyHttpClient) new NettyHttpClientBuilder()
-            .channelClass(NioSocketChannel.class)
-            .eventLoopGroup(new NioEventLoopGroup())
-            .build();
+        NettyHttpClient nettyHttpClient
+            = (NettyHttpClient) new NettyHttpClientBuilder().channelClass(NioSocketChannel.class)
+                .eventLoopGroup(new NioEventLoopGroup())
+                .build();
 
         BootstrapConfig config = nettyHttpClient.getBootstrap().config();
         assertInstanceOf(NioEventLoopGroup.class, config.group());
@@ -345,10 +345,10 @@ public class NettyHttpClientBuilderTests {
     @Test
     @EnabledOnOs(OS.LINUX)
     public void linuxUsesNioIfConfigured() {
-        NettyHttpClient nettyHttpClient = (NettyHttpClient) new NettyHttpClientBuilder()
-            .channelClass(NioSocketChannel.class)
-            .eventLoopGroup(new NioEventLoopGroup())
-            .build();
+        NettyHttpClient nettyHttpClient
+            = (NettyHttpClient) new NettyHttpClientBuilder().channelClass(NioSocketChannel.class)
+                .eventLoopGroup(new NioEventLoopGroup())
+                .build();
 
         BootstrapConfig config = nettyHttpClient.getBootstrap().config();
         assertInstanceOf(NioEventLoopGroup.class, config.group());
