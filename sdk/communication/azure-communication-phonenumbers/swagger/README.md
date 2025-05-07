@@ -323,11 +323,11 @@ directive:
         to: BrowsePhoneNumbersOptions
 ```
 
-### Remove UNKNOWN_SEARCH_ERROR enum 
-``` yaml
+### Set PhoneNumbersBrowseResult fields as readonly
+```yaml
 directive:
   - from: swagger-document
-    where: $.definitions.PhoneNumberSearchResult.properties.error.x-ms-enum.values
+    where: $.definitions.PhoneNumbersBrowseResult
     transform: >
-      $ = $.filter(v => v.value !== "UNKNOWN_SEARCH_ERROR" && v.value !== "NO_ERROR");
+      $["properties"]["phoneNumbers"].readOnly = true;
 ```

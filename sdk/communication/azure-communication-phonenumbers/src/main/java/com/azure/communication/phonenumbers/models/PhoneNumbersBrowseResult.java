@@ -4,7 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * The result of a phone number browse operation.
  */
-@Fluent
+@Immutable
 public final class PhoneNumbersBrowseResult implements JsonSerializable<PhoneNumbersBrowseResult> {
     /*
      * The phone numbers that are available for purchase.
@@ -38,23 +38,11 @@ public final class PhoneNumbersBrowseResult implements JsonSerializable<PhoneNum
     }
 
     /**
-     * Set the phoneNumbers property: The phone numbers that are available for purchase.
-     * 
-     * @param phoneNumbers the phoneNumbers value to set.
-     * @return the PhoneNumbersBrowseResult object itself.
-     */
-    public PhoneNumbersBrowseResult setPhoneNumbers(List<AvailablePhoneNumber> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("phoneNumbers", this.phoneNumbers, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
