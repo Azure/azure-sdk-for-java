@@ -1408,7 +1408,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             // something is off in the backend
             // it could be due to limits on how many splits can be executed concurrently etc.
             // nothing that can really be done in the SDK
-            while (i < 120 && !throughputResponse.isReplacePending()) {
+            while (i < 120 && throughputResponse.isReplacePending()) {
                 logger.info("Waiting for split to complete");
                 Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
                 throughputResponse = createdFeedCollectionForSplit.readThroughput().block();
@@ -1418,6 +1418,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             if (throughputResponse.isReplacePending()) {
                 throw new SplitTimeoutException(
                     "Backend did not finish split for container '"
+                        + getEndpoint() + "/"
                         + createdFeedCollectionForSplit.getDatabase().getId() + "/"
                         + createdFeedCollectionForSplit.getId()
                         + "' - skipping this test case");
