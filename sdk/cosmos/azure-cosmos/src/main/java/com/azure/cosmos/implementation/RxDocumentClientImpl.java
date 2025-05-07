@@ -111,6 +111,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -118,6 +119,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -564,7 +566,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.userAgentContainer = new UserAgentContainer();
 
             String userAgentSuffix = this.connectionPolicy.getUserAgentSuffix();
-            if (userAgentSuffix != null && userAgentSuffix.length() > 0) {
+
+            if (userAgentSuffix != null && !userAgentSuffix.isEmpty()) {
                 userAgentContainer.setSuffix(userAgentSuffix);
             }
 
@@ -786,6 +789,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     && readConsistencyStrategy != ReadConsistencyStrategy.SESSION
                     && !sessionCapturingOverrideEnabled);
             this.sessionContainer.setDisableSessionCapturing(updatedDisableSessionCapturing);
+
+            this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -1358,6 +1363,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 }
                 return throwable;
             });
+    }
+
+    private void addUserAgentSuffix(UserAgentContainer userAgentContainer, Set<UserAgentFeatureFlags> userAgentFeatureFlags) {
+
+        if (!this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
+            userAgentFeatureFlags.remove(UserAgentFeatureFlags.PerPartitionAutomaticFailover);
+        }
+
+        if (!this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig().isPartitionLevelCircuitBreakerEnabled()) {
+            userAgentFeatureFlags.remove(UserAgentFeatureFlags.PerPartitionCircuitBreaker);
+        }
+
+        userAgentContainer.setFeatureEnabledFlagsAsSuffix(userAgentFeatureFlags);
     }
 
     @Override

@@ -108,6 +108,8 @@ def parse_args() -> (argparse.ArgumentParser, argparse.Namespace):
 
 
 def sdk_automation(input_file: str, output_file: str):
+    # this function is for SDK automation from CI in specs or "spec-gen-sdk - java" pipeline
+
     with open(input_file, "r") as fin:
         config = json.load(fin)
 
@@ -158,7 +160,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
         else:
             spec = match.group(1)
             spec = update_spec(spec, match.group(2))
-            service = get_and_update_service_from_api_specs(api_specs_file, spec)
+            service = get_and_update_service_from_api_specs(api_specs_file, spec, truncate_service=True)
 
             pre_suffix = SUFFIX
             suffix = get_suffix_from_api_specs(api_specs_file, spec)
@@ -435,7 +437,7 @@ def main():
 
         readme = args["readme"]
         match = re.match(
-            "specification/([^/]+)/resource-manager(/.*)*/readme.md",
+            r"specification/([^/]+)/resource-manager(/.*)*/readme.md",
             readme,
             re.IGNORECASE,
         )
