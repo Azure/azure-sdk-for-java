@@ -8,14 +8,16 @@ Sync TypeSpec defintion and generate SDK for RPs under the input directory and h
 If the regenerated code is different from current code, this will tell the files the differences
 are in, and exit with a failure status.
 
-.PARAMETER Directory
-The directory that will be used to get 'tsp-location.yaml' and generate SDK. The default is the root directory of the
-Azure SDK for Java repository. One can also input service directory like: /sdk/storage, sdk/anomalydetector/azure-ai-anomalydetector.
+.PARAMETER ScanDirectories
+A comma-separated list of directories that will be scanned for 'tsp-location.yaml'. If nothing is passed the default
+behavior is a no-op. CI jobs should determine which directories to scan based either on the 'ServiceDirectory',
+such as /sdk/storage, of the ci.yml being used or for Pull Request pipelines determine all directories based on what files
+were changed.
 #>
 
 param(
   [Parameter(Mandatory = $false)]
-  [string]$ServiceDirectories
+  [string]$ScanDirectories
 )
 
 $SeparatorBars = "==========================================================================="
@@ -44,19 +46,19 @@ function Install-typespec-client-generator-cli {
 function TypeSpec-Compare-CurrentToCodegeneration {
   param(
     [Parameter(Mandatory=$true)]
-    $ServiceDirectory
+    $ScanDirectory
   )
 
-  $tspYamls = Get-ChildItem -Path $ServiceDirectory -Filter "tsp-location.yaml" -Recurse
+  $tspYamls = Get-ChildItem -Path $ScanDirectory -Filter "tsp-location.yaml" -Recurse
   if ($tspYamls.Count -eq 0) {
     Write-Host "$SeparatorBars"
-    Write-Host "No TypeSpec files to regenerate for $ServiceDirectory"
+    Write-Host "No TypeSpec files to regenerate for $ScanDirectory"
     Write-Host "$SeparatorBars"
     return $false
   }
 
   Write-Host "$SeparatorBars"
-  Write-Host "Invoking tsp-client update for tsp-location.yaml files in $ServiceDirectory"
+  Write-Host "Invoking tsp-client update for tsp-location.yaml files in $ScanDirectory"
   Write-Host "$SeparatorBars"
 
   $failedSdk = $null
@@ -80,7 +82,7 @@ function TypeSpec-Compare-CurrentToCodegeneration {
   }
 
   Write-Host "$SeparatorBars"
-  Write-Host "Verify no diff for TypeSpec generated files in $ServiceDirectory"
+  Write-Host "Verify no diff for TypeSpec generated files in $ScanDirectory"
   Write-Host "$SeparatorBars"
 
   # prevent warning related to EOL differences which triggers an exception for some reason
@@ -95,17 +97,17 @@ function TypeSpec-Compare-CurrentToCodegeneration {
   }
 
   # Delete out TypeSpec temporary folders if they still exist.
-  Get-ChildItem -Path $ServiceDirectory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
+  Get-ChildItem -Path $ScanDirectory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
     Remove-Item -Path $_.FullName -Recurse -Force
   }
   return $false
 }
 
 $hasError = $false
-if ($ServiceDirectories) {
+if ($ScanDirectories) {
   Install-typespec-client-generator-cli
-  foreach ($ServiceDirectory in $ServiceDirectories.Split(',')) {
-    $path = "sdk/$ServiceDirectory"
+  foreach ($ScanDirectory in $ScanDirectories.Split(',')) {
+    $path = "sdk/$ScanDirectory"
     $result = TypeSpec-Compare-CurrentToCodegeneration $path
     if ($result) {
       $hasError = $true
