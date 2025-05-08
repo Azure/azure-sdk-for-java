@@ -507,7 +507,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             // Expectation is for the operation to see a success because of availability strategy but once circuit breaker
             // has kicked in, to also see success from solely the second preferred region.
             {
-                String.format("Test with faulty %s with Server injected 410s in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
+                String.format("Test with faulty %s with Server injected 410s in the first preferred region with availability strategy enabled.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
@@ -531,7 +531,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             // Expectation is for the operation to see a success because of availability strategy but once circuit breaker
             // has kicked in, to also see success from solely the second preferred region.
             {
-                String.format("Test with faulty %s with Server injected 410s in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
+                String.format("Test with faulty %s with Server injected 410s in the first preferred region with availability strategy enabled.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
@@ -555,7 +555,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             // Expectation is for the operation to see a success because of availability strategy but once circuit breaker
             // has kicked in, to also see success from solely the second preferred region.
             {
-                String.format("Test with faulty %s with Server injected 410s in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
+                String.format("Test with faulty %s with Server injected 410s in the first preferred region with availability strategy enabled.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
@@ -566,7 +566,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ONLY_DIRECT_MODE,
