@@ -20,7 +20,7 @@ public enum DigitalTwinsServiceVersion implements ServiceVersion {
     V2022_05_31("2022-05-31"),
 
     /**
-     * Service version {@code 2022-05-31}.
+     * Service version {@code 2023-10-31}.
      */
     V2023_10_31("2023-10-31");
 
