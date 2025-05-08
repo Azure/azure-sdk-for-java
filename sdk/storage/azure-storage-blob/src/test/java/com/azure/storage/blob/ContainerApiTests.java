@@ -1760,6 +1760,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void rootExplicit() {
         cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1771,6 +1772,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void rootExplicitInEndpoint() {
         cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1788,6 +1790,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void blobClientBuilderRootImplicit() {
         cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // createroot container if not exist.
@@ -1810,6 +1813,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void containerClientBuilderRootImplicit() {
         cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1832,10 +1836,10 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     public void serviceClientImplicitRoot() {
-        assertEquals(primaryBlobServiceClient.getBlobContainerClient(null).getBlobContainerName(),
-            BlobContainerAsyncClient.ROOT_CONTAINER_NAME);
-        assertEquals(primaryBlobServiceClient.getBlobContainerClient("").getBlobContainerName(),
-            BlobContainerAsyncClient.ROOT_CONTAINER_NAME);
+        assertEquals(BlobContainerAsyncClient.ROOT_CONTAINER_NAME,
+            primaryBlobServiceClient.getBlobContainerClient(null).getBlobContainerName());
+        assertEquals(BlobContainerAsyncClient.ROOT_CONTAINER_NAME,
+            primaryBlobServiceClient.getBlobContainerClient("").getBlobContainerName());
     }
 
     @Test
