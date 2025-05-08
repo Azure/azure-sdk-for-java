@@ -40,8 +40,9 @@ public final class PercentEscaper {
         this.usePlusForSpace = usePlusForSpace;
 
         if (usePlusForSpace && safeCharacters != null && safeCharacters.contains(" ")) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                "' ' as a safe character with 'usePlusForSpace = true' is an invalid configuration."));
+            throw LOGGER.throwableAtError()
+                .log("' ' as a safe character with 'usePlusForSpace = true' is an invalid configuration.",
+                    IllegalArgumentException::new);
         }
 
         this.safeCharacterPoints = Arrays.copyOf(SAFE_CHARACTERS, 256); // 256 works as only ASCII characters are safe.
@@ -244,8 +245,9 @@ public final class PercentEscaper {
         } else if (Character.isHighSurrogate(char1)) {
             // High surrogates will occur first in the string.
             if (index == end) {
-                throw LOGGER.logThrowableAsError(
-                    new IllegalStateException("String contains trailing high surrogate without paired low surrogate."));
+                throw LOGGER.throwableAtError()
+                    .log("String contains trailing high surrogate without paired low surrogate.",
+                        IllegalStateException::new);
             }
 
             char char2 = original.charAt(index);
@@ -253,11 +255,11 @@ public final class PercentEscaper {
                 return Character.toCodePoint(char1, char2);
             }
 
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException("String contains high surrogate without trailing low surrogate."));
+            throw LOGGER.throwableAtError()
+                .log("String contains high surrogate without trailing low surrogate.", IllegalStateException::new);
         } else {
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException("String contains low surrogate without leading high surrogate."));
+            throw LOGGER.throwableAtError()
+                .log("String contains low surrogate without leading high surrogate.", IllegalStateException::new);
         }
     }
 }

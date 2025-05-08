@@ -75,6 +75,7 @@
     <module>sdk/dataprotection</module>
     <module>sdk/defendereasm</module>
     <module>sdk/delegatednetwork</module>
+    <module>sdk/dell</module>
     <module>sdk/dependencymap</module>
     <module>sdk/deploymentmanager</module>
     <module>sdk/desktopvirtualization</module>
@@ -181,6 +182,7 @@
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
+    <module>sdk/programmableconnectivity</module>
     <module>sdk/providerhub</module>
     <module>sdk/purview</module>
     <module>sdk/quantum</module>
@@ -203,6 +205,7 @@
     <module>sdk/schemaregistry</module>
     <module>sdk/scvmm</module>
     <module>sdk/search</module>
+    <module>sdk/secretsstoreextension</module>
     <module>sdk/security</module>
     <module>sdk/securitydevops</module>
     <module>sdk/securityinsights</module>

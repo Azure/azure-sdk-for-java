@@ -70,7 +70,7 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }

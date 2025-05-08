@@ -36,7 +36,7 @@ public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U>
     public ChainedPollingStrategy(List<PollingStrategy<T, U>> strategies) {
         Objects.requireNonNull(strategies, "'strategies' cannot be null.");
         if (strategies.isEmpty()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'strategies' cannot be empty."));
+            throw LOGGER.throwableAtError().log("'strategies' cannot be empty.", IllegalArgumentException::new);
         }
         this.pollingStrategies = Collections.unmodifiableList(strategies);
     }

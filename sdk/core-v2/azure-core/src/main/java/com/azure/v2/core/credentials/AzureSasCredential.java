@@ -98,7 +98,7 @@ public final class AzureSasCredential {
     public AzureSasCredential(String signature, Function<String, String> signatureEncoder) {
         Objects.requireNonNull(signature, "'signature' cannot be null.");
         if (signature.isEmpty()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'signature' cannot be empty."));
+            throw LOGGER.throwableAtError().log("'signature' cannot be empty.", IllegalArgumentException::new);
         }
 
         this.signatureEncoder = signatureEncoder;
@@ -125,7 +125,7 @@ public final class AzureSasCredential {
     public AzureSasCredential update(String signature) {
         Objects.requireNonNull(signature, "'signature' cannot be null.");
         if (signature.isEmpty()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'signature' cannot be empty."));
+            throw LOGGER.throwableAtError().log("'signature' cannot be empty.", IllegalArgumentException::new);
         }
 
         this.signature = (signatureEncoder == null) ? signature : signatureEncoder.apply(signature);

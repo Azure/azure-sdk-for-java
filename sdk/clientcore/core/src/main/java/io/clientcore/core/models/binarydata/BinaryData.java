@@ -724,7 +724,7 @@ public abstract class BinaryData implements Closeable {
         try {
             outputStream.write(toBytes());
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -748,7 +748,7 @@ public abstract class BinaryData implements Closeable {
                 channel.write(buffer);
             }
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
