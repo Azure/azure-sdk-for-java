@@ -397,6 +397,11 @@ jobs:
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
 
+      - task: UseNode@1
+        inputs:
+          version: 22.x
+        displayName: Use Node.js 22.x
+
       - task: PowerShell@2
         displayName: Verify TypeSpec Code Generation
         inputs:
