@@ -32,17 +32,6 @@ public class CreateOrUpdateReservationOptions {
     }
 
     /**
-     * Set the reservationId property: The reservation ID.
-     * 
-     * @param reservationId the reservationId value to set.
-     * @return the CreateOrUpdateReservationOptions itself.
-     */
-    public CreateOrUpdateReservationOptions setReservationId(String reservationId) {
-        this.reservationId = reservationId;
-        return this;
-    }
-
-    /**
      * Get the phoneNumbersToAdd property: The list of phone numbers to add to the reservation.
      * 
      * @return the phoneNumbersToAdd value.
