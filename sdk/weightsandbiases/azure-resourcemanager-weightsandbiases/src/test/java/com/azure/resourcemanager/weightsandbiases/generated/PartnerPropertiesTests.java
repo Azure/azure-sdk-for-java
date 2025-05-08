@@ -12,17 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class PartnerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartnerProperties model = BinaryData.fromString("{\"region\":\"westeurope\",\"subdomain\":\"hsgcbacphejkot\"}")
-            .toObject(PartnerProperties.class);
-        Assertions.assertEquals(Region.WESTEUROPE, model.region());
-        Assertions.assertEquals("hsgcbacphejkot", model.subdomain());
+        PartnerProperties model
+            = BinaryData.fromString("{\"region\":\"koreacentral\",\"subdomain\":\"qktapspwgcuert\"}")
+                .toObject(PartnerProperties.class);
+        Assertions.assertEquals(Region.KOREACENTRAL, model.region());
+        Assertions.assertEquals("qktapspwgcuert", model.subdomain());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerProperties model = new PartnerProperties().withRegion(Region.WESTEUROPE).withSubdomain("hsgcbacphejkot");
+        PartnerProperties model
+            = new PartnerProperties().withRegion(Region.KOREACENTRAL).withSubdomain("qktapspwgcuert");
         model = BinaryData.fromObject(model).toObject(PartnerProperties.class);
-        Assertions.assertEquals(Region.WESTEUROPE, model.region());
-        Assertions.assertEquals("hsgcbacphejkot", model.subdomain());
+        Assertions.assertEquals(Region.KOREACENTRAL, model.region());
+        Assertions.assertEquals("qktapspwgcuert", model.subdomain());
     }
 }
