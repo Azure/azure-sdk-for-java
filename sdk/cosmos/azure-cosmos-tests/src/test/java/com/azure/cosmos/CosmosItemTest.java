@@ -1069,7 +1069,7 @@ public class CosmosItemTest extends TestSuiteBase {
             });
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readItemWithEventualConsistency() throws Exception {
 
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
@@ -1079,7 +1079,8 @@ public class CosmosItemTest extends TestSuiteBase {
         ObjectNode properties = getDocumentDefinition(idAndPkValue, idAndPkValue);
         CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
 
-        CosmosItemResponse<ObjectNode> readResponse1 = container.readItem(
+        CosmosItemResponse<ObjectNode> readResponse1 = verifyExists(
+            container,
             idAndPkValue,
             new PartitionKey(idAndPkValue),
             new CosmosItemRequestOptions()

@@ -97,37 +97,6 @@ public abstract class BatchTestBase extends TestSuiteBase {
         verifyByRead(container, doc, null);
     }
 
-    <T> CosmosItemResponse verifyExists(CosmosContainer container, String id, PartitionKey pk, Class<T> clazz) {
-        CosmosItemResponse<T> response = null;
-        while (response == null) {
-            try {
-                CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
-                if (getConnectionPolicy().getConnectionMode() != ConnectionMode.GATEWAY) {
-                    requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
-                }
-
-                response = container.readItem(
-                    id,
-                    pk,
-                    clazz);
-
-                break;
-            } catch (CosmosException cosmosError) {
-                if (cosmosError.getStatusCode() != 404 || cosmosError.getSubStatusCode() != 0) {
-                    throw cosmosError;
-                }
-
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-
-        return response;
-    }
-
     void verifyByRead(CosmosContainer container, TestDoc doc, String eTag) {
         PartitionKey partitionKey = this.getPartitionKey(doc.getStatus());
 
