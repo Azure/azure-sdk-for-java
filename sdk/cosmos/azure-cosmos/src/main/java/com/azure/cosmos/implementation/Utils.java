@@ -78,6 +78,9 @@ public class Utils {
     public static final Base64.Decoder Base64Decoder = Base64.getDecoder();
     public static final Base64.Encoder Base64UrlEncoder = Base64.getUrlEncoder();
 
+    public static final Duration ONE_SECOND = Duration.ofSeconds(1);
+    public static final Duration HALF_SECOND = Duration.ofMillis(500);
+
     private static final ObjectMapper simpleObjectMapperAllowingDuplicatedProperties =
         createAndInitializeObjectMapper(true);
     private static final ObjectMapper simpleObjectMapperDisallowingDuplicatedProperties =
@@ -807,5 +810,15 @@ public class Utils {
                     String.valueOf(DEFAULT_ALLOW_UNQUOTED_CONTROL_CHARS)));
 
         return Boolean.parseBoolean(shouldAllowUnquotedControlCharsConfig);
+    }
+
+    public static Duration min(Duration duration1, Duration duration2) {
+        if (duration1 == null) {
+            return duration2;
+        } else if (duration2 == null) {
+            return duration1;
+        } else {
+            return duration1.compareTo(duration2) < 0 ? duration1 : duration2;
+        }
     }
 }

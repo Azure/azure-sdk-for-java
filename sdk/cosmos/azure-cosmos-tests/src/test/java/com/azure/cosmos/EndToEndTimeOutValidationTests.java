@@ -122,6 +122,22 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         }
     }
 
+    public void validatePpafEnforcedE2eTimeoutForReads() {
+        if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Failure injection only supported for DIRECT mode");
+        }
+
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        TestObject itemToRead = createdDocuments.get(random.nextInt(createdDocuments.size()));
+        FaultInjectionRule rule = injectFailure(createdContainer, FaultInjectionOperationType.READ_ITEM, null);
+
+        Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
+            createdContainer.readItem(itemToRead.id, new PartitionKey(itemToRead.mypk), options, TestObject.class);
+
+        verifyExpectError(cosmosItemResponseMono);
+        rule.disable();
+    }
+
     @Test(groups = {"fast"}, timeOut = 10000L)
     public void createItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
