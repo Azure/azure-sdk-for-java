@@ -52,6 +52,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -2056,7 +2057,8 @@ public final class DigitalTwinsAsyncClient {
             : new DigitalTwinsResponseHeaders().setETag(response.getHeaders().getValue(HttpHeaderName.ETAG));
     }
 
-    private <T> Mono<DigitalTwinsResponse<T>> deserializeHelper(Response<Object> response, Class<T> clazz) {
+    private <T> Mono<DigitalTwinsResponse<T>> deserializeHelper(Response<Map<String, Object>> response,
+        Class<T> clazz) {
         try {
             T genericResponse = DeserializationHelpers.deserializeObject(protocolLayer.getSerializerAdapter(),
                 response.getValue(), clazz, this.serializer);

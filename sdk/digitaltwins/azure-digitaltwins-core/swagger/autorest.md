@@ -30,10 +30,10 @@ autorest
 
 ``` yaml
 #When generating from the official specifications repository
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e79e929e76c8da146e561b4e1246980e336fdc00/specification/digitaltwins/data-plane/Microsoft.DigitalTwins/stable/2022-05-31/digitaltwins.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/764484f6d4d2eeace159a19d3df364abc0645c7e/specification/digitaltwins/data-plane/Microsoft.DigitalTwins/stable/2023-10-31/digitaltwins.json
 
 #if you want to generate using local swagger copy:
-#input-file: $(this-folder)/swagger/2022-05-31/digitaltwins.json
+#input-file: $(this-folder)/swagger/2023-10-31/digitaltwins.json
 
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
