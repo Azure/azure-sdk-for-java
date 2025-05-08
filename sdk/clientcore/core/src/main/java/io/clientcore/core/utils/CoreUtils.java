@@ -239,8 +239,10 @@ public final class CoreUtils {
 
         if (index == -1) {
             // No size segment.
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("The Content-Range header wasn't properly "
-                + "formatted and didn't contain a '/size' segment. The 'contentRange' was: " + contentRange));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("Content-Range", contentRange)
+                .log("The Content-Range header wasn't properly formatted and didn't contain a '/size' segment",
+                    IllegalArgumentException::new);
         }
 
         String sizeString = contentRange.substring(index + 1).trim();
@@ -492,8 +494,7 @@ public final class CoreUtils {
             }
             return serializer.deserializeFromBytes(data.toBytes(), token);
         } catch (IOException e) {
-            CoreException coreException = CoreException.from(e);
-            throw LOGGER.logThrowableAsError(CoreException.from(coreException));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 

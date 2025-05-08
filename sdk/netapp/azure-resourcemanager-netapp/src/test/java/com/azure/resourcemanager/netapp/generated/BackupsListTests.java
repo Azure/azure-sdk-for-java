@@ -18,7 +18,7 @@ public final class BackupsListTests {
             .toObject(BackupsList.class);
         Assertions.assertEquals("jpr", model.value().get(0).label());
         Assertions.assertEquals("ljyxgtczhe", model.value().get(0).volumeResourceId());
-        Assertions.assertEquals(true, model.value().get(0).useExistingSnapshot());
+        Assertions.assertTrue(model.value().get(0).useExistingSnapshot());
         Assertions.assertEquals("dshmkxmaehvbbx", model.value().get(0).snapshotName());
         Assertions.assertEquals("odpvruudlgzib", model.nextLink());
     }
@@ -32,7 +32,7 @@ public final class BackupsListTests {
         model = BinaryData.fromObject(model).toObject(BackupsList.class);
         Assertions.assertEquals("jpr", model.value().get(0).label());
         Assertions.assertEquals("ljyxgtczhe", model.value().get(0).volumeResourceId());
-        Assertions.assertEquals(true, model.value().get(0).useExistingSnapshot());
+        Assertions.assertTrue(model.value().get(0).useExistingSnapshot());
         Assertions.assertEquals("dshmkxmaehvbbx", model.value().get(0).snapshotName());
         Assertions.assertEquals("odpvruudlgzib", model.nextLink());
     }

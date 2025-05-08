@@ -327,15 +327,6 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-        - template: /eng/common/pipelines/templates/steps/verify-readmes.yml
-          parameters:
-            PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
-      - ${{ else }}:
-        - template: /eng/common/pipelines/templates/steps/verify-readme.yml
-          parameters:
-            ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
-
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
           ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
@@ -397,6 +388,11 @@ jobs:
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
           JdkVersion: ${{ parameters.JavaBuildVersion }}
+
+      - task: UseNode@1
+        inputs:
+          version: 22.x
+        displayName: Use Node.js 22.x
 
       - task: PowerShell@2
         displayName: Verify Code Generation for Pull Request

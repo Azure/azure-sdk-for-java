@@ -5,6 +5,7 @@ package com.azure.v2.core.http.polling;
 
 import com.azure.v2.core.implementation.ImplUtils;
 import com.azure.v2.core.implementation.polling.PollingUtils;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
@@ -61,15 +62,15 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
             return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType), retryAfter);
         } else {
-            throw LOGGER.logThrowableAsError(
-                new RuntimeException("Operation failed or cancelled: " + response.getStatusCode()));
+            throw LOGGER.throwableAtError()
+                .log("Operation failed or cancelled", message -> new HttpResponseException(message, response, null));
         }
     }
 
     @Override
     public PollResponse<T> poll(PollingContext<T> context, Type pollResponseType) {
-        throw LOGGER
-            .logThrowableAsError(new IllegalStateException("StatusCheckPollingStrategy doesn't support polling"));
+        throw LOGGER.throwableAtError()
+            .log("StatusCheckPollingStrategy doesn't support polling", IllegalStateException::new);
     }
 
     @Override
