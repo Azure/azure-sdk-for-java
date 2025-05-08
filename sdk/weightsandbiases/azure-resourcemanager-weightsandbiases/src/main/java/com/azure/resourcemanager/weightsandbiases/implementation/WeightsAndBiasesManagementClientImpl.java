@@ -169,7 +169,7 @@ public final class WeightsAndBiasesManagementClientImpl implements WeightsAndBia
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-09-18-preview";
+        this.apiVersion = "2024-09-18";
         this.operations = new OperationsClientImpl(this);
         this.instances = new InstancesClientImpl(this);
     }
