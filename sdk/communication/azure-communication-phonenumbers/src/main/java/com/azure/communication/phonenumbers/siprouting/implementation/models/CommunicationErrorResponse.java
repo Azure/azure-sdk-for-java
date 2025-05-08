@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * The Communication Services error.
- */
+/** The Communication Services error. */
 @Fluent
 public final class CommunicationErrorResponse implements JsonSerializable<CommunicationErrorResponse> {
     /*
@@ -21,15 +19,13 @@ public final class CommunicationErrorResponse implements JsonSerializable<Commun
      */
     private CommunicationError error;
 
-    /**
-     * Creates an instance of CommunicationErrorResponse class.
-     */
+    /** Creates an instance of CommunicationErrorResponse class. */
     public CommunicationErrorResponse() {
     }
 
     /**
      * Get the error property: The Communication Services error.
-     * 
+     *
      * @return the error value.
      */
     public CommunicationError getError() {
@@ -38,7 +34,7 @@ public final class CommunicationErrorResponse implements JsonSerializable<Commun
 
     /**
      * Set the error property: The Communication Services error.
-     * 
+     *
      * @param error the error value to set.
      * @return the CommunicationErrorResponse object itself.
      */
@@ -47,9 +43,6 @@ public final class CommunicationErrorResponse implements JsonSerializable<Commun
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -59,10 +52,10 @@ public final class CommunicationErrorResponse implements JsonSerializable<Commun
 
     /**
      * Reads an instance of CommunicationErrorResponse from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CommunicationErrorResponse if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CommunicationErrorResponse.
      */
