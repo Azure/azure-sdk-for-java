@@ -6,13 +6,11 @@ package com.azure.communication.phonenumbers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
 import com.azure.communication.phonenumbers.models.BrowsePhoneNumbersOptions;
 import com.azure.communication.phonenumbers.models.CreateOrUpdateReservationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
-import com.azure.communication.phonenumbers.models.PhoneNumberAvailabilityStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;

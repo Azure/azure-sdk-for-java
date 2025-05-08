@@ -9,7 +9,7 @@ import java.util.List;
  * The parameters for the create or update reservation operation.
  */
 public class CreateOrUpdateReservationOptions {
-    private String reservationId;
+    private final String reservationId;
     private List<AvailablePhoneNumber> phoneNumbersToAdd;
     private List<String> phoneNumbersToRemove;
 

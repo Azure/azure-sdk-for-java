@@ -28,10 +28,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 
 public class AsyncClientJavaDocCodeSnippets {
@@ -102,7 +100,8 @@ public class AsyncClientJavaDocCodeSnippets {
      *
      */
     public void browseAndReservePhoneNumbers() {
-        // BEGIN: com.azure.communication.phonenumbers.asyncclient.browseAndReservePhoneNumbers
+        // BEGIN:
+        // com.azure.communication.phonenumbers.asyncclient.browseAndReservePhoneNumbers
         PhoneNumbersAsyncClient phoneNumberAsyncClient = createPhoneNumberAsyncClient();
         String reservationId = UUID.randomUUID().toString();
 
@@ -120,11 +119,12 @@ public class AsyncClientJavaDocCodeSnippets {
         PhoneNumbersReservation reservationResponse = phoneNumberAsyncClient.createOrUpdateReservation(
                 new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToAdd(numbersToAdd)).block();
         System.out.println("Reservation ID: " + reservationResponse.getId());
-        // END: com.azure.communication.phonenumbers.asyncclient.browseAndReservePhoneNumbers
+        // END:
+        // com.azure.communication.phonenumbers.asyncclient.browseAndReservePhoneNumbers
 
         // BEGIN: com.azure.communication.phonenumbers.asyncclient.purchaseReservation
-        AsyncPollResponse<PhoneNumberOperation, PurchaseReservationResult> purchaseResponse =
-        phoneNumberAsyncClient.beginPurchaseReservation(reservationId).blockFirst();
+        AsyncPollResponse<PhoneNumberOperation, PurchaseReservationResult> purchaseResponse = phoneNumberAsyncClient
+                .beginPurchaseReservation(reservationId).blockFirst();
         System.out.println("Purchase reservation is complete: " + purchaseResponse.getStatus());
         // END: com.azure.communication.phonenumbers.asyncclient.purchaseReservation
     }
@@ -135,7 +135,8 @@ public class AsyncClientJavaDocCodeSnippets {
      *
      */
     public void browseAndReservePhoneNumbersWithResponse() {
-        // BEGIN: com.azure.communication.phonenumbers.asyncclient.browseAndReservePhoneNumbersWithResponse
+        // BEGIN:
+        // com.azure.communication.phonenumbers.asyncclient.browseAndReservePhoneNumbersWithResponse
         PhoneNumbersAsyncClient phoneNumberAsyncClient = createPhoneNumberAsyncClient();
         String reservationId = UUID.randomUUID().toString();
 
@@ -144,22 +145,27 @@ public class AsyncClientJavaDocCodeSnippets {
                 .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                         .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
-        PhoneNumbersBrowseResult result = phoneNumberAsyncClient.browseAvailableNumbersWithResponse(browseRequest).block().getValue();
+        PhoneNumbersBrowseResult result = phoneNumberAsyncClient.browseAvailableNumbersWithResponse(browseRequest)
+                .block().getValue();
 
         List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
 
         numbersToAdd.add(result.getPhoneNumbers().get(0));
 
         PhoneNumbersReservation reservationResponse = phoneNumberAsyncClient.createOrUpdateReservationWithResponse(
-                new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToAdd(numbersToAdd)).block().getValue();
+                new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToAdd(numbersToAdd)).block()
+                .getValue();
         System.out.println("Reservation ID: " + reservationResponse.getId());
-        // END: com.azure.communication.phonenumbers.asyncclient.browseAndReservePhoneNumbersWithResponse
+        // END:
+        // com.azure.communication.phonenumbers.asyncclient.browseAndReservePhoneNumbersWithResponse
 
-        // BEGIN: com.azure.communication.phonenumbers.asyncclient.purchaseReservationWithResponse
-        AsyncPollResponse<PhoneNumberOperation, PurchaseReservationResult> purchaseResponse =
-        phoneNumberAsyncClient.beginPurchaseReservation(reservationId).blockFirst();
+        // BEGIN:
+        // com.azure.communication.phonenumbers.asyncclient.purchaseReservationWithResponse
+        AsyncPollResponse<PhoneNumberOperation, PurchaseReservationResult> purchaseResponse = phoneNumberAsyncClient
+                .beginPurchaseReservation(reservationId).blockFirst();
         System.out.println("Purchase reservation is complete: " + purchaseResponse.getStatus());
-        // END: com.azure.communication.phonenumbers.asyncclient.purchaseReservationWithResponse
+        // END:
+        // com.azure.communication.phonenumbers.asyncclient.purchaseReservationWithResponse
     }
 
     /**
