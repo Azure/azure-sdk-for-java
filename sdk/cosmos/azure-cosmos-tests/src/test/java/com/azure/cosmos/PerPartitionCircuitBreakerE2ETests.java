@@ -200,6 +200,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
     private final Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> buildGwResponseDelayFaultInjectionRules
         = PerPartitionCircuitBreakerE2ETests::buildGwResponseDelayInjectionRules;
 
+    private final Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> buildGwResponseDelayFaultInjectionRulesWoOpScoping
+        = PerPartitionCircuitBreakerE2ETests::buildGwResponseDelayInjectionRulesNotScopedToOpType;
+
     private final Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> buildInternalServerErrorFaultInjectionRules
         = PerPartitionCircuitBreakerE2ETests::buildInternalServerErrorFaultInjectionRules;
 
@@ -1059,7 +1062,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 15,
                 15
             },
-            // 429s injected into first preferred region for READ_ITEM operation on GW Connection Mode
+            // Response Delay from Gateway injected into first preferred region for READ_ITEM operation on GW Connection Mode
             // injected into entire region
             // Expectation is for the operation to see a success because of availability strategy but once circuit breaker
             // has kicked in, to also see success from solely the second preferred region.
@@ -1084,10 +1087,11 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 15,
                 15
             },
-            // 429s injected into first preferred region for CREATE_ITEM operation on GW Connection Mode
+            // Response Delay from Gateway injected into first preferred region for CREATE_ITEM operation on GW Connection Mode
             // injected into entire region
             // Expectation is for the operation to see a success because of availability strategy but once circuit breaker
             // has kicked in, to also see success from solely the second preferred region.
+            // NOTE: GW Response Delay is injected for all ops to fail reads too wrapped for non-idempotent writes.
             {
                 String.format("Test with faulty %s with GW Response Delay in the first preferred region and also availability strategy enabled.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -1095,7 +1099,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withResponseDelay(Duration.ofSeconds(60))
                     .withFaultInjectionDuration(Duration.ofSeconds(50)),
-                this.buildGwResponseDelayFaultInjectionRules,
+                this.buildGwResponseDelayFaultInjectionRulesWoOpScoping,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY,
                 NO_REGION_SWITCH_HINT,
                 NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
@@ -1126,7 +1130,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ONLY_GATEWAY_MODE,
@@ -4748,6 +4752,46 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             if (!paramsWrapper.getIsOverrideFaultInjectionOperationType() && paramsWrapper.getFaultInjectionOperationType() != null) {
                 faultInjectionConditionBuilder.operationType(paramsWrapper.getFaultInjectionOperationType());
+            }
+
+            FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
+
+            FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("response-delay-rule-" + UUID.randomUUID())
+                .condition(faultInjectionCondition)
+                .result(faultInjectionServerErrorResult);
+
+            if (paramsWrapper.getFaultInjectionDuration() != null) {
+                faultInjectionRuleBuilder.duration(paramsWrapper.getFaultInjectionDuration());
+            }
+
+            if (paramsWrapper.getHitLimit() != null) {
+                faultInjectionRuleBuilder.hitLimit(paramsWrapper.getHitLimit());
+            }
+
+            faultInjectionRules.add(faultInjectionRuleBuilder.build());
+        }
+
+        return faultInjectionRules;
+    }
+
+    private static List<FaultInjectionRule> buildGwResponseDelayInjectionRulesNotScopedToOpType(FaultInjectionRuleParamsWrapper paramsWrapper) {
+
+        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+            .delay(paramsWrapper.getResponseDelay())
+            .suppressServiceRequests(false)
+            .build();
+
+        List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
+
+        for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
+
+            FaultInjectionConditionBuilder faultInjectionConditionBuilder = new FaultInjectionConditionBuilder()
+                .connectionType(FaultInjectionConnectionType.GATEWAY)
+                .region(applicableRegion);
+
+            if (paramsWrapper.getFaultInjectionApplicableFeedRange() != null) {
+                faultInjectionConditionBuilder.endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build());
             }
 
             FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
