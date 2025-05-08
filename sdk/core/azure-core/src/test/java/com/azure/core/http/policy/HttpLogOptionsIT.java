@@ -3,6 +3,8 @@
 package com.azure.core.http.policy;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
@@ -19,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 @SuppressWarnings("removal")
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated("Mutates the global SecurityManager")
+@EnabledForJreRange(min = JRE.JAVA_8, max = JRE.JAVA_23, disabledReason = "Security manager was removed in Java 24")
 public class HttpLogOptionsIT {
     private java.lang.SecurityManager originalManager;
     private java.security.Policy originalPolicy;
