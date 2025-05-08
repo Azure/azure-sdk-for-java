@@ -119,8 +119,9 @@ public final class JsonNumber extends JsonElement {
         }
 
         if (token != JsonToken.NUMBER) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "JsonReader is pointing to an invalid token for deserialization. Token was: " + token + "."));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("token", token.name())
+                .log("JsonReader is pointing to an invalid token for deserialization.", IllegalStateException::new);
         }
 
         return new JsonNumber(jsonReader.getString());
