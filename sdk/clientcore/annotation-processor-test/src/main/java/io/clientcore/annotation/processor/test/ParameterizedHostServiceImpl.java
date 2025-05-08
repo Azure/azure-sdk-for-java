@@ -2,20 +2,21 @@
 // Licensed under the MIT License.
 package io.clientcore.annotation.processor.test;
 
-import io.clientcore.annotation.processor.test.implementation.ParameterizedHostService;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.annotation.processor.test.implementation.ParameterizedHostService;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
+import io.clientcore.core.http.models.HttpResponseException;
+import java.lang.reflect.ParameterizedType;
 import io.clientcore.core.utils.CoreUtils;
 import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -56,20 +57,17 @@ public class ParameterizedHostServiceImpl implements ParameterizedHostService {
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                String errorMessage = networkResponse.getValue().toString();
-                throw new HttpResponseException(errorMessage, networkResponse, null);
-            }
-            BinaryData responseBody = networkResponse.getValue();
-            return responseBody != null ? responseBody.toBytes() : null;
-            if (!expectedResponse) {
-                if (networkResponse.getValue() == null || networkResponse.getValue().toBytes().length == 0) {
+                BinaryData value = networkResponse.getValue();
+                if (value == null || value.toBytes().length == 0) {
                     throw instantiateUnexpectedException(responseCode, networkResponse, null, null);
                 } else {
                     ParameterizedType returnType = null;
-                    throw instantiateUnexpectedException(responseCode, networkResponse, networkResponse.getValue(),
-                        CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType));
+                    Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
+                    throw instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
                 }
             }
+            BinaryData responseBody = networkResponse.getValue();
+            return responseBody != null ? responseBody.toBytes() : null;
         }
     }
 
