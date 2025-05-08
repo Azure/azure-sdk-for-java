@@ -672,7 +672,18 @@ public class ClientMetricsTest extends BatchTestBase {
                 InternalObjectNode.class
             );
 
-            CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+            logger.info(
+                "{}/{}/{} - Document created and to be returned by readAll: Document [{}], Container [{}]",
+                getEndpoint(),
+                state.databaseId,
+                state.containerId,
+                properties.toJson(),
+                state.container.read().getProperties().toString());
+
+            CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions()
+                .setDiagnosticsThresholds(new CosmosDiagnosticsThresholds()
+                    .setNonPointOperationLatencyThreshold(Duration.ZERO))
+                .setQueryMetricsEnabled(true);
 
             CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 = new CosmosPagedIterable<>(
                 state.container.asyncContainer.readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class),
