@@ -32,7 +32,6 @@
     "com.azure.v2.security.keyvault.certificates.implementation.models.IssuerCredentials": "KeyVault.IssuerCredentials",
     "com.azure.v2.security.keyvault.certificates.implementation.models.IssuerParameters": "KeyVault.IssuerParameters",
     "com.azure.v2.security.keyvault.certificates.implementation.models.KeyProperties": "KeyVault.KeyProperties",
-    "com.azure.v2.security.keyvault.certificates.implementation.models.KeyVaultError": "KeyVaultError",
     "com.azure.v2.security.keyvault.certificates.implementation.models.KeyVaultErrorError": "KeyVaultError.error.anonymous",
     "com.azure.v2.security.keyvault.certificates.implementation.models.LifetimeAction": "KeyVault.LifetimeAction",
     "com.azure.v2.security.keyvault.certificates.implementation.models.OrganizationDetails": "KeyVault.OrganizationDetails",

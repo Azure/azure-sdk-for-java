@@ -27,8 +27,6 @@
     "com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicyAttributes": "KeyVault.KeyRotationPolicyAttributes",
     "com.azure.v2.security.keyvault.keys.implementation.models.KeySignParameters": "KeyVault.KeySignParameters",
     "com.azure.v2.security.keyvault.keys.implementation.models.KeyUpdateParameters": "KeyVault.KeyUpdateParameters",
-    "com.azure.v2.security.keyvault.keys.implementation.models.KeyVaultError": "KeyVaultError",
-    "com.azure.v2.security.keyvault.keys.implementation.models.KeyVaultErrorError": "KeyVaultError.error.anonymous",
     "com.azure.v2.security.keyvault.keys.implementation.models.KeyVerifyParameters": "KeyVault.KeyVerifyParameters",
     "com.azure.v2.security.keyvault.keys.implementation.models.KeyVerifyResult": "KeyVault.KeyVerifyResult",
     "com.azure.v2.security.keyvault.keys.implementation.models.LifetimeActions": "KeyVault.LifetimeActions",

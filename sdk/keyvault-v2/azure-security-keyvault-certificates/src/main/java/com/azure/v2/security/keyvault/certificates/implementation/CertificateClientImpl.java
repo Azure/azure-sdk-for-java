@@ -4,6 +4,7 @@
 
 package com.azure.v2.security.keyvault.certificates.implementation;
 
+import com.azure.v2.security.keyvault.certificates.CertificateServiceVersion;
 import com.azure.v2.security.keyvault.certificates.implementation.models.BackupCertificateResult;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateBundle;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateCreateParameters;
@@ -68,17 +69,17 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Version parameter.
+     * Service version.
      */
-    private final String apiVersion;
+    private final CertificateServiceVersion serviceVersion;
 
     /**
-     * Gets Version parameter.
+     * Gets Service version.
      * 
-     * @return the apiVersion value.
+     * @return the serviceVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
+    public CertificateServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /**
@@ -100,13 +101,15 @@ public final class CertificateClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param vaultBaseUrl
-     * @param apiVersion Version parameter.
+     * @param serviceVersion Service version.
      */
-    public CertificateClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, String apiVersion) {
+    public CertificateClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl,
+        CertificateServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
-        this.apiVersion = apiVersion;
-        this.service = CertificateClientService.getNewInstance(this.httpPipeline);
+        this.serviceVersion = serviceVersion;
+        this.service = CertificateClientServiceImpl
+            .getNewInstance(this.httpPipeline);
     }
 
     /**
@@ -415,8 +418,8 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<CertificateItem> getCertificatesSinglePage(Integer maxresults, Boolean includePending) {
         final String accept = "application/json";
-        Response<CertificateListResult> res = service.getCertificates(this.getVaultBaseUrl(), this.getApiVersion(),
-            maxresults, includePending, accept, RequestContext.none());
+        Response<CertificateListResult> res = service.getCertificates(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), maxresults, includePending, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -440,8 +443,8 @@ public final class CertificateClientImpl {
     public PagedResponse<CertificateItem> getCertificatesSinglePage(Integer maxresults, Boolean includePending,
         RequestContext requestContext) {
         final String accept = "application/json";
-        Response<CertificateListResult> res = service.getCertificates(this.getVaultBaseUrl(), this.getApiVersion(),
-            maxresults, includePending, accept, requestContext);
+        Response<CertificateListResult> res = service.getCertificates(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), maxresults, includePending, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -527,8 +530,8 @@ public final class CertificateClientImpl {
     public Response<DeletedCertificateBundle> deleteCertificateWithResponse(String certificateName,
         RequestContext requestContext) {
         final String accept = "application/json";
-        return service.deleteCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
-            requestContext);
+        return service.deleteCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
+            accept, requestContext);
     }
 
     /**
@@ -567,8 +570,8 @@ public final class CertificateClientImpl {
     public Response<Contacts> setCertificateContactsWithResponse(Contacts contacts, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.setCertificateContacts(this.getVaultBaseUrl(), this.getApiVersion(), contentType, accept,
-            contacts, requestContext);
+        return service.setCertificateContacts(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            contentType, accept, contacts, requestContext);
     }
 
     /**
@@ -603,7 +606,8 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Contacts> getCertificateContactsWithResponse(RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getCertificateContacts(this.getVaultBaseUrl(), this.getApiVersion(), accept, requestContext);
+        return service.getCertificateContacts(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
+            requestContext);
     }
 
     /**
@@ -636,7 +640,8 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Contacts> deleteCertificateContactsWithResponse(RequestContext requestContext) {
         final String accept = "application/json";
-        return service.deleteCertificateContacts(this.getVaultBaseUrl(), this.getApiVersion(), accept, requestContext);
+        return service.deleteCertificateContacts(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
+            requestContext);
     }
 
     /**
@@ -671,7 +676,7 @@ public final class CertificateClientImpl {
     public PagedResponse<CertificateIssuerItem> getCertificateIssuersSinglePage(Integer maxresults) {
         final String accept = "application/json";
         Response<CertificateIssuerListResult> res = service.getCertificateIssuers(this.getVaultBaseUrl(),
-            this.getApiVersion(), maxresults, accept, RequestContext.none());
+            this.getServiceVersion().getVersion(), maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -695,7 +700,7 @@ public final class CertificateClientImpl {
         RequestContext requestContext) {
         final String accept = "application/json";
         Response<CertificateIssuerListResult> res = service.getCertificateIssuers(this.getVaultBaseUrl(),
-            this.getApiVersion(), maxresults, accept, requestContext);
+            this.getServiceVersion().getVersion(), maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -778,8 +783,8 @@ public final class CertificateClientImpl {
         CertificateIssuerSetParameters parameter, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.setCertificateIssuer(this.getVaultBaseUrl(), this.getApiVersion(), issuerName, contentType,
-            accept, parameter, requestContext);
+        return service.setCertificateIssuer(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), issuerName,
+            contentType, accept, parameter, requestContext);
     }
 
     /**
@@ -820,8 +825,8 @@ public final class CertificateClientImpl {
         CertificateIssuerUpdateParameters parameter, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateCertificateIssuer(this.getVaultBaseUrl(), this.getApiVersion(), issuerName, contentType,
-            accept, parameter, requestContext);
+        return service.updateCertificateIssuer(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            issuerName, contentType, accept, parameter, requestContext);
     }
 
     /**
@@ -858,8 +863,8 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IssuerBundle> getCertificateIssuerWithResponse(String issuerName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getCertificateIssuer(this.getVaultBaseUrl(), this.getApiVersion(), issuerName, accept,
-            requestContext);
+        return service.getCertificateIssuer(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), issuerName,
+            accept, requestContext);
     }
 
     /**
@@ -896,8 +901,8 @@ public final class CertificateClientImpl {
     public Response<IssuerBundle> deleteCertificateIssuerWithResponse(String issuerName,
         RequestContext requestContext) {
         final String accept = "application/json";
-        return service.deleteCertificateIssuer(this.getVaultBaseUrl(), this.getApiVersion(), issuerName, accept,
-            requestContext);
+        return service.deleteCertificateIssuer(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            issuerName, accept, requestContext);
     }
 
     /**
@@ -937,8 +942,8 @@ public final class CertificateClientImpl {
         CertificateCreateParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, contentType,
-            accept, parameters, requestContext);
+        return service.createCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
+            contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -982,8 +987,8 @@ public final class CertificateClientImpl {
         CertificateImportParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.importCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, contentType,
-            accept, parameters, requestContext);
+        return service.importCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
+            contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -1025,7 +1030,7 @@ public final class CertificateClientImpl {
     public PagedResponse<CertificateItem> getCertificateVersionsSinglePage(String certificateName, Integer maxresults) {
         final String accept = "application/json";
         Response<CertificateListResult> res = service.getCertificateVersions(this.getVaultBaseUrl(),
-            this.getApiVersion(), certificateName, maxresults, accept, RequestContext.none());
+            this.getServiceVersion().getVersion(), certificateName, maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1050,7 +1055,7 @@ public final class CertificateClientImpl {
         RequestContext requestContext) {
         final String accept = "application/json";
         Response<CertificateListResult> res = service.getCertificateVersions(this.getVaultBaseUrl(),
-            this.getApiVersion(), certificateName, maxresults, accept, requestContext);
+            this.getServiceVersion().getVersion(), certificateName, maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1135,8 +1140,8 @@ public final class CertificateClientImpl {
     public Response<CertificatePolicy> getCertificatePolicyWithResponse(String certificateName,
         RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getCertificatePolicy(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
-            requestContext);
+        return service.getCertificatePolicy(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            certificateName, accept, requestContext);
     }
 
     /**
@@ -1175,8 +1180,8 @@ public final class CertificateClientImpl {
         CertificatePolicy certificatePolicy, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateCertificatePolicy(this.getVaultBaseUrl(), this.getApiVersion(), certificateName,
-            contentType, accept, certificatePolicy, requestContext);
+        return service.updateCertificatePolicy(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            certificateName, contentType, accept, certificatePolicy, requestContext);
     }
 
     /**
@@ -1218,7 +1223,7 @@ public final class CertificateClientImpl {
         CertificateUpdateParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName,
+        return service.updateCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
             certificateVersion, contentType, accept, parameters, requestContext);
     }
 
@@ -1263,8 +1268,8 @@ public final class CertificateClientImpl {
     public Response<CertificateBundle> getCertificateWithResponse(String certificateName, String certificateVersion,
         RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, certificateVersion,
-            accept, requestContext);
+        return service.getCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
+            certificateVersion, accept, requestContext);
     }
 
     /**
@@ -1306,8 +1311,8 @@ public final class CertificateClientImpl {
         CertificateOperationUpdateParameter certificateOperation, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateCertificateOperation(this.getVaultBaseUrl(), this.getApiVersion(), certificateName,
-            contentType, accept, certificateOperation, requestContext);
+        return service.updateCertificateOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            certificateName, contentType, accept, certificateOperation, requestContext);
     }
 
     /**
@@ -1349,8 +1354,8 @@ public final class CertificateClientImpl {
     public Response<CertificateOperation> getCertificateOperationWithResponse(String certificateName,
         RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getCertificateOperation(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
-            requestContext);
+        return service.getCertificateOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            certificateName, accept, requestContext);
     }
 
     /**
@@ -1389,8 +1394,8 @@ public final class CertificateClientImpl {
     public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName,
         RequestContext requestContext) {
         final String accept = "application/json";
-        return service.deleteCertificateOperation(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
-            requestContext);
+        return service.deleteCertificateOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            certificateName, accept, requestContext);
     }
 
     /**
@@ -1429,8 +1434,8 @@ public final class CertificateClientImpl {
         CertificateMergeParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.mergeCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, contentType,
-            accept, parameters, requestContext);
+        return service.mergeCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
+            contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -1468,8 +1473,8 @@ public final class CertificateClientImpl {
     public Response<BackupCertificateResult> backupCertificateWithResponse(String certificateName,
         RequestContext requestContext) {
         final String accept = "application/json";
-        return service.backupCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
-            requestContext);
+        return service.backupCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
+            accept, requestContext);
     }
 
     /**
@@ -1507,8 +1512,8 @@ public final class CertificateClientImpl {
         RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.restoreCertificate(this.getVaultBaseUrl(), this.getApiVersion(), contentType, accept, parameters,
-            requestContext);
+        return service.restoreCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType,
+            accept, parameters, requestContext);
     }
 
     /**
@@ -1548,7 +1553,7 @@ public final class CertificateClientImpl {
         Boolean includePending) {
         final String accept = "application/json";
         Response<DeletedCertificateListResult> res = service.getDeletedCertificates(this.getVaultBaseUrl(),
-            this.getApiVersion(), maxresults, includePending, accept, RequestContext.none());
+            this.getServiceVersion().getVersion(), maxresults, includePending, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1574,7 +1579,7 @@ public final class CertificateClientImpl {
         Boolean includePending, RequestContext requestContext) {
         final String accept = "application/json";
         Response<DeletedCertificateListResult> res = service.getDeletedCertificates(this.getVaultBaseUrl(),
-            this.getApiVersion(), maxresults, includePending, accept, requestContext);
+            this.getServiceVersion().getVersion(), maxresults, includePending, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1663,8 +1668,8 @@ public final class CertificateClientImpl {
     public Response<DeletedCertificateBundle> getDeletedCertificateWithResponse(String certificateName,
         RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getDeletedCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
-            requestContext);
+        return service.getDeletedCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            certificateName, accept, requestContext);
     }
 
     /**
@@ -1703,8 +1708,8 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedCertificateWithResponse(String certificateName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.purgeDeletedCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
-            requestContext);
+        return service.purgeDeletedCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            certificateName, accept, requestContext);
     }
 
     /**
@@ -1742,8 +1747,8 @@ public final class CertificateClientImpl {
     public Response<CertificateBundle> recoverDeletedCertificateWithResponse(String certificateName,
         RequestContext requestContext) {
         final String accept = "application/json";
-        return service.recoverDeletedCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
-            requestContext);
+        return service.recoverDeletedCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            certificateName, accept, requestContext);
     }
 
     /**

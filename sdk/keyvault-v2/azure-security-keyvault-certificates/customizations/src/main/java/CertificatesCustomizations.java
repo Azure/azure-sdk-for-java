@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.autorest.customization.ClassCustomization;
-import com.azure.autorest.customization.Customization;
-import com.azure.autorest.customization.Editor;
-import com.azure.autorest.customization.LibraryCustomization;
+import com.microsoft.typespec.http.client.generator.core.customization.ClassCustomization;
+import com.microsoft.typespec.http.client.generator.core.customization.Customization;
+import com.microsoft.typespec.http.client.generator.core.customization.Editor;
+import com.microsoft.typespec.http.client.generator.core.customization.LibraryCustomization;
 import org.slf4j.Logger;
 
 /**
@@ -15,14 +15,9 @@ public class CertificatesCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         // Remove unnecessary files.
         removeFiles(libraryCustomization.getRawEditor());
-
-        // Rename KeyVaultServiceVersion to KeyServiceVersion.
-        libraryCustomization.getPackage("com.azure.v2.security.keyvault.certificates")
-            .getClass("KeyVaultServiceVersion")
-            .rename("CertificateServiceVersion");
-
         moveListResultFiles(libraryCustomization);
         customizeError(libraryCustomization);
+        customizeServiceVersion(libraryCustomization);
         customizeModuleInfo(libraryCustomization.getRawEditor());
     }
 
@@ -109,15 +104,12 @@ public class CertificatesCustomizations extends Customization {
         replaceInFile(classCustomization, implModelsDirectory + "CertificateOperation.java",
             new String[] { oldClassName },
             new String[] { newClassName });
+    }
 
-        // Add import statement in impl KeyVaultError class.
-        classCustomization = libraryCustomization.getPackage(implModelsPackage)
-            .getClass("KeyVaultError")
-            .addImports(modelsPackage + "." + newClassName);
-
-        replaceInFile(classCustomization, implModelsDirectory + "KeyVaultError.java",
-            new String[] { oldClassName },
-            new String[] { newClassName });
+    private static void customizeServiceVersion(LibraryCustomization libraryCustomization) {
+        libraryCustomization.getPackage("com.azure.v2.security.keyvault.certificates")
+            .getClass("KeyVaultServiceVersion")
+            .rename("CertificateServiceVersion");
     }
 
     private static void replaceInFile(ClassCustomization classCustomization, String classPath,

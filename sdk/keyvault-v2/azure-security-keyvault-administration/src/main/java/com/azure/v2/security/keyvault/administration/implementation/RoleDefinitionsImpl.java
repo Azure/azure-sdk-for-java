@@ -4,6 +4,7 @@
 
 package com.azure.v2.security.keyvault.administration.implementation;
 
+import com.azure.v2.security.keyvault.administration.KeyVaultAdministrationServiceVersion;
 import com.azure.v2.security.keyvault.administration.implementation.models.KeyVaultError;
 import com.azure.v2.security.keyvault.administration.implementation.models.RoleDefinition;
 import com.azure.v2.security.keyvault.administration.implementation.models.RoleDefinitionCreateParameters;
@@ -47,8 +48,18 @@ public final class RoleDefinitionsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     RoleDefinitionsImpl(KeyVaultAdministrationClientImpl client) {
-        this.service = RoleDefinitionsService.getNewInstance(client.getHttpPipeline());
+        this.service = RoleDefinitionsServiceImpl
+            .getNewInstance(this.httpPipeline);
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public KeyVaultAdministrationServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -132,8 +143,8 @@ public final class RoleDefinitionsImpl {
     public Response<RoleDefinition> deleteWithResponse(String scope, String roleDefinitionName,
         RequestContext requestContext) {
         final String accept = "application/json";
-        return service.delete(this.client.getVaultBaseUrl(), this.client.getApiVersion(), scope, roleDefinitionName,
-            accept, requestContext);
+        return service.delete(this.client.getVaultBaseUrl(), this.client.getServiceVersion().getVersion(), scope,
+            roleDefinitionName, accept, requestContext);
     }
 
     /**
@@ -168,8 +179,8 @@ public final class RoleDefinitionsImpl {
         RoleDefinitionCreateParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOrUpdate(this.client.getVaultBaseUrl(), this.client.getApiVersion(), scope,
-            roleDefinitionName, contentType, accept, parameters, requestContext);
+        return service.createOrUpdate(this.client.getVaultBaseUrl(), this.client.getServiceVersion().getVersion(),
+            scope, roleDefinitionName, contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -204,8 +215,8 @@ public final class RoleDefinitionsImpl {
     public Response<RoleDefinition> getWithResponse(String scope, String roleDefinitionName,
         RequestContext requestContext) {
         final String accept = "application/json";
-        return service.get(this.client.getVaultBaseUrl(), this.client.getApiVersion(), scope, roleDefinitionName,
-            accept, requestContext);
+        return service.get(this.client.getVaultBaseUrl(), this.client.getServiceVersion().getVersion(), scope,
+            roleDefinitionName, accept, requestContext);
     }
 
     /**
@@ -238,7 +249,7 @@ public final class RoleDefinitionsImpl {
     public PagedResponse<RoleDefinition> listSinglePage(String scope, String filter) {
         final String accept = "application/json";
         Response<RoleDefinitionListResult> res = service.list(this.client.getVaultBaseUrl(),
-            this.client.getApiVersion(), scope, filter, accept, RequestContext.none());
+            this.client.getServiceVersion().getVersion(), scope, filter, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -259,7 +270,7 @@ public final class RoleDefinitionsImpl {
     public PagedResponse<RoleDefinition> listSinglePage(String scope, String filter, RequestContext requestContext) {
         final String accept = "application/json";
         Response<RoleDefinitionListResult> res = service.list(this.client.getVaultBaseUrl(),
-            this.client.getApiVersion(), scope, filter, accept, requestContext);
+            this.client.getServiceVersion().getVersion(), scope, filter, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
