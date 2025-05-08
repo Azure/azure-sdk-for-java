@@ -4,6 +4,10 @@
 
 package com.azure.v2.security.keyvault.administration.implementation;
 
+import com.azure.v2.core.http.polling.DefaultPollingStrategy;
+import com.azure.v2.core.http.polling.Poller;
+import com.azure.v2.core.http.polling.PollingStrategyOptions;
+import com.azure.v2.security.keyvault.administration.KeyVaultAdministrationServiceVersion;
 import com.azure.v2.security.keyvault.administration.implementation.models.FullBackupOperation;
 import com.azure.v2.security.keyvault.administration.implementation.models.KeyVaultError;
 import com.azure.v2.security.keyvault.administration.implementation.models.RestoreOperation;
@@ -30,6 +34,7 @@ import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
 
 /**
  * Initializes a new instance of the KeyVaultAdministrationClient type.
@@ -54,17 +59,17 @@ public final class KeyVaultAdministrationClientImpl {
     }
 
     /**
-     * Version parameter.
+     * Service version.
      */
-    private final String apiVersion;
+    private final KeyVaultAdministrationServiceVersion serviceVersion;
 
     /**
-     * Gets Version parameter.
+     * Gets Service version.
      * 
-     * @return the apiVersion value.
+     * @return the serviceVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
+    public KeyVaultAdministrationServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /**
@@ -114,15 +119,18 @@ public final class KeyVaultAdministrationClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param vaultBaseUrl
-     * @param apiVersion Version parameter.
+     * @param serviceVersion Service version.
      */
-    public KeyVaultAdministrationClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, String apiVersion) {
+    public KeyVaultAdministrationClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl,
+        KeyVaultAdministrationServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
-        this.apiVersion = apiVersion;
+        this.serviceVersion = serviceVersion;
         this.roleDefinitions = new RoleDefinitionsImpl(this);
         this.roleAssignments = new RoleAssignmentsImpl(this);
-        this.service = KeyVaultAdministrationClientService.getNewInstance(this.httpPipeline);
+        this.service
+            = KeyVaultAdministrationClientServiceImpl
+                .getNewInstance(this.httpPipeline);
     }
 
     /**
@@ -226,58 +234,6 @@ public final class KeyVaultAdministrationClientImpl {
     }
 
     /**
-     * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     storageResourceUri: String (Required)
-     *     token: String (Optional)
-     *     useManagedIdentity: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     *     jobId: String (Optional)
-     *     azureStorageBlobContainerUri: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
-     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
-     * time of making this call.
-     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full backup operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FullBackupOperation> fullBackupWithResponse(SASTokenParameter azureStorageBlobContainerUri,
-        RequestContext requestContext) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.fullBackup(this.getVaultBaseUrl(), this.getApiVersion(), contentType, accept,
-            azureStorageBlobContainerUri, requestContext);
-    }
-
-    /**
      * Returns the status of full backup operation.
      * 
      * @param jobId The id returned as part of the backup request.
@@ -290,7 +246,8 @@ public final class KeyVaultAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FullBackupOperation> fullBackupStatusWithResponse(String jobId, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.fullBackupStatus(this.getVaultBaseUrl(), this.getApiVersion(), jobId, accept, requestContext);
+        return service.fullBackupStatus(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), jobId, accept,
+            requestContext);
     }
 
     /**
@@ -308,58 +265,96 @@ public final class KeyVaultAdministrationClientImpl {
     }
 
     /**
-     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     sasTokenParameters (Required): {
-     *         storageResourceUri: String (Required)
-     *         token: String (Optional)
-     *         useManagedIdentity: Boolean (Optional)
-     *     }
-     *     folderToRestore: String (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     jobId: String (Optional)
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
-     * was stored.
-     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
+     * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
+     * 
+     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
+     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
+     * time of making this call.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore operation along with {@link Response}.
+     * @return full backup operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RestoreOperation> fullRestoreOperationWithResponse(RestoreOperationParameters restoreBlobDetails,
+    public Response<FullBackupOperation> fullBackupWithResponse(SASTokenParameter azureStorageBlobContainerUri,
         RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.fullRestoreOperation(this.getVaultBaseUrl(), this.getApiVersion(), contentType, accept,
-            restoreBlobDetails, requestContext);
+        return service.fullBackup(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType, accept,
+            azureStorageBlobContainerUri, requestContext);
     }
 
+    /**
+     * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
+     * 
+     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
+     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
+     * time of making this call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return full backup operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public Poller<FullBackupOperation, FullBackupOperation>
+        beginFullBackup(SASTokenParameter azureStorageBlobContainerUri) {
+        return Poller.createPoller(Duration.ofSeconds(1),
+            () -> this.fullBackupWithResponse(azureStorageBlobContainerUri, RequestContext.none()),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setRequestContext(RequestContext.none())
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            FullBackupOperation.class, FullBackupOperation.class);
+    }
+
+    /**
+     * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
+     * 
+     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
+     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
+     * time of making this call.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return full backup operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public Poller<FullBackupOperation, FullBackupOperation>
+        beginFullBackup(SASTokenParameter azureStorageBlobContainerUri, RequestContext requestContext) {
+        return Poller.createPoller(Duration.ofSeconds(1),
+            () -> this.fullBackupWithResponse(azureStorageBlobContainerUri, requestContext),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setRequestContext(requestContext)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            FullBackupOperation.class, FullBackupOperation.class);
+    }
+
+    /**
+     * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
+     * 
+     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
+     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
+     * time of making this call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return full backup operation.
+     */
+    /**
+     * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
+     * 
+     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
+     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
+     * time of making this call.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return full backup operation.
+     */
     /**
      * Returns the status of restore operation.
      * 
@@ -373,7 +368,8 @@ public final class KeyVaultAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestoreOperation> restoreStatusWithResponse(String jobId, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.restoreStatus(this.getVaultBaseUrl(), this.getApiVersion(), jobId, accept, requestContext);
+        return service.restoreStatus(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), jobId, accept,
+            requestContext);
     }
 
     /**
@@ -391,60 +387,91 @@ public final class KeyVaultAdministrationClientImpl {
     }
 
     /**
-     * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
-     * storage backup folder.
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     sasTokenParameters (Required): {
-     *         storageResourceUri: String (Required)
-     *         token: String (Optional)
-     *         useManagedIdentity: Boolean (Optional)
-     *     }
-     *     folder: String (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     jobId: String (Optional)
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param keyName The name of the key to be restored from the user supplied backup.
+     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
+     * 
      * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
      * was stored.
-     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return selective Key Restore operation along with {@link Response}.
+     * @return restore operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SelectiveKeyRestoreOperation> selectiveKeyRestoreOperationWithResponse(String keyName,
-        SelectiveKeyRestoreOperationParameters restoreBlobDetails, RequestContext requestContext) {
+    public Response<RestoreOperation> fullRestoreOperationWithResponse(RestoreOperationParameters restoreBlobDetails,
+        RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.selectiveKeyRestoreOperation(this.getVaultBaseUrl(), this.getApiVersion(), keyName, contentType,
+        return service.fullRestoreOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType,
             accept, restoreBlobDetails, requestContext);
     }
 
+    /**
+     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public Poller<RestoreOperation, RestoreOperation>
+        beginFullRestoreOperation(RestoreOperationParameters restoreBlobDetails) {
+        return Poller.createPoller(Duration.ofSeconds(1),
+            () -> this.fullRestoreOperationWithResponse(restoreBlobDetails, RequestContext.none()),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setRequestContext(RequestContext.none())
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            RestoreOperation.class, RestoreOperation.class);
+    }
+
+    /**
+     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public Poller<RestoreOperation, RestoreOperation>
+        beginFullRestoreOperation(RestoreOperationParameters restoreBlobDetails, RequestContext requestContext) {
+        return Poller.createPoller(Duration.ofSeconds(1),
+            () -> this.fullRestoreOperationWithResponse(restoreBlobDetails, requestContext),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setRequestContext(requestContext)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            RestoreOperation.class, RestoreOperation.class);
+    }
+
+    /**
+     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore operation.
+     */
+    /**
+     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore operation.
+     */
     /**
      * Returns the status of the selective key restore operation.
      * 
@@ -459,8 +486,8 @@ public final class KeyVaultAdministrationClientImpl {
     public Response<SelectiveKeyRestoreOperation> selectiveKeyRestoreStatusWithResponse(String jobId,
         RequestContext requestContext) {
         final String accept = "application/json";
-        return service.selectiveKeyRestoreStatus(this.getVaultBaseUrl(), this.getApiVersion(), jobId, accept,
-            requestContext);
+        return service.selectiveKeyRestoreStatus(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), jobId,
+            accept, requestContext);
     }
 
     /**
@@ -477,6 +504,102 @@ public final class KeyVaultAdministrationClientImpl {
         return selectiveKeyRestoreStatusWithResponse(jobId, RequestContext.none()).getValue();
     }
 
+    /**
+     * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
+     * storage backup folder.
+     * 
+     * @param keyName The name of the key to be restored from the user supplied backup.
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return selective Key Restore operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SelectiveKeyRestoreOperation> selectiveKeyRestoreOperationWithResponse(String keyName,
+        SelectiveKeyRestoreOperationParameters restoreBlobDetails, RequestContext requestContext) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.selectiveKeyRestoreOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            keyName, contentType, accept, restoreBlobDetails, requestContext);
+    }
+
+    /**
+     * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
+     * storage backup folder.
+     * 
+     * @param keyName The name of the key to be restored from the user supplied backup.
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return selective Key Restore operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public Poller<SelectiveKeyRestoreOperation, SelectiveKeyRestoreOperation>
+        beginSelectiveKeyRestoreOperation(String keyName, SelectiveKeyRestoreOperationParameters restoreBlobDetails) {
+        return Poller.createPoller(Duration.ofSeconds(1),
+            () -> this.selectiveKeyRestoreOperationWithResponse(keyName, restoreBlobDetails, RequestContext.none()),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setRequestContext(RequestContext.none())
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            SelectiveKeyRestoreOperation.class, SelectiveKeyRestoreOperation.class);
+    }
+
+    /**
+     * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
+     * storage backup folder.
+     * 
+     * @param keyName The name of the key to be restored from the user supplied backup.
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return selective Key Restore operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public Poller<SelectiveKeyRestoreOperation, SelectiveKeyRestoreOperation> beginSelectiveKeyRestoreOperation(
+        String keyName, SelectiveKeyRestoreOperationParameters restoreBlobDetails, RequestContext requestContext) {
+        return Poller.createPoller(Duration.ofSeconds(1),
+            () -> this.selectiveKeyRestoreOperationWithResponse(keyName, restoreBlobDetails, requestContext),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setRequestContext(requestContext)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            SelectiveKeyRestoreOperation.class, SelectiveKeyRestoreOperation.class);
+    }
+
+    /**
+     * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
+     * storage backup folder.
+     * 
+     * @param keyName The name of the key to be restored from the user supplied backup.
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return selective Key Restore operation.
+     */
+    /**
+     * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
+     * storage backup folder.
+     * 
+     * @param keyName The name of the key to be restored from the user supplied backup.
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the service returns an error.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return selective Key Restore operation.
+     */
     /**
      * Updates key vault account setting, stores it, then returns the setting name and value to the client.
      * 
@@ -495,8 +618,8 @@ public final class KeyVaultAdministrationClientImpl {
         RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateSetting(this.getVaultBaseUrl(), this.getApiVersion(), settingName, contentType, accept,
-            parameters, requestContext);
+        return service.updateSetting(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), settingName,
+            contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -533,7 +656,8 @@ public final class KeyVaultAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Setting> getSettingWithResponse(String settingName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getSetting(this.getVaultBaseUrl(), this.getApiVersion(), settingName, accept, requestContext);
+        return service.getSetting(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), settingName, accept,
+            requestContext);
     }
 
     /**
@@ -568,7 +692,8 @@ public final class KeyVaultAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SettingsListResult> getSettingsWithResponse(RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getSettings(this.getVaultBaseUrl(), this.getApiVersion(), accept, requestContext);
+        return service.getSettings(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
+            requestContext);
     }
 
     /**

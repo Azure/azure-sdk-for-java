@@ -4,6 +4,7 @@
 
 package com.azure.v2.security.keyvault.keys.implementation;
 
+import com.azure.v2.security.keyvault.keys.KeyServiceVersion;
 import com.azure.v2.security.keyvault.keys.implementation.models.BackupKeyResult;
 import com.azure.v2.security.keyvault.keys.implementation.models.DeletedKeyBundle;
 import com.azure.v2.security.keyvault.keys.implementation.models.DeletedKeyItem;
@@ -68,17 +69,17 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Version parameter.
+     * Service version.
      */
-    private final String apiVersion;
+    private final KeyServiceVersion serviceVersion;
 
     /**
-     * Gets Version parameter.
+     * Gets Service version.
      * 
-     * @return the apiVersion value.
+     * @return the serviceVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
+    public KeyServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /**
@@ -100,13 +101,14 @@ public final class KeyClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param vaultBaseUrl
-     * @param apiVersion Version parameter.
+     * @param serviceVersion Service version.
      */
-    public KeyClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, String apiVersion) {
+    public KeyClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, KeyServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
-        this.apiVersion = apiVersion;
-        this.service = KeyClientService.getNewInstance(this.httpPipeline);
+        this.serviceVersion = serviceVersion;
+        this.service
+            = KeyClientServiceImpl.getNewInstance(this.httpPipeline);
     }
 
     /**
@@ -388,8 +390,8 @@ public final class KeyClientImpl {
         RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, contentType, accept, parameters,
-            requestContext);
+        return service.createKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, contentType,
+            accept, parameters, requestContext);
     }
 
     /**
@@ -427,7 +429,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyBundle> rotateKeyWithResponse(String keyName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.rotateKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, accept, requestContext);
+        return service.rotateKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
+            requestContext);
     }
 
     /**
@@ -466,8 +469,8 @@ public final class KeyClientImpl {
         RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.importKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, contentType, accept, parameters,
-            requestContext);
+        return service.importKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, contentType,
+            accept, parameters, requestContext);
     }
 
     /**
@@ -506,7 +509,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedKeyBundle> deleteKeyWithResponse(String keyName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.deleteKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, accept, requestContext);
+        return service.deleteKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
+            requestContext);
     }
 
     /**
@@ -548,8 +552,8 @@ public final class KeyClientImpl {
         RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
-            parameters, requestContext);
+        return service.updateKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
+            contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -592,8 +596,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyBundle> getKeyWithResponse(String keyName, String keyVersion, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, accept,
-            requestContext);
+        return service.getKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
+            accept, requestContext);
     }
 
     /**
@@ -634,8 +638,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyItem> getKeyVersionsSinglePage(String keyName, Integer maxresults) {
         final String accept = "application/json";
-        Response<KeyListResult> res = service.getKeyVersions(this.getVaultBaseUrl(), this.getApiVersion(), keyName,
-            maxresults, accept, RequestContext.none());
+        Response<KeyListResult> res = service.getKeyVersions(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), keyName, maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -659,8 +663,8 @@ public final class KeyClientImpl {
     public PagedResponse<KeyItem> getKeyVersionsSinglePage(String keyName, Integer maxresults,
         RequestContext requestContext) {
         final String accept = "application/json";
-        Response<KeyListResult> res = service.getKeyVersions(this.getVaultBaseUrl(), this.getApiVersion(), keyName,
-            maxresults, accept, requestContext);
+        Response<KeyListResult> res = service.getKeyVersions(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), keyName, maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -744,8 +748,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyItem> getKeysSinglePage(Integer maxresults) {
         final String accept = "application/json";
-        Response<KeyListResult> res
-            = service.getKeys(this.getVaultBaseUrl(), this.getApiVersion(), maxresults, accept, RequestContext.none());
+        Response<KeyListResult> res = service.getKeys(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -769,8 +773,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyItem> getKeysSinglePage(Integer maxresults, RequestContext requestContext) {
         final String accept = "application/json";
-        Response<KeyListResult> res
-            = service.getKeys(this.getVaultBaseUrl(), this.getApiVersion(), maxresults, accept, requestContext);
+        Response<KeyListResult> res = service.getKeys(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -861,7 +865,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupKeyResult> backupKeyWithResponse(String keyName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.backupKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, accept, requestContext);
+        return service.backupKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
+            requestContext);
     }
 
     /**
@@ -912,8 +917,8 @@ public final class KeyClientImpl {
     public Response<KeyBundle> restoreKeyWithResponse(KeyRestoreParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.restoreKey(this.getVaultBaseUrl(), this.getApiVersion(), contentType, accept, parameters,
-            requestContext);
+        return service.restoreKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType, accept,
+            parameters, requestContext);
     }
 
     /**
@@ -965,8 +970,8 @@ public final class KeyClientImpl {
         KeyOperationsParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.encrypt(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
-            parameters, requestContext);
+        return service.encrypt(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
+            contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -1018,8 +1023,8 @@ public final class KeyClientImpl {
         KeyOperationsParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.decrypt(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
-            parameters, requestContext);
+        return service.decrypt(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
+            contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -1066,8 +1071,8 @@ public final class KeyClientImpl {
         KeySignParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.sign(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
-            parameters, requestContext);
+        return service.sign(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
+            contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -1111,8 +1116,8 @@ public final class KeyClientImpl {
         KeyVerifyParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.verify(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
-            parameters, requestContext);
+        return service.verify(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
+            contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -1159,8 +1164,8 @@ public final class KeyClientImpl {
         KeyOperationsParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.wrapKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
-            parameters, requestContext);
+        return service.wrapKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
+            contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -1207,8 +1212,8 @@ public final class KeyClientImpl {
         KeyOperationsParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.unwrapKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
-            parameters, requestContext);
+        return service.unwrapKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
+            contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -1252,8 +1257,8 @@ public final class KeyClientImpl {
         KeyReleaseParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.release(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
-            parameters, requestContext);
+        return service.release(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
+            contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -1293,8 +1298,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DeletedKeyItem> getDeletedKeysSinglePage(Integer maxresults) {
         final String accept = "application/json";
-        Response<DeletedKeyListResult> res = service.getDeletedKeys(this.getVaultBaseUrl(), this.getApiVersion(),
-            maxresults, accept, RequestContext.none());
+        Response<DeletedKeyListResult> res = service.getDeletedKeys(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1318,8 +1323,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DeletedKeyItem> getDeletedKeysSinglePage(Integer maxresults, RequestContext requestContext) {
         final String accept = "application/json";
-        Response<DeletedKeyListResult> res
-            = service.getDeletedKeys(this.getVaultBaseUrl(), this.getApiVersion(), maxresults, accept, requestContext);
+        Response<DeletedKeyListResult> res = service.getDeletedKeys(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1406,7 +1411,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedKeyBundle> getDeletedKeyWithResponse(String keyName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getDeletedKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, accept, requestContext);
+        return service.getDeletedKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
+            requestContext);
     }
 
     /**
@@ -1446,7 +1452,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedKeyWithResponse(String keyName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.purgeDeletedKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, accept, requestContext);
+        return service.purgeDeletedKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
+            requestContext);
     }
 
     /**
@@ -1484,7 +1491,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyBundle> recoverDeletedKeyWithResponse(String keyName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.recoverDeletedKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, accept, requestContext);
+        return service.recoverDeletedKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
+            requestContext);
     }
 
     /**
@@ -1522,8 +1530,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyRotationPolicy> getKeyRotationPolicyWithResponse(String keyName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getKeyRotationPolicy(this.getVaultBaseUrl(), this.getApiVersion(), keyName, accept,
-            requestContext);
+        return service.getKeyRotationPolicy(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName,
+            accept, requestContext);
     }
 
     /**
@@ -1562,8 +1570,8 @@ public final class KeyClientImpl {
         KeyRotationPolicy keyRotationPolicy, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateKeyRotationPolicy(this.getVaultBaseUrl(), this.getApiVersion(), keyName, contentType,
-            accept, keyRotationPolicy, requestContext);
+        return service.updateKeyRotationPolicy(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName,
+            contentType, accept, keyRotationPolicy, requestContext);
     }
 
     /**
@@ -1603,8 +1611,8 @@ public final class KeyClientImpl {
         RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.getRandomBytes(this.getVaultBaseUrl(), this.getApiVersion(), contentType, accept, parameters,
-            requestContext);
+        return service.getRandomBytes(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType,
+            accept, parameters, requestContext);
     }
 
     /**

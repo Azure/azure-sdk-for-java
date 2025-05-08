@@ -4,6 +4,7 @@
 
 package com.azure.v2.security.keyvault.secrets.implementation;
 
+import com.azure.v2.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.v2.security.keyvault.secrets.implementation.models.BackupSecretResult;
 import com.azure.v2.security.keyvault.secrets.implementation.models.DeletedSecretBundle;
 import com.azure.v2.security.keyvault.secrets.implementation.models.DeletedSecretItem;
@@ -57,17 +58,17 @@ public final class SecretClientImpl {
     }
 
     /**
-     * Version parameter.
+     * Service version.
      */
-    private final String apiVersion;
+    private final SecretServiceVersion serviceVersion;
 
     /**
-     * Gets Version parameter.
+     * Gets Service version.
      * 
-     * @return the apiVersion value.
+     * @return the serviceVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
+    public SecretServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /**
@@ -89,13 +90,14 @@ public final class SecretClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param vaultBaseUrl
-     * @param apiVersion Version parameter.
+     * @param serviceVersion Service version.
      */
-    public SecretClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, String apiVersion) {
+    public SecretClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, SecretServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
-        this.apiVersion = apiVersion;
-        this.service = SecretClientService.getNewInstance(this.httpPipeline);
+        this.serviceVersion = serviceVersion;
+        this.service = SecretClientServiceImpl
+            .getNewInstance(this.httpPipeline);
     }
 
     /**
@@ -258,8 +260,8 @@ public final class SecretClientImpl {
         RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.setSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, contentType, accept,
-            parameters, requestContext);
+        return service.setSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName, contentType,
+            accept, parameters, requestContext);
     }
 
     /**
@@ -298,7 +300,8 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedSecretBundle> deleteSecretWithResponse(String secretName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.deleteSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, accept, requestContext);
+        return service.deleteSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName, accept,
+            requestContext);
     }
 
     /**
@@ -340,8 +343,8 @@ public final class SecretClientImpl {
         SecretUpdateParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, secretVersion,
-            contentType, accept, parameters, requestContext);
+        return service.updateSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
+            secretVersion, contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -385,8 +388,8 @@ public final class SecretClientImpl {
     public Response<SecretBundle> getSecretWithResponse(String secretName, String secretVersion,
         RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, secretVersion, accept,
-            requestContext);
+        return service.getSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
+            secretVersion, accept, requestContext);
     }
 
     /**
@@ -427,8 +430,8 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<SecretItem> getSecretsSinglePage(Integer maxresults) {
         final String accept = "application/json";
-        Response<SecretListResult> res = service.getSecrets(this.getVaultBaseUrl(), this.getApiVersion(), maxresults,
-            accept, RequestContext.none());
+        Response<SecretListResult> res = service.getSecrets(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -451,8 +454,8 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<SecretItem> getSecretsSinglePage(Integer maxresults, RequestContext requestContext) {
         final String accept = "application/json";
-        Response<SecretListResult> res
-            = service.getSecrets(this.getVaultBaseUrl(), this.getApiVersion(), maxresults, accept, requestContext);
+        Response<SecretListResult> res = service.getSecrets(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -534,8 +537,8 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<SecretItem> getSecretVersionsSinglePage(String secretName, Integer maxresults) {
         final String accept = "application/json";
-        Response<SecretListResult> res = service.getSecretVersions(this.getVaultBaseUrl(), this.getApiVersion(),
-            secretName, maxresults, accept, RequestContext.none());
+        Response<SecretListResult> res = service.getSecretVersions(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), secretName, maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -559,8 +562,8 @@ public final class SecretClientImpl {
     public PagedResponse<SecretItem> getSecretVersionsSinglePage(String secretName, Integer maxresults,
         RequestContext requestContext) {
         final String accept = "application/json";
-        Response<SecretListResult> res = service.getSecretVersions(this.getVaultBaseUrl(), this.getApiVersion(),
-            secretName, maxresults, accept, requestContext);
+        Response<SecretListResult> res = service.getSecretVersions(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), secretName, maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -644,8 +647,8 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DeletedSecretItem> getDeletedSecretsSinglePage(Integer maxresults) {
         final String accept = "application/json";
-        Response<DeletedSecretListResult> res = service.getDeletedSecrets(this.getVaultBaseUrl(), this.getApiVersion(),
-            maxresults, accept, RequestContext.none());
+        Response<DeletedSecretListResult> res = service.getDeletedSecrets(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -668,8 +671,8 @@ public final class SecretClientImpl {
     public PagedResponse<DeletedSecretItem> getDeletedSecretsSinglePage(Integer maxresults,
         RequestContext requestContext) {
         final String accept = "application/json";
-        Response<DeletedSecretListResult> res = service.getDeletedSecrets(this.getVaultBaseUrl(), this.getApiVersion(),
-            maxresults, accept, requestContext);
+        Response<DeletedSecretListResult> res = service.getDeletedSecrets(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -750,8 +753,8 @@ public final class SecretClientImpl {
     public Response<DeletedSecretBundle> getDeletedSecretWithResponse(String secretName,
         RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getDeletedSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, accept,
-            requestContext);
+        return service.getDeletedSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
+            accept, requestContext);
     }
 
     /**
@@ -790,8 +793,8 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedSecretWithResponse(String secretName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.purgeDeletedSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, accept,
-            requestContext);
+        return service.purgeDeletedSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
+            accept, requestContext);
     }
 
     /**
@@ -827,8 +830,8 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretBundle> recoverDeletedSecretWithResponse(String secretName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.recoverDeletedSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, accept,
-            requestContext);
+        return service.recoverDeletedSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
+            accept, requestContext);
     }
 
     /**
@@ -864,7 +867,8 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupSecretResult> backupSecretWithResponse(String secretName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.backupSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, accept, requestContext);
+        return service.backupSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName, accept,
+            requestContext);
     }
 
     /**
@@ -902,8 +906,8 @@ public final class SecretClientImpl {
         RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.restoreSecret(this.getVaultBaseUrl(), this.getApiVersion(), contentType, accept, parameters,
-            requestContext);
+        return service.restoreSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType, accept,
+            parameters, requestContext);
     }
 
     /**

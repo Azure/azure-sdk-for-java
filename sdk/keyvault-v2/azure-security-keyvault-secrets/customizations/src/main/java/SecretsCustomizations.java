@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.autorest.customization.Customization;
-import com.azure.autorest.customization.Editor;
-import com.azure.autorest.customization.LibraryCustomization;
+import com.microsoft.typespec.http.client.generator.core.customization.Customization;
+import com.microsoft.typespec.http.client.generator.core.customization.Editor;
+import com.microsoft.typespec.http.client.generator.core.customization.LibraryCustomization;
 import org.slf4j.Logger;
 
 /**
@@ -14,13 +14,8 @@ public class SecretsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         // Remove unnecessary files.
         removeFiles(libraryCustomization.getRawEditor());
-
-        // Rename KeyVaultServiceVersion to SecretServiceVersion.
-        libraryCustomization.getPackage("com.azure.v2.security.keyvault.secrets")
-            .getClass("KeyVaultServiceVersion")
-            .rename("SecretServiceVersion");
-
         moveListResultFiles(libraryCustomization);
+        customizeServiceVersion(libraryCustomization);
         customizeModuleInfo(libraryCustomization.getRawEditor());
     }
 
@@ -69,6 +64,12 @@ public class SecretsCustomizations extends Customization {
 
         // Move file to the new path.
         editor.renameFile(oldClassPath, newClassPath);
+    }
+
+    private static void customizeServiceVersion(LibraryCustomization libraryCustomization) {
+        libraryCustomization.getPackage("com.azure.v2.security.keyvault.secrets")
+            .getClass("KeyVaultServiceVersion")
+            .rename("SecretServiceVersion");
     }
 
     private static void customizeModuleInfo(Editor editor) {
