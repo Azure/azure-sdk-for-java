@@ -195,35 +195,24 @@ System.out.println("Phone Number Country Code: " + phoneNumber.getCountryCode())
 
 Use the Browse and Reservations API to reserve a phone number
 
-```java readme-sample-getPurchasedPhoneNumber
-    PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
-    BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("US", PhoneNumberType.TOLL_FREE)
+```java readme-sample-browseAndReservePhoneNumbers
+PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
+String reservationId = UUID.randomUUID().toString();
+
+BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("US", PhoneNumberType.TOLL_FREE)
         .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
         .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-            .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+                .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
-    PhoneNumbersBrowseResult result = phoneNumberClient.browseAvailableNumbers(browseRequest);
+PhoneNumbersBrowseResult result = phoneNumberClient.browseAvailableNumbers(browseRequest);
 
-    List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
+List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
 
-    numbersToAdd.add(result.getPhoneNumbers().get(0));
+numbersToAdd.add(result.getPhoneNumbers().get(0));
 
-    PhoneNumbersReservation reservationResponse
-        = phoneNumberClient.createOrUpdateReservation(
-                new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToAdd(numbersToAdd));
-    List<AvailablePhoneNumber> phoneNumbersWithError = reservationResponse.getPhoneNumbers().values().stream()
-            .filter(phoneNumber -> phoneNumber.getStatus() == PhoneNumberAvailabilityStatus.ERROR)
-            .collect(Collectors.toList());
-
-    if (!phoneNumbersWithError.isEmpty())
-    {
-        // Handle the error for the phone numbers that failed to reserve.
-        for (AvailablePhoneNumber phoneNumber : phoneNumbersWithError)
-        {
-            System.out.println("Failed to reserve phone number "+phoneNumber.getId() + ". Error Code: " + phoneNumber.getError().getCode() + " - Message: " + phoneNumber.getError().getMessage());
-        }
-    }    
-   
+PhoneNumbersReservation reservationResponse = phoneNumberClient.createOrUpdateReservation(
+        new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToAdd(numbersToAdd));
+System.out.println("Reservation ID: " + reservationResponse.getId());
 ```
 
 ### Long Running Operations
