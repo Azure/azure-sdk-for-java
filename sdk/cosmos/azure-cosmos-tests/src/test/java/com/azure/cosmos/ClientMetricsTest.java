@@ -8,7 +8,6 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -123,7 +122,7 @@ public class ClientMetricsTest extends BatchTestBase {
         assertThat(this.client).isNull();
         assertThat(this.meterRegistry).isNull();
 
-        this.meterRegistry = ConsoleLoggingRegistryFactory.create(1);
+        this.meterRegistry = Log4jDebugLoggingRegistryFactory.create(1);
         this.inputMetricsOptions = new CosmosMicrometerMetricsOptions()
             .meterRegistry(this.meterRegistry)
             .setMetricCategories(metricCategories)
