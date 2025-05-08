@@ -12,8 +12,8 @@ import com.azure.ai.agents.persistent.models.ListSortOrder;
 import com.azure.ai.agents.persistent.models.RunAdditionalFieldList;
 import com.azure.ai.agents.persistent.models.ThreadRun;
 import com.azure.ai.agents.persistent.models.ToolOutput;
-import com.azure.ai.agents.persistent.models.streaming.StreamUpdate;
 import com.azure.ai.agents.persistent.models.streaming.PersistentAgentServerSentEvents;
+import com.azure.ai.agents.persistent.models.streaming.StreamUpdate;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -733,7 +733,6 @@ public final class RunsAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-
         return createRunWithResponse(threadId, createRunRequest, requestOptions).map(response -> {
             PersistentAgentServerSentEvents eventStream
                 = new PersistentAgentServerSentEvents(response.getValue().toFluxByteBuffer());
@@ -979,7 +978,6 @@ public final class RunsAsyncClient {
         SubmitToolOutputsToRunRequest submitToolOutputsToRunRequestObj
             = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(true);
         BinaryData submitToolOutputsToRunRequest = BinaryData.fromObject(submitToolOutputsToRunRequestObj);
-
         return submitToolOutputsToRunWithResponse(threadId, runId, submitToolOutputsToRunRequest, requestOptions)
             .map(response -> {
                 PersistentAgentServerSentEvents eventStream

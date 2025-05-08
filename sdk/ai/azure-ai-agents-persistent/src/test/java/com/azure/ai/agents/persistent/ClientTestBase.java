@@ -52,10 +52,10 @@ public class ClientTestBase extends TestProxyTestBase {
                 .credential(new DefaultAzureCredentialBuilder().build());
         }
 
-        String serviceVersion = Configuration.getGlobalConfiguration().get("SERVICE_VERSION");
-        if (serviceVersion != null) {
-            builder.serviceVersion(AgentsServiceVersion.valueOf(serviceVersion));
-        }
+        String version = Configuration.getGlobalConfiguration().get("SERVICE_VERSION");
+        AgentsServiceVersion serviceVersion
+            = version != null ? AgentsServiceVersion.valueOf(version) : AgentsServiceVersion.V2025_05_15_PREVIEW;
+        builder.serviceVersion(serviceVersion);
         return builder;
     }
 

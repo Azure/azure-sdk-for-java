@@ -1366,6 +1366,12 @@
         "gcch",
         "updation" // current typo in a swagger
       ]
+    },
+    {
+      "filename": "sdk/ai/azure-ai-agents-persistent/**",
+      "words": [
+        "AISEARCH"
+      ]
     }
   ],
   "allowCompoundWords": true
