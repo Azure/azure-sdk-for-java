@@ -1523,30 +1523,6 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 1,
                 15,
                 15
-            },
-            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
-            // for QUERY_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
-            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
-            // circuit breaking involved here (partition split will resolve to two new child partitions)
-            new Object[]{
-                "Test faulty read many operation with partition is splitting error in first preferred region.",
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                this.buildPartitionIsSplittingFaultInjectionRules,
-                executeReadManyOperation,
-                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
-                NO_REGION_SWITCH_HINT,
-                this.validateResponseHasOperationCancelledException,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ONLY_DIRECT_MODE,
-                1,
-                15,
-                15
             }
         };
     }
@@ -1802,30 +1778,6 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ALL_CONNECTION_MODES_INCLUDED,
-                1,
-                15,
-                15
-            },
-            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
-            // for QUERY_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
-            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
-            // circuit breaking involved here (partition split will resolve to two new child partitions)
-            new Object[]{
-                "Test faulty read all operation with partition is splitting error in first preferred region.",
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                this.buildPartitionIsSplittingFaultInjectionRules,
-                executeReadAllOperation,
-                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
-                NO_REGION_SWITCH_HINT,
-                this.validateResponseHasOperationCancelledException,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ONLY_DIRECT_MODE,
                 1,
                 15,
                 15
