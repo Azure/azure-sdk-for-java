@@ -1,6 +1,6 @@
 # Release History
 
-## 1.16.0-beta.2 (Unreleased)
+## 1.17.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,7 +10,16 @@
 
 ### Other Changes
 
+## 1.16.0 (2025-05-06)
+
+### Other Changes
+ 
 - Marked `VisualStudioCodeCredential` and `VisualStudioCodeCredentialBuilder` as deprecated.[#44527](https://github.com/Azure/azure-sdk-for-java/issues/44527)
+- Added deprecation message to `EnvironmentCredential` when a username/password is used. [#45185](https://github.com/Azure/azure-sdk-for-java/pull/45185) 
+
+#### Dependency Updates
+
+- Updated `msal4j` from `1.20.0` to version `1.20.1`.
 
 ## 1.16.0-beta.1 (2025-03-13)
 
@@ -20,7 +29,7 @@
 
 ### Other Changes
 
- - Marked `UsernamePasswordCredential` and `UsernamePasswordCredentialBuilder` as deprecated. See https://aka.ms/azsdk/identity/mfa for details about MFA enforcement and migration guidance. [#44381](https://github.com/Azure/azure-sdk-for-java/pull/44381)  
+- Marked `UsernamePasswordCredential` and `UsernamePasswordCredentialBuilder` as deprecated. See https://aka.ms/azsdk/identity/mfa for details about MFA enforcement and migration guidance. [#44381](https://github.com/Azure/azure-sdk-for-java/pull/44381)  
 
 ## 1.15.4 (2025-03-11)
 

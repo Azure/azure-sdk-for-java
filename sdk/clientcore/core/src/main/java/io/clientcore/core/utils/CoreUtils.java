@@ -239,8 +239,10 @@ public final class CoreUtils {
 
         if (index == -1) {
             // No size segment.
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("The Content-Range header wasn't properly "
-                + "formatted and didn't contain a '/size' segment. The 'contentRange' was: " + contentRange));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("Content-Range", contentRange)
+                .log("The Content-Range header wasn't properly formatted and didn't contain a '/size' segment",
+                    IllegalArgumentException::new);
         }
 
         String sizeString = contentRange.substring(index + 1).trim();
@@ -441,8 +443,7 @@ public final class CoreUtils {
             return host;  // No parameters to append
         }
 
-        StringBuilder urlBuilder = new StringBuilder(host);
-        boolean hasExistingQuery = host.contains("?");
+        UriBuilder uriBuilder = UriBuilder.parse(host);
 
         // Process each key-value pair in the queryParams map
         for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
@@ -457,16 +458,14 @@ public final class CoreUtils {
             if (value instanceof List<?>) {
                 List<?> valueList = (List<?>) value;
                 for (Object item : valueList) {
-                    urlBuilder.append(hasExistingQuery ? "&" : "?").append(key).append("=").append(item.toString());
-                    hasExistingQuery = true; // Ensure subsequent parameters use '&'
+                    uriBuilder.addQueryParameter(key, String.valueOf(item));
                 }
             } else {
-                urlBuilder.append(hasExistingQuery ? "&" : "?").append(key).append("=").append(value.toString());
-                hasExistingQuery = true; // Ensure subsequent parameters use '&'
+                uriBuilder.addQueryParameter(key, String.valueOf(value));
             }
         }
 
-        return urlBuilder.toString();
+        return uriBuilder.toString();
     }
 
     /*
@@ -513,10 +512,11 @@ public final class CoreUtils {
      * @param data The BinaryData to decode.
      * @param serializer The serializer to use.
      * @param returnType The type of the ParameterizedType return value.
+     * @param <T> The decoded value type.
      * @return The decoded value.
      * @throws CoreException If the deserialization fails.
      */
-    public static Object decodeNetworkResponse(BinaryData data, ObjectSerializer serializer,
+    public static <T> T decodeNetworkResponse(BinaryData data, ObjectSerializer serializer,
         ParameterizedType returnType) {
         if (data == null) {
             return null;
@@ -531,8 +531,7 @@ public final class CoreUtils {
             }
             return serializer.deserializeFromBytes(data.toBytes(), token);
         } catch (IOException e) {
-            CoreException coreException = CoreException.from(e);
-            throw LOGGER.logThrowableAsError(CoreException.from(coreException));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 

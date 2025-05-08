@@ -61,7 +61,7 @@ class OkHttpHttpClient implements HttpClient {
 
             return toResponse(request, okHttpResponse);
         } catch (IOException ex) {
-            throw LOGGER.logThrowableAsError(CoreException.from(ex));
+            throw LOGGER.throwableAtError().log(ex, CoreException::from);
         }
     }
 
@@ -163,7 +163,7 @@ class OkHttpHttpClient implements HttpClient {
                     return this.send(request);
                 }
             } else {
-                throw LOGGER.logThrowableAsError(new IllegalStateException(NO_LISTENER_ERROR_MESSAGE));
+                throw LOGGER.throwableAtError().log(NO_LISTENER_ERROR_MESSAGE, IllegalStateException::new);
             }
         }
 

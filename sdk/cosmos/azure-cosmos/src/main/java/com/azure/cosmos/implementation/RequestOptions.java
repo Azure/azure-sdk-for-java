@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
@@ -34,6 +35,7 @@ public class RequestOptions implements OverridableRequestOptions {
     private List<String> postTriggerInclude;
     private IndexingDirective indexingDirective;
     private ConsistencyLevel consistencyLevel;
+    private ReadConsistencyStrategy readConsistencyStrategy;
     private String sessionToken;
     private Integer resourceTokenExpirySeconds;
     private String offerType;
@@ -74,6 +76,7 @@ public class RequestOptions implements OverridableRequestOptions {
     public RequestOptions(RequestOptions toBeCloned) {
         this.indexingDirective = toBeCloned.indexingDirective;
         this.consistencyLevel = toBeCloned.consistencyLevel;
+        this.readConsistencyStrategy = toBeCloned.readConsistencyStrategy;
         this.sessionToken = toBeCloned.sessionToken;
         this.resourceTokenExpirySeconds = toBeCloned.resourceTokenExpirySeconds;
         this.offerType = toBeCloned.offerType;
@@ -272,12 +275,31 @@ public class RequestOptions implements OverridableRequestOptions {
     }
 
     /**
+     * Gets the read consistency strategy for the request.
+     *
+     * @return the read consistency strategy.
+     */
+    @Override
+    public ReadConsistencyStrategy getReadConsistencyStrategy() {
+        return this.readConsistencyStrategy;
+    }
+
+    /**
      * Sets the consistency level required for the request.
      *
      * @param consistencyLevel the consistency level.
      */
     public void setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
+    }
+
+    /**
+     * Sets the read consistency strategy for the request.
+     *
+     * @param readConsistencyStrategy the read consistency strategy.
+     */
+    public void setReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+        this.readConsistencyStrategy = readConsistencyStrategy;
     }
 
     /**
@@ -618,6 +640,7 @@ public class RequestOptions implements OverridableRequestOptions {
     @Override
     public void override(CosmosRequestOptions cosmosCommonRequestOptions) {
         this.consistencyLevel = overrideOption(cosmosCommonRequestOptions.getConsistencyLevel(), this.consistencyLevel);
+        this.readConsistencyStrategy = overrideOption(cosmosCommonRequestOptions.getReadConsistencyStrategy(), this.readConsistencyStrategy);
         this.contentResponseOnWriteEnabled = overrideOption(cosmosCommonRequestOptions.isContentResponseOnWriteEnabled(), this.contentResponseOnWriteEnabled);
         this.nonIdempotentWriteRetriesEnabled = overrideOption(cosmosCommonRequestOptions.getNonIdempotentWriteRetriesEnabled(), this.nonIdempotentWriteRetriesEnabled);
         this.dedicatedGatewayRequestOptions = overrideOption(cosmosCommonRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);

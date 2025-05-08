@@ -152,10 +152,9 @@ public class HttpPipelineBuilder {
 
         HttpPipelinePosition order = policy.getPipelinePosition();
         if (order == null) {
-            String exceptionMessage
-                = String.format("%s policy has invalid pipeline position - position cannot be null.",
-                    policy.getClass().getCanonicalName());
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(exceptionMessage));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("policyType", policy.getClass().getCanonicalName())
+                .log("Policy has invalid pipeline position - position cannot be null.", IllegalArgumentException::new);
         }
 
         if (order == HttpPipelinePosition.BEFORE_REDIRECT) {
@@ -169,9 +168,10 @@ public class HttpPipelineBuilder {
         } else if (order == HttpPipelinePosition.AFTER_INSTRUMENTATION) {
             afterInstrumentation.add(policy);
         } else {
-            String exceptionMessage
-                = String.format("%s policy has unexpected position '%s'.", policy.getClass().getCanonicalName(), order);
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(exceptionMessage));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("policyType", policy.getClass().getCanonicalName())
+                .addKeyValue("position", order.getValue())
+                .log("Policy has unexpected position.", IllegalArgumentException::new);
         }
 
         return this;

@@ -1,14 +1,10 @@
 # Release History
 
-## 1.0.0-beta.9 (Unreleased)
+## 1.0.0-beta.9 (2025-04-30)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added RestProxy back [#45149](https://github.com/Azure/azure-sdk-for-java/pull/45149)
+- Added CoreException type as the base type for all exceptions [#44892](https://github.com/Azure/azure-sdk-for-java/pull/44892)
 
 ## 1.0.0-beta.8 (2025-04-03)
 

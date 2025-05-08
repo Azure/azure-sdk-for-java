@@ -71,8 +71,9 @@ public class FileBinaryData extends BinaryData {
         Objects.requireNonNull(file, "'file' cannot be null.");
 
         if (!file.toFile().exists()) {
-            throw LOGGER
-                .logThrowableAsError(CoreException.from(new FileNotFoundException("File does not exist " + file)));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("file", file.toString())
+                .log("File does not exist.", CoreException::from);
         }
 
         return file;
@@ -80,8 +81,8 @@ public class FileBinaryData extends BinaryData {
 
     private static int validateChunkSize(int chunkSize) {
         if (chunkSize <= 0) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'chunkSize' cannot be less than or equal to 0."));
+            throw LOGGER.throwableAtError()
+                .log("'chunkSize' cannot be less than or equal to 0.", IllegalArgumentException::new);
         }
 
         return chunkSize;
@@ -89,7 +90,7 @@ public class FileBinaryData extends BinaryData {
 
     private static long validatePosition(Long position) {
         if (position != null && position < 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'position' cannot be negative."));
+            throw LOGGER.throwableAtError().log("'position' cannot be negative.", IllegalArgumentException::new);
         }
 
         return (position != null) ? position : 0;
@@ -97,7 +98,7 @@ public class FileBinaryData extends BinaryData {
 
     private static long validateLength(Long length, long fileLength, long position) {
         if (length != null && length < 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'length' cannot be negative."));
+            throw LOGGER.throwableAtError().log("'length' cannot be negative.", IllegalArgumentException::new);
         }
 
         long maxAvailableLength = fileLength - position;
@@ -128,7 +129,7 @@ public class FileBinaryData extends BinaryData {
     @Override
     public byte[] toBytes() {
         if (length > MAX_ARRAY_SIZE) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+            throw LOGGER.throwableAtError().log(TOO_LARGE_FOR_BYTE_ARRAY + length, IllegalStateException::new);
         }
 
         return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
@@ -139,7 +140,7 @@ public class FileBinaryData extends BinaryData {
         try {
             return serializer.deserializeFromStream(toStream(), type);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -148,7 +149,9 @@ public class FileBinaryData extends BinaryData {
         try {
             return new SliceInputStream(new BufferedInputStream(getFileInputStream(), chunkSize), position, length);
         } catch (FileNotFoundException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from("File not found " + file, e));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("file", file.toString())
+                .log("File not found", e, CoreException::from);
         }
     }
 
@@ -159,7 +162,7 @@ public class FileBinaryData extends BinaryData {
     @Override
     public ByteBuffer toByteBuffer() {
         if (length > MAX_ARRAY_SIZE) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+            throw LOGGER.throwableAtError().log(TOO_LARGE_FOR_BYTE_ARRAY + length, IllegalStateException::new);
         }
 
         return toByteBufferInternal();
@@ -175,7 +178,7 @@ public class FileBinaryData extends BinaryData {
         try (FileChannel fileChannel = FileChannel.open(file)) {
             fileChannel.transferTo(position, length, channel);
         } catch (IOException exception) {
-            throw LOGGER.logThrowableAsError(CoreException.from(exception));
+            throw LOGGER.throwableAtError().log(exception, CoreException::from);
         }
     }
 
@@ -186,7 +189,7 @@ public class FileBinaryData extends BinaryData {
         try {
             jsonWriter.writeBinary(toBytes());
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -198,7 +201,7 @@ public class FileBinaryData extends BinaryData {
         try (FileChannel fileChannel = FileChannel.open(file)) {
             return fileChannel.map(FileChannel.MapMode.READ_ONLY, position, length);
         } catch (IOException exception) {
-            throw LOGGER.logThrowableAsError(CoreException.from(exception));
+            throw LOGGER.throwableAtError().log(exception, CoreException::from);
         }
     }
 
@@ -223,7 +226,7 @@ public class FileBinaryData extends BinaryData {
 
     private byte[] getBytes() {
         if (length > MAX_ARRAY_SIZE) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+            throw LOGGER.throwableAtError().log(TOO_LARGE_FOR_BYTE_ARRAY + length, IllegalStateException::new);
         }
 
         try (InputStream is = this.toStream()) {
@@ -237,13 +240,13 @@ public class FileBinaryData extends BinaryData {
                     pendingBytes -= read;
                     offset += read;
                 } else {
-                    throw LOGGER.logThrowableAsError(
-                        new IllegalStateException("Premature EOF. File was modified concurrently."));
+                    throw LOGGER.throwableAtError()
+                        .log("Premature EOF. File was modified concurrently.", IllegalStateException::new);
                 }
             } while (pendingBytes > 0);
             return bytes;
         } catch (IOException exception) {
-            throw LOGGER.logThrowableAsError(CoreException.from(exception));
+            throw LOGGER.throwableAtError().log(exception, CoreException::from);
         }
     }
 

@@ -39,7 +39,7 @@ public final class SnapshotPolicyPatchTests {
         Assertions.assertEquals(1372310139, model.monthlySchedule().hour());
         Assertions.assertEquals(1415965286, model.monthlySchedule().minute());
         Assertions.assertEquals(8043734787641480835L, model.monthlySchedule().usedBytes());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertTrue(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -84,7 +84,7 @@ public final class SnapshotPolicyPatchTests {
         Assertions.assertEquals(1372310139, model.monthlySchedule().hour());
         Assertions.assertEquals(1415965286, model.monthlySchedule().minute());
         Assertions.assertEquals(8043734787641480835L, model.monthlySchedule().usedBytes());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertTrue(model.enabled());
     }
 
     // Use "Map.of" if available

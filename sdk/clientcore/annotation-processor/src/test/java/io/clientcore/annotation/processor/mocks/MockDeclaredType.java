@@ -15,6 +15,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ import java.util.Set;
  */
 public class MockDeclaredType extends MockTypeMirror implements DeclaredType {
     private final String qualifiedName;
+    private final List<? extends TypeMirror> typeArguments;
 
     /**
      * Creates a mock {@link DeclaredType}.
@@ -31,9 +33,10 @@ public class MockDeclaredType extends MockTypeMirror implements DeclaredType {
      * @param kind the {@link DeclaredType}
      * @param toString the {@link DeclaredType#toString()} value
      */
-    public MockDeclaredType(TypeKind kind, String toString) {
+    public MockDeclaredType(TypeKind kind, String toString, TypeMirror... typeArguments) {
         super(kind, toString);
         this.qualifiedName = toString;
+        this.typeArguments = Arrays.asList(typeArguments);
     }
 
     @Override
@@ -174,7 +177,7 @@ public class MockDeclaredType extends MockTypeMirror implements DeclaredType {
 
     @Override
     public List<? extends TypeMirror> getTypeArguments() {
-        return Collections.emptyList();
+        return typeArguments;
     }
 
 }

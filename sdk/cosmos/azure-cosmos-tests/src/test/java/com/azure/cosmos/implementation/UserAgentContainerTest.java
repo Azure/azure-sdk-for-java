@@ -6,13 +6,32 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserAgentContainerTest {
     private final static String SPACE = " ";
     private final static int TIMEOUT = 40000;
+
+    @DataProvider(name = "userAgentSuffixFeatureEnablementFlags")
+    public Object[][] userAgentSuffixFeatureEnablementFlags() {
+        return new Object[][]{
+            {Arrays.asList(UserAgentFeatureFlags.PerPartitionAutomaticFailover, UserAgentFeatureFlags.PerPartitionCircuitBreaker), "|F3"},
+            {Arrays.asList(UserAgentFeatureFlags.PerPartitionCircuitBreaker, UserAgentFeatureFlags.PerPartitionAutomaticFailover), "|F3"},
+            {Arrays.asList(UserAgentFeatureFlags.PerPartitionAutomaticFailover), "|F1"},
+            {Arrays.asList(UserAgentFeatureFlags.PerPartitionCircuitBreaker), "|F2"},
+            {new ArrayList<>(), ""},
+            {null, ""}
+        };
+    }
 
     @Test(groups = {"unit"})
     public void userAgentContainerSetSuffix() {
@@ -51,6 +70,25 @@ public class UserAgentContainerTest {
         } finally {
             HttpConstants.Versions.resetSnapshotInsteadOfBeta();
         }
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "userAgentSuffixFeatureEnablementFlags")
+    public void userAgentContainerSetSuffixWithFeatureEnablementFlags(
+        List<UserAgentFeatureFlags> userAgentFeatureFlags,
+        String expectedUserAgentFeatureFlagSuffix) {
+        String expectedStringFixedPart = getUserAgentFixedPart();
+        Set<UserAgentFeatureFlags> uniqueUserAgentFeatureFlags = userAgentFeatureFlags != null ? new HashSet<>(userAgentFeatureFlags) : null;
+
+        //With suffix less than 64 character
+        String userProvidedSuffix = "test-application-id";
+        UserAgentContainer userAgentContainer = new UserAgentContainer();
+        userAgentContainer.setSuffix(userProvidedSuffix);
+        userAgentContainer.setFeatureEnabledFlagsAsSuffix(uniqueUserAgentFeatureFlags);
+
+        String expectedString = expectedStringFixedPart + SPACE + userProvidedSuffix +
+            ((!Strings.isNullOrEmpty(expectedUserAgentFeatureFlagSuffix)) ?
+             expectedUserAgentFeatureFlagSuffix : Strings.Emtpy);
+        assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
