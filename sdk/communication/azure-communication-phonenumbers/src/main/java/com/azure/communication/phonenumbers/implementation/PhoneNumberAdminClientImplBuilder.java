@@ -249,7 +249,7 @@ public final class PhoneNumberAdminClientImplBuilder implements HttpTrait<PhoneN
     @Generated
     public PhoneNumberAdminClientImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2025-02-11";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2025-04-01";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         PhoneNumberAdminClientImpl client
