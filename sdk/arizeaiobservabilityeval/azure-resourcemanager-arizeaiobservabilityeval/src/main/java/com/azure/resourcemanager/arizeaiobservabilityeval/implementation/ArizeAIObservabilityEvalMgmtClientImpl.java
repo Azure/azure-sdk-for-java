@@ -169,7 +169,7 @@ public final class ArizeAIObservabilityEvalMgmtClientImpl implements ArizeAIObse
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-10-01-preview";
+        this.apiVersion = "2024-10-01";
         this.operations = new OperationsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);
     }
