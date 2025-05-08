@@ -37,4 +37,10 @@
       <Class name="com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute" />
     </Or>
   </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_STATIC_REP2" />
+    <Or>
+      <Class name="com.azure.communication.phonenumbers.implementation.accesshelpers.PhoneNumbersReservationAccessHelper" />
+    </Or>
+  </Match>
 </FindBugsFilter>
