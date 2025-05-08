@@ -17,8 +17,9 @@ import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.utils.CoreUtils;
 import java.lang.reflect.ParameterizedType;
-import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.serialization.SerializationFormat;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Initializes a new instance of the ParameterizedMultipleHostServiceImpl type.
@@ -58,9 +59,16 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+            BinaryData value = networkResponse.getValue();
+            if (value == null || value.toBytes().length == 0) {
+                networkResponse.close();
+                throw instantiateUnexpectedException(responseCode, networkResponse, null, null);
+            } else {
+                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+                Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
+                networkResponse.close();
+                throw instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+            }
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -73,5 +81,22 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
             throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
+    }
+
+    private static HttpResponseException instantiateUnexpectedException(int responseCode, Response<BinaryData> response, BinaryData data, Object decodedValue) {
+        StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+        String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+        if ("application/octet-stream".equalsIgnoreCase(contentType)) {
+            String contentLength = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
+            exceptionMessage.append("(").append(contentLength).append("-byte body)");
+        } else if (data == null || data.toBytes().length == 0) {
+            exceptionMessage.append("(empty body)");
+        } else {
+            exceptionMessage.append('"').append(new String(data.toBytes(), StandardCharsets.UTF_8)).append('"');
+        }
+        if (decodedValue instanceof IOException || decodedValue instanceof IllegalStateException) {
+            return new HttpResponseException(exceptionMessage.toString(), response, (Throwable) decodedValue);
+        }
+        return new HttpResponseException(exceptionMessage.toString(), response, decodedValue);
     }
 }

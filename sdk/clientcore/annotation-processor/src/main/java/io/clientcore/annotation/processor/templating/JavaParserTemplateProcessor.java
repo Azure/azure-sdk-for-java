@@ -38,7 +38,6 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
@@ -50,7 +49,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.net.URI;
-import java.lang.reflect.ParameterizedType;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,8 +60,6 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
@@ -561,91 +557,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
     private void finalizeHttpRequest(BlockStmt body, TypeMirror returnTypeName, HttpRequestContext method,
         boolean serializationFormatSet) {
-        body.tryAddImportToParentCompilationUnit(Response.class);
-
-        Statement statement = StaticJavaParser
-            .parseStatement("Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);");
-        statement.setLineComment("\n Send the request through the httpPipeline");
-        body.addStatement(statement);
-
-        validateResponseStatus(body, method);
-
         generateResponseHandling(body, returnTypeName, method, serializationFormatSet);
-    }
-
-    private void validateResponseStatus(BlockStmt body, HttpRequestContext method) {
-        body.addStatement(StaticJavaParser.parseStatement("int responseCode = networkResponse.getStatusCode();"));
-        String expectedResponseCheck;
-        if (CoreUtils.isNullOrEmpty(method.getExpectedStatusCodes())) {
-            expectedResponseCheck = "responseCode < 400;";
-        } else if (method.getExpectedStatusCodes().size() == 1) {
-            expectedResponseCheck = "responseCode == " + method.getExpectedStatusCodes().get(0) + ";";
-        } else {
-            String statusCodes = method.getExpectedStatusCodes()
-                .stream()
-                .map(code -> "responseCode == " + code)
-                .collect(Collectors.joining(" || "));
-            expectedResponseCheck = "(" + statusCodes + ");";
-        }
-        body.addStatement(StaticJavaParser.parseStatement("boolean expectedResponse = " + expectedResponseCheck));
-        // Generate the error handling block with dynamic ParameterizedType creation
-        StringBuilder errorBlock = new StringBuilder();
-        errorBlock.append("if (!expectedResponse) {\n")
-            .append(
-                "    if (networkResponse.getValue() == null || networkResponse.getValue().toBytes().length == 0) {\n")
-            .append("        throw instantiateUnexpectedException(responseCode, networkResponse, null, null);\n")
-            .append("    } else {\n");
-
-        // Dynamically generate ParameterizedType if return type is declared
-        TypeMirror returnType = method.getMethodReturnType();
-        if (returnType.getKind() == TypeKind.DECLARED) {
-            DeclaredType declaredType = (DeclaredType) returnType;
-            TypeElement typeElement = (TypeElement) declaredType.asElement();
-            body.tryAddImportToParentCompilationUnit(CoreUtils.class);
-            StringBuilder paramTypeBuilder = new StringBuilder();
-            paramTypeBuilder.append(typeElement.getQualifiedName().toString()).append(".class");
-            if (!declaredType.getTypeArguments().isEmpty()) {
-                TypeMirror firstGenericType = declaredType.getTypeArguments().get(0);
-
-                if (firstGenericType instanceof DeclaredType) {
-                    DeclaredType genericDeclaredType = (DeclaredType) firstGenericType;
-                    TypeElement genericTypeElement = (TypeElement) genericDeclaredType.asElement();
-
-                    body.findCompilationUnit()
-                        .ifPresent(compilationUnit -> compilationUnit
-                            .addImport(genericTypeElement.getQualifiedName().toString()));
-
-                    if (genericTypeElement.getQualifiedName().contentEquals(List.class.getCanonicalName())) {
-                        if (!genericDeclaredType.getTypeArguments().isEmpty()) {
-                            String innerType
-                                = ((DeclaredType) genericDeclaredType.getTypeArguments().get(0)).asElement()
-                                    .getSimpleName()
-                                    .toString();
-                            paramTypeBuilder.append(", ").append(innerType).append(".class");
-                        }
-                    } else {
-                        String genericType = ((DeclaredType) declaredType.getTypeArguments().get(0)).asElement()
-                            .getSimpleName()
-                            .toString();
-                        paramTypeBuilder.append(", ").append(genericType).append(".class");
-
-                    }
-                }
-            }
-            errorBlock.append("        ParameterizedType returnType = CoreUtils.createParameterizedType(")
-                .append(paramTypeBuilder)
-                .append(");\n");
-        } else {
-            errorBlock.append("        ParameterizedType returnType = null;\n");
-
-        }
-        body.tryAddImportToParentCompilationUnit(ParameterizedType.class);
-        body.tryAddImportToParentCompilationUnit(CoreUtils.class);
-        errorBlock.append(
-            "        throw instantiateUnexpectedException(responseCode, networkResponse, networkResponse.getValue(), ")
-            .append("CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType));\n")
-            .append("    }\n")
-            .append("}\n");
-        body.addStatement(StaticJavaParser.parseStatement(errorBlock.toString()));
     }
 }
