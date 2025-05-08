@@ -292,14 +292,13 @@ public class CloudEventTests {
     public void serializeStringDataNonJsonLiteral() {
         final String dataPayload = "AAA";
         final BinaryData binaryData = BinaryData.fromString(dataPayload);
-        assertThrows(IllegalArgumentException.class, () -> {
-            new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON, "application/json")
-                .setDataSchema("/testSchema")
-                .setSubject("testSubject")
-                .setTime(OffsetDateTime.now())
-                .setSpecVersion("1.0")
-                .addExtensionAttribute("foo", "value");
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON,
+                "application/json").setDataSchema("/testSchema")
+                    .setSubject("testSubject")
+                    .setTime(OffsetDateTime.now())
+                    .setSpecVersion("1.0")
+                    .addExtensionAttribute("foo", "value"));
     }
 
     @Test

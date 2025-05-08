@@ -195,7 +195,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -225,7 +225,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -255,7 +255,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -290,7 +290,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -320,7 +320,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -356,7 +356,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -392,7 +392,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -457,7 +457,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -485,7 +485,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -513,7 +513,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -541,7 +541,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -574,7 +574,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -606,7 +606,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -639,7 +639,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -664,7 +664,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -689,7 +689,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -714,7 +714,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -740,7 +740,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -766,7 +766,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -799,7 +799,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -825,7 +825,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -857,7 +857,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -882,7 +882,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -907,7 +907,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -932,7 +932,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -957,7 +957,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -993,7 +993,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1027,7 +1027,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1059,7 +1059,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1091,7 +1091,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1124,7 +1124,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1156,7 +1156,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1187,7 +1187,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1218,7 +1218,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1268,7 +1268,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -1342,7 +1342,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
@@ -1366,7 +1366,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1508,7 +1508,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1541,7 +1541,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1573,7 +1573,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1605,7 +1605,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1637,7 +1637,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1669,7 +1669,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1701,7 +1701,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1733,7 +1733,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1767,7 +1767,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1799,7 +1799,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1829,7 +1829,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }
@@ -1861,7 +1861,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }

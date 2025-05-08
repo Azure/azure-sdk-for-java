@@ -90,9 +90,9 @@ public final class JdkHttpClient implements HttpClient {
             java.net.http.HttpResponse<InputStream> jdKResponse = jdkHttpClient.send(jdkRequest, bodyHandler);
             return toResponse(request, jdKResponse);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         } catch (InterruptedException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
     }
 
@@ -136,7 +136,7 @@ public final class JdkHttpClient implements HttpClient {
                 try {
                     serverSentResult = processTextEventStream(response.body(), listener);
                 } catch (IOException e) {
-                    throw LOGGER.logThrowableAsError(CoreException.from(e));
+                    throw LOGGER.throwableAtError().log(e, CoreException::from);
                 }
 
                 if (serverSentResult.getException() != null) {
@@ -149,7 +149,7 @@ public final class JdkHttpClient implements HttpClient {
                     return this.send(request);
                 }
             } else {
-                throw LOGGER.logThrowableAsError(new IllegalStateException(NO_LISTENER_ERROR_MESSAGE));
+                throw LOGGER.throwableAtError().log(NO_LISTENER_ERROR_MESSAGE, IllegalStateException::new);
             }
         }
 
@@ -167,7 +167,7 @@ public final class JdkHttpClient implements HttpClient {
                 try {
                     response.body().close();
                 } catch (IOException e) {
-                    throw LOGGER.logThrowableAsError(CoreException.from(e));
+                    throw LOGGER.throwableAtError().log(e, CoreException::from);
                 }
                 break;
 
@@ -227,7 +227,7 @@ public final class JdkHttpClient implements HttpClient {
         try (InputStream responseBody = response.body()) { // Use try-with-resources to close the stream.
             return BinaryData.fromBytes(responseBody.readAllBytes());
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 }
