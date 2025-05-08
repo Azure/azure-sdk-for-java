@@ -65,7 +65,7 @@ final class ListByteBufferBinaryData extends BinaryData {
     @Override
     public byte[] toBytes() {
         if (getLength() > MAX_ARRAY_SIZE) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + getLength()));
+            throw LOGGER.throwableAtError().log(TOO_LARGE_FOR_BYTE_ARRAY + getLength(), IllegalStateException::new);
         }
 
         return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
@@ -76,7 +76,7 @@ final class ListByteBufferBinaryData extends BinaryData {
         try {
             return serializer.deserializeFromBytes(toBytes(), type);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -97,7 +97,7 @@ final class ListByteBufferBinaryData extends BinaryData {
                 ImplUtils.writeByteBufferToStream(bb, outputStream);
             }
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -111,7 +111,7 @@ final class ListByteBufferBinaryData extends BinaryData {
                 }
             }
         } catch (IOException exception) {
-            throw LOGGER.logThrowableAsError(CoreException.from(exception));
+            throw LOGGER.throwableAtError().log(exception, CoreException::from);
         }
     }
 
@@ -122,7 +122,7 @@ final class ListByteBufferBinaryData extends BinaryData {
         try {
             jsonWriter.writeBinary(toBytes());
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -139,7 +139,7 @@ final class ListByteBufferBinaryData extends BinaryData {
     private byte[] getBytes() {
         long length = getLength();
         if (length > MAX_ARRAY_SIZE) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+            throw LOGGER.throwableAtError().log(TOO_LARGE_FOR_BYTE_ARRAY + length, IllegalStateException::new);
         }
 
         byte[] bytes = new byte[(int) length];

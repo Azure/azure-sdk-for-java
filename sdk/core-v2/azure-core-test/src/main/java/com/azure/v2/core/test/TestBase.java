@@ -328,7 +328,7 @@ public abstract class TestBase {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException ex) {
-            throw logger.logThrowableAsWarning(new IllegalStateException(ex));
+            throw logger.throwableAtWarning().log(ex, IllegalStateException::new);
         }
     }
 

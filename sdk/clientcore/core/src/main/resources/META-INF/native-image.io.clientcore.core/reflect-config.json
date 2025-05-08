@@ -1,6 +1,6 @@
 [
   {
-    "name":"io.clientcore.core.util.logging.ClientLogger",
+    "name":"io.clientcore.core.instrumentation.logging.ClientLogger",
     "allDeclaredFields":true,
     "queryAllDeclaredMethods":true,
     "queryAllDeclaredConstructors":true

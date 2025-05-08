@@ -41,7 +41,7 @@ public class HttpPipelineCallState {
         this.currentPolicyIndex++;
 
         if (this.currentPolicyIndex > size) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException("There is no more policies to execute."));
+            throw LOGGER.throwableAtError().log("There is no more policies to execute.", IllegalStateException::new);
         } else if (this.currentPolicyIndex == size) {
             return null;
         } else {
