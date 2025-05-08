@@ -418,6 +418,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             }
 
             body.tryAddImportToParentCompilationUnit(GeneratedCodeUtils.class);
+
+            // This is the manual equivalent of:
+            // GeneratedCodeUtils.addQueryParameter(variableName, key, !queryParameter.isStatic(), valueExpression,
+            // queryParameter.shouldEncode());
+            // Doing this manually avoids a call to StaticJavaParser which is much slower.
             MethodCallExpr addParameterCall
                 = new MethodCallExpr(new NameExpr("GeneratedCodeUtils"), "addQueryParameter")
                     .addArgument(new NameExpr(variableName))
