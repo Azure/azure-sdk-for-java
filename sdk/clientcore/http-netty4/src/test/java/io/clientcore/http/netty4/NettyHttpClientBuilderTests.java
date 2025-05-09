@@ -11,9 +11,17 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer;
+import io.netty.bootstrap.BootstrapConfig;
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollSocketChannel;
+import io.netty.channel.kqueue.KQueueEventLoopGroup;
+import io.netty.channel.kqueue.KQueueSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,6 +37,7 @@ import java.util.stream.Stream;
 
 import static io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer.DEFAULT_PATH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -287,5 +296,61 @@ public class NettyHttpClientBuilderTests {
             Arguments.of(Duration.ofSeconds(-1), 0),
             Arguments.of(Duration.ofSeconds(120), TimeUnit.SECONDS.toMillis(120)),
             Arguments.of(Duration.ofNanos(1), TimeUnit.MILLISECONDS.toMillis(1)));
+    }
+
+    @Test
+    @EnabledOnOs(OS.WINDOWS)
+    public void windowsUseNioByDefault() {
+        NettyHttpClient nettyHttpClient = (NettyHttpClient) new NettyHttpClientBuilder().build();
+
+        BootstrapConfig config = nettyHttpClient.getBootstrap().config();
+        assertInstanceOf(NioEventLoopGroup.class, config.group());
+        assertInstanceOf(NioSocketChannel.class, config.channelFactory().newChannel());
+    }
+
+    @Test
+    @EnabledOnOs(OS.MAC)
+    public void macUsesKQueueByDefault() {
+        NettyHttpClient nettyHttpClient = (NettyHttpClient) new NettyHttpClientBuilder().build();
+
+        BootstrapConfig config = nettyHttpClient.getBootstrap().config();
+        assertInstanceOf(KQueueEventLoopGroup.class, config.group());
+        assertInstanceOf(KQueueSocketChannel.class, config.channelFactory().newChannel());
+    }
+
+    @Test
+    @EnabledOnOs(OS.MAC)
+    public void macUsesNioIfConfigured() {
+        NettyHttpClient nettyHttpClient
+            = (NettyHttpClient) new NettyHttpClientBuilder().channelClass(NioSocketChannel.class)
+                .eventLoopGroup(new NioEventLoopGroup())
+                .build();
+
+        BootstrapConfig config = nettyHttpClient.getBootstrap().config();
+        assertInstanceOf(NioEventLoopGroup.class, config.group());
+        assertInstanceOf(NioSocketChannel.class, config.channelFactory().newChannel());
+    }
+
+    @Test
+    @EnabledOnOs(OS.LINUX)
+    public void linuxUsesEpollByDefault() {
+        NettyHttpClient nettyHttpClient = (NettyHttpClient) new NettyHttpClientBuilder().build();
+
+        BootstrapConfig config = nettyHttpClient.getBootstrap().config();
+        assertInstanceOf(EpollEventLoopGroup.class, config.group());
+        assertInstanceOf(EpollSocketChannel.class, config.channelFactory().newChannel());
+    }
+
+    @Test
+    @EnabledOnOs(OS.LINUX)
+    public void linuxUsesNioIfConfigured() {
+        NettyHttpClient nettyHttpClient
+            = (NettyHttpClient) new NettyHttpClientBuilder().channelClass(NioSocketChannel.class)
+                .eventLoopGroup(new NioEventLoopGroup())
+                .build();
+
+        BootstrapConfig config = nettyHttpClient.getBootstrap().config();
+        assertInstanceOf(NioEventLoopGroup.class, config.group());
+        assertInstanceOf(NioSocketChannel.class, config.channelFactory().newChannel());
     }
 }

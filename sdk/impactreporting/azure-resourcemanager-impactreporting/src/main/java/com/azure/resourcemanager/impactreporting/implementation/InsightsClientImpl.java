@@ -28,6 +28,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.impactreporting.fluent.InsightsClient;
 import com.azure.resourcemanager.impactreporting.fluent.models.InsightInner;
 import com.azure.resourcemanager.impactreporting.implementation.models.InsightListResult;
@@ -74,6 +75,15 @@ public final class InsightsClientImpl implements InsightsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<InsightInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("workloadImpactName") String workloadImpactName, @PathParam("insightName") String insightName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -82,10 +92,28 @@ public final class InsightsClientImpl implements InsightsClient {
             @PathParam("workloadImpactName") String workloadImpactName, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<InsightListResult> listBySubscriptionSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("workloadImpactName") String workloadImpactName, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<InsightInner>> create(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("workloadImpactName") String workloadImpactName, @PathParam("insightName") String insightName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") InsightInner resource, Context context);
+
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<InsightInner> createSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("workloadImpactName") String workloadImpactName, @PathParam("insightName") String insightName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -101,10 +129,27 @@ public final class InsightsClientImpl implements InsightsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("workloadImpactName") String workloadImpactName, @PathParam("insightName") String insightName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<InsightListResult>> listBySubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<InsightListResult> listBySubscriptionNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -149,42 +194,6 @@ public final class InsightsClientImpl implements InsightsClient {
      * 
      * @param workloadImpactName workloadImpact resource.
      * @param insightName Name of the insight.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return insight resources by workloadImpactName and insightName along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InsightInner>> getWithResponseAsync(String workloadImpactName, String insightName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workloadImpactName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
-        }
-        if (insightName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter insightName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            workloadImpactName, insightName, accept, context);
-    }
-
-    /**
-     * Get Insight resources by workloadImpactName and insightName.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param insightName Name of the insight.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -208,7 +217,27 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InsightInner> getWithResponse(String workloadImpactName, String insightName, Context context) {
-        return getWithResponseAsync(workloadImpactName, insightName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (workloadImpactName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
+        }
+        if (insightName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter insightName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            workloadImpactName, insightName, accept, context);
     }
 
     /**
@@ -263,41 +292,6 @@ public final class InsightsClientImpl implements InsightsClient {
      * List Insight resources by workloadImpactName.
      * 
      * @param workloadImpactName workloadImpact resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Insight list operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InsightInner>> listBySubscriptionSinglePageAsync(String workloadImpactName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workloadImpactName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listBySubscription(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                workloadImpactName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List Insight resources by workloadImpactName.
-     * 
-     * @param workloadImpactName workloadImpact resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -313,16 +307,65 @@ public final class InsightsClientImpl implements InsightsClient {
      * List Insight resources by workloadImpactName.
      * 
      * @param workloadImpactName workloadImpact resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Insight list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<InsightInner> listBySubscriptionSinglePage(String workloadImpactName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (workloadImpactName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<InsightListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), workloadImpactName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List Insight resources by workloadImpactName.
+     * 
+     * @param workloadImpactName workloadImpact resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Insight list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a Insight list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<InsightInner> listBySubscriptionAsync(String workloadImpactName, Context context) {
-        return new PagedFlux<>(() -> listBySubscriptionSinglePageAsync(workloadImpactName, context),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<InsightInner> listBySubscriptionSinglePage(String workloadImpactName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (workloadImpactName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<InsightListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), workloadImpactName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -336,7 +379,8 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InsightInner> listBySubscription(String workloadImpactName) {
-        return new PagedIterable<>(listBySubscriptionAsync(workloadImpactName));
+        return new PagedIterable<>(() -> listBySubscriptionSinglePage(workloadImpactName),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -351,7 +395,8 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InsightInner> listBySubscription(String workloadImpactName, Context context) {
-        return new PagedIterable<>(listBySubscriptionAsync(workloadImpactName, context));
+        return new PagedIterable<>(() -> listBySubscriptionSinglePage(workloadImpactName, context),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -401,48 +446,6 @@ public final class InsightsClientImpl implements InsightsClient {
      * @param workloadImpactName workloadImpact resource.
      * @param insightName Name of the insight.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return insight resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InsightInner>> createWithResponseAsync(String workloadImpactName, String insightName,
-        InsightInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workloadImpactName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
-        }
-        if (insightName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter insightName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            workloadImpactName, insightName, contentType, accept, resource, context);
-    }
-
-    /**
-     * Create Insight resource, This is Admin only operation.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param insightName Name of the insight.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -469,7 +472,34 @@ public final class InsightsClientImpl implements InsightsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InsightInner> createWithResponse(String workloadImpactName, String insightName,
         InsightInner resource, Context context) {
-        return createWithResponseAsync(workloadImpactName, insightName, resource, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (workloadImpactName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
+        }
+        if (insightName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter insightName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), workloadImpactName, insightName, contentType, accept, resource, context);
     }
 
     /**
@@ -527,41 +557,6 @@ public final class InsightsClientImpl implements InsightsClient {
      * 
      * @param workloadImpactName workloadImpact resource.
      * @param insightName Name of the insight.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String workloadImpactName, String insightName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (workloadImpactName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
-        }
-        if (insightName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter insightName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            workloadImpactName, insightName, accept, context);
-    }
-
-    /**
-     * Delete Insight resource, This is Admin only operation.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param insightName Name of the insight.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -585,7 +580,27 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String workloadImpactName, String insightName, Context context) {
-        return deleteWithResponseAsync(workloadImpactName, insightName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (workloadImpactName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workloadImpactName is required and cannot be null."));
+        }
+        if (insightName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter insightName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), workloadImpactName, insightName, accept, context);
     }
 
     /**
@@ -634,26 +649,56 @@ public final class InsightsClientImpl implements InsightsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Insight list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<InsightInner> listBySubscriptionNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<InsightListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Insight list operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a Insight list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InsightInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<InsightInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<InsightListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(InsightsClientImpl.class);
 }

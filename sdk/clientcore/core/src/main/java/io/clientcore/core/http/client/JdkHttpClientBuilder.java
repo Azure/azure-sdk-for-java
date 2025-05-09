@@ -39,7 +39,7 @@ public class JdkHttpClientBuilder {
      * Creates JdkHttpClientBuilder.
      */
     public JdkHttpClientBuilder() {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -56,7 +56,7 @@ public class JdkHttpClientBuilder {
      * @throws NullPointerException if {@code executor} is null
      */
     public JdkHttpClientBuilder executor(Executor executor) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -78,7 +78,7 @@ public class JdkHttpClientBuilder {
      * @return the updated {@link JdkHttpClientBuilder} object
      */
     public JdkHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -98,7 +98,7 @@ public class JdkHttpClientBuilder {
      * @return The updated {@link JdkHttpClientBuilder} object.
      */
     public JdkHttpClientBuilder writeTimeout(Duration writeTimeout) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -116,7 +116,7 @@ public class JdkHttpClientBuilder {
      * @return The updated {@link JdkHttpClientBuilder} object.
      */
     public JdkHttpClientBuilder responseTimeout(Duration responseTimeout) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -135,7 +135,7 @@ public class JdkHttpClientBuilder {
      * @return The updated {@link JdkHttpClientBuilder} object.
      */
     public JdkHttpClientBuilder readTimeout(Duration readTimeout) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -160,7 +160,7 @@ public class JdkHttpClientBuilder {
      * @throws NullPointerException If {@code proxyOptions} is not null and the proxy type or address is not set.
      */
     public JdkHttpClientBuilder proxy(ProxyOptions proxyOptions) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -170,7 +170,7 @@ public class JdkHttpClientBuilder {
      * @return The updated {@link JdkHttpClientBuilder} object.
      */
     public JdkHttpClientBuilder sslContext(SSLContext sslContext) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -180,7 +180,7 @@ public class JdkHttpClientBuilder {
      * @return The updated {@link JdkHttpClientBuilder} object.
      */
     public JdkHttpClientBuilder configuration(Configuration configuration) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -189,6 +189,6 @@ public class JdkHttpClientBuilder {
      * @return a {@link HttpClient}.
      */
     public HttpClient build() {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 }

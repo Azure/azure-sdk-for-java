@@ -227,8 +227,9 @@ public final class TestProxyUtils {
             error = response.getHeaders().getValue(X_REQUEST_EXCEPTION_EXCEPTION_ERROR);
         }
         if (error != null) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(
-                "Test proxy exception: " + new String(Base64.getDecoder().decode(error), StandardCharsets.UTF_8)));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("error", new String(Base64.getDecoder().decode(error), StandardCharsets.UTF_8))
+                .log("Test proxy exception", RuntimeException::new);
         }
     }
 

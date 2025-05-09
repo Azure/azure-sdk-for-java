@@ -241,7 +241,11 @@ abstract class Fetcher<T> {
         RegionalRoutingContext firstContactedLocationEndpoint = diagnosticsAccessor.getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
 
         if (firstContactedLocationEndpoint != null) {
-            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
+            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+                .handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
+        } else {
+            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+                .handleLocationExceptionForPartitionKeyRange(failedRequest, failedRequest.requestContext.regionalRoutingContextToRoute);
         }
     }
 }
