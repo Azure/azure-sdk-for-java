@@ -664,6 +664,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
             String id = UUID.randomUUID().toString();
             InternalObjectNode properties = getDocumentDefinition(id);
+
             state.container.createItem(properties);
             verifyExists(
                 state.container,
@@ -684,6 +685,17 @@ public class ClientMetricsTest extends BatchTestBase {
                 .setDiagnosticsThresholds(new CosmosDiagnosticsThresholds()
                     .setNonPointOperationLatencyThreshold(Duration.ZERO))
                 .setQueryMetricsEnabled(true);
+
+            CosmosPagedIterable<InternalObjectNode> feedResponseIterator3NoPageSize = state.container
+                .readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class);
+            assertThat(feedResponseIterator3NoPageSize.iterator().hasNext()).isTrue();
+
+            // draining the iterator - metrics will only be emitted at the end
+            List<InternalObjectNode> allDocs = feedResponseIterator3NoPageSize.stream().collect(Collectors.toList());
+            logger.info("FOR DEBUGGING FLAKINESS - logging all docs in the current container");
+            for (InternalObjectNode current : allDocs) {
+                logger.info("  - {}", current.toJson());
+            }
 
             CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 = new CosmosPagedIterable<>(
                 state.container.asyncContainer.readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class),
@@ -1394,14 +1406,19 @@ public class ClientMetricsTest extends BatchTestBase {
     }
 
     private InternalObjectNode getDocumentDefinition(String documentId) {
-        final String uuid = UUID.randomUUID().toString();
+        final String pk = UUID.randomUUID().toString();
+        return getDocumentDefinition(documentId, pk);
+    }
+
+    private InternalObjectNode getDocumentDefinition(String documentId, String pk) {
+
         return
             new InternalObjectNode(String.format("{ "
                     + "\"id\": \"%s\", "
                     + "\"mypk\": \"%s\", "
                     + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
                     + "}"
-                , documentId, uuid));
+                , documentId, pk));
     }
 
     private void validateItemResponse(InternalObjectNode containerProperties,
