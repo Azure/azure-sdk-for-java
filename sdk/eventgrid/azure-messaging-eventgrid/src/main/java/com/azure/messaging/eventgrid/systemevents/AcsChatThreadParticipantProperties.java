@@ -105,8 +105,8 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeJsonField("participantCommunicationIdentifier", this.participantCommunicationIdentifier);
+        jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -117,6 +117,7 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatThreadParticipantProperties if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatThreadParticipantProperties.
      */
     public static AcsChatThreadParticipantProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -127,11 +128,11 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("displayName".equals(fieldName)) {
-                    deserializedAcsChatThreadParticipantProperties.displayName = reader.getString();
-                } else if ("participantCommunicationIdentifier".equals(fieldName)) {
+                if ("participantCommunicationIdentifier".equals(fieldName)) {
                     deserializedAcsChatThreadParticipantProperties.participantCommunicationIdentifier
                         = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAcsChatThreadParticipantProperties.displayName = reader.getString();
                 } else if ("metadata".equals(fieldName)) {
                     Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
                     deserializedAcsChatThreadParticipantProperties.metadata = metadata;

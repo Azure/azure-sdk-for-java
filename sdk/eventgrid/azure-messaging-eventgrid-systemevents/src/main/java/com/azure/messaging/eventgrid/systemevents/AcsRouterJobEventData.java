@@ -47,20 +47,16 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
     @Generated
     private String channelReference;
 
-    /*
-     * Router Event Job ID
-     */
-    @Generated
-    private String jobId;
-
     /**
      * Creates an instance of AcsRouterJobEventData class.
      * 
+     * @param jobId the jobId value to set.
      * @param labels the labels value to set.
      * @param tags the tags value to set.
      */
     @Generated
-    protected AcsRouterJobEventData(Map<String, String> labels, Map<String, String> tags) {
+    protected AcsRouterJobEventData(String jobId, Map<String, String> labels, Map<String, String> tags) {
+        super(jobId);
         this.labels = labels;
         this.tags = tags;
     }
@@ -130,17 +126,6 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
     }
 
     /**
-     * Get the jobId property: Router Event Job ID.
-     * 
-     * @return the jobId value.
-     */
-    @Generated
-    @Override
-    public String getJobId() {
-        return this.jobId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -194,8 +179,7 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
                     reader.skipChildren();
                 }
             }
-            AcsRouterJobEventData deserializedAcsRouterJobEventData = new AcsRouterJobEventData(labels, tags);
-            deserializedAcsRouterJobEventData.jobId = jobId;
+            AcsRouterJobEventData deserializedAcsRouterJobEventData = new AcsRouterJobEventData(jobId, labels, tags);
             deserializedAcsRouterJobEventData.channelReference = channelReference;
             deserializedAcsRouterJobEventData.channelId = channelId;
             deserializedAcsRouterJobEventData.queueId = queueId;

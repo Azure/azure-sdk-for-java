@@ -38,7 +38,7 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
      * The thread metadata
      */
     @Generated
-    private final Map<String, String> metadata;
+    private Map<String, String> metadata;
 
     /*
      * The updated thread properties
@@ -53,12 +53,6 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
     private Long version;
 
     /*
-     * The chat thread id
-     */
-    @Generated
-    private String threadId;
-
-    /*
      * The transaction id will be used as co-relation vector
      */
     @Generated
@@ -68,21 +62,20 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
      * Creates an instance of AcsChatThreadPropertiesUpdatedPerUserEventData class.
      * 
      * @param recipientCommunicationIdentifier the recipientCommunicationIdentifier value to set.
+     * @param threadId the threadId value to set.
      * @param createTime the createTime value to set.
      * @param editedByCommunicationIdentifier the editedByCommunicationIdentifier value to set.
      * @param editTime the editTime value to set.
-     * @param metadata the metadata value to set.
      * @param properties the properties value to set.
      */
     @Generated
     private AcsChatThreadPropertiesUpdatedPerUserEventData(
-        CommunicationIdentifierModel recipientCommunicationIdentifier, OffsetDateTime createTime,
+        CommunicationIdentifierModel recipientCommunicationIdentifier, String threadId, OffsetDateTime createTime,
         CommunicationIdentifierModel editedByCommunicationIdentifier, OffsetDateTime editTime,
-        Map<String, String> metadata, Map<String, BinaryData> properties) {
-        super(recipientCommunicationIdentifier, createTime);
+        Map<String, BinaryData> properties) {
+        super(recipientCommunicationIdentifier, threadId, createTime);
         this.editedByCommunicationIdentifier = editedByCommunicationIdentifier;
         this.editTime = editTime;
-        this.metadata = metadata;
         this.properties = properties;
     }
 
@@ -139,17 +132,6 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
     }
 
     /**
-     * Get the threadId property: The chat thread id.
-     * 
-     * @return the threadId value.
-     */
-    @Generated
-    @Override
-    public String getThreadId() {
-        return this.threadId;
-    }
-
-    /**
      * Get the transactionId property: The transaction id will be used as co-relation vector.
      * 
      * @return the transactionId value.
@@ -168,17 +150,17 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("recipientCommunicationIdentifier", getRecipientCommunicationIdentifier());
+        jsonWriter.writeStringField("threadId", getThreadId());
         jsonWriter.writeStringField("createTime",
             getCreateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreateTime()));
         jsonWriter.writeStringField("transactionId", getTransactionId());
-        jsonWriter.writeStringField("threadId", getThreadId());
         jsonWriter.writeNumberField("version", getVersion());
         jsonWriter.writeJsonField("editedByCommunicationIdentifier", this.editedByCommunicationIdentifier);
         jsonWriter.writeStringField("editTime",
             this.editTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.editTime));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("properties", this.properties,
             (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -195,27 +177,27 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
     public static AcsChatThreadPropertiesUpdatedPerUserEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CommunicationIdentifierModel recipientCommunicationIdentifier = null;
+            String threadId = null;
             OffsetDateTime createTime = null;
             String transactionId = null;
-            String threadId = null;
             Long version = null;
             CommunicationIdentifierModel editedByCommunicationIdentifier = null;
             OffsetDateTime editTime = null;
-            Map<String, String> metadata = null;
             Map<String, BinaryData> properties = null;
+            Map<String, String> metadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("recipientCommunicationIdentifier".equals(fieldName)) {
                     recipientCommunicationIdentifier = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("threadId".equals(fieldName)) {
+                    threadId = reader.getString();
                 } else if ("createTime".equals(fieldName)) {
                     createTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("transactionId".equals(fieldName)) {
                     transactionId = reader.getString();
-                } else if ("threadId".equals(fieldName)) {
-                    threadId = reader.getString();
                 } else if ("version".equals(fieldName)) {
                     version = reader.getNullable(JsonReader::getLong);
                 } else if ("editedByCommunicationIdentifier".equals(fieldName)) {
@@ -223,21 +205,21 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
                 } else if ("editTime".equals(fieldName)) {
                     editTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readMap(reader1 -> reader1.getString());
                 } else if ("properties".equals(fieldName)) {
                     properties = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             AcsChatThreadPropertiesUpdatedPerUserEventData deserializedAcsChatThreadPropertiesUpdatedPerUserEventData
-                = new AcsChatThreadPropertiesUpdatedPerUserEventData(recipientCommunicationIdentifier, createTime,
-                    editedByCommunicationIdentifier, editTime, metadata, properties);
+                = new AcsChatThreadPropertiesUpdatedPerUserEventData(recipientCommunicationIdentifier, threadId,
+                    createTime, editedByCommunicationIdentifier, editTime, properties);
             deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.transactionId = transactionId;
-            deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.threadId = threadId;
             deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.version = version;
+            deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.metadata = metadata;
 
             return deserializedAcsChatThreadPropertiesUpdatedPerUserEventData;
         });

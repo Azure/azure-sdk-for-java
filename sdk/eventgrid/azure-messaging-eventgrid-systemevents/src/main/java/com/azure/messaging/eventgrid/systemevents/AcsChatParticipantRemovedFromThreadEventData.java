@@ -44,12 +44,6 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
     private Long version;
 
     /*
-     * The chat thread id
-     */
-    @Generated
-    private String threadId;
-
-    /*
      * The transaction id will be used as co-relation vector
      */
     @Generated
@@ -58,14 +52,16 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
     /**
      * Creates an instance of AcsChatParticipantRemovedFromThreadEventData class.
      * 
+     * @param threadId the threadId value to set.
      * @param time the time value to set.
      * @param removedByCommunicationIdentifier the removedByCommunicationIdentifier value to set.
      * @param participantRemoved the participantRemoved value to set.
      */
     @Generated
-    private AcsChatParticipantRemovedFromThreadEventData(OffsetDateTime time,
+    private AcsChatParticipantRemovedFromThreadEventData(String threadId, OffsetDateTime time,
         CommunicationIdentifierModel removedByCommunicationIdentifier,
         AcsChatThreadParticipantProperties participantRemoved) {
+        super(threadId);
         this.time = time;
         this.removedByCommunicationIdentifier = removedByCommunicationIdentifier;
         this.participantRemoved = participantRemoved;
@@ -112,17 +108,6 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
     }
 
     /**
-     * Get the threadId property: The chat thread id.
-     * 
-     * @return the threadId value.
-     */
-    @Generated
-    @Override
-    public String getThreadId() {
-        return this.threadId;
-    }
-
-    /**
      * Get the transactionId property: The transaction id will be used as co-relation vector.
      * 
      * @return the transactionId value.
@@ -140,8 +125,8 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeStringField("threadId", getThreadId());
+        jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeStringField("time",
             this.time == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.time));
         jsonWriter.writeJsonField("removedByCommunicationIdentifier", this.removedByCommunicationIdentifier);
@@ -162,8 +147,8 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
     @Generated
     public static AcsChatParticipantRemovedFromThreadEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String transactionId = null;
             String threadId = null;
+            String transactionId = null;
             OffsetDateTime time = null;
             CommunicationIdentifierModel removedByCommunicationIdentifier = null;
             AcsChatThreadParticipantProperties participantRemoved = null;
@@ -172,10 +157,10 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("transactionId".equals(fieldName)) {
-                    transactionId = reader.getString();
-                } else if ("threadId".equals(fieldName)) {
+                if ("threadId".equals(fieldName)) {
                     threadId = reader.getString();
+                } else if ("transactionId".equals(fieldName)) {
+                    transactionId = reader.getString();
                 } else if ("time".equals(fieldName)) {
                     time = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -190,10 +175,9 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
                 }
             }
             AcsChatParticipantRemovedFromThreadEventData deserializedAcsChatParticipantRemovedFromThreadEventData
-                = new AcsChatParticipantRemovedFromThreadEventData(time, removedByCommunicationIdentifier,
+                = new AcsChatParticipantRemovedFromThreadEventData(threadId, time, removedByCommunicationIdentifier,
                     participantRemoved);
             deserializedAcsChatParticipantRemovedFromThreadEventData.transactionId = transactionId;
-            deserializedAcsChatParticipantRemovedFromThreadEventData.threadId = threadId;
             deserializedAcsChatParticipantRemovedFromThreadEventData.version = version;
 
             return deserializedAcsChatParticipantRemovedFromThreadEventData;

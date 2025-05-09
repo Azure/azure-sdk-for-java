@@ -60,24 +60,19 @@ public final class AcsRouterJobClassifiedEventData extends AcsRouterJobEventData
     @Generated
     private String channelReference;
 
-    /*
-     * Router Event Job ID
-     */
-    @Generated
-    private String jobId;
-
     /**
      * Creates an instance of AcsRouterJobClassifiedEventData class.
      * 
+     * @param jobId the jobId value to set.
      * @param labels the labels value to set.
      * @param tags the tags value to set.
      * @param queueDetails the queueDetails value to set.
      * @param attachedWorkerSelectors the attachedWorkerSelectors value to set.
      */
     @Generated
-    private AcsRouterJobClassifiedEventData(Map<String, String> labels, Map<String, String> tags,
+    private AcsRouterJobClassifiedEventData(String jobId, Map<String, String> labels, Map<String, String> tags,
         AcsRouterQueueDetails queueDetails, List<AcsRouterWorkerSelector> attachedWorkerSelectors) {
-        super(labels, tags);
+        super(jobId, labels, tags);
         this.queueDetails = queueDetails;
         this.attachedWorkerSelectors = attachedWorkerSelectors;
     }
@@ -156,26 +151,15 @@ public final class AcsRouterJobClassifiedEventData extends AcsRouterJobEventData
     }
 
     /**
-     * Get the jobId property: Router Event Job ID.
-     * 
-     * @return the jobId value.
-     */
-    @Generated
-    @Override
-    public String getJobId() {
-        return this.jobId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
@@ -199,9 +183,9 @@ public final class AcsRouterJobClassifiedEventData extends AcsRouterJobEventData
     @Generated
     public static AcsRouterJobClassifiedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String jobId = null;
             Map<String, String> labels = null;
             Map<String, String> tags = null;
-            String jobId = null;
             String channelReference = null;
             String channelId = null;
             String queueId = null;
@@ -213,12 +197,12 @@ public final class AcsRouterJobClassifiedEventData extends AcsRouterJobEventData
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("labels".equals(fieldName)) {
+                if ("jobId".equals(fieldName)) {
+                    jobId = reader.getString();
+                } else if ("labels".equals(fieldName)) {
                     labels = reader.readMap(reader1 -> reader1.getString());
                 } else if ("tags".equals(fieldName)) {
                     tags = reader.readMap(reader1 -> reader1.getString());
-                } else if ("jobId".equals(fieldName)) {
-                    jobId = reader.getString();
                 } else if ("channelReference".equals(fieldName)) {
                     channelReference = reader.getString();
                 } else if ("channelId".equals(fieldName)) {
@@ -238,8 +222,7 @@ public final class AcsRouterJobClassifiedEventData extends AcsRouterJobEventData
                 }
             }
             AcsRouterJobClassifiedEventData deserializedAcsRouterJobClassifiedEventData
-                = new AcsRouterJobClassifiedEventData(labels, tags, queueDetails, attachedWorkerSelectors);
-            deserializedAcsRouterJobClassifiedEventData.jobId = jobId;
+                = new AcsRouterJobClassifiedEventData(jobId, labels, tags, queueDetails, attachedWorkerSelectors);
             deserializedAcsRouterJobClassifiedEventData.channelReference = channelReference;
             deserializedAcsRouterJobClassifiedEventData.channelId = channelId;
             deserializedAcsRouterJobClassifiedEventData.queueId = queueId;
