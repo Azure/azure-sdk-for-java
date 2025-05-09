@@ -1366,6 +1366,18 @@
         "gcch",
         "updation" // current typo in a swagger
       ]
+    },
+    {
+      "filename": "sdk/ai/azure-ai-projects/**",
+      "words": [
+        "UPIA",
+        "ANSII",
+        "ansii",
+        "AISEARCH",
+        "azureai",
+        "gleu",
+        "GLEU"
+      ]
     }
   ],
   "allowCompoundWords": true

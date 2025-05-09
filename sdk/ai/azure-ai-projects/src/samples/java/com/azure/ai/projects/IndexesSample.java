@@ -28,8 +28,8 @@ public class IndexesSample {
 
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "2.0");
-        String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "agentaisearch2aqa");
-        String aiSearchIndexName = Configuration.getGlobalConfiguration().get("AI_SEARCH_INDEX_NAME", "azureblob-index");
+        String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
+        String aiSearchIndexName = Configuration.getGlobalConfiguration().get("AI_SEARCH_INDEX_NAME", "");
 
         Index index = indexesClient.createOrUpdate(
             indexName,
