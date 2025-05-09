@@ -81,8 +81,6 @@ public class CallAutomationUnitTestBase {
                 .setServerCallId(serverCallId)
                 .setCallbackUri(callbackUri)
                 .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
-                .setMediaSubscriptionId(mediaSubscriptionId)
-                .setDataSubscriptionId(dataSubscriptionId)
                 .setSourceDisplayName(callerDisplayName)
                 .setTargets(
                     new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId))));

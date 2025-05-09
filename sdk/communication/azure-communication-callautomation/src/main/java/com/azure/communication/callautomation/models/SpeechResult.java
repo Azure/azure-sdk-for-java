@@ -12,7 +12,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /** The continuous speech recognition result. */
-@Fluent
 @Immutable
 public final class SpeechResult extends RecognizeResult {
 

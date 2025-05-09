@@ -42,13 +42,6 @@ public final class CreateCallOptions {
     private TranscriptionOptions transcriptionOptions;
 
     /**
-     * Overrides default client source by a MicrosoftTeamsAppIdentifier type source.
-     * Required for creating call with Teams resource account ID.
-     * This is per-operation setting and does not change the client's default source.
-     */
-    private MicrosoftTeamsAppIdentifier teamsAppSource;
-
-    /**
      * Constructor
      * @param callInvite Call invitee information.
      * @param callbackUrl The call back URI.
@@ -152,28 +145,6 @@ public final class CreateCallOptions {
      */
     public CreateCallOptions setMediaStreamingOptions(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
-    }
-
-    /**
-     * Get the TeamsAppSource property: it overrides default client source by a MicrosoftTeamsAppIdentifier type source.
-     *
-     * @return the teamsAppSource.
-     */
-    public MicrosoftTeamsAppIdentifier getTeamsAppSource() {
-        return teamsAppSource;
-    }
-
-    /**
-     * Overrides default client source by a MicrosoftTeamsAppIdentifier type source.
-     * Required for creating call with Teams resource account ID.
-     * This is per-operation setting and does not change the client's default source.
-     *
-     * @param teamsAppSource The MicrosoftTeamsAppIdentifier type source for overriding default client source.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateCallOptions setTeamsAppSource(MicrosoftTeamsAppIdentifier teamsAppSource) {
-        this.teamsAppSource = teamsAppSource;
         return this;
     }
 }

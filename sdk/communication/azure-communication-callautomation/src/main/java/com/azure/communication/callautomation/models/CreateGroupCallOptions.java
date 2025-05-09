@@ -57,18 +57,6 @@ public final class CreateGroupCallOptions {
     private CallIntelligenceOptions callIntelligenceOptions;
 
     /**
-     * Custom Context
-     */
-    private final CustomCallingContext customContext;
-
-    /**
-     * Overrides default client source by a MicrosoftTeamsAppIdentifier type source.
-     * Required for creating call with Teams resource account ID.
-     * This is per-operation setting and does not change the client's default source.
-     */
-    private MicrosoftTeamsAppIdentifier teamsAppSource;
-
-    /**
      * Constructor
      *
      * @param targetParticipants The targets of the call.
@@ -79,7 +67,6 @@ public final class CreateGroupCallOptions {
         this.callbackUrl = callbackUrl;
         this.sourceDisplayName = null;
         this.sourceCallIdNumber = null;
-        this.customContext = new CustomCallingContext(new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     /**
@@ -214,35 +201,5 @@ public final class CreateGroupCallOptions {
      */
     public TranscriptionOptions getTranscriptionOptions() {
         return transcriptionOptions;
-    }
-
-    /**
-     *  get custom context
-     * @return custom context
-     */
-    public CustomCallingContext getCustomContext() {
-        return customContext;
-    }
-
-    /**
-     * Get the TeamsAppSource property: it overrides default client source by a MicrosoftTeamsAppIdentifier type source.
-     *
-     * @return the teamsAppSource.
-     */
-    public MicrosoftTeamsAppIdentifier getTeamsAppSource() {
-        return teamsAppSource;
-    }
-
-    /**
-     * Overrides default client source by a MicrosoftTeamsAppIdentifier type source.
-     * Required for creating call with Teams resource account ID.
-     * This is per-operation setting and does not change the client's default source.
-     *
-     * @param teamsAppSource The MicrosoftTeamsAppIdentifier type source for overriding default client source.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateGroupCallOptions setTeamsAppSource(MicrosoftTeamsAppIdentifier teamsAppSource) {
-        this.teamsAppSource = teamsAppSource;
-        return this;
     }
 }

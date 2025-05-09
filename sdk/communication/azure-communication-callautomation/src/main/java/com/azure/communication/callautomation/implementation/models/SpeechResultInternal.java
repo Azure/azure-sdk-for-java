@@ -21,6 +21,11 @@ public final class SpeechResultInternal implements JsonSerializable<SpeechResult
      */
     private String speech;
 
+    /*
+     * The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0.
+     */
+    private Double confidence;
+
     /**
      * Creates an instance of SpeechResultInternal class.
      */
@@ -48,12 +53,33 @@ public final class SpeechResultInternal implements JsonSerializable<SpeechResult
     }
 
     /**
+     * Get the confidence property: The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0.
+     * 
+     * @return the confidence value.
+     */
+    public Double getConfidence() {
+        return this.confidence;
+    }
+
+    /**
+     * Set the confidence property: The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0.
+     * 
+     * @param confidence the confidence value to set.
+     * @return the SpeechResultInternal object itself.
+     */
+    public SpeechResultInternal setConfidence(Double confidence) {
+        this.confidence = confidence;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("speech", this.speech);
+        jsonWriter.writeNumberField("confidence", this.confidence);
         return jsonWriter.writeEndObject();
     }
 
@@ -74,6 +100,8 @@ public final class SpeechResultInternal implements JsonSerializable<SpeechResult
 
                 if ("speech".equals(fieldName)) {
                     deserializedSpeechResultInternal.speech = reader.getString();
+                } else if ("confidence".equals(fieldName)) {
+                    deserializedSpeechResultInternal.confidence = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }

@@ -271,13 +271,4 @@ public class CallMediaUnitTests {
         Response<Void> response = callMedia.stopMediaStreamingWithResponse(options, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
-
-    @Test
-    public void interruptAudioAndAnnounceWithResponseTest() {
-        InterruptAudioAndAnnounceOptions options
-            = new InterruptAudioAndAnnounceOptions(playTextSource, new CommunicationUserIdentifier("id"));
-        options.setOperationContext("operationContext");
-        Response<Void> response = callMedia.interruptAudioAndAnnounceWithResponse(options, Context.NONE);
-        assertEquals(response.getStatusCode(), 202);
-    }
 }
