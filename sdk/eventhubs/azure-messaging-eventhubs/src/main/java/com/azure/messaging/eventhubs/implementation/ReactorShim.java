@@ -48,6 +48,7 @@ public final class ReactorShim {
      * @param <T> the element type of the source {@link Flux}.
      * @return a {@link Flux} of {@link Flux} windows based on element count and duration.
      */
+    @SuppressWarnings("unchecked")
     public static <T> Flux<Flux<T>> windowTimeout(Flux<T> source, int maxSize, Duration maxTime) {
         if (BACKPRESSURE_WINDOW_TIMEOUT_OPERATOR_HANDLE == null) {
             // optimized (backpressure) aware windowTimeout operator not available use standard variant.
