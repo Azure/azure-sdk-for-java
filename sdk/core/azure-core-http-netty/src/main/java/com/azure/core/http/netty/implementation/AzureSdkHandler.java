@@ -83,6 +83,17 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) {
+       disposeTimeouts();
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        disposeTimeouts();
+        ctx.fireChannelInactive();
+        ctx.pipeline().remove(this);
+    }
+
+    private void disposeTimeouts() {
         disposeWriteTimeoutWatcher();
         disposeResponseTimeoutWatcher();
         disposeReadTimeoutWatcher();
