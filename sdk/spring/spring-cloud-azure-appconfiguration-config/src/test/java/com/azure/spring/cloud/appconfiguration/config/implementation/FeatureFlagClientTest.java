@@ -2,27 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.E_TAG;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_ID;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_REFERENCE;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.USERS;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.DEFAULT_ROLLOUT_PERCENTAGE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_LABEL;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE_ALL;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE_TELEMETRY;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.GROUPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_E_TAG;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE_ALL;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.USERS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +32,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
@@ -43,6 +43,9 @@ public class FeatureFlagClientTest {
 
     @Mock
     private AppConfigurationReplicaClient clientMock;
+    
+    @Mock
+    private Context contextMock;
 
     private FeatureFlagClient featureFlagClient;
 
@@ -76,14 +79,13 @@ public class FeatureFlagClientTest {
     public void loadFeatureFlagsTestNoFeatureFlags() {
         List<ConfigurationSetting> settings = List.of(new ConfigurationSetting().setKey("FakeKey"));
         FeatureFlags featureFlags = new FeatureFlags(null, settings);
-        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.anyBoolean())).thenReturn(featureFlags);
+        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
-        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
-            false);
+        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, contextMock);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals("FakeKey", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
-        assertEquals(0, featureFlagClient.getProperties().size());
+        assertEquals(0, featureFlagClient.getFeatureFlags().size());
     }
 
     @Test
@@ -91,15 +93,14 @@ public class FeatureFlagClientTest {
         List<ConfigurationSetting> settings = List.of(new FeatureFlagConfigurationSetting("Alpha", false),
             new FeatureFlagConfigurationSetting("Beta", true));
         FeatureFlags featureFlags = new FeatureFlags(null, settings);
-        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.anyBoolean())).thenReturn(featureFlags);
+        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
-        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
-            false);
+        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, contextMock);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/Alpha", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
         assertEquals(".appconfig.featureflag/Beta", featureFlagsList.get(0).getFeatureFlags().get(1).getKey());
-        assertEquals(2, featureFlagClient.getProperties().size());
+        assertEquals(2, featureFlagClient.getFeatureFlags().size());
     }
 
     @Test
@@ -107,31 +108,30 @@ public class FeatureFlagClientTest {
         List<ConfigurationSetting> settings = List.of(new FeatureFlagConfigurationSetting("Alpha", false),
             new FeatureFlagConfigurationSetting("Beta", true));
         FeatureFlags featureFlags = new FeatureFlags(null, settings);
-        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.anyBoolean())).thenReturn(featureFlags);
+        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
-        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
-            false);
+        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, contextMock);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/Alpha", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
         assertEquals(".appconfig.featureflag/Beta", featureFlagsList.get(0).getFeatureFlags().get(1).getKey());
-        assertEquals(2, featureFlagClient.getProperties().size());
+        assertEquals(2, featureFlagClient.getFeatureFlags().size());
 
         List<ConfigurationSetting> settings2 = List.of(new FeatureFlagConfigurationSetting("Alpha", true),
             new FeatureFlagConfigurationSetting("Gamma", false));
         featureFlags = new FeatureFlags(null, settings2);
-        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.anyBoolean())).thenReturn(featureFlags);
+        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
-        featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, false);
+        featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, contextMock);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/Alpha", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
         assertEquals(".appconfig.featureflag/Gamma", featureFlagsList.get(0).getFeatureFlags().get(1).getKey());
-        assertEquals(3, featureFlagClient.getProperties().size());
-        Map<String, Feature> features = featureFlagClient.getProperties();
-        assertTrue(features.get(".appconfig.featureflag/Alpha").isEnabled());
-        assertTrue(features.get(".appconfig.featureflag/Beta").isEnabled());
-        assertFalse(features.get(".appconfig.featureflag/Gamma").isEnabled());
+        assertEquals(3, featureFlagClient.getFeatureFlags().size());
+        List<Feature> features = featureFlagClient.getFeatureFlags();
+        assertTrue(features.get(0).isEnabled());
+        assertTrue(features.get(1).isEnabled());
+        assertFalse(features.get(2).isEnabled());
     }
 
     @Test
@@ -166,14 +166,13 @@ public class FeatureFlagClientTest {
         targetingFlag.addClientFilter(targetingFilter);
         List<ConfigurationSetting> settings = List.of(targetingFlag);
         FeatureFlags featureFlags = new FeatureFlags(null, settings);
-        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.anyBoolean())).thenReturn(featureFlags);
+        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
-        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
-            false);
+        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, contextMock);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/TargetingTest", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
-        assertEquals(1, featureFlagClient.getProperties().size());
+        assertEquals(1, featureFlagClient.getFeatureFlags().size());
     }
     
     @Test
@@ -185,13 +184,49 @@ public class FeatureFlagClientTest {
     @Test
     public void testFeatureFlagTelemetry() {
         Feature feature = FeatureFlagClient.createFeature(TELEMETRY_FEATURE, TEST_ENDPOINT);
-
-        String featureFlagId = "yON6V7DTGfVgOKfnPtue_2hS-CFVV5ecv-dcjqCFQt4";
         String featureFlagReference = String.format("%s/kv/%s", TEST_ENDPOINT, ".appconfig.featureflag/Delta");
 
-        assertEquals(featureFlagId, feature.getTelemetry().getMetadata().get(FEATURE_FLAG_ID));
         assertEquals(featureFlagReference, feature.getTelemetry().getMetadata().get(FEATURE_FLAG_REFERENCE));
         assertEquals(TEST_E_TAG, feature.getTelemetry().getMetadata().get(E_TAG));
     }
 
+    @Test
+    public void testAllocationIdInTelemetry() {
+        Feature feature = FeatureFlagClient.createFeature(TELEMETRY_FEATURE, TEST_ENDPOINT);
+
+        assertEquals("wz4oTwm3SjARe1SrmzT7", feature.getTelemetry().getMetadata().get("AllocationId"));
+
+        feature = FeatureFlagClient.createFeature(ALL_FEATURE, TEST_ENDPOINT);
+        assertNull(feature.getTelemetry());
+    }
+
+    @Test
+    public void testAllocationIdWithDifferentSeed() {
+        FeatureFlagConfigurationSetting featureFlag = createItemFeatureFlag(
+            ".appconfig.featureflag/", "TestFeature",
+            "{\"allocation\":{\"seed\":\"newSeed\"},\"telemetry\":{\"enabled\":true}}", FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+
+        Feature feature = FeatureFlagClient.createFeature(featureFlag, TEST_ENDPOINT);
+        assertEquals("RkxUK5CoaOaNWBjc55Mi", feature.getTelemetry().getMetadata().get("AllocationId"));
+    }
+
+    @Test
+    public void testAllocationIdWithVariants() {
+        String flagValue = "{\"allocation\": { \"percentile\": [{\"variant\": \"Off\", \"from\": 0, \"to\": 50}, {\"variant\": \"On\", \"from\": 50, \"to\": 100}], \"default_when_enabled\": \"Off2\", \"default_when_disabled\": \"Off\" }, \"telemetry\": {\"enabled\": true}}";
+        FeatureFlagConfigurationSetting featureFlag = createItemFeatureFlag(
+            ".appconfig.featureflag/", "TestFeature", flagValue, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+
+        Feature feature = FeatureFlagClient.createFeature(featureFlag, TEST_ENDPOINT);
+        assertEquals("wGzzPy4qGy92SHnMtSvY", feature.getTelemetry().getMetadata().get("AllocationId"));
+    }
+
+    @Test
+    public void testAllocationIdWithEmptyAllocation() {
+        FeatureFlagConfigurationSetting featureFlag = createItemFeatureFlag(
+            ".appconfig.featureflag/", "TestFeature",
+            "{\"allocation\":{},\"telemetry\":{\"enabled\":true}}}", FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+
+        Feature feature = FeatureFlagClient.createFeature(featureFlag, TEST_ENDPOINT);
+        assertNull(feature.getTelemetry().getMetadata().get("AllocationId"));
+    }
 }

@@ -30,8 +30,8 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
     private final AtomicBoolean running = new AtomicBoolean(false);
 
     private ApplicationEventPublisher publisher;
-
-    private final Long defaultMinBackoff;
+    
+    private final Long defaultMinBackoff = (long) 30;
 
     private final AppConfigurationReplicaClientFactory clientFactory;
 
@@ -46,11 +46,9 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
      *
      * @param clientFactory Clients stores used to connect to App Configuration. * @param defaultMinBackoff default
      * @param refreshInterval time between refresh intervals
-     * @param defaultMinBackoff minimum time between backoff retries minimum backoff time
      */
     public AppConfigurationPullRefresh(AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval,
-        Long defaultMinBackoff, ReplicaLookUp replicaLookUp, AppConfigurationRefreshUtil refreshUtils) {
-        this.defaultMinBackoff = defaultMinBackoff;
+        ReplicaLookUp replicaLookUp, AppConfigurationRefreshUtil refreshUtils) {
         this.refreshInterval = refreshInterval;
         this.clientFactory = clientFactory;
         this.replicaLookUp = replicaLookUp;
