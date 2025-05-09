@@ -177,6 +177,7 @@
     "com.azure.messaging.eventgrid.systemevents.DeviceTwinInfoX509Thumbprint": "Microsoft.EventGrid.SystemEvents.DeviceTwinInfoX509Thumbprint",
     "com.azure.messaging.eventgrid.systemevents.DeviceTwinMetadata": "Microsoft.EventGrid.SystemEvents.DeviceTwinMetadata",
     "com.azure.messaging.eventgrid.systemevents.DeviceTwinProperties": "Microsoft.EventGrid.SystemEvents.DeviceTwinProperties",
+    "com.azure.messaging.eventgrid.systemevents.EdgeSolutionVersionPublishedEventData": "Microsoft.EventGrid.SystemEvents.EdgeSolutionVersionPublishedEventData",
     "com.azure.messaging.eventgrid.systemevents.EventGridMqttClientCreatedOrUpdatedEventData": "Microsoft.EventGrid.SystemEvents.EventGridMQTTClientCreatedOrUpdatedEventData",
     "com.azure.messaging.eventgrid.systemevents.EventGridMqttClientDeletedEventData": "Microsoft.EventGrid.SystemEvents.EventGridMQTTClientDeletedEventData",
     "com.azure.messaging.eventgrid.systemevents.EventGridMqttClientDisconnectionReason": "Microsoft.EventGrid.SystemEvents.EventGridMQTTClientDisconnectionReason",
