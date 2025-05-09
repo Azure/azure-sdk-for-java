@@ -212,9 +212,9 @@ public final class AcsEmailDeliveryReportReceivedEventData
         jsonWriter.writeStringField("sender", this.sender);
         jsonWriter.writeStringField("recipient", this.recipient);
         jsonWriter.writeStringField("internetMessageId", this.internetMessageId);
+        jsonWriter.writeJsonField("deliveryStatusDetails", this.deliveryStatusDetails);
         jsonWriter.writeStringField("messageId", this.messageId);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeJsonField("deliveryStatusDetails", this.deliveryStatusDetails);
         jsonWriter.writeStringField("deliveryAttemptTimestamp",
             this.deliveryAttemptTimestamp == null
                 ? null
@@ -228,6 +228,7 @@ public final class AcsEmailDeliveryReportReceivedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsEmailDeliveryReportReceivedEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsEmailDeliveryReportReceivedEventData.
      */
     public static AcsEmailDeliveryReportReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -244,14 +245,14 @@ public final class AcsEmailDeliveryReportReceivedEventData
                     deserializedAcsEmailDeliveryReportReceivedEventData.recipient = reader.getString();
                 } else if ("internetMessageId".equals(fieldName)) {
                     deserializedAcsEmailDeliveryReportReceivedEventData.internetMessageId = reader.getString();
+                } else if ("deliveryStatusDetails".equals(fieldName)) {
+                    deserializedAcsEmailDeliveryReportReceivedEventData.deliveryStatusDetails
+                        = AcsEmailDeliveryReportStatusDetails.fromJson(reader);
                 } else if ("messageId".equals(fieldName)) {
                     deserializedAcsEmailDeliveryReportReceivedEventData.messageId = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     deserializedAcsEmailDeliveryReportReceivedEventData.status
                         = AcsEmailDeliveryReportStatus.fromString(reader.getString());
-                } else if ("deliveryStatusDetails".equals(fieldName)) {
-                    deserializedAcsEmailDeliveryReportReceivedEventData.deliveryStatusDetails
-                        = AcsEmailDeliveryReportStatusDetails.fromJson(reader);
                 } else if ("deliveryAttemptTimestamp".equals(fieldName)) {
                     deserializedAcsEmailDeliveryReportReceivedEventData.deliveryAttemptTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

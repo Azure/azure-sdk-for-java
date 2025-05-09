@@ -133,9 +133,9 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
         jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
-        jsonWriter.writeStringField("queueId", this.queueId);
         jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("queueId", this.queueId);
         return jsonWriter.writeEndObject();
     }
 
@@ -145,6 +145,7 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsRouterJobEventData if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterJobEventData.
      */
     public static AcsRouterJobEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -160,14 +161,14 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
                     deserializedAcsRouterJobEventData.setChannelReference(reader.getString());
                 } else if ("channelId".equals(fieldName)) {
                     deserializedAcsRouterJobEventData.setChannelId(reader.getString());
-                } else if ("queueId".equals(fieldName)) {
-                    deserializedAcsRouterJobEventData.queueId = reader.getString();
                 } else if ("labels".equals(fieldName)) {
                     Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
                     deserializedAcsRouterJobEventData.labels = labels;
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedAcsRouterJobEventData.tags = tags;
+                } else if ("queueId".equals(fieldName)) {
+                    deserializedAcsRouterJobEventData.queueId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

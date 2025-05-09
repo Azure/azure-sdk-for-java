@@ -190,8 +190,8 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
         jsonWriter.writeNumberField("version", getVersion());
         jsonWriter.writeJsonField("createdByCommunicationIdentifier", this.createdByCommunicationIdentifier);
         jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("participants", this.participants, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -201,6 +201,7 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatThreadCreatedWithUserEventData if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatThreadCreatedWithUserEventData.
      */
     public static AcsChatThreadCreatedWithUserEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -230,13 +231,13 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
                 } else if ("properties".equals(fieldName)) {
                     Map<String, Object> properties = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedAcsChatThreadCreatedWithUserEventData.properties = properties;
-                } else if ("metadata".equals(fieldName)) {
-                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsChatThreadCreatedWithUserEventData.metadata = metadata;
                 } else if ("participants".equals(fieldName)) {
                     List<AcsChatThreadParticipantProperties> participants
                         = reader.readArray(reader1 -> AcsChatThreadParticipantProperties.fromJson(reader1));
                     deserializedAcsChatThreadCreatedWithUserEventData.participants = participants;
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsChatThreadCreatedWithUserEventData.metadata = metadata;
                 } else {
                     reader.skipChildren();
                 }

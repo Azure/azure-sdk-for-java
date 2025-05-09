@@ -184,12 +184,12 @@ public final class AcsRouterJobClassifiedEventData extends AcsRouterJobEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("queueDetails", this.queueDetails);
         jsonWriter.writeStringField("classificationPolicyId", this.classificationPolicyId);
         jsonWriter.writeNumberField("priority", this.priority);
@@ -204,6 +204,7 @@ public final class AcsRouterJobClassifiedEventData extends AcsRouterJobEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsRouterJobClassifiedEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterJobClassifiedEventData.
      */
     public static AcsRouterJobClassifiedEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -214,7 +215,13 @@ public final class AcsRouterJobClassifiedEventData extends AcsRouterJobEventData
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("jobId".equals(fieldName)) {
+                if ("labels".equals(fieldName)) {
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobClassifiedEventData.setLabels(labels);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobClassifiedEventData.setTags(tags);
+                } else if ("jobId".equals(fieldName)) {
                     deserializedAcsRouterJobClassifiedEventData.setJobId(reader.getString());
                 } else if ("channelReference".equals(fieldName)) {
                     deserializedAcsRouterJobClassifiedEventData.setChannelReference(reader.getString());
@@ -222,12 +229,6 @@ public final class AcsRouterJobClassifiedEventData extends AcsRouterJobEventData
                     deserializedAcsRouterJobClassifiedEventData.setChannelId(reader.getString());
                 } else if ("queueId".equals(fieldName)) {
                     deserializedAcsRouterJobClassifiedEventData.setQueueId(reader.getString());
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobClassifiedEventData.setLabels(labels);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobClassifiedEventData.setTags(tags);
                 } else if ("queueDetails".equals(fieldName)) {
                     deserializedAcsRouterJobClassifiedEventData.queueDetails = AcsRouterQueueDetails.fromJson(reader);
                 } else if ("classificationPolicyId".equals(fieldName)) {
