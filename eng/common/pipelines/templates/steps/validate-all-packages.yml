@@ -1,7 +1,16 @@
 parameters:
-  ArtifactPath: $(Build.ArtifactStagingDirectory)
-  Artifacts: []
-  ConfigFileDir: $(Build.ArtifactStagingDirectory)/PackageInfo
+  - name: ArtifactPath
+    type: string
+    default: $(Build.ArtifactStagingDirectory)
+  - name: Artifacts
+    type: object
+    default: []
+  - name: ConfigFileDir
+    type: string
+    default: $(Build.ArtifactStagingDirectory)/PackageInfo
+  - name: PackageInfoFiles
+    type: object
+    default: []
 
 steps:
  - ${{ if and(ne(variables['Skip.PackageValidation'], 'true'), and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))) }}:
@@ -10,6 +19,25 @@ steps:
       displayName: "Set as release build"
       condition: and(succeeded(), eq(variables['SetAsReleaseBuild'], ''))
 
+    - ${{ if eq(length(parameters.PackageInfoFiles), 0) }}:
+      - pwsh: |
+          $ArtifactList = ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
+          $configDir = '${{ parameters.ConfigFileDir }}'
+          $PackageInfoFilesList = @()
+          foreach ($artifact in $artifactsList) {
+            $PackageInfoFilesList += "$configDir/$($artifact).json"
+          }
+          $PackageInfoFiles = $PackageInfoFilesList.Replace("\", "\\").Replace("\\", "/")
+          Write-Host "PackageInfoFiles=$PackageInfoFiles"
+          Write-Host "##vso[task.setvariable variable=PackageInfoFiles;]$PackageInfoFiles"
+        displayName: Set PackageInfoFiles files from ArtifactsList
+    - ${{ else }}:
+      - pwsh: |
+          $PackageInfoFiles = ('${{ convertToJson(parameters.PackageInfoFiles) }}'.Replace("\", "\\").Replace("\\", "/") | ConvertFrom-Json -NoEnumerate)
+          Write-Host "PackageInfoFiles=$PackageInfoFiles"
+          Write-Host "##vso[task.setvariable variable=PackageInfoFiles;]$PackageInfoFiles"
+        displayName: Set PackageInfoFiles files
+
     - task: AzureCLI@2
       inputs:
         azureSubscription: opensource-api-connection
@@ -17,11 +45,10 @@ steps:
         scriptLocation: inlineScript
         inlineScript: |
           $(Build.SourcesDirectory)/eng/common/scripts/Validate-All-Packages.ps1 `
-            -ArtifactList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name) `
+            -PackageInfoFiles ('${{ convertToJson(parameters.PackageInfoFiles) }}'.Replace("\", "\\").Replace("\\", "/") | ConvertFrom-Json -NoEnumerate) `
             -ArtifactPath ${{ parameters.ArtifactPath }} `
             -RepoRoot $(Build.SourcesDirectory) `
             -APIKey $(azuresdk-apiview-apikey) `
-            -ConfigFileDir '${{ parameters.ConfigFileDir }}' `
             -BuildDefinition $(System.CollectionUri)$(System.TeamProject)/_build?definitionId=$(System.DefinitionId) `
             -PipelineUrl $(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId) `
             -IsReleaseBuild $$(SetAsReleaseBuild)

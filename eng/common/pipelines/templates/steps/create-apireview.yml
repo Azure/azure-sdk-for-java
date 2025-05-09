@@ -1,12 +1,31 @@
 parameters:
-  ArtifactPath: $(Build.ArtifactStagingDirectory)
-  Artifacts: []
-  ConfigFileDir: $(Build.ArtifactStagingDirectory)/PackageInfo
-  MarkPackageAsShipped: false
-  GenerateApiReviewForManualOnly: false
-  ArtifactName: 'packages'
-  PackageName: ''
-  SourceRootPath: $(Build.SourcesDirectory)
+  - name: ArtifactPath
+    type: string
+    default: $(Build.ArtifactStagingDirectory)
+  - name: Artifacts
+    type: object
+    default: []
+  - name: ConfigFileDir
+    type: string
+    default: $(Build.ArtifactStagingDirectory)/PackageInfo
+  - name: MarkPackageAsShipped
+    type: boolean
+    default: false
+  - name: GenerateApiReviewForManualOnly
+    type: boolean
+    default: false
+  - name: ArtifactName
+    type: string
+    default: 'packages'
+  - name: PackageName
+    type: string
+    default: ''
+  - name: SourceRootPath
+    type: string
+    default: $(Build.SourcesDirectory)
+  - name: PackageInfoFiles
+    type: object
+    default: []
 
 steps:
   # ideally this should be done as initial step of a job in caller template
@@ -15,23 +34,44 @@ steps:
     parameters:
       WorkingDirectory: ${{ parameters.SourceRootPath }}
 
+  - ${{ if eq(length(parameters.PackageInfoFiles), 0) }}:
+    - pwsh: |
+        $ArtifactList = ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
+        $configDir = '${{ parameters.ConfigFileDir }}'
+        $PackageInfoFilesList = @()
+        foreach ($artifact in $artifactsList) {
+          $PackageInfoFilesList += "$configDir/$($artifact).json"
+        }
+        $PackageInfoFiles = $PackageInfoFilesList.Replace("\", "\\").Replace("\\", "/")
+        Write-Host "PackageInfoFiles=$PackageInfoFiles"
+        Write-Host "##vso[task.setvariable variable=PackageInfoFiles;]$PackageInfoFiles"
+      displayName: Set PackageInfoFiles files from ArtifactsList
+  - ${{ else }}:
+    - pwsh: |
+        $PackageInfoFiles = ('${{ convertToJson(parameters.PackageInfoFiles) }}'.Replace("\", "\\").Replace("\\", "/") | ConvertFrom-Json -NoEnumerate)
+        Write-Host "PackageInfoFiles=$PackageInfoFiles"
+        Write-Host "##vso[task.setvariable variable=PackageInfoFiles;]$PackageInfoFiles"
+      displayName: Set PackageInfoFiles files
+
   # Automatic API review is generated for a package when pipeline runs irrespective of how pipeline gets triggered.
-  # Below condition ensures that API review is generated only for manual pipeline runs when flag GenerateApiReviewForManualOnly is set to true. 
+  # Below condition ensures that API review is generated only for manual pipeline runs when flag GenerateApiReviewForManualOnly is set to true.
   - ${{ if or(ne(parameters.GenerateApiReviewForManualOnly, true), eq(variables['Build.Reason'], 'Manual')) }}:
     - task: Powershell@2
       inputs:
         filePath: ${{ parameters.SourceRootPath }}/eng/common/scripts/Create-APIReview.ps1
+        # The .Replace("\", "\\") below is in case this runs on Windows which would have paths like:
+        # D:\a\_work\1/packages-signed/PackageInfo/
+        # and the backslashes in the string, without replacing them with the double would be treated
+        # as escape sequences.
         arguments: >
-          -ArtifactList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
+          -PackageInfoFiles '$(PRServiceDirectories)''
           -ArtifactPath '${{parameters.ArtifactPath}}'
           -ArtifactName ${{ parameters.ArtifactName }}
           -APIKey '$(azuresdk-apiview-apikey)'
-          -PackageName '${{parameters.PackageName}}'
           -SourceBranch '$(Build.SourceBranchName)'
           -DefaultBranch '$(DefaultBranch)'
-          -ConfigFileDir '${{parameters.ConfigFileDir}}'
           -BuildId '$(Build.BuildId)'
-          -RepoName '$(Build.Repository.Name)'    
+          -RepoName '$(Build.Repository.Name)'
           -MarkPackageAsShipped $${{parameters.MarkPackageAsShipped}}
         pwsh: true
       displayName: Create API Review
