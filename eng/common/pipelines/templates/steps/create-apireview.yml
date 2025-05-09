@@ -58,12 +58,8 @@ steps:
     - task: Powershell@2
       inputs:
         filePath: ${{ parameters.SourceRootPath }}/eng/common/scripts/Create-APIReview.ps1
-        # The .Replace("\", "\\") below is in case this runs on Windows which would have paths like:
-        # D:\a\_work\1/packages-signed/PackageInfo/
-        # and the backslashes in the string, without replacing them with the double would be treated
-        # as escape sequences.
         arguments: >
-          -PackageInfoFiles '$(PackageInfoFiles)'
+          -PackageInfoFiles $(PackageInfoFiles)
           -ArtifactPath '${{parameters.ArtifactPath}}'
           -ArtifactName ${{ parameters.ArtifactName }}
           -APIKey '$(azuresdk-apiview-apikey)'

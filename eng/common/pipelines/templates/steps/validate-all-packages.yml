@@ -44,7 +44,7 @@ steps:
         scriptLocation: inlineScript
         inlineScript: |
           $(Build.SourcesDirectory)/eng/common/scripts/Validate-All-Packages.ps1 `
-            -PackageInfoFiles '$(PackageInfoFiles)'
+            -PackageInfoFiles $(PackageInfoFiles)
             -ArtifactPath ${{ parameters.ArtifactPath }} `
             -RepoRoot $(Build.SourcesDirectory) `
             -APIKey $(azuresdk-apiview-apikey) `
