@@ -1,5 +1,6 @@
 # Release History
 # (Unreleased)
+Upgrade Spring Boot dependencies version to 3.4.5 and Spring Cloud dependencies version to 2024.0.1
 Upgrade Spring Boot dependencies version to 3.4.4 and Spring Cloud dependencies version to 2024.0.1
 
 ## 5.22.0-beta.1 (Unreleased)
