@@ -21,6 +21,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.carbonoptimization.fluent.CarbonServicesClient;
 import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataAvailableDateRangeInner;
 import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataListResultInner;
@@ -67,11 +68,27 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") QueryFilter queryParameters, Context context);
 
+        @Post("/providers/Microsoft.Carbon/carbonEmissionReports")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CarbonEmissionDataListResultInner> queryCarbonEmissionReportsSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") QueryFilter queryParameters, Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Carbon/queryCarbonEmissionDataAvailableDateRange")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CarbonEmissionDataAvailableDateRangeInner>> queryCarbonEmissionDataAvailableDateRange(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.Carbon/queryCarbonEmissionDataAvailableDateRange")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CarbonEmissionDataAvailableDateRangeInner> queryCarbonEmissionDataAvailableDateRangeSync(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -110,36 +127,6 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
      * API for Carbon Emissions Reports.
      * 
      * @param queryParameters Query parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CarbonEmissionDataListResultInner>>
-        queryCarbonEmissionReportsWithResponseAsync(QueryFilter queryParameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (queryParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter queryParameters is required and cannot be null."));
-        } else {
-            queryParameters.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.queryCarbonEmissionReports(this.client.getEndpoint(), this.client.getApiVersion(), contentType,
-            accept, queryParameters, context);
-    }
-
-    /**
-     * API for Carbon Emissions Reports.
-     * 
-     * @param queryParameters Query parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -164,7 +151,21 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CarbonEmissionDataListResultInner>
         queryCarbonEmissionReportsWithResponse(QueryFilter queryParameters, Context context) {
-        return queryCarbonEmissionReportsWithResponseAsync(queryParameters, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (queryParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter queryParameters is required and cannot be null."));
+        } else {
+            queryParameters.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.queryCarbonEmissionReportsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            contentType, accept, queryParameters, context);
     }
 
     /**
@@ -206,29 +207,6 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
     /**
      * API for query carbon emission data available date range.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for available date range of carbon emission data along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CarbonEmissionDataAvailableDateRangeInner>>
-        queryCarbonEmissionDataAvailableDateRangeWithResponseAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.queryCarbonEmissionDataAvailableDateRange(this.client.getEndpoint(), this.client.getApiVersion(),
-            accept, context);
-    }
-
-    /**
-     * API for query carbon emission data available date range.
-     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for available date range of carbon emission data on successful completion of {@link Mono}.
@@ -251,7 +229,14 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CarbonEmissionDataAvailableDateRangeInner>
         queryCarbonEmissionDataAvailableDateRangeWithResponse(Context context) {
-        return queryCarbonEmissionDataAvailableDateRangeWithResponseAsync(context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.queryCarbonEmissionDataAvailableDateRangeSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -265,4 +250,6 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
     public CarbonEmissionDataAvailableDateRangeInner queryCarbonEmissionDataAvailableDateRange() {
         return queryCarbonEmissionDataAvailableDateRangeWithResponse(Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CarbonServicesClientImpl.class);
 }

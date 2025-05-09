@@ -234,6 +234,9 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     /** Read and create quota requests, get quota request status, and create support tickets. */
     public static final BuiltInRole QUOTA_REQUEST_OPERATOR = BuiltInRole.fromString("Quota Request Operator");
 
+    /** Read-only access to pull images. */
+    public static final BuiltInRole ACR_PULL = BuiltInRole.fromString("AcrPull");
+
     /**
      * Creates a new instance of BuiltInRole value.
      *

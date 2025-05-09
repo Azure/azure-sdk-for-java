@@ -362,6 +362,22 @@ public class ContainerGroupImpl extends
     }
 
     @Override
+    public ContainerGroupImpl withPrivateImageRegistry(String server, Identity identity) {
+        return withPrivateImageRegistry(server, Objects.requireNonNull(identity).id());
+    }
+
+    private ContainerGroupImpl withPrivateImageRegistry(String server, String managedIdentityResourceId) {
+        if (this.innerModel().imageRegistryCredentials() == null) {
+            this.innerModel().withImageRegistryCredentials(new ArrayList<ImageRegistryCredential>());
+        }
+        this.innerModel()
+            .imageRegistryCredentials()
+            .add(new ImageRegistryCredential().withServer(server).withIdentity(managedIdentityResourceId));
+
+        return this;
+    }
+
+    @Override
     public ContainerGroupImpl withNewAzureFileShareVolume(String volumeName, String shareName) {
         if (this.newFileShares == null || this.creatableStorageAccountKey == null) {
             StorageAccount.DefinitionStages.WithGroup definitionWithGroup = manager().storageManager()
