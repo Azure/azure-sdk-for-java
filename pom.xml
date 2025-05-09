@@ -154,6 +154,7 @@
     <module>sdk/mobilenetwork</module>
     <module>sdk/modelsrepository</module>
     <module>sdk/mongocluster</module>
+    <module>sdk/mongodbatlas</module>
     <module>sdk/monitor</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
