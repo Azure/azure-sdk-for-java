@@ -7188,6 +7188,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT) {
                 Duration networkRequestTimeout = connectionPolicy.getTcpNetworkRequestTimeout();
+
+                checkNotNull(networkRequestTimeout, "Argument 'networkRequestTimeout' cannot be null!");
+
                 Duration overallE2eLatencyTimeout = networkRequestTimeout.plus(Utils.ONE_SECOND);
                 Duration threshold = Utils.min(networkRequestTimeout.dividedBy(2), Utils.ONE_SECOND);
                 Duration thresholdStep = Utils.min(threshold.dividedBy(2), Utils.HALF_SECOND);
@@ -7198,6 +7201,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             } else {
 
                 Duration httpNetworkRequestTimeout = connectionPolicy.getHttpNetworkRequestTimeout();
+
+                checkNotNull(httpNetworkRequestTimeout, "Argument 'httpNetworkRequestTimeout' cannot be null!");
 
                 // 6s was chosen to accommodate for control-plane hot path read timeout retries (like QueryPlan / PartitionKeyRange)
                 Duration overallE2eLatencyTimeout = Utils.min(Utils.SIX_SECONDS, httpNetworkRequestTimeout);
