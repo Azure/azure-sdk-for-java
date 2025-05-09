@@ -1,4 +1,6 @@
 
+. ${PSScriptRoot}\..\SemVer.ps1
+
 $ReleaseDevOpsOrgParameters =  @("--organization", "https://dev.azure.com/azure-sdk")
 $ReleaseDevOpsCommonParameters =  $ReleaseDevOpsOrgParameters + @("--output", "json")
 $ReleaseDevOpsCommonParametersWithProject = $ReleaseDevOpsCommonParameters + @("--project", "Release")
@@ -1073,9 +1075,6 @@ function Update-DevOpsReleaseWorkItem {
     Write-Error 'You must have the Azure CLI installed: https://aka.ms/azure-cli'
     return $false
   }
-
-  . (Join-Path $PSScriptRoot SemVer.ps1)
-  . (Join-Path $PSScriptRoot Helpers DevOps-WorkItem-Helpers.ps1)
 
   CheckAzLoginAndDevOpsExtensionInstall
 
