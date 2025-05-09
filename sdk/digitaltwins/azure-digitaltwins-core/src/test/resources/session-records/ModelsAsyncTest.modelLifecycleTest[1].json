@@ -1,0 +1,647 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Building;1444467?includeModelDefinition=true&api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:02 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Length": "214",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:27:03 GMT",
+        "mise-correlation-id": "5ffadbf7-e9f0-4e22-be5e-d581190a3c26",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-583a170910a43963a31fdd8ba4eacdd5-dbb995d092d5acf2-01",
+        "x-ms-error-code": "ModelNotFound"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "ModelNotFound",
+          "message": "There is no Model(s) available that matches the provided id(s) dtmi:example:Building;1444467. Check that the Model ID provided is valid by doing a Model_List API call."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Floor;1549959?includeModelDefinition=true&api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Length": "211",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:27:03 GMT",
+        "mise-correlation-id": "b5a3cb4e-4318-4075-bf30-4039d87fe801",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-67a95fc58383409c693f86981af771d2-d4f7d57fdc2b9b39-01",
+        "x-ms-error-code": "ModelNotFound"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "ModelNotFound",
+          "message": "There is no Model(s) available that matches the provided id(s) dtmi:example:Floor;1549959. Check that the Model ID provided is valid by doing a Model_List API call."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Hvac;1711277?includeModelDefinition=true&api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Length": "210",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:27:03 GMT",
+        "mise-correlation-id": "dd706fca-5eb6-481a-9c04-b431c1764638",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-2bec617eeabb6da46526e5f70ae65349-e83187cf9992b7a0-01",
+        "x-ms-error-code": "ModelNotFound"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "ModelNotFound",
+          "message": "There is no Model(s) available that matches the provided id(s) dtmi:example:Hvac;1711277. Check that the Model ID provided is valid by doing a Model_List API call."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Ward;1120040?includeModelDefinition=true&api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Length": "210",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:27:03 GMT",
+        "mise-correlation-id": "04d1b057-8e9a-43f7-87ed-b3aa6b6022aa",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-e5a383aed55ea2a38eee9a3453a77a77-af219de3952cf43a-01",
+        "x-ms-error-code": "ModelNotFound"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "ModelNotFound",
+          "message": "There is no Model(s) available that matches the provided id(s) dtmi:example:Ward;1120040. Check that the Model ID provided is valid by doing a Model_List API call."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/models?api-version=2023-10-31",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "1244",
+        "Content-Type": "application/json",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": "[{\"@id\":\"dtmi:example:Building;1444467\",\"@type\":\"Interface\",\"displayName\":\"Building\",\"description\":\"A free-standing structure.\",\"contents\":[{\"@type\":\"Relationship\",\"name\":\"has\",\"target\":\"dtmi:example:Floor;1549959\"},{\"@type\":\"Relationship\",\"name\":\"isEquippedWith\",\"target\":\"dtmi:example:Hvac;1711277\"},{\"@type\":\"Property\",\"name\":\"AverageTemperature\",\"schema\":\"double\"}],\"@context\":[\"dtmi:dtdl:context;2\"]},{\"@id\":\"dtmi:example:Hvac;1711277\",\"@type\":\"Interface\",\"displayName\":\"HVAC\",\"description\":\"A heating, ventilation, and air conditioning unit.\",\"contents\":[{\"@type\":\"Property\",\"name\":\"Efficiency\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"TargetTemperature\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"TargetHumidity\",\"schema\":\"double\"},{\"@type\":\"Relationship\",\"name\":\"cools\",\"target\":\"dtmi:example:Floor;1549959\"}],\"@context\":[\"dtmi:dtdl:context;2\"]},{\"@id\":\"dtmi:example:Ward;1120040\",\"@type\":\"Interface\",\"displayName\":\"Ward\",\"description\":\"A separate partition in a building, made of rooms and hallways.\",\"contents\":[{\"@type\":\"Property\",\"name\":\"VisitorCount\",\"schema\":\"double\"},{\"@type\":\"Property\",\"name\":\"HandWashPercentage\",\"schema\":\"double\"},{\"@type\":\"Relationship\",\"name\":\"managedRooms\"}],\"@context\":[\"dtmi:dtdl:context;2\"]}]",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "625",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:27:03 GMT",
+        "mise-correlation-id": "7d37389b-b4d9-433c-b872-857a1af4838e",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-36db733efccb0fcb34926bdb74841068-38fd0cb3066f1bd5-01"
+      },
+      "ResponseBody": "[{\"id\":\"dtmi:example:Building;1444467\",\"description\":{\"en\":\"A free-standing structure.\"},\"displayName\":{\"en\":\"Building\"},\"decommissioned\":false,\"uploadTime\":\"2025-05-09T01:27:04.6162149+00:00\"},{\"id\":\"dtmi:example:Hvac;1711277\",\"description\":{\"en\":\"A heating, ventilation, and air conditioning unit.\"},\"displayName\":{\"en\":\"HVAC\"},\"decommissioned\":false,\"uploadTime\":\"2025-05-09T01:27:04.6162896+00:00\"},{\"id\":\"dtmi:example:Ward;1120040\",\"description\":{\"en\":\"A separate partition in a building, made of rooms and hallways.\"},\"displayName\":{\"en\":\"Ward\"},\"decommissioned\":false,\"uploadTime\":\"2025-05-09T01:27:04.6163087+00:00\"}]"
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Building;1444467?includeModelDefinition=true&api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "605",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:27:03 GMT",
+        "mise-correlation-id": "88fac049-2156-4bcd-8ef8-be52773a4f2f",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-d0c901f844957bd4746ebc60b402735f-b044ee11084ad1a7-01"
+      },
+      "ResponseBody": {
+        "id": "dtmi:example:Building;1444467",
+        "description": {
+          "en": "A free-standing structure."
+        },
+        "displayName": {
+          "en": "Building"
+        },
+        "decommissioned": false,
+        "uploadTime": "2025-05-09T01:27:04.6162149+00:00",
+        "model": {
+          "@id": "dtmi:example:Building;1444467",
+          "@type": "Interface",
+          "displayName": "Building",
+          "description": "A free-standing structure.",
+          "contents": [
+            {
+              "@type": "Relationship",
+              "name": "has",
+              "target": "dtmi:example:Floor;1549959"
+            },
+            {
+              "@type": "Relationship",
+              "name": "isEquippedWith",
+              "target": "dtmi:example:Hvac;1711277"
+            },
+            {
+              "@type": "Property",
+              "name": "AverageTemperature",
+              "schema": "double"
+            }
+          ],
+          "@context": [
+            "dtmi:dtdl:context;2"
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Building;1444467?api-version=2023-10-31",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "56",
+        "Content-Type": "application/json-patch+json",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": "[{\"op\":\"replace\",\"path\":\"/decommissioned\",\"value\":true}]",
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:03 GMT",
+        "mise-correlation-id": "f3aae89a-1f14-4d4f-8702-a46aba5e22e5",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-25757a5fcca1a661881f97bf67866085-4c6ad3fe9c777134-01"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Building;1444467?includeModelDefinition=true&api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "604",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:27:03 GMT",
+        "mise-correlation-id": "2bd6638d-4158-4bc4-a235-2f2ca07267ea",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-4b8407882027cad3251cf32d50c32818-347c38842a35b6ab-01"
+      },
+      "ResponseBody": {
+        "id": "dtmi:example:Building;1444467",
+        "description": {
+          "en": "A free-standing structure."
+        },
+        "displayName": {
+          "en": "Building"
+        },
+        "decommissioned": true,
+        "uploadTime": "2025-05-09T01:27:04.6162149+00:00",
+        "model": {
+          "@id": "dtmi:example:Building;1444467",
+          "@type": "Interface",
+          "displayName": "Building",
+          "description": "A free-standing structure.",
+          "contents": [
+            {
+              "@type": "Relationship",
+              "name": "has",
+              "target": "dtmi:example:Floor;1549959"
+            },
+            {
+              "@type": "Relationship",
+              "name": "isEquippedWith",
+              "target": "dtmi:example:Hvac;1711277"
+            },
+            {
+              "@type": "Property",
+              "name": "AverageTemperature",
+              "schema": "double"
+            }
+          ],
+          "@context": [
+            "dtmi:dtdl:context;2"
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Building;1444467?api-version=2023-10-31",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "mise-correlation-id": "b74f4d58-0e59-43dd-af94-a0ef1c227948",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-bbcb692a3ba77278bb4a236664d815b2-1bdfb6211d51aae2-01"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Hvac;1711277?includeModelDefinition=true&api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "674",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "mise-correlation-id": "6c171361-be99-44d3-bca0-1e7c60bd868e",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-b45abbd934b231acca2d46fdae5aa761-230f81a990969fe2-01"
+      },
+      "ResponseBody": {
+        "id": "dtmi:example:Hvac;1711277",
+        "description": {
+          "en": "A heating, ventilation, and air conditioning unit."
+        },
+        "displayName": {
+          "en": "HVAC"
+        },
+        "decommissioned": false,
+        "uploadTime": "2025-05-09T01:27:04.6162896+00:00",
+        "model": {
+          "@id": "dtmi:example:Hvac;1711277",
+          "@type": "Interface",
+          "displayName": "HVAC",
+          "description": "A heating, ventilation, and air conditioning unit.",
+          "contents": [
+            {
+              "@type": "Property",
+              "name": "Efficiency",
+              "schema": "double"
+            },
+            {
+              "@type": "Property",
+              "name": "TargetTemperature",
+              "schema": "double"
+            },
+            {
+              "@type": "Property",
+              "name": "TargetHumidity",
+              "schema": "double"
+            },
+            {
+              "@type": "Relationship",
+              "name": "cools",
+              "target": "dtmi:example:Floor;1549959"
+            }
+          ],
+          "@context": [
+            "dtmi:dtdl:context;2"
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Hvac;1711277?api-version=2023-10-31",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "56",
+        "Content-Type": "application/json-patch+json",
+        "Date": "Fri, 09 May 2025 01:27:05 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": "[{\"op\":\"replace\",\"path\":\"/decommissioned\",\"value\":true}]",
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "mise-correlation-id": "6b46aa52-62d8-4aaf-b9da-01efddd08d49",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-62c3dac3b609a04f8c9e055a99c3e6e9-7cd07590e198e0c2-01"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Hvac;1711277?includeModelDefinition=true&api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:05 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "673",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "mise-correlation-id": "b18c5dcb-17ab-417f-964b-88c545d55b63",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-1a2f98198cf7cec1b508b3ad52583def-8191428d25a1aa4b-01"
+      },
+      "ResponseBody": {
+        "id": "dtmi:example:Hvac;1711277",
+        "description": {
+          "en": "A heating, ventilation, and air conditioning unit."
+        },
+        "displayName": {
+          "en": "HVAC"
+        },
+        "decommissioned": true,
+        "uploadTime": "2025-05-09T01:27:04.6162896+00:00",
+        "model": {
+          "@id": "dtmi:example:Hvac;1711277",
+          "@type": "Interface",
+          "displayName": "HVAC",
+          "description": "A heating, ventilation, and air conditioning unit.",
+          "contents": [
+            {
+              "@type": "Property",
+              "name": "Efficiency",
+              "schema": "double"
+            },
+            {
+              "@type": "Property",
+              "name": "TargetTemperature",
+              "schema": "double"
+            },
+            {
+              "@type": "Property",
+              "name": "TargetHumidity",
+              "schema": "double"
+            },
+            {
+              "@type": "Relationship",
+              "name": "cools",
+              "target": "dtmi:example:Floor;1549959"
+            }
+          ],
+          "@context": [
+            "dtmi:dtdl:context;2"
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Hvac;1711277?api-version=2023-10-31",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:05 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "mise-correlation-id": "046c89cd-cd33-47bf-9a0c-c6608b1e59ae",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-a413fd8fee7a7d8f550493d7a6f68a4b-ffab2e46af3bf901-01"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Ward;1120040?includeModelDefinition=true&api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:05 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "609",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "mise-correlation-id": "746bbe7e-1c75-47d8-a670-400950229607",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-549c5a3cb023ae03e7728275dc7c859a-9c72d0da16cddf83-01"
+      },
+      "ResponseBody": {
+        "id": "dtmi:example:Ward;1120040",
+        "description": {
+          "en": "A separate partition in a building, made of rooms and hallways."
+        },
+        "displayName": {
+          "en": "Ward"
+        },
+        "decommissioned": false,
+        "uploadTime": "2025-05-09T01:27:04.6163087+00:00",
+        "model": {
+          "@id": "dtmi:example:Ward;1120040",
+          "@type": "Interface",
+          "displayName": "Ward",
+          "description": "A separate partition in a building, made of rooms and hallways.",
+          "contents": [
+            {
+              "@type": "Property",
+              "name": "VisitorCount",
+              "schema": "double"
+            },
+            {
+              "@type": "Property",
+              "name": "HandWashPercentage",
+              "schema": "double"
+            },
+            {
+              "@type": "Relationship",
+              "name": "managedRooms"
+            }
+          ],
+          "@context": [
+            "dtmi:dtdl:context;2"
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Ward;1120040?api-version=2023-10-31",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "56",
+        "Content-Type": "application/json-patch+json",
+        "Date": "Fri, 09 May 2025 01:27:05 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": "[{\"op\":\"replace\",\"path\":\"/decommissioned\",\"value\":true}]",
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "mise-correlation-id": "14adf7d9-d3b2-4084-9c3a-8eb26516a2f5",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-03d92ac8a1e1c96bdbebe4296d9b39b2-03683c7b290ec04d-01"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Ward;1120040?includeModelDefinition=true&api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:05 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "608",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "mise-correlation-id": "6fc254d3-ab15-4f60-a9df-2b70853188d7",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-891884fe19b61a87c261fba088e6bc1b-b2dae187fdba1a5c-01"
+      },
+      "ResponseBody": {
+        "id": "dtmi:example:Ward;1120040",
+        "description": {
+          "en": "A separate partition in a building, made of rooms and hallways."
+        },
+        "displayName": {
+          "en": "Ward"
+        },
+        "decommissioned": true,
+        "uploadTime": "2025-05-09T01:27:04.6163087+00:00",
+        "model": {
+          "@id": "dtmi:example:Ward;1120040",
+          "@type": "Interface",
+          "displayName": "Ward",
+          "description": "A separate partition in a building, made of rooms and hallways.",
+          "contents": [
+            {
+              "@type": "Property",
+              "name": "VisitorCount",
+              "schema": "double"
+            },
+            {
+              "@type": "Property",
+              "name": "HandWashPercentage",
+              "schema": "double"
+            },
+            {
+              "@type": "Relationship",
+              "name": "managedRooms"
+            }
+          ],
+          "@context": [
+            "dtmi:dtdl:context;2"
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:example:Ward;1120040?api-version=2023-10-31",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:05 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:04 GMT",
+        "mise-correlation-id": "7ec6f4b4-fd97-4935-b481-2b33ad98aa9d",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-cd014c1ba61f3303af6377ec0a38fcae-95bd4891c3ff78cc-01"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "66668a",
+    "1": "761171",
+    "2": "933499",
+    "3": "342262"
+  }
+}

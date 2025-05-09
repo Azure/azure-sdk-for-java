@@ -1,0 +1,140 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/eventroutes?api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:26:26 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "28",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:26:28 GMT",
+        "mise-correlation-id": "756e5275-fd31-47c5-bd6c-e3505508e46e",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-e3dc21181371d54ae0c29cfcdcff3799-91f637ea8a9d266d-01"
+      },
+      "ResponseBody": {
+        "value": [],
+        "nextLink": null
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/eventroutes/3ff4156f-0278-41fe-b834-93d16bce1274?api-version=2023-10-31",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "145",
+        "Content-Type": "application/json",
+        "Date": "Fri, 09 May 2025 01:26:28 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": {
+        "endpointName": "someEventHubEndpoint",
+        "filter": "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'"
+      },
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:26:29 GMT",
+        "mise-correlation-id": "5f22f1dc-de47-431e-aea0-1caa3675918f",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-0beee84b49964a28f4a075f2391f5b1b-8b75651d829a65da-01"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/eventroutes/3ff4156f-0278-41fe-b834-93d16bce1274?api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:26:35 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "189",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:26:34 GMT",
+        "mise-correlation-id": "d4a957e7-f491-40d7-b775-0bf84b63f170",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-49b86daaaa8efa853c7097ae0a2d5a93-5df15d9175c5e1af-01"
+      },
+      "ResponseBody": {
+        "id": "3ff4156f-0278-41fe-b834-93d16bce1274",
+        "endpointName": "someEventHubEndpoint",
+        "filter": "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/eventroutes?api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:26:35 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "217",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:26:35 GMT",
+        "mise-correlation-id": "2f28ec10-0ff2-4705-803f-4cc395cd2dba",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-76cb668dbf8e69cd0f1f5c9e2b6c9f4a-1caee1a86c5c55a5-01"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "3ff4156f-0278-41fe-b834-93d16bce1274",
+            "endpointName": "someEventHubEndpoint",
+            "filter": "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'"
+          }
+        ],
+        "nextLink": null
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/eventroutes/3ff4156f-0278-41fe-b834-93d16bce1274?api-version=2023-10-31",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:26:35 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:26:35 GMT",
+        "mise-correlation-id": "03b58e40-17d5-4d64-a044-5638cb6df3a3",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-e1e1580d4ca689dfbf7caecd78c238e6-9d5bb7afdef8063f-01"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "3ff4156f-0278-41fe-b834-93d16bce1274"
+  }
+}
