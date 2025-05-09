@@ -678,7 +678,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 state.databaseId,
                 state.containerId,
                 properties.toJson(),
-                state.container.read().getProperties().toString());
+                ModelBridgeInternal.getResource(state.container.read().getProperties()).toJson());
 
             CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions()
                 .setDiagnosticsThresholds(new CosmosDiagnosticsThresholds()
@@ -1779,11 +1779,11 @@ public class ClientMetricsTest extends BatchTestBase {
                             m);
                         sb.append(message);
                         sb.append(System.getProperty("line.separator"));
-                        logger.info(message);
+                        logger.debug(message);
                     });
 
                     if (exactMatchMeter.get() != null) {
-                        logger.info("Found exact match {}", exactMatchMeter);
+                        logger.debug("Found exact match {}", exactMatchMeter);
                         return exactMatchMeter.get();
                     }
                 }

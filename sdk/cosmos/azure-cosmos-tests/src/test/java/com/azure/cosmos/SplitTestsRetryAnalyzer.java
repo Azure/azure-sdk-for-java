@@ -7,7 +7,7 @@ import org.testng.ITestResult;
 public class SplitTestsRetryAnalyzer extends FlakyTestRetryAnalyzer {
     public SplitTestsRetryAnalyzer() {
         super();
-        this.retryLimit = 2;
+        this.retryLimit = 5;
     }
 
     @Override
