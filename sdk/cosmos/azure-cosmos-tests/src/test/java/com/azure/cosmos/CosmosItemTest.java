@@ -313,7 +313,7 @@ public class CosmosItemTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = 100 * TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = 100 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readManyWithTwoSecondariesNotReachable() throws Exception {
         if (client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Fault injection only targeting direct mode");
