@@ -135,8 +135,8 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
         jsonWriter.writeStringField("messageId", getMessageId());
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
-        jsonWriter.writeIntField("segmentCount", this.segmentCount);
         jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeIntField("segmentCount", this.segmentCount);
         jsonWriter.writeStringField("receivedTimestamp",
             this.receivedTimestamp == null
                 ? null
@@ -165,10 +165,10 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
                     deserializedAcsSmsReceivedEventData.setFrom(reader.getString());
                 } else if ("to".equals(fieldName)) {
                     deserializedAcsSmsReceivedEventData.setTo(reader.getString());
-                } else if ("segmentCount".equals(fieldName)) {
-                    deserializedAcsSmsReceivedEventData.segmentCount = reader.getInt();
                 } else if ("message".equals(fieldName)) {
                     deserializedAcsSmsReceivedEventData.message = reader.getString();
+                } else if ("segmentCount".equals(fieldName)) {
+                    deserializedAcsSmsReceivedEventData.segmentCount = reader.getInt();
                 } else if ("receivedTimestamp".equals(fieldName)) {
                     deserializedAcsSmsReceivedEventData.receivedTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

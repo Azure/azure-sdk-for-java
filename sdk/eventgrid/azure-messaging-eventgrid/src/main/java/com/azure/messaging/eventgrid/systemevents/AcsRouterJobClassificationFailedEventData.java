@@ -140,12 +140,12 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("classificationPolicyId", this.classificationPolicyId);
         jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -157,6 +157,7 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsRouterJobClassificationFailedEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterJobClassificationFailedEventData.
      */
     public static AcsRouterJobClassificationFailedEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -166,7 +167,13 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("jobId".equals(fieldName)) {
+                if ("labels".equals(fieldName)) {
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobClassificationFailedEventData.setLabels(labels);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobClassificationFailedEventData.setTags(tags);
+                } else if ("jobId".equals(fieldName)) {
                     deserializedAcsRouterJobClassificationFailedEventData.setJobId(reader.getString());
                 } else if ("channelReference".equals(fieldName)) {
                     deserializedAcsRouterJobClassificationFailedEventData.setChannelReference(reader.getString());
@@ -174,12 +181,6 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
                     deserializedAcsRouterJobClassificationFailedEventData.setChannelId(reader.getString());
                 } else if ("queueId".equals(fieldName)) {
                     deserializedAcsRouterJobClassificationFailedEventData.setQueueId(reader.getString());
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobClassificationFailedEventData.setLabels(labels);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobClassificationFailedEventData.setTags(tags);
                 } else if ("classificationPolicyId".equals(fieldName)) {
                     deserializedAcsRouterJobClassificationFailedEventData.classificationPolicyId = reader.getString();
                 } else if ("errors".equals(fieldName)) {
