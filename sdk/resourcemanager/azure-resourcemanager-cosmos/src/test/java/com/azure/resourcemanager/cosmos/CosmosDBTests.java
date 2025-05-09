@@ -64,6 +64,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
     }
 
     @Test
+    @Disabled("Local authentication methods are not allowed.")
     public void canCreateCosmosDbSqlAccount() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
@@ -88,6 +89,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
     }
 
     @Test
+    @Disabled("Local authentication methods are not allowed.")
     public void canCreateSqlPrivateEndpoint() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
         final String networkName = generateRandomResourceName("network", 22);
@@ -159,6 +161,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
     }
 
     @Test
+    @Disabled("Local authentication methods are not allowed.")
     public void canCreateCosmosDbMongoDBAccount() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
@@ -229,6 +232,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
     }
 
     @Test
+    @Disabled("Local authentication methods are not allowed.")
     public void canCreateCosmosDbAzureTableAccount() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
@@ -252,6 +256,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
     }
 
     @Test
+    @Disabled("Local authentication methods are not allowed.")
     public void canCreateCosmosDBAccountWithDisablePublicNetworkAccess() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
@@ -271,6 +276,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
     }
 
     @Test
+    @Disabled("Local authentication methods are not allowed.")
     public void canUpdatePublicNetworkAccess() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
