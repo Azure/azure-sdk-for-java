@@ -77,7 +77,9 @@ public final class StaticRouterRule extends RouterRule {
         } else {
             jsonWriter.writeStartObject();
             jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-            jsonWriter.writeJsonField("value", this.value);
+            if (this.value != null) {
+                jsonWriter.writeJsonField("value", this.value);
+            }
             return jsonWriter.writeEndObject();
         }
     }
