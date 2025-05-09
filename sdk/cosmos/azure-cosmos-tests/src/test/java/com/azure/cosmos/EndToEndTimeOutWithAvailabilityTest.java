@@ -28,10 +28,6 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResultBuild
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.test.faultinjection.IFaultInjectionResult;
 import com.azure.cosmos.test.implementation.faultinjection.FaultInjectorProvider;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.commons.lang3.StringUtils;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -48,8 +44,8 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 
-import static com.azure.cosmos.CosmosDiagnostics.OBJECT_MAPPER;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
 public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
     private static final int DEFAULT_NUM_DOCUMENTS = 100;
@@ -94,78 +90,149 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "faultInjectionArgProvider", timeOut = TIMEOUT*100)
-    public void testThresholdAvailabilityStrategy(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType) throws InterruptedException {
+    public void testThresholdAvailabilityStrategy(
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType,
+        boolean ignore) throws InterruptedException {
+
         if (this.preferredRegionList.size() <= 1) {
             throw new SkipException("excludeRegionTest_SkipFirstPreferredRegion can only be tested for multi-master with multi-regions");
         }
 
-        if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
-            throw new SkipException("Failure injection only supported for DIRECT mode");
-        }
+        ConnectionMode connectionMode = getClientBuilder().buildConnectionPolicy().getConnectionMode();
+        FaultInjectionConnectionType faultInjectionConnectionType = connectionMode == ConnectionMode.DIRECT ?
+            FaultInjectionConnectionType.DIRECT :
+            FaultInjectionConnectionType.GATEWAY;
 
         TestItem createdItem = TestItem.createNewItem();
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         this.cosmosAsyncContainer.createItem(createdItem).block();
 
-        // This is to wait for the item to be replicated to the secondary region
-        Thread.sleep(2000);
-        FaultInjectionRule rule = injectFailure(cosmosAsyncContainer, faultInjectionOperationType);
-        CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, options);
-        assertThat(cosmosDiagnostics).isNotNull();
-        CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
-        assertThat(diagnosticsContext).isNotNull();
-        assertThat(diagnosticsContext.getContactedRegionNames().size()).isGreaterThan(1);
-        ObjectNode diagnosticsNode;
+        FaultInjectionRule rule = injectFailure(cosmosAsyncContainer, faultInjectionOperationType, faultInjectionConnectionType);
+
         try {
-            if (operationType == OperationType.Query) {
-                assertThat(cosmosDiagnostics.getClientSideRequestStatistics().iterator().next().getResponseStatisticsList().iterator().next().getRegionName())
-                    .isEqualTo(regions.get(1).toLowerCase(Locale.ROOT));
-            } else {
-                diagnosticsNode = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
-                assertResponseFromSpeculatedRegion(diagnosticsNode);
-            }
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            // This is to wait for the item to be replicated to the secondary region
+            Thread.sleep(2000);
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, options, false);
+            assertThat(cosmosDiagnostics).isNotNull();
+            CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+            assertThat(diagnosticsContext).isNotNull();
+            assertThat(diagnosticsContext.getContactedRegionNames().size()).isBetween(1, 2);
+            assertThat(diagnosticsContext.getStatusCode()).isBetween(200, 204);
+            assertThat(diagnosticsContext.getDuration()).isLessThanOrEqualTo(Duration.ofSeconds(3));
+
+            // asserts response is obtained from the second preferred region
+            assertThat(diagnosticsContext.getContactedRegionNames()).contains(regions.get(1).toLowerCase(Locale.ROOT));
+
+        } catch (RuntimeException e) {
+            fail("Operation should have succeeded from the second preferred region.", e);
         } finally {
             rule.disable();
+        }
+    }
+
+    @Test(groups = {"multi-region"}, dataProvider = "faultInjectionArgProvider", timeOut = TIMEOUT*100)
+    public void testThresholdAvailabilityStrategyForReadsDefaultEnablementWithPpaf(
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType,
+        boolean shouldPpafEnforcedReadAvailabilityStrategyBeEnforced) {
+
+        if (this.preferredRegionList.size() <= 1) {
+            throw new SkipException("excludeRegionTest_SkipFirstPreferredRegion can only be tested for multi-master with multi-regions");
+        }
+
+        if (faultInjectionOperationType != FaultInjectionOperationType.READ_ITEM && faultInjectionOperationType != FaultInjectionOperationType.QUERY_ITEM) {
+            throw new SkipException("testThresholdAvailabilityStrategyForReadsDefaultEnablementWithPpaf only supported for READ and QUERY operations");
+        }
+
+        ConnectionMode connectionMode = getClientBuilder().buildConnectionPolicy().getConnectionMode();
+        FaultInjectionConnectionType faultInjectionConnectionType = connectionMode == ConnectionMode.DIRECT ?
+            FaultInjectionConnectionType.DIRECT :
+            FaultInjectionConnectionType.GATEWAY;
+
+        System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
+
+        // test opt out behavior - opt in behavior is the default
+        if (!shouldPpafEnforcedReadAvailabilityStrategyBeEnforced) {
+            System.setProperty("COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF", "false");
+        }
+
+        CosmosAsyncClient cosmosAsyncClient = this.getClientBuilder().preferredRegions(this.preferredRegionList).buildAsyncClient();
+        FaultInjectionRule rule = null;
+
+        try {
+            CosmosAsyncDatabase asyncDatabase = cosmosAsyncClient.getDatabase(this.cosmosAsyncContainer.getDatabase().getId());
+            CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer(this.cosmosAsyncContainer.getId());
+
+            TestItem createdItem = TestItem.createNewItem();
+            CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+            asyncContainer.createItem(createdItem).block();
+
+            // This is to wait for the item to be replicated to the secondary region
+            Thread.sleep(2000);
+            rule = injectFailure(asyncContainer, faultInjectionOperationType, faultInjectionConnectionType);
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(asyncContainer, operationType, createdItem, options, true);
+            assertThat(cosmosDiagnostics).isNotNull();
+            CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+            assertThat(diagnosticsContext).isNotNull();
+            assertThat(diagnosticsContext.getStatusCode()).isBetween(200, 204);
+
+            if (!shouldPpafEnforcedReadAvailabilityStrategyBeEnforced) {
+                assertThat(diagnosticsContext.getDuration()).isGreaterThanOrEqualTo(Duration.ofSeconds(10));
+            } else {
+                // Default enablement of PPAF-enforced read availability strategy should
+                // return a success ideally in 2s-3s
+                assertThat(diagnosticsContext.getDuration()).isLessThanOrEqualTo(Duration.ofSeconds(5));
+            }
+
+            // asserts response is obtained from the second preferred region
+            assertThat(diagnosticsContext.getContactedRegionNames()).contains(regions.get(1).toLowerCase(Locale.ROOT));
+        } catch (Exception e) {
+            fail("Operation should have succeeded from the second preferred region.", e);
+        } finally {
+
+            System.clearProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED");
+            System.clearProperty("COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF");
+
+            if (rule != null) {
+                rule.disable();
+            }
+
+            safeClose(cosmosAsyncClient);
         }
     }
 
     @DataProvider(name = "faultInjectionArgProvider")
     public static Object[][] faultInjectionArgProvider() {
         return new Object[][] {
-            {OperationType.Read, FaultInjectionOperationType.READ_ITEM},
-            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM},
-            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM},
-            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM},
-            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM},
-            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM}
+            // Operation type, Fault Injection Operation Type, Is PPAF-enforced read availability strategy enabled
+            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, true},
+            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, false},
+            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false},
+            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true},
+            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false},
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true},
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false},
+            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true},
         };
-    }
-
-    private void assertResponseFromSpeculatedRegion(ObjectNode diagnosticsNode) {
-        JsonNode responseStatisticsList = diagnosticsNode.get("responseStatisticsList");
-        assertThat(responseStatisticsList.isArray()).isTrue();
-        assertThat(responseStatisticsList.size()).isGreaterThan(0);
-        JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
-        assertThat(storeResult.get("storePhysicalAddress").toString()).contains(StringUtils.deleteWhitespace(regions.get(1).toLowerCase(Locale.ROOT)));
     }
 
     private FaultInjectionRule injectFailure(
         CosmosAsyncContainer container,
-        FaultInjectionOperationType operationType) {
+        FaultInjectionOperationType operationType,
+        FaultInjectionConnectionType faultInjectionConnectionType) {
 
         FaultInjectionServerErrorResultBuilder faultInjectionResultBuilder = FaultInjectionResultBuilders
             .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-            .delay(Duration.ofMillis(10000))
-            .times(1);
+            .delay(Duration.ofSeconds(10000))
+            .times(10000);
 
         IFaultInjectionResult result = faultInjectionResultBuilder.build();
         logger.info("Injecting fault: {}", this.preferredRegionList.get(0));
         FaultInjectionCondition condition = new FaultInjectionConditionBuilder()
             .operationType(operationType)
             .region(this.preferredRegionList.get(0))
-            .connectionType(FaultInjectionConnectionType.DIRECT)
+            .connectionType(faultInjectionConnectionType)
             .build();
 
         FaultInjectionRule rule = new FaultInjectionRuleBuilder("InjectedResponseDelay")
@@ -217,12 +284,18 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         CosmosAsyncContainer cosmosAsyncContainer,
         OperationType operationType,
         TestItem createdItem,
-        CosmosItemRequestOptions cosmosItemRequestOptions) {
-        CosmosEndToEndOperationLatencyPolicyConfig config = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(4))
-            .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200)))
-            .build();
-        cosmosItemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(config);
-        cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(true, true);
+        CosmosItemRequestOptions cosmosItemRequestOptions,
+        boolean ignoreE2E2LatencyCfgOnRequestOptions) {
+
+        CosmosEndToEndOperationLatencyPolicyConfig config = null;
+
+        if (!ignoreE2E2LatencyCfgOnRequestOptions) {
+            config = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(4))
+                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200)))
+                .build();
+            cosmosItemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(config);
+            cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(true, true);
+        }
 
         if (operationType == OperationType.Query) {
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();

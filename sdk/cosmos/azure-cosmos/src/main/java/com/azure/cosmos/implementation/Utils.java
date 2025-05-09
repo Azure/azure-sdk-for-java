@@ -80,6 +80,7 @@ public class Utils {
 
     public static final Duration ONE_SECOND = Duration.ofSeconds(1);
     public static final Duration HALF_SECOND = Duration.ofMillis(500);
+    public static final Duration SIX_SECONDS = Duration.ofSeconds(6);
 
     private static final ObjectMapper simpleObjectMapperAllowingDuplicatedProperties =
         createAndInitializeObjectMapper(true);
