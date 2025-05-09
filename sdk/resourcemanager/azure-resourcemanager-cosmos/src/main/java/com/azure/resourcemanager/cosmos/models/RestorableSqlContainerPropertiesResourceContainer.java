@@ -194,6 +194,15 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RestorableSqlContainerPropertiesResourceContainer withFullTextPolicy(FullTextPolicy fullTextPolicy) {
+        super.withFullTextPolicy(fullTextPolicy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -229,6 +238,9 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
         if (vectorEmbeddingPolicy() != null) {
             vectorEmbeddingPolicy().validate();
         }
+        if (fullTextPolicy() != null) {
+            fullTextPolicy().validate();
+        }
     }
 
     private static final ClientLogger LOGGER
@@ -253,6 +265,7 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
         jsonWriter.writeArrayField("computedProperties", computedProperties(),
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("vectorEmbeddingPolicy", vectorEmbeddingPolicy());
+        jsonWriter.writeJsonField("fullTextPolicy", fullTextPolicy());
         return jsonWriter.writeEndObject();
     }
 
@@ -310,6 +323,9 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
                 } else if ("vectorEmbeddingPolicy".equals(fieldName)) {
                     deserializedRestorableSqlContainerPropertiesResourceContainer
                         .withVectorEmbeddingPolicy(VectorEmbeddingPolicy.fromJson(reader));
+                } else if ("fullTextPolicy".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer
+                        .withFullTextPolicy(FullTextPolicy.fromJson(reader));
                 } else if ("_self".equals(fieldName)) {
                     deserializedRestorableSqlContainerPropertiesResourceContainer.self = reader.getString();
                 } else if ("_rid".equals(fieldName)) {

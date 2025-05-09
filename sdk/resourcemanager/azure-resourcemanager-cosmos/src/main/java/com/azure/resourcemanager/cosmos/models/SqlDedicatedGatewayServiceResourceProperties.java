@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,16 +38,6 @@ public final class SqlDedicatedGatewayServiceResourceProperties extends ServiceR
      * An array that contains all of the locations for the service.
      */
     private List<SqlDedicatedGatewayRegionalServiceResource> locations;
-
-    /*
-     * Describes the status of a service.
-     */
-    private ServiceStatus status;
-
-    /*
-     * Time of the last state change (ISO-8601 format).
-     */
-    private OffsetDateTime creationTime;
 
     /**
      * Creates an instance of SqlDedicatedGatewayServiceResourceProperties class.
@@ -115,26 +104,6 @@ public final class SqlDedicatedGatewayServiceResourceProperties extends ServiceR
      */
     public List<SqlDedicatedGatewayRegionalServiceResource> locations() {
         return this.locations;
-    }
-
-    /**
-     * Get the status property: Describes the status of a service.
-     * 
-     * @return the status value.
-     */
-    @Override
-    public ServiceStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Get the creationTime property: Time of the last state change (ISO-8601 format).
-     * 
-     * @return the creationTime value.
-     */
-    @Override
-    public OffsetDateTime creationTime() {
-        return this.creationTime;
     }
 
     /**
@@ -205,8 +174,8 @@ public final class SqlDedicatedGatewayServiceResourceProperties extends ServiceR
                 reader.nextToken();
 
                 if ("creationTime".equals(fieldName)) {
-                    deserializedSqlDedicatedGatewayServiceResourceProperties.creationTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedSqlDedicatedGatewayServiceResourceProperties.withCreationTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("instanceSize".equals(fieldName)) {
                     deserializedSqlDedicatedGatewayServiceResourceProperties
                         .withInstanceSize(ServiceSize.fromString(reader.getString()));
@@ -214,8 +183,8 @@ public final class SqlDedicatedGatewayServiceResourceProperties extends ServiceR
                     deserializedSqlDedicatedGatewayServiceResourceProperties
                         .withInstanceCount(reader.getNullable(JsonReader::getInt));
                 } else if ("status".equals(fieldName)) {
-                    deserializedSqlDedicatedGatewayServiceResourceProperties.status
-                        = ServiceStatus.fromString(reader.getString());
+                    deserializedSqlDedicatedGatewayServiceResourceProperties
+                        .withStatus(ServiceStatus.fromString(reader.getString()));
                 } else if ("serviceType".equals(fieldName)) {
                     deserializedSqlDedicatedGatewayServiceResourceProperties.serviceType
                         = ServiceType.fromString(reader.getString());

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.cosmos.generated;
 public final class SqlResourcesListSqlDatabasesSamples {
     /*
      * x-ms-original-file:
-     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/CosmosDBSqlDatabaseList.
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBSqlDatabaseList.
      * json
      */
     /**
