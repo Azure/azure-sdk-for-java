@@ -113,7 +113,6 @@ public class SampleCriticalResultInferenceAsync {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     mono = completedResult.getFinalResult();
-                    displayCriticalResults(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -121,6 +120,7 @@ public class SampleCriticalResultInferenceAsync {
             });
 
         latch.await();
+        displayCriticalResults(mono.block());
     }
 
     /**

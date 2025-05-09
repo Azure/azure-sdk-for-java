@@ -138,6 +138,12 @@ public class RadiologyInsightsInference implements JsonSerializable<RadiologyIns
                     return FollowupRecommendationInference.fromJson(readerToUse.reset());
                 } else if ("followupCommunication".equals(discriminatorValue)) {
                     return FollowupCommunicationInference.fromJson(readerToUse.reset());
+                } else if ("scoringAndAssessment".equals(discriminatorValue)) {
+                    return ScoringAndAssessmentInference.fromJson(readerToUse.reset());
+                } else if ("guidance".equals(discriminatorValue)) {
+                    return GuidanceInference.fromJson(readerToUse.reset());
+                } else if ("qualityMeasure".equals(discriminatorValue)) {
+                    return QualityMeasureInference.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
