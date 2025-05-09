@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `withPrivateImageRegistry` overload for managed identity in `ContainerGroup`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
