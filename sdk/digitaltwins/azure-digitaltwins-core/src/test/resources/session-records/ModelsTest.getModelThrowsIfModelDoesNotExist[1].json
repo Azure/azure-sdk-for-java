@@ -1,0 +1,34 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/models/dtmi:doesnotexist:fakemodel;1000?includeModelDefinition=true&api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:24 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Length": "217",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:27:26 GMT",
+        "mise-correlation-id": "4a02c01a-4ded-4e6e-a55f-4aac3f8e299b",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-dcaba6b68bfa6a94e089794b5bdbb64c-024792a20635e7f7-01",
+        "x-ms-error-code": "ModelNotFound"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "ModelNotFound",
+          "message": "There is no Model(s) available that matches the provided id(s) dtmi:doesnotexist:fakemodel;1000. Check that the Model ID provided is valid by doing a Model_List API call."
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

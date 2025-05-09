@@ -1,0 +1,36 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/digitaltwins/eeb3ac76-c34e-405a-a8e3-29231d4a9b70?api-version=2023-10-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 09 May 2025 01:27:56 GMT",
+        "User-Agent": "azsdk-java-azure-digitaltwins-core/1.6.0 (11.0.22; Windows 11; 10.0)",
+        "x-ms-client-request-id": "Sanitized"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Length": "290",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 09 May 2025 01:27:57 GMT",
+        "mise-correlation-id": "cf7012d0-9f53-453e-a978-56e3387fd507",
+        "Strict-Transport-Security": "max-age=2592000",
+        "traceresponse": "00-3923af3159809db9985d4d861ab57f5c-3a49276dec6e939e-01",
+        "x-ms-error-code": "DigitalTwinNotFound"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "DigitalTwinNotFound",
+          "message": "There is no digital twin instance that exists with the ID eeb3ac76-c34e-405a-a8e3-29231d4a9b70. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins https://aka.ms/adtv2query."
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "eeb3ac76-c34e-405a-a8e3-29231d4a9b70"
+  }
+}
