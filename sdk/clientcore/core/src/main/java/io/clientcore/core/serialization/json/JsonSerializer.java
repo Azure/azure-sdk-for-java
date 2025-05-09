@@ -72,7 +72,7 @@ public class JsonSerializer implements ObjectSerializer {
                         try {
                             return clazz.getMethod("fromJson", JsonReader.class).invoke(null, arrayReader);
                         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-                            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+                            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
                         }
                     });
                     return (T) list;
@@ -85,7 +85,7 @@ public class JsonSerializer implements ObjectSerializer {
             }
             return (T) jsonReader.readUntyped();
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
     }
 
@@ -110,7 +110,7 @@ public class JsonSerializer implements ObjectSerializer {
                 return (T) jsonReader.readUntyped();
             }
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
     }
 
