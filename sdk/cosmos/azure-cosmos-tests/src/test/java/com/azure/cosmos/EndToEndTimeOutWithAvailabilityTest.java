@@ -225,14 +225,14 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
     public static Object[][] faultInjectionArgProvider() {
         return new Object[][] {
             // Operation type, Fault Injection Operation Type, Is PPAF-enforced read availability strategy enabled
-//            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, true},
-//            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, false},
-//            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false},
-//            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true},
-//            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false},
-//            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true},
+            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, true},
+            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, false},
+            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false},
+            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true},
+            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false},
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true},
             {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false},
-//            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true}
+            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true}
         };
     }
 
