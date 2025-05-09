@@ -15,10 +15,8 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.utils.CoreUtils;
 import java.lang.reflect.ParameterizedType;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import io.clientcore.core.utils.CoreUtils;
 
 /**
  * Initializes a new instance of the SpecialReturnBodiesServiceImpl type.
@@ -61,12 +59,12 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             BinaryData value = networkResponse.getValue();
             if (value == null || value.toBytes().length == 0) {
                 networkResponse.close();
-                throw instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
             } else {
                 ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.models.binarydata.BinaryData.class);
                 Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
                 networkResponse.close();
-                throw instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
             }
         }
         return networkResponse.getValue();
@@ -85,12 +83,12 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             BinaryData value = networkResponse.getValue();
             if (value == null || value.toBytes().length == 0) {
                 networkResponse.close();
-                throw instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
             } else {
                 ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, BinaryData.class);
                 Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
                 networkResponse.close();
-                throw instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
             }
         }
         return networkResponse;
@@ -108,11 +106,11 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             if (!expectedResponse) {
                 BinaryData value = networkResponse.getValue();
                 if (value == null || value.toBytes().length == 0) {
-                    throw instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                    throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
                 } else {
                     ParameterizedType returnType = null;
                     Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
-                    throw instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                    throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
                 }
             }
             BinaryData responseBody = networkResponse.getValue();
@@ -132,11 +130,11 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             if (!expectedResponse) {
                 BinaryData value = networkResponse.getValue();
                 if (value == null || value.toBytes().length == 0) {
-                    throw instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                    throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
                 } else {
-                    ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class);
+                    ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, byte[].class);
                     Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
-                    throw instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                    throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
                 }
             }
             BinaryData responseBody = networkResponse.getValue();
@@ -157,12 +155,12 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             BinaryData value = networkResponse.getValue();
             if (value == null || value.toBytes().length == 0) {
                 networkResponse.close();
-                throw instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
             } else {
                 ParameterizedType returnType = CoreUtils.createParameterizedType(java.io.InputStream.class);
                 Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
                 networkResponse.close();
-                throw instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
             }
         }
         return networkResponse.getValue().toStream();
@@ -181,31 +179,14 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             BinaryData value = networkResponse.getValue();
             if (value == null || value.toBytes().length == 0) {
                 networkResponse.close();
-                throw instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
             } else {
                 ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, InputStream.class);
                 Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
                 networkResponse.close();
-                throw instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
             }
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), networkResponse.getValue().toStream());
-    }
-
-    private static HttpResponseException instantiateUnexpectedException(int responseCode, Response<BinaryData> response, BinaryData data, Object decodedValue) {
-        StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-        String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
-        if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            String contentLength = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
-            exceptionMessage.append("(").append(contentLength).append("-byte body)");
-        } else if (data == null || data.toBytes().length == 0) {
-            exceptionMessage.append("(empty body)");
-        } else {
-            exceptionMessage.append('"').append(new String(data.toBytes(), StandardCharsets.UTF_8)).append('"');
-        }
-        if (decodedValue instanceof IOException || decodedValue instanceof IllegalStateException) {
-            return new HttpResponseException(exceptionMessage.toString(), response, (Throwable) decodedValue);
-        }
-        return new HttpResponseException(exceptionMessage.toString(), response, decodedValue);
     }
 }
