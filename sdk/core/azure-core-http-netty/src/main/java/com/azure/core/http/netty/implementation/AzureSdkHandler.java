@@ -4,6 +4,7 @@
 package com.azure.core.http.netty.implementation;
 
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
 import io.netty.channel.ChannelDuplexHandler;
@@ -31,7 +32,7 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
      * Name of the handler when it's added into a ChannelPipeline.
      */
     public static final String HANDLER_NAME = "azureSdkHandler";
-
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSdkHandler.class);
     private final long writeTimeoutMillis;
     private final ProgressReporter progressReporter;
     private long lastWriteMillis;
@@ -88,6 +89,7 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        LOGGER.verbose("In channelInactive for " + ctx.name());
         disposeTimeouts();
         ctx.fireChannelInactive();
         ctx.pipeline().remove(this);
