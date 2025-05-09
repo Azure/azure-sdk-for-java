@@ -129,6 +129,7 @@
     <module>sdk/iothub</module>
     <module>sdk/iotoperations</module>
     <module>sdk/keyvault</module>
+    <module>sdk/keyvault-v2</module>
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>
     <module>sdk/labservices</module>

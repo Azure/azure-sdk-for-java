@@ -16,6 +16,7 @@
     "**/checkstyle-suppressions.xml",
     "**/spotbugs-exclude.xml",
     "**/sdk/**/target/**",
+    "**/sdk/**/target/**",
     "**/session-records/**",
     "**/sdk/**/**/assets.json",
     "**/sdk/**/*-matrix.json",
@@ -1365,6 +1366,17 @@
         "rservice", // appears in the name SignalRService
         "gcch",
         "updation" // current typo in a swagger
+      ]
+    },
+    {
+      "filename": "sdk/keyvault-v2/*",
+      "words": [
+        "FIPS",
+        "IMDS",
+        "mhsm",
+        "OAEP",
+        "upns",
+        "vcolin" // TODO: Remove after all TODOs are removed from the codebase
       ]
     }
   ],
