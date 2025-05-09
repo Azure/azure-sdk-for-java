@@ -36,13 +36,12 @@ steps:
 
   - ${{ if eq(length(parameters.PackageInfoFiles), 0) }}:
     - pwsh: |
-        $ArtifactList = ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
+        $artifactList = ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
         $configDir = '${{ parameters.ConfigFileDir }}'
-        $PackageInfoFilesList = @()
+        $PackageInfoFiles = @()
         foreach ($artifact in $artifactsList) {
-          $PackageInfoFilesList += "$configDir/$($artifact).json"
+          $PackageInfoFiles += "$configDir/$($artifact).json".Replace("\", "\\").Replace("\\", "/")
         }
-        $PackageInfoFiles = $PackageInfoFilesList.Replace("\", "\\").Replace("\\", "/")
         Write-Host "PackageInfoFiles=$PackageInfoFiles"
         Write-Host "##vso[task.setvariable variable=PackageInfoFiles;]$PackageInfoFiles"
       displayName: Set PackageInfoFiles files from ArtifactsList
@@ -64,7 +63,7 @@ steps:
         # and the backslashes in the string, without replacing them with the double would be treated
         # as escape sequences.
         arguments: >
-          -PackageInfoFiles '$(PRServiceDirectories)''
+          -PackageInfoFiles '$(PackageInfoFiles)''
           -ArtifactPath '${{parameters.ArtifactPath}}'
           -ArtifactName ${{ parameters.ArtifactName }}
           -APIKey '$(azuresdk-apiview-apikey)'

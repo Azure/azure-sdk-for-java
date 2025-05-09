@@ -21,13 +21,12 @@ steps:
 
     - ${{ if eq(length(parameters.PackageInfoFiles), 0) }}:
       - pwsh: |
-          $ArtifactList = ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
+          $artifactList = ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
           $configDir = '${{ parameters.ConfigFileDir }}'
-          $PackageInfoFilesList = @()
+          $PackageInfoFiles = @()
           foreach ($artifact in $artifactsList) {
-            $PackageInfoFilesList += "$configDir/$($artifact).json"
+            $PackageInfoFiles += "$configDir/$($artifact).json".Replace("\", "\\").Replace("\\", "/")
           }
-          $PackageInfoFiles = $PackageInfoFilesList.Replace("\", "\\").Replace("\\", "/")
           Write-Host "PackageInfoFiles=$PackageInfoFiles"
           Write-Host "##vso[task.setvariable variable=PackageInfoFiles;]$PackageInfoFiles"
         displayName: Set PackageInfoFiles files from ArtifactsList
@@ -45,7 +44,7 @@ steps:
         scriptLocation: inlineScript
         inlineScript: |
           $(Build.SourcesDirectory)/eng/common/scripts/Validate-All-Packages.ps1 `
-            -PackageInfoFiles ('${{ convertToJson(parameters.PackageInfoFiles) }}'.Replace("\", "\\").Replace("\\", "/") | ConvertFrom-Json -NoEnumerate) `
+            -PackageInfoFiles '$(PackageInfoFiles)'
             -ArtifactPath ${{ parameters.ArtifactPath }} `
             -RepoRoot $(Build.SourcesDirectory) `
             -APIKey $(azuresdk-apiview-apikey) `
