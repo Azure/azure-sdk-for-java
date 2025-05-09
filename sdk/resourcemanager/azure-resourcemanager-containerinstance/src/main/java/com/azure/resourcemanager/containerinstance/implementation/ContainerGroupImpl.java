@@ -366,8 +366,7 @@ public class ContainerGroupImpl extends
         return withPrivateImageRegistry(server, Objects.requireNonNull(identity).id());
     }
 
-    @Override
-    public ContainerGroupImpl withPrivateImageRegistry(String server, String managedIdentityResourceId) {
+    private ContainerGroupImpl withPrivateImageRegistry(String server, String managedIdentityResourceId) {
         if (this.innerModel().imageRegistryCredentials() == null) {
             this.innerModel().withImageRegistryCredentials(new ArrayList<ImageRegistryCredential>());
         }
