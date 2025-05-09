@@ -16,8 +16,6 @@ import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.http.models.HttpResponseException;
 import java.lang.reflect.ParameterizedType;
 import io.clientcore.core.utils.CoreUtils;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Initializes a new instance of the HostEdgeCase2ServiceImpl type.
@@ -57,34 +55,17 @@ public class HostEdgeCase2ServiceImpl implements HostEdgeCase2Service {
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData value = networkResponse.getValue();
-                if (value == null || value.toBytes().length == 0) {
-                    throw instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                BinaryData networkResponseValue = networkResponse.getValue();
+                if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                    throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
                 } else {
                     ParameterizedType returnType = null;
-                    Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
-                    throw instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
+                    throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, networkResponseValue, decoded);
                 }
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;
         }
-    }
-
-    private static HttpResponseException instantiateUnexpectedException(int responseCode, Response<BinaryData> response, BinaryData data, Object decodedValue) {
-        StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-        String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
-        if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            String contentLength = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
-            exceptionMessage.append("(").append(contentLength).append("-byte body)");
-        } else if (data == null || data.toBytes().length == 0) {
-            exceptionMessage.append("(empty body)");
-        } else {
-            exceptionMessage.append('"').append(new String(data.toBytes(), StandardCharsets.UTF_8)).append('"');
-        }
-        if (decodedValue instanceof IOException || decodedValue instanceof IllegalStateException) {
-            return new HttpResponseException(exceptionMessage.toString(), response, (Throwable) decodedValue);
-        }
-        return new HttpResponseException(exceptionMessage.toString(), response, decodedValue);
     }
 }

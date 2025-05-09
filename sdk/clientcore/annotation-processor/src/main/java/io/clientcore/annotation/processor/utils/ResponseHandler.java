@@ -100,90 +100,47 @@ public final class ResponseHandler {
         body.addStatement(StaticJavaParser.parseStatement("boolean expectedResponse = " + expectedResponseCheck + ";"));
 
         body.tryAddImportToParentCompilationUnit(HttpResponseException.class);
-        BlockStmt ifBlock = new BlockStmt();
 
         // Take value from networkResponse before closing
-        ifBlock.addStatement(StaticJavaParser.parseStatement("BinaryData value = networkResponse.getValue();"));
+        BlockStmt errorBlock = new BlockStmt();
+        errorBlock.addStatement(
+            StaticJavaParser.parseStatement("BinaryData networkResponseValue = networkResponse" + ".getValue();"));
 
-        // if (value == null || value.toBytes().length == 0)
+        // Early throw for null/empty
         IfStmt nullOrEmptyCheck = new IfStmt();
-        nullOrEmptyCheck.setCondition(StaticJavaParser.parseExpression("value == null || value.toBytes().length == 0"));
-
-        // THEN block: null or empty
+        nullOrEmptyCheck.setCondition(StaticJavaParser
+            .parseExpression("networkResponseValue == null || networkResponseValue.toBytes().length == 0"));
         BlockStmt throwNullBlock = new BlockStmt();
         if (!usingTryWithResources) {
             closeResponse(throwNullBlock);
         }
-        throwNullBlock.addStatement(StaticJavaParser
-            .parseStatement("throw instantiateUnexpectedException(responseCode, networkResponse, null, null);"));
+        throwNullBlock.addStatement(StaticJavaParser.parseStatement(
+            "throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, " + "null);"));
         nullOrEmptyCheck.setThenStmt(throwNullBlock);
 
-        // ELSE block: not null/empty
-        BlockStmt elseBlock = new BlockStmt();
-
+        // Only execute the rest if not null/empty
+        BlockStmt notNullBlock = new BlockStmt();
         // Dynamically generate ParameterizedType if a return type is declared
         TypeMirror returnType = method.getMethodReturnType();
-        if (returnType.getKind() == TypeKind.DECLARED) {
-            DeclaredType declaredType = (DeclaredType) returnType;
-            TypeElement typeElement = (TypeElement) declaredType.asElement();
-            body.tryAddImportToParentCompilationUnit(CoreUtils.class);
-
-            StringBuilder paramTypeBuilder = new StringBuilder();
-            paramTypeBuilder.append(typeElement.getQualifiedName().toString()).append(".class");
-
-            if (!declaredType.getTypeArguments().isEmpty()) {
-                TypeMirror firstGenericType = declaredType.getTypeArguments().get(0);
-
-                if (firstGenericType instanceof DeclaredType) {
-                    DeclaredType genericDeclaredType = (DeclaredType) firstGenericType;
-                    TypeElement genericTypeElement = (TypeElement) genericDeclaredType.asElement();
-
-                    body.findCompilationUnit()
-                        .ifPresent(compilationUnit -> compilationUnit
-                            .addImport(genericTypeElement.getQualifiedName().toString()));
-
-                    if (genericTypeElement.getQualifiedName().contentEquals(List.class.getCanonicalName())) {
-                        if (!genericDeclaredType.getTypeArguments().isEmpty()) {
-                            String innerType
-                                = ((DeclaredType) genericDeclaredType.getTypeArguments().get(0)).asElement()
-                                    .getSimpleName()
-                                    .toString();
-                            paramTypeBuilder.append(", ").append(innerType).append(".class");
-                        }
-                    } else {
-                        String genericType = ((DeclaredType) declaredType.getTypeArguments().get(0)).asElement()
-                            .getSimpleName()
-                            .toString();
-                        paramTypeBuilder.append(", ").append(genericType).append(".class");
-                    }
-                }
-            }
-            elseBlock.addStatement(StaticJavaParser.parseStatement(
-                "ParameterizedType returnType = CoreUtils.createParameterizedType(" + paramTypeBuilder + ");"));
-        } else {
-            elseBlock.addStatement(StaticJavaParser.parseStatement("ParameterizedType returnType = null;"));
-        }
+        notNullBlock.addStatement(AnnotationProcessorUtils.createParameterizedTypeStatement(returnType, body));
         body.tryAddImportToParentCompilationUnit(ParameterizedType.class);
         body.tryAddImportToParentCompilationUnit(CoreUtils.class);
 
-        // Decode before closing
-        elseBlock.addStatement(StaticJavaParser
-            .parseStatement("Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);"));
-
+        notNullBlock.addStatement(StaticJavaParser.parseStatement(
+            "Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);"));
         if (!usingTryWithResources) {
-            closeResponse(elseBlock);
+            closeResponse(notNullBlock);
         }
-        elseBlock.addStatement(StaticJavaParser
-            .parseStatement("throw instantiateUnexpectedException(responseCode, networkResponse, value, decoded);"));
+        notNullBlock.addStatement(StaticJavaParser.parseStatement(
+            "throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, networkResponseValue, decoded);"));
 
-        nullOrEmptyCheck.setElseStmt(elseBlock);
+        nullOrEmptyCheck.setElseStmt(notNullBlock);
 
-        // Add the if-else error handling directly to the main ifBlock (no extra braces)
-        ifBlock.addStatement(nullOrEmptyCheck);
+        errorBlock.addStatement(nullOrEmptyCheck);
 
         IfStmt ifStmt = new IfStmt()
             .setCondition(new UnaryExpr(new NameExpr("expectedResponse"), UnaryExpr.Operator.LOGICAL_COMPLEMENT))
-            .setThenStmt(ifBlock);
+            .setThenStmt(errorBlock);
         body.addStatement(ifStmt);
     }
 
@@ -312,40 +269,11 @@ public final class ResponseHandler {
 
     private static void handleDeclaredTypeResponse(BlockStmt body, DeclaredType returnType,
         boolean serializationFormatSet, String typeCast) {
-        TypeElement typeElement = (TypeElement) returnType.asElement();
         body.tryAddImportToParentCompilationUnit(CoreUtils.class);
         body.tryAddImportToParentCompilationUnit(ParameterizedType.class);
 
         if (!returnType.getTypeArguments().isEmpty()) {
-            TypeMirror firstGenericType = returnType.getTypeArguments().get(0);
-            if (firstGenericType.getKind() == TypeKind.ARRAY) {
-                ArrayType arrayType = (ArrayType) firstGenericType;
-                String componentTypeName = arrayType.getComponentType().toString();
-                body.addStatement("ParameterizedType returnType = CoreUtils.createParameterizedType("
-                    + typeElement.getSimpleName() + ".class," + componentTypeName + "[].class);");
-            } else if (firstGenericType instanceof DeclaredType) {
-                DeclaredType genericDeclaredType = (DeclaredType) firstGenericType;
-                TypeElement genericTypeElement = (TypeElement) genericDeclaredType.asElement();
-
-                body.findCompilationUnit()
-                    .ifPresent(
-                        compilationUnit -> compilationUnit.addImport(genericTypeElement.getQualifiedName().toString()));
-
-                if (genericTypeElement.getQualifiedName().contentEquals(List.class.getCanonicalName())) {
-                    if (!genericDeclaredType.getTypeArguments().isEmpty()) {
-                        String innerType = ((DeclaredType) genericDeclaredType.getTypeArguments().get(0)).asElement()
-                            .getSimpleName()
-                            .toString();
-                        body.addStatement("ParameterizedType returnType = CoreUtils.createParameterizedType("
-                            + genericTypeElement.getSimpleName() + ".class, " + innerType + ".class);");
-                    }
-                } else {
-                    String genericType
-                        = ((DeclaredType) returnType.getTypeArguments().get(0)).asElement().getSimpleName().toString();
-                    body.addStatement("ParameterizedType returnType = CoreUtils.createParameterizedType("
-                        + typeElement.getSimpleName() + ".class, " + genericType + ".class);");
-                }
-            }
+            body.addStatement(AnnotationProcessorUtils.createParameterizedTypeStatement(returnType, body));
         } else {
             body.addStatement(
                 "ParameterizedType returnType = CoreUtils.createParameterizedType(" + typeCast + ".class);");

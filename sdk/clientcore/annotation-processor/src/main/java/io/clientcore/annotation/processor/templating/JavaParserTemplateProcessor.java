@@ -37,7 +37,6 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
@@ -49,7 +48,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -172,34 +170,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         if (!headerConstants.isEmpty()) {
             classBuilder.getMembers().addAll(0, headerConstants);
         }
-        addInstantiateExceptionHelperMethod(classBuilder.addMethod("instantiateUnexpectedException",
-            Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC));
-    }
-
-    private void addInstantiateExceptionHelperMethod(MethodDeclaration instantiateUnexpectedException) {
-        instantiateUnexpectedException.setType("HttpResponseException")
-            .addParameter("int", "responseCode")
-            .addParameter("Response<BinaryData>", "response")
-            .addParameter("BinaryData", "data")
-            .addParameter("Object", "decodedValue");
-        instantiateUnexpectedException.tryAddImportToParentCompilationUnit(IOException.class);
-        instantiateUnexpectedException.setBody(StaticJavaParser.parseBlock("{\n"
-            + "    StringBuilder exceptionMessage = new StringBuilder(\"Status code \")\n"
-            + "        .append(responseCode).append(\", \");\n"
-            + "    String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);\n"
-            + "    if (\"application/octet-stream\".equalsIgnoreCase(contentType)) {\n"
-            + "        String contentLength = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);\n"
-            + "        exceptionMessage.append(\"(\").append(contentLength).append(\"-byte body)\");\n"
-            + "    } else if (data == null || data.toBytes().length == 0) {\n"
-            + "        exceptionMessage.append(\"(empty body)\");\n" + "    } else {\n"
-            + "        exceptionMessage.append('\"').append(new String(data.toBytes(), StandardCharsets.UTF_8)).append('\"');\n"
-            + "    }\n"
-            + "    if (decodedValue instanceof IOException || decodedValue instanceof IllegalStateException) {\n"
-            + "        return new HttpResponseException(exceptionMessage.toString(), response, (Throwable) decodedValue);\n"
-            + "    }\n" + "    return new HttpResponseException(exceptionMessage.toString(), response, decodedValue);\n"
-            + "}"));
-        instantiateUnexpectedException.tryAddImportToParentCompilationUnit(HttpResponseException.class);
-        instantiateUnexpectedException.tryAddImportToParentCompilationUnit(StandardCharsets.class);
     }
 
     private void addLoggerField(String serviceInterfaceShortName) {

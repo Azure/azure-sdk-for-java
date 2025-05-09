@@ -4,6 +4,7 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.CoreException;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -496,6 +498,33 @@ public final class CoreUtils {
         } catch (IOException e) {
             throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
+    }
+
+    /**
+     * Instantiates an {@link HttpResponseException} for unexpected responses.
+     *
+     * @param responseCode The HTTP response code.
+     * @param response The HTTP response.
+     * @param data The body of the HTTP response.
+     * @param decodedValue The decoded value.
+     * @return An {@link HttpResponseException} for unexpected responses.
+     */
+    public static HttpResponseException instantiateUnexpectedException(int responseCode, Response<BinaryData> response,
+        BinaryData data, Object decodedValue) {
+        StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+        String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+        if ("application/octet-stream".equalsIgnoreCase(contentType)) {
+            String contentLength = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
+            exceptionMessage.append("(").append(contentLength).append("-byte body)");
+        } else if (data == null || data.toBytes().length == 0) {
+            exceptionMessage.append("(empty body)");
+        } else {
+            exceptionMessage.append('"').append(new String(data.toBytes(), StandardCharsets.UTF_8)).append('"');
+        }
+        if (decodedValue instanceof IOException || decodedValue instanceof IllegalStateException) {
+            return new HttpResponseException(exceptionMessage.toString(), response, (Throwable) decodedValue);
+        }
+        return new HttpResponseException(exceptionMessage.toString(), response, decodedValue);
     }
 
     private CoreUtils() {
