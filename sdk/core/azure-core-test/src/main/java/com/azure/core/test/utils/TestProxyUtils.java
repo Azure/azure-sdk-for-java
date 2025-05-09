@@ -290,7 +290,7 @@ public class TestProxyUtils {
 
     private static String createCustomMatcherRequestBody(CustomMatcher customMatcher) {
         return String.format(
-            "{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"Accept, Accept-Encoding, Connect, Connection, %s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\",\"ignoreQueryOrdering\":%s}",
+            "{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\",\"ignoreQueryOrdering\":%s}",
             getCommaSeperatedString(customMatcher.getHeadersKeyOnlyMatch()),
             getCommaSeperatedString(customMatcher.getExcludedHeaders()), customMatcher.isComparingBodies(),
             getCommaSeperatedString(customMatcher.getIgnoredQueryParameters()), customMatcher.isQueryOrderingIgnored());
@@ -476,11 +476,8 @@ public class TestProxyUtils {
                     break;
 
                 case BODILESS:
-//                    matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS.getName();
-                    CustomMatcher fakeBodilessMatcher  = new CustomMatcher().setComparingBodies(false);
-                    String fakeRequestBody = createCustomMatcherRequestBody(fakeBodilessMatcher);
-                    matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName();
-                    request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/setmatcher").setBody(fakeRequestBody);
+                    matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS.getName();
+                    request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/setmatcher");
                     break;
 
                 case CUSTOM:
