@@ -15,8 +15,8 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.utils.CoreUtils;
 import java.lang.reflect.ParameterizedType;
+import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.serialization.SerializationFormat;
 
 /**
@@ -57,9 +57,16 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+            BinaryData value = networkResponse.getValue();
+            if (value == null || value.toBytes().length == 0) {
+                networkResponse.close();
+                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
+            } else {
+                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+                Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
+                networkResponse.close();
+                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+            }
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
