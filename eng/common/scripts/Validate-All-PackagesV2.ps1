@@ -225,7 +225,7 @@ foreach ($packageInfoFile in $PackageInfoFiles)
     Write-Host "Output: $($output)"
 
     # Create json token file in artifact path
-    $tokenFile = Join-Path $ArtifactPath "$PackageName-Validation.json"
+    $tokenFile = Join-Path $ArtifactPath "$pkgName-Validation.json"
     $output | Out-File -FilePath $tokenFile -Encoding utf8
 
     # Create DevOps work item
