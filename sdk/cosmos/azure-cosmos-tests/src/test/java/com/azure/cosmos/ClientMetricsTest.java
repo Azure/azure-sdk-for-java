@@ -688,22 +688,22 @@ public class ClientMetricsTest extends BatchTestBase {
 
             CosmosPagedIterable<InternalObjectNode> feedResponseIterator3NoPageSize = state.container
                 .readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class);
-            assertThat(feedResponseIterator3NoPageSize.iterator().hasNext()).isTrue();
-
             // draining the iterator - metrics will only be emitted at the end
-            List<InternalObjectNode> allDocs = feedResponseIterator3NoPageSize.stream().collect(Collectors.toList());
+            List<InternalObjectNode> allDocsNoPageSize = feedResponseIterator3NoPageSize.stream().collect(Collectors.toList());
+            assertThat(allDocsNoPageSize.isEmpty()).isFalse();
+
             logger.info("FOR DEBUGGING FLAKINESS - logging all docs in the current container");
-            for (InternalObjectNode current : allDocs) {
+            for (InternalObjectNode current : allDocsNoPageSize) {
                 logger.info("  - {}", current.toJson());
             }
 
             CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 = new CosmosPagedIterable<>(
                 state.container.asyncContainer.readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class),
                 10);
-            assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
 
             // draining the iterator - metrics will only be emitted at the end
-            feedResponseIterator3.stream().collect(Collectors.toList());
+            List<InternalObjectNode> allDocsWithPageSize = feedResponseIterator3.stream().collect(Collectors.toList());
+            assertThat(allDocsWithPageSize.isEmpty()).isFalse();
 
             state.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
