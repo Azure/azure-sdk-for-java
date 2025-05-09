@@ -246,6 +246,9 @@ jobs:
           PackageInfoFiles:
             - ${{ each artifact in parameters.ReleaseArtifacts }}:
               - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
+          PackageInfoFiles:
+            - ${{ each artifact in parameters.ReleaseArtifacts }}:
+              - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
 
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
 
@@ -398,13 +401,13 @@ jobs:
   #        version: 22.x
   #      displayName: Use Node.js 22.x
 
-      # - task: PowerShell@2
-      #   displayName: Verify Code Generation for Pull Request
-      #   inputs:
-      #     pwsh: true
-      #     filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
-      #     arguments: >
-      #       -ServiceDirectories '$(PRServiceDirectories)'
+  #     - task: PowerShell@2
+  #       displayName: Verify Code Generation for Pull Request
+  #       inputs:
+  #         pwsh: true
+  #         filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
+  #         arguments: >
+  #           -ServiceDirectories '$(PRServiceDirectories)'
 
   #     - task: PowerShell@2
   #       displayName: Verify TypeSpec Code Generation
