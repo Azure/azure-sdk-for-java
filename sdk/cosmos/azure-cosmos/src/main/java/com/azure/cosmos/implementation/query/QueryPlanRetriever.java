@@ -119,17 +119,17 @@ class QueryPlanRetriever {
         BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<PartitionedQueryExecutionInfo>> executeFunc =
             (retryPolicyFactory, req) -> {
                 DocumentClientRetryPolicy retryPolicyInstance = retryPolicyFactory.get();
-                retryPolicyInstance.onBeforeSendRequest(req);
 
-                return BackoffRetryUtility.executeRetry(() ->
-                    queryClient.executeQueryAsync(req).flatMap(rxDocumentServiceResponse -> {
+                return BackoffRetryUtility.executeRetry(() -> {
+                    retryPolicyInstance.onBeforeSendRequest(req);
+                    return queryClient.executeQueryAsync(req).flatMap(rxDocumentServiceResponse -> {
                         PartitionedQueryExecutionInfo partitionedQueryExecutionInfo =
                             new PartitionedQueryExecutionInfo(
-                                (ObjectNode)rxDocumentServiceResponse.getResponseBody(),
+                                (ObjectNode) rxDocumentServiceResponse.getResponseBody(),
                                 rxDocumentServiceResponse.getGatewayHttpRequestTimeline());
                         return Mono.just(partitionedQueryExecutionInfo);
-
-                    }), retryPolicyInstance);
+                    });
+                }, retryPolicyInstance);
             };
 
         return queryClient.executeFeedOperationWithAvailabilityStrategy(
