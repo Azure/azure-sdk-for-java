@@ -173,7 +173,7 @@ public final class PollingUtils {
      * @param logger The logger.
      * @return Whether the location can poll.
      */
-    public static boolean locationCanPoll(Response<BinaryData> initialResponse, String endpoint, ClientLogger logger) {
+    public static boolean locationCanPoll(Response<?> initialResponse, String endpoint, ClientLogger logger) {
         HttpHeader locationHeader = initialResponse.getHeaders().get(HttpHeaderName.LOCATION);
 
         if (locationHeader != null) {

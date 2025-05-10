@@ -248,17 +248,16 @@ public final class HttpRequestContext {
      *
      * @param key the query parameter key.
      * @param value the query parameter value.
-     * @param isMultiple boolean indicating whether this query parameter list values should be sent as individual query
-     * params or as a single Json
-     * @param shouldEncode boolean indicating whether the query parameter value is URL encoded.
-     *
+     * @param isMultiple Whether this query parameter list values should be sent as individual query param.
+     * @param shouldEncode Whether the query parameter value is URL encoded.
+     * @param isStatic Whether the query parameter is a static value.
      */
-    public void addQueryParam(String key, String value, boolean isMultiple, boolean shouldEncode) {
+    public void addQueryParam(String key, String value, boolean isMultiple, boolean shouldEncode, boolean isStatic) {
         QueryParameter existing = queryParams.get(key);
         if (existing != null) {
             existing.addValue(value);
         } else {
-            queryParams.put(key, new QueryParameter(value, isMultiple, shouldEncode));
+            queryParams.put(key, new QueryParameter(value, isMultiple, shouldEncode, isStatic));
         }
     }
 
@@ -380,7 +379,7 @@ public final class HttpRequestContext {
             String[] parts = queryParam.split("=", 2);
             String key = parts[0].trim();
             String value = parts.length > 1 ? parts[1].trim() : null;
-            addQueryParam(key, value, true, false);
+            addQueryParam(key, value, true, false, true);
         }
     }
 
@@ -510,6 +509,7 @@ public final class HttpRequestContext {
         private final List<String> values;
         private final boolean isMultiple;
         private final boolean shouldEncode;
+        private final boolean isStatic;
 
         /**
          * Constructs a new QueryParameter.
@@ -517,12 +517,14 @@ public final class HttpRequestContext {
          * @param value the value of the query parameter.
          * @param isMultiple whether the parameter can accept multiple values.
          * @param shouldEncode whether the parameter and value is encoded
+         * @param isStatic Whether the query parameter is a static value.
          */
-        public QueryParameter(String value, boolean isMultiple, boolean shouldEncode) {
+        public QueryParameter(String value, boolean isMultiple, boolean shouldEncode, boolean isStatic) {
             this.values = new ArrayList<>();
             this.values.add(value);
             this.isMultiple = isMultiple;
             this.shouldEncode = shouldEncode;
+            this.isStatic = isStatic;
         }
 
         /**
@@ -531,11 +533,13 @@ public final class HttpRequestContext {
          * @param values the values of the query parameter.
          * @param isMultiple whether the parameter can accept multiple values.
          * @param shouldEncode whether the parameter and value is encoded
+         * @param isStatic Whether the query parameter is a static value.
          */
-        public QueryParameter(List<String> values, boolean isMultiple, boolean shouldEncode) {
+        public QueryParameter(List<String> values, boolean isMultiple, boolean shouldEncode, boolean isStatic) {
             this.values = new ArrayList<>(values);
             this.isMultiple = isMultiple;
             this.shouldEncode = shouldEncode;
+            this.isStatic = isStatic;
         }
 
         /**
@@ -572,6 +576,15 @@ public final class HttpRequestContext {
          */
         public boolean shouldEncode() {
             return shouldEncode;
+        }
+
+        /**
+         * Whether the query parameter is a static value.
+         *
+         * @return Whether the query parameter is a static value.
+         */
+        public boolean isStatic() {
+            return isStatic;
         }
     }
 }

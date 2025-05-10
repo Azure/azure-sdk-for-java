@@ -154,6 +154,7 @@
     <module>sdk/mobilenetwork</module>
     <module>sdk/modelsrepository</module>
     <module>sdk/mongocluster</module>
+    <module>sdk/mongodbatlas</module>
     <module>sdk/monitor</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
@@ -217,6 +218,7 @@
     <module>sdk/servicelinker</module>
     <module>sdk/servicenetworking</module>
     <module>sdk/signalr</module>
+    <module>sdk/sitemanager</module>
     <module>sdk/sphere</module>
     <module>sdk/spring</module>
     <module>sdk/spring-experimental</module>

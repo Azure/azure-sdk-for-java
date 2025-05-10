@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `ACR_PULL` to `BuiltInRole`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
