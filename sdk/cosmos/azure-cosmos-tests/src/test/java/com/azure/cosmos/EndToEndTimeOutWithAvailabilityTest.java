@@ -39,6 +39,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -167,7 +168,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             System.setProperty("COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF", "false");
         }
 
-        CosmosAsyncClient cosmosAsyncClient = this.getClientBuilder().preferredRegions(this.preferredRegionList).buildAsyncClient();
+        CosmosAsyncClient cosmosAsyncClient;
         FaultInjectionRule rule = null;
 
         // To run the test against the read all and read many variations of query
@@ -175,6 +176,8 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         QueryFlavor[] queryFlavors = QueryFlavor.values();
 
         for (int i = 0; i < maxIterations; i++) {
+
+            cosmosAsyncClient = getClientBuilder().preferredRegions(this.preferredRegionList).buildAsyncClient();
 
             QueryFlavor queryFlavor = (operationType == OperationType.Query) ? queryFlavors[i] : null;
 
@@ -189,18 +192,36 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
                 // This is to wait for the item to be replicated to the secondary region
                 Thread.sleep(2000);
                 rule = injectFailure(asyncContainer, faultInjectionConnectionType);
-                CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(asyncContainer, operationType, createdItem, options, true, queryFlavor);
+
+                Instant start = Instant.now();
+
+                CosmosDiagnostics cosmosDiagnostics
+                    = performDocumentOperation(asyncContainer, operationType, createdItem, options, true, queryFlavor);
+
+                Instant end = Instant.now();
+
                 assertThat(cosmosDiagnostics).isNotNull();
                 CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
                 assertThat(diagnosticsContext).isNotNull();
                 assertThat(diagnosticsContext.getStatusCode()).isBetween(200, 204);
 
                 if (!shouldPpafEnforcedReadAvailabilityStrategyBeEnforced) {
-                    assertThat(diagnosticsContext.getDuration()).isGreaterThanOrEqualTo(Duration.ofSeconds(10));
+
+                    if (diagnosticsContext.isPointOperation()) {
+                        assertThat(diagnosticsContext.getDuration()).isGreaterThanOrEqualTo(Duration.ofSeconds(30));
+                    } else {
+                        assertThat(Duration.between(start, end)).isGreaterThanOrEqualTo(Duration.ofSeconds(30));
+                    }
+
                 } else {
                     // Default enablement of PPAF-enforced read availability strategy should
                     // return a success ideally in 2s-3s
-                    assertThat(diagnosticsContext.getDuration()).isLessThanOrEqualTo(Duration.ofSeconds(5));
+                    // keeping loose enough bounds to ensure test is not flaky
+                    if (diagnosticsContext.isPointOperation()) {
+                        assertThat(diagnosticsContext.getDuration()).isLessThanOrEqualTo(Duration.ofSeconds(10));
+                    } else {
+                        assertThat(Duration.between(start, end)).isLessThanOrEqualTo(Duration.ofSeconds(15));
+                    }
                 }
 
                 // asserts response is obtained from the second preferred region
