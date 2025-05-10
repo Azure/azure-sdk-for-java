@@ -129,12 +129,12 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
     }
 
     @Override
-    public boolean canPoll(Response<BinaryData> initialResponse) {
+    public boolean canPoll(Response<T> initialResponse) {
         return operationResourceCanPoll(initialResponse, operationLocationHeaderName, endpoint, LOGGER);
     }
 
     @Override
-    public PollResponse<T> onInitialResponse(Response<BinaryData> response, PollingContext<T> pollingContext,
+    public PollResponse<T> onInitialResponse(Response<T> response, PollingContext<T> pollingContext,
         Type pollResponseType) {
         HttpHeader operationLocationHeader = response.getHeaders().get(operationLocationHeaderName);
         HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
@@ -160,13 +160,17 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
                 PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType), retryAfter);
         }
 
+        Response<BinaryData> binaryDataResponse = new Response<>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), BinaryData.fromObject(response.getValue()));
+
         throw LOGGER.throwableAtError()
             .addKeyValue("http.response.status_code", response.getStatusCode())
             .addKeyValue("http.response.body.content", serializeResponse(response.getValue(), serializer).toString())
             .addKeyValue("operationLocationHeaderName", operationLocationHeaderName.getValue())
             .addKeyValue("operationLocationHeaderValue",
                 operationLocationHeader == null ? null : operationLocationHeader.getValue())
-            .log("Operation failed or cancelled", message -> new HttpResponseException(message, response, null));
+            .log("Operation failed or cancelled",
+                message -> new HttpResponseException(message, binaryDataResponse, null));
     }
 
     @Override
