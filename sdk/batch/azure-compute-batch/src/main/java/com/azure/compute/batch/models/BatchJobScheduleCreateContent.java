@@ -52,7 +52,7 @@ public final class BatchJobScheduleCreateContent implements JsonSerializable<Bat
      * meaning to metadata; it is solely for the use of user code.
      */
     @Generated
-    private List<MetadataItem> metadata;
+    private List<BatchMetadataItem> metadata;
 
     /**
      * Creates an instance of BatchJobScheduleCreateContent class.
@@ -134,7 +134,7 @@ public final class BatchJobScheduleCreateContent implements JsonSerializable<Bat
      * @return the metadata value.
      */
     @Generated
-    public List<MetadataItem> getMetadata() {
+    public List<BatchMetadataItem> getMetadata() {
         return this.metadata;
     }
 
@@ -146,7 +146,7 @@ public final class BatchJobScheduleCreateContent implements JsonSerializable<Bat
      * @return the BatchJobScheduleCreateContent object itself.
      */
     @Generated
-    public BatchJobScheduleCreateContent setMetadata(List<MetadataItem> metadata) {
+    public BatchJobScheduleCreateContent setMetadata(List<BatchMetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -182,7 +182,7 @@ public final class BatchJobScheduleCreateContent implements JsonSerializable<Bat
             BatchJobScheduleConfiguration schedule = null;
             BatchJobSpecification jobSpecification = null;
             String displayName = null;
-            List<MetadataItem> metadata = null;
+            List<BatchMetadataItem> metadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -195,7 +195,7 @@ public final class BatchJobScheduleCreateContent implements JsonSerializable<Bat
                 } else if ("displayName".equals(fieldName)) {
                     displayName = reader.getString();
                 } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    metadata = reader.readArray(reader1 -> BatchMetadataItem.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }

@@ -136,21 +136,21 @@ public class JobTests extends BatchClientTestBase {
             job = batchClient.getJob(jobId);
             Assertions
                 .assertTrue(job.getState() == BatchJobState.DISABLED || job.getState() == BatchJobState.DISABLING);
-            Assertions.assertEquals(OnAllBatchTasksComplete.NO_ACTION, job.getOnAllTasksComplete());
+            Assertions.assertEquals(BatchAllTasksCompleteMode.NO_ACTION, job.getAllTasksCompleteMode());
 
             // UPDATE
             BatchJobUpdateContent jobUpdateContent = new BatchJobUpdateContent();
-            jobUpdateContent.setOnAllTasksComplete(OnAllBatchTasksComplete.TERMINATE_JOB);
+            jobUpdateContent.setAllTasksCompleteMode(BatchAllTasksCompleteMode.TERMINATE_JOB);
             batchClient.updateJob(jobId, jobUpdateContent);
             job = batchClient.getJob(jobId);
-            Assertions.assertEquals(OnAllBatchTasksComplete.TERMINATE_JOB, job.getOnAllTasksComplete());
+            Assertions.assertEquals(BatchAllTasksCompleteMode.TERMINATE_JOB, job.getAllTasksCompleteMode());
 
             batchClient.enableJob(jobId);
             job = batchClient.getJob(jobId);
             Assertions.assertEquals(BatchJobState.ACTIVE, job.getState());
 
             BatchJobTerminateContent terminateContent = new BatchJobTerminateContent().setTerminationReason("myreason");
-            TerminateBatchJobOptions options = new TerminateBatchJobOptions();
+            BatchJobTerminateOptions options = new BatchJobTerminateOptions();
             options.setParameters(terminateContent);
 
             batchClient.terminateJob(jobId, options, null);
@@ -175,7 +175,7 @@ public class JobTests extends BatchClientTestBase {
         String jobId = getStringIdWithUserNamePrefix("-Job-canCRUDWithPoolNodeComm");
         BatchNodeCommunicationMode targetMode = BatchNodeCommunicationMode.SIMPLIFIED;
 
-        ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+        BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
             .setOffer("UbuntuServer")
             .setSku("18.04-LTS")
             .setVersion("latest");
@@ -243,13 +243,13 @@ public class JobTests extends BatchClientTestBase {
             Assertions.assertEquals(Duration.parse("PT1H"), stats.getUserCpuTime());
             Assertions.assertEquals(Duration.parse("PT30M"), stats.getKernelCpuTime());
             Assertions.assertEquals(Duration.parse("PT1H30M"), stats.getWallClockTime());
-            Assertions.assertEquals(1000, stats.getReadIOps());
-            Assertions.assertEquals(500, stats.getWriteIOps());
-            Assertions.assertEquals(0.5, stats.getReadIOGiB());
-            Assertions.assertEquals(0.25, stats.getWriteIOGiB());
-            Assertions.assertEquals(10, stats.getNumSucceededTasks());
-            Assertions.assertEquals(2, stats.getNumFailedTasks());
-            Assertions.assertEquals(3, stats.getNumTaskRetries());
+            Assertions.assertEquals(1000, stats.getReadIops());
+            Assertions.assertEquals(500, stats.getWriteIops());
+            Assertions.assertEquals(0.5, stats.getReadIoGiB());
+            Assertions.assertEquals(0.25, stats.getWriteIoGiB());
+            Assertions.assertEquals(10, stats.getSucceededTasksCount());
+            Assertions.assertEquals(2, stats.getFailedTasksCount());
+            Assertions.assertEquals(3, stats.getTaskRetriesCount());
             Assertions.assertEquals(Duration.parse("PT10M"), stats.getWaitTime());
         } catch (IOException e) {
             throw new RuntimeException(e);
