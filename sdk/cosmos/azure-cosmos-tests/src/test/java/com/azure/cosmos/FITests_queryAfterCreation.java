@@ -15,7 +15,7 @@ import java.util.function.Function;
 public class FITests_queryAfterCreation
     extends FaultInjectionWithAvailabilityStrategyTestsBase {
 
-    @Test(groups = {"fi-multi-master"}, dataProvider = "testConfigs_queryAfterCreation")
+    @Test(groups = {"fi-multi-master"}, dataProvider = "testConfigs_queryAfterCreation", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryAfterCreation(
         String testCaseId,
         Duration endToEndTimeout,

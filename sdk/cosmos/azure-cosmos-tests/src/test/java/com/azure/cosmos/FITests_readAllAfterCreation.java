@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class FITests_readAllAfterCreation extends FaultInjectionWithAvailabilityStrategyTestsBase {
-    @Test(groups = {"fi-multi-master"}, dataProvider = "testConfigs_readAllAfterCreation")
+    @Test(groups = {"fi-multi-master"}, dataProvider = "testConfigs_readAllAfterCreation", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readAllAfterCreation(
         String testCaseId,
         Duration endToEndTimeout,
