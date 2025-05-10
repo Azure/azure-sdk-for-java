@@ -204,7 +204,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
         return (String)row[0];
     }
 
-    @BeforeClass(groups = { "multi-master" })
+    @BeforeClass(groups = { "fi-multi-master" })
     public void beforeClass() {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -333,7 +333,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             safeClose(dummyClient);
         }
     }
-    @AfterClass(groups = { "multi-master" })
+    @AfterClass(groups = { "fi-multi-master" })
     public void afterClass() {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
