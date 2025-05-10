@@ -33,3 +33,19 @@
 | 410             | 1000           | NO                 | N/A                          | N/A         | N/A              | 1                  | N/A                                     |                                               |
 | 410             | 1002           | NO                 | N/A                          | N/A         | N/A              | 1                  | N/A                                     | Only applies to `Query`, `ChangeFeed`         |
 | 400             | 1001           | NO                 | N/A                          | N/A         | N/A              | 1                  | N/A                                     |                                               |
+
+### Per-Partition Automatic Failover (PPAF) defaults
+ 
+With PPAF enabled, the SDK will also enable threshold-based availability strategy with defaults as below:
+
+#### Threshold-based availability strategy defaults
+
+NOTE: 6s was chosen as in `Direct` Connection Mode, the connect timeout and network request timeout are 5s. This will allow the SDK to do at least 1 in-region retry. In Gateway mode, the Gateway performs the in-region retries on behalf of the SDK within the same time bound.
+
+| Operation Type | Connection Mode | End-to-end timeout | Threshold duration | Threshold step duration |
+|----------------|-----------------|--------------------|--------------------|-------------------------|
+| Read           | Direct          | 6s                 | 1s                 | 500ms                   |
+| Query          | Direct          | 6s                 | 1s                 | 500ms                   |
+| Read           | Gateway         | 6s                 | 1s                 | 500ms                   |
+| Query          | Gateway         | 6s                 | 1s                 | 500ms                   |
+

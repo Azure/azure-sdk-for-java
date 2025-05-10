@@ -304,6 +304,10 @@ public class Configs {
     private static final String E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF = "COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF";
     private static final String E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF_VARIABLE = "COSMOS_E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF";
 
+    private static final String DEFAULT_IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF = "true";
+    private static final String IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF = "COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF";
+    private static final String IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF_VARIABLE = "COSMOS_IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF";
+
     private static final String COSMOS_DISABLE_IMDS_ACCESS = "COSMOS.DISABLE_IMDS_ACCESS";
     private static final String COSMOS_DISABLE_IMDS_ACCESS_VARIABLE = "COSMOS_DISABLE_IMDS_ACCESS";
     private static final boolean COSMOS_DISABLE_IMDS_ACCESS_DEFAULT = false;
@@ -1166,5 +1170,15 @@ public class Configs {
             firstNonNull(
                 emptyToNull(System.getenv().get(EMULATOR_HOST_VARIABLE)),
                 DEFAULT_EMULATOR_HOST));
+    }
+
+    public static boolean isReadAvailabilityStrategyEnabledWithPpaf() {
+        String isReadAvailabilityStrategyEnabledWithPpaf = System.getProperty(
+            IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF,
+            firstNonNull(
+                emptyToNull(System.getenv().get(IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF_VARIABLE)),
+                DEFAULT_IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF));
+
+        return Boolean.parseBoolean(isReadAvailabilityStrategyEnabledWithPpaf);
     }
 }
