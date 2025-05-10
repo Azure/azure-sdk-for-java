@@ -565,7 +565,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"flaky-multi-master"}, dataProvider = "proactiveContainerInitConfigs")
+    @Test(groups = {"flaky-multi-master"}, dataProvider = "proactiveContainerInitConfigs", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughProactiveContainerInitConfig_WithTimeout(
         ProactiveConnectionManagementTestConfig proactiveConnectionManagementTestConfig) {
 

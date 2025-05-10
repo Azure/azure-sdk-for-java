@@ -4,11 +4,8 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
 import com.azure.cosmos.implementation.DiagnosticsProviderJvmFatalErrorMapper;
 import com.azure.cosmos.implementation.Exceptions;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestUtils;
@@ -251,7 +248,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void defaultLoggerAndMetrics() {
-        MeterRegistry meterRegistry = ConsoleLoggingRegistryFactory.create(1);
+        MeterRegistry meterRegistry = Log4jDebugLoggingRegistryFactory.create(1);
 
         CosmosClientBuilder builder = this
             .getClientBuilder()
@@ -273,7 +270,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @Test(groups = { "fast", "emulator" }, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void delayedSampling(OperationType operationType) {
-        MeterRegistry meterRegistry = ConsoleLoggingRegistryFactory.create(1);
+        MeterRegistry meterRegistry = Log4jDebugLoggingRegistryFactory.create(1);
 
         CapturingLogger capturingLogger = new CapturingLogger();
         CosmosClientTelemetryConfig clientTelemetryCfg = new CosmosClientTelemetryConfig()

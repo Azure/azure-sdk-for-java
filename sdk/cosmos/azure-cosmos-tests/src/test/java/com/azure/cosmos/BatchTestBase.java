@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.map.Unmodifiabl
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -99,7 +100,7 @@ public abstract class BatchTestBase extends TestSuiteBase {
     void verifyByRead(CosmosContainer container, TestDoc doc, String eTag) {
         PartitionKey partitionKey = this.getPartitionKey(doc.getStatus());
 
-        CosmosItemResponse<TestDoc> response = container.readItem(doc.getId(), partitionKey, TestDoc.class);
+        CosmosItemResponse<TestDoc> response = verifyExists(container, doc.getId(), partitionKey, TestDoc.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
         assertThat(response.getItem()).isEqualTo(doc);
