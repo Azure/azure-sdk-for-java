@@ -403,7 +403,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
 
             if (operationType == OperationType.Delete) {
                 TestItem toBeDeletedItem = TestItem.createNewItem();
-                cosmosAsyncContainer.createItem(toBeDeletedItem).block();
+                cosmosAsyncContainer.createItem(toBeDeletedItem, cosmosItemRequestOptions).block();
                 CosmosItemResponse<Object> response = cosmosAsyncContainer
                     .deleteItem(toBeDeletedItem, cosmosItemRequestOptions)
                     .block();
