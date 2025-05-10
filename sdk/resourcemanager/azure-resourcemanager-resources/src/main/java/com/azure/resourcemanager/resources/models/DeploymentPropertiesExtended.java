@@ -72,6 +72,11 @@ public final class DeploymentPropertiesExtended implements JsonSerializable<Depl
     private ParametersLink parametersLink;
 
     /*
+     * The extensions used in this deployment.
+     */
+    private List<DeploymentExtensionDefinition> extensions;
+
+    /*
      * The deployment mode. Possible values are Incremental and Complete.
      */
     private DeploymentMode mode;
@@ -213,6 +218,15 @@ public final class DeploymentPropertiesExtended implements JsonSerializable<Depl
     }
 
     /**
+     * Get the extensions property: The extensions used in this deployment.
+     * 
+     * @return the extensions value.
+     */
+    public List<DeploymentExtensionDefinition> extensions() {
+        return this.extensions;
+    }
+
+    /**
      * Get the mode property: The deployment mode. Possible values are Incremental and Complete.
      * 
      * @return the mode value.
@@ -322,6 +336,9 @@ public final class DeploymentPropertiesExtended implements JsonSerializable<Depl
         if (parametersLink() != null) {
             parametersLink().validate();
         }
+        if (extensions() != null) {
+            extensions().forEach(e -> e.validate());
+        }
         if (debugSetting() != null) {
             debugSetting().validate();
         }
@@ -389,6 +406,10 @@ public final class DeploymentPropertiesExtended implements JsonSerializable<Depl
                     deserializedDeploymentPropertiesExtended.parameters = reader.readUntyped();
                 } else if ("parametersLink".equals(fieldName)) {
                     deserializedDeploymentPropertiesExtended.parametersLink = ParametersLink.fromJson(reader);
+                } else if ("extensions".equals(fieldName)) {
+                    List<DeploymentExtensionDefinition> extensions
+                        = reader.readArray(reader1 -> DeploymentExtensionDefinition.fromJson(reader1));
+                    deserializedDeploymentPropertiesExtended.extensions = extensions;
                 } else if ("mode".equals(fieldName)) {
                     deserializedDeploymentPropertiesExtended.mode = DeploymentMode.fromString(reader.getString());
                 } else if ("debugSetting".equals(fieldName)) {

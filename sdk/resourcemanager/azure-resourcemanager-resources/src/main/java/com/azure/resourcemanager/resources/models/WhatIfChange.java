@@ -279,10 +279,16 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
         jsonWriter.writeStringField("resourceId", this.resourceId);
         jsonWriter.writeStringField("deploymentId", this.deploymentId);
         jsonWriter.writeStringField("symbolicName", this.symbolicName);
-        jsonWriter.writeUntypedField("identifiers", this.identifiers);
+        if (this.identifiers != null) {
+            jsonWriter.writeUntypedField("identifiers", this.identifiers);
+        }
         jsonWriter.writeStringField("unsupportedReason", this.unsupportedReason);
-        jsonWriter.writeUntypedField("before", this.before);
-        jsonWriter.writeUntypedField("after", this.after);
+        if (this.before != null) {
+            jsonWriter.writeUntypedField("before", this.before);
+        }
+        if (this.after != null) {
+            jsonWriter.writeUntypedField("after", this.after);
+        }
         jsonWriter.writeArrayField("delta", this.delta, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }

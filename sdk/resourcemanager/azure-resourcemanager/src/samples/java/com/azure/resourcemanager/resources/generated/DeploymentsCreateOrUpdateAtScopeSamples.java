@@ -17,7 +17,7 @@ import java.util.Map;
 public final class DeploymentsCreateOrUpdateAtScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentAtScope.json
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PutDeploymentAtScope.json
      */
     /**
      * Sample code: Create deployment at a given scope.
