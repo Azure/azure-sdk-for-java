@@ -161,13 +161,6 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             FaultInjectionConnectionType.DIRECT :
             FaultInjectionConnectionType.GATEWAY;
 
-        System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
-
-        // test opt out behavior - opt in behavior is the default
-        if (!shouldPpafEnforcedReadAvailabilityStrategyBeEnforced) {
-            System.setProperty("COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF", "false");
-        }
-
         CosmosAsyncClient cosmosAsyncClient;
         FaultInjectionRule rule = null;
 
@@ -176,6 +169,13 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         QueryFlavor[] queryFlavors = QueryFlavor.values();
 
         for (int i = 0; i < maxIterations; i++) {
+
+            System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
+
+            // test opt out behavior - opt in behavior is the default
+            if (!shouldPpafEnforcedReadAvailabilityStrategyBeEnforced) {
+                System.setProperty("COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF", "false");
+            }
 
             cosmosAsyncClient = getClientBuilder().preferredRegions(this.preferredRegionList).buildAsyncClient();
 
