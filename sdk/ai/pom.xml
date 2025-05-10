@@ -11,5 +11,6 @@
 
   <modules>
     <module>azure-ai-inference</module>
+    <module>azure-ai-projects</module>
   </modules>
 </project>
