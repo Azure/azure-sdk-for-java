@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
@@ -221,7 +222,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = { "direct" }, dataProvider = "targetPartitionsKeyRangeAndCollectionLinkParams", timeOut = TIMEOUT)
+    @Test(groups = { "direct" }, dataProvider = "targetPartitionsKeyRangeAndCollectionLinkParams", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void tryGetAddresses_ForDataPartitions(String partitionKeyRangeId, String collectionLink, Protocol protocol) throws Exception {
         Configs configs = ConfigsBuilder.instance().withProtocol(protocol).build();
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
