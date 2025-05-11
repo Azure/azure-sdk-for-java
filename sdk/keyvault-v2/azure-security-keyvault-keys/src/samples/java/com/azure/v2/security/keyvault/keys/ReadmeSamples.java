@@ -113,9 +113,7 @@ public class ReadmeSamples {
 
     public void deleteKey() {
         // BEGIN: readme-sample-deleteKey
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<DeletedKey, Void> deletedKeyPoller = null;
-            //keyClient.beginDeleteKey("<key-name>");
+        Poller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("<key-name>");
 
         PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 

@@ -5,6 +5,7 @@ package com.azure.v2.security.keyvault.certificates;
 
 import com.azure.v2.core.http.polling.LongRunningOperationStatus;
 import com.azure.v2.core.http.polling.PollResponse;
+import com.azure.v2.core.http.polling.Poller;
 import com.azure.v2.core.http.polling.PollingContext;
 import com.azure.v2.security.keyvault.certificates.implementation.CertificateClientImpl;
 import com.azure.v2.security.keyvault.certificates.implementation.CertificateIssuerHelper;
@@ -53,6 +54,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -218,13 +220,13 @@ public final class CertificateClient {
      *
      * @throws HttpResponseException If the provided {@code policy} is malformed.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
-    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
-    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String name,
         CertificatePolicy policy) {
-    
+
         return beginCreateCertificate(name, policy, true, null);
-    }*/
+    }
 
     /**
      * Creates a new certificate in the key vault. If a certificate with the provided name already exists, a new version
@@ -261,15 +263,14 @@ public final class CertificateClient {
      * @throws HttpResponseException If the provided {@code policy} is malformed.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
-    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
-    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String name,
         CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-    
+
         if (isNullOrEmpty(name)) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
         }
-    
+
         try {
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> createCertificateActivation(name, policy, isEnabled, tags),
@@ -279,7 +280,7 @@ public final class CertificateClient {
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }*/
+    }
 
     private PollResponse<CertificateOperation> createCertificateActivation(String certificateName,
         CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
@@ -610,24 +611,22 @@ public final class CertificateClient {
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      * @return A {@link Poller} to poll on and retrieve the deleted certificate with.
      */
-    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
-    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<DeletedCertificate, Void> beginDeleteCertificate(String name) {
         if (isNullOrEmpty(name)) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
         }
-    
+
         try {
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     createDeletedCertificate(clientImpl.deleteCertificate(name))),
                 pollingContext -> deleteCertificatePollOperation(name, pollingContext),
-                (pollingContext, pollResponse) -> null,
-                pollingContext -> null);
+                (pollingContext, pollResponse) -> null, pollingContext -> null);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }*/
+    }
 
     private PollResponse<DeletedCertificate> deleteCertificatePollOperation(String name,
         PollingContext<DeletedCertificate> pollingContext) {
@@ -829,24 +828,22 @@ public final class CertificateClient {
      * certificate vault.
      * @return A {@link Poller} to poll on and retrieve the recovered certificate with.
      */
-    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
-    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String name) {
         if (isNullOrEmpty(name)) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
         }
-    
+
         try {
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     createCertificateWithPolicy(clientImpl.recoverDeletedCertificate(name))),
                 pollingContext -> recoverDeletedCertificatePollOperation(name, pollingContext),
-                (pollingContext, firstResponse) -> null,
-                pollingContext -> null);
+                (pollingContext, firstResponse) -> null, pollingContext -> null);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }*/
+    }
 
     private PollResponse<KeyVaultCertificateWithPolicy> recoverDeletedCertificatePollOperation(String certificateName,
         PollingContext<KeyVaultCertificateWithPolicy> pollingContext) {
@@ -2220,15 +2217,14 @@ public final class CertificateClient {
      * exist.
      * @throws IllegalArgumentException If the provided {@code certificateName} is {@code null} or an empty string.
      */
-    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
-    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
         if (isNullOrEmpty(certificateName)) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'certificateName' cannot be null or empty."));
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
         }
-    
-        try {    
+
+        try {
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null),
                 pollingContext -> certificatePollOperation(certificateName),
@@ -2237,7 +2233,7 @@ public final class CertificateClient {
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }*/
+    }
 
     /**
      * Deletes the creation operation for the specified certificate that is in the process of being created. The

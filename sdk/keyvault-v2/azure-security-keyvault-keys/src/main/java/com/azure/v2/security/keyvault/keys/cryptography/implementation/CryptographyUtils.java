@@ -33,14 +33,24 @@ import static com.azure.v2.security.keyvault.keys.models.KeyType.RSA_HSM;
 import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
- * Utility methods for the Cryptography portion of KeyVault Keys.
+ * Utility methods for the Cryptography portion of Key Vault Keys.
  */
 public final class CryptographyUtils {
     private CryptographyUtils() {
     }
 
+    /**
+     * The name of the collection for secrets.
+     */
     public static final String SECRETS_COLLECTION = "secrets";
 
+    /**
+     * Extracts the components of a key identifier and validates them.
+     *
+     * @param keyId The key identifier to unpack.
+     * @param logger The logger to use for logging errors.
+     * @return A list containing the vault URL, key collection, key name, and key version.
+     */
     public static List<String> unpackAndValidateId(String keyId, ClientLogger logger) {
         if (isNullOrEmpty(keyId)) {
             throw logger.logThrowableAsError(new IllegalArgumentException("'keyId' cannot be null or empty."));
@@ -73,6 +83,15 @@ public final class CryptographyUtils {
         }
     }
 
+    /**
+     * Creates a local cryptography client using the provided key identifier and cryptography client implementation.
+     *
+     * @param implClient The cryptography client implementation.
+     * @return A local cryptography client.
+     *
+     * @throws IllegalStateException If either of the key identifier or JSON Web Key is invalid or if the latter cannot
+     * be retrieved.
+     */
     public static LocalKeyCryptographyClient retrieveJwkAndCreateLocalClient(CryptographyClientImpl implClient) {
         // Technically the collection portion of a key identifier should never be null/empty, but we still check for it.
         if (!isNullOrEmpty(implClient.getKeyCollection())) {
@@ -96,6 +115,16 @@ public final class CryptographyUtils {
         }
     }
 
+    /**
+     * Creates a local cryptography client using the provided JSON Web Key and cryptography client implementation.
+     *
+     * @param jsonWebKey The JSON Web Key to use for local cryptographic operations.
+     * @param implClient The cryptography client implementation.
+     * @return A local cryptography client.
+     *
+     * @throws IllegalArgumentException If the JSON Web Key type is not supported.
+     * @throws IllegalStateException If the local cryptography client cannot be created.
+     */
     public static LocalKeyCryptographyClient createLocalClient(JsonWebKey jsonWebKey,
         CryptographyClientImpl implClient) {
 
@@ -116,6 +145,14 @@ public final class CryptographyUtils {
         throw new IllegalStateException("Could not create local cryptography client.");
     }
 
+    /**
+     * Verifies that the key operations are supported by the key.
+     *
+     * @param jsonWebKey The JSON Web Key to verify.
+     * @param keyOperation The key operation to verify.
+     *
+     * @throws UnsupportedOperationException If the key operation is not supported by the key.
+     */
     public static void verifyKeyPermissions(JsonWebKey jsonWebKey, KeyOperation keyOperation) {
         if (!jsonWebKey.getKeyOps().contains(keyOperation)) {
             String keyOperationName = keyOperation == null ? null : keyOperation.toString().toLowerCase(Locale.ROOT);
@@ -125,6 +162,12 @@ public final class CryptographyUtils {
         }
     }
 
+    /**
+     * Determines whether the exception is a retryable error.
+     *
+     * @param e The exception to check.
+     * @return True if the exception is a retryable error, false otherwise.
+     */
     public static boolean isThrowableRetryable(Throwable e) {
         if (e instanceof HttpResponseException) {
             int statusCode = ((HttpResponseException) e).getResponse().getStatusCode();

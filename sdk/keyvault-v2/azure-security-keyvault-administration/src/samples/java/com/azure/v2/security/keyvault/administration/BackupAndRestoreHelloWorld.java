@@ -44,9 +44,7 @@ public class BackupAndRestoreHelloWorld {
         settings, or any way that works for your application. */
         String blobStorageUrl = "<blob-storage-url>";
         String sasToken = "<sas-token>";
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<KeyVaultBackupOperation, String> backupPoller = null;
-            //backupClient.beginBackup(blobStorageUrl, sasToken);
+        Poller<KeyVaultBackupOperation, String> backupPoller = backupClient.beginBackup(blobStorageUrl, sasToken);
 
         backupPoller.waitForCompletion();
 
@@ -54,9 +52,8 @@ public class BackupAndRestoreHelloWorld {
         location the backup, as well as Shared Access Signature for accessing it. */
         String backupFolderUrl = backupPoller.getFinalResult();
 
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller = null;
-            //backupClient.beginRestore(backupFolderUrl, sasToken);
+        Poller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
+            backupClient.beginRestore(backupFolderUrl, sasToken);
 
         restorePoller.waitForCompletion();
     }

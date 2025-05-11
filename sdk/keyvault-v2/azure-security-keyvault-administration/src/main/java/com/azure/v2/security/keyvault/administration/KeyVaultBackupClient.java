@@ -5,6 +5,7 @@ package com.azure.v2.security.keyvault.administration;
 
 import com.azure.v2.core.http.polling.LongRunningOperationStatus;
 import com.azure.v2.core.http.polling.PollResponse;
+import com.azure.v2.core.http.polling.Poller;
 import com.azure.v2.core.http.polling.PollingContext;
 import com.azure.v2.security.keyvault.administration.implementation.KeyVaultAdministrationClientImpl;
 import com.azure.v2.security.keyvault.administration.implementation.models.FullBackupOperation;
@@ -16,19 +17,23 @@ import com.azure.v2.security.keyvault.administration.implementation.models.Selec
 import com.azure.v2.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationParameters;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultRestoreOperation;
+import com.azure.v2.security.keyvault.administration.models.KeyVaultRestoreResult;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
+import com.azure.v2.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
+import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceClient;
+import io.clientcore.core.annotations.ServiceMethod;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.time.Duration;
 import java.util.Locale;
 
 import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrationUtil.toLongRunningOperationStatus;
 import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrationUtil.transformToLongRunningOperation;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * This class provides methods to perform full a backup and restore of a key vault,
@@ -75,9 +80,7 @@ import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrati
  * String blobStorageUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&quot;;
  * String sasToken = &quot;&lt;sas-token&gt;&quot;;
  *
- * &#47;&#47; TODO &#40;vcolin7&#41;: Uncomment once LROs are available in clientcore.
- * Poller&lt;KeyVaultBackupOperation, String&gt; backupPoller = null;
- *     &#47;&#47;client.beginBackup&#40;blobStorageUrl, sasToken&#41;;
+ * Poller&lt;KeyVaultBackupOperation, String&gt; backupPoller = client.beginBackup&#40;blobStorageUrl, sasToken&#41;;
  * PollResponse&lt;KeyVaultBackupOperation&gt; pollResponse = backupPoller.poll&#40;&#41;;
  *
  * System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
@@ -110,9 +113,8 @@ import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrati
  * String folderUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&#47;mhsm-myaccount-2020090117323313&quot;;
  * String sasToken = &quot;&lt;sas-token&gt;&quot;;
  *
- * &#47;&#47; TODO &#40;vcolin7&#41;: Uncomment once LROs are available in clientcore.
- * Poller&lt;KeyVaultRestoreOperation, KeyVaultRestoreResult&gt; restorePoller = null;
- *     &#47;&#47;client.beginRestore&#40;folderUrl, sasToken&#41;;
+ * Poller&lt;KeyVaultRestoreOperation, KeyVaultRestoreResult&gt; restorePoller =
+ *     client.beginRestore&#40;folderUrl, sasToken&#41;;
  * PollResponse&lt;KeyVaultRestoreOperation&gt; pollResponse = restorePoller.poll&#40;&#41;;
  *
  * System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
@@ -144,9 +146,8 @@ import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrati
  * String sasToken = &quot;&lt;sas-token&gt;&quot;;
  * String keyName = &quot;myKey&quot;;
  *
- * &#47;&#47; TODO &#40;vcolin7&#41;: Uncomment once LROs are available in clientcore.
- * Poller&lt;KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult&gt; restorePoller = null;
- *     &#47;&#47;client.beginSelectiveKeyRestore&#40;folderUrl, sasToken, keyName&#41;;
+ * Poller&lt;KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult&gt; restorePoller =
+ *     client.beginSelectiveKeyRestore&#40;folderUrl, sasToken, keyName&#41;;
  * PollResponse&lt;KeyVaultSelectiveKeyRestoreOperation&gt; pollResponse = restorePoller.poll&#40;&#41;;
  *
  * System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
@@ -193,9 +194,7 @@ public final class KeyVaultBackupClient {
      * String blobStorageUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&quot;;
      * String sasToken = &quot;&lt;sas-token&gt;&quot;;
      *
-     * &#47;&#47; TODO &#40;vcolin7&#41;: Uncomment once LROs are available in clientcore.
-     * Poller&lt;KeyVaultBackupOperation, String&gt; backupPoller = null;
-     *     &#47;&#47;client.beginBackup&#40;blobStorageUrl, sasToken&#41;;
+     * Poller&lt;KeyVaultBackupOperation, String&gt; backupPoller = client.beginBackup&#40;blobStorageUrl, sasToken&#41;;
      * PollResponse&lt;KeyVaultBackupOperation&gt; pollResponse = backupPoller.poll&#40;&#41;;
      *
      * System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
@@ -224,26 +223,25 @@ public final class KeyVaultBackupClient {
      * @throws HttpResponseException If the provided {@code blobStorageUrl} or {@code sasToken} are invalid.
      * @throws IllegalArgumentException If {@code blobStorageUrl} is {@code null} or an empty string.
      */
-    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
-    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultBackupOperation, String> beginBackup(String blobStorageUrl, String sasToken) {
+        if (isNullOrEmpty(blobStorageUrl)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'blobStorageUrl'")));
+        }
+
         try {
-            if (isNullOrEmpty(blobStorageUrl)) {
-                throw new IllegalArgumentException(
-                    String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'blobStorageUrl'"));
-            }
-    
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     backupWithResponse(blobStorageUrl, sasToken).getValue()),
                 pollingContext -> backupPollOperation(pollingContext.getLatestResponse(), RequestContext.none()),
                 (pollingContext, firstResponse) -> {
-                    throw new RuntimeException("Cancellation is not supported");
+                    throw new UnsupportedOperationException("Cancellation is not supported");
                 }, pollingContext -> pollingContext.getLatestResponse().getValue().getAzureStorageBlobContainerUrl());
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }*/
+    }
 
     private Response<KeyVaultBackupOperation> backupWithResponse(String blobStorageUrl, String sasToken) {
         SASTokenParameter sasTokenParameter
@@ -255,8 +253,6 @@ public final class KeyVaultBackupClient {
             return new Response<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
                 backupOperationResponse.getHeaders(),
                 (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue()));
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -286,8 +282,6 @@ public final class KeyVaultBackupClient {
                 return processOperationResponse(
                     new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                         (KeyVaultBackupOperation) transformToLongRunningOperation(response.getValue())));
-            } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
             }
         } catch (HttpResponseException e) {
             //noinspection ThrowableNotThrown
@@ -308,9 +302,7 @@ public final class KeyVaultBackupClient {
      * String blobStorageUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&quot;;
      * String sasToken = &quot;&lt;sas-token&gt;&quot;;
      *
-     * &#47;&#47; TODO &#40;vcolin7&#41;: Uncomment once LROs are available in clientcore.
-     * Poller&lt;KeyVaultBackupOperation, String&gt; backupPoller = null;
-     *     &#47;&#47;client.beginBackup&#40;blobStorageUrl, sasToken&#41;;
+     * Poller&lt;KeyVaultBackupOperation, String&gt; backupPoller = client.beginBackup&#40;blobStorageUrl, sasToken&#41;;
      * PollResponse&lt;KeyVaultBackupOperation&gt; pollResponse = backupPoller.poll&#40;&#41;;
      *
      * System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
@@ -342,25 +334,24 @@ public final class KeyVaultBackupClient {
      * @throws HttpResponseException If the provided {@code folderUrl} or {@code sasToken} are invalid.
      * @throws IllegalArgumentException If {@code folderUrl} is {@code null} or an empty string.
      */
-    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
-    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultRestoreOperation, KeyVaultRestoreResult> beginRestore(String folderUrl, String sasToken) {
+        if (isNullOrEmpty(folderUrl)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'folderUrl'")));
+        }
+
         try {
-            if (isNullOrEmpty(folderUrl)) {
-                throw new IllegalArgumentException(
-                    String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'folderUrl'"));
-            }
-    
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     restoreActivationOperation(folderUrl, sasToken)),
-                pollingContext -> restorePollOperation(pollingContext),
-                (pollingContext, firstResponse) -> { throw new RuntimeException("Cancellation is not supported"); },
-                pollingContext -> new KeyVaultRestoreResult());
+                this::restorePollOperation, (pollingContext, firstResponse) -> {
+                    throw new UnsupportedOperationException("Cancellation is not supported");
+                }, pollingContext -> new KeyVaultRestoreResult());
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }*/
+    }
 
     Response<KeyVaultRestoreOperation> restoreWithResponse(String folderUrl, String sasToken) {
         String[] segments = folderUrl.split("/");
@@ -377,16 +368,12 @@ public final class KeyVaultBackupClient {
 
             return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue()));
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
     private KeyVaultRestoreOperation restoreActivationOperation(String folderUrl, String sasToken) {
         try (Response<KeyVaultRestoreOperation> response = restoreWithResponse(folderUrl, sasToken)) {
             return response.getValue();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -418,8 +405,6 @@ public final class KeyVaultBackupClient {
                 return processOperationResponse(
                     new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                         (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue())));
-            } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
             }
         } catch (HttpResponseException e) {
             //noinspection ThrowableNotThrown
@@ -442,9 +427,8 @@ public final class KeyVaultBackupClient {
      * String sasToken = &quot;&lt;sas-token&gt;&quot;;
      * String keyName = &quot;myKey&quot;;
      *
-     * &#47;&#47; TODO &#40;vcolin7&#41;: Uncomment once LROs are available in clientcore.
-     * Poller&lt;KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult&gt; restorePoller = null;
-     *     &#47;&#47;client.beginSelectiveKeyRestore&#40;folderUrl, sasToken, keyName&#41;;
+     * Poller&lt;KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult&gt; restorePoller =
+     *     client.beginSelectiveKeyRestore&#40;folderUrl, sasToken, keyName&#41;;
      * PollResponse&lt;KeyVaultSelectiveKeyRestoreOperation&gt; pollResponse = restorePoller.poll&#40;&#41;;
      *
      * System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
@@ -475,32 +459,31 @@ public final class KeyVaultBackupClient {
      * @throws HttpResponseException If the given {@code folderUrl} or {@code sasToken} are invalid.
      * @throws NullPointerException If the {@code keyName} or {@code folderUrl} are {@code null}.
      */
-    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
-    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult>
         beginSelectiveKeyRestore(String keyName, String folderUrl, String sasToken) {
-    
+
+        if (isNullOrEmpty(keyName)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'keyName'")));
+        }
+
+        if (isNullOrEmpty(folderUrl)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'folderUrl'")));
+        }
+
         try {
-            if (isNullOrEmpty(keyName)) {
-                throw new IllegalArgumentException(
-                    String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'keyName'"));
-            }
-    
-            if (isNullOrEmpty(folderUrl)) {
-                throw new IllegalArgumentException(
-                    String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'folderUrl'"));
-            }
-    
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     selectiveKeyRestoreActivationOperation(keyName, folderUrl, sasToken)),
-                pollingContext -> selectiveKeyRestorePollOperation(pollingContext),
-                (pollingContext, firstResponse) -> { throw new RuntimeException("Cancellation is not supported"); },
-                pollingContext -> new KeyVaultSelectiveKeyRestoreResult());
+                this::selectiveKeyRestorePollOperation, (pollingContext, firstResponse) -> {
+                    throw new UnsupportedOperationException("Cancellation is not supported");
+                }, pollingContext -> new KeyVaultSelectiveKeyRestoreResult());
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }*/
+    }
 
     Response<KeyVaultSelectiveKeyRestoreOperation> selectiveKeyRestoreWithResponse(String keyName, String folderUrl,
         String sasToken) {
@@ -522,8 +505,6 @@ public final class KeyVaultBackupClient {
                 selectiveKeyRestoreOperationResponse.getStatusCode(), selectiveKeyRestoreOperationResponse.getHeaders(),
                 (KeyVaultSelectiveKeyRestoreOperation) transformToLongRunningOperation(
                     selectiveKeyRestoreOperationResponse.getValue()));
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -534,8 +515,6 @@ public final class KeyVaultBackupClient {
             = selectiveKeyRestoreWithResponse(keyName, folderUrl, sasToken)) {
 
             return response.getValue();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -568,8 +547,6 @@ public final class KeyVaultBackupClient {
                 return processOperationResponse(
                     new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                         (KeyVaultSelectiveKeyRestoreOperation) transformToLongRunningOperation(response.getValue())));
-            } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
             }
         } catch (HttpResponseException e) {
             //noinspection ThrowableNotThrown

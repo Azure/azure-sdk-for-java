@@ -203,6 +203,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         throw new UnsupportedOperationException("The sign operation not supported for OCT/symmetric keys.");
     }
 
+    @Override
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
         RequestContext requestContext) {
 
@@ -295,6 +296,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         return sign(algorithm, data, requestContext);
     }
 
+    @Override
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
         RequestContext requestContext) {
 

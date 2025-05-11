@@ -3,6 +3,7 @@
 
 package com.azure.v2.security.keyvault.keys.implementation;
 
+import com.azure.v2.security.keyvault.keys.KeyServiceVersion;
 import com.azure.v2.security.keyvault.keys.cryptography.CryptographyClientBuilder;
 import com.azure.v2.security.keyvault.keys.cryptography.CryptographyServiceVersion;
 import io.clientcore.core.http.models.HttpResponseException;
@@ -24,7 +25,7 @@ import java.util.function.Supplier;
 import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
- * Utility class for KeyVault Keys.
+ * Utility class for Key Vault Keys.
  */
 public final class KeyVaultKeysUtils {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultKeysUtils.class);
@@ -42,13 +43,13 @@ public final class KeyVaultKeysUtils {
      * @throws IllegalArgumentException If {@code keyName} is {@code null} or an empty string.
      */
     public static CryptographyClientBuilder getCryptographyClientBuilder(String keyName, String keyVersion,
-        String endpoint, HttpPipeline httpPipeline, String serviceVersion) {
+        String endpoint, HttpPipeline httpPipeline, KeyServiceVersion serviceVersion) {
 
         CryptographyClientBuilder builder
             = new CryptographyClientBuilder().keyIdentifier(generateKeyId(keyName, keyVersion, endpoint))
-                .serviceVersion(CryptographyServiceVersion.valueOf(serviceVersion));
+                .serviceVersion(CryptographyServiceVersion.valueOf(serviceVersion.getVersion()));
 
-        httpPipeline.getPolicies().forEach(policy -> builder.addHttpPipelinePolicy(policy));
+        httpPipeline.getPolicies().forEach(builder::addHttpPipelinePolicy);
 
         return builder;
     }

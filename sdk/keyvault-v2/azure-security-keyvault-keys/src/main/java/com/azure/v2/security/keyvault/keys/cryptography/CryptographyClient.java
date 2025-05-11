@@ -1263,14 +1263,16 @@ public class CryptographyClient {
             } catch (Throwable t) {
                 if (isThrowableRetryable(t)) {
                     LOGGER.atVerbose()
-                        .log("Could not set up local cryptography for this operation. Defaulting to "
-                            + "service-side cryptography.", t);
+                        .setThrowable(t)
+                        .log("Could not set up local cryptography for this operation. Defaulting to service-side "
+                            + "cryptography.");
                 } else {
                     skipLocalClientCreation = true;
 
                     LOGGER.atVerbose()
-                        .log("Could not set up local cryptography. Defaulting to service-side "
-                            + "cryptography for all operations.", t);
+                        .setThrowable(t)
+                        .log("Could not set up local cryptography. Defaulting to service-side cryptography for all "
+                            + "operations.");
                 }
             }
         }

@@ -130,9 +130,8 @@ Create a certificate to be stored in the key vault. `beginCreateCertificate` cre
 If a certificate with the same name already exists then a new version of the certificate is created.
 
 ```java readme-sample-createCertificate
-// TODO (vcolin7): Uncomment once LROs are available in clientcore.
-Poller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller = null;
-    //certificateClient.beginCreateCertificate("certificateName", CertificatePolicy.getDefault());
+Poller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
+    certificateClient.beginCreateCertificate("certificateName", CertificatePolicy.getDefault());
 certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 KeyVaultCertificate certificate = certificatePoller.getFinalResult();
 System.out.printf("Certificate created with name \"%s\"%n", certificate.getName());
@@ -167,9 +166,8 @@ System.out.printf("Updated certificate with name \"%s\" and enabled status \"%s\
 Delete an existing certificate by calling `beginDeleteCertificate`.
 
 ```java readme-sample-deleteCertificate
-// TODO (vcolin7): Uncomment once LROs are available in clientcore.
-Poller<DeletedCertificate, Void> deleteCertificatePoller = null;
-    //certificateClient.beginDeleteCertificate("<certificate-name>");
+Poller<DeletedCertificate, Void> deleteCertificatePoller =
+    certificateClient.beginDeleteCertificate("<certificate-name>");
 
 // Deleted certificate is accessible as soon as polling beings.
 PollResponse<DeletedCertificate> pollResponse = deleteCertificatePoller.poll();
@@ -190,9 +188,8 @@ List the certificates in the key vault by calling `listPropertiesOfCertificates`
 // List operations don't return the certificates with their full information. So, for each returned certificate we call
 // getCertificate to get the certificate with all its properties excluding the policy.
 for (CertificateProperties certificateProperties : certificateClient.listPropertiesOfCertificates()) {
-    // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-    KeyVaultCertificate certificateWithAllProperties = null;
-        //certificateClient.getCertificateVersion(certificateProperties.getName(), certificateProperties.getVersion());
+    KeyVaultCertificate certificateWithAllProperties =
+        certificateClient.getCertificate(certificateProperties.getName(), certificateProperties.getVersion());
     System.out.printf("Received certificate with name \"%s\" and secret id %s",
         certificateWithAllProperties.getProperties().getName(), certificateWithAllProperties.getSecretId());
 }

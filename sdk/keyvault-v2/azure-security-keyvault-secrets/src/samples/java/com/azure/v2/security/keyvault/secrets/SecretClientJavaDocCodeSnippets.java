@@ -217,9 +217,7 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = createSecretClient();
 
         // BEGIN: com.azure.v2.security.keyvault.SecretClient.deleteSecret#String
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<DeletedSecret, Void> deleteSecretPoller = null;
-            //secretClient.beginDeleteSecret("secretName");
+        Poller<DeletedSecret, Void> deleteSecretPoller = secretClient.beginDeleteSecret("secretName");
 
         // Deleted Secret is accessible as soon as polling begins.
         PollResponse<DeletedSecret> deleteSecretPollResponse = deleteSecretPoller.poll();
@@ -304,9 +302,7 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = createSecretClient();
 
         // BEGIN: com.azure.v2.security.keyvault.SecretClient.beginRecoverDeletedSecret#String
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<KeyVaultSecret, Void> recoverSecretPoller = null;
-            //secretClient.beginRecoverDeletedSecret("deletedSecretName");
+        Poller<KeyVaultSecret, Void> recoverSecretPoller = secretClient.beginRecoverDeletedSecret("deletedSecretName");
 
         // A secret to be recovered can be accessed as soon as polling is in progress.
         PollResponse<KeyVaultSecret> recoveredSecretPollResponse = recoverSecretPoller.poll();

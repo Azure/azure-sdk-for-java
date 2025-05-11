@@ -52,9 +52,7 @@ public class ManagingDeletedSecrets {
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
         // The storage account was closed, need to delete its credentials from the key vault.
-        Poller<DeletedSecret, Void> deletedBankSecretPoller = null;
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-            //client.beginDeleteSecret("BankAccountPassword");
+        Poller<DeletedSecret, Void> deletedBankSecretPoller = client.beginDeleteSecret("BankAccountPassword");
 
         PollResponse<DeletedSecret> deletedBankSecretPollResponse = deletedBankSecretPoller.poll();
 
@@ -66,9 +64,7 @@ public class ManagingDeletedSecrets {
 
         // We accidentally deleted bank account secret. Let's recover it.
         // A deleted secret can only be recovered if the key vault is soft-delete enabled.
-        Poller<KeyVaultSecret, Void> recoverSecretPoller = null;
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-            //client.beginRecoverDeletedSecret("BankAccountPassword");
+        Poller<KeyVaultSecret, Void> recoverSecretPoller = client.beginRecoverDeletedSecret("BankAccountPassword");
 
         PollResponse<KeyVaultSecret> recoverSecretResponse = recoverSecretPoller.poll();
 
@@ -80,9 +76,7 @@ public class ManagingDeletedSecrets {
 
         // The bank account and storage accounts got closed.
         // Let's delete bank and storage accounts secrets.
-        Poller<DeletedSecret, Void> deletedBankPwdSecretPoller = null;
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-            //client.beginDeleteSecret("BankAccountPassword");
+        Poller<DeletedSecret, Void> deletedBankPwdSecretPoller = client.beginDeleteSecret("BankAccountPassword");
         PollResponse<DeletedSecret> deletedBankPwdSecretPollResponse = deletedBankPwdSecretPoller.poll();
 
         System.out.println("Deleted Date %s" + deletedBankPwdSecretPollResponse.getValue().getDeletedOn().toString());
@@ -92,9 +86,7 @@ public class ManagingDeletedSecrets {
         // The secret is being deleted on the server.
         deletedBankPwdSecretPoller.waitForCompletion();
 
-        Poller<DeletedSecret, Void> deletedStorageSecretPoller = null;
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-            //client.beginDeleteSecret("StorageAccountPassword");
+        Poller<DeletedSecret, Void> deletedStorageSecretPoller = client.beginDeleteSecret("StorageAccountPassword");
         PollResponse<DeletedSecret> deletedStorageSecretPollResponse = deletedStorageSecretPoller.poll();
 
         System.out.println("Deleted Date  %s" + deletedStorageSecretPollResponse.getValue().getDeletedOn().toString());

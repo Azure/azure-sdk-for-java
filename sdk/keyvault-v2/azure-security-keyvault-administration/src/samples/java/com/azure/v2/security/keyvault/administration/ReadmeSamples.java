@@ -174,35 +174,6 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code sample for starting a {@link KeyVaultBackupOperation pre-backup check}.
-     */
-    public void beginPreBackup() {
-        // BEGIN: readme-sample-beginPreBackup
-        String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-        String sasToken = "<sas-token>";
-
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<KeyVaultBackupOperation, String> preBackupPoller = null;
-            //keyVaultBackupClient.beginPreBackup(blobStorageUrl, sasToken);
-        PollResponse<KeyVaultBackupOperation> pollResponse = preBackupPoller.poll();
-
-        System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
-
-        PollResponse<KeyVaultBackupOperation> finalPollResponse = preBackupPoller.waitForCompletion();
-
-        if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-            String folderUrl = preBackupPoller.getFinalResult();
-
-            System.out.printf("Pre-backup check completed successfully.%n");
-        } else {
-            KeyVaultBackupOperation operation = preBackupPoller.poll().getValue();
-
-            System.out.printf("Pre-backup check failed with error: %s.%n", operation.getError().getMessage());
-        }
-        // END: readme-sample-beginPreBackup
-    }
-
-    /**
      * Code sample for starting a {@link KeyVaultBackupOperation backup operation}.
      */
     public void beginBackup() {
@@ -210,9 +181,8 @@ public class ReadmeSamples {
         String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
         String sasToken = "<sas-token>";
 
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<KeyVaultBackupOperation, String> backupPoller = null;
-            //keyVaultBackupClient.beginBackup(blobStorageUrl, sasToken);
+        Poller<KeyVaultBackupOperation, String> backupPoller =
+            keyVaultBackupClient.beginBackup(blobStorageUrl, sasToken);
         PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.poll();
 
         System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
@@ -232,33 +202,6 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code sample for starting a {@link KeyVaultRestoreOperation pre-restore check}.
-     */
-    public void beginPreRestore() {
-        // BEGIN: readme-sample-beginPreRestore
-        String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "<sas-token>";
-
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<KeyVaultRestoreOperation, KeyVaultRestoreResult> preRestorePoller = null;
-            //keyVaultBackupClient.beginPreRestore(folderUrl, sasToken);
-        PollResponse<KeyVaultRestoreOperation> pollResponse = preRestorePoller.poll();
-
-        System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
-
-        PollResponse<KeyVaultRestoreOperation> finalPollResponse = preRestorePoller.waitForCompletion();
-
-        if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-            System.out.printf("Pre-restore check completed successfully.%n");
-        } else {
-            KeyVaultRestoreOperation operation = preRestorePoller.poll().getValue();
-
-            System.out.printf("Pre-restore check failed with error: %s.%n", operation.getError().getMessage());
-        }
-        // END: readme-sample-beginPreRestore
-    }
-
-    /**
      * Code sample for starting a {@link KeyVaultRestoreOperation restore operation}.
      */
     public void beginRestore() {
@@ -266,9 +209,8 @@ public class ReadmeSamples {
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
         String sasToken = "<sas-token>";
 
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller = null;
-            //keyVaultBackupClient.beginRestore(folderUrl, sasToken);
+        Poller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
+            keyVaultBackupClient.beginRestore(folderUrl, sasToken);
         PollResponse<KeyVaultRestoreOperation> pollResponse = restorePoller.poll();
 
         System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
@@ -294,9 +236,8 @@ public class ReadmeSamples {
         String sasToken = "<sas-token>";
         String keyName = "myKey";
 
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePoller = null;
-            //keyVaultBackupClient.beginSelectiveKeyRestore(folderUrl, sasToken, keyName);
+        Poller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePoller =
+            keyVaultBackupClient.beginSelectiveKeyRestore(folderUrl, sasToken, keyName);
         PollResponse<KeyVaultSelectiveKeyRestoreOperation> pollResponse = restorePoller.poll();
 
         System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());

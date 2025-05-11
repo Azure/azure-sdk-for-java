@@ -22,11 +22,17 @@ import java.util.function.Consumer;
 import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
- * Utility methods for KeyVault Secrets models.
+ * Utility methods for Key Vault Secrets models.
  */
 public final class SecretsModelsUtils {
     private static final ClientLogger LOGGER = new ClientLogger(SecretsModelsUtils.class);
 
+    /**
+     * Creates a {@link SecretAttributes} from the given {@link SecretProperties}.
+     *
+     * @param secretProperties The {@link SecretProperties} to create the {@link SecretAttributes} from.
+     * @return The created {@link SecretAttributes}.
+     */
     public static SecretAttributes createSecretAttributes(SecretProperties secretProperties) {
         if (secretProperties == null) {
             return null;
@@ -37,6 +43,12 @@ public final class SecretsModelsUtils {
             .setExpires(secretProperties.getExpiresOn());
     }
 
+    /**
+     * Creates a {@link KeyVaultSecret} from the given {@link SecretBundle}.
+     *
+     * @param secretBundle The {@link SecretBundle} to create the {@link KeyVaultSecret} from.
+     * @return The created {@link KeyVaultSecret}.
+     */
     public static KeyVaultSecret createKeyVaultSecret(SecretBundle secretBundle) {
         if (secretBundle == null) {
             return null;
@@ -48,6 +60,12 @@ public final class SecretsModelsUtils {
         return keyVaultSecret;
     }
 
+    /**
+     * Creates a {@link SecretProperties} from the given {@link SecretBundle}.
+     *
+     * @param secretBundle The {@link SecretBundle} to create the {@link SecretProperties} from.
+     * @return The created {@link SecretProperties}.
+     */
     public static SecretProperties createSecretProperties(SecretBundle secretBundle) {
         if (secretBundle == null) {
             return null;
@@ -83,6 +101,12 @@ public final class SecretsModelsUtils {
             version -> SecretPropertiesHelper.setVersion(secretProperties, version));
     }
 
+    /**
+     * Creates a {@link SecretProperties} from the given {@link SecretItem}.
+     *
+     * @param secretItem The {@link SecretItem} to create the {@link SecretProperties} from.
+     * @return The created {@link SecretProperties}.
+     */
     public static SecretProperties createSecretProperties(SecretItem secretItem) {
         if (secretItem == null) {
             return null;
@@ -117,6 +141,12 @@ public final class SecretsModelsUtils {
             version -> SecretPropertiesHelper.setVersion(secretProperties, version));
     }
 
+    /**
+     * Creates a {@link DeletedSecret} from the given {@link DeletedSecretBundle}.
+     *
+     * @param deletedSecretBundle The {@link DeletedSecretBundle} to create the {@link DeletedSecret} from.
+     * @return The created {@link DeletedSecret}.
+     */
     public static DeletedSecret createDeletedSecret(DeletedSecretBundle deletedSecretBundle) {
         if (deletedSecretBundle == null) {
             return null;
@@ -156,6 +186,12 @@ public final class SecretsModelsUtils {
         return deletedSecret;
     }
 
+    /**
+     * Creates a {@link DeletedSecret} from the given {@link DeletedSecretItem}.
+     *
+     * @param deletedSecretItem The {@link DeletedSecretItem} to create the {@link DeletedSecret} from.
+     * @return The created {@link DeletedSecret}.
+     */
     public static DeletedSecret createDeletedSecret(DeletedSecretItem deletedSecretItem) {
         if (deletedSecretItem == null) {
             return null;
@@ -194,6 +230,13 @@ public final class SecretsModelsUtils {
         return deletedSecret;
     }
 
+    /**
+     * Unpacks a Key Vault secret ID into a name and version.
+     *
+     * @param id The Key Vault secret ID to unpack.
+     * @param nameConsumer The consumer to accept the name.
+     * @param versionConsumer The consumer to accept the version.
+     */
     public static void unpackId(String id, Consumer<String> nameConsumer, Consumer<String> versionConsumer) {
         if (isNullOrEmpty(id)) {
             return;
@@ -216,6 +259,13 @@ public final class SecretsModelsUtils {
         }
     }
 
+    /**
+     * Converts a JSON reader representing an epoch time to an {@link OffsetDateTime}.
+     *
+     * @param epochReader The JSON reader representing the epoch time.
+     * @return The {@link OffsetDateTime} representation of the epoch time.
+     * @throws IOException If an I/O error occurs.
+     */
     public static OffsetDateTime epochToOffsetDateTime(JsonReader epochReader) throws IOException {
         Instant instant = Instant.ofEpochMilli(epochReader.getLong() * 1000L);
 
@@ -223,5 +273,6 @@ public final class SecretsModelsUtils {
     }
 
     private SecretsModelsUtils() {
+        // Private constructor to prevent instantiation.
     }
 }

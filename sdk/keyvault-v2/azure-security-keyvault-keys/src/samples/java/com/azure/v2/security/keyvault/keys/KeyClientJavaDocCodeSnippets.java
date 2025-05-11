@@ -169,9 +169,7 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
 
         // BEGIN: com.azure.v2.security.keyvault.keys.KeyClient.deleteKey#String
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<DeletedKey, Void> deleteKeyPoller = null;
-            //keyClient.beginDeleteKey("keyName");
+        Poller<DeletedKey, Void> deleteKeyPoller = keyClient.beginDeleteKey("keyName");
         PollResponse<DeletedKey> deleteKeyPollResponse = deleteKeyPoller.poll();
 
         // Deleted date only works for SoftDelete Enabled Key Vault.
@@ -400,9 +398,7 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
 
         // BEGIN: com.azure.v2.security.keyvault.keys.KeyClient.recoverDeletedKey#String
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<KeyVaultKey, Void> recoverKeyPoller = null;
-            //keyClient.beginRecoverDeletedKey("deletedKeyName");
+        Poller<KeyVaultKey, Void> recoverKeyPoller = keyClient.beginRecoverDeletedKey("deletedKeyName");
 
         PollResponse<KeyVaultKey> recoverKeyPollResponse = recoverKeyPoller.poll();
 

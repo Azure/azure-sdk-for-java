@@ -3,6 +3,7 @@
 
 package com.azure.v2.security.keyvault.keys.cryptography.implementation;
 
+import com.azure.v2.security.keyvault.keys.KeyServiceVersion;
 import com.azure.v2.security.keyvault.keys.cryptography.CryptographyServiceVersion;
 import com.azure.v2.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.v2.security.keyvault.keys.cryptography.models.DecryptResult;
@@ -66,7 +67,7 @@ public final class CryptographyClientImpl {
         this.keyName = data.get(2);
         this.keyVersion = data.get(3);
         this.keyId = keyId;
-        this.keyClient = new KeyClientImpl(pipeline, endpoint, serviceVersion.getVersion());
+        this.keyClient = new KeyClientImpl(pipeline, endpoint, KeyServiceVersion.valueOf(serviceVersion.getVersion()));
         this.secretClient = new SecretMinClientImpl(pipeline, endpoint, serviceVersion.getVersion());
     }
 

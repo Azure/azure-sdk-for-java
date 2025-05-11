@@ -17,7 +17,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 
 abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
-    private static final ClientLogger LOGGER = new ClientLogger(AesCbcHmacSha2.class);
     private static final long BYTE_TO_BITS = 8L;
 
     abstract static class AbstractAesCbcHmacSha2CryptoTransform implements IAuthenticatedCryptoTransform {
@@ -200,19 +199,19 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException,
         NoSuchPaddingException, InvalidAlgorithmParameterException {
         if (key == null) {
-            throw LOGGER.logThrowableAsWarning(new IllegalArgumentException("No key material."));
+            throw new IllegalArgumentException("No key material.");
         }
 
         if (iv == null) {
-            throw LOGGER.logThrowableAsWarning(new IllegalArgumentException("No initialization vector."));
+            throw new IllegalArgumentException("No initialization vector.");
         }
 
         if (additionalAuthenticatedData == null) {
-            throw LOGGER.logThrowableAsWarning(new IllegalArgumentException("No authentication data."));
+            throw new IllegalArgumentException("No authentication data.");
         }
 
         if (authenticationTag == null) {
-            throw LOGGER.logThrowableAsWarning(new IllegalArgumentException("No authentication tag."));
+            throw new IllegalArgumentException("No authentication tag.");
         }
 
         // Create the Decryptor.
@@ -234,15 +233,15 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         if (key == null) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("No key material"));
+            throw new IllegalArgumentException("No key material");
         }
 
         if (iv == null) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("No initialization vector"));
+            throw new IllegalArgumentException("No initialization vector");
         }
 
         if (additionalAuthenticatedData == null) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("No authentication data"));
+            throw new IllegalArgumentException("No authentication data");
         }
 
         // Create the Encryptor.
