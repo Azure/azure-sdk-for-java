@@ -23,9 +23,15 @@ import java.util.stream.Collectors;
 import static com.azure.v2.security.keyvault.keys.implementation.KeyVaultKeysUtils.unpackId;
 
 /**
- * Utility class for KeyVault Keys models.
+ * Utility class for converting between different models used in the Key Vault Keys library.
  */
 public final class KeyVaultKeysModelsUtils {
+    /**
+     * Creates an instance {@link KeyVaultKey} from the provided {@link KeyBundle}.
+     *
+     * @param keyBundle The key bundle.
+     * @return The created {@link KeyVaultKey}.
+     */
     public static KeyVaultKey createKeyVaultKey(KeyBundle keyBundle) {
         if (keyBundle == null) {
             return null;
@@ -38,6 +44,12 @@ public final class KeyVaultKeysModelsUtils {
         return keyVaultKey;
     }
 
+    /**
+     * Creates an instance of {@link KeyVaultKey} from the provided {@link KeyItem}.
+     *
+     * @param keyItem The key item.
+     * @return The created {@link KeyVaultKey}.
+     */
     public static KeyProperties createKeyProperties(KeyItem keyItem) {
         if (keyItem == null) {
             return null;
@@ -50,6 +62,9 @@ public final class KeyVaultKeysModelsUtils {
         return properties;
     }
 
+    /**
+     * Sets the properties of a {@link KeyItem} object based on the provided {@link KeyProperties}.
+     */
     private static void populateKeyProperties(KeyItem keyItem, KeyProperties properties) {
         if (keyItem != null) {
             populateKeyProperties(null, keyItem.getTags(), keyItem.isManaged(), keyItem.getKid(), properties,
@@ -57,6 +72,9 @@ public final class KeyVaultKeysModelsUtils {
         }
     }
 
+    /**
+     * Sets the properties of a {@link DeletedKeyItem} object based on the provided {@link KeyProperties}.
+     */
     private static void populateKeyProperties(DeletedKeyItem item, KeyProperties properties) {
         if (item != null) {
             populateKeyProperties(null, item.getTags(), item.isManaged(), item.getKid(), properties,
@@ -64,6 +82,12 @@ public final class KeyVaultKeysModelsUtils {
         }
     }
 
+    /**
+     * Creates a {@link DeletedKey} from the provided {@link DeletedKeyBundle}.
+     *
+     * @param bundle The deleted key bundle.
+     * @return The created {@link DeletedKey}.
+     */
     public static DeletedKey createDeletedKey(DeletedKeyBundle bundle) {
         if (bundle == null) {
             return null;
@@ -80,6 +104,12 @@ public final class KeyVaultKeysModelsUtils {
         return deletedKey;
     }
 
+    /**
+     * Creates an instance of {@link DeletedKey} from a provided {@link DeletedKeyItem}.
+     *
+     * @param item The deleted key item.
+     * @return The created {@link DeletedKey}.
+     */
     public static DeletedKey createDeletedKey(DeletedKeyItem item) {
         if (item == null) {
             return null;
@@ -121,6 +151,13 @@ public final class KeyVaultKeysModelsUtils {
             .setY(impl.getY());
     }
 
+    /**
+     * Maps a public {@link JsonWebKey} instance to an implementation
+     * {@link com.azure.v2.security.keyvault.keys.implementation.models.JsonWebKey} instance.
+     *
+     * @param key The {@link JsonWebKey} to map.
+     * @return The created {@link com.azure.v2.security.keyvault.keys.implementation.models.JsonWebKey}.
+     */
     public static com.azure.v2.security.keyvault.keys.implementation.models.JsonWebKey mapJsonWebKey(JsonWebKey key) {
         if (key == null) {
             return null;
@@ -144,6 +181,12 @@ public final class KeyVaultKeysModelsUtils {
             .setY(key.getY());
     }
 
+    /**
+     * Creates an instance of {@link KeyAttributes} based on the provided {@link CreateKeyOptions}.
+     *
+     * @param options The create key options.
+     * @return The created {@link KeyAttributes}.
+     */
     public static KeyAttributes createKeyAttributes(CreateKeyOptions options) {
         if (options == null) {
             return null;
@@ -155,6 +198,12 @@ public final class KeyVaultKeysModelsUtils {
             .setNotBefore(options.getNotBefore());
     }
 
+    /**
+     * Creates an instance of {@link KeyAttributes} based on the provided {@link KeyProperties}.
+     *
+     * @param properties The key properties.
+     * @return The created {@link KeyAttributes}.
+     */
     public static KeyAttributes createKeyAttributes(KeyProperties properties) {
         if (properties == null) {
             return null;
@@ -205,6 +254,13 @@ public final class KeyVaultKeysModelsUtils {
         }
     }
 
+    /**
+     * Maps a public {@link KeyReleasePolicy} instance to an implementation
+     * {@link com.azure.v2.security.keyvault.keys.implementation.models.KeyReleasePolicy} instance.
+     *
+     * @param policy The {@link KeyReleasePolicy} to map.
+     * @return The created {@link com.azure.v2.security.keyvault.keys.implementation.models.KeyReleasePolicy}.
+     */
     public static com.azure.v2.security.keyvault.keys.implementation.models.KeyReleasePolicy
         mapKeyReleasePolicy(KeyReleasePolicy policy) {
 
@@ -228,12 +284,27 @@ public final class KeyVaultKeysModelsUtils {
             .setImmutable(impl.isImmutable());
     }
 
+    /**
+     * Maps an implementation {@link com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy}
+     * instance to a public {@link KeyRotationPolicy} instance.
+     *
+     * @param impl The implementation
+     * {@link com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy} to map.
+     * @return The created {@link KeyRotationPolicy}.
+     */
     public static KeyRotationPolicy
         mapKeyRotationPolicyImpl(com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
 
         return (impl == null) ? null : KeyRotationPolicyHelper.createPolicy(impl);
     }
 
+    /**
+     * Maps a public {@link KeyRotationPolicy} instance to an implementation
+     * {@link com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy} instance.
+     *
+     * @param policy The {@link KeyRotationPolicy} to map.
+     * @return The created {@link com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy}.
+     */
     public static com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy
         mapKeyRotationPolicy(KeyRotationPolicy policy) {
 

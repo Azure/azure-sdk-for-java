@@ -6,6 +6,7 @@ package com.azure.v2.security.keyvault.secrets;
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.http.polling.LongRunningOperationStatus;
 import com.azure.v2.core.http.polling.PollResponse;
+import com.azure.v2.core.http.polling.Poller;
 import com.azure.v2.core.http.polling.PollingContext;
 import com.azure.v2.security.keyvault.secrets.implementation.SecretClientImpl;
 import com.azure.v2.security.keyvault.secrets.implementation.models.BackupSecretResult;
@@ -27,6 +28,7 @@ import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.paging.PagingOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -116,9 +118,7 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  *
  * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.deleteSecret#String -->
  * <pre>
- * &#47;&#47; TODO &#40;vcolin7&#41;: Uncomment once LROs are available in clientcore.
- * Poller&lt;DeletedSecret, Void&gt; deleteSecretPoller = null;
- *     &#47;&#47;secretClient.beginDeleteSecret&#40;&quot;secretName&quot;&#41;;
+ * Poller&lt;DeletedSecret, Void&gt; deleteSecretPoller = secretClient.beginDeleteSecret&#40;&quot;secretName&quot;&#41;;
  *
  * &#47;&#47; Deleted Secret is accessible as soon as polling begins.
  * PollResponse&lt;DeletedSecret&gt; deleteSecretPollResponse = deleteSecretPoller.poll&#40;&#41;;
@@ -174,8 +174,7 @@ public final class SecretClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret setSecret(String name, String value) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(
-                LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty.")));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
         }
 
         return setSecret(new KeyVaultSecret(name, value));
@@ -565,9 +564,7 @@ public final class SecretClient {
      * <p>Deletes the secret from a key vault enabled for soft-delete and prints out its recovery id.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.deleteSecret#String -->
      * <pre>
-     * &#47;&#47; TODO &#40;vcolin7&#41;: Uncomment once LROs are available in clientcore.
-     * Poller&lt;DeletedSecret, Void&gt; deleteSecretPoller = null;
-     *     &#47;&#47;secretClient.beginDeleteSecret&#40;&quot;secretName&quot;&#41;;
+     * Poller&lt;DeletedSecret, Void&gt; deleteSecretPoller = secretClient.beginDeleteSecret&#40;&quot;secretName&quot;&#41;;
      *
      * &#47;&#47; Deleted Secret is accessible as soon as polling begins.
      * PollResponse&lt;DeletedSecret&gt; deleteSecretPollResponse = deleteSecretPoller.poll&#40;&#41;;
@@ -587,24 +584,22 @@ public final class SecretClient {
      * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
-    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
-    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<DeletedSecret, Void> beginDeleteSecret(String name) {
         if (isNullOrEmpty(name)) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
         }
-    
-        try {    
+
+        try {
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     createDeletedSecret(clientImpl.deleteSecret(name))),
-                pollingContext -> deletePollOperation(name, pollingContext),
-                (pollingContext, response) -> null,
+                pollingContext -> deletePollOperation(name, pollingContext), (pollingContext, response) -> null,
                 pollingContext -> null);
         } catch (HttpResponseException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }*/
+    }
 
     private PollResponse<DeletedSecret> deletePollOperation(String name, PollingContext<DeletedSecret> pollingContext) {
         try {
@@ -787,9 +782,7 @@ public final class SecretClient {
      * <p>Recovers a deleted secret from a key vault enabled for soft-delete and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.SecretClient.beginRecoverDeletedSecret#String -->
      * <pre>
-     * &#47;&#47; TODO &#40;vcolin7&#41;: Uncomment once LROs are available in clientcore.
-     * Poller&lt;KeyVaultSecret, Void&gt; recoverSecretPoller = null;
-     *     &#47;&#47;secretClient.beginRecoverDeletedSecret&#40;&quot;deletedSecretName&quot;&#41;;
+     * Poller&lt;KeyVaultSecret, Void&gt; recoverSecretPoller = secretClient.beginRecoverDeletedSecret&#40;&quot;deletedSecretName&quot;&#41;;
      *
      * &#47;&#47; A secret to be recovered can be accessed as soon as polling is in progress.
      * PollResponse&lt;KeyVaultSecret&gt; recoveredSecretPollResponse = recoverSecretPoller.poll&#40;&#41;;
@@ -808,24 +801,22 @@ public final class SecretClient {
      * @throws HttpResponseException If a secret with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
-    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
-    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
         if (isNullOrEmpty(name)) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
         }
-    
+
         try {
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     createKeyVaultSecret(clientImpl.recoverDeletedSecret(name))),
-                pollingContext -> recoverPollOperation(name, pollingContext),
-                (pollingContext, response) -> null,
+                pollingContext -> recoverPollOperation(name, pollingContext), (pollingContext, response) -> null,
                 pollingContext -> null);
         } catch (HttpResponseException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }*/
+    }
 
     private PollResponse<KeyVaultSecret> recoverPollOperation(String name,
         PollingContext<KeyVaultSecret> pollingContext) {

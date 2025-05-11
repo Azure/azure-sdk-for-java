@@ -3,8 +3,6 @@
 
 package com.azure.v2.security.keyvault.keys.cryptography.implementation;
 
-import io.clientcore.core.instrumentation.logging.ClientLogger;
-
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -16,8 +14,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 
 abstract class AesKw extends LocalKeyWrapAlgorithm {
-    private static final ClientLogger LOGGER = new ClientLogger(AesKw.class);
-
     static final int BLOCK_SIZE_IN_BITS = 64;
     static final String CIPHER_NAME = "AESWrap";
     static final byte[] DEFAULT_IV = new byte[] {
@@ -118,23 +114,21 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
         NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
         if (key == null) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("key"));
+            throw new IllegalArgumentException("key");
         }
 
         if (key.length != 128 >> 3 && key.length != 192 >> 3 && key.length != 256 >> 3) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("key length must be 128, 192 or 256 bits"));
+            throw new IllegalArgumentException("key length must be 128, 192 or 256 bits");
         }
 
         if (iv != null) {
             // iv length must be 64 bits
             if (iv.length != BLOCK_SIZE_IN_BITS >> 3) {
-                throw LOGGER.logThrowableAsError(
-                    new IllegalArgumentException(String.format("iv length must be %s bits", BLOCK_SIZE_IN_BITS)));
+                throw new IllegalArgumentException(String.format("iv length must be %s bits", BLOCK_SIZE_IN_BITS));
             }
             // iv cannot be specified with the default provider
             if (provider == null) {
-                throw LOGGER.logThrowableAsError(
-                    new IllegalArgumentException("user specified iv is not supported with the default provider"));
+                throw new IllegalArgumentException("user specified iv is not supported with the default provider");
             }
         }
 
@@ -168,23 +162,21 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
         NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
         if (key == null) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("key"));
+            throw new IllegalArgumentException("key");
         }
 
         if (key.length != 128 >> 3 && key.length != 192 >> 3 && key.length != 256 >> 3) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("key length must be 128, 192 or 256 bits"));
+            throw new IllegalArgumentException("key length must be 128, 192 or 256 bits");
         }
 
         if (iv != null) {
             // iv length must be 64 bits
             if (iv.length != BLOCK_SIZE_IN_BITS >> 3) {
-                throw LOGGER.logThrowableAsError(
-                    new IllegalArgumentException(String.format("iv length must be %s bits", BLOCK_SIZE_IN_BITS)));
+                throw new IllegalArgumentException(String.format("iv length must be %s bits", BLOCK_SIZE_IN_BITS));
             }
             // iv cannot be specified with the default provider
             if (provider == null) {
-                throw LOGGER.logThrowableAsError(
-                    new IllegalArgumentException("user specified iv is not supported with the default provider"));
+                throw new IllegalArgumentException("user specified iv is not supported with the default provider");
             }
         }
 

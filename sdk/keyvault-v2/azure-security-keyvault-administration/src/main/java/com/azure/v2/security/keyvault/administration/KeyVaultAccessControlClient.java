@@ -20,8 +20,6 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -611,8 +609,6 @@ public final class KeyVaultAccessControlClient {
             }
 
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -1014,8 +1010,6 @@ public final class KeyVaultAccessControlClient {
             }
 
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 }

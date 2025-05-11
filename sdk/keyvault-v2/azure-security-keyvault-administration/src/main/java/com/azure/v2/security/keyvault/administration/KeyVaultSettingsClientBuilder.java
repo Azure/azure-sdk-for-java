@@ -164,8 +164,7 @@ public final class KeyVaultSettingsClientBuilder
 
         HttpPipeline builtPipeline = httpPipelineBuilder.httpClient(httpClient).build();
 
-        return new KeyVaultSettingsClient(
-            new KeyVaultAdministrationClientImpl(builtPipeline, endpoint, version.getVersion()));
+        return new KeyVaultSettingsClient(new KeyVaultAdministrationClientImpl(builtPipeline, endpoint, version));
     }
 
     /**

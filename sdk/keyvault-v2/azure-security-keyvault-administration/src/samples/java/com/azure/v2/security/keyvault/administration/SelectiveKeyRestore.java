@@ -37,9 +37,8 @@ public class SelectiveKeyRestore {
         String backupFolderUrl = "<backup-folder-url>";
         String sasToken = "<sas-token>";
 
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePoller = null;
-            //backupClient.beginSelectiveKeyRestore(keyName, backupFolderUrl, sasToken);
+        Poller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePoller =
+            backupClient.beginSelectiveKeyRestore(keyName, backupFolderUrl, sasToken);
 
         restorePoller.waitForCompletion();
     }

@@ -164,8 +164,7 @@ public final class KeyVaultAccessControlClientBuilder implements ConfigurationTr
 
         HttpPipeline builtPipeline = httpPipelineBuilder.httpClient(httpClient).build();
 
-        return new KeyVaultAccessControlClient(
-            new KeyVaultAdministrationClientImpl(builtPipeline, endpoint, version.getVersion()));
+        return new KeyVaultAccessControlClient(new KeyVaultAdministrationClientImpl(builtPipeline, endpoint, version));
     }
 
     /**

@@ -169,7 +169,7 @@ public final class KeyClientBuilder implements ConfigurationTrait<KeyClientBuild
 
         HttpPipeline builtPipeline = httpPipelineBuilder.httpClient(httpClient).build();
 
-        return new KeyClient(new KeyClientImpl(builtPipeline, endpoint, version.getVersion()));
+        return new KeyClient(new KeyClientImpl(builtPipeline, endpoint, version));
     }
 
     /**

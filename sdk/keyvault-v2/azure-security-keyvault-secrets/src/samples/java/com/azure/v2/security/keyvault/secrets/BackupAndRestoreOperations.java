@@ -56,9 +56,7 @@ public class BackupAndRestoreOperations {
         writeBackupToFile(secretBackup, backupFilePath);
 
         // The storage account secret is no longer in use, so you delete it.
-        Poller<DeletedSecret, Void> deletedStorageSecretPoller = null;
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-            //client.beginDeleteSecret("StorageAccountPassword");
+        Poller<DeletedSecret, Void> deletedStorageSecretPoller = client.beginDeleteSecret("StorageAccountPassword");
         PollResponse<DeletedSecret> pollResponse = deletedStorageSecretPoller.poll();
         DeletedSecret deletedStorageSecret = pollResponse.getValue();
 

@@ -30,6 +30,7 @@ import com.azure.v2.security.keyvault.keys.models.ReleaseKeyResult;
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
+import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -107,8 +108,7 @@ public final class KeyClientImpl {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.service
-            = KeyClientServiceImpl.getNewInstance(this.httpPipeline);
+        this.service = RestProxy.create(KeyClientService.class, this.httpPipeline);
     }
 
     /**

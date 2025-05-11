@@ -64,9 +64,7 @@ public class HelloWorld {
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
         // The bank account was closed, need to delete its credentials from the key vault.
-        Poller<DeletedSecret, Void> deletedBankSecretPoller = null;
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-            //secretClient.beginDeleteSecret("BankAccountPassword");
+        Poller<DeletedSecret, Void> deletedBankSecretPoller = secretClient.beginDeleteSecret("BankAccountPassword");
         PollResponse<DeletedSecret> deletedBankSecretPollResponse = deletedBankSecretPoller.poll();
 
         System.out.println("Deleted Date %s" + deletedBankSecretPollResponse.getValue().getDeletedOn().toString());

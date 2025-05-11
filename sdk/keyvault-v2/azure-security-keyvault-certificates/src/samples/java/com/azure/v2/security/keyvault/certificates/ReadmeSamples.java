@@ -8,6 +8,7 @@ import com.azure.v2.core.http.polling.PollResponse;
 import com.azure.v2.core.http.polling.Poller;
 import com.azure.v2.identity.DefaultAzureCredentialBuilder;
 import com.azure.v2.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.v2.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.v2.security.keyvault.certificates.models.CertificateProperties;
 import com.azure.v2.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.v2.security.keyvault.certificates.models.KeyVaultCertificate;
@@ -32,9 +33,8 @@ public class ReadmeSamples {
 
     public void createCertificate() {
         // BEGIN: readme-sample-createCertificate
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller = null;
-            //certificateClient.beginCreateCertificate("certificateName", CertificatePolicy.getDefault());
+        Poller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
+            certificateClient.beginCreateCertificate("certificateName", CertificatePolicy.getDefault());
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
         KeyVaultCertificate certificate = certificatePoller.getFinalResult();
         System.out.printf("Certificate created with name \"%s\"%n", certificate.getName());
@@ -63,9 +63,8 @@ public class ReadmeSamples {
 
     public void deleteCertificate() {
         // BEGIN: readme-sample-deleteCertificate
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<DeletedCertificate, Void> deleteCertificatePoller = null;
-            //certificateClient.beginDeleteCertificate("<certificate-name>");
+        Poller<DeletedCertificate, Void> deleteCertificatePoller =
+            certificateClient.beginDeleteCertificate("<certificate-name>");
 
         // Deleted certificate is accessible as soon as polling beings.
         PollResponse<DeletedCertificate> pollResponse = deleteCertificatePoller.poll();
@@ -84,9 +83,8 @@ public class ReadmeSamples {
         // List operations don't return the certificates with their full information. So, for each returned certificate we call
         // getCertificate to get the certificate with all its properties excluding the policy.
         for (CertificateProperties certificateProperties : certificateClient.listPropertiesOfCertificates()) {
-            // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-            KeyVaultCertificate certificateWithAllProperties = null;
-                //certificateClient.getCertificateVersion(certificateProperties.getName(), certificateProperties.getVersion());
+            KeyVaultCertificate certificateWithAllProperties =
+                certificateClient.getCertificate(certificateProperties.getName(), certificateProperties.getVersion());
             System.out.printf("Received certificate with name \"%s\" and secret id %s",
                 certificateWithAllProperties.getProperties().getName(), certificateWithAllProperties.getSecretId());
         }

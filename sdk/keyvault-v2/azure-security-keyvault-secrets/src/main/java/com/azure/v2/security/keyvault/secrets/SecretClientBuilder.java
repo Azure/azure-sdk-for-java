@@ -172,7 +172,7 @@ public final class SecretClientBuilder implements ConfigurationTrait<SecretClien
 
         HttpPipeline builtPipeline = httpPipelineBuilder.httpClient(httpClient).build();
 
-        return new SecretClientImpl(builtPipeline, endpoint, version.getVersion());
+        return new SecretClientImpl(builtPipeline, endpoint, version);
     }
 
     /**

@@ -174,7 +174,7 @@ public final class CertificateClientBuilder
 
         HttpPipeline builtPipeline = httpPipelineBuilder.httpClient(httpClient).build();
 
-        return new CertificateClientImpl(builtPipeline, endpoint, version.getVersion());
+        return new CertificateClientImpl(builtPipeline, endpoint, version);
     }
 
     /**

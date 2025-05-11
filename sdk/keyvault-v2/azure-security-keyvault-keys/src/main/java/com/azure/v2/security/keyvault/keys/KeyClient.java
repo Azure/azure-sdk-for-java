@@ -5,6 +5,7 @@ package com.azure.v2.security.keyvault.keys;
 
 import com.azure.v2.core.http.polling.LongRunningOperationStatus;
 import com.azure.v2.core.http.polling.PollResponse;
+import com.azure.v2.core.http.polling.Poller;
 import com.azure.v2.core.http.polling.PollingContext;
 import com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient;
 import com.azure.v2.security.keyvault.keys.cryptography.CryptographyClientBuilder;
@@ -45,6 +46,7 @@ import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.paging.PagingOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -137,9 +139,7 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * {/@link KeyClient#beginDeleteKey(String)} API.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.deleteKey#String -->
  * <pre>
- * &#47;&#47; TODO &#40;vcolin7&#41;: Uncomment once LROs are available in clientcore.
- * Poller&lt;DeletedKey, Void&gt; deleteKeyPoller = null;
- *     &#47;&#47;keyClient.beginDeleteKey&#40;&quot;keyName&quot;&#41;;
+ * Poller&lt;DeletedKey, Void&gt; deleteKeyPoller = keyClient.beginDeleteKey&#40;&quot;keyName&quot;&#41;;
  * PollResponse&lt;DeletedKey&gt; deleteKeyPollResponse = deleteKeyPoller.poll&#40;&#41;;
  *
  * &#47;&#47; Deleted date only works for SoftDelete Enabled Key Vault.
@@ -211,7 +211,7 @@ public final class KeyClient {
 
         return KeyVaultKeysUtils
             .getCryptographyClientBuilder(keyName, keyVersion, clientImpl.getVaultBaseUrl(),
-                clientImpl.getHttpPipeline(), clientImpl.getApiVersion())
+                clientImpl.getHttpPipeline(), clientImpl.getServiceVersion())
             .buildClient();
     }
 
@@ -1185,9 +1185,7 @@ public final class KeyClient {
      * <p>Deletes a key from the key vault and prints out its recovery id.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.deleteKey#String -->
      * <pre>
-     * &#47;&#47; TODO &#40;vcolin7&#41;: Uncomment once LROs are available in clientcore.
-     * Poller&lt;DeletedKey, Void&gt; deleteKeyPoller = null;
-     *     &#47;&#47;keyClient.beginDeleteKey&#40;&quot;keyName&quot;&#41;;
+     * Poller&lt;DeletedKey, Void&gt; deleteKeyPoller = keyClient.beginDeleteKey&#40;&quot;keyName&quot;&#41;;
      * PollResponse&lt;DeletedKey&gt; deleteKeyPollResponse = deleteKeyPoller.poll&#40;&#41;;
      *
      * &#47;&#47; Deleted date only works for SoftDelete Enabled Key Vault.
@@ -1208,24 +1206,22 @@ public final class KeyClient {
      * @throws HttpResponseException If a key with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
-    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
-    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<DeletedKey, Void> beginDeleteKey(String name) {
         if (isNullOrEmpty(name)) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
         }
-    
-        try {    
+
+        try {
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     createDeletedKey(clientImpl.deleteKey(name))),
-                pollingContext -> deletePollOperation(name, pollingContext),
-                (pollingContext, firstResponse) -> null,
+                pollingContext -> deletePollOperation(name, pollingContext), (pollingContext, firstResponse) -> null,
                 pollingContext -> null);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }*/
+    }
 
     private PollResponse<DeletedKey> deletePollOperation(String name, PollingContext<DeletedKey> pollingContext) {
         try {
@@ -1404,9 +1400,7 @@ public final class KeyClient {
      * <p>Recovers a deleted key from key vault enabled for soft-delete and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.recoverDeletedKey#String -->
      * <pre>
-     * &#47;&#47; TODO &#40;vcolin7&#41;: Uncomment once LROs are available in clientcore.
-     * Poller&lt;KeyVaultKey, Void&gt; recoverKeyPoller = null;
-     *     &#47;&#47;keyClient.beginRecoverDeletedKey&#40;&quot;deletedKeyName&quot;&#41;;
+     * Poller&lt;KeyVaultKey, Void&gt; recoverKeyPoller = keyClient.beginRecoverDeletedKey&#40;&quot;deletedKeyName&quot;&#41;;
      *
      * PollResponse&lt;KeyVaultKey&gt; recoverKeyPollResponse = recoverKeyPoller.poll&#40;&#41;;
      *
@@ -1426,25 +1420,22 @@ public final class KeyClient {
      * @throws HttpResponseException If a key with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
-    // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
-    /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
         if (isNullOrEmpty(name)) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
         }
-    
+
         try {
-            return Poller.createPoller(
-                Duration.ofSeconds(1),
+            return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     createKeyVaultKey(clientImpl.recoverDeletedKey(name))),
-                pollingContext -> recoverPollOperation(name, pollingContext),
-                (pollingContext, firstResponse) -> null,
+                pollingContext -> recoverPollOperation(name, pollingContext), (pollingContext, firstResponse) -> null,
                 pollingContext -> null);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
-    }*/
+    }
 
     private PollResponse<KeyVaultKey> recoverPollOperation(String keyName, PollingContext<KeyVaultKey> pollingContext) {
         try {

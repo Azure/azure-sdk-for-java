@@ -15,8 +15,7 @@ import java.time.OffsetDateTime;
 
 /**
  * Deleted Key is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes
- * inherited from {@link KeyVaultKey}.
- * It is managed by Key Service.
+ * inherited from {@link KeyVaultKey}. It is managed by the Keys service.
  *
  * @see KeyClient
  */

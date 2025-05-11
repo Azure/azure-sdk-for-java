@@ -57,9 +57,7 @@ public class BackupAndRestoreOperations {
         writeBackupToFile(keyBackup, backupFilePath);
 
         // The RSA key is no longer in use, so you delete it.
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<DeletedKey, Void> rsaDeletedKeyPoller = null;
-            //keyClient.beginDeleteKey("CloudRsaKey");
+        Poller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("CloudRsaKey");
         PollResponse<DeletedKey> pollResponse = rsaDeletedKeyPoller.poll();
         DeletedKey rsaDeletedKey = pollResponse.getValue();
 

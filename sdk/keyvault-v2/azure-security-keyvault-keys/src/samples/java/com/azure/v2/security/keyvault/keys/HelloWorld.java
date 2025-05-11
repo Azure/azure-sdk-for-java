@@ -78,9 +78,7 @@ public class HelloWorld {
             .setKeySize(4096));
 
         // The RSA key is no longer needed, need to delete it from the key vault.
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<DeletedKey, Void> rsaDeletedKeyPoller = null;
-            //keyClient.beginDeleteKey("CloudRsaKey");
+        Poller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("CloudRsaKey");
         PollResponse<DeletedKey> pollResponse = rsaDeletedKeyPoller.poll();
         DeletedKey rsaDeletedKey = pollResponse.getValue();
 

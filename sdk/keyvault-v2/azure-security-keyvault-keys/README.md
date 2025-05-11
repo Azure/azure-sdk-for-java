@@ -195,9 +195,7 @@ System.out.printf("Key's updated expiry time: %s%n", updatedKey.getProperties().
 Delete an existing key by calling `beginDeleteKey`.
 
 ```java readme-sample-deleteKey
-// TODO (vcolin7): Uncomment once LROs are available in clientcore.
-Poller<DeletedKey, Void> deletedKeyPoller = null;
-    //keyClient.beginDeleteKey("<key-name>");
+Poller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("<key-name>");
 
 PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 

@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Key is the resource consisting of name, {@link JsonWebKey} and its attributes specified in {@link KeyProperties}.
- * It is managed by Key Service.
+ * Key is the resource consisting of name, {@link JsonWebKey} and its attributes specified in {@link KeyProperties}. It
+ * is managed by Keys service.
  *
  * @see KeyClient
  */
@@ -36,7 +36,10 @@ public class KeyVaultKey implements JsonSerializable<KeyVaultKey> {
      */
     final KeyProperties properties;
 
-    KeyVaultKey() {
+    /**
+     * Creates an instance of {@link KeyVaultKey}.
+     */
+    public KeyVaultKey() {
         this.key = null;
         this.properties = new KeyProperties();
     }

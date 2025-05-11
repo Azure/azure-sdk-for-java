@@ -4,8 +4,8 @@ package com.azure.v2.security.keyvault.certificates.implementation;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
@@ -13,6 +13,16 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * Utility methods for Key Vault Certificates.
  */
 public final class CertificatesUtils {
+    /**
+     * Get metadata from a certificate identifier.
+     *
+     * @param id The certificate identifier.
+     * @param vaultUrlIndex The index of the vault URL in the identifier.
+     * @param nameIndex The index of the name in the identifier.
+     * @param versionIndex The index of the version in the identifier.
+     * @param logger The logger to use when logging errors.
+     * @return The metadata of the certificate identifier.
+     */
     public static IdMetadata getIdMetadata(String id, int vaultUrlIndex, int nameIndex, int versionIndex,
         ClientLogger logger) {
 
@@ -21,11 +31,12 @@ public final class CertificatesUtils {
         }
 
         try {
-            URL url = new URL(id);
+            URI url = new URI(id);
             String[] tokens = url.getPath().split("/");
+
             return new IdMetadata(id, getIdMetadataPiece(tokens, vaultUrlIndex), getIdMetadataPiece(tokens, nameIndex),
                 getIdMetadataPiece(tokens, versionIndex));
-        } catch (MalformedURLException e) {
+        } catch (URISyntaxException e) {
             // Should never come here.
             logger.atError().log("Received Malformed Secret Id URL from KV Service");
 

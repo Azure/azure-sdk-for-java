@@ -30,6 +30,7 @@ import com.azure.v2.security.keyvault.certificates.implementation.models.KeyVaul
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
+import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -108,8 +109,7 @@ public final class CertificateClientImpl {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.service = CertificateClientServiceImpl
-            .getNewInstance(this.httpPipeline);
+        this.service = RestProxy.create(CertificateClientService.class, this.httpPipeline);
     }
 
     /**

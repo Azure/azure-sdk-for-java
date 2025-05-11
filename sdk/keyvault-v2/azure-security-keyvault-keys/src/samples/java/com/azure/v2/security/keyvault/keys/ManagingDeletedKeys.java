@@ -53,9 +53,7 @@ public class ManagingDeletedKeys {
             .setExpiresOn(OffsetDateTime.now().plusYears(1)));
 
         // The RSA key is no longer needed, need to delete it from the key vault.
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<DeletedKey, Void> deletedKeyPoller = null;
-            //keyClient.beginDeleteKey("CloudEcKey");
+        Poller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("CloudEcKey");
         PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
         DeletedKey deletedKey = deletedKeyPollResponse.getValue();
 
@@ -67,9 +65,7 @@ public class ManagingDeletedKeys {
 
         // We accidentally deleted the EC key. Let's recover it.
         // A deleted key can only be recovered if the key vault is soft-delete enabled.
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<KeyVaultKey, Void> recoverEcKeyPoller = null;
-            //keyClient.beginRecoverDeletedKey("CloudEcKey");
+        Poller<KeyVaultKey, Void> recoverEcKeyPoller = keyClient.beginRecoverDeletedKey("CloudEcKey");
         PollResponse<KeyVaultKey> recoveryEcKeyPollResponse = recoverEcKeyPoller.poll();
         KeyVaultKey recoveredKey = recoveryEcKeyPollResponse.getValue();
 
@@ -80,9 +76,7 @@ public class ManagingDeletedKeys {
         recoverEcKeyPoller.waitForCompletion();
 
         // The EC and RSA keys are no longer needed, need to delete them from the key vault.
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<DeletedKey, Void> ecDeletedKeyPoller = null;
-            //keyClient.beginDeleteKey("CloudEcKey");
+        Poller<DeletedKey, Void> ecDeletedKeyPoller = keyClient.beginDeleteKey("CloudEcKey");
         PollResponse<DeletedKey> ecDeletedKeyPollResponse = ecDeletedKeyPoller.poll();
         DeletedKey ecDeletedKey = ecDeletedKeyPollResponse.getValue();
 
@@ -92,9 +86,7 @@ public class ManagingDeletedKeys {
         // The key is being deleted on the server.
         ecDeletedKeyPoller.waitForCompletion();
 
-        // TODO (vcolin7): Uncomment once LROs are available in clientcore.
-        Poller<DeletedKey, Void> rsaDeletedKeyPoller = null;
-            //keyClient.beginDeleteKey("CloudRsaKey");
+        Poller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("CloudRsaKey");
         PollResponse<DeletedKey> rsaDeletedKeyPollResponse = rsaDeletedKeyPoller.poll();
         DeletedKey rsaDeletedKey = rsaDeletedKeyPollResponse.getValue();
 

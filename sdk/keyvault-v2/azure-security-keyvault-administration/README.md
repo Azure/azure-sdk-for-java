@@ -319,9 +319,8 @@ Back up an entire collection of keys using `beginBackup()`.
 String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
 String sasToken = "<sas-token>";
 
-// TODO (vcolin7): Uncomment once LROs are available in clientcore.
-Poller<KeyVaultBackupOperation, String> backupPoller = null;
-    //keyVaultBackupClient.beginBackup(blobStorageUrl, sasToken);
+Poller<KeyVaultBackupOperation, String> backupPoller =
+    keyVaultBackupClient.beginBackup(blobStorageUrl, sasToken);
 PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.poll();
 
 System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
@@ -347,9 +346,8 @@ Restore an entire collection of keys from a backup using `beginRestore()`.
 String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
 String sasToken = "<sas-token>";
 
-// TODO (vcolin7): Uncomment once LROs are available in clientcore.
-Poller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller = null;
-    //keyVaultBackupClient.beginRestore(folderUrl, sasToken);
+Poller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
+    keyVaultBackupClient.beginRestore(folderUrl, sasToken);
 PollResponse<KeyVaultRestoreOperation> pollResponse = restorePoller.poll();
 
 System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
@@ -374,9 +372,8 @@ String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-mya
 String sasToken = "<sas-token>";
 String keyName = "myKey";
 
-// TODO (vcolin7): Uncomment once LROs are available in clientcore.
-Poller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePoller = null;
-    //keyVaultBackupClient.beginSelectiveKeyRestore(folderUrl, sasToken, keyName);
+Poller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePoller =
+    keyVaultBackupClient.beginSelectiveKeyRestore(folderUrl, sasToken, keyName);
 PollResponse<KeyVaultSelectiveKeyRestoreOperation> pollResponse = restorePoller.poll();
 
 System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
@@ -450,7 +447,7 @@ catching the exception and displaying additional information about the error.
 
 ```java readme-sample-troubleshooting
 try {
-    keyVaultAccessControlClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, "<role-assignment-name>");
+    keyVaultAccessControlClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, "<role-assginment-name>");
 } catch (HttpResponseException e) {
     System.out.println(e.getMessage());
 }

@@ -13,8 +13,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Base64Uri;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -249,11 +247,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
         if (authorizeRequestOnChallengeInternal(request, response, bodyCache)) {
             // The body needs to be closed or read to the end to release the connection.
-            try {
-                response.close();
-            } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            }
+            response.close();
 
             HttpPipelineNextPolicy nextPolicy = next.copy();
             Response<BinaryData> newResponse = next.process();
