@@ -188,7 +188,7 @@ including:
 - [Retrieve a role assignment](#retrieve-a-role-assignment)
 - [Delete a role assignment](#delete-a-role-assignment)
 
-##### List role definitions
+#### List role definitions
 
 List the role definitions in the key vault or managed HSM by calling `listRoleDefinitions()`.
 
@@ -200,7 +200,7 @@ roleDefinitions.forEach(roleDefinition ->
     System.out.printf("Retrieved role definition with name '%s'.%n", roleDefinition.getName()));
 ```
 
-##### Create or update a role definition
+#### Create or update a role definition
 
 Create or update a role definition. The following example shows how to create a role definition with a randomly
 generated name.
@@ -212,7 +212,7 @@ System.out.printf("Created role definition with randomly generated name '%s' and
     roleDefinition.getName(), roleDefinition.getRoleName());
 ```
 
-##### Retrieve a role definition
+#### Retrieve a role definition
 
 Get an existing role definition. To do this, the scope and 'name' property from an existing role definition are
 required.
@@ -226,7 +226,7 @@ System.out.printf("Retrieved role definition with name '%s' and role name '%s'.%
     roleDefinition.getRoleName());
 ```
 
-##### Delete a role definition
+#### Delete a role definition
 
 Delete a role definition. To do this, the scope and 'name' property from an existing role definition are required.
 
@@ -238,7 +238,7 @@ keyVaultAccessControlClient.deleteRoleDefinition(KeyVaultRoleScope.GLOBAL, roleD
 System.out.printf("Deleted role definition with name '%s'.%n", roleDefinitionName);
 ```
 
-##### List role assignments
+#### List role assignments
 
 List the role assignments in the key vault or managed HSM by calling `listRoleAssignments()`.
 
@@ -250,7 +250,7 @@ roleAssignments.forEach(roleAssignment ->
     System.out.printf("Retrieved role assignment with name '%s'.%n", roleAssignment.getName()));
 ```
 
-##### Create a role assignment
+#### Create a role assignment
 
 Create a role assignment. To do this, a role definition id and a service principal object id are required.
 
@@ -276,7 +276,7 @@ System.out.printf("Created role assignment with randomly generated name '%s' for
     roleAssignment.getName(), roleAssignment.getProperties().getPrincipalId());
 ```
 
-##### Retrieve a role assignment
+#### Retrieve a role assignment
 
 Get an existing role assignment. To do this, the 'name' property from an existing role assignment is required.
 
@@ -288,7 +288,7 @@ KeyVaultRoleAssignment roleAssignment =
 System.out.printf("Retrieved role assignment with name '%s'.%n", roleAssignment.getName());
 ```
 
-##### Delete a role assignment
+#### Delete a role assignment
 
 To remove a role assignment from a service principal, the role assignment must be deleted. To do this, the 'name'
 property from an existing role assignment is required.
@@ -311,7 +311,7 @@ The following sections provide several code snippets covering some of the most c
 - [Restore a Key Vault](#restore-a-collection-of-keys)
 - [Restore a key](#selectively-restore-a-key)
 
-##### Backup a collection of keys
+#### Backup a collection of keys
 
 Back up an entire collection of keys using `beginBackup()`.
 
@@ -338,7 +338,7 @@ if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COM
 }
 ```
 
-##### Restore a collection of keys
+#### Restore a collection of keys
 
 Restore an entire collection of keys from a backup using `beginRestore()`.
 
@@ -363,7 +363,7 @@ if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COM
 }
 ```
 
-##### Selectively restore a key
+#### Selectively restore a key
 
 Restore a specific key from a backup using `beginSelectiveRestore()`.
 
@@ -399,7 +399,7 @@ The following sections provide several code snippets covering some of the most c
 - [Retrieving a setting](#retrieve-a-specific-setting)
 - [Updating a setting](#update-a-specific-setting)
 
-##### Get all settings
+#### Get all settings
 
 List all the settings for an Azure Key Vault or Managed HSM account.
 
@@ -411,7 +411,7 @@ for (KeyVaultSetting setting : getSettingsResult.getSettings()) {
 }
 ```
 
-##### Retrieve a specific setting
+#### Retrieve a specific setting
 
 Retrieve a specific setting.
 
@@ -423,7 +423,7 @@ System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName()
     setting.asBoolean());
 ```
 
-##### Update a specific setting
+#### Update a specific setting
 
 Update a specific setting.
 
@@ -447,7 +447,7 @@ catching the exception and displaying additional information about the error.
 
 ```java readme-sample-troubleshooting
 try {
-    keyVaultAccessControlClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, "<role-assginment-name>");
+    keyVaultAccessControlClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, "<role-assignment-name>");
 } catch (HttpResponseException e) {
     System.out.println(e.getMessage());
 }

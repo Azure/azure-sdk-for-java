@@ -148,7 +148,7 @@ including:
 - [Encrypt](#encrypt)
 - [Decrypt](#decrypt)
 
-#### Create a key
+### Create a key
 Create a key to be stored in the key vault. `createKey` creates a new key in the key vault. If a key with the same name
 already exists then a new version of the key is created.
 
@@ -164,7 +164,7 @@ KeyVaultKey ecKey = keyClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
 System.out.printf("Key created with name \"%s\" and id %s%n", ecKey.getName(), ecKey.getId());
 ```
 
-#### Retrieve a key
+### Retrieve a key
 
 Retrieve a previously stored key by calling `getKey`.
 
@@ -173,7 +173,7 @@ KeyVaultKey key = keyClient.getKey("<key-name>");
 System.out.printf("A key was returned with name \"%s\" and id %s%n", key.getName(), key.getId());
 ```
 
-#### Update an existing key
+### Update an existing key
 
 Update an existing key by calling `updateKeyProperties`.
 
@@ -190,7 +190,7 @@ KeyVaultKey updatedKey = keyClient.updateKeyProperties(key.getProperties(),
 System.out.printf("Key's updated expiry time: %s%n", updatedKey.getProperties().getExpiresOn());
 ```
 
-#### Delete a key
+### Delete a key
 
 Delete an existing key by calling `beginDeleteKey`.
 
@@ -208,7 +208,7 @@ System.out.printf("Deletion date: %s%n", deletedKey.getDeletedOn());
 deletedKeyPoller.waitForCompletion();
 ```
 
-#### List keys
+### List keys
 
 List the keys in the key vault by calling `listPropertiesOfKeys`.
 
@@ -222,7 +222,7 @@ for (KeyProperties keyProperties : keyClient.listPropertiesOfKeys()) {
 }
 ```
 
-#### Encrypt
+### Encrypt
 
 Encrypt plain text by calling `encrypt`.
 
@@ -237,7 +237,7 @@ System.out.printf("Returned ciphertext size is %d bytes with algorithm \"%s\"%n"
     encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
 ```
 
-#### Decrypt
+### Decrypt
 
 Decrypt encrypted content by calling `decrypt`.
 
