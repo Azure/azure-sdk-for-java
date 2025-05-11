@@ -237,8 +237,7 @@ public interface Poller<T, U> {
         BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation = strategy::cancel;
         Function<PollingContext<T>, U> fetchResultOperation = context -> strategy.getResult(context, resultType);
 
-        return createPoller(pollInterval, activationOperation, pollOperation, cancelOperation,
-            fetchResultOperation);
+        return createPoller(pollInterval, activationOperation, pollOperation, cancelOperation, fetchResultOperation);
     }
 
 }
