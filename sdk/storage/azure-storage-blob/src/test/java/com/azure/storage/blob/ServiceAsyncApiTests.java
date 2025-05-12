@@ -286,6 +286,14 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         StepVerifier.create(anonymousClient.listBlobContainers()).verifyError(IllegalStateException.class);
     }
 
+    /*
+     * For listContainersWithTimeoutStillBackedByPagedFlux:
+     * The custom http client returns a generic xml list of 5 blobs total.
+     * The api call should return 2 pages, one page of 3 blobs and one page of 2 blobs.
+     * Although each page is set to take 4 seconds to return, the timeout being set to 6 seconds should not cause the test to fail,
+     * as the timeout is only on the page request and not the entire stream of pages.
+     */
+
     @Test
     public void listContainersWithTimeoutStillBackedByPagedFlux() {
         BlobServiceAsyncClient serviceClient
