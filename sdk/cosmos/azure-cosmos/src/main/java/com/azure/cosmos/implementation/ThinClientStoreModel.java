@@ -15,6 +15,8 @@ import com.azure.cosmos.implementation.http.HttpRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -33,6 +35,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     private String globalDatabaseAccountName = null;
+    private final static Logger logger = LoggerFactory.getLogger(ThinClientStoreModel.class);
 
     public ThinClientStoreModel(
         DiagnosticsClientContext clientContext,
@@ -54,6 +57,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
+        logger.info("entered ThinClientStoreModel.processMessage");
         return super.processMessage(request);
     }
 
@@ -109,6 +113,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
+        logger.info("entered ThinClientStoreModel.wrapInHttpRequest");
         if (this.globalDatabaseAccountName == null) {
             this.globalDatabaseAccountName = this.globalEndpointManager.getLatestDatabaseAccount().getId();
         }

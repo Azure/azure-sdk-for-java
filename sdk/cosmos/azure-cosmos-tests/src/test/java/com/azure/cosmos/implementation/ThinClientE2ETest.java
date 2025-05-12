@@ -2,27 +2,27 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosPatchOperations;
-import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.*;
+import com.azure.cosmos.models.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+// End to end sanity tests for basic thin client functionality.
 public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
     @Test(groups = {"thinclient"})
     public void testThinClientDocumentPointOperations() {
         CosmosAsyncClient client = null;
         try {
+            // it's set in the profile, but when running locally you need to set them manually
+            // so having it here makes it easier to not forget
+            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            System.setProperty("COSMOS.HTTP2_ENABLED", "true");
             client  = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
@@ -98,6 +98,8 @@ public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
             assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
             assertThat(deleteResponse.getRequestCharge()).isGreaterThan(0.0);
         } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+            System.clearProperty("COSMOS.HTTP2_ENABLED");
             client.close();
         }
     }
