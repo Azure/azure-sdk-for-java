@@ -1376,7 +1376,9 @@
         "mhsm",
         "OAEP",
         "upns",
-        "vcolin" // TODO: Remove after all TODOs are removed from the codebase
+        "vcolin", // TODO: Remove after all TODOs are removed from the codebase
+        "inprogress",
+        "myacccount"
       ]
     }
   ],
