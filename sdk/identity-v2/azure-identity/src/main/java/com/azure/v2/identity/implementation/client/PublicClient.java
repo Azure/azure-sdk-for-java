@@ -188,7 +188,7 @@ public class PublicClient extends ClientBase {
                     .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
                     .setName(tokenCachePersistenceOptions.getName());
                 builder.setTokenCacheAccessAspect(tokenCache);
-            } catch (Throwable t) {
+            } catch (RuntimeException t) {
                 throw LOGGER.throwableAtError()
                     .log("Shared token cache is unavailable in this environment.", t,
                         CredentialAuthenticationException::new);
@@ -298,7 +298,7 @@ public class PublicClient extends ClientBase {
 
         try {
             return new MsalToken(pc.acquireToken(parametersBuilder.build()).get());
-        } catch (Exception e) {
+        } catch (InterruptedException | ExecutionException | RuntimeException e) {
             throw LOGGER.throwableAtError()
                 .log("Failed to acquire token with device code.", e, CredentialAuthenticationException::new);
         }

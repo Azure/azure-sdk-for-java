@@ -58,7 +58,7 @@ public class AzureToolkitCacheAccessor {
                         .toString());
                 String data = new String(cacheFileAccessor.read(), StandardCharsets.UTF_8);
                 return parseRefreshTokenFromJson(data);
-            } catch (Exception | Error e) {
+            } catch (RuntimeException e) {
                 LOGGER.atVerbose().setThrowable(e).log("IntelliJCredential => Refresh Token Cache Unavailable.");
             }
 

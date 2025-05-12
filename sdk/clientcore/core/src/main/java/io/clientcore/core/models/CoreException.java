@@ -32,16 +32,6 @@ public abstract class CoreException extends RuntimeException {
     /**
      * Translates a {@link Throwable} into a {@link CoreException}.
      *
-     * @param message the exception message
-     * @return the {@link CoreException} that was created
-     */
-    public static CoreException from(String message) {
-        return from(message, null);
-    }
-
-    /**
-     * Translates a {@link Throwable} into a {@link CoreException}.
-     *
      * @param cause the {@link Throwable} to translate
      * @return the {@link CoreException} that was created
      */

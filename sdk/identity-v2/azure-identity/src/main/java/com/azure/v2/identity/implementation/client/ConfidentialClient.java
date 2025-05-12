@@ -164,7 +164,7 @@ public class ConfidentialClient extends ClientBase {
         ConfidentialClientApplication cc = getConfidentialClientInstance(request).getValue();
         try {
             return new MsalToken(cc.acquireToken(buildOBOFlowParameters(request)).get());
-        } catch (Exception e) {
+        } catch (InterruptedException | ExecutionException | RuntimeException e) {
             throw LOGGER.throwableAtError()
                 .log("Failed to acquire token with On Behalf Of Authentication.", e,
                     CredentialAuthenticationException::new);
@@ -268,7 +268,7 @@ public class ConfidentialClient extends ClientBase {
                     .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
                     .setName(tokenCachePersistenceOptions.getName());
                 applicationBuilder.setTokenCacheAccessAspect(tokenCache);
-            } catch (Throwable t) {
+            } catch (RuntimeException t) {
                 throw LOGGER.throwableAtError()
                     .log("Shared token cache is unavailable in this environment.", t,
                         CredentialAuthenticationException::new);
