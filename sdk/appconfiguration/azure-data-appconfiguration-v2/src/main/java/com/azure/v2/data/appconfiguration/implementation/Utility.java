@@ -118,19 +118,19 @@ public class Utility {
     }
 
     // Sync Handler
-    public static PagedResponse<ConfigurationSetting> handleNotModifiedErrorToValidResponse(HttpResponseException error,
-        ClientLogger logger) {
+    public static PagedResponse<ConfigurationSetting>
+        handleNotModifiedErrorToValidResponse(HttpResponseException error) {
         Response<BinaryData> httpResponse = error.getResponse();
-        if (httpResponse == null) {
-            logger.atError().setThrowable(error).log();
-            throw error;
+        if (httpResponse != null) {
+            String continuationToken = parseNextLink(httpResponse.getHeaders().getValue(HttpHeaderName.LINK));
+            if (httpResponse.getStatusCode() == 304) {
+                return new PagedResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                    httpResponse.getHeaders(), null, continuationToken, null, null, null, null);
+            }
         }
 
-        String continuationToken = parseNextLink(httpResponse.getHeaders().getValue(HttpHeaderName.LINK));
-        if (httpResponse.getStatusCode() == 304) {
-            return new PagedResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
-                httpResponse.getHeaders(), null, continuationToken, null, null, null, null);
-        }
+        // HttpResponseException is already logged in instrumentation policy
+        throw error;
     }
 
     // Get the ETag from a list
