@@ -243,17 +243,21 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/create-apireview.yml
         parameters:
-          PackageInfoFiles:
-            - ${{ each artifact in parameters.ReleaseArtifacts }}:
-              - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
+          Artifacts: ${{parameters.ReleaseArtifacts}}
+        # parameters:
+        #   PackageInfoFiles:
+        #     - ${{ each artifact in parameters.ReleaseArtifacts }}:
+        #       - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
 
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
 
       - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
         parameters:
-          PackageInfoFiles:
-            - ${{ each artifact in parameters.Artifacts }}:
-              - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
+          Artifacts: ${{parameters.Artifacts}}
+        # parameters:
+        #   PackageInfoFiles:
+        #     - ${{ each artifact in parameters.Artifacts }}:
+        #       - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
