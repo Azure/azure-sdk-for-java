@@ -24,7 +24,7 @@ public final class BatchNodeRebootOptions {
      * The options to use for rebooting the Compute Node.
      */
     @Generated
-    private BatchNodeRebootContent parameters;
+    private BatchNodeRebootParameters parameters;
 
     /**
      * Creates an instance of BatchNodeRebootOptions class.
@@ -53,20 +53,8 @@ public final class BatchNodeRebootOptions {
      * @return the parameters value.
      */
     @Generated
-    public BatchNodeRebootContent getParameters() {
+    public BatchNodeRebootParameters getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: The options to use for rebooting the Compute Node.
-     *
-     * @param parameters the parameters value to set.
-     * @return the BatchNodeRebootOptions object itself.
-     */
-    @Generated
-    public BatchNodeRebootOptions setParameters(BatchNodeRebootContent parameters) {
-        this.parameters = parameters;
-        return this;
     }
 
     /**
@@ -83,6 +71,18 @@ public final class BatchNodeRebootOptions {
         } else {
             this.timeOutInSeconds = timeOutInSeconds.getSeconds();
         }
+        return this;
+    }
+
+    /**
+     * Set the parameters property: The options to use for rebooting the Compute Node.
+     *
+     * @param parameters the parameters value to set.
+     * @return the BatchNodeRebootOptions object itself.
+     */
+    @Generated
+    public BatchNodeRebootOptions setParameters(BatchNodeRebootParameters parameters) {
+        this.parameters = parameters;
         return this;
     }
 }
