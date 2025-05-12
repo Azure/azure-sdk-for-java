@@ -118,7 +118,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
             newValue = outputStream.toString(StandardCharsets.UTF_8.name());
             outputStream.close();
         } catch (IOException exception) {
-            LOGGER.throwableAtError()
+            throw LOGGER.throwableAtError()
                 .log("Can't parse Feature Flag configuration setting value.", exception, IllegalArgumentException::new);
         }
 
@@ -254,7 +254,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * Set the boolean indicator to show if the setting is turn on or off.
      *
      * @param isEnabled the boolean indicator to show if the setting is turn on or off.
-    
+
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
      * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */

@@ -99,7 +99,7 @@ public final class ConfigurationSettingDeserializationHelper {
                 // Configuration Setting
                 return setting;
             }
-        } catch (Exception exception) {
+        } catch (RuntimeException exception) {
             throw LOGGER.throwableAtError()
                 .log(
                     "The setting is neither a 'FeatureFlagConfigurationSetting' nor "

@@ -657,6 +657,7 @@ public final class ConfigurationClient {
                 return new Response<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
                     httpResponse.getHeaders(), null);
             }
+            // HttpResponseException is logged in the instrumentation policy.
             throw ex;
         }
     }

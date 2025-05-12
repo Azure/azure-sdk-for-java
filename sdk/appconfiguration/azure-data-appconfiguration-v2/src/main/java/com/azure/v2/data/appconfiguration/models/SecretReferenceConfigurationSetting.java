@@ -126,7 +126,7 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
             newValue = outputStream.toString(StandardCharsets.UTF_8.name());
             outputStream.close();
         } catch (IOException exception) {
-            LOGGER.throwableAtError()
+            throw LOGGER.throwableAtError()
                 .log("Can't parse Secret Reference configuration setting value.", exception,
                     IllegalArgumentException::new);
         }
