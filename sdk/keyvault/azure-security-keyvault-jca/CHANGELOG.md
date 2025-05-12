@@ -1,10 +1,6 @@
 # Release History
 
-## 2.11.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.10.1 (2025-05-12)
 
 ### Bugs Fixed
 - Fixed bug: Missing logging for abnormal http status codes when processing HTTP responses. [#42859](https://github.com/Azure/azure-sdk-for-java/issues/42859).
@@ -14,6 +10,7 @@
 #### Dependency Updates
 
 - Upgraded from `org.apache.httpcomponents:httpclient:4.5.14` to `org.apache.httpcomponents.client5:httpclient5:5.4.3`.
+- Updated `com.azure:azure-json:1.3.0` to `com.azure:azure-json:1.5.0`.
 
 ## 2.10.0 (2024-11-26)
 
