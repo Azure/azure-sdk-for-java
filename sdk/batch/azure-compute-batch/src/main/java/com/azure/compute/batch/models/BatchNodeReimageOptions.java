@@ -24,7 +24,7 @@ public final class BatchNodeReimageOptions {
      * The options to use for reimaging the Compute Node.
      */
     @Generated
-    private BatchNodeReimageContent parameters;
+    private BatchNodeReimageParameters parameters;
 
     /**
      * Creates an instance of BatchNodeReimageOptions class.
@@ -53,20 +53,8 @@ public final class BatchNodeReimageOptions {
      * @return the parameters value.
      */
     @Generated
-    public BatchNodeReimageContent getParameters() {
+    public BatchNodeReimageParameters getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: The options to use for reimaging the Compute Node.
-     *
-     * @param parameters the parameters value to set.
-     * @return the BatchNodeReimageOptions object itself.
-     */
-    @Generated
-    public BatchNodeReimageOptions setParameters(BatchNodeReimageContent parameters) {
-        this.parameters = parameters;
-        return this;
     }
 
     /**
@@ -83,6 +71,18 @@ public final class BatchNodeReimageOptions {
         } else {
             this.timeOutInSeconds = timeOutInSeconds.getSeconds();
         }
+        return this;
+    }
+
+    /**
+     * Set the parameters property: The options to use for reimaging the Compute Node.
+     *
+     * @param parameters the parameters value to set.
+     * @return the BatchNodeReimageOptions object itself.
+     */
+    @Generated
+    public BatchNodeReimageOptions setParameters(BatchNodeReimageParameters parameters) {
+        this.parameters = parameters;
         return this;
     }
 }
