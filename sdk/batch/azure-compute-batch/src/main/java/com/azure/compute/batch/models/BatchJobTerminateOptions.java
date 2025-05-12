@@ -24,7 +24,7 @@ public final class BatchJobTerminateOptions {
      * The options to use for terminating the Job.
      */
     @Generated
-    private BatchJobTerminateContent parameters;
+    private BatchJobTerminateParameters parameters;
 
     /*
      * If true, the server will terminate the Job even if the corresponding nodes have not fully processed the
@@ -60,20 +60,8 @@ public final class BatchJobTerminateOptions {
      * @return the parameters value.
      */
     @Generated
-    public BatchJobTerminateContent getParameters() {
+    public BatchJobTerminateParameters getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: The options to use for terminating the Job.
-     *
-     * @param parameters the parameters value to set.
-     * @return the BatchJobTerminateOptions object itself.
-     */
-    @Generated
-    public BatchJobTerminateOptions setParameters(BatchJobTerminateContent parameters) {
-        this.parameters = parameters;
-        return this;
     }
 
     /**
@@ -114,6 +102,18 @@ public final class BatchJobTerminateOptions {
         } else {
             this.timeOutInSeconds = timeOutInSeconds.getSeconds();
         }
+        return this;
+    }
+
+    /**
+     * Set the parameters property: The options to use for terminating the Job.
+     *
+     * @param parameters the parameters value to set.
+     * @return the BatchJobTerminateOptions object itself.
+     */
+    @Generated
+    public BatchJobTerminateOptions setParameters(BatchJobTerminateParameters parameters) {
+        this.parameters = parameters;
         return this;
     }
 }
