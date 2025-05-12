@@ -12,6 +12,8 @@ import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.FeedOperationState;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.FeedResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
@@ -37,6 +39,7 @@ import java.util.function.Function;
  * @see FeedResponse
  */
 final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosPagedFluxStaticListImpl.class);
     private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
 
@@ -69,8 +72,10 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
      * @return CosmosPagedFlux instance with attached handler
      */
     public CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> newFeedResponseConsumer) {
+        int i = 0;
         while (true) {
             Consumer<FeedResponse<T>> feedResponseConsumerSnapshot = this.feedResponseConsumer.get();
+            i++;
             if (feedResponseConsumerSnapshot != null) {
 
                 if (this.feedResponseConsumer.compareAndSet(
@@ -85,6 +90,11 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
 
                     break;
                 }
+            }
+
+            if (i > 10) {
+                LOGGER.warn("Highly concurrent calls to CosmosPagedFlux.handle "
+                    + "are not expected and can result in perf regressions. Avoid this by reducing concurrency.");
             }
         }
 
