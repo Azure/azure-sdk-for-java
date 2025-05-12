@@ -68,7 +68,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         random = new Random();
     }
 
-    @BeforeClass(groups = {"multi-master"}, timeOut = SETUP_TIMEOUT * 100)
+    @BeforeClass(groups = {"multi-master", "multi-region"}, timeOut = SETUP_TIMEOUT * 100)
     public void beforeClass() throws Exception {
         System.setProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS", "1000");
         System.setProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS", "500");
@@ -294,11 +294,13 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         return doc;
     }
 
-    @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-master", "multi-region"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.clientWithPreferredRegions);
         System.clearProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS");
         System.clearProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS");
+        System.clearProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED");
+        System.clearProperty("COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF");
     }
 
     private CosmosDiagnostics performDocumentOperation(

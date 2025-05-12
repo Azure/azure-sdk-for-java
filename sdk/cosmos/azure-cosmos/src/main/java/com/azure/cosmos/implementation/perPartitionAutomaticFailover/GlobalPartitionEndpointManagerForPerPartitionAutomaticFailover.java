@@ -158,12 +158,10 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         String resolvedCollectionRid = request.requestContext.resolvedCollectionRid;
 
         if (partitionKeyRange == null) {
-            logger.warn("PerPartitionAutomaticFailover is not applicable as partitionKeyRange is null");
             return false;
         }
 
         if (StringUtils.isEmpty(resolvedCollectionRid)) {
-            logger.warn("PerPartitionAutomaticFailover is not applicable as resolvedCollectionRid is null or empty");
             return false;
         }
 
@@ -234,12 +232,10 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         if (request == null) {
-            logger.warn("PerPartitionAutomaticFailover is not applicable as request is null");
             return false;
         }
 
         if (request.requestContext == null) {
-            logger.warn("PerPartitionAutomaticFailover is not applicable as request.requestContext is null");
             return false;
         }
 
@@ -252,20 +248,15 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         if (request.getResourceType() == null) {
-            logger.warn("PerPartitionAutomaticFailover is not applicable as request.getResourceType() is null");
             return false;
         }
 
         if (request.getOperationType() == null) {
-            logger.warn("PerPartitionAutomaticFailover is not applicable as request.getOperationType() is null");
             return false;
         }
 
         ResourceType resourceType = request.getResourceType();
         OperationType operationType = request.getOperationType();
-
-        checkNotNull(resourceType, "Argument 'resourceType' cannot be null!");
-        checkNotNull(operationType, "Argument 'operationType' cannot be null!");
 
         if (request.getOperationType() == OperationType.QueryPlan) {
             return false;
