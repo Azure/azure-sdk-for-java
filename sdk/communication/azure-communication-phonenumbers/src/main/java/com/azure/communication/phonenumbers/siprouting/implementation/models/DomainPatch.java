@@ -11,7 +11,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Represents Domain that will be used. Map key is domain. */
+/**
+ * Represents Domain that will be used.
+ * Map key is domain.
+ */
 @Fluent
 public final class DomainPatch implements JsonSerializable<DomainPatch> {
     /*
@@ -19,13 +22,15 @@ public final class DomainPatch implements JsonSerializable<DomainPatch> {
      */
     private Boolean enabled;
 
-    /** Creates an instance of DomainPatch class. */
+    /**
+     * Creates an instance of DomainPatch class.
+     */
     public DomainPatch() {
     }
 
     /**
      * Get the enabled property: Enabled flag.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean isEnabled() {
@@ -34,7 +39,7 @@ public final class DomainPatch implements JsonSerializable<DomainPatch> {
 
     /**
      * Set the enabled property: Enabled flag.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the DomainPatch object itself.
      */
@@ -43,6 +48,9 @@ public final class DomainPatch implements JsonSerializable<DomainPatch> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -52,10 +60,10 @@ public final class DomainPatch implements JsonSerializable<DomainPatch> {
 
     /**
      * Reads an instance of DomainPatch from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DomainPatch if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DomainPatch.
      */
     public static DomainPatch fromJson(JsonReader jsonReader) throws IOException {

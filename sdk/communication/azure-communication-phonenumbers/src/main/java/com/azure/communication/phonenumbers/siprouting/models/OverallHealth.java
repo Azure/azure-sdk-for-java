@@ -4,15 +4,17 @@
 
 package com.azure.communication.phonenumbers.siprouting.models;
 
+import java.io.IOException;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Objects;
 
-/** The overall health status of Trunk. */
+/**
+ * The overall health status of Trunk.
+ */
 @Fluent
 public final class OverallHealth implements JsonSerializable<OverallHealth> {
     /*
@@ -23,15 +25,17 @@ public final class OverallHealth implements JsonSerializable<OverallHealth> {
     /*
      * The reason overall status of Trunk is inactive.
      */
-    private UnhealthyStatusReason reason;
+    private HealthStatusReason reason;
 
-    /** Creates an instance of OverallHealth class. */
+    /**
+     * Creates an instance of OverallHealth class.
+     */
     public OverallHealth() {
     }
 
     /**
      * Get the status property: The overall health status of Trunk.
-     *
+     * 
      * @return the status value.
      */
     public OverallHealthStatus getStatus() {
@@ -40,7 +44,7 @@ public final class OverallHealth implements JsonSerializable<OverallHealth> {
 
     /**
      * Set the status property: The overall health status of Trunk.
-     *
+     * 
      * @param status the status value to set.
      * @return the OverallHealth object itself.
      */
@@ -51,38 +55,41 @@ public final class OverallHealth implements JsonSerializable<OverallHealth> {
 
     /**
      * Get the reason property: The reason overall status of Trunk is inactive.
-     *
+     * 
      * @return the reason value.
      */
-    public UnhealthyStatusReason getReason() {
+    public HealthStatusReason getReason() {
         return this.reason;
     }
 
     /**
      * Set the reason property: The reason overall status of Trunk is inactive.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the OverallHealth object itself.
      */
-    public OverallHealth setReason(UnhealthyStatusReason reason) {
+    public OverallHealth setReason(HealthStatusReason reason) {
         this.reason = reason;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
-        jsonWriter.writeStringField("reason", Objects.toString(this.reason, null));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("reason", this.reason == null ? null : this.reason.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of OverallHealth from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of OverallHealth if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OverallHealth.
      */
@@ -96,7 +103,7 @@ public final class OverallHealth implements JsonSerializable<OverallHealth> {
                 if ("status".equals(fieldName)) {
                     deserializedOverallHealth.status = OverallHealthStatus.fromString(reader.getString());
                 } else if ("reason".equals(fieldName)) {
-                    deserializedOverallHealth.reason = UnhealthyStatusReason.fromString(reader.getString());
+                    deserializedOverallHealth.reason = HealthStatusReason.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

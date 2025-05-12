@@ -79,7 +79,7 @@ public class AsyncClientJavaDocCodeSnippets {
         SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.getTrunk
-        sipRoutingAsyncClient.getTrunk("<trunk fqdn>", false).subscribe(trunk ->
+        sipRoutingAsyncClient.getTrunk("<trunk fqdn>").subscribe(trunk ->
             System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort()));
         // END: com.azure.communication.phonenumbers.siprouting.asyncclient.getTrunk
     }
@@ -164,8 +164,8 @@ public class AsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.setDomains
         sipRoutingAsyncClient.setDomains(asList(
-            new SipDomain(),
-            new SipDomain()
+            new SipDomain("<first trunk fqdn>", false),
+            new SipDomain("<first trunk fqdn>", false)
         )).block();
         // END: com.azure.communication.phonenumbers.siprouting.asyncclient.setDomains
     }
@@ -177,7 +177,7 @@ public class AsyncClientJavaDocCodeSnippets {
         SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.setDomain
-        sipRoutingAsyncClient.setDomain(new SipDomain()
+        sipRoutingAsyncClient.setDomain(new SipDomain("<first trunk fqdn>", false)
         ).block();
         // END: com.azure.communication.phonenumbers.siprouting.asyncclient.setDomain
     }
@@ -190,8 +190,8 @@ public class AsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.setDomainsWithResponse
         sipRoutingAsyncClient.setDomainsWithResponse(asList(
-            new SipDomain(),
-            new SipDomain()
+            new SipDomain("<first trunk fqdn>", false),
+            new SipDomain("<first trunk fqdn>", false)
         )).subscribe(response -> {
             System.out.println("Response status " + response.getStatusCode());
         });

@@ -11,7 +11,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Represents Domain object as response of validation api. Map key is domain. */
+/**
+ * Represents Domain object as response of validation api.
+ * Map key is domain.
+ */
 @Fluent
 public final class SipDomain implements JsonSerializable<SipDomain> {
     /*
@@ -19,13 +22,15 @@ public final class SipDomain implements JsonSerializable<SipDomain> {
      */
     private boolean enabled;
 
-    /** Creates an instance of SipDomain class. */
+    /**
+     * Creates an instance of SipDomain class.
+     */
     public SipDomain() {
     }
 
     /**
      * Get the enabled property: Enabled flag.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean isEnabled() {
@@ -34,7 +39,7 @@ public final class SipDomain implements JsonSerializable<SipDomain> {
 
     /**
      * Set the enabled property: Enabled flag.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the SipDomain object itself.
      */
@@ -43,6 +48,9 @@ public final class SipDomain implements JsonSerializable<SipDomain> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -52,10 +60,10 @@ public final class SipDomain implements JsonSerializable<SipDomain> {
 
     /**
      * Reads an instance of SipDomain from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SipDomain if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
+     * to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SipDomain.
      */

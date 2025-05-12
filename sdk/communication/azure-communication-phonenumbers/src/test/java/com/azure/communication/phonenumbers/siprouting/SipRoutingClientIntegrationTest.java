@@ -20,14 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.HashMap;
-import java.util.Map;
 import static java.util.Arrays.asList;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain;
-import com.azure.communication.phonenumbers.siprouting.models.RoutesForNumber;
 
 @Execution(value = ExecutionMode.SAME_THREAD)
 public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBase {
@@ -173,7 +168,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void setTrunkNotExistingEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunkNotExistingEmptyBeforeSync");
         client.setTrunks(new ArrayList<>());
-        List<SipTrunk> trunksAsList = getAsList(client.listTrunks(false));
+        List<SipTrunk> trunksAsList = getAsList(client.listTrunks());
         assertTrue(trunksAsList.size() == 0);
 
         client.setTrunk(SET_TRUNK);
@@ -182,7 +177,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         assertNotNull(storedTrunk);
         assertEquals(SET_TRUNK_PORT, storedTrunk.getSipSignalingPort());
 
-        assertEquals(1, getAsList(client.listTrunks(false)).size());
+        assertEquals(1, getAsList(client.listTrunks()).size());
     }
 
     @ParameterizedTest
@@ -192,7 +187,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunkNotExistingNotEmptyBeforeSync");
         List<SipTrunk> initialTrunks = EXPECTED_TRUNKS;
         client.setTrunks(initialTrunks);
-        validateTrunks(initialTrunks, client.listTrunks(false));
+        validateTrunks(initialTrunks, client.listTrunks());
 
         client.setTrunk(SET_TRUNK);
 
@@ -202,7 +197,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
         ArrayList<SipTrunk> expectedTrunks = new ArrayList<>(initialTrunks);
         expectedTrunks.add(SET_TRUNK);
-        validateTrunks(expectedTrunks, client.listTrunks(false));
+        validateTrunks(expectedTrunks, client.listTrunks());
     }
 
     @ParameterizedTest
@@ -213,7 +208,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         List<SipTrunk> expectedTrunks = new ArrayList<>(EXPECTED_TRUNKS);
         expectedTrunks.add(SET_TRUNK);
         client.setTrunks(expectedTrunks);
-        validateTrunks(expectedTrunks, client.listTrunks(false));
+        validateTrunks(expectedTrunks, client.listTrunks());
 
         client.setTrunk(SET_UPDATED_TRUNK);
 
@@ -222,7 +217,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         assertEquals(SET_TRUNK_UPDATED_PORT, storedTrunk.getSipSignalingPort());
         expectedTrunks = new ArrayList<>(EXPECTED_TRUNKS);
         expectedTrunks.add(SET_UPDATED_TRUNK);
-        validateTrunks(expectedTrunks, client.listTrunks(false));
+        validateTrunks(expectedTrunks, client.listTrunks());
     }
 
     @ParameterizedTest
@@ -233,7 +228,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         List<SipTrunk> expectedTrunks = new ArrayList<>(EXPECTED_TRUNKS);
         expectedTrunks.add(SET_TRUNK);
         client.setTrunks(expectedTrunks);
-        validateTrunks(expectedTrunks, client.listTrunks(false));
+        validateTrunks(expectedTrunks, client.listTrunks());
 
         client.setTrunk(SET_UPDATED_TRUNK);
 
@@ -242,7 +237,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         assertEquals(SET_TRUNK_UPDATED_PORT, storedTrunk.getSipSignalingPort());
         expectedTrunks = new ArrayList<>(EXPECTED_TRUNKS);
         expectedTrunks.add(SET_UPDATED_TRUNK);
-        validateTrunks(expectedTrunks, client.listTrunks(false));
+        validateTrunks(expectedTrunks, client.listTrunks());
     }
 
     // set trunks
@@ -252,11 +247,11 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void setTrunksEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksEmptyBeforeSync");
         client.setTrunks(new ArrayList<>());
-        assertTrue(getAsList(client.listTrunks(false)).size() == 0);
+        assertTrue(getAsList(client.listTrunks()).size() == 0);
 
         client.setTrunks(EXPECTED_TRUNKS);
 
-        validateTrunks(EXPECTED_TRUNKS, client.listTrunks(false));
+        validateTrunks(EXPECTED_TRUNKS, client.listTrunks());
     }
 
     @ParameterizedTest
@@ -265,13 +260,13 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void setTrunksEmptyBeforeWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksEmptyBeforeWithResponseSync");
         client.setTrunks(new ArrayList<>());
-        assertTrue(getAsList(client.listTrunks(false)).size() == 0);
+        assertTrue(getAsList(client.listTrunks()).size() == 0);
 
         Response<Void> response = client.setTrunksWithResponse(EXPECTED_TRUNKS, Context.NONE);
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        validateTrunks(EXPECTED_TRUNKS, client.listTrunks(false));
+        validateTrunks(EXPECTED_TRUNKS, client.listTrunks());
     }
 
     @ParameterizedTest
@@ -280,11 +275,11 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void setTrunksEmptyBeforeWithAAD(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksEmptyBeforeWithAADSync");
         client.setTrunks(new ArrayList<>());
-        assertTrue(getAsList(client.listTrunks(false)).size() == 0);
+        assertTrue(getAsList(client.listTrunks()).size() == 0);
 
         client.setTrunks(EXPECTED_TRUNKS);
 
-        validateTrunks(EXPECTED_TRUNKS, client.listTrunks(false));
+        validateTrunks(EXPECTED_TRUNKS, client.listTrunks());
     }
 
     @ParameterizedTest
@@ -293,12 +288,12 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void setTrunksNotEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksNotEmptyBeforeSync");
         client.setTrunks(UPDATED_TRUNKS);
-        List<SipTrunk> trunksAsList = getAsList(client.listTrunks(false));
+        List<SipTrunk> trunksAsList = getAsList(client.listTrunks());
         assertEquals(UPDATED_TRUNKS.size(), trunksAsList.size());
 
         client.setTrunks(EXPECTED_TRUNKS);
 
-        validateTrunks(EXPECTED_TRUNKS, client.listTrunks(false));
+        validateTrunks(EXPECTED_TRUNKS, client.listTrunks());
     }
 
     @ParameterizedTest
@@ -307,14 +302,14 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void setTrunksNotEmptyBeforeWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksNotEmptyBeforeWithResponseSync");
         client.setTrunks(UPDATED_TRUNKS);
-        List<SipTrunk> trunksAsList = getAsList(client.listTrunks(false));
+        List<SipTrunk> trunksAsList = getAsList(client.listTrunks());
         assertEquals(UPDATED_TRUNKS.size(), trunksAsList.size());
 
         Response<Void> response = client.setTrunksWithResponse(EXPECTED_TRUNKS, Context.NONE);
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        validateTrunks(EXPECTED_TRUNKS, client.listTrunks(false));
+        validateTrunks(EXPECTED_TRUNKS, client.listTrunks());
     }
 
     @ParameterizedTest
@@ -326,7 +321,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
         client.setTrunks(EXPECTED_TRUNKS);
 
-        validateTrunks(EXPECTED_TRUNKS, client.listTrunks(false));
+        validateTrunks(EXPECTED_TRUNKS, client.listTrunks());
         validateExpectedRoutes(client.listRoutes());
     }
 
@@ -342,7 +337,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        validateTrunks(EXPECTED_TRUNKS, client.listTrunks(false));
+        validateTrunks(EXPECTED_TRUNKS, client.listTrunks());
         validateExpectedRoutes(client.listRoutes());
     }
 
@@ -352,11 +347,11 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void setEmptyTrunksNotEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyTrunksNotEmptyBeforeSync");
         client.setTrunks(EXPECTED_TRUNKS);
-        validateTrunks(EXPECTED_TRUNKS, client.listTrunks(false));
+        validateTrunks(EXPECTED_TRUNKS, client.listTrunks());
 
         client.setTrunks(new ArrayList<>());
 
-        assertTrue(getAsList(client.listTrunks(false)).size() == 0);
+        assertTrue(getAsList(client.listTrunks()).size() == 0);
     }
 
     @ParameterizedTest
@@ -366,13 +361,13 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client
             = getClientWithConnectionString(httpClient, "setEmptyTrunksNotEmptyBeforeWithResponseSync");
         client.setTrunks(EXPECTED_TRUNKS);
-        validateTrunks(EXPECTED_TRUNKS, client.listTrunks(false));
+        validateTrunks(EXPECTED_TRUNKS, client.listTrunks());
 
         Response<Void> response = client.setTrunksWithResponse(new ArrayList<>(), Context.NONE);
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        assertTrue(getAsList(client.listTrunks(false)).size() == 0);
+        assertTrue(getAsList(client.listTrunks()).size() == 0);
     }
 
     @ParameterizedTest
@@ -381,11 +376,11 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void setEmptyTrunksEmptyBefore(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyTrunksEmptyBeforeSync");
         client.setTrunks(new ArrayList<>());
-        assertTrue(getAsList(client.listTrunks(false)).size() == 0);
+        assertTrue(getAsList(client.listTrunks()).size() == 0);
 
         client.setTrunks(new ArrayList<>());
 
-        assertTrue(getAsList(client.listTrunks(false)).size() == 0);
+        assertTrue(getAsList(client.listTrunks()).size() == 0);
     }
 
     @ParameterizedTest
@@ -395,13 +390,13 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client
             = getClientWithConnectionString(httpClient, "setEmptyTrunksEmptyBeforeWithResponseSync");
         client.setTrunks(new ArrayList<>());
-        assertTrue(getAsList(client.listTrunks(false)).size() == 0);
+        assertTrue(getAsList(client.listTrunks()).size() == 0);
 
         Response<Void> response = client.setTrunksWithResponse(new ArrayList<>(), Context.NONE);
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        assertTrue(getAsList(client.listTrunks(false)).size() == 0);
+        assertTrue(getAsList(client.listTrunks()).size() == 0);
     }
 
     @ParameterizedTest
@@ -545,7 +540,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         client.setRoutes(EXPECTED_ROUTES);
 
         validateExpectedRoutes(client.listRoutes());
-        validateTrunks(EXPECTED_TRUNKS, client.listTrunks(false));
+        validateTrunks(EXPECTED_TRUNKS, client.listTrunks());
     }
 
     @ParameterizedTest
@@ -561,7 +556,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
         validateExpectedRoutes(client.listRoutes());
-        validateTrunks(EXPECTED_TRUNKS, client.listTrunks(false));
+        validateTrunks(EXPECTED_TRUNKS, client.listTrunks());
     }
 
     @ParameterizedTest
@@ -799,7 +794,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void deleteTrunkNotExisting(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "deleteTrunkNotExistingSync");
         client.setTrunks(new ArrayList<>());
-        assertTrue(getAsList(client.listTrunks(false)).size() == 0);
+        assertTrue(getAsList(client.listTrunks()).size() == 0);
         assertNull(client.getTrunk(DELETE_FQDN));
 
         client.deleteTrunk(DELETE_FQDN);
@@ -813,7 +808,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void deleteTrunkNotExistingWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "deleteTrunkNotExistingWithResponseSync");
         client.setTrunks(new ArrayList<>());
-        assertTrue(getAsList(client.listTrunks(false)).size() == 0);
+        assertTrue(getAsList(client.listTrunks()).size() == 0);
         assertNull(client.getTrunk(DELETE_FQDN));
 
         Response<Void> response = client.deleteTrunkWithResponse(DELETE_FQDN, Context.NONE);
@@ -832,8 +827,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         String targetPhonenumber = "+11234567890";
         List<com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute> trunkRoute = new ArrayList<>();
 
-        Response<RoutesForNumber> response
-            = client.testRoutesWithNumberWithResponse(targetPhonenumber, trunkRoute, Context.NONE);
+        Response<List<SipTrunkRoute>> response
+            = client.getRoutesForNumberWithResponse(targetPhonenumber, trunkRoute, Context.NONE);
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
         assertNotNull(response.getValue());

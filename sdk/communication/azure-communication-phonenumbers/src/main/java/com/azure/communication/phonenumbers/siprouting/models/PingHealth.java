@@ -10,9 +10,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
-/** The status of SIP OPTIONS message sent by Trunk. */
+/**
+ * The status of SIP OPTIONS message sent by Trunk.
+ */
 @Fluent
 public final class PingHealth implements JsonSerializable<PingHealth> {
     /*
@@ -20,13 +21,15 @@ public final class PingHealth implements JsonSerializable<PingHealth> {
      */
     private PingStatus status;
 
-    /** Creates an instance of PingHealth class. */
+    /**
+     * Creates an instance of PingHealth class.
+     */
     public PingHealth() {
     }
 
     /**
      * Get the status property: The status of SIP OPTIONS message sent by Trunk.
-     *
+     * 
      * @return the status value.
      */
     public PingStatus getStatus() {
@@ -35,7 +38,7 @@ public final class PingHealth implements JsonSerializable<PingHealth> {
 
     /**
      * Set the status property: The status of SIP OPTIONS message sent by Trunk.
-     *
+     * 
      * @param status the status value to set.
      * @return the PingHealth object itself.
      */
@@ -44,19 +47,22 @@ public final class PingHealth implements JsonSerializable<PingHealth> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of PingHealth from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of PingHealth if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
+     * to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PingHealth.
      */

@@ -34,7 +34,7 @@ tag: package-2024-11-15-preview
 use: '@autorest/java@4.1.29'
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/abb839b726184aa10f8d1eaac8e9fe590833619c/specification/communication/data-plane/SipRouting/readme.md
 override-client-name: SipRoutingAdminClient
-custom-types: TlsHealth,PingHealth,TrunkHealth,OverallHealth,UnhealthyStatusReason,TlsStatus,PrivacyHeader,PingStatus,OverallHealthStatus,IpAddressVersion
+custom-types: TlsHealth,PingHealth,TrunkHealth,OverallHealth,HealthStatusReason,TlsStatus,PrivacyHeader,PingStatus,OverallHealthStatus,IpAddressVersion
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -123,11 +123,11 @@ directive:
           $["x-ms-client-name"] = "PingHealth";
 ```
 
-### Directive renaming "InactiveStatusReason" enum to "UnhealthyStatusReason"
+### Directive renaming "InactiveStatusReason" enum to "HealthStatusReason"
 ```yaml
 directive:
     - from: swagger-document
       where: "$.definitions.OverallHealth" 
       transform: >
-          $.properties.reason["x-ms-enum"].name = "UnhealthyStatusReason";
+          $.properties.reason["x-ms-enum"].name = "HealthStatusReason";
 ```

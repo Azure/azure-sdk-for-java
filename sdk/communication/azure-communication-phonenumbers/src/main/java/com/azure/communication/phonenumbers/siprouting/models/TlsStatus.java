@@ -7,23 +7,33 @@ package com.azure.communication.phonenumbers.siprouting.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** The status of the TLS connections of the Trunk. */
+/**
+ * The status of the TLS connections of the Trunk.
+ */
 public final class TlsStatus extends ExpandableStringEnum<TlsStatus> {
-    /** Indicates an unknown status. */
+    /**
+     * Indicates an unknown status.
+     */
     public static final TlsStatus UNKNOWN = fromString("unknown");
 
-    /** Indicates the status is okay. */
+    /**
+     * Indicates the status is okay.
+     */
     public static final TlsStatus OK = fromString("ok");
 
-    /** Indicates the Trunk certificate is expiring. */
+    /**
+     * Indicates the Trunk certificate is expiring.
+     */
     public static final TlsStatus CERT_EXPIRING = fromString("certExpiring");
 
-    /** Indicates the Trunk certificate is expired. */
+    /**
+     * Indicates the Trunk certificate is expired.
+     */
     public static final TlsStatus CERT_EXPIRED = fromString("certExpired");
 
     /**
      * Creates a new instance of TlsStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +42,7 @@ public final class TlsStatus extends ExpandableStringEnum<TlsStatus> {
 
     /**
      * Creates or finds a TlsStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TlsStatus.
      */
@@ -42,7 +52,7 @@ public final class TlsStatus extends ExpandableStringEnum<TlsStatus> {
 
     /**
      * Gets known TlsStatus values.
-     *
+     * 
      * @return known TlsStatus values.
      */
     public static Collection<TlsStatus> values() {

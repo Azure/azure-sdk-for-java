@@ -7,23 +7,33 @@ package com.azure.communication.phonenumbers.siprouting.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** The status of SIP OPTIONS message sent by Trunk. */
+/**
+ * The status of SIP OPTIONS message sent by Trunk.
+ */
 public final class PingStatus extends ExpandableStringEnum<PingStatus> {
-    /** Indicates an unknown status. */
+    /**
+     * Indicates an unknown status.
+     */
     public static final PingStatus UNKNOWN = fromString("unknown");
 
-    /** Indicates the status is okay. */
+    /**
+     * Indicates the status is okay.
+     */
     public static final PingStatus OK = fromString("ok");
 
-    /** Indicates the status is expired. */
+    /**
+     * Indicates the status is expired.
+     */
     public static final PingStatus EXPIRED = fromString("expired");
 
-    /** Indicates the status is at an error level. */
+    /**
+     * Indicates the status is at an error level.
+     */
     public static final PingStatus ERROR = fromString("error");
 
     /**
      * Creates a new instance of PingStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +42,7 @@ public final class PingStatus extends ExpandableStringEnum<PingStatus> {
 
     /**
      * Creates or finds a PingStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PingStatus.
      */
@@ -42,7 +52,7 @@ public final class PingStatus extends ExpandableStringEnum<PingStatus> {
 
     /**
      * Gets known PingStatus values.
-     *
+     * 
      * @return known PingStatus values.
      */
     public static Collection<PingStatus> values() {

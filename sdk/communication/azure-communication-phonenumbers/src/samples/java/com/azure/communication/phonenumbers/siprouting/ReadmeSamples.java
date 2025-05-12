@@ -191,7 +191,7 @@ public class ReadmeSamples {
         SipRoutingClient sipRoutingClient = createSipRoutingClient();
 
         // BEGIN: readme-sample-setDomain
-        sipRoutingClient.setDomain(new SipDomain());
+        sipRoutingClient.setDomain(new SipDomain("<trunk fqdn>", false));
         // END: readme-sample-setDomain
     }
 

@@ -17,6 +17,8 @@ import com.azure.communication.phonenumbers.siprouting.models.SipDomain;
 public final class SipDomainConverter {
     /**
      * Maps from {@link Map} to {@link List}.
+     * @param obj Map of {@link com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain}
+     * @return List of {@link SipDomain}
      */
     public static List<SipDomain> convertFromApi(
         Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain> obj) {
@@ -34,19 +36,23 @@ public final class SipDomainConverter {
 
     /**
      * Maps from {@link com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain} to {@link SipDomain}.
+     * @param obj {@link com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain}
+     * @param fqdn FQDN of the trunk
+     * @return {@link SipDomain}
      */
     public static SipDomain convertFromApi(
         com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain obj, String fqdn) {
         if (obj == null) {
             return null;
         }
-        SipDomain sipDomain = new SipDomain();
-        sipDomain.setEnabled(obj.isEnabled());
+        SipDomain sipDomain = new SipDomain(fqdn, obj.isEnabled());
         return sipDomain;
     }
 
     /**
      * Maps from {@link List} to {@link Map}.
+     * @param obj List of {@link SipDomain}
+     * @return Map of {@link com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain}
      */
     public static Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain>
         convertToApi(List<SipDomain> obj) {
@@ -64,6 +70,8 @@ public final class SipDomainConverter {
 
     /**
      * Maps from {@link SipDomain} to {@link com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain}.
+     * @param obj {@link SipDomain}
+     * @return {@link com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain}
      */
     public static com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain
         convertToApi(SipDomain obj) {

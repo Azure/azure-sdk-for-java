@@ -12,15 +12,19 @@ import java.util.Collection;
  * is performed by privacy service (rfc3323).
  */
 public final class PrivacyHeader extends ExpandableStringEnum<PrivacyHeader> {
-    /** Static value id for PrivacyHeader. */
+    /**
+     * Static value id for PrivacyHeader.
+     */
     public static final PrivacyHeader ID = fromString("id");
 
-    /** Static value none for PrivacyHeader. */
+    /**
+     * Static value none for PrivacyHeader.
+     */
     public static final PrivacyHeader NONE = fromString("none");
 
     /**
      * Creates a new instance of PrivacyHeader value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -29,7 +33,7 @@ public final class PrivacyHeader extends ExpandableStringEnum<PrivacyHeader> {
 
     /**
      * Creates or finds a PrivacyHeader from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrivacyHeader.
      */
@@ -39,7 +43,7 @@ public final class PrivacyHeader extends ExpandableStringEnum<PrivacyHeader> {
 
     /**
      * Gets known PrivacyHeader values.
-     *
+     * 
      * @return known PrivacyHeader values.
      */
     public static Collection<PrivacyHeader> values() {

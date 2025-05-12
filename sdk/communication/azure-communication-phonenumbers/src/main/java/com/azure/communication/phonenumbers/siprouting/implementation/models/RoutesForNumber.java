@@ -12,23 +12,26 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** Represents number routing validation details. */
+/**
+ * Represents number routing validation details.
+ */
 @Fluent
 public final class RoutesForNumber implements JsonSerializable<RoutesForNumber> {
     /*
-     * The list of routes whose number patterns are matched by the target number. The routes are displayed and apply in
-     * the same order as in SipConfiguration.
+     * The list of routes whose number patterns are matched by the target number. The routes are displayed and apply in the same order as in SipConfiguration.
      */
     private List<SipTrunkRoute> matchingRoutes;
 
-    /** Creates an instance of RoutesForNumber class. */
+    /**
+     * Creates an instance of RoutesForNumber class.
+     */
     public RoutesForNumber() {
     }
 
     /**
      * Get the matchingRoutes property: The list of routes whose number patterns are matched by the target number. The
      * routes are displayed and apply in the same order as in SipConfiguration.
-     *
+     * 
      * @return the matchingRoutes value.
      */
     public List<SipTrunkRoute> getMatchingRoutes() {
@@ -38,7 +41,7 @@ public final class RoutesForNumber implements JsonSerializable<RoutesForNumber> 
     /**
      * Set the matchingRoutes property: The list of routes whose number patterns are matched by the target number. The
      * routes are displayed and apply in the same order as in SipConfiguration.
-     *
+     * 
      * @param matchingRoutes the matchingRoutes value to set.
      * @return the RoutesForNumber object itself.
      */
@@ -47,6 +50,9 @@ public final class RoutesForNumber implements JsonSerializable<RoutesForNumber> 
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -57,10 +63,10 @@ public final class RoutesForNumber implements JsonSerializable<RoutesForNumber> 
 
     /**
      * Reads an instance of RoutesForNumber from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of RoutesForNumber if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RoutesForNumber.
      */
     public static RoutesForNumber fromJson(JsonReader jsonReader) throws IOException {

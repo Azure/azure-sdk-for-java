@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Represents health state of a SIP trunk for routing calls. */
+/**
+ * Represents health state of a SIP trunk for routing calls.
+ */
 @Fluent
 public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
     /*
@@ -29,13 +31,15 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
      */
     private OverallHealth overall;
 
-    /** Creates an instance of TrunkHealth class. */
+    /**
+     * Creates an instance of TrunkHealth class.
+     */
     public TrunkHealth() {
     }
 
     /**
      * Get the tls property: The status of the TLS connections of the Trunk.
-     *
+     * 
      * @return the tls value.
      */
     public TlsHealth getTls() {
@@ -44,7 +48,7 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
 
     /**
      * Set the tls property: The status of the TLS connections of the Trunk.
-     *
+     * 
      * @param tls the tls value to set.
      * @return the TrunkHealth object itself.
      */
@@ -55,7 +59,7 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
 
     /**
      * Get the ping property: The status of SIP OPTIONS message sent by Trunk.
-     *
+     * 
      * @return the ping value.
      */
     public PingHealth getPing() {
@@ -64,7 +68,7 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
 
     /**
      * Set the ping property: The status of SIP OPTIONS message sent by Trunk.
-     *
+     * 
      * @param ping the ping value to set.
      * @return the TrunkHealth object itself.
      */
@@ -75,7 +79,7 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
 
     /**
      * Get the overall property: The overall health status of Trunk.
-     *
+     * 
      * @return the overall value.
      */
     public OverallHealth getOverall() {
@@ -84,7 +88,7 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
 
     /**
      * Set the overall property: The overall health status of Trunk.
-     *
+     * 
      * @param overall the overall value to set.
      * @return the TrunkHealth object itself.
      */
@@ -93,6 +97,9 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -104,10 +111,10 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
 
     /**
      * Reads an instance of TrunkHealth from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of TrunkHealth if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TrunkHealth.
      */

@@ -3,20 +3,29 @@
 
 package com.azure.communication.phonenumbers.siprouting.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 /** Represents a SIP Domain for routing calls. See RFC 4904. */
-@Immutable
+@Fluent
 public final class SipDomain {
+    /*
+     * Gets or sets FQDN of the trunk.
+     */
+    private final String fqdn;
+
     /*
      * Enabled flag
      */
-    private boolean enabled;
+    private final boolean enabled;
 
     /**
-     * Creates an instance of SipDomain class.
+     * Constructor with required properties.
+     * @param fqdn the FQDN of the trunk.
+     * @param enabled the enabled flag.
      */
-    public SipDomain() {
+    public SipDomain(String fqdn, boolean enabled) {
+        this.enabled = enabled;
+        this.fqdn = fqdn;
     }
 
     /**
@@ -29,13 +38,11 @@ public final class SipDomain {
     }
 
     /**
-     * Set the enabled property: Enabled flag.
-     * 
-     * @param enabled the enabled value to set.
-     * @return the SipDomain object itself.
+     * Get the fqdn property: Gets or sets FQDN of the trunk.
+     *
+     * @return the fqdn value.
      */
-    public SipDomain setEnabled(boolean enabled) {
-        this.enabled = enabled;
-        return this;
+    public String getFqdn() {
+        return this.fqdn;
     }
 }

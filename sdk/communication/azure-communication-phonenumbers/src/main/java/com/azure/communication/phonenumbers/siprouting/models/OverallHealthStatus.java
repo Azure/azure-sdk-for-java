@@ -7,20 +7,28 @@ package com.azure.communication.phonenumbers.siprouting.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** The overall health status of Trunk. */
+/**
+ * The overall health status of Trunk.
+ */
 public final class OverallHealthStatus extends ExpandableStringEnum<OverallHealthStatus> {
-    /** Indicates an unknown health status. */
+    /**
+     * Indicates an unknown health status.
+     */
     public static final OverallHealthStatus UNKNOWN = fromString("unknown");
 
-    /** Indicates the Trunk is active. */
+    /**
+     * Indicates the Trunk is active.
+     */
     public static final OverallHealthStatus ACTIVE = fromString("active");
 
-    /** Indicates the Trunk is inactive. */
+    /**
+     * Indicates the Trunk is inactive.
+     */
     public static final OverallHealthStatus INACTIVE = fromString("inactive");
 
     /**
      * Creates a new instance of OverallHealthStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -29,7 +37,7 @@ public final class OverallHealthStatus extends ExpandableStringEnum<OverallHealt
 
     /**
      * Creates or finds a OverallHealthStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OverallHealthStatus.
      */
@@ -39,7 +47,7 @@ public final class OverallHealthStatus extends ExpandableStringEnum<OverallHealt
 
     /**
      * Gets known OverallHealthStatus values.
-     *
+     * 
      * @return known OverallHealthStatus values.
      */
     public static Collection<OverallHealthStatus> values() {

@@ -177,8 +177,8 @@ public class SyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.client.setDomains
         sipRoutingClient.setDomains(asList(
-            new SipDomain(),
-            new SipDomain()
+            new SipDomain("<first trunk fqdn>", false),
+            new SipDomain("<first trunk fqdn>", false)
         ));
         // END: com.azure.communication.phonenumbers.siprouting.client.setDomains
     }
@@ -191,8 +191,8 @@ public class SyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.client.setDomainsWithResponse
         Response<Void> response = sipRoutingClient.setDomainsWithResponse(asList(
-            new SipDomain(),
-            new SipDomain()
+            new SipDomain("<first trunk fqdn>", false),
+            new SipDomain("<first trunk fqdn>", false)
         ), Context.NONE);
         // END: com.azure.communication.phonenumbers.siprouting.client.setDomainsWithResponse
     }
@@ -265,7 +265,7 @@ public class SyncClientJavaDocCodeSnippets {
         SipRoutingClient sipRoutingClient = createSipRoutingClient();
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.client.setDomain
-        sipRoutingClient.setDomain(new SipDomain());
+        sipRoutingClient.setDomain(new SipDomain("<first trunk fqdn>", false));
         // END: com.azure.communication.phonenumbers.siprouting.client.setDomain
     }
 

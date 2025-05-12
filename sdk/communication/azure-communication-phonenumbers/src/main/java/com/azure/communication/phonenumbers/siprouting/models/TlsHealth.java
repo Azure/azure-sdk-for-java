@@ -10,9 +10,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
-/** The status of the TLS connections of the Trunk. */
+/**
+ * The status of the TLS connections of the Trunk.
+ */
 @Fluent
 public final class TlsHealth implements JsonSerializable<TlsHealth> {
     /*
@@ -20,13 +21,15 @@ public final class TlsHealth implements JsonSerializable<TlsHealth> {
      */
     private TlsStatus status;
 
-    /** Creates an instance of TlsHealth class. */
+    /**
+     * Creates an instance of TlsHealth class.
+     */
     public TlsHealth() {
     }
 
     /**
      * Get the status property: The status of the TLS connections of the Trunk.
-     *
+     * 
      * @return the status value.
      */
     public TlsStatus getStatus() {
@@ -35,7 +38,7 @@ public final class TlsHealth implements JsonSerializable<TlsHealth> {
 
     /**
      * Set the status property: The status of the TLS connections of the Trunk.
-     *
+     * 
      * @param status the status value to set.
      * @return the TlsHealth object itself.
      */
@@ -44,19 +47,22 @@ public final class TlsHealth implements JsonSerializable<TlsHealth> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of TlsHealth from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of TlsHealth if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
+     * to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TlsHealth.
      */
