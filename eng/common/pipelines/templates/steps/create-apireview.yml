@@ -37,25 +37,24 @@ steps:
       parameters:
         WorkingDirectory: ${{ parameters.SourceRootPath }}
 
-    - ${{ if eq(length(parameters.PackageInfoFiles), 0) }}:
-      - pwsh: |
-          $artifactList = ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
+    - pwsh: |
+        # If the Artifacts array is set create the list PackageInfo files from them otherwise use
+        # the PackageInfoFiles that were passed in to create the list.
+        $artifactList = ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
+        $PackageInfoFiles = @()
+        if ($artifactList.Count -gt 0) {
           $configDir = '${{ parameters.ConfigFileDir }}'
-          $PackageInfoFiles = @()
           foreach ($artifact in $artifactsList) {
             $PackageInfoFiles += "$configDir/$($artifact).json".Replace("\", "\\").Replace("\\", "/")
           }
           $PackageInfoFilesList = $PackageInfoFiles -join ","
-          Write-Host "PackageInfoFiles=$PackageInfoFilesList"
-          Write-Host "##vso[task.setvariable variable=PackageInfoFiles;]$PackageInfoFilesList"
-        displayName: Set PackageInfoFiles files from ArtifactsList
-    - ${{ else }}:
-      - pwsh: |
+        } else {
           $PackageInfoFiles = ('${{ convertToJson(parameters.PackageInfoFiles) }}'.Replace("\", "\\").Replace("\\", "/") | ConvertFrom-Json -NoEnumerate)
           $PackageInfoFilesList = $PackageInfoFiles -join ","
-          Write-Host "PackageInfoFiles=$PackageInfoFilesList"
-          Write-Host "##vso[task.setvariable variable=PackageInfoFiles;]$PackageInfoFilesList"
-        displayName: Set PackageInfoFiles files
+        }
+        Write-Host "PackageInfoFiles=$PackageInfoFilesList"
+        Write-Host "##vso[task.setvariable variable=PackageInfoFiles;]$PackageInfoFilesList"
+      displayName: Set PackageInfoFiles list
 
     - task: Powershell@2
       inputs:
