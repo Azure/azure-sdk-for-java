@@ -36,7 +36,7 @@ public class TableAudience extends ExpandableStringEnum<TableAudience> {
     public static final TableAudience AZURE_STORAGE_CHINA = fromString("https://storage.azure.cn");
 
     /**
-     * The audience for the Azure Storage service in the US government.
+     * The audience for the Azure Storage service in the US government cloud.
      */
     public static final TableAudience AZURE_STORAGE_US_GOVERNMENT = fromString("https://storage.azure.us");
 
