@@ -11,7 +11,6 @@ import io.clientcore.core.http.models.HttpMatchConditions;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedResponse;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 

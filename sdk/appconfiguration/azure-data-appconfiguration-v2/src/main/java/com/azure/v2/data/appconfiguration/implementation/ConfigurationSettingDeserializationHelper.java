@@ -11,6 +11,7 @@ import com.azure.v2.data.appconfiguration.models.SecretReferenceConfigurationSet
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 
@@ -104,7 +105,7 @@ public final class ConfigurationSettingDeserializationHelper {
                 .log(
                     "The setting is neither a 'FeatureFlagConfigurationSetting' nor "
                         + "'SecretReferenceConfigurationSetting', return the setting as 'ConfigurationSetting'. ",
-                    exception, RuntimeException::new);
+                    exception, CoreException::from);
         }
     }
 

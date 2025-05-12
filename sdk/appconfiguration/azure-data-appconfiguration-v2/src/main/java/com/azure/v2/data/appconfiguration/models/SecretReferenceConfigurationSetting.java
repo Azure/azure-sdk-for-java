@@ -4,6 +4,7 @@
 package com.azure.v2.data.appconfiguration.models;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -90,10 +91,9 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
     public String getValue() {
         // Lazily update: Update 'value' by all latest property values when this getValue() method is called.
         String newValue = null;
-        try {
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            final JsonWriter writer = JsonWriter.toStream(outputStream);
 
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            JsonWriter writer = JsonWriter.toStream(outputStream)) {
             boolean isUriWritten = false;
 
             writer.writeStartObject();
@@ -112,7 +112,7 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
                         writer.writeUntypedField(name, jsonValue);
                     }
                 } catch (IOException e) {
-                    throw LOGGER.throwableAtError().log(e, RuntimeException::new);
+                    throw LOGGER.throwableAtError().log(e, CoreException::from);
                 }
             }
 
@@ -124,11 +124,9 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
             writer.flush();
 
             newValue = outputStream.toString(StandardCharsets.UTF_8.name());
-            outputStream.close();
         } catch (IOException exception) {
             throw LOGGER.throwableAtError()
-                .log("Can't parse Secret Reference configuration setting value.", exception,
-                    IllegalArgumentException::new);
+                .log("Can't parse Secret Reference configuration setting value.", exception, CoreException::from);
         }
 
         super.setValue(newValue);

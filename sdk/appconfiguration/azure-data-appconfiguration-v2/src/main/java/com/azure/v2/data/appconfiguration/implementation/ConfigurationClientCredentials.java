@@ -6,6 +6,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.DateTimeRfc1123;
 
@@ -100,10 +101,8 @@ public class ConfigurationClientCredentials {
                 = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
             headers.set(HttpHeaderName.AUTHORIZATION, "HMAC-SHA256 Credential=" + credentials.id()
                 + "&SignedHeaders=Host;Date;x-ms-content-sha256&Signature=" + signature);
-        } catch (GeneralSecurityException e) {
-            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+        } catch (GeneralSecurityException | MalformedURLException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
