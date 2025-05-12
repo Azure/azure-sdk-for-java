@@ -9,14 +9,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * Defines the audience for the Azure Table service.
+ * Defines the audience for the Azure Tables service.
  * <p>
  * This class is used to specify the audience when creating clients.
  * <p>
  * The audience can be one of the following:
  * <ul>
  *     <li>AZURE_STORAGE_PUBLIC_CLOUD</li>
- *     <li>AZURE_STORAGE_CHINAD</li>
+ *     <li>AZURE_STORAGE_CHINA</li>
  *     <li>AZURE_STORAGE_US_GOVERNMENT</li>
  *     <li>AZURE_COSMOS_PUBLIC_CLOUD</li>
  *     <li>AZURE_COSMOS_CHINA</li>
@@ -36,7 +36,7 @@ public class TableAudience extends ExpandableStringEnum<TableAudience> {
     public static final TableAudience AZURE_STORAGE_CHINA = fromString("https://storage.azure.cn");
 
     /**
-     * The audience for the Azure Storage service in the US government.
+     * The audience for the Azure Storage service in the US government cloud.
      */
     public static final TableAudience AZURE_STORAGE_US_GOVERNMENT = fromString("https://storage.azure.us");
 
@@ -49,7 +49,7 @@ public class TableAudience extends ExpandableStringEnum<TableAudience> {
      */
     public static final TableAudience AZURE_COSMOS_CHINA = fromString("https://cosmos.azure.cn");
     /**
-     * The audience for the Azure Cosmos service in the US government.
+     * The audience for the Azure Cosmos service in the US government cloud.
      */
     public static final TableAudience AZURE_COSMOS_US_GOVERNMENT = fromString("https://cosmos.azure.us");
 

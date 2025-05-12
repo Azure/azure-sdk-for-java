@@ -748,7 +748,7 @@ public final class TableClientBuilder
     }
 
     /**
-     * Sets the {@link TableAudience} to use when authenticating with the Table Service.
+     * Sets the {@link TableAudience} to use when authenticating with the Azure Tables service.
      *
      * @param audience The {@link TableAudience} to use when authenticating with the Table Service.
      *
