@@ -21,19 +21,19 @@ import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.compute.batch.models.BatchCreateTaskCollectionResult;
 import com.azure.compute.batch.models.BatchFileProperties;
 import com.azure.compute.batch.models.BatchJob;
-import com.azure.compute.batch.models.BatchJobCreateContent;
 import com.azure.compute.batch.models.BatchJobCreateOptions;
+import com.azure.compute.batch.models.BatchJobCreateParameters;
 import com.azure.compute.batch.models.BatchJobDeleteOptions;
-import com.azure.compute.batch.models.BatchJobDisableContent;
 import com.azure.compute.batch.models.BatchJobDisableOptions;
+import com.azure.compute.batch.models.BatchJobDisableParameters;
 import com.azure.compute.batch.models.BatchJobEnableOptions;
 import com.azure.compute.batch.models.BatchJobGetOptions;
 import com.azure.compute.batch.models.BatchJobPreparationAndReleaseTaskStatus;
 import com.azure.compute.batch.models.BatchJobPreparationAndReleaseTaskStatusListOptions;
 import com.azure.compute.batch.models.BatchJobReplaceOptions;
 import com.azure.compute.batch.models.BatchJobSchedule;
-import com.azure.compute.batch.models.BatchJobScheduleCreateContent;
 import com.azure.compute.batch.models.BatchJobScheduleCreateOptions;
+import com.azure.compute.batch.models.BatchJobScheduleCreateParameters;
 import com.azure.compute.batch.models.BatchJobScheduleDeleteOptions;
 import com.azure.compute.batch.models.BatchJobScheduleDisableOptions;
 import com.azure.compute.batch.models.BatchJobScheduleEnableOptions;
@@ -41,20 +41,20 @@ import com.azure.compute.batch.models.BatchJobScheduleExistsOptions;
 import com.azure.compute.batch.models.BatchJobScheduleGetOptions;
 import com.azure.compute.batch.models.BatchJobScheduleReplaceOptions;
 import com.azure.compute.batch.models.BatchJobScheduleTerminateOptions;
-import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
 import com.azure.compute.batch.models.BatchJobScheduleUpdateOptions;
+import com.azure.compute.batch.models.BatchJobScheduleUpdateParameters;
 import com.azure.compute.batch.models.BatchJobSchedulesListOptions;
 import com.azure.compute.batch.models.BatchJobTaskCountsGetOptions;
-import com.azure.compute.batch.models.BatchJobTerminateContent;
 import com.azure.compute.batch.models.BatchJobTerminateOptions;
-import com.azure.compute.batch.models.BatchJobUpdateContent;
+import com.azure.compute.batch.models.BatchJobTerminateParameters;
 import com.azure.compute.batch.models.BatchJobUpdateOptions;
+import com.azure.compute.batch.models.BatchJobUpdateParameters;
 import com.azure.compute.batch.models.BatchJobsFromScheduleListOptions;
 import com.azure.compute.batch.models.BatchJobsListOptions;
 import com.azure.compute.batch.models.BatchNode;
-import com.azure.compute.batch.models.BatchNodeDeallocateContent;
 import com.azure.compute.batch.models.BatchNodeDeallocateOptions;
-import com.azure.compute.batch.models.BatchNodeDisableSchedulingContent;
+import com.azure.compute.batch.models.BatchNodeDeallocateParameters;
+import com.azure.compute.batch.models.BatchNodeDisableSchedulingParameters;
 import com.azure.compute.batch.models.BatchNodeExtensionGetOptions;
 import com.azure.compute.batch.models.BatchNodeExtensionsListOptions;
 import com.azure.compute.batch.models.BatchNodeFile;
@@ -64,21 +64,21 @@ import com.azure.compute.batch.models.BatchNodeFilePropertiesGetOptions;
 import com.azure.compute.batch.models.BatchNodeFilesListOptions;
 import com.azure.compute.batch.models.BatchNodeGetOptions;
 import com.azure.compute.batch.models.BatchNodeLogsUploadOptions;
-import com.azure.compute.batch.models.BatchNodeRebootContent;
 import com.azure.compute.batch.models.BatchNodeRebootOptions;
-import com.azure.compute.batch.models.BatchNodeReimageContent;
+import com.azure.compute.batch.models.BatchNodeRebootParameters;
 import com.azure.compute.batch.models.BatchNodeReimageOptions;
+import com.azure.compute.batch.models.BatchNodeReimageParameters;
 import com.azure.compute.batch.models.BatchNodeRemoteLoginSettings;
 import com.azure.compute.batch.models.BatchNodeRemoteLoginSettingsGetOptions;
-import com.azure.compute.batch.models.BatchNodeRemoveContent;
+import com.azure.compute.batch.models.BatchNodeRemoveParameters;
 import com.azure.compute.batch.models.BatchNodeSchedulingDisableOptions;
 import com.azure.compute.batch.models.BatchNodeSchedulingEnableOptions;
 import com.azure.compute.batch.models.BatchNodeStartOptions;
-import com.azure.compute.batch.models.BatchNodeUserCreateContent;
 import com.azure.compute.batch.models.BatchNodeUserCreateOptions;
+import com.azure.compute.batch.models.BatchNodeUserCreateParameters;
 import com.azure.compute.batch.models.BatchNodeUserDeleteOptions;
 import com.azure.compute.batch.models.BatchNodeUserReplaceOptions;
-import com.azure.compute.batch.models.BatchNodeUserUpdateContent;
+import com.azure.compute.batch.models.BatchNodeUserUpdateParameters;
 import com.azure.compute.batch.models.BatchNodeVMExtension;
 import com.azure.compute.batch.models.BatchNodesListOptions;
 import com.azure.compute.batch.models.BatchNodesRemoveOptions;
@@ -86,22 +86,22 @@ import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolAutoScaleDisableOptions;
 import com.azure.compute.batch.models.BatchPoolAutoScaleEnableOptions;
 import com.azure.compute.batch.models.BatchPoolAutoScaleEvaluateOptions;
-import com.azure.compute.batch.models.BatchPoolCreateContent;
 import com.azure.compute.batch.models.BatchPoolCreateOptions;
+import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchPoolDeleteOptions;
-import com.azure.compute.batch.models.BatchPoolEnableAutoScaleContent;
-import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleContent;
+import com.azure.compute.batch.models.BatchPoolEnableAutoScaleParameters;
+import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolExistsOptions;
 import com.azure.compute.batch.models.BatchPoolGetOptions;
 import com.azure.compute.batch.models.BatchPoolNodeCounts;
 import com.azure.compute.batch.models.BatchPoolNodeCountsListOptions;
 import com.azure.compute.batch.models.BatchPoolPropertiesReplaceOptions;
-import com.azure.compute.batch.models.BatchPoolReplaceContent;
-import com.azure.compute.batch.models.BatchPoolResizeContent;
+import com.azure.compute.batch.models.BatchPoolReplaceParameters;
 import com.azure.compute.batch.models.BatchPoolResizeOptions;
+import com.azure.compute.batch.models.BatchPoolResizeParameters;
 import com.azure.compute.batch.models.BatchPoolResizeStopOptions;
-import com.azure.compute.batch.models.BatchPoolUpdateContent;
 import com.azure.compute.batch.models.BatchPoolUpdateOptions;
+import com.azure.compute.batch.models.BatchPoolUpdateParameters;
 import com.azure.compute.batch.models.BatchPoolUsageMetrics;
 import com.azure.compute.batch.models.BatchPoolUsageMetricsListOptions;
 import com.azure.compute.batch.models.BatchPoolsListOptions;
@@ -113,6 +113,7 @@ import com.azure.compute.batch.models.BatchTaskCollectionCreateOptions;
 import com.azure.compute.batch.models.BatchTaskCountsResult;
 import com.azure.compute.batch.models.BatchTaskCreateContent;
 import com.azure.compute.batch.models.BatchTaskCreateOptions;
+import com.azure.compute.batch.models.BatchTaskCreateParameters;
 import com.azure.compute.batch.models.BatchTaskDeleteOptions;
 import com.azure.compute.batch.models.BatchTaskFileDeleteOptions;
 import com.azure.compute.batch.models.BatchTaskFileGetOptions;
@@ -125,7 +126,7 @@ import com.azure.compute.batch.models.BatchTaskReplaceOptions;
 import com.azure.compute.batch.models.BatchTaskTerminateOptions;
 import com.azure.compute.batch.models.BatchTasksListOptions;
 import com.azure.compute.batch.models.SupportedBatchImagesListOptions;
-import com.azure.compute.batch.models.UploadBatchServiceLogsContent;
+import com.azure.compute.batch.models.UploadBatchServiceLogsParameters;
 import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -232,7 +233,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -277,7 +278,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -342,7 +343,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -384,7 +385,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -700,7 +701,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1157,7 +1158,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * boolean
@@ -1215,7 +1216,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1617,7 +1618,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1972,7 +1973,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1983,7 +1984,7 @@ public final class BatchAsyncClient {
      * </pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for enabling automatic scaling.
+     * @param parameters The options to use for enabling automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1993,9 +1994,9 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> enablePoolAutoScaleWithResponse(String poolId, BinaryData content,
+    public Mono<Response<Void>> enablePoolAutoScaleWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
-        return this.serviceClient.enablePoolAutoScaleWithResponseAsync(poolId, content, requestOptions);
+        return this.serviceClient.enablePoolAutoScaleWithResponseAsync(poolId, parameters, requestOptions);
     }
 
     /**
@@ -2014,7 +2015,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2022,9 +2023,9 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2045,7 +2046,7 @@ public final class BatchAsyncClient {
      * </pre>
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param content The options to use for evaluating the automatic scaling formula.
+     * @param parameters The options to use for evaluating the automatic scaling formula.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2059,9 +2060,9 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> evaluatePoolAutoScaleWithResponse(String poolId, BinaryData content,
+    public Mono<Response<BinaryData>> evaluatePoolAutoScaleWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
-        return this.serviceClient.evaluatePoolAutoScaleWithResponseAsync(poolId, content, requestOptions);
+        return this.serviceClient.evaluatePoolAutoScaleWithResponseAsync(poolId, parameters, requestOptions);
     }
 
     /**
@@ -2106,7 +2107,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2119,7 +2120,7 @@ public final class BatchAsyncClient {
      * </pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for resizing the pool.
+     * @param parameters The options to use for resizing the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2129,9 +2130,9 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resizePoolWithResponse(String poolId, BinaryData content,
+    public Mono<Response<Void>> resizePoolWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
-        return this.serviceClient.resizePoolWithResponseAsync(poolId, content, requestOptions);
+        return this.serviceClient.resizePoolWithResponseAsync(poolId, parameters, requestOptions);
     }
 
     /**
@@ -2206,7 +2207,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2340,7 +2341,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2354,7 +2355,7 @@ public final class BatchAsyncClient {
      * </pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for removing the node.
+     * @param parameters The options to use for removing the node.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2364,9 +2365,9 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeNodesWithResponse(String poolId, BinaryData content,
+    public Mono<Response<Void>> removeNodesWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
-        return this.serviceClient.removeNodesWithResponseAsync(poolId, content, requestOptions);
+        return this.serviceClient.removeNodesWithResponseAsync(poolId, parameters, requestOptions);
     }
 
     /**
@@ -2387,7 +2388,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2445,7 +2446,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2584,7 +2585,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3066,7 +3067,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3421,7 +3422,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3909,7 +3910,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3919,7 +3920,7 @@ public final class BatchAsyncClient {
      * </pre>
      *
      * @param jobId The ID of the Job to disable.
-     * @param content The options to use for disabling the Job.
+     * @param parameters The options to use for disabling the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3929,9 +3930,9 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableJobWithResponse(String jobId, BinaryData content,
+    public Mono<Response<Void>> disableJobWithResponse(String jobId, BinaryData parameters,
         RequestOptions requestOptions) {
-        return this.serviceClient.disableJobWithResponseAsync(jobId, content, requestOptions);
+        return this.serviceClient.disableJobWithResponseAsync(jobId, parameters, requestOptions);
     }
 
     /**
@@ -4034,7 +4035,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4079,7 +4080,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4504,7 +4505,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4969,7 +4970,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5441,7 +5442,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5522,7 +5523,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5574,7 +5575,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5637,7 +5638,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5768,7 +5769,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5848,7 +5849,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * boolean
@@ -5962,7 +5963,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6450,7 +6451,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6905,7 +6906,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7514,7 +7515,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7951,7 +7952,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -8413,7 +8414,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -8588,7 +8589,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -8818,7 +8819,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -8955,9 +8956,9 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -9101,7 +9102,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -9342,7 +9343,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -9565,7 +9566,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -9795,7 +9796,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -9884,7 +9885,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -9933,7 +9934,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10012,7 +10013,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10026,7 +10027,7 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
-     * @param content The options to use for updating the user.
+     * @param parameters The options to use for updating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -10037,8 +10038,9 @@ public final class BatchAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> replaceNodeUserWithResponse(String poolId, String nodeId, String userName,
-        BinaryData content, RequestOptions requestOptions) {
-        return this.serviceClient.replaceNodeUserWithResponseAsync(poolId, nodeId, userName, content, requestOptions);
+        BinaryData parameters, RequestOptions requestOptions) {
+        return this.serviceClient.replaceNodeUserWithResponseAsync(poolId, nodeId, userName, parameters,
+            requestOptions);
     }
 
     /**
@@ -10055,7 +10057,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10259,7 +10261,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10336,7 +10338,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10382,7 +10384,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10430,7 +10432,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10501,7 +10503,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10549,7 +10551,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10562,9 +10564,9 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10577,7 +10579,7 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
      * Protocol file.
-     * @param content The Azure Batch service log files upload options.
+     * @param parameters The Azure Batch service log files upload options.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -10588,9 +10590,9 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadNodeLogsWithResponse(String poolId, String nodeId, BinaryData content,
+    public Mono<Response<BinaryData>> uploadNodeLogsWithResponse(String poolId, String nodeId, BinaryData parameters,
         RequestOptions requestOptions) {
-        return this.serviceClient.uploadNodeLogsWithResponseAsync(poolId, nodeId, content, requestOptions);
+        return this.serviceClient.uploadNodeLogsWithResponseAsync(poolId, nodeId, parameters, requestOptions);
     }
 
     /**
@@ -10613,7 +10615,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10807,7 +10809,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10883,7 +10885,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -11002,7 +11004,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -11089,7 +11091,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -11227,30 +11229,6 @@ public final class BatchAsyncClient {
                         .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(), null));
         });
-    }
-
-    /**
-     * Creates a Pool to the specified Account.
-     *
-     * When naming Pools, avoid including sensitive information such as user names or
-     * secret project names. This information may appear in telemetry logs accessible
-     * to Microsoft Support engineers.
-     *
-     * @param pool The Pool to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createPool(BatchPoolCreateContent pool) {
-        // Generated convenience method for createPoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createPoolWithResponse(BinaryData.fromObject(pool), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -11401,31 +11379,6 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Updates the properties of the specified Pool.
-     *
-     * This only replaces the Pool properties specified in the request. For example,
-     * if the Pool has a StartTask associated with it, and a request does not specify
-     * a StartTask element, then the Pool keeps the existing StartTask.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param pool The pool properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updatePool(String poolId, BatchPoolUpdateContent pool) {
-        // Generated convenience method for updatePoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return updatePoolWithResponse(poolId, BinaryData.fromObject(pool), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * Disables automatic scaling for a Pool.
      *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
@@ -11446,17 +11399,17 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Enables automatic scaling for a Pool.
+     * Stops an ongoing resize operation on the Pool.
      *
-     * You cannot enable automatic scaling on a Pool if a resize operation is in
-     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
-     * you must specify a valid autoscale formula as part of the request. If automatic
-     * scaling of the Pool is already enabled, you may specify a new autoscale formula
-     * and/or a new evaluation interval. You cannot call this API for the same Pool
-     * more than once every 30 seconds.
+     * This does not restore the Pool to its previous state before the resize
+     * operation: it only stops any further changes being made, and the Pool maintains
+     * its current state. After stopping, the Pool stabilizes at the number of Compute
+     * Nodes it was at when the stop operation was done. During the stop operation,
+     * the Pool allocation state changes first to stopping and then to steady. A
+     * resize operation need not be an explicit resize Pool request; this API can also
+     * be used to halt the initial sizing of the Pool when it is created.
      *
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for enabling automatic scaling.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11467,11 +11420,41 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleContent content) {
-        // Generated convenience method for enablePoolAutoScaleWithResponse
+    public Mono<Void> stopPoolResize(String poolId) {
+        // Generated convenience method for stopPoolResizeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(content), requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return stopPoolResizeWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists all Virtual Machine Images supported by the Azure Batch service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the supported Virtual Machine Images as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BatchSupportedImage> listSupportedImages() {
+        // Generated convenience method for listSupportedImages
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listSupportedImages(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, BatchSupportedImage>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(BatchSupportedImage.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -11560,31 +11543,6 @@ public final class BatchAsyncClient {
     /**
      * Updates the properties of the specified Job.
      *
-     * This replaces only the Job properties specified in the request. For example, if
-     * the Job has constraints, and a request does not specify the constraints
-     * element, then the Job keeps the existing constraints.
-     *
-     * @param jobId The ID of the Job whose properties you want to update.
-     * @param job The options to use for updating the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateJob(String jobId, BatchJobUpdateContent job) {
-        // Generated convenience method for updateJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the properties of the specified Job.
-     *
      * This fully replaces all the updatable properties of the Job. For example, if
      * the Job has constraints associated with it and if constraints is not specified
      * with this request, then the Batch service will remove the existing constraints.
@@ -11605,6 +11563,90 @@ public final class BatchAsyncClient {
         // Generated convenience method for replaceJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return replaceJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Enables the specified Job, allowing new Tasks to run.
+     *
+     * When you call this API, the Batch service sets a disabled Job to the enabling
+     * state. After the this operation is completed, the Job moves to the active
+     * state, and scheduling of new Tasks under the Job resumes. The Batch service
+     * does not allow a Task to remain in the active state for more than 180 days.
+     * Therefore, if you enable a Job containing active Tasks which were added more
+     * than 180 days ago, those Tasks will not run.
+     *
+     * @param jobId The ID of the Job to enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enableJob(String jobId) {
+        // Generated convenience method for enableJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return enableJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Terminates the specified Job, marking it as completed.
+     *
+     * When a Terminate Job request is received, the Batch service sets the Job to the
+     * terminating state. The Batch service then terminates any running Tasks
+     * associated with the Job and runs any required Job release Tasks. Then the Job
+     * moves into the completed state. If there are any Tasks in the Job in the active
+     * state, they will remain in the active state. Once a Job is terminated, new
+     * Tasks cannot be added and any remaining active Tasks will not be scheduled.
+     *
+     * @param jobId The ID of the Job to terminate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> terminateJob(String jobId) {
+        // Generated convenience method for terminateJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return terminateJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists all of the Jobs in the specified Account.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BatchJob> listJobs() {
+        // Generated convenience method for listJobs
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJob>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(BatchJob.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -11957,34 +11999,6 @@ public final class BatchAsyncClient {
     /**
      * Updates the properties of the specified Job Schedule.
      *
-     * This replaces only the Job Schedule properties specified in the request. For
-     * example, if the schedule property is not specified with this request, then the
-     * Batch service will keep the existing schedule. Changes to a Job Schedule only
-     * impact Jobs created by the schedule after the update has taken place; currently
-     * running Jobs are unaffected.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to update.
-     * @param jobSchedule The options to use for updating the Job Schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateJobSchedule(String jobScheduleId, BatchJobScheduleUpdateContent jobSchedule) {
-        // Generated convenience method for updateJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return updateJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(jobSchedule), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the properties of the specified Job Schedule.
-     *
      * This fully replaces all the updatable properties of the Job Schedule. For
      * example, if the schedule property is not specified with this request, then the
      * Batch service will remove the existing schedule. Changes to a Job Schedule only
@@ -12073,27 +12087,6 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Creates a Job Schedule to the specified Account.
-     *
-     * @param jobSchedule The Job Schedule to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createJobSchedule(BatchJobScheduleCreateContent jobSchedule) {
-        // Generated convenience method for createJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createJobScheduleWithResponse(BinaryData.fromObject(jobSchedule), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * Lists all of the Job Schedules in the specified Account.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12121,31 +12114,6 @@ public final class BatchAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
-    }
-
-    /**
-     * Creates a Task to the specified Job.
-     *
-     * The maximum lifetime of a Task from addition to completion is 180 days. If a
-     * Task has not completed within 180 days of being added it will be terminated by
-     * the Batch service and left in whatever state it was in at that time.
-     *
-     * @param jobId The ID of the Job to which the Task is to be created.
-     * @param task The Task to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createTask(String jobId, BatchTaskCreateContent task) {
-        // Generated convenience method for createTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createTaskWithResponse(jobId, BinaryData.fromObject(task), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -12529,32 +12497,6 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Adds a user Account to the specified Compute Node.
-     *
-     * You can add a user Account to a Compute Node only when it is in the idle or
-     * running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to create a user Account.
-     * @param user The options to use for creating the user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createNodeUser(String poolId, String nodeId, BatchNodeUserCreateContent user) {
-        // Generated convenience method for createNodeUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * Deletes a user Account from the specified Compute Node.
      *
      * You can delete a user Account to a Compute Node only when it is in the idle or
@@ -12577,36 +12519,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for deleteNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the password and expiration time of a user Account on the specified Compute Node.
-     *
-     * This operation replaces of all the updatable properties of the Account. For
-     * example, if the expiryTime element is not specified, the current value is
-     * replaced with the default value, not left unmodified. You can update a user
-     * Account on a Compute Node only when it is in the idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
-     * @param content The options to use for updating the user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> replaceNodeUser(String poolId, String nodeId, String userName,
-        BatchNodeUserUpdateContent content) {
-        // Generated convenience method for replaceNodeUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(content), requestOptions)
-            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -12799,39 +12711,6 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getNodeRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(BatchNodeRemoteLoginSettings.class));
-    }
-
-    /**
-     * Upload Azure Batch service log files from the specified Compute Node to Azure
-     * Blob Storage.
-     *
-     * This is for gathering Azure Batch service log files in an automated fashion
-     * from Compute Nodes if you are experiencing an error and wish to escalate to
-     * Azure support. The Azure Batch service log files should be shared with Azure
-     * support to aid in debugging issues with the Batch service.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
-     * Protocol file.
-     * @param content The Azure Batch service log files upload options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of uploading Batch service log files from a specific Compute Node on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadBatchServiceLogsResult> uploadNodeLogs(String poolId, String nodeId,
-        UploadBatchServiceLogsContent content) {
-        // Generated convenience method for uploadNodeLogsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(content), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(UploadBatchServiceLogsResult.class));
     }
 
     /**
@@ -13195,35 +13074,6 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Creates a Pool to the specified Account.
-     *
-     * When naming Pools, avoid including sensitive information such as user names or
-     * secret project names. This information may appear in telemetry logs accessible
-     * to Microsoft Support engineers.
-     *
-     * @param pool The Pool to be created.
-     * @param options Optional parameters for Create Pool operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createPool(BatchPoolCreateContent pool, BatchPoolCreateOptions options) {
-        // Generated convenience method for createPoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        return createPoolWithResponse(BinaryData.fromObject(pool), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * Lists all of the Pools which be mounted.
      *
      * @param options Optional parameters for List Pools operation.
@@ -13398,56 +13248,6 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Updates the properties of the specified Pool.
-     *
-     * This only replaces the Pool properties specified in the request. For example,
-     * if the Pool has a StartTask associated with it, and a request does not specify
-     * a StartTask element, then the Pool keeps the existing StartTask.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param pool The pool properties to update.
-     * @param options Optional parameters for Update Pool operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updatePool(String poolId, BatchPoolUpdateContent pool, BatchPoolUpdateOptions options,
-        RequestConditions requestConditions) {
-        // Generated convenience method for updatePoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return updatePoolWithResponse(poolId, BinaryData.fromObject(pool), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * Disables automatic scaling for a Pool.
      *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
@@ -13470,150 +13270,6 @@ public final class BatchAsyncClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return disablePoolAutoScaleWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Enables automatic scaling for a Pool.
-     *
-     * You cannot enable automatic scaling on a Pool if a resize operation is in
-     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
-     * you must specify a valid autoscale formula as part of the request. If automatic
-     * scaling of the Pool is already enabled, you may specify a new autoscale formula
-     * and/or a new evaluation interval. You cannot call this API for the same Pool
-     * more than once every 30 seconds.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param content The options to use for enabling automatic scaling.
-     * @param options Optional parameters for Enable Pool AutoScale operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleContent content,
-        BatchPoolAutoScaleEnableOptions options, RequestConditions requestConditions) {
-        // Generated convenience method for enablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(content), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets the result of evaluating an automatic scaling formula on the Pool.
-     *
-     * This API is primarily for validating an autoscale formula, as it simply returns
-     * the result without applying the formula to the Pool. The Pool must have auto
-     * scaling enabled in order to evaluate a formula.
-     *
-     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param content The options to use for evaluating the automatic scaling formula.
-     * @param options Optional parameters for Evaluate Pool AutoScale operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of evaluating an automatic scaling formula on the Pool.
-     *
-     * This API is primarily for validating an autoscale formula, as it simply returns
-     * the result without applying the formula to the Pool on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AutoScaleRun> evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleContent content,
-        BatchPoolAutoScaleEvaluateOptions options) {
-        // Generated convenience method for evaluatePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(content), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AutoScaleRun.class));
-    }
-
-    /**
-     * Changes the number of Compute Nodes that are assigned to a Pool.
-     *
-     * You can only resize a Pool when its allocation state is steady. If the Pool is
-     * already resizing, the request fails with status code 409. When you resize a
-     * Pool, the Pool's allocation state changes from steady to resizing. You cannot
-     * resize Pools which are configured for automatic scaling. If you try to do this,
-     * the Batch service returns an error 409. If you resize a Pool downwards, the
-     * Batch service chooses which Compute Nodes to remove. To remove specific Compute
-     * Nodes, use the Pool remove Compute Nodes API instead.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param content The options to use for resizing the pool.
-     * @param options Optional parameters for Resize Pool operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resizePool(String poolId, BatchPoolResizeContent content, BatchPoolResizeOptions options,
-        RequestConditions requestConditions) {
-        // Generated convenience method for resizePoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return resizePoolWithResponse(poolId, BinaryData.fromObject(content), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -13667,89 +13323,6 @@ public final class BatchAsyncClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         return stopPoolResizeWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the properties of the specified Pool.
-     *
-     * This fully replaces all the updatable properties of the Pool. For example, if
-     * the Pool has a StartTask associated with it and if StartTask is not specified
-     * with this request, then the Batch service will remove the existing StartTask.
-     *
-     * @param poolId The ID of the Pool to update.
-     * @param pool The options to use for replacing properties on the pool.
-     * @param options Optional parameters for Replace Pool Properties operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> replacePoolProperties(String poolId, BatchPoolReplaceContent pool,
-        BatchPoolPropertiesReplaceOptions options) {
-        // Generated convenience method for replacePoolPropertiesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        return replacePoolPropertiesWithResponse(poolId, BinaryData.fromObject(pool), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Removes Compute Nodes from the specified Pool.
-     *
-     * This operation can only run when the allocation state of the Pool is steady.
-     * When this operation runs, the allocation state changes from steady to resizing.
-     * Each request may remove up to 100 nodes.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param content The options to use for removing the node.
-     * @param options Optional parameters for Remove Nodes operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeNodes(String poolId, BatchNodeRemoveContent content, BatchNodesRemoveOptions options,
-        RequestConditions requestConditions) {
-        // Generated convenience method for removeNodesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return removeNodesWithResponse(poolId, BinaryData.fromObject(content), requestOptions)
-            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -13957,56 +13530,6 @@ public final class BatchAsyncClient {
     /**
      * Updates the properties of the specified Job.
      *
-     * This replaces only the Job properties specified in the request. For example, if
-     * the Job has constraints, and a request does not specify the constraints
-     * element, then the Job keeps the existing constraints.
-     *
-     * @param jobId The ID of the Job whose properties you want to update.
-     * @param job The options to use for updating the Job.
-     * @param options Optional parameters for Update Job operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateJob(String jobId, BatchJobUpdateContent job, BatchJobUpdateOptions options,
-        RequestConditions requestConditions) {
-        // Generated convenience method for updateJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the properties of the specified Job.
-     *
      * This fully replaces all the updatable properties of the Job. For example, if
      * the Job has constraints associated with it and if constraints is not specified
      * with this request, then the Batch service will remove the existing constraints.
@@ -14052,61 +13575,6 @@ public final class BatchAsyncClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         return replaceJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Disables the specified Job, preventing new Tasks from running.
-     *
-     * The Batch Service immediately moves the Job to the disabling state. Batch then
-     * uses the disableTasks parameter to determine what to do with the currently
-     * running Tasks of the Job. The Job remains in the disabling state until the
-     * disable operation is completed and all Tasks have been dealt with according to
-     * the disableTasks option; the Job then moves to the disabled state. No new Tasks
-     * are started under the Job until it moves back to active state. If you try to
-     * disable a Job that is in any state other than active, disabling, or disabled,
-     * the request fails with status code 409.
-     *
-     * @param jobId The ID of the Job to disable.
-     * @param content The options to use for disabling the Job.
-     * @param options Optional parameters for Disable Job operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableJob(String jobId, BatchJobDisableContent content, BatchJobDisableOptions options,
-        RequestConditions requestConditions) {
-        // Generated convenience method for disableJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return disableJobWithResponse(jobId, BinaryData.fromObject(content), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -14188,7 +13656,7 @@ public final class BatchAsyncClient {
         // Generated convenience method for terminateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchJobTerminateContent parameters = options == null ? null : options.getParameters();
+        BatchJobTerminateParameters parameters = options == null ? null : options.getParameters();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
@@ -14218,41 +13686,6 @@ public final class BatchAsyncClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         return terminateJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Creates a Job to the specified Account.
-     *
-     * The Batch service supports two ways to control the work done as part of a Job.
-     * In the first approach, the user specifies a Job Manager Task. The Batch service
-     * launches this Task when it is ready to start the Job. The Job Manager Task
-     * controls all other Tasks that run under this Job, by using the Task APIs. In
-     * the second approach, the user directly controls the execution of Tasks under an
-     * active Job, by using the Task APIs. Also note: when naming Jobs, avoid
-     * including sensitive information such as user names or secret project names.
-     * This information may appear in telemetry logs accessible to Microsoft Support
-     * engineers.
-     *
-     * @param job The Job to be created.
-     * @param options Optional parameters for Create Job operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createJob(BatchJobCreateContent job, BatchJobCreateOptions options) {
-        // Generated convenience method for createJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        return createJobWithResponse(BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -14765,59 +14198,6 @@ public final class BatchAsyncClient {
     /**
      * Updates the properties of the specified Job Schedule.
      *
-     * This replaces only the Job Schedule properties specified in the request. For
-     * example, if the schedule property is not specified with this request, then the
-     * Batch service will keep the existing schedule. Changes to a Job Schedule only
-     * impact Jobs created by the schedule after the update has taken place; currently
-     * running Jobs are unaffected.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to update.
-     * @param jobSchedule The options to use for updating the Job Schedule.
-     * @param options Optional parameters for Update Job Schedule operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateJobSchedule(String jobScheduleId, BatchJobScheduleUpdateContent jobSchedule,
-        BatchJobScheduleUpdateOptions options, RequestConditions requestConditions) {
-        // Generated convenience method for updateJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return updateJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(jobSchedule), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the properties of the specified Job Schedule.
-     *
      * This fully replaces all the updatable properties of the Job Schedule. For
      * example, if the schedule property is not specified with this request, then the
      * Batch service will remove the existing schedule. Changes to a Job Schedule only
@@ -15010,33 +14390,6 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Creates a Job Schedule to the specified Account.
-     *
-     * @param jobSchedule The Job Schedule to be created.
-     * @param options Optional parameters for Create Job Schedule operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createJobSchedule(BatchJobScheduleCreateContent jobSchedule,
-        BatchJobScheduleCreateOptions options) {
-        // Generated convenience method for createJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        return createJobScheduleWithResponse(BinaryData.fromObject(jobSchedule), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * Lists all of the Job Schedules in the specified Account.
      *
      * @param options Optional parameters for List Job Schedules operation.
@@ -15090,36 +14443,6 @@ public final class BatchAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
-    }
-
-    /**
-     * Creates a Task to the specified Job.
-     *
-     * The maximum lifetime of a Task from addition to completion is 180 days. If a
-     * Task has not completed within 180 days of being added it will be terminated by
-     * the Batch service and left in whatever state it was in at that time.
-     *
-     * @param jobId The ID of the Job to which the Task is to be created.
-     * @param task The Task to be created.
-     * @param options Optional parameters for Create Task operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createTask(String jobId, BatchTaskCreateContent task, BatchTaskCreateOptions options) {
-        // Generated convenience method for createTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        return createTaskWithResponse(jobId, BinaryData.fromObject(task), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -15671,38 +14994,6 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Adds a user Account to the specified Compute Node.
-     *
-     * You can add a user Account to a Compute Node only when it is in the idle or
-     * running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to create a user Account.
-     * @param user The options to use for creating the user.
-     * @param options Optional parameters for Create Node User operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createNodeUser(String poolId, String nodeId, BatchNodeUserCreateContent user,
-        BatchNodeUserCreateOptions options) {
-        // Generated convenience method for createNodeUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        return createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * Deletes a user Account from the specified Compute Node.
      *
      * You can delete a user Account to a Compute Node only when it is in the idle or
@@ -15731,41 +15022,6 @@ public final class BatchAsyncClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the password and expiration time of a user Account on the specified Compute Node.
-     *
-     * This operation replaces of all the updatable properties of the Account. For
-     * example, if the expiryTime element is not specified, the current value is
-     * replaced with the default value, not left unmodified. You can update a user
-     * Account on a Compute Node only when it is in the idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
-     * @param content The options to use for updating the user.
-     * @param options Optional parameters for Replace Node User operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateContent content,
-        BatchNodeUserReplaceOptions options) {
-        // Generated convenience method for replaceNodeUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        return replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(content), requestOptions)
-            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -15825,7 +15081,7 @@ public final class BatchAsyncClient {
         // Generated convenience method for rebootNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchNodeRebootContent parameters = options == null ? null : options.getParameters();
+        BatchNodeRebootParameters parameters = options == null ? null : options.getParameters();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
@@ -15887,7 +15143,7 @@ public final class BatchAsyncClient {
         // Generated convenience method for reimageNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchNodeReimageContent parameters = options == null ? null : options.getParameters();
+        BatchNodeReimageParameters parameters = options == null ? null : options.getParameters();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
@@ -15919,7 +15175,7 @@ public final class BatchAsyncClient {
         // Generated convenience method for deallocateNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchNodeDeallocateContent parameters = options == null ? null : options.getParameters();
+        BatchNodeDeallocateParameters parameters = options == null ? null : options.getParameters();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
@@ -15952,7 +15208,7 @@ public final class BatchAsyncClient {
         // Generated convenience method for disableNodeSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchNodeDisableSchedulingContent parameters = options == null ? null : options.getParameters();
+        BatchNodeDisableSchedulingParameters parameters = options == null ? null : options.getParameters();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
@@ -16023,44 +15279,6 @@ public final class BatchAsyncClient {
         }
         return getNodeRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(BatchNodeRemoteLoginSettings.class));
-    }
-
-    /**
-     * Upload Azure Batch service log files from the specified Compute Node to Azure
-     * Blob Storage.
-     *
-     * This is for gathering Azure Batch service log files in an automated fashion
-     * from Compute Nodes if you are experiencing an error and wish to escalate to
-     * Azure support. The Azure Batch service log files should be shared with Azure
-     * support to aid in debugging issues with the Batch service.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
-     * Protocol file.
-     * @param content The Azure Batch service log files upload options.
-     * @param options Optional parameters for Upload Node Logs operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of uploading Batch service log files from a specific Compute Node on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadBatchServiceLogsResult> uploadNodeLogs(String poolId, String nodeId,
-        UploadBatchServiceLogsContent content, BatchNodeLogsUploadOptions options) {
-        // Generated convenience method for uploadNodeLogsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(content), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(UploadBatchServiceLogsResult.class));
     }
 
     /**
@@ -16316,5 +15534,1107 @@ public final class BatchAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
+    }
+
+    /**
+     * Creates a Pool to the specified Account.
+     *
+     * When naming Pools, avoid including sensitive information such as user names or
+     * secret project names. This information may appear in telemetry logs accessible
+     * to Microsoft Support engineers.
+     *
+     * @param pool The Pool to be created.
+     * @param options Optional parameters for Create Pool operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createPool(BatchPoolCreateParameters pool, BatchPoolCreateOptions options) {
+        // Generated convenience method for createPoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        return createPoolWithResponse(BinaryData.fromObject(pool), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a Pool to the specified Account.
+     *
+     * When naming Pools, avoid including sensitive information such as user names or
+     * secret project names. This information may appear in telemetry logs accessible
+     * to Microsoft Support engineers.
+     *
+     * @param pool The Pool to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createPool(BatchPoolCreateParameters pool) {
+        // Generated convenience method for createPoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createPoolWithResponse(BinaryData.fromObject(pool), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * This only replaces the Pool properties specified in the request. For example,
+     * if the Pool has a StartTask associated with it, and a request does not specify
+     * a StartTask element, then the Pool keeps the existing StartTask.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param pool The pool properties to update.
+     * @param options Optional parameters for Update Pool operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updatePool(String poolId, BatchPoolUpdateParameters pool, BatchPoolUpdateOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for updatePoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return updatePoolWithResponse(poolId, BinaryData.fromObject(pool), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * This only replaces the Pool properties specified in the request. For example,
+     * if the Pool has a StartTask associated with it, and a request does not specify
+     * a StartTask element, then the Pool keeps the existing StartTask.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param pool The pool properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updatePool(String poolId, BatchPoolUpdateParameters pool) {
+        // Generated convenience method for updatePoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return updatePoolWithResponse(poolId, BinaryData.fromObject(pool), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Enables automatic scaling for a Pool.
+     *
+     * You cannot enable automatic scaling on a Pool if a resize operation is in
+     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
+     * you must specify a valid autoscale formula as part of the request. If automatic
+     * scaling of the Pool is already enabled, you may specify a new autoscale formula
+     * and/or a new evaluation interval. You cannot call this API for the same Pool
+     * more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for enabling automatic scaling.
+     * @param options Optional parameters for Enable Pool AutoScale operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters,
+        BatchPoolAutoScaleEnableOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for enablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Enables automatic scaling for a Pool.
+     *
+     * You cannot enable automatic scaling on a Pool if a resize operation is in
+     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
+     * you must specify a valid autoscale formula as part of the request. If automatic
+     * scaling of the Pool is already enabled, you may specify a new autoscale formula
+     * and/or a new evaluation interval. You cannot call this API for the same Pool
+     * more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for enabling automatic scaling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters) {
+        // Generated convenience method for enablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool. The Pool must have auto
+     * scaling enabled in order to evaluate a formula.
+     *
+     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
+     * @param parameters The options to use for evaluating the automatic scaling formula.
+     * @param options Optional parameters for Evaluate Pool AutoScale operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AutoScaleRun> evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleParameters parameters,
+        BatchPoolAutoScaleEvaluateOptions options) {
+        // Generated convenience method for evaluatePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AutoScaleRun.class));
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool. The Pool must have auto
+     * scaling enabled in order to evaluate a formula.
+     *
+     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
+     * @param parameters The options to use for evaluating the automatic scaling formula.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AutoScaleRun> evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleParameters parameters) {
+        // Generated convenience method for evaluatePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AutoScaleRun.class));
+    }
+
+    /**
+     * Changes the number of Compute Nodes that are assigned to a Pool.
+     *
+     * You can only resize a Pool when its allocation state is steady. If the Pool is
+     * already resizing, the request fails with status code 409. When you resize a
+     * Pool, the Pool's allocation state changes from steady to resizing. You cannot
+     * resize Pools which are configured for automatic scaling. If you try to do this,
+     * the Batch service returns an error 409. If you resize a Pool downwards, the
+     * Batch service chooses which Compute Nodes to remove. To remove specific Compute
+     * Nodes, use the Pool remove Compute Nodes API instead.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for resizing the pool.
+     * @param options Optional parameters for Resize Pool operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resizePool(String poolId, BatchPoolResizeParameters parameters, BatchPoolResizeOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for resizePoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return resizePoolWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Changes the number of Compute Nodes that are assigned to a Pool.
+     *
+     * You can only resize a Pool when its allocation state is steady. If the Pool is
+     * already resizing, the request fails with status code 409. When you resize a
+     * Pool, the Pool's allocation state changes from steady to resizing. You cannot
+     * resize Pools which are configured for automatic scaling. If you try to do this,
+     * the Batch service returns an error 409. If you resize a Pool downwards, the
+     * Batch service chooses which Compute Nodes to remove. To remove specific Compute
+     * Nodes, use the Pool remove Compute Nodes API instead.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for resizing the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resizePool(String poolId, BatchPoolResizeParameters parameters) {
+        // Generated convenience method for resizePoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return resizePoolWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * This fully replaces all the updatable properties of the Pool. For example, if
+     * the Pool has a StartTask associated with it and if StartTask is not specified
+     * with this request, then the Batch service will remove the existing StartTask.
+     *
+     * @param poolId The ID of the Pool to update.
+     * @param pool The options to use for replacing properties on the pool.
+     * @param options Optional parameters for Replace Pool Properties operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> replacePoolProperties(String poolId, BatchPoolReplaceParameters pool,
+        BatchPoolPropertiesReplaceOptions options) {
+        // Generated convenience method for replacePoolPropertiesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        return replacePoolPropertiesWithResponse(poolId, BinaryData.fromObject(pool), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * This fully replaces all the updatable properties of the Pool. For example, if
+     * the Pool has a StartTask associated with it and if StartTask is not specified
+     * with this request, then the Batch service will remove the existing StartTask.
+     *
+     * @param poolId The ID of the Pool to update.
+     * @param pool The options to use for replacing properties on the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> replacePoolProperties(String poolId, BatchPoolReplaceParameters pool) {
+        // Generated convenience method for replacePoolPropertiesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return replacePoolPropertiesWithResponse(poolId, BinaryData.fromObject(pool), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Removes Compute Nodes from the specified Pool.
+     *
+     * This operation can only run when the allocation state of the Pool is steady.
+     * When this operation runs, the allocation state changes from steady to resizing.
+     * Each request may remove up to 100 nodes.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for removing the node.
+     * @param options Optional parameters for Remove Nodes operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> removeNodes(String poolId, BatchNodeRemoveParameters parameters, BatchNodesRemoveOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for removeNodesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return removeNodesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Removes Compute Nodes from the specified Pool.
+     *
+     * This operation can only run when the allocation state of the Pool is steady.
+     * When this operation runs, the allocation state changes from steady to resizing.
+     * Each request may remove up to 100 nodes.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for removing the node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> removeNodes(String poolId, BatchNodeRemoveParameters parameters) {
+        // Generated convenience method for removeNodesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return removeNodesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the properties of the specified Job.
+     *
+     * This replaces only the Job properties specified in the request. For example, if
+     * the Job has constraints, and a request does not specify the constraints
+     * element, then the Job keeps the existing constraints.
+     *
+     * @param jobId The ID of the Job whose properties you want to update.
+     * @param job The options to use for updating the Job.
+     * @param options Optional parameters for Update Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateJob(String jobId, BatchJobUpdateParameters job, BatchJobUpdateOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for updateJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the properties of the specified Job.
+     *
+     * This replaces only the Job properties specified in the request. For example, if
+     * the Job has constraints, and a request does not specify the constraints
+     * element, then the Job keeps the existing constraints.
+     *
+     * @param jobId The ID of the Job whose properties you want to update.
+     * @param job The options to use for updating the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateJob(String jobId, BatchJobUpdateParameters job) {
+        // Generated convenience method for updateJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Disables the specified Job, preventing new Tasks from running.
+     *
+     * The Batch Service immediately moves the Job to the disabling state. Batch then
+     * uses the disableTasks parameter to determine what to do with the currently
+     * running Tasks of the Job. The Job remains in the disabling state until the
+     * disable operation is completed and all Tasks have been dealt with according to
+     * the disableTasks option; the Job then moves to the disabled state. No new Tasks
+     * are started under the Job until it moves back to active state. If you try to
+     * disable a Job that is in any state other than active, disabling, or disabled,
+     * the request fails with status code 409.
+     *
+     * @param jobId The ID of the Job to disable.
+     * @param parameters The options to use for disabling the Job.
+     * @param options Optional parameters for Disable Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> disableJob(String jobId, BatchJobDisableParameters parameters, BatchJobDisableOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for disableJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return disableJobWithResponse(jobId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Disables the specified Job, preventing new Tasks from running.
+     *
+     * The Batch Service immediately moves the Job to the disabling state. Batch then
+     * uses the disableTasks parameter to determine what to do with the currently
+     * running Tasks of the Job. The Job remains in the disabling state until the
+     * disable operation is completed and all Tasks have been dealt with according to
+     * the disableTasks option; the Job then moves to the disabled state. No new Tasks
+     * are started under the Job until it moves back to active state. If you try to
+     * disable a Job that is in any state other than active, disabling, or disabled,
+     * the request fails with status code 409.
+     *
+     * @param jobId The ID of the Job to disable.
+     * @param parameters The options to use for disabling the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> disableJob(String jobId, BatchJobDisableParameters parameters) {
+        // Generated convenience method for disableJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return disableJobWithResponse(jobId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a Job to the specified Account.
+     *
+     * The Batch service supports two ways to control the work done as part of a Job.
+     * In the first approach, the user specifies a Job Manager Task. The Batch service
+     * launches this Task when it is ready to start the Job. The Job Manager Task
+     * controls all other Tasks that run under this Job, by using the Task APIs. In
+     * the second approach, the user directly controls the execution of Tasks under an
+     * active Job, by using the Task APIs. Also note: when naming Jobs, avoid
+     * including sensitive information such as user names or secret project names.
+     * This information may appear in telemetry logs accessible to Microsoft Support
+     * engineers.
+     *
+     * @param job The Job to be created.
+     * @param options Optional parameters for Create Job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createJob(BatchJobCreateParameters job, BatchJobCreateOptions options) {
+        // Generated convenience method for createJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        return createJobWithResponse(BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a Job to the specified Account.
+     *
+     * The Batch service supports two ways to control the work done as part of a Job.
+     * In the first approach, the user specifies a Job Manager Task. The Batch service
+     * launches this Task when it is ready to start the Job. The Job Manager Task
+     * controls all other Tasks that run under this Job, by using the Task APIs. In
+     * the second approach, the user directly controls the execution of Tasks under an
+     * active Job, by using the Task APIs. Also note: when naming Jobs, avoid
+     * including sensitive information such as user names or secret project names.
+     * This information may appear in telemetry logs accessible to Microsoft Support
+     * engineers.
+     *
+     * @param job The Job to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createJob(BatchJobCreateParameters job) {
+        // Generated convenience method for createJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createJobWithResponse(BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the properties of the specified Job Schedule.
+     *
+     * This replaces only the Job Schedule properties specified in the request. For
+     * example, if the schedule property is not specified with this request, then the
+     * Batch service will keep the existing schedule. Changes to a Job Schedule only
+     * impact Jobs created by the schedule after the update has taken place; currently
+     * running Jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to update.
+     * @param jobSchedule The options to use for updating the Job Schedule.
+     * @param options Optional parameters for Update Job Schedule operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateJobSchedule(String jobScheduleId, BatchJobScheduleUpdateParameters jobSchedule,
+        BatchJobScheduleUpdateOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for updateJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return updateJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(jobSchedule), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the properties of the specified Job Schedule.
+     *
+     * This replaces only the Job Schedule properties specified in the request. For
+     * example, if the schedule property is not specified with this request, then the
+     * Batch service will keep the existing schedule. Changes to a Job Schedule only
+     * impact Jobs created by the schedule after the update has taken place; currently
+     * running Jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to update.
+     * @param jobSchedule The options to use for updating the Job Schedule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateJobSchedule(String jobScheduleId, BatchJobScheduleUpdateParameters jobSchedule) {
+        // Generated convenience method for updateJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return updateJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(jobSchedule), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a Job Schedule to the specified Account.
+     *
+     * @param jobSchedule The Job Schedule to be created.
+     * @param options Optional parameters for Create Job Schedule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createJobSchedule(BatchJobScheduleCreateParameters jobSchedule,
+        BatchJobScheduleCreateOptions options) {
+        // Generated convenience method for createJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        return createJobScheduleWithResponse(BinaryData.fromObject(jobSchedule), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a Job Schedule to the specified Account.
+     *
+     * @param jobSchedule The Job Schedule to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createJobSchedule(BatchJobScheduleCreateParameters jobSchedule) {
+        // Generated convenience method for createJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createJobScheduleWithResponse(BinaryData.fromObject(jobSchedule), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a Task to the specified Job.
+     *
+     * The maximum lifetime of a Task from addition to completion is 180 days. If a
+     * Task has not completed within 180 days of being added it will be terminated by
+     * the Batch service and left in whatever state it was in at that time.
+     *
+     * @param jobId The ID of the Job to which the Task is to be created.
+     * @param task The Task to be created.
+     * @param options Optional parameters for Create Task operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createTask(String jobId, BatchTaskCreateParameters task, BatchTaskCreateOptions options) {
+        // Generated convenience method for createTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        return createTaskWithResponse(jobId, BinaryData.fromObject(task), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a Task to the specified Job.
+     *
+     * The maximum lifetime of a Task from addition to completion is 180 days. If a
+     * Task has not completed within 180 days of being added it will be terminated by
+     * the Batch service and left in whatever state it was in at that time.
+     *
+     * @param jobId The ID of the Job to which the Task is to be created.
+     * @param task The Task to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createTask(String jobId, BatchTaskCreateParameters task) {
+        // Generated convenience method for createTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createTaskWithResponse(jobId, BinaryData.fromObject(task), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Adds a user Account to the specified Compute Node.
+     *
+     * You can add a user Account to a Compute Node only when it is in the idle or
+     * running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to create a user Account.
+     * @param user The options to use for creating the user.
+     * @param options Optional parameters for Create Node User operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createNodeUser(String poolId, String nodeId, BatchNodeUserCreateParameters user,
+        BatchNodeUserCreateOptions options) {
+        // Generated convenience method for createNodeUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        return createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Adds a user Account to the specified Compute Node.
+     *
+     * You can add a user Account to a Compute Node only when it is in the idle or
+     * running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to create a user Account.
+     * @param user The options to use for creating the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createNodeUser(String poolId, String nodeId, BatchNodeUserCreateParameters user) {
+        // Generated convenience method for createNodeUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the password and expiration time of a user Account on the specified Compute Node.
+     *
+     * This operation replaces of all the updatable properties of the Account. For
+     * example, if the expiryTime element is not specified, the current value is
+     * replaced with the default value, not left unmodified. You can update a user
+     * Account on a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to update a user Account.
+     * @param userName The name of the user Account to update.
+     * @param parameters The options to use for updating the user.
+     * @param options Optional parameters for Replace Node User operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> replaceNodeUser(String poolId, String nodeId, String userName,
+        BatchNodeUserUpdateParameters parameters, BatchNodeUserReplaceOptions options) {
+        // Generated convenience method for replaceNodeUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        return replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the password and expiration time of a user Account on the specified Compute Node.
+     *
+     * This operation replaces of all the updatable properties of the Account. For
+     * example, if the expiryTime element is not specified, the current value is
+     * replaced with the default value, not left unmodified. You can update a user
+     * Account on a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to update a user Account.
+     * @param userName The name of the user Account to update.
+     * @param parameters The options to use for updating the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> replaceNodeUser(String poolId, String nodeId, String userName,
+        BatchNodeUserUpdateParameters parameters) {
+        // Generated convenience method for replaceNodeUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Upload Azure Batch service log files from the specified Compute Node to Azure
+     * Blob Storage.
+     *
+     * This is for gathering Azure Batch service log files in an automated fashion
+     * from Compute Nodes if you are experiencing an error and wish to escalate to
+     * Azure support. The Azure Batch service log files should be shared with Azure
+     * support to aid in debugging issues with the Batch service.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
+     * Protocol file.
+     * @param parameters The Azure Batch service log files upload options.
+     * @param options Optional parameters for Upload Node Logs operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of uploading Batch service log files from a specific Compute Node on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UploadBatchServiceLogsResult> uploadNodeLogs(String poolId, String nodeId,
+        UploadBatchServiceLogsParameters parameters, BatchNodeLogsUploadOptions options) {
+        // Generated convenience method for uploadNodeLogsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(UploadBatchServiceLogsResult.class));
+    }
+
+    /**
+     * Upload Azure Batch service log files from the specified Compute Node to Azure
+     * Blob Storage.
+     *
+     * This is for gathering Azure Batch service log files in an automated fashion
+     * from Compute Nodes if you are experiencing an error and wish to escalate to
+     * Azure support. The Azure Batch service log files should be shared with Azure
+     * support to aid in debugging issues with the Batch service.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
+     * Protocol file.
+     * @param parameters The Azure Batch service log files upload options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of uploading Batch service log files from a specific Compute Node on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UploadBatchServiceLogsResult> uploadNodeLogs(String poolId, String nodeId,
+        UploadBatchServiceLogsParameters parameters) {
+        // Generated convenience method for uploadNodeLogsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(UploadBatchServiceLogsResult.class));
     }
 }
