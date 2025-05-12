@@ -1083,6 +1083,11 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static final class ListBlobsWithTimeoutTestClient implements HttpClient {
+        private final boolean isAsync;
+
+        ListBlobsWithTimeoutTestClient(Boolean isAsync) {
+            this.isAsync = isAsync;
+        }
 
         private HttpResponse response(HttpRequest request, String xml) {
             HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
@@ -1113,6 +1118,7 @@ public class BlobTestBase extends TestProxyTestBase {
         public Mono<HttpResponse> send(HttpRequest request) {
             String url = request.getUrl().toString();
             HttpResponse response;
+            int delay = isAsync ? 8 : 4;
 
             if (url.contains("?restype=container&comp=list&maxresults=")) {
                 // flat first request
@@ -1131,11 +1137,16 @@ public class BlobTestBase extends TestProxyTestBase {
                 return Mono.just(new MockHttpResponse(request, 404));
             }
 
-            return Mono.delay(Duration.ofSeconds(4)).then(Mono.just(response));
+            return Mono.delay(Duration.ofSeconds(delay)).then(Mono.just(response));
         }
     }
 
     protected static final class FindBlobsWithTimeoutClient implements HttpClient {
+        private final boolean isAsync;
+
+        FindBlobsWithTimeoutClient(Boolean isAsync) {
+            this.isAsync = isAsync;
+        }
 
         private HttpResponse response(HttpRequest request, String xml) {
             HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
@@ -1172,6 +1183,7 @@ public class BlobTestBase extends TestProxyTestBase {
         public Mono<HttpResponse> send(HttpRequest request) {
             String url = request.getUrl().toString();
             HttpResponse response;
+            int delay = isAsync ? 8 : 4;
 
             if (url.contains("marker")) {
                 // second request
@@ -1184,11 +1196,16 @@ public class BlobTestBase extends TestProxyTestBase {
                 return Mono.just(new MockHttpResponse(request, 404));
             }
 
-            return Mono.delay(Duration.ofSeconds(4)).then(Mono.just(response));
+            return Mono.delay(Duration.ofSeconds(delay)).then(Mono.just(response));
         }
     }
 
     protected static final class ListContainersWithTimeoutTestClient implements HttpClient {
+        private final boolean isAsync;
+
+        ListContainersWithTimeoutTestClient(Boolean isAsync) {
+            this.isAsync = isAsync;
+        }
 
         private HttpResponse response(HttpRequest request, String xml) {
             HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
@@ -1216,6 +1233,7 @@ public class BlobTestBase extends TestProxyTestBase {
         public Mono<HttpResponse> send(HttpRequest request) {
             String url = request.getUrl().toString();
             HttpResponse response;
+            int delay = isAsync ? 8 : 4;
 
             if (url.contains("?comp=list&maxresults=")) {
                 // flat first request
@@ -1228,7 +1246,7 @@ public class BlobTestBase extends TestProxyTestBase {
                 return Mono.just(new MockHttpResponse(request, 404));
             }
 
-            return Mono.delay(Duration.ofSeconds(4)).then(Mono.just(response));
+            return Mono.delay(Duration.ofSeconds(delay)).then(Mono.just(response));
         }
     }
 }

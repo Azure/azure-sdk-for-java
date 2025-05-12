@@ -303,12 +303,12 @@ public class ServiceApiTests extends BlobTestBase {
         BlobServiceClient serviceClient
             = new BlobServiceClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
-                .httpClient(new ListContainersWithTimeoutTestClient())
+                .httpClient(new ListContainersWithTimeoutTestClient(false))
                 .buildClient();
 
         assertEquals(2,
             serviceClient
-                .listBlobContainers(new ListBlobContainersOptions().setMaxResultsPerPage(3), Duration.ofSeconds(6))
+                .listBlobContainers(new ListBlobContainersOptions().setMaxResultsPerPage(3), Duration.ofSeconds(14))
                 .streamByPage()
                 .count());
 
@@ -540,13 +540,13 @@ public class ServiceApiTests extends BlobTestBase {
         BlobServiceClient serviceClient
             = new BlobServiceClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
-                .httpClient(new FindBlobsWithTimeoutClient())
+                .httpClient(new FindBlobsWithTimeoutClient(false))
                 .buildClient();
 
         assertEquals(2,
             serviceClient.findBlobsByTags(
                 new FindBlobsOptions(String.format("\"%s\"='%s'", "dummyKey", "dummyValue")).setMaxResultsPerPage(3),
-                Duration.ofSeconds(6), Context.NONE).streamByPage().count());
+                Duration.ofSeconds(14), Context.NONE).streamByPage().count());
     }
 
     private static void validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {

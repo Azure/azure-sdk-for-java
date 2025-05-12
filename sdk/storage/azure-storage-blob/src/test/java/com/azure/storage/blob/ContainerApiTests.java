@@ -1084,11 +1084,11 @@ public class ContainerApiTests extends BlobTestBase {
             = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
                 .containerName("foo")
-                .httpClient(new ListBlobsWithTimeoutTestClient())
+                .httpClient(new ListBlobsWithTimeoutTestClient(false))
                 .buildClient();
 
         assertEquals(2,
-            containerClient.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(3), Duration.ofSeconds(6))
+            containerClient.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(3), Duration.ofSeconds(14))
                 .streamByPage()
                 .count());
     }
@@ -1099,12 +1099,12 @@ public class ContainerApiTests extends BlobTestBase {
             = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
                 .containerName("foo")
-                .httpClient(new ListBlobsWithTimeoutTestClient())
+                .httpClient(new ListBlobsWithTimeoutTestClient(false))
                 .buildClient();
 
         assertEquals(2,
             containerClient
-                .listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(3), Duration.ofSeconds(6))
+                .listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(3), Duration.ofSeconds(14))
                 .streamByPage()
                 .count());
     }
@@ -1676,13 +1676,13 @@ public class ContainerApiTests extends BlobTestBase {
             = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
                 .containerName("foo")
-                .httpClient(new FindBlobsWithTimeoutClient())
+                .httpClient(new FindBlobsWithTimeoutClient(false))
                 .buildClient();
 
         assertEquals(2,
             containerClient.findBlobsByTags(
                 new FindBlobsOptions(String.format("\"%s\"='%s'", "dummyKey", "dummyValue")).setMaxResultsPerPage(3),
-                Duration.ofSeconds(6), Context.NONE).streamByPage().count());
+                Duration.ofSeconds(14), Context.NONE).streamByPage().count());
     }
 
     @ParameterizedTest

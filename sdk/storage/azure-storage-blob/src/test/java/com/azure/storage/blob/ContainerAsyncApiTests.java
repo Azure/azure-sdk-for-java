@@ -1135,7 +1135,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
                 .containerName("foo")
-                .httpClient(new ListBlobsWithTimeoutTestClient())
+                .httpClient(new ListBlobsWithTimeoutTestClient(true))
                 .buildAsyncClient();
 
         StepVerifier
@@ -1154,7 +1154,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
                 .containerName("foo")
-                .httpClient(new ListBlobsWithTimeoutTestClient())
+                .httpClient(new ListBlobsWithTimeoutTestClient(true))
                 .buildAsyncClient();
 
         StepVerifier
@@ -1799,7 +1799,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
                 .containerName("foo")
-                .httpClient(new FindBlobsWithTimeoutClient())
+                .httpClient(new FindBlobsWithTimeoutClient(true))
                 .buildAsyncClient();
 
         StepVerifier.create(containerClient.findBlobsByTags(

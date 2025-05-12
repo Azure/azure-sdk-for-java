@@ -299,7 +299,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         BlobServiceAsyncClient serviceClient
             = new BlobServiceClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
-                .httpClient(new ListContainersWithTimeoutTestClient())
+                .httpClient(new ListContainersWithTimeoutTestClient(true))
                 .buildAsyncClient();
 
         StepVerifier
@@ -524,7 +524,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         BlobServiceAsyncClient serviceClient
             = new BlobServiceClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
-                .httpClient(new FindBlobsWithTimeoutClient())
+                .httpClient(new FindBlobsWithTimeoutClient(true))
                 .buildAsyncClient();
 
         StepVerifier.create(serviceClient.findBlobsByTags(
