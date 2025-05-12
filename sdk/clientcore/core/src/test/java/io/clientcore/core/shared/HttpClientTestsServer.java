@@ -152,6 +152,7 @@ public class HttpClientTestsServer {
                 resp.flushBuffer();
             } else if (get && pathMatches(path, HUGE_HEADER_RESPONSE)) {
                 resp.addHeader(HUGE_HEADER_NAME.getCaseSensitiveName(), HUGE_HEADER_VALUE);
+                resp.setContentLength(0);
                 resp.setStatus(200);
                 resp.flushBuffer();
             } else {
