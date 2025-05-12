@@ -42,11 +42,14 @@ public class Http2ConnectionConfig {
      * If not configured, will be default to 1000.
      *
      * @param maxConnectionPoolSize the maximum number of live connections to keep in the pool.
+     * If null, the default value `1000` will be applied.
      * @return the current {@link Http2ConnectionConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Http2ConnectionConfig setMaxConnectionPoolSize(int maxConnectionPoolSize) {
-        this.maxConnectionPoolSize = maxConnectionPoolSize;
+    public Http2ConnectionConfig setMaxConnectionPoolSize(Integer maxConnectionPoolSize) {
+        this.maxConnectionPoolSize = maxConnectionPoolSize != null
+            ? maxConnectionPoolSize
+            : Configs.getDefaultHttpPoolSize();
         return this;
     }
 
@@ -65,11 +68,14 @@ public class Http2ConnectionConfig {
      * Default to 30.
      *
      * @param maxConcurrentStreams the maximum number of the concurrent streams that can be opened to the remote peer.
+     * If null, the default value `30` will be used.
      * @return the current {@link Http2ConnectionConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Http2ConnectionConfig setMaxConcurrentStreams(int maxConcurrentStreams) {
-        this.maxConcurrentStreams = maxConcurrentStreams;
+    public Http2ConnectionConfig setMaxConcurrentStreams(Integer maxConcurrentStreams) {
+        this.maxConcurrentStreams = maxConcurrentStreams != null
+            ? maxConcurrentStreams
+            : Configs.getHttp2MaxConcurrentStreams();
         return this;
     }
 
@@ -85,11 +91,14 @@ public class Http2ConnectionConfig {
     /***
      * Configures the minimum number of live connections to keep in the pool (can be the best effort). Default to 1.
      * @param minConnectionPoolSize the minimum number of live connections to keep in the pool (can be the best effort).
+     * If null, the default value `1` will be applied.
      * @return the current {@link Http2ConnectionConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Http2ConnectionConfig setMinConnectionPoolSize(int minConnectionPoolSize) {
-        this.minConnectionPoolSize = minConnectionPoolSize;
+    public Http2ConnectionConfig setMinConnectionPoolSize(Integer minConnectionPoolSize) {
+        this.minConnectionPoolSize = minConnectionPoolSize != null
+            ? minConnectionPoolSize
+            : Configs.getHttp2MinConnectionPoolSize();
         return this;
     }
 
