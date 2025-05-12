@@ -47,9 +47,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
     @SuppressWarnings("cast")
     @Override
     public BinaryData getBinaryData(String url) {
-        String uri = url + "/bytes";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url + "/bytes");
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -65,9 +64,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
     @SuppressWarnings("cast")
     @Override
     public Response<BinaryData> getBinaryDataWithResponse(String url) {
-        String uri = url + "/bytes";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url + "/bytes");
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -83,9 +81,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
     @SuppressWarnings("cast")
     @Override
     public byte[] getByteArray(String url) {
-        String uri = url + "/bytes";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url + "/bytes");
         // Send the request through the httpPipeline
         try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
             int responseCode = networkResponse.getStatusCode();
@@ -102,9 +99,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
     @SuppressWarnings("cast")
     @Override
     public Response<byte[]> getByteArrayWithResponse(String url) {
-        String uri = url + "/bytes";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url + "/bytes");
         // Send the request through the httpPipeline
         try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
             int responseCode = networkResponse.getStatusCode();
@@ -121,9 +117,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
     @SuppressWarnings("cast")
     @Override
     public InputStream getInputStream(String url) {
-        String uri = url + "/bytes";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url + "/bytes");
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -139,9 +134,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
     @SuppressWarnings("cast")
     @Override
     public Response<InputStream> getInputStreamWithResponse(String url) {
-        String uri = url + "/bytes";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url + "/bytes");
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
