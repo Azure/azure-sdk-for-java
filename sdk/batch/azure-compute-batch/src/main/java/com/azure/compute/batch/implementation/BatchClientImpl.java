@@ -372,7 +372,7 @@ public final class BatchClientImpl {
         Mono<Response<Void>> enablePoolAutoScale(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/enableautoscale")
@@ -384,7 +384,7 @@ public final class BatchClientImpl {
         Response<Void> enablePoolAutoScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/evaluateautoscale")
@@ -396,7 +396,7 @@ public final class BatchClientImpl {
         Mono<Response<BinaryData>> evaluatePoolAutoScale(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/evaluateautoscale")
@@ -408,7 +408,7 @@ public final class BatchClientImpl {
         Response<BinaryData> evaluatePoolAutoScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/resize")
@@ -420,7 +420,7 @@ public final class BatchClientImpl {
         Mono<Response<Void>> resizePool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/resize")
@@ -432,7 +432,7 @@ public final class BatchClientImpl {
         Response<Void> resizePoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/stopresize")
@@ -488,7 +488,7 @@ public final class BatchClientImpl {
         Mono<Response<Void>> removeNodes(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/removenodes")
@@ -500,7 +500,7 @@ public final class BatchClientImpl {
         Response<Void> removeNodesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Get("/supportedimages")
@@ -640,7 +640,7 @@ public final class BatchClientImpl {
         Mono<Response<Void>> disableJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/jobs/{jobId}/disable")
@@ -652,7 +652,7 @@ public final class BatchClientImpl {
         Response<Void> disableJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/jobs/{jobId}/enable")
@@ -1463,7 +1463,7 @@ public final class BatchClientImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @PathParam("userName") String userName, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Put("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
@@ -1476,7 +1476,7 @@ public final class BatchClientImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @PathParam("userName") String userName, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}")
@@ -1665,7 +1665,7 @@ public final class BatchClientImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/uploadbatchservicelogs")
@@ -1678,7 +1678,7 @@ public final class BatchClientImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
         @Get("/pools/{poolId}/nodes")
@@ -6809,7 +6809,7 @@ public final class BatchClientImpl {
      * </pre>
      * 
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for enabling automatic scaling.
+     * @param parameters The options to use for enabling automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6818,12 +6818,12 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> enablePoolAutoScaleWithResponseAsync(String poolId, BinaryData content,
+    public Mono<Response<Void>> enablePoolAutoScaleWithResponseAsync(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.enablePoolAutoScale(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -6878,7 +6878,7 @@ public final class BatchClientImpl {
      * </pre>
      * 
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for enabling automatic scaling.
+     * @param parameters The options to use for enabling automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6887,12 +6887,12 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> enablePoolAutoScaleWithResponse(String poolId, BinaryData content,
+    public Response<Void> enablePoolAutoScaleWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.enablePoolAutoScaleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, accept, content, requestOptions, Context.NONE);
+            poolId, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -6942,7 +6942,7 @@ public final class BatchClientImpl {
      * </pre>
      * 
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param content The options to use for evaluating the automatic scaling formula.
+     * @param parameters The options to use for evaluating the automatic scaling formula.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6955,12 +6955,12 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> evaluatePoolAutoScaleWithResponseAsync(String poolId, BinaryData content,
+    public Mono<Response<BinaryData>> evaluatePoolAutoScaleWithResponseAsync(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.evaluatePoolAutoScale(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -7010,7 +7010,7 @@ public final class BatchClientImpl {
      * </pre>
      * 
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param content The options to use for evaluating the automatic scaling formula.
+     * @param parameters The options to use for evaluating the automatic scaling formula.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7022,12 +7022,12 @@ public final class BatchClientImpl {
      * the result without applying the formula to the Pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> evaluatePoolAutoScaleWithResponse(String poolId, BinaryData content,
+    public Response<BinaryData> evaluatePoolAutoScaleWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.evaluatePoolAutoScaleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, accept, content, requestOptions, Context.NONE);
+            poolId, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -7085,7 +7085,7 @@ public final class BatchClientImpl {
      * </pre>
      * 
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for resizing the pool.
+     * @param parameters The options to use for resizing the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7094,12 +7094,12 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resizePoolWithResponseAsync(String poolId, BinaryData content,
+    public Mono<Response<Void>> resizePoolWithResponseAsync(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.resizePool(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -7157,7 +7157,7 @@ public final class BatchClientImpl {
      * </pre>
      * 
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for resizing the pool.
+     * @param parameters The options to use for resizing the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7166,11 +7166,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resizePoolWithResponse(String poolId, BinaryData content, RequestOptions requestOptions) {
+    public Response<Void> resizePoolWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.resizePoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, poolId,
-            accept, content, requestOptions, Context.NONE);
+            accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -7567,7 +7567,7 @@ public final class BatchClientImpl {
      * </pre>
      * 
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for removing the node.
+     * @param parameters The options to use for removing the node.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7576,12 +7576,12 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeNodesWithResponseAsync(String poolId, BinaryData content,
+    public Mono<Response<Void>> removeNodesWithResponseAsync(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeNodes(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -7636,7 +7636,7 @@ public final class BatchClientImpl {
      * </pre>
      * 
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for removing the node.
+     * @param parameters The options to use for removing the node.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7645,11 +7645,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeNodesWithResponse(String poolId, BinaryData content, RequestOptions requestOptions) {
+    public Response<Void> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.removeNodesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, poolId,
-            accept, content, requestOptions, Context.NONE);
+            accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -11059,7 +11059,7 @@ public final class BatchClientImpl {
      * </pre>
      * 
      * @param jobId The ID of the Job to disable.
-     * @param content The options to use for disabling the Job.
+     * @param parameters The options to use for disabling the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11068,12 +11068,12 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableJobWithResponseAsync(String jobId, BinaryData content,
+    public Mono<Response<Void>> disableJobWithResponseAsync(String jobId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.disableJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobId, accept, content, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, jobId, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -11129,7 +11129,7 @@ public final class BatchClientImpl {
      * </pre>
      * 
      * @param jobId The ID of the Job to disable.
-     * @param content The options to use for disabling the Job.
+     * @param parameters The options to use for disabling the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11138,11 +11138,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disableJobWithResponse(String jobId, BinaryData content, RequestOptions requestOptions) {
+    public Response<Void> disableJobWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.disableJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
-            accept, content, requestOptions, Context.NONE);
+            accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -27615,7 +27615,7 @@ public final class BatchClientImpl {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
-     * @param content The options to use for updating the user.
+     * @param parameters The options to use for updating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -27625,12 +27625,12 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> replaceNodeUserWithResponseAsync(String poolId, String nodeId, String userName,
-        BinaryData content, RequestOptions requestOptions) {
+        BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.replaceNodeUser(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, poolId, nodeId, userName, accept, content, requestOptions, context));
+                contentType, poolId, nodeId, userName, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -27664,7 +27664,7 @@ public final class BatchClientImpl {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
-     * @param content The options to use for updating the user.
+     * @param parameters The options to use for updating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -27673,12 +27673,12 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String userName, BinaryData content,
-        RequestOptions requestOptions) {
+    public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String userName,
+        BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.replaceNodeUserSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, nodeId, userName, accept, content, requestOptions, Context.NONE);
+            poolId, nodeId, userName, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -28772,7 +28772,7 @@ public final class BatchClientImpl {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
      * Protocol file.
-     * @param content The Azure Batch service log files upload options.
+     * @param parameters The Azure Batch service log files upload options.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -28782,13 +28782,13 @@ public final class BatchClientImpl {
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadNodeLogsWithResponseAsync(String poolId, String nodeId, BinaryData content,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> uploadNodeLogsWithResponseAsync(String poolId, String nodeId,
+        BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.uploadNodeLogs(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, poolId, nodeId, accept, content, requestOptions, context));
+                contentType, poolId, nodeId, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -28837,7 +28837,7 @@ public final class BatchClientImpl {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
      * Protocol file.
-     * @param content The Azure Batch service log files upload options.
+     * @param parameters The Azure Batch service log files upload options.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -28846,12 +28846,12 @@ public final class BatchClientImpl {
      * @return the result of uploading Batch service log files from a specific Compute Node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadNodeLogsWithResponse(String poolId, String nodeId, BinaryData content,
+    public Response<BinaryData> uploadNodeLogsWithResponse(String poolId, String nodeId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.uploadNodeLogsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, nodeId, accept, content, requestOptions, Context.NONE);
+            poolId, nodeId, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
