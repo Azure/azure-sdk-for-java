@@ -16,6 +16,7 @@ import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -40,8 +41,8 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
         ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
 
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
-    private final Consumer<FeedResponse<T>> feedResponseConsumer;
-    private final int defaultPageSize;
+    private final AtomicReference<Consumer<FeedResponse<T>>> feedResponseConsumer;
+    private final AtomicInteger defaultPageSize;
 
     CosmosPagedFluxDefaultImpl(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction) {
         this(optionsFluxFunction, null, -1);
@@ -57,8 +58,8 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
                     int defaultPageSize) {
         super();
         this.optionsFluxFunction = optionsFluxFunction;
-        this.feedResponseConsumer = feedResponseConsumer;
-        this.defaultPageSize = defaultPageSize;
+        this.feedResponseConsumer = new AtomicReference<>(feedResponseConsumer);
+        this.defaultPageSize = new AtomicInteger(defaultPageSize);
     }
 
     /**
@@ -68,18 +69,32 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
      * @return CosmosPagedFlux instance with attached handler
      */
     public CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> newFeedResponseConsumer) {
-        if (this.feedResponseConsumer != null) {
-            return new CosmosPagedFluxDefaultImpl<>(
-                this.optionsFluxFunction,
-                this.feedResponseConsumer.andThen(newFeedResponseConsumer));
-        } else {
-            return new CosmosPagedFluxDefaultImpl<>(this.optionsFluxFunction, newFeedResponseConsumer);
+        while (true) {
+            Consumer<FeedResponse<T>> feedResponseConsumerSnapshot = this.feedResponseConsumer.get();
+            if (feedResponseConsumerSnapshot != null) {
+
+                if (this.feedResponseConsumer.compareAndSet(
+                    feedResponseConsumerSnapshot, feedResponseConsumerSnapshot.andThen(newFeedResponseConsumer))) {
+
+                    break;
+                }
+            } else {
+                if (this.feedResponseConsumer.compareAndSet(
+                    null,
+                    newFeedResponseConsumer)) {
+
+                    break;
+                }
+            }
         }
+
+        return this;
     }
 
     @Override
     CosmosPagedFlux<T> withDefaultPageSize(int pageSize) {
-        return new CosmosPagedFluxDefaultImpl<>(this.optionsFluxFunction, this.feedResponseConsumer, pageSize);
+        this.defaultPageSize.set(pageSize);
+        return this;
     }
 
     @Override
@@ -113,8 +128,9 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
     private CosmosPagedFluxOptions createCosmosPagedFluxOptions() {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
 
-        if (this.defaultPageSize > 0) {
-            cosmosPagedFluxOptions.setMaxItemCount(this.defaultPageSize);
+        int defaultPageSizeSnapshot = this.defaultPageSize.get();
+        if (defaultPageSizeSnapshot > 0) {
+            cosmosPagedFluxOptions.setMaxItemCount(defaultPageSizeSnapshot);
         }
 
         return cosmosPagedFluxOptions;
@@ -137,7 +153,7 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
                             case ON_COMPLETE:
                             case ON_NEXT:
                                 DiagnosticsProvider.recordFeedResponse(
-                                    feedResponseConsumer,
+                                    feedResponseConsumer.get(),
                                     pagedFluxOptions.getFeedOperationState(),
                                     () ->pagedFluxOptions.getSamplingRateSnapshot(),
                                     tracerProvider,
@@ -169,7 +185,7 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
                         case ON_COMPLETE:
                             if (response != null) {
                                 DiagnosticsProvider.recordFeedResponse(
-                                    feedResponseConsumer,
+                                    feedResponseConsumer.get(),
                                     pagedFluxOptions.getFeedOperationState(),
                                     () ->pagedFluxOptions.getSamplingRateSnapshot(),
                                     tracerProvider,
@@ -193,7 +209,7 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
                             break;
                         case ON_NEXT:
                             DiagnosticsProvider.recordFeedResponse(
-                                feedResponseConsumer,
+                                feedResponseConsumer.get(),
                                 pagedFluxOptions.getFeedOperationState(),
                                 () ->pagedFluxOptions.getSamplingRateSnapshot(),
                                 tracerProvider,
