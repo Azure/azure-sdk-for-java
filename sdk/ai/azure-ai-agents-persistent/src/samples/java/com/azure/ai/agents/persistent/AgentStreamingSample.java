@@ -9,12 +9,11 @@ import com.azure.ai.agents.persistent.models.MessageRole;
 import com.azure.ai.agents.persistent.models.PersistentAgent;
 import com.azure.ai.agents.persistent.models.PersistentAgentStreamEvent;
 import com.azure.ai.agents.persistent.models.PersistentAgentThread;
-import com.azure.ai.agents.persistent.models.ThreadMessage;
 import com.azure.ai.agents.persistent.models.StreamMessageUpdate;
 import com.azure.ai.agents.persistent.models.StreamUpdate;
+import com.azure.ai.agents.persistent.models.ThreadMessage;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Flux;
 import java.util.Arrays;
 import java.util.stream.Stream;
 

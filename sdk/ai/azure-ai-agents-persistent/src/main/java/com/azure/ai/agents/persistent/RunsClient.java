@@ -9,11 +9,11 @@ import com.azure.ai.agents.persistent.implementation.models.SubmitToolOutputsToR
 import com.azure.ai.agents.persistent.implementation.models.UpdateRunRequest;
 import com.azure.ai.agents.persistent.models.CreateRunOptions;
 import com.azure.ai.agents.persistent.models.ListSortOrder;
+import com.azure.ai.agents.persistent.models.PersistentAgentServerSentEvents;
 import com.azure.ai.agents.persistent.models.RunAdditionalFieldList;
+import com.azure.ai.agents.persistent.models.StreamUpdate;
 import com.azure.ai.agents.persistent.models.ThreadRun;
 import com.azure.ai.agents.persistent.models.ToolOutput;
-import com.azure.ai.agents.persistent.models.PersistentAgentServerSentEvents;
-import com.azure.ai.agents.persistent.models.StreamUpdate;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -26,6 +26,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
 /**
@@ -944,10 +944,8 @@ public final class RunsClient {
         Flux<ByteBuffer> response
             = createRunWithResponse(threadId, createRunRequest, requestOptions).getValue().toFluxByteBuffer();
         PersistentAgentServerSentEvents eventStream = new PersistentAgentServerSentEvents(response);
-
         Iterable<StreamUpdate> iterable = eventStream.getEvents().toIterable();
         Stream<StreamUpdate> stream = StreamSupport.stream(iterable.spliterator(), false);
-
         return stream.onClose(() -> {
             if (iterable instanceof AutoCloseable) {
                 try {
@@ -990,7 +988,6 @@ public final class RunsClient {
         PersistentAgentServerSentEvents eventStream = new PersistentAgentServerSentEvents(response);
         Iterable<StreamUpdate> iterable = eventStream.getEvents().toIterable();
         Stream<StreamUpdate> stream = StreamSupport.stream(iterable.spliterator(), false);
-
         return stream.onClose(() -> {
             if (iterable instanceof AutoCloseable) {
                 try {

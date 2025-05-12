@@ -5,20 +5,19 @@ package com.azure.ai.agents.persistent;
 import com.azure.ai.agents.persistent.models.PersistentAgent;
 import com.azure.ai.agents.persistent.models.RunStatus;
 import com.azure.ai.agents.persistent.models.ThreadRun;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.azure.ai.agents.persistent.TestUtils.FAKE_API_KEY;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -42,7 +41,7 @@ public class ClientTestBase extends TestProxyTestBase {
         }
 
         if (testMode == TestMode.PLAYBACK) {
-            builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(FAKE_API_KEY));
+            builder.endpoint("https://localhost:8080").credential(new MockTokenCredential());
         } else if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))

@@ -173,6 +173,7 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
             OpenApiAuthDetails auth = null;
             String description = null;
             List<String> defaultParams = null;
+            List<FunctionDefinition> functions = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -186,6 +187,8 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
                     description = reader.getString();
                 } else if ("default_params".equals(fieldName)) {
                     defaultParams = reader.readArray(reader1 -> reader1.getString());
+                } else if ("functions".equals(fieldName)) {
+                    functions = reader.readArray(reader1 -> FunctionDefinition.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -194,7 +197,24 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
                 = new OpenApiFunctionDefinition(name, spec, auth);
             deserializedOpenApiFunctionDefinition.description = description;
             deserializedOpenApiFunctionDefinition.defaultParams = defaultParams;
+            deserializedOpenApiFunctionDefinition.functions = functions;
             return deserializedOpenApiFunctionDefinition;
         });
+    }
+
+    /*
+     * List of function definitions used by OpenApi tool
+     */
+    @Generated
+    private List<FunctionDefinition> functions;
+
+    /**
+     * Get the functions property: List of function definitions used by OpenApi tool.
+     *
+     * @return the functions value.
+     */
+    @Generated
+    public List<FunctionDefinition> getFunctions() {
+        return this.functions;
     }
 }

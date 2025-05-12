@@ -8,8 +8,6 @@ import com.azure.ai.agents.persistent.models.BingGroundingToolDefinition;
 import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.CreateRunOptions;
 import com.azure.ai.agents.persistent.models.MessageRole;
-import com.azure.ai.agents.persistent.models.ToolConnection;
-import com.azure.ai.agents.persistent.models.ToolConnectionList;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
@@ -32,8 +30,6 @@ public class AgentBingGroundingAsyncSample {
         RunsAsyncClient runsAsyncClient = clientBuilder.buildRunsAsyncClient();
 
         String bingConnectionId = Configuration.getGlobalConfiguration().get("BING_CONNECTION_ID", "");
-        ToolConnectionList toolConnectionList = new ToolConnectionList()
-            .setConnectionList(Arrays.asList(new ToolConnection(bingConnectionId)));
 
         BingGroundingSearchConfiguration searchConfiguration = new BingGroundingSearchConfiguration(bingConnectionId);
         BingGroundingSearchConfigurationList searchConfigurationList = new BingGroundingSearchConfigurationList(

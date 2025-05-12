@@ -12,8 +12,6 @@ import com.azure.ai.agents.persistent.models.PersistentAgent;
 import com.azure.ai.agents.persistent.models.PersistentAgentThread;
 import com.azure.ai.agents.persistent.models.ThreadMessage;
 import com.azure.ai.agents.persistent.models.ThreadRun;
-import com.azure.ai.agents.persistent.models.ToolConnection;
-import com.azure.ai.agents.persistent.models.ToolConnectionList;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
@@ -33,8 +31,6 @@ public class AgentBingGroundingSample {
         RunsClient runsClient = clientBuilder.buildRunsClient();
 
         String bingConnectionId = Configuration.getGlobalConfiguration().get("BING_CONNECTION_ID", "");
-        ToolConnectionList toolConnectionList = new ToolConnectionList()
-            .setConnectionList(Arrays.asList(new ToolConnection(bingConnectionId)));
 
         BingGroundingSearchConfiguration searchConfiguration = new BingGroundingSearchConfiguration(bingConnectionId);
         BingGroundingSearchConfigurationList searchConfigurationList = new BingGroundingSearchConfigurationList(Arrays.asList(searchConfiguration));

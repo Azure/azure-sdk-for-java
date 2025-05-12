@@ -32,24 +32,6 @@ public final class PersistentAgentsNamedToolChoiceType
     public static final PersistentAgentsNamedToolChoiceType FILE_SEARCH = fromString("file_search");
 
     /**
-     * Tool type `bing_grounding`.
-     */
-    @Generated
-    public static final PersistentAgentsNamedToolChoiceType BING_GROUNDING = fromString("bing_grounding");
-
-    /**
-     * Tool type `fabric_dataagent`.
-     */
-    @Generated
-    public static final PersistentAgentsNamedToolChoiceType MICROSOFT_FABRIC = fromString("fabric_dataagent");
-
-    /**
-     * Tool type `sharepoint_grounding`.
-     */
-    @Generated
-    public static final PersistentAgentsNamedToolChoiceType SHAREPOINT = fromString("sharepoint_grounding");
-
-    /**
      * Tool type `azure_ai_search`.
      */
     @Generated

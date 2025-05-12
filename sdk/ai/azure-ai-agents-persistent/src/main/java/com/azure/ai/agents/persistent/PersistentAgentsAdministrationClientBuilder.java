@@ -9,9 +9,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.client.traits.KeyCredentialTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
-import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -26,7 +24,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.KeyCredentialPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -69,7 +66,6 @@ public final class PersistentAgentsAdministrationClientBuilder
     implements HttpTrait<PersistentAgentsAdministrationClientBuilder>,
     ConfigurationTrait<PersistentAgentsAdministrationClientBuilder>,
     TokenCredentialTrait<PersistentAgentsAdministrationClientBuilder>,
-    KeyCredentialTrait<PersistentAgentsAdministrationClientBuilder>,
     EndpointTrait<PersistentAgentsAdministrationClientBuilder> {
 
     @Generated
@@ -223,22 +219,6 @@ public final class PersistentAgentsAdministrationClientBuilder
     }
 
     /*
-     * The KeyCredential used for authentication.
-     */
-    @Generated
-    private KeyCredential keyCredential;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public PersistentAgentsAdministrationClientBuilder credential(KeyCredential keyCredential) {
-        this.keyCredential = keyCredential;
-        return this;
-    }
-
-    /*
      * The service endpoint
      */
     @Generated
@@ -336,9 +316,6 @@ public final class PersistentAgentsAdministrationClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        if (keyCredential != null) {
-            policies.add(new KeyCredentialPolicy("authorization", keyCredential, "Bearer"));
-        }
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }

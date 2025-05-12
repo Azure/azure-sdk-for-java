@@ -9,11 +9,11 @@ import com.azure.ai.agents.persistent.implementation.models.SubmitToolOutputsToR
 import com.azure.ai.agents.persistent.implementation.models.UpdateRunRequest;
 import com.azure.ai.agents.persistent.models.CreateRunOptions;
 import com.azure.ai.agents.persistent.models.ListSortOrder;
+import com.azure.ai.agents.persistent.models.PersistentAgentServerSentEvents;
 import com.azure.ai.agents.persistent.models.RunAdditionalFieldList;
+import com.azure.ai.agents.persistent.models.StreamUpdate;
 import com.azure.ai.agents.persistent.models.ThreadRun;
 import com.azure.ai.agents.persistent.models.ToolOutput;
-import com.azure.ai.agents.persistent.models.PersistentAgentServerSentEvents;
-import com.azure.ai.agents.persistent.models.StreamUpdate;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -704,7 +704,7 @@ public final class RunsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<StreamUpdate> createRunStreaming(CreateRunOptions options) {
+    public Mono<Flux<StreamUpdate>> createRunStreaming(CreateRunOptions options) {
         // Generated convenience method for createRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String threadId = options.getThreadId();
@@ -733,7 +733,7 @@ public final class RunsAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return createRunWithResponse(threadId, createRunRequest, requestOptions).flatMapMany(response -> {
+        return createRunWithResponse(threadId, createRunRequest, requestOptions).map(response -> {
             PersistentAgentServerSentEvents eventStream
                 = new PersistentAgentServerSentEvents(response.getValue().toFluxByteBuffer());
             return eventStream.getEvents();
@@ -972,14 +972,14 @@ public final class RunsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<StreamUpdate> submitToolOutputsToRunStreaming(String threadId, String runId,
+    public Mono<Flux<StreamUpdate>> submitToolOutputsToRunStreaming(String threadId, String runId,
         List<ToolOutput> toolOutputs) {
         RequestOptions requestOptions = new RequestOptions();
         SubmitToolOutputsToRunRequest submitToolOutputsToRunRequestObj
             = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(true);
         BinaryData submitToolOutputsToRunRequest = BinaryData.fromObject(submitToolOutputsToRunRequestObj);
         return submitToolOutputsToRunWithResponse(threadId, runId, submitToolOutputsToRunRequest, requestOptions)
-            .flatMapMany(response -> {
+            .map(response -> {
                 PersistentAgentServerSentEvents eventStream
                     = new PersistentAgentServerSentEvents(response.getValue().toFluxByteBuffer());
                 return eventStream.getEvents();
