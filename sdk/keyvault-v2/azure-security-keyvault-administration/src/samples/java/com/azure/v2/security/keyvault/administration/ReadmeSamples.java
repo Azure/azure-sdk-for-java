@@ -257,7 +257,7 @@ public class ReadmeSamples {
     public void troubleshooting() {
         // BEGIN: readme-sample-troubleshooting
         try {
-            keyVaultAccessControlClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, "<role-assginment-name>");
+            keyVaultAccessControlClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, "<role-assignment-name>");
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
