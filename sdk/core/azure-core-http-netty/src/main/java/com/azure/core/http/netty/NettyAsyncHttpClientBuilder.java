@@ -200,8 +200,7 @@ public class NettyAsyncHttpClientBuilder {
                 (int) getTimeout(connectTimeout, getDefaultConnectTimeout()).toMillis())
             // TODO (alzimmer): What does validating HTTP response headers get us?
             .httpResponseDecoder(httpResponseDecoderSpec -> initialSpec.validateHeaders(false))
-            .doOnRequest(
-                (request, connection) -> addHandler(request, connection, writeTimeout, responseTimeout, readTimeout))
+
             .doAfterResponseSuccess((ignored, connection) -> removeHandler(connection));
 
         LoggingHandler loggingHandler = nettyHttpClient.configuration().loggingHandler();
