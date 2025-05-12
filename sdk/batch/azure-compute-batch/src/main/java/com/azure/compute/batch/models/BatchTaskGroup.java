@@ -24,7 +24,7 @@ public final class BatchTaskGroup implements JsonSerializable<BatchTaskGroup> {
      * @param values the values value to set.
      */
     @Generated
-    public BatchTaskGroup(List<BatchTaskCreateContent> values) {
+    public BatchTaskGroup(List<BatchTaskCreateParameters> values) {
         this.values = values;
     }
 
@@ -51,12 +51,12 @@ public final class BatchTaskGroup implements JsonSerializable<BatchTaskGroup> {
     @Generated
     public static BatchTaskGroup fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<BatchTaskCreateContent> values = null;
+            List<BatchTaskCreateParameters> values = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("value".equals(fieldName)) {
-                    values = reader.readArray(reader1 -> BatchTaskCreateContent.fromJson(reader1));
+                    values = reader.readArray(reader1 -> BatchTaskCreateParameters.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -72,7 +72,7 @@ public final class BatchTaskGroup implements JsonSerializable<BatchTaskGroup> {
      * fewer Tasks.
      */
     @Generated
-    private final List<BatchTaskCreateContent> values;
+    private final List<BatchTaskCreateParameters> values;
 
     /**
      * Get the values property: The collection of Tasks to add. The maximum count of Tasks is 100. The total serialized
@@ -83,7 +83,7 @@ public final class BatchTaskGroup implements JsonSerializable<BatchTaskGroup> {
      * @return the values value.
      */
     @Generated
-    public List<BatchTaskCreateContent> getValues() {
+    public List<BatchTaskCreateParameters> getValues() {
         return this.values;
     }
 }
