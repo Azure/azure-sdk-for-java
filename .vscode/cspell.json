@@ -1373,12 +1373,15 @@
       "words": [
         "FIPS",
         "IMDS",
-        "mhsm",
-        "OAEP",
-        "upns",
-        "vcolin", // TODO: Remove after all TODOs are removed from the codebase
         "inprogress",
-        "myaccount"
+        "mhsm",
+        "myaccount",
+        "myissuer",
+        "OAEP",
+        "SECG",
+        "SECP",
+        "upns",
+        "vcolin" // TODO: Remove after all TODOs are removed from the codebase
       ]
     }
   ],

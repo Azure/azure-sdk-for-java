@@ -74,8 +74,8 @@ import static com.azure.v2.security.keyvault.certificates.implementation.KeyVaul
 import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
- * This class provides methods to manage {@link KeyVaultCertificate certifcates} in Azure Key Vault. The client supports
- * creating, retrieving, updating, merging, deleting, purging, backing up, restoring and listing the
+ * This class provides methods to manage {@link KeyVaultCertificate certificates} in Azure Key Vault. The client
+ * supports creating, retrieving, updating, merging, deleting, purging, backing up, restoring and listing the
  * {@link KeyVaultCertificate certificates}. The client also supports listing
  * {@link DeletedCertificate deleted certificates} for a soft-delete enabled key vault.
  *
