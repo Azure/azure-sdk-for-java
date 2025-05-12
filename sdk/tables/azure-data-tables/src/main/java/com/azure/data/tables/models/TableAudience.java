@@ -9,7 +9,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * Defines the audience for the Azure Table service.
+ * Defines the audience for the Azure Tables service.
  * <p>
  * This class is used to specify the audience when creating clients.
  * <p>
