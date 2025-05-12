@@ -251,7 +251,15 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        checkNotNull(request, "Argument 'request' cannot be null!");
+        if (request.getResourceType() == null) {
+            logger.warn("PerPartitionAutomaticFailover is not applicable as request.getResourceType() is null");
+            return false;
+        }
+
+        if (request.getOperationType() == null) {
+            logger.warn("PerPartitionAutomaticFailover is not applicable as request.getOperationType() is null");
+            return false;
+        }
 
         ResourceType resourceType = request.getResourceType();
         OperationType operationType = request.getOperationType();
