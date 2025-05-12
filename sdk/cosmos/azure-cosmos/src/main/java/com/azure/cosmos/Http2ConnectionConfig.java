@@ -9,7 +9,7 @@ import com.azure.cosmos.util.Beta;
 /***
  * Represents the http2 connection config associated with Cosmos Client in the Azure Cosmos DB database service.
  */
-@Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class Http2ConnectionConfig {
     private int maxConnectionPoolSize;
     private int minConnectionPoolSize;
@@ -19,7 +19,7 @@ public class Http2ConnectionConfig {
     /***
      * The constructor of Http2ConnectionConfig.
      */
-    @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig() {
         this.maxConnectionPoolSize = Configs.getHttp2MaxConnectionPoolSize(); // overlapping with the maxConnectionPoolSize in gateway connection config
         this.minConnectionPoolSize = Configs.getHttp2MinConnectionPoolSize();
@@ -32,7 +32,7 @@ public class Http2ConnectionConfig {
      *
      * @return the configured max number of live connections to keep in the pool.
      */
-    @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMaxConnectionPoolSize() {
         return maxConnectionPoolSize;
     }
@@ -44,7 +44,7 @@ public class Http2ConnectionConfig {
      * @param maxConnectionPoolSize the maximum number of live connections to keep in the pool.
      * @return the current {@link Http2ConnectionConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig setMaxConnectionPoolSize(int maxConnectionPoolSize) {
         this.maxConnectionPoolSize = maxConnectionPoolSize;
         return this;
@@ -54,7 +54,7 @@ public class Http2ConnectionConfig {
      * Get the maximum number of the concurrent streams that can be opened to the remote peer.
      * @return the maximum number of the concurrent streams that can be opened to the remote peer.
      */
-    @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMaxConcurrentStreams() {
         return maxConcurrentStreams;
     }
@@ -67,7 +67,7 @@ public class Http2ConnectionConfig {
      * @param maxConcurrentStreams the maximum number of the concurrent streams that can be opened to the remote peer.
      * @return the current {@link Http2ConnectionConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig setMaxConcurrentStreams(int maxConcurrentStreams) {
         this.maxConcurrentStreams = maxConcurrentStreams;
         return this;
@@ -77,7 +77,7 @@ public class Http2ConnectionConfig {
      * Get the minimum number of live connections to keep in the pool (can be the best effort).
      * @return the minimum number of live connections to keep in the pool (can be the best effort).
      */
-    @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMinConnectionPoolSize() {
         return minConnectionPoolSize;
     }
@@ -87,7 +87,7 @@ public class Http2ConnectionConfig {
      * @param minConnectionPoolSize the minimum number of live connections to keep in the pool (can be the best effort).
      * @return the current {@link Http2ConnectionConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig setMinConnectionPoolSize(int minConnectionPoolSize) {
         this.minConnectionPoolSize = minConnectionPoolSize;
         return this;
@@ -97,7 +97,7 @@ public class Http2ConnectionConfig {
      * return the flag to indicate whether http2 is enabled.
      * @return the flag to indicate whether http2 is enabled.
      */
-    @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isEnabled() {
         return enabled;
     }
@@ -107,7 +107,7 @@ public class Http2ConnectionConfig {
      * @param enabled the flag to indicate whether http2 is enabled.
      * @return the current {@link Http2ConnectionConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
