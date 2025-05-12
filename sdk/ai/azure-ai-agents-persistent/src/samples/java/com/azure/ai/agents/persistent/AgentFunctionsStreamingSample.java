@@ -17,10 +17,10 @@ import com.azure.ai.agents.persistent.models.SubmitToolOutputsAction;
 import com.azure.ai.agents.persistent.models.ThreadMessage;
 import com.azure.ai.agents.persistent.models.ThreadRun;
 import com.azure.ai.agents.persistent.models.ToolOutput;
-import com.azure.ai.agents.persistent.models.streaming.StreamMessageUpdate;
-import com.azure.ai.agents.persistent.models.streaming.StreamRequiredAction;
-import com.azure.ai.agents.persistent.models.streaming.StreamThreadRunCreation;
-import com.azure.ai.agents.persistent.models.streaming.StreamUpdate;
+import com.azure.ai.agents.persistent.models.StreamMessageUpdate;
+import com.azure.ai.agents.persistent.models.StreamRequiredAction;
+import com.azure.ai.agents.persistent.models.StreamThreadRunCreation;
+import com.azure.ai.agents.persistent.models.StreamUpdate;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -37,6 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static com.azure.ai.agents.persistent.SampleUtils.printStreamUpdate;
 
@@ -166,10 +167,9 @@ public final class AgentFunctionsStreamingSample {
             .setAdditionalInstructions("");
 
         try {
-            Flux<StreamUpdate> streamingUpdates = runsClient.createRunStreaming(createRunOptions);
+            Stream<StreamUpdate> streamUpdates = runsClient.createRunStreaming(createRunOptions);
 
-
-            streamingUpdates.doOnNext(
+            streamUpdates.forEach(
                 streamUpdate -> {
                     if (streamUpdate.getKind() == PersistentAgentStreamEvent.THREAD_RUN_CREATED) {
                         System.out.println("----- Run started! -----");
@@ -189,7 +189,7 @@ public final class AgentFunctionsStreamingSample {
                                 streamRun.get().getThreadId(),
                                 streamRun.get().getId(),
                                 toolOutputs
-                            ).doOnNext(update -> {
+                            ).forEach(update -> {
                                 if (update instanceof StreamRequiredAction) {
                                     streamRun.set(((StreamRequiredAction) update).getMessage());
                                 } else if (update instanceof StreamMessageUpdate) {
@@ -198,14 +198,14 @@ public final class AgentFunctionsStreamingSample {
                                 } else if (update.getKind() == PersistentAgentStreamEvent.THREAD_RUN_COMPLETED) {
                                     streamRun.set(((StreamThreadRunCreation) update).getMessage());
                                 }
-                            }).blockLast();
+                            });
                         }
                     } else if (streamUpdate instanceof StreamMessageUpdate) {
                         StreamMessageUpdate messageUpdate = (StreamMessageUpdate) streamUpdate;
                         printStreamUpdate(messageUpdate);
                     }
                 }
-            ).blockLast();
+            );
 
             System.out.println();
         } catch (Exception ex) {

@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.ai.agents.persistent.models.streaming;
-
-import com.azure.ai.agents.persistent.models.PersistentAgentStreamEvent;
+package com.azure.ai.agents.persistent.models;
 
 /**
  * Represents a stream update that indicating the creation of a new thread.

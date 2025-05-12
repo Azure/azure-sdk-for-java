@@ -1,13 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.ai.agents.persistent.models.streaming;
+package com.azure.ai.agents.persistent.models;
 
-import com.azure.ai.agents.persistent.models.PersistentAgentStreamEvent;
-import com.azure.ai.agents.persistent.models.MessageDeltaChunk;
-import com.azure.ai.agents.persistent.models.RunStep;
-import com.azure.ai.agents.persistent.models.RunStepDeltaChunk;
-import com.azure.ai.agents.persistent.models.ThreadMessage;
-import com.azure.ai.agents.persistent.models.ThreadRun;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 

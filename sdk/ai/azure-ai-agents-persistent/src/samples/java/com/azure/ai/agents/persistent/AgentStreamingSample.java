@@ -10,12 +10,13 @@ import com.azure.ai.agents.persistent.models.PersistentAgent;
 import com.azure.ai.agents.persistent.models.PersistentAgentStreamEvent;
 import com.azure.ai.agents.persistent.models.PersistentAgentThread;
 import com.azure.ai.agents.persistent.models.ThreadMessage;
-import com.azure.ai.agents.persistent.models.streaming.StreamMessageUpdate;
-import com.azure.ai.agents.persistent.models.streaming.StreamUpdate;
+import com.azure.ai.agents.persistent.models.StreamMessageUpdate;
+import com.azure.ai.agents.persistent.models.StreamUpdate;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Flux;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 import static com.azure.ai.agents.persistent.SampleUtils.printStreamUpdate;
 
@@ -46,18 +47,16 @@ public final class AgentStreamingSample {
             .setAdditionalInstructions("");
 
         try {
-            Flux<StreamUpdate> streamingUpdates = runsClient.createRunStreaming(createRunOptions);
+            Stream<StreamUpdate> streamUpdates = runsClient.createRunStreaming(createRunOptions);
 
-            streamingUpdates.doOnNext(
-                streamUpdate -> {
-                    if (streamUpdate.getKind() == PersistentAgentStreamEvent.THREAD_RUN_CREATED) {
-                        System.out.println("----- Run started! -----");
-                    } else if (streamUpdate instanceof StreamMessageUpdate) {
-                        StreamMessageUpdate messageUpdate = (StreamMessageUpdate) streamUpdate;
-                        printStreamUpdate(messageUpdate);
-                    }
+            streamUpdates.forEach(streamUpdate -> {
+                if (streamUpdate.getKind() == PersistentAgentStreamEvent.THREAD_RUN_CREATED) {
+                    System.out.println("----- Run started! -----");
+                } else if (streamUpdate instanceof StreamMessageUpdate) {
+                    StreamMessageUpdate messageUpdate = (StreamMessageUpdate) streamUpdate;
+                    printStreamUpdate(messageUpdate);
                 }
-            ).blockLast();
+            });
 
             System.out.println();
         } catch (Exception ex) {

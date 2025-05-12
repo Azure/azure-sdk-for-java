@@ -10,7 +10,7 @@ import com.azure.ai.agents.persistent.models.MessageTextContent;
 import com.azure.ai.agents.persistent.models.RunStatus;
 import com.azure.ai.agents.persistent.models.ThreadMessage;
 import com.azure.ai.agents.persistent.models.ThreadRun;
-import com.azure.ai.agents.persistent.models.streaming.StreamMessageUpdate;
+import com.azure.ai.agents.persistent.models.StreamMessageUpdate;
 import com.azure.core.http.rest.PagedIterable;
 import org.jetbrains.annotations.NotNull;
 import reactor.core.publisher.Mono;

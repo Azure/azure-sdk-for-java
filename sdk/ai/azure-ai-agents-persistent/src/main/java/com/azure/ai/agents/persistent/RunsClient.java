@@ -12,8 +12,8 @@ import com.azure.ai.agents.persistent.models.ListSortOrder;
 import com.azure.ai.agents.persistent.models.RunAdditionalFieldList;
 import com.azure.ai.agents.persistent.models.ThreadRun;
 import com.azure.ai.agents.persistent.models.ToolOutput;
-import com.azure.ai.agents.persistent.models.streaming.PersistentAgentServerSentEvents;
-import com.azure.ai.agents.persistent.models.streaming.StreamUpdate;
+import com.azure.ai.agents.persistent.models.PersistentAgentServerSentEvents;
+import com.azure.ai.agents.persistent.models.StreamUpdate;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -31,6 +31,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
 /**
@@ -38,6 +41,8 @@ import reactor.core.publisher.Flux;
  */
 @ServiceClient(builder = PersistentAgentsAdministrationClientBuilder.class)
 public final class RunsClient {
+
+    private final ClientLogger logger = new ClientLogger(RunsClient.class);
 
     @Generated
     private final RunsImpl serviceClient;
@@ -907,7 +912,7 @@ public final class RunsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<StreamUpdate> createRunStreaming(CreateRunOptions options) {
+    public Stream<StreamUpdate> createRunStreaming(CreateRunOptions options) {
         // Generated convenience method for createRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String threadId = options.getThreadId();
@@ -939,7 +944,19 @@ public final class RunsClient {
         Flux<ByteBuffer> response
             = createRunWithResponse(threadId, createRunRequest, requestOptions).getValue().toFluxByteBuffer();
         PersistentAgentServerSentEvents eventStream = new PersistentAgentServerSentEvents(response);
-        return eventStream.getEvents();
+
+        Iterable<StreamUpdate> iterable = eventStream.getEvents().toIterable();
+        Stream<StreamUpdate> stream = StreamSupport.stream(iterable.spliterator(), false);
+
+        return stream.onClose(() -> {
+            if (iterable instanceof AutoCloseable) {
+                try {
+                    ((AutoCloseable) iterable).close();
+                } catch (Exception e) {
+                    throw logger.logExceptionAsError(new RuntimeException(e));
+                }
+            }
+        });
     }
 
     /**
@@ -959,7 +976,7 @@ public final class RunsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<StreamUpdate> submitToolOutputsToRunStreaming(String threadId, String runId,
+    public Stream<StreamUpdate> submitToolOutputsToRunStreaming(String threadId, String runId,
         List<ToolOutput> toolOutputs) {
         // Generated convenience method for submitToolOutputsToRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -971,7 +988,18 @@ public final class RunsClient {
                 .getValue()
                 .toFluxByteBuffer();
         PersistentAgentServerSentEvents eventStream = new PersistentAgentServerSentEvents(response);
-        return eventStream.getEvents();
+        Iterable<StreamUpdate> iterable = eventStream.getEvents().toIterable();
+        Stream<StreamUpdate> stream = StreamSupport.stream(iterable.spliterator(), false);
+
+        return stream.onClose(() -> {
+            if (iterable instanceof AutoCloseable) {
+                try {
+                    ((AutoCloseable) iterable).close();
+                } catch (Exception e) {
+                    throw logger.logExceptionAsError(new RuntimeException(e));
+                }
+            }
+        });
     }
 
     /**

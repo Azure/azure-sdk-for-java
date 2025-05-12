@@ -1,9 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.ai.agents.persistent.models.streaming;
-
-import com.azure.ai.agents.persistent.models.PersistentAgentStreamEvent;
-import com.azure.ai.agents.persistent.models.RunStep;
+package com.azure.ai.agents.persistent.models;
 
 /**
  * Represents a stream update indicating a change of state in a run step, e.g. creation, completion, etc.
