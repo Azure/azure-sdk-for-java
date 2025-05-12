@@ -46,19 +46,16 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
      * List of Router Communication Errors
      */
     @Generated
-    private final List<AcsRouterCommunicationError> details;
+    private List<AcsRouterCommunicationError> errors;
 
     /**
      * Creates an instance of AcsRouterCommunicationError class.
      * 
      * @param innererror the innererror value to set.
-     * @param details the details value to set.
      */
     @Generated
-    private AcsRouterCommunicationError(AcsRouterCommunicationError innererror,
-        List<AcsRouterCommunicationError> details) {
+    private AcsRouterCommunicationError(AcsRouterCommunicationError innererror) {
         this.innererror = innererror;
-        this.details = details;
     }
 
     /**
@@ -102,13 +99,13 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
     }
 
     /**
-     * Get the details property: List of Router Communication Errors.
+     * Get the errors property: List of Router Communication Errors.
      * 
-     * @return the details value.
+     * @return the errors value.
      */
     @Generated
-    public List<AcsRouterCommunicationError> getDetails() {
-        return this.details;
+    public List<AcsRouterCommunicationError> getErrors() {
+        return this.errors;
     }
 
     /**
@@ -119,7 +116,6 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("innererror", this.innererror);
-        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("code", this.code);
         jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeStringField("target", this.target);
@@ -139,7 +135,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
     public static AcsRouterCommunicationError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsRouterCommunicationError innererror = null;
-            List<AcsRouterCommunicationError> details = null;
+            List<AcsRouterCommunicationError> errors = null;
             String code = null;
             String message = null;
             String target = null;
@@ -149,8 +145,8 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
 
                 if ("innererror".equals(fieldName)) {
                     innererror = AcsRouterCommunicationError.fromJson(reader);
-                } else if ("details".equals(fieldName)) {
-                    details = reader.readArray(reader1 -> AcsRouterCommunicationError.fromJson(reader1));
+                } else if ("errors".equals(fieldName)) {
+                    errors = reader.readArray(reader1 -> AcsRouterCommunicationError.fromJson(reader1));
                 } else if ("code".equals(fieldName)) {
                     code = reader.getString();
                 } else if ("message".equals(fieldName)) {
@@ -162,7 +158,8 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
                 }
             }
             AcsRouterCommunicationError deserializedAcsRouterCommunicationError
-                = new AcsRouterCommunicationError(innererror, details);
+                = new AcsRouterCommunicationError(innererror);
+            deserializedAcsRouterCommunicationError.errors = errors;
             deserializedAcsRouterCommunicationError.code = code;
             deserializedAcsRouterCommunicationError.message = message;
             deserializedAcsRouterCommunicationError.target = target;

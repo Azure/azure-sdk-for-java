@@ -251,6 +251,7 @@ public class EventGridCustomization extends Customization {
         customizeCommunicationIdentifierModelKind(customization);
         customizeAcsMessageChannelEventError(customization);
         customizeCommuicationSMSEvents(customization);
+        customizeAcsCallEndedEventDataDuration(customization);
     }
 
     public void customizeCommuicationSMSEvents(LibraryCustomization customization) {
@@ -692,6 +693,36 @@ public class EventGridCustomization extends Customization {
             "= reader.getNullable(nonNullReader -> parseOffsetDateTimeBest(nonNullReader.getString()));");
 
         editor.replaceFile(classCustomization.getFileName(), replacedContent);
+    }
+
+    public void customizeAcsCallEndedEventDataDuration(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("AcsCallEndedEventData");
+        classCustomization.customizeAst(compilationUnit -> {
+            PropertyCustomization property = classCustomization.getProperty("callDurationInSeconds");
+            property.generateGetterAndSetter();
+
+            ClassOrInterfaceDeclaration clazz = compilationUnit.getClassByName("AcsCallEndedEventData").get();
+            compilationUnit.addImport("java.time.Duration");
+            clazz.getMethodsByName("getCallDurationInSeconds").forEach(m -> {
+                m.setName("getCallDurationInSeconds")
+                    .setType("Duration")
+                    .setBody(parseBlock("{ if (this.callDurationInSeconds != null) { return Duration.ofNanos((long) (this.callDurationInSeconds * 1000_000_000L)); } return null; }"))
+                    .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Get the recordingDurationcallDurationInSeconds property:Duration of the call in seconds."))))
+                        .addBlockTag("return", "the callDurationInSeconds value."));
+            });
+
+            clazz.getMethodsByName("setCallDurationInSeconds").forEach(m -> {
+                m.setName("setCallDurationInSeconds")
+                    .setType("AcsCallEndedEventData")
+                    .setParameters(new NodeList<>( new Parameter().setType("Float").setName("callDurationInSeconds")))
+                    .setBody(parseBlock("{ this.callDurationInSeconds = callDurationInSeconds; return this; }"))
+                    .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Set the callDurationInSeconds property: Duration of the call in seconds."))))
+                        .addBlockTag("param", "callDurationInSeconds the callDurationInSeconds value to set.")
+                        .addBlockTag("return", "the AcsCallEndedEventData object itself."));
+            });
+        });
+
     }
 
     private static final Map<String, String> replacementNames = new HashMap<String,String>() {
