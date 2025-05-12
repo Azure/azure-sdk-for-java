@@ -3,8 +3,11 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.inference.ChatCompletionsAsyncClient;
+import com.azure.ai.inference.ChatCompletionsClientBuilder;
 import com.azure.ai.inference.EmbeddingsAsyncClient;
+import com.azure.ai.inference.EmbeddingsClientBuilder;
 import com.azure.ai.inference.ImageEmbeddingsAsyncClient;
+import com.azure.ai.inference.ImageEmbeddingsClientBuilder;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
 import com.azure.ai.inference.models.ChatRequestUserMessage;
 import com.azure.ai.inference.models.EmbeddingItem;
@@ -18,13 +21,20 @@ import java.util.List;
 
 public class InferenceAsyncSample {
 
-    private static AIProjectClientBuilder projectClientBuilder
-        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-        .credential(new DefaultAzureCredentialBuilder().build());
+    private static ChatCompletionsAsyncClient chatCompletionsAsyncClient
+        = new ChatCompletionsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildAsyncClient();
 
-    private static ChatCompletionsAsyncClient chatCompletionsAsyncClient = projectClientBuilder.buildChatCompletionsAsyncClient();
-    private static ImageEmbeddingsAsyncClient imageEmbeddingsAsyncClient = projectClientBuilder.buildImageEmbeddingsAsyncClient();
-    private static EmbeddingsAsyncClient embeddingsAsyncClient = projectClientBuilder.buildEmbeddingsAsyncClient();
+    private static ImageEmbeddingsAsyncClient imageEmbeddingsAsyncClient
+        = new ImageEmbeddingsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildAsyncClient();
+
+    private static EmbeddingsAsyncClient embeddingsAsyncClient
+        = new EmbeddingsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildAsyncClient();
 
     public static void main(String[] args) {
 

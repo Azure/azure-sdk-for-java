@@ -3,8 +3,11 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.inference.ChatCompletionsClient;
+import com.azure.ai.inference.ChatCompletionsClientBuilder;
 import com.azure.ai.inference.EmbeddingsClient;
+import com.azure.ai.inference.EmbeddingsClientBuilder;
 import com.azure.ai.inference.ImageEmbeddingsClient;
+import com.azure.ai.inference.ImageEmbeddingsClientBuilder;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
 import com.azure.ai.inference.models.ChatRequestUserMessage;
@@ -22,13 +25,20 @@ import java.util.List;
 
 public class InferenceSample {
 
-    private static AIProjectClientBuilder projectClientBuilder
-        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-        .credential(new DefaultAzureCredentialBuilder().build());
+    private static ChatCompletionsClient chatCompletionsClient
+        = new ChatCompletionsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildClient();
 
-    private static ChatCompletionsClient chatCompletionsClient = projectClientBuilder.buildChatCompletionsClient();
-    private static ImageEmbeddingsClient imageEmbeddingsClient = projectClientBuilder.buildImageEmbeddingsClient();
-    private static EmbeddingsClient embeddingsClient = projectClientBuilder.buildEmbeddingsClient();
+    private static ImageEmbeddingsClient imageEmbeddingsClient
+        = new ImageEmbeddingsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildClient();
+
+    private static EmbeddingsClient embeddingsClient
+        = new EmbeddingsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildClient();
 
     public static void main(String[] args) {
         embeddingsClientSample();
