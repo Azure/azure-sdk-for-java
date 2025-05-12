@@ -16,7 +16,7 @@ import java.net.URISyntaxException;
  * The audience can be one of the following:
  * <ul>
  *     <li>AZURE_STORAGE_PUBLIC_CLOUD</li>
- *     <li>AZURE_STORAGE_CHINAD</li>
+ *     <li>AZURE_STORAGE_CHINA</li>
  *     <li>AZURE_STORAGE_US_GOVERNMENT</li>
  *     <li>AZURE_COSMOS_PUBLIC_CLOUD</li>
  *     <li>AZURE_COSMOS_CHINA</li>
