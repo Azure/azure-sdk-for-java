@@ -46,9 +46,8 @@ public class ParameterizedHostServiceImpl implements ParameterizedHostService {
     @SuppressWarnings("cast")
     @Override
     public byte[] getByteArray(String scheme, String host, int numberOfBytes) {
-        String uri = scheme + "://" + host + "/bytes/" + numberOfBytes;
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(scheme + "://" + host + "/bytes/" + numberOfBytes);
         // Send the request through the httpPipeline
         try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
             int responseCode = networkResponse.getStatusCode();

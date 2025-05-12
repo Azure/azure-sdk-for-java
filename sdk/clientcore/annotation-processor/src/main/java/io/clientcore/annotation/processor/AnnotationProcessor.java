@@ -200,7 +200,7 @@ public class AnnotationProcessor extends AbstractProcessor {
                 String key = queryParam.value();
                 if (!method.getQueryParams().containsKey(key)) {
                     method.addQueryParam(key, param.getSimpleName().toString(), queryParam.multipleQueryParams(),
-                        !queryParam.encoded());
+                        !queryParam.encoded(), false);
                 }
             } else if (bodyParam != null) {
                 method.setBody(

@@ -47,12 +47,12 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
     }
 
     @Override
-    public boolean canPoll(Response<BinaryData> initialResponse) {
+    public boolean canPoll(Response<T> initialResponse) {
         return true;
     }
 
     @Override
-    public PollResponse<T> onInitialResponse(Response<BinaryData> response, PollingContext<T> pollingContext,
+    public PollResponse<T> onInitialResponse(Response<T> response, PollingContext<T> pollingContext,
         Type pollResponseType) {
         if (response.getStatusCode() == 200
             || response.getStatusCode() == 201
@@ -62,8 +62,11 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
             return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType), retryAfter);
         } else {
+            Response<BinaryData> binaryDataResponse = new Response<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), BinaryData.fromObject(response.getValue()));
             throw LOGGER.throwableAtError()
-                .log("Operation failed or cancelled", message -> new HttpResponseException(message, response, null));
+                .log("Operation failed or cancelled",
+                    message -> new HttpResponseException(message, binaryDataResponse, null));
         }
     }
 

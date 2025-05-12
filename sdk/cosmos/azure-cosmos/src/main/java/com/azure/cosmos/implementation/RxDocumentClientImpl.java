@@ -1691,7 +1691,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     public void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
-        if (this.connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
+        if (this.connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT
+            && readConsistencyStrategyName != null
+            && ! readConsistencyStrategyName.equalsIgnoreCase(ReadConsistencyStrategy.DEFAULT.toString())) {
+
             logger.warn(
                 "ReadConsistencyStrategy {} defined in Gateway mode. "
                     + "This version of the SDK only supports ReadConsistencyStrategy in DIRECT mode. "
