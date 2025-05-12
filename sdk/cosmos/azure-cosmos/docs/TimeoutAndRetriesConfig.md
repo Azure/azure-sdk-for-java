@@ -40,9 +40,10 @@ With PPAF enabled, the SDK will also enable threshold-based availability strateg
 
 #### Threshold-based availability strategy defaults
 
-NOTE: 6s was chosen as in `Direct` Connection Mode, the connect timeout and network request timeout are 5s. This will allow the SDK to do at least 1 in-region retry. In Gateway mode, the Gateway performs the in-region retries on behalf of the SDK within the same time bound.
+NOTE: 6s was chosen as in `Direct` Connection Mode, the connect timeout and network request timeout are 5s. This will allow the SDK to do at least 1 in-region retry. In `Gateway` connection mode, the Gateway performs the in-region retries on behalf of the SDK within the same time bound.
 
 | Connection Mode | End-to-end timeout | Threshold duration | Threshold step duration |
 |-----------------|--------------------|--------------------|-------------------------|
 | Direct          | 6s                 | 1s                 | 500ms                   |
+| Gateway         | 6s                 | 1s                 | 500ms                   |
 
