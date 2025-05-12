@@ -659,9 +659,9 @@ public final class TableServiceClientBuilder implements TokenCredentialTrait<Tab
     }
 
     /**
-     * Sets the {@link TableAudience audience} for the Azure Table service.
+     * Sets the {@link TableAudience audience} for the Azure Tables service.
      *
-     * @param audience The {@link TableAudience audience} for the Azure Table service.
+     * @param audience The {@link TableAudience audience} for the Azure Tables service.
      * @return The updated {@link TableServiceClientBuilder}.
      */
     public TableServiceClientBuilder audience(TableAudience audience) {
