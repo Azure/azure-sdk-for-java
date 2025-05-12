@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
-import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, spark}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ReadConsistencyStrategy, spark}
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.implementation.routing.LocationHelper
 import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings}
@@ -68,8 +68,10 @@ private[spark] object CosmosConfigNames {
   val AllowInvalidJsonWithDuplicateJsonProperties = "spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
   val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
+  val ReadResponseContinuationTokenLimitInKb = "spark.cosmos.read.responseContinuationTokenLimitInKb"
   val ReadPrefetchBufferSize = "spark.cosmos.read.prefetchBufferSize"
   val ReadForceEventualConsistency = "spark.cosmos.read.forceEventualConsistency"
+  val ReadConsistencyStrategy = "spark.cosmos.read.consistencyStrategy"
   val ReadSchemaConversionMode = "spark.cosmos.read.schemaConversionMode"
   val ReadInferSchemaSamplingSize = "spark.cosmos.read.inferSchema.samplingSize"
   val ReadInferSchemaEnabled = "spark.cosmos.read.inferSchema.enabled"
@@ -172,8 +174,10 @@ private[spark] object CosmosConfigNames {
     AllowInvalidJsonWithDuplicateJsonProperties,
     ReadCustomQuery,
     ReadForceEventualConsistency,
+    ReadConsistencyStrategy,
     ReadSchemaConversionMode,
     ReadMaxItemCount,
+    ReadResponseContinuationTokenLimitInKb,
     ReadPrefetchBufferSize,
     ReadInferSchemaSamplingSize,
     ReadInferSchemaEnabled,
@@ -907,7 +911,7 @@ private object CosmosAuthConfig {
     }
 }
 
-private case class CosmosReadConfig(forceEventualConsistency: Boolean,
+private case class CosmosReadConfig(readConsistencyStrategy: ReadConsistencyStrategy,
                                     schemaConversionMode: SchemaConversionMode,
                                     maxItemCount: Int,
                                     prefetchBufferSize: Int,
@@ -915,7 +919,8 @@ private case class CosmosReadConfig(forceEventualConsistency: Boolean,
                                     customQuery: Option[CosmosParameterizedQuery],
                                     throughputControlConfig: Option[CosmosThroughputControlConfig] = None,
                                     runtimeFilteringEnabled: Boolean,
-                                    readManyFilteringConfig: CosmosReadManyFilteringConfig)
+                                    readManyFilteringConfig: CosmosReadManyFilteringConfig,
+                                    responseContinuationTokenLimitInKb: Option[Int] = None)
 
 private object SchemaConversionModes extends Enumeration {
   type SchemaConversionMode = Value
@@ -933,6 +938,14 @@ private object CosmosReadConfig {
     defaultValue = Some(true),
     parseFromStringFunction = value => value.toBoolean,
     helpMessage = "Makes the client use Eventual consistency for read operations")
+
+  private val ReadConsistencyStrategyOverride = CosmosConfigEntry[ReadConsistencyStrategy](key = CosmosConfigNames.ReadConsistencyStrategy,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = value => SparkBridgeImplementationInternal
+      .parseReadConsistencyStrategy(value)
+      .getOrElse(ReadConsistencyStrategy.DEFAULT),
+    helpMessage = "Makes the client use the specified read consistency strategy")
 
   private val JsonSchemaConversion = CosmosConfigEntry[SchemaConversionMode](
     key = CosmosConfigNames.ReadSchemaConversionMode,
@@ -961,6 +974,13 @@ private object CosmosReadConfig {
     defaultValue = None,
     parseFromStringFunction = queryText => queryText.toInt,
     helpMessage = "The maximum number of documents returned in a single request. The default is 1000.")
+
+  private val ResponseContinuationTokenLimitInKb = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.ReadResponseContinuationTokenLimitInKb,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = queryText => Math.max(1, queryText.toInt),
+    helpMessage = "The maximum continuation token size allowed in kilo-bytes. It has to be at least 1 KB.")
 
   private val PrefetchBufferSize = CosmosConfigEntry[Int](
     key = CosmosConfigNames.ReadPrefetchBufferSize,
@@ -996,10 +1016,12 @@ private object CosmosReadConfig {
 
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
+    val readConsistencyStrategyOverride = CosmosConfigEntry.parse(cfg, ReadConsistencyStrategyOverride)
     val jsonSchemaConversionMode = CosmosConfigEntry.parse(cfg, JsonSchemaConversion)
     val customQuery = CosmosConfigEntry.parse(cfg, CustomQuery)
     val maxItemCount = CosmosConfigEntry.parse(cfg, MaxItemCount)
     val prefetchBufferSize = CosmosConfigEntry.parse(cfg, PrefetchBufferSize)
+    val responseContinuationTokenLimitInKb = CosmosConfigEntry.parse(cfg, ResponseContinuationTokenLimitInKb)
     val maxIntegratedCacheStalenessInMilliseconds = CosmosConfigEntry.parse(cfg, MaxIntegratedCacheStalenessInMilliseconds)
     val dedicatedGatewayRequestOptions = {
       val result = new DedicatedGatewayRequestOptions
@@ -1015,8 +1037,18 @@ private object CosmosReadConfig {
     val runtimeFilteringEnabled = CosmosConfigEntry.parse(cfg, ReadRuntimeFilteringEnabled)
     val readManyFilteringConfig = CosmosReadManyFilteringConfig.parseCosmosReadManyFilterConfig(cfg)
 
+    val effectiveReadConsistencyStrategy = if (readConsistencyStrategyOverride.getOrElse(ReadConsistencyStrategy.DEFAULT) != ReadConsistencyStrategy.DEFAULT) {
+      readConsistencyStrategyOverride.get
+    } else {
+      if (forceEventualConsistency.getOrElse(true)) {
+        ReadConsistencyStrategy.EVENTUAL
+      } else {
+        ReadConsistencyStrategy.DEFAULT
+      }
+    }
+
     CosmosReadConfig(
-      forceEventualConsistency.get,
+      effectiveReadConsistencyStrategy,
       jsonSchemaConversionMode.get,
       maxItemCount.getOrElse(DefaultMaxItemCount),
       prefetchBufferSize.getOrElse(
@@ -1034,7 +1066,8 @@ private object CosmosReadConfig {
       customQuery,
       throughputControlConfigOpt,
       runtimeFilteringEnabled.get,
-      readManyFilteringConfig)
+      readManyFilteringConfig,
+      responseContinuationTokenLimitInKb)
   }
 }
 
@@ -1166,7 +1199,7 @@ private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      maxMicroBatchSize: Option[Int] = None,
                                      minTargetMicroBatchSize: Option[Int] = None,
                                      flushCloseIntervalInSeconds: Int = 60,
-                                     maxNoProgressIntervalInSeconds: Int = 180,
+                                     maxInitialNoProgressIntervalInSeconds: Int = 180,
                                      maxRetryNoProgressIntervalInSeconds: Int = 45 * 60,
                                      retryCommitInterceptor: Option[WriteOnRetryCommitInterceptor] = None)
 
@@ -1312,14 +1345,14 @@ private object CosmosWriteConfig {
     parseFromStringFunction = intAsString => intAsString.toInt,
     helpMessage = s"Interval of checks whether any progress has been made when flushing write operations.")
 
-  private val maxNoProgressIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxNoProgressIntervalInSeconds,
-    defaultValue = Some(45 * 60),
+  private val maxInitialNoProgressIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxNoProgressIntervalInSeconds,
+    defaultValue = Some(3 * 60),
     mandatory = false,
     parseFromStringFunction = intAsString => intAsString.toInt,
     helpMessage = s"Interval after which a writer fails when no progress has been made when flushing operations.")
 
   private val maxRetryNoProgressIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxRetryNoProgressIntervalInSeconds,
-    defaultValue = Some(3 * 60),
+    defaultValue = Some(45 * 60),
     mandatory = false,
     parseFromStringFunction = intAsString => intAsString.toInt,
     helpMessage = s"Interval after which a writer fails when no progress has been made when flushing operations in the second commit.")
@@ -1492,7 +1525,7 @@ private object CosmosWriteConfig {
       maxMicroBatchSize = maxBatchSizeOpt,
       minTargetMicroBatchSize = minTargetBatchSizeOpt,
       flushCloseIntervalInSeconds = CosmosConfigEntry.parse(cfg, flushCloseIntervalInSeconds).get,
-      maxNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxNoProgressIntervalInSeconds).get,
+      maxInitialNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxInitialNoProgressIntervalInSeconds).get,
       maxRetryNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxRetryNoProgressIntervalInSeconds).get,
       retryCommitInterceptor = writeRetryCommitInterceptor)
   }

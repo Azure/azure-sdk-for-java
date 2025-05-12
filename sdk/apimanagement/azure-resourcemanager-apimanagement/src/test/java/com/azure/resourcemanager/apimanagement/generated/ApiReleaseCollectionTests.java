@@ -12,15 +12,15 @@ public final class ApiReleaseCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiReleaseCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"apiId\":\"tnwu\",\"createdDateTime\":\"2021-10-03T15:35:19Z\",\"updatedDateTime\":\"2021-02-12T15:23:48Z\",\"notes\":\"ufizuckyf\"},\"id\":\"hr\",\"name\":\"idf\",\"type\":\"zwdzuh\"}],\"count\":6116347242940995661,\"nextLink\":\"sdkf\"}")
+            "{\"value\":[{\"properties\":{\"apiId\":\"onocukok\",\"createdDateTime\":\"2021-08-01T18:11:18Z\",\"updatedDateTime\":\"2021-05-31T06:54:27Z\",\"notes\":\"onuq\"},\"id\":\"zf\",\"name\":\"beypewrmjmw\",\"type\":\"vjektcxsenh\"}],\"count\":8745881341458290995,\"nextLink\":\"frzpwvlqdqgb\"}")
             .toObject(ApiReleaseCollection.class);
-        Assertions.assertEquals(6116347242940995661L, model.count());
+        Assertions.assertEquals(8745881341458290995L, model.count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiReleaseCollection model = new ApiReleaseCollection().withCount(6116347242940995661L);
+        ApiReleaseCollection model = new ApiReleaseCollection().withCount(8745881341458290995L);
         model = BinaryData.fromObject(model).toObject(ApiReleaseCollection.class);
-        Assertions.assertEquals(6116347242940995661L, model.count());
+        Assertions.assertEquals(8745881341458290995L, model.count());
     }
 }

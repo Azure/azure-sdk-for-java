@@ -16,22 +16,22 @@ public final class JsonSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JsonSource model = BinaryData.fromString(
-            "{\"type\":\"JsonSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"dataiksjpkign\",\"disableMetricsCollection\":\"datao\",\"\":{\"ipbfs\":\"datai\",\"kkkgiecjyf\":\"datapslpevzpqydn\",\"f\":\"datasn\",\"tjc\":\"dataz\"}},\"formatSettings\":{\"type\":\"JsonReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"q\":\"datab\",\"xuhhvgddfzcny\":\"dataagpdsuyywnaqgo\"}},\"\":{\"degfhofo\":\"datalhufsgcpwrtg\",\"xvkqjpovjvvxps\":\"datatbiuikpotjjfe\"}},\"additionalColumns\":\"dataewrb\",\"sourceRetryCount\":\"dataj\",\"sourceRetryWait\":\"dataflqwqcxyiqppacji\",\"maxConcurrentConnections\":\"datallacylbtkxeij\",\"disableMetricsCollection\":\"datanlaaxtte\",\"\":{\"wlntenhnqtvx\":\"datagojvgjezrwbob\",\"eojl\":\"datahbehhehotqorrvwl\",\"fdsgrtkevim\":\"dataugzlvgjirjkkrs\",\"klbfvtzdtw\":\"dataupgevjmandrvvj\"}}")
+            "{\"type\":\"JsonSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datalxbofdchboacf\",\"disableMetricsCollection\":\"datazwesetutqjsojwoi\",\"\":{\"jka\":\"datanakytzcmagvs\",\"vygmtywivb\":\"datarqhpxwqhzsxgm\",\"ykwbhzs\":\"dataiteedjnklvbrs\"}},\"formatSettings\":{\"type\":\"JsonReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"qxpsnnn\":\"datat\",\"sdxylndbgaic\":\"datahgd\",\"dnp\":\"datakqjzfzk\"}},\"\":{\"asvywkbiekyvak\":\"dataxjdfkqlkaipfyvq\",\"pgnapkpaie\":\"dataah\",\"zmlrvlghlrcdiq\":\"dataoxvoaoavezwcl\",\"awifz\":\"datavhcbu\"}},\"additionalColumns\":\"datatock\",\"sourceRetryCount\":\"dataaawyy\",\"sourceRetryWait\":\"datawoeql\",\"maxConcurrentConnections\":\"dataw\",\"disableMetricsCollection\":\"datarfyww\",\"\":{\"cztmqdkhohspkg\":\"datapkhqhvk\",\"bxxxqfrn\":\"dataemvlyaprj\",\"fauvgt\":\"datazbhmxlp\",\"fbmrwhk\":\"datainozsmyvvfa\"}}")
             .toObject(JsonSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonSource model = new JsonSource().withSourceRetryCount("dataj")
-            .withSourceRetryWait("dataflqwqcxyiqppacji")
-            .withMaxConcurrentConnections("datallacylbtkxeij")
-            .withDisableMetricsCollection("datanlaaxtte")
-            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("dataiksjpkign")
-                .withDisableMetricsCollection("datao")
+        JsonSource model = new JsonSource().withSourceRetryCount("dataaawyy")
+            .withSourceRetryWait("datawoeql")
+            .withMaxConcurrentConnections("dataw")
+            .withDisableMetricsCollection("datarfyww")
+            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datalxbofdchboacf")
+                .withDisableMetricsCollection("datazwesetutqjsojwoi")
                 .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
             .withFormatSettings(new JsonReadSettings().withCompressionProperties(
                 new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings"))))
-            .withAdditionalColumns("dataewrb");
+            .withAdditionalColumns("datatock");
         model = BinaryData.fromObject(model).toObject(JsonSource.class);
     }
 

@@ -11,8 +11,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluent.DataPolicyManifestsClient;
 import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
 import com.azure.resourcemanager.resources.fluent.PolicyClient;
+import com.azure.resourcemanager.resources.fluent.PolicyDefinitionVersionsClient;
 import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
 import com.azure.resourcemanager.resources.fluent.PolicyExemptionsClient;
+import com.azure.resourcemanager.resources.fluent.PolicySetDefinitionVersionsClient;
 import com.azure.resourcemanager.resources.fluent.PolicySetDefinitionsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
@@ -23,12 +25,12 @@ import java.time.Duration;
 @ServiceClient(builder = PolicyClientBuilder.class)
 public final class PolicyClientImpl extends AzureServiceClient implements PolicyClient {
     /**
-     * The ID of the target subscription.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -121,6 +123,20 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
     }
 
     /**
+     * The PolicyDefinitionVersionsClient object to access its operations.
+     */
+    private final PolicyDefinitionVersionsClient policyDefinitionVersions;
+
+    /**
+     * Gets the PolicyDefinitionVersionsClient object to access its operations.
+     * 
+     * @return the PolicyDefinitionVersionsClient object.
+     */
+    public PolicyDefinitionVersionsClient getPolicyDefinitionVersions() {
+        return this.policyDefinitionVersions;
+    }
+
+    /**
      * The PolicySetDefinitionsClient object to access its operations.
      */
     private final PolicySetDefinitionsClient policySetDefinitions;
@@ -132,6 +148,20 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
      */
     public PolicySetDefinitionsClient getPolicySetDefinitions() {
         return this.policySetDefinitions;
+    }
+
+    /**
+     * The PolicySetDefinitionVersionsClient object to access its operations.
+     */
+    private final PolicySetDefinitionVersionsClient policySetDefinitionVersions;
+
+    /**
+     * Gets the PolicySetDefinitionVersionsClient object to access its operations.
+     * 
+     * @return the PolicySetDefinitionVersionsClient object.
+     */
+    public PolicySetDefinitionVersionsClient getPolicySetDefinitionVersions() {
+        return this.policySetDefinitionVersions;
     }
 
     /**
@@ -169,7 +199,7 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     PolicyClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
@@ -182,7 +212,9 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
         this.endpoint = endpoint;
         this.dataPolicyManifests = new DataPolicyManifestsClientImpl(this);
         this.policyDefinitions = new PolicyDefinitionsClientImpl(this);
+        this.policyDefinitionVersions = new PolicyDefinitionVersionsClientImpl(this);
         this.policySetDefinitions = new PolicySetDefinitionsClientImpl(this);
+        this.policySetDefinitionVersions = new PolicySetDefinitionVersionsClientImpl(this);
         this.policyAssignments = new PolicyAssignmentsClientImpl(this);
         this.policyExemptions = new PolicyExemptionsClientImpl(this);
     }

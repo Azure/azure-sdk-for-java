@@ -3,17 +3,21 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * A collection of {@link HttpHeaders} on a request or response.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public class HttpHeaders {
     /**
      * This map is a case-insensitive key (i.e. lower-cased), but the returned {@link HttpHeader} key will be as-provided to

@@ -3,18 +3,18 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -71,9 +71,11 @@ public class HttpInstrumentationLoggingTests {
         throws IOException {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel, logCaptureStream);
 
+        RequestContext context = RequestContext.builder().setLogger(logger).build();
+
         HttpPipeline pipeline = createPipeline(new HttpInstrumentationOptions().setHttpLogLevel(detailLevel));
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(URI);
-        request.setRequestOptions(new RequestOptions().setLogger(logger));
+        request.setContext(context);
 
         pipeline.send(request).close();
 
@@ -269,12 +271,12 @@ public class HttpInstrumentationLoggingTests {
         IOException expectedException = new IOException("socket error");
         TestStream responseStream = new TestStream(1024, expectedException);
         HttpPipeline pipeline = createPipeline(options,
-            request -> new MockHttpResponse(request, 200, BinaryData.fromStream(responseStream, 1024L)));
+            request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.fromStream(responseStream, 1024L)));
 
         HttpRequest request = createRequest(HttpMethod.GET, URI, logger);
 
-        Response<?> response = pipeline.send(request);
-        assertThrows(RuntimeException.class, () -> response.getBody().toString());
+        Response<BinaryData> response = pipeline.send(request);
+        assertThrows(RuntimeException.class, () -> response.getValue().toBytes());
 
         List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
         if (!expectExceptionLog) {
@@ -291,7 +293,7 @@ public class HttpInstrumentationLoggingTests {
             .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS);
 
         HttpPipeline pipeline = createPipeline(options,
-            request -> new MockHttpResponse(request, 200, BinaryData.fromString("Response body")));
+            request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.fromString("Response body")));
 
         HttpRequest request = createRequest(HttpMethod.GET, URI, logger);
 
@@ -311,14 +313,14 @@ public class HttpInstrumentationLoggingTests {
             .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS);
 
         HttpPipeline pipeline = createPipeline(options,
-            request -> new MockHttpResponse(request, 200, BinaryData.fromString("Response body")));
+            request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.fromString("Response body")));
 
         HttpRequest request = createRequest(HttpMethod.GET, URI, logger);
 
-        Response<?> response = pipeline.send(request);
+        Response<BinaryData> response = pipeline.send(request);
 
         for (int i = 0; i < 3; i++) {
-            BinaryData data = response.getBody();
+            BinaryData data = response.getValue();
             assertEquals(1, parseLogMessages(logCaptureStream).size());
             assertEquals("Response body", data.toString());
         }
@@ -391,15 +393,15 @@ public class HttpInstrumentationLoggingTests {
             .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS);
 
         HttpPipeline pipeline = createPipeline(options,
-            request -> new MockHttpResponse(request, 200, BinaryData.fromString("Response body")));
+            request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.fromString("Response body")));
 
         HttpRequest request = createRequest(HttpMethod.PUT, URI, logger);
         request.setBody(BinaryData.fromString("Request body"));
 
-        Response<?> response = pipeline.send(request);
+        Response<BinaryData> response = pipeline.send(request);
         response.close();
 
-        assertEquals("Response body", response.getBody().toString());
+        assertEquals("Response body", response.getValue().toString());
 
         List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
         assertEquals(2, logMessages.size());
@@ -422,7 +424,7 @@ public class HttpInstrumentationLoggingTests {
         BinaryData responseBody = BinaryData.fromString("Response body");
         TestStream responseStream = new TestStream(responseBody);
 
-        HttpPipeline pipeline = createPipeline(options, request -> new MockHttpResponse(request, 200,
+        HttpPipeline pipeline = createPipeline(options, request -> new Response<>(request, 200, new HttpHeaders(),
             BinaryData.fromStream(responseStream, responseBody.getLength())));
 
         BinaryData requestBody = BinaryData.fromString("Request body");
@@ -431,11 +433,11 @@ public class HttpInstrumentationLoggingTests {
         request.setBody(BinaryData.fromStream(requestStream, requestBody.getLength()));
         assertFalse(request.getBody().isReplayable());
 
-        Response<?> response = pipeline.send(request);
+        Response<BinaryData> response = pipeline.send(request);
         assertTrue(request.getBody().isReplayable());
-        assertTrue(response.getBody().isReplayable());
+        assertTrue(response.getValue().isReplayable());
 
-        assertEquals("Response body", response.getBody().toString());
+        assertEquals("Response body", response.getValue().toString());
 
         List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
         assertEquals(2, logMessages.size());
@@ -460,8 +462,8 @@ public class HttpInstrumentationLoggingTests {
 
         TestStream requestStream = new TestStream(1024 * 1024);
         TestStream responseStream = new TestStream(1024 * 1024);
-        HttpPipeline pipeline = createPipeline(options,
-            request -> new MockHttpResponse(request, 200, BinaryData.fromStream(responseStream, (long) 1024 * 1024)));
+        HttpPipeline pipeline = createPipeline(options, request -> new Response<>(request, 200, new HttpHeaders(),
+            BinaryData.fromStream(responseStream, (long) 1024 * 1024)));
 
         HttpRequest request = createRequest(HttpMethod.PUT, URI, logger);
 
@@ -493,7 +495,7 @@ public class HttpInstrumentationLoggingTests {
         TestStream requestStream = new TestStream(1024);
         TestStream responseStream = new TestStream(1024);
         HttpPipeline pipeline = createPipeline(options,
-            request -> new MockHttpResponse(request, 200, BinaryData.fromStream(responseStream)));
+            request -> new Response<>(request, 200, new HttpHeaders(), BinaryData.fromStream(responseStream)));
 
         HttpRequest request = createRequest(HttpMethod.PUT, URI, logger);
         request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, "1024");
@@ -530,13 +532,13 @@ public class HttpInstrumentationLoggingTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy())
             .addPolicy(new HttpInstrumentationPolicy(options))
             .httpClient(request -> {
-                assertEquals(traceparent(request.getRequestOptions().getInstrumentationContext()),
+                assertEquals(traceparent(request.getContext().getInstrumentationContext()),
                     request.getHeaders().get(TRACEPARENT).getValue());
                 if (count.getAndIncrement() == 0) {
-                    firstTryContext.set(request.getRequestOptions().getInstrumentationContext());
-                    throw expectedException;
+                    firstTryContext.set(request.getContext().getInstrumentationContext());
+                    throw CoreException.from(expectedException);
                 } else {
-                    return new MockHttpResponse(request, 200);
+                    return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
                 }
             })
             .build();
@@ -572,10 +574,10 @@ public class HttpInstrumentationLoggingTests {
             .addPolicy(new HttpInstrumentationPolicy(options))
             .httpClient(request -> {
                 if (count.getAndIncrement() == 0) {
-                    firstTryContext.set(request.getRequestOptions().getInstrumentationContext());
-                    return new MockHttpResponse(request, 500);
+                    firstTryContext.set(request.getContext().getInstrumentationContext());
+                    return new Response<>(request, 500, new HttpHeaders(), BinaryData.empty());
                 } else {
-                    return new MockHttpResponse(request, 200);
+                    return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
                 }
             })
             .build();
@@ -603,7 +605,7 @@ public class HttpInstrumentationLoggingTests {
         HttpRetryOptions retryOptions = new HttpRetryOptions(maxRetries, Duration.ofMillis(5));
 
         HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy(retryOptions))
-            .httpClient(request -> new MockHttpResponse(request, 500))
+            .httpClient(request -> new Response<>(request, 500, new HttpHeaders(), BinaryData.empty()))
             .build();
 
         InstrumentationContext parentContext = createRandomInstrumentationContext();
@@ -645,12 +647,12 @@ public class HttpInstrumentationLoggingTests {
             .addPolicy(new HttpInstrumentationPolicy(options))
             .httpClient(request -> {
                 if (count.getAndIncrement() == 0) {
-                    firstRedirectContext.set(request.getRequestOptions().getInstrumentationContext());
+                    firstRedirectContext.set(request.getContext().getInstrumentationContext());
                     HttpHeaders httpHeaders = new HttpHeaders().set(HttpHeaderName.LOCATION,
                         "http://redirecthost/" + count.get() + "?param=value&api-version=42");
-                    return new MockHttpResponse(request, 302, httpHeaders);
+                    return new Response<>(request, 302, httpHeaders, BinaryData.empty());
                 } else {
-                    return new MockHttpResponse(request, 200);
+                    return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
                 }
             })
             .build();
@@ -678,7 +680,7 @@ public class HttpInstrumentationLoggingTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRedirectPolicy()).httpClient(request -> {
             count.getAndIncrement();
             HttpHeaders httpHeaders = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
-            return new MockHttpResponse(request, 302, httpHeaders);
+            return new Response<>(request, 302, httpHeaders, BinaryData.empty());
         }).build();
 
         InstrumentationContext parentContext = createRandomInstrumentationContext();
@@ -701,7 +703,7 @@ public class HttpInstrumentationLoggingTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRedirectPolicy()).httpClient(request -> {
             count.getAndIncrement();
             HttpHeaders httpHeaders = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
-            return new MockHttpResponse(request, 302, httpHeaders);
+            return new Response<>(request, 302, httpHeaders, BinaryData.empty());
         }).build();
 
         InstrumentationContext parentContext = createRandomInstrumentationContext();
@@ -726,7 +728,7 @@ public class HttpInstrumentationLoggingTests {
             count.getAndIncrement();
             HttpHeaders httpHeaders
                 = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/" + count.get());
-            return new MockHttpResponse(request, 302, httpHeaders);
+            return new Response<>(request, 302, httpHeaders, BinaryData.empty());
         }).build();
 
         InstrumentationContext parentContext = createRandomInstrumentationContext();
@@ -832,7 +834,7 @@ public class HttpInstrumentationLoggingTests {
         assertNull(log.get("message"));
 
         if (context == null) {
-            context = request.getRequestOptions().getInstrumentationContext();
+            context = request.getContext().getInstrumentationContext();
         }
 
         assertTraceContext(log, context);
@@ -902,7 +904,7 @@ public class HttpInstrumentationLoggingTests {
 
     private void assertResponseLog(Map<String, Object> log, String expectedUri, Response<?> response, int tryCount) {
         assertResponseLog(log, expectedUri, tryCount, response.getStatusCode(),
-            response.getRequest().getRequestOptions().getInstrumentationContext());
+            response.getRequest().getContext().getInstrumentationContext());
 
         Long expectedRequestLength = getLength(response.getRequest().getBody(), response.getRequest().getHeaders());
 
@@ -945,7 +947,7 @@ public class HttpInstrumentationLoggingTests {
         assertEquals(error.getMessage(), log.get("exception.message"));
         assertEquals(error.getClass().getCanonicalName(), log.get("exception.type"));
         assertNull(log.get("message"));
-        assertTraceContext(log, response.getRequest().getRequestOptions().getInstrumentationContext());
+        assertTraceContext(log, response.getRequest().getContext().getInstrumentationContext());
     }
 
     private void assertExceptionLog(Map<String, Object> log, HttpRequest request, Throwable error) {
@@ -971,7 +973,7 @@ public class HttpInstrumentationLoggingTests {
         assertNull(log.get("message"));
 
         if (context == null) {
-            context = request.getRequestOptions().getInstrumentationContext();
+            context = request.getContext().getInstrumentationContext();
         }
         assertTraceContext(log, context);
     }
@@ -982,7 +984,7 @@ public class HttpInstrumentationLoggingTests {
                 request.getBody().toString();
             }
             BinaryData responseBody = BinaryData.fromString("Hello, world!");
-            MockHttpResponse response = new MockHttpResponse(request, 200, responseBody);
+            Response<BinaryData> response = new Response<>(request, 200, new HttpHeaders(), responseBody);
             response.getHeaders()
                 .set(HttpHeaderName.CONTENT_TYPE, "application/text")
                 .set(HttpHeaderName.CONTENT_LENGTH, responseBody.getLength().toString())
@@ -992,7 +994,7 @@ public class HttpInstrumentationLoggingTests {
     }
 
     private HttpPipeline createPipeline(HttpInstrumentationOptions instrumentationOptions,
-        Function<HttpRequest, Response<?>> httpClient) {
+        Function<HttpRequest, Response<BinaryData>> httpClient) {
         return new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
             .httpClient(httpClient::apply)
             .build();
@@ -1007,7 +1009,7 @@ public class HttpInstrumentationLoggingTests {
         HttpRequest request = new HttpRequest().setMethod(method).setUri(url);
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         request.getHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer {token}");
-        request.setRequestOptions(new RequestOptions().setLogger(logger).setInstrumentationContext(context));
+        request.setContext(RequestContext.builder().setLogger(logger).setInstrumentationContext(context).build());
 
         return request;
     }

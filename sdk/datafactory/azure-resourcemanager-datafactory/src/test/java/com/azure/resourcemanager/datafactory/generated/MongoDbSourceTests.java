@@ -11,18 +11,18 @@ public final class MongoDbSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbSource model = BinaryData.fromString(
-            "{\"type\":\"MongoDbSource\",\"query\":\"dataomapcaxnoqnjfv\",\"additionalColumns\":\"datavectooxjztt\",\"sourceRetryCount\":\"datasnmxvsrvkzvxlez\",\"sourceRetryWait\":\"datadybxehjkqogtnfla\",\"maxConcurrentConnections\":\"datapghfvkqijmyqo\",\"disableMetricsCollection\":\"datasfaoc\",\"\":{\"dpyohnmru\":\"datarr\",\"eywbhxhawkwcf\":\"datavlwhtfscoups\"}}")
+            "{\"type\":\"MongoDbSource\",\"query\":\"datawdw\",\"additionalColumns\":\"dataxxehndcpiwcgc\",\"sourceRetryCount\":\"datashlpqxjxhdwj\",\"sourceRetryWait\":\"dataopzclkatpuomg\",\"maxConcurrentConnections\":\"datavcqnjjfm\",\"disableMetricsCollection\":\"datacfbflyzcq\",\"\":{\"vbfpu\":\"dataybsyjoonv\",\"td\":\"datalo\",\"oet\":\"dataumuuqwcka\"}}")
             .toObject(MongoDbSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbSource model = new MongoDbSource().withSourceRetryCount("datasnmxvsrvkzvxlez")
-            .withSourceRetryWait("datadybxehjkqogtnfla")
-            .withMaxConcurrentConnections("datapghfvkqijmyqo")
-            .withDisableMetricsCollection("datasfaoc")
-            .withQuery("dataomapcaxnoqnjfv")
-            .withAdditionalColumns("datavectooxjztt");
+        MongoDbSource model = new MongoDbSource().withSourceRetryCount("datashlpqxjxhdwj")
+            .withSourceRetryWait("dataopzclkatpuomg")
+            .withMaxConcurrentConnections("datavcqnjjfm")
+            .withDisableMetricsCollection("datacfbflyzcq")
+            .withQuery("datawdw")
+            .withAdditionalColumns("dataxxehndcpiwcgc");
         model = BinaryData.fromObject(model).toObject(MongoDbSource.class);
     }
 }

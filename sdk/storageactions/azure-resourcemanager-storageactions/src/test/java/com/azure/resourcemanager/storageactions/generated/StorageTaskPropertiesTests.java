@@ -22,9 +22,9 @@ public final class StorageTaskPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageTaskProperties model = BinaryData.fromString(
-            "{\"taskVersion\":1351173386215455176,\"enabled\":true,\"description\":\"ybb\",\"action\":{\"if\":{\"condition\":\"podepoo\",\"operations\":[{\"name\":\"SetBlobTier\",\"parameters\":{\"theotusiv\":\"amiheognarxz\",\"bwjzr\":\"evcciqihnhun\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"},{\"name\":\"SetBlobTags\",\"parameters\":{\"qeof\":\"pemvtzfkufubljof\",\"jqul\":\"aeqjhqjbasvms\",\"clxxwrljdo\":\"gsntnbybkzgcwr\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"},{\"name\":\"SetBlobLegalHold\",\"parameters\":{\"jdkwtnhxbnjb\":\"cr\",\"qpjwnzlljfm\":\"ksqrglssai\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]},\"else\":{\"operations\":[{\"name\":\"SetBlobLegalHold\",\"parameters\":{\"zevndhkrwpdappds\":\"abkyqduujitcjcz\",\"snhu\":\"dkvwrwjfe\",\"tmrldhugjzzdatq\":\"je\",\"gphuticndvka\":\"hocdgeab\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"},{\"name\":\"SetBlobTags\",\"parameters\":{\"rokft\":\"hxh\",\"iawxklry\":\"xolniwpwcukjfk\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]}},\"provisioningState\":\"Canceled\",\"creationTimeInUtc\":\"2021-11-03T18:10:18Z\"}")
+            "{\"taskVersion\":1351173386215455176,\"enabled\":true,\"description\":\"ybb\",\"action\":{\"if\":{\"condition\":\"podepoo\",\"operations\":[{\"name\":\"SetBlobTier\",\"parameters\":{\"theotusiv\":\"amiheognarxz\",\"bwjzr\":\"evcciqihnhun\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"},{\"name\":\"SetBlobTags\",\"parameters\":{\"qeof\":\"pemvtzfkufubljof\",\"jqul\":\"aeqjhqjbasvms\",\"clxxwrljdo\":\"gsntnbybkzgcwr\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"},{\"name\":\"SetBlobLegalHold\",\"parameters\":{\"jdkwtnhxbnjb\":\"cr\",\"qpjwnzlljfm\":\"ksqrglssai\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]},\"else\":{\"operations\":[{\"name\":\"SetBlobLegalHold\",\"parameters\":{\"zevndhkrwpdappds\":\"abkyqduujitcjcz\",\"snhu\":\"dkvwrwjfe\",\"tmrldhugjzzdatq\":\"je\",\"gphuticndvka\":\"hocdgeab\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"},{\"name\":\"SetBlobTags\",\"parameters\":{\"rokft\":\"hxh\",\"iawxklry\":\"xolniwpwcukjfk\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]}},\"provisioningState\":\"ValidateSubscriptionQuotaEnd\",\"creationTimeInUtc\":\"2021-11-03T18:10:18Z\"}")
             .toObject(StorageTaskProperties.class);
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertTrue(model.enabled());
         Assertions.assertEquals("ybb", model.description());
         Assertions.assertEquals("podepoo", model.action().ifProperty().condition());
         Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TIER,
@@ -80,7 +80,7 @@ public final class StorageTaskPropertiesTests {
                                 .withOnSuccess(OnSuccess.CONTINUE)
                                 .withOnFailure(OnFailure.BREAK)))));
         model = BinaryData.fromObject(model).toObject(StorageTaskProperties.class);
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertTrue(model.enabled());
         Assertions.assertEquals("ybb", model.description());
         Assertions.assertEquals("podepoo", model.action().ifProperty().condition());
         Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TIER,

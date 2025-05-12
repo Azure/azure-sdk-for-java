@@ -73,8 +73,8 @@ public class SapOdpLinkedService extends LinkedService {
     private Object messageServerService;
 
     /*
-     * SNC activation indicator to access the SAP server where the table is located. Must be either 0 (off) or 1 (on).
-     * Type: string (or Expression with resultType string).
+     * SNC activation flag (Boolean) to access the SAP server where the table is located. Type: boolean (or Expression
+     * with resultType boolean).
      */
     private Object sncMode;
 
@@ -336,8 +336,8 @@ public class SapOdpLinkedService extends LinkedService {
     }
 
     /**
-     * Get the sncMode property: SNC activation indicator to access the SAP server where the table is located. Must be
-     * either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
+     * Get the sncMode property: SNC activation flag (Boolean) to access the SAP server where the table is located.
+     * Type: boolean (or Expression with resultType boolean).
      * 
      * @return the sncMode value.
      */
@@ -346,8 +346,8 @@ public class SapOdpLinkedService extends LinkedService {
     }
 
     /**
-     * Set the sncMode property: SNC activation indicator to access the SAP server where the table is located. Must be
-     * either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
+     * Set the sncMode property: SNC activation flag (Boolean) to access the SAP server where the table is located.
+     * Type: boolean (or Expression with resultType boolean).
      * 
      * @param sncMode the sncMode value to set.
      * @return the SapOdpLinkedService object itself.
@@ -535,6 +535,15 @@ public class SapOdpLinkedService extends LinkedService {
      * {@inheritDoc}
      */
     @Override
+    public SapOdpLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SapOdpLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
@@ -573,6 +582,7 @@ public class SapOdpLinkedService extends LinkedService {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -641,7 +651,9 @@ public class SapOdpLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedSapOdpLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedSapOdpLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedSapOdpLinkedService.setDescription(reader.getString());

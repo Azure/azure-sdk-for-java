@@ -20,12 +20,13 @@ import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.CosmosOperationPolicy;
+import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.CosmosRequestContext;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -41,6 +42,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStat
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -58,6 +60,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
+import com.azure.cosmos.models.CosmosOperationDetails;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -68,7 +71,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
-import com.azure.cosmos.models.CosmosOperationDetails;
 import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -83,7 +85,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -159,6 +160,10 @@ public class ImplementationBridgeHelpers {
             void setRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder, boolean isRegionScopedSessionCapturingEnabled);
 
             boolean getRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder);
+
+            void setPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder, boolean isPerPartitionAutomaticFailoverEnabled);
+
+            boolean getPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder);
         }
     }
 
@@ -838,7 +843,7 @@ public class ImplementationBridgeHelpers {
 
             void setDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, CosmosDiagnosticsContext ctx);
 
-            URI getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics);
+            RegionalRoutingContext getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics);
 
             void mergeMetadataDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, MetadataDiagnosticsContext otherMetadataDiagnosticsContext);
 
@@ -1094,6 +1099,10 @@ public class ImplementationBridgeHelpers {
             <T> FeedResponse<T> createFeedResponse(RxDocumentServiceResponse response,
                                                    CosmosItemSerializer itemSerializer,
                                                    Class<T> cls);
+
+            <T> FeedResponse<T> createNonServiceFeedResponse(List<T> items,
+                                                   boolean isChangeFeed,
+                                                   boolean isNoChanges);
 
             <T> FeedResponse<T> createChangeFeedResponse(RxDocumentServiceResponse response,
                                                    CosmosItemSerializer itemSerializer,
@@ -1422,7 +1431,6 @@ public class ImplementationBridgeHelpers {
             EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client);
             EnumSet<MetricCategory> getMetricCategories(CosmosAsyncClient client);
             boolean shouldEnableEmptyPageDiagnostics(CosmosAsyncClient client);
-            boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client);
             List<String> getPreferredRegions(CosmosAsyncClient client);
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
             String getConnectionMode(CosmosAsyncClient client);
@@ -1578,14 +1586,9 @@ public class ImplementationBridgeHelpers {
             EnumSet<TagName> getMetricTagNames(CosmosClientTelemetryConfig config);
             String getClientCorrelationId(CosmosClientTelemetryConfig config);
             MeterRegistry getClientMetricRegistry(CosmosClientTelemetryConfig config);
-            Boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
             boolean isClientMetricsEnabled(CosmosClientTelemetryConfig config);
-            void resetIsSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
             CosmosMeterOptions getMeterOptions(CosmosClientTelemetryConfig config, CosmosMetricName name);
             CosmosMeterOptions createDisabledMeterOptions(CosmosMetricName name);
-            CosmosClientTelemetryConfig createSnapshot(
-                CosmosClientTelemetryConfig config,
-                boolean effectiveIsClientTelemetryEnabled);
             Collection<CosmosDiagnosticsHandler> getDiagnosticHandlers(CosmosClientTelemetryConfig config);
             void setAccountName(CosmosClientTelemetryConfig config, String accountName);
             String getAccountName(CosmosClientTelemetryConfig config);
@@ -1810,6 +1813,40 @@ public class ImplementationBridgeHelpers {
 
             void setItemObjectMapper(CosmosItemSerializer serializer, ObjectMapper mapper);
             ObjectMapper getItemObjectMapper(CosmosItemSerializer serializer);
+        }
+    }
+
+    public static final class ReadConsistencyStrategyHelper {
+        private static final AtomicReference<ReadConsistencyStrategyAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean readConsistencyStrategyClassLoaded = new AtomicBoolean(false);
+
+        private ReadConsistencyStrategyHelper() {}
+
+        public static void setReadConsistencyStrategyAccessor(final ReadConsistencyStrategyAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("ReadConsistencyStrategyAccessor already initialized!");
+            } else {
+                logger.debug("Setting ReadConsistencyStrategyAccessor...");
+                readConsistencyStrategyClassLoaded.set(true);
+            }
+        }
+
+        public static ReadConsistencyStrategyAccessor getReadConsistencyStrategyAccessor() {
+            if (!readConsistencyStrategyClassLoaded.get()) {
+                logger.debug("Initializing ReadConsistencyStrategyAccessor...");
+                initializeAllAccessors();
+            }
+
+            ReadConsistencyStrategyAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("ReadConsistencyStrategyAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface ReadConsistencyStrategyAccessor {
+            ReadConsistencyStrategy createFromServiceSerializedFormat(String serviceSerializedFormat);
         }
     }
 }

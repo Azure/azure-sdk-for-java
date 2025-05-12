@@ -1,5 +1,34 @@
 # Release History
 
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.22 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
+
+## 1.0.21 (2025-02-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+
 ## 1.0.20 (2025-01-20)
 
 ### Other Changes

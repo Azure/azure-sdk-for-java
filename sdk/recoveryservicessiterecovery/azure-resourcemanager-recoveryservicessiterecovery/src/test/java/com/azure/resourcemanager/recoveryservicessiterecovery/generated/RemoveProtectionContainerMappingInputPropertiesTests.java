@@ -13,16 +13,16 @@ public final class RemoveProtectionContainerMappingInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RemoveProtectionContainerMappingInputProperties model
-            = BinaryData.fromString("{\"providerSpecificInput\":{\"instanceType\":\"dao\"}}")
+            = BinaryData.fromString("{\"providerSpecificInput\":{\"instanceType\":\"l\"}}")
                 .toObject(RemoveProtectionContainerMappingInputProperties.class);
-        Assertions.assertEquals("dao", model.providerSpecificInput().instanceType());
+        Assertions.assertEquals("l", model.providerSpecificInput().instanceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RemoveProtectionContainerMappingInputProperties model = new RemoveProtectionContainerMappingInputProperties()
-            .withProviderSpecificInput(new ReplicationProviderContainerUnmappingInput().withInstanceType("dao"));
+            .withProviderSpecificInput(new ReplicationProviderContainerUnmappingInput().withInstanceType("l"));
         model = BinaryData.fromObject(model).toObject(RemoveProtectionContainerMappingInputProperties.class);
-        Assertions.assertEquals("dao", model.providerSpecificInput().instanceType());
+        Assertions.assertEquals("l", model.providerSpecificInput().instanceType());
     }
 }

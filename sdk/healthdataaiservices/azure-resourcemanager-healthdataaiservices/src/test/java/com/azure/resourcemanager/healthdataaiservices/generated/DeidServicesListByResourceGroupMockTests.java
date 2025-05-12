@@ -7,8 +7,8 @@ package com.azure.resourcemanager.healthdataaiservices.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.healthdataaiservices.HealthDataAIServicesManager;
 import com.azure.resourcemanager.healthdataaiservices.models.DeidService;
@@ -24,14 +24,14 @@ public final class DeidServicesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"fvgxbfsmxneh\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"godebfqkkrbmpu\",\"gr\",\"wflzlfbxzpuzy\",\"ispnqzahmgkbrp\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"bnuqqkpik\",\"name\":\"drgvtqagn\",\"type\":\"uynhijg\"},{\"properties\":{\"groupIds\":[\"fsiarbutr\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"zzmhjrunmpxttd\",\"name\":\"hrbnlankxmyskpbh\",\"type\":\"nbtkcxywnytnr\"},{\"properties\":{\"groupIds\":[\"qidybyx\",\"zfcl\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"babphlwrqlfk\",\"name\":\"sthsu\",\"type\":\"ocmnyyazttbtwwrq\"},{\"properties\":{\"groupIds\":[\"ckzywbiexzfeyue\",\"xibxujwbhqwalm\",\"zyoxaepdkzjan\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"d\",\"name\":\"bavxbniwdjswzt\",\"type\":\"dbpgnxytxhp\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"fzab\",\"tenantId\":\"cuh\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"gu\":{\"principalId\":\"yqiklbbovplwzb\",\"clientId\":\"gy\"},\"mg\":{\"principalId\":\"vmkfssxqu\",\"clientId\":\"fpl\"}}},\"location\":\"nkjzkdeslpvlop\",\"tags\":{\"wzbaiue\":\"ighxpk\",\"a\":\"baumnyqupedeoj\"},\"id\":\"ckhsmtxpsieb\",\"name\":\"fhvpesaps\",\"type\":\"rdqmhjjdhtldwkyz\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"fvgxbfsmxneh\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"godebfqkkrbmpu\",\"gr\",\"wflzlfbxzpuzy\",\"ispnqzahmgkbrp\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"bnuqqkpik\",\"name\":\"drgvtqagn\",\"type\":\"uynhijg\"},{\"properties\":{\"groupIds\":[\"fsiarbutr\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"zzmhjrunmpxttd\",\"name\":\"hrbnlankxmyskpbh\",\"type\":\"nbtkcxywnytnr\"},{\"properties\":{\"groupIds\":[\"qidybyx\",\"zfcl\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"babphlwrqlfk\",\"name\":\"sthsu\",\"type\":\"ocmnyyazttbtwwrq\"},{\"properties\":{\"groupIds\":[\"ckzywbiexzfeyue\",\"xibxujwbhqwalm\",\"zyoxaepdkzjan\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"d\",\"name\":\"bavxbniwdjswzt\",\"type\":\"dbpgnxytxhp\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"fzab\",\"tenantId\":\"cuh\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"gu\":{\"clientId\":\"yqiklbbovplwzb\",\"principalId\":\"gy\"},\"mg\":{\"clientId\":\"vmkfssxqu\",\"principalId\":\"fpl\"}}},\"location\":\"nkjzkdeslpvlop\",\"tags\":{\"wzbaiue\":\"ighxpk\",\"a\":\"baumnyqupedeoj\"},\"id\":\"ckhsmtxpsieb\",\"name\":\"fhvpesaps\",\"type\":\"rdqmhjjdhtldwkyz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HealthDataAIServicesManager manager = HealthDataAIServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DeidService> response
             = manager.deidServices().listByResourceGroup("bgsncghkjeszzhb", com.azure.core.util.Context.NONE);

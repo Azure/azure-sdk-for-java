@@ -52,7 +52,7 @@ public final class CosmosDbSqlApiCollectionDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private CosmosDbSqlApiCollectionDatasetTypeProperties innerTypeProperties() {
+    CosmosDbSqlApiCollectionDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

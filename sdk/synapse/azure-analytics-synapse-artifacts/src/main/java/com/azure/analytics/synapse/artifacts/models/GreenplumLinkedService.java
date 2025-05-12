@@ -39,6 +39,54 @@ public class GreenplumLinkedService extends LinkedService {
      */
     private Object encryptedCredential;
 
+    /*
+     * The authentication type to use. Type: string. Only used for V2.
+     */
+    private GreenplumAuthenticationType authenticationType;
+
+    /*
+     * Host name for connection. Type: string. Only used for V2.
+     */
+    private Object host;
+
+    /*
+     * The port for the connection. Type: integer. Only used for V2.
+     */
+    private Object port;
+
+    /*
+     * Username for authentication. Type: string. Only used for V2.
+     */
+    private Object username;
+
+    /*
+     * Database name for connection. Type: string. Only used for V2.
+     */
+    private Object database;
+
+    /*
+     * SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full.
+     * Type: integer. Only used for V2.
+     */
+    private Object sslMode;
+
+    /*
+     * The time to wait (in seconds) while trying to establish a connection before terminating the attempt and
+     * generating an error. Type: integer. Only used for V2.
+     */
+    private Object connectionTimeout;
+
+    /*
+     * The time to wait (in seconds) while trying to execute a command before terminating the attempt and generating an
+     * error. Set to zero for infinity. Type: integer. Only used for V2.
+     */
+    private Object commandTimeout;
+
+    /*
+     * The Azure key vault secret reference of password in connection string. Type: string. Only used for V2.
+     */
+    private SecretBase password;
+
     /**
      * Creates an instance of GreenplumLinkedService class.
      */
@@ -120,6 +168,203 @@ public class GreenplumLinkedService extends LinkedService {
     }
 
     /**
+     * Get the authenticationType property: The authentication type to use. Type: string. Only used for V2.
+     * 
+     * @return the authenticationType value.
+     */
+    public GreenplumAuthenticationType getAuthenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The authentication type to use. Type: string. Only used for V2.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService setAuthenticationType(GreenplumAuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the host property: Host name for connection. Type: string. Only used for V2.
+     * 
+     * @return the host value.
+     */
+    public Object getHost() {
+        return this.host;
+    }
+
+    /**
+     * Set the host property: Host name for connection. Type: string. Only used for V2.
+     * 
+     * @param host the host value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService setHost(Object host) {
+        this.host = host;
+        return this;
+    }
+
+    /**
+     * Get the port property: The port for the connection. Type: integer. Only used for V2.
+     * 
+     * @return the port value.
+     */
+    public Object getPort() {
+        return this.port;
+    }
+
+    /**
+     * Set the port property: The port for the connection. Type: integer. Only used for V2.
+     * 
+     * @param port the port value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService setPort(Object port) {
+        this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the username property: Username for authentication. Type: string. Only used for V2.
+     * 
+     * @return the username value.
+     */
+    public Object getUsername() {
+        return this.username;
+    }
+
+    /**
+     * Set the username property: Username for authentication. Type: string. Only used for V2.
+     * 
+     * @param username the username value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService setUsername(Object username) {
+        this.username = username;
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. Type: string. Only used for V2.
+     * 
+     * @return the database value.
+     */
+    public Object getDatabase() {
+        return this.database;
+    }
+
+    /**
+     * Set the database property: Database name for connection. Type: string. Only used for V2.
+     * 
+     * @param database the database value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService setDatabase(Object database) {
+        this.database = database;
+        return this;
+    }
+
+    /**
+     * Get the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4:
+     * verify-ca, 5: verify-full. Type: integer. Only used for V2.
+     * 
+     * @return the sslMode value.
+     */
+    public Object getSslMode() {
+        return this.sslMode;
+    }
+
+    /**
+     * Set the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4:
+     * verify-ca, 5: verify-full. Type: integer. Only used for V2.
+     * 
+     * @param sslMode the sslMode value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService setSslMode(Object sslMode) {
+        this.sslMode = sslMode;
+        return this;
+    }
+
+    /**
+     * Get the connectionTimeout property: The time to wait (in seconds) while trying to establish a connection before
+     * terminating the attempt and generating an error. Type: integer. Only used for V2.
+     * 
+     * @return the connectionTimeout value.
+     */
+    public Object getConnectionTimeout() {
+        return this.connectionTimeout;
+    }
+
+    /**
+     * Set the connectionTimeout property: The time to wait (in seconds) while trying to establish a connection before
+     * terminating the attempt and generating an error. Type: integer. Only used for V2.
+     * 
+     * @param connectionTimeout the connectionTimeout value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService setConnectionTimeout(Object connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+        return this;
+    }
+
+    /**
+     * Get the commandTimeout property: The time to wait (in seconds) while trying to execute a command before
+     * terminating the attempt and generating an error. Set to zero for infinity. Type: integer. Only used for V2.
+     * 
+     * @return the commandTimeout value.
+     */
+    public Object getCommandTimeout() {
+        return this.commandTimeout;
+    }
+
+    /**
+     * Set the commandTimeout property: The time to wait (in seconds) while trying to execute a command before
+     * terminating the attempt and generating an error. Set to zero for infinity. Type: integer. Only used for V2.
+     * 
+     * @param commandTimeout the commandTimeout value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService setCommandTimeout(Object commandTimeout) {
+        this.commandTimeout = commandTimeout;
+        return this;
+    }
+
+    /**
+     * Get the password property: The Azure key vault secret reference of password in connection string. Type: string.
+     * Only used for V2.
+     * 
+     * @return the password value.
+     */
+    public SecretBase getPassword() {
+        return this.password;
+    }
+
+    /**
+     * Set the password property: The Azure key vault secret reference of password in connection string. Type: string.
+     * Only used for V2.
+     * 
+     * @param password the password value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService setPassword(SecretBase password) {
+        this.password = password;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GreenplumLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -161,16 +406,38 @@ public class GreenplumLinkedService extends LinkedService {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("type", this.type);
-        if (connectionString != null || pwd != null || encryptedCredential != null) {
+        if (connectionString != null
+            || pwd != null
+            || encryptedCredential != null
+            || authenticationType != null
+            || host != null
+            || port != null
+            || username != null
+            || database != null
+            || sslMode != null
+            || connectionTimeout != null
+            || commandTimeout != null
+            || password != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("connectionString", this.connectionString);
             jsonWriter.writeJsonField("pwd", this.pwd);
             jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeStringField("authenticationType",
+                this.authenticationType == null ? null : this.authenticationType.toString());
+            jsonWriter.writeUntypedField("host", this.host);
+            jsonWriter.writeUntypedField("port", this.port);
+            jsonWriter.writeUntypedField("username", this.username);
+            jsonWriter.writeUntypedField("database", this.database);
+            jsonWriter.writeUntypedField("sslMode", this.sslMode);
+            jsonWriter.writeUntypedField("connectionTimeout", this.connectionTimeout);
+            jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+            jsonWriter.writeJsonField("password", this.password);
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -197,7 +464,9 @@ public class GreenplumLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedGreenplumLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedGreenplumLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedGreenplumLinkedService.setDescription(reader.getString());
@@ -221,6 +490,25 @@ public class GreenplumLinkedService extends LinkedService {
                             deserializedGreenplumLinkedService.pwd = AzureKeyVaultSecretReference.fromJson(reader);
                         } else if ("encryptedCredential".equals(fieldName)) {
                             deserializedGreenplumLinkedService.encryptedCredential = reader.readUntyped();
+                        } else if ("authenticationType".equals(fieldName)) {
+                            deserializedGreenplumLinkedService.authenticationType
+                                = GreenplumAuthenticationType.fromString(reader.getString());
+                        } else if ("host".equals(fieldName)) {
+                            deserializedGreenplumLinkedService.host = reader.readUntyped();
+                        } else if ("port".equals(fieldName)) {
+                            deserializedGreenplumLinkedService.port = reader.readUntyped();
+                        } else if ("username".equals(fieldName)) {
+                            deserializedGreenplumLinkedService.username = reader.readUntyped();
+                        } else if ("database".equals(fieldName)) {
+                            deserializedGreenplumLinkedService.database = reader.readUntyped();
+                        } else if ("sslMode".equals(fieldName)) {
+                            deserializedGreenplumLinkedService.sslMode = reader.readUntyped();
+                        } else if ("connectionTimeout".equals(fieldName)) {
+                            deserializedGreenplumLinkedService.connectionTimeout = reader.readUntyped();
+                        } else if ("commandTimeout".equals(fieldName)) {
+                            deserializedGreenplumLinkedService.commandTimeout = reader.readUntyped();
+                        } else if ("password".equals(fieldName)) {
+                            deserializedGreenplumLinkedService.password = SecretBase.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

@@ -15,12 +15,11 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
@@ -54,7 +53,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         try {
             uri = new URI(options.getServiceEndpoint());
         } catch (URISyntaxException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'uri' must be a valid URI.", ex));
+            throw LOGGER.throwableAtError().log("'uri' must be a valid URI.", ex, IllegalArgumentException::new);
         }
     }
 
@@ -66,11 +65,8 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     private void runInternal() {
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
         HttpRequest request = createRequest();
-        try (Response<?> response = pipeline.send(request)) {
-            response.getBody().toBytes();
-        } catch (IOException e) {
-            LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        Response<BinaryData> response = pipeline.send(request);
+        response.getValue().toBytes();
     }
 
     @Override
@@ -95,24 +91,16 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     private Mono<Void> runInternalAsync() {
         return Mono.usingWhen(Mono.fromCallable(() -> pipeline.send(createRequest())), response -> {
-            response.getBody().toBytes();
+            response.getValue().toBytes();
             return Mono.empty();
-        }, response -> Mono.fromRunnable(() -> {
-            try {
-                response.close();
-            } catch (IOException e) {
-                LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            }
-        }));
+        }, response -> Mono.fromRunnable(response::close));
     }
 
     // Method to run using CompletableFuture
     private CompletableFuture<Void> runAsyncWithCompletableFutureInternal() {
         return CompletableFuture.supplyAsync(() -> {
-            try (Response<?> response = pipeline.send(createRequest())) {
-                response.getBody().toBytes();
-            } catch (Exception e) {
-                LOGGER.logThrowableAsError(e);
+            try (Response<BinaryData> response = pipeline.send(createRequest())) {
+                response.getValue().toBytes();
             }
             return null;
         }, executorService);
@@ -121,10 +109,8 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     // Method to run using ExecutorService
     private Runnable runAsyncWithExecutorServiceInternal() {
         return () -> {
-            try (Response<?> response = pipeline.send(createRequest())) {
-                response.getBody().toBytes();
-            } catch (Exception e) {
-                LOGGER.logThrowableAsError(e);
+            try (Response<BinaryData> response = pipeline.send(createRequest())) {
+                response.getValue().toBytes();
             }
         };
     }
@@ -132,10 +118,8 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     // Method to run using Virtual Threads
     private Runnable runAsyncWithVirtualThreadInternal() {
         return () -> {
-            try (Response<?> response = pipeline.send(createRequest())) {
-                response.getBody().toBytes();
-            } catch (Exception e) {
-                LOGGER.logThrowableAsError(e);
+            try (Response<BinaryData> response = pipeline.send(createRequest())) {
+                response.getValue().toBytes();
             }
         };
     }

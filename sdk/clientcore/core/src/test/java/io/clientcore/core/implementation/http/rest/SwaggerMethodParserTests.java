@@ -12,27 +12,19 @@ import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
-import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
-import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.models.SimpleClass;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.utils.Base64Uri;
-import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.UriBuilder;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -49,6 +41,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static io.clientcore.core.implementation.http.ContentType.APPLICATION_JSON;
 import static io.clientcore.core.implementation.http.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
@@ -68,10 +64,7 @@ public class SwaggerMethodParserTests {
         void getMethod();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        void getMethodWithContext(Context context);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        void getMethodWithRequestOptions(RequestOptions requestOptions);
+        void getMethodWithRequestContext(RequestContext requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "test")
         void putMethod();
@@ -515,32 +508,34 @@ public class SwaggerMethodParserTests {
     }
 
     @ParameterizedTest
-    @MethodSource("setRequestOptionsSupplier")
-    public void setRequestOptions(SwaggerMethodParser swaggerMethodParser, Object[] arguments,
-        RequestOptions expectedRequestOptions) {
-        assertEquals(expectedRequestOptions, swaggerMethodParser.setRequestOptions(arguments));
+    @MethodSource("setRequestContextSupplier")
+    public void setRequestContext(SwaggerMethodParser swaggerMethodParser, Object[] arguments,
+        RequestContext expectedRequestContext) {
+        assertEquals(expectedRequestContext, swaggerMethodParser.setRequestContext(arguments));
     }
 
-    private static Stream<Arguments> setRequestOptionsSupplier() throws NoSuchMethodException {
-        Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestOptions", RequestOptions.class);
+    private static Stream<Arguments> setRequestContextSupplier() throws NoSuchMethodException {
+        Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestContext", RequestContext.class);
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        RequestOptions bodyOptions = new RequestOptions().setBody(BinaryData.fromString("{\"id\":\"123\"}"));
-
-        RequestOptions headerQueryOptions
-            = new RequestOptions().addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-foo"), "bar"))
-                .addQueryParam("foo", "bar");
-
-        RequestOptions uriOptions
-            = new RequestOptions().addRequestCallback(httpRequest -> httpRequest.setUri("https://foo.host.com"));
+        RequestContext context = RequestContext.builder()
+            .addRequestCallback(request -> request
+                // may already be set if request is created from a client
+                .setUri("https://foo.host.com")
+                .setBody(BinaryData.fromString("{\"id\":\"123" + "\"}"))
+                .getHeaders()
+                .set(HttpHeaderName.fromString("x-ms-foo"), "bar"))
+            .addQueryParam("foo", "bar")
+            .build();
 
         // Add this test back if error options is ever made public.
-        // RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
+        // RequestContext statusOptionOptions = RequestContext.builder().setErrorOptions(EnumSet.of(ErrorOptions
+        // .NO_THROW));
 
         return Stream.of(Arguments.of(swaggerMethodParser, toObjectArray((Object) null), null),
-            Arguments.of(swaggerMethodParser, toObjectArray(bodyOptions), bodyOptions),
-            Arguments.of(swaggerMethodParser, toObjectArray(headerQueryOptions), headerQueryOptions),
-            Arguments.of(swaggerMethodParser, toObjectArray(uriOptions), uriOptions)
+            Arguments.of(swaggerMethodParser, toObjectArray(context), context),
+            Arguments.of(swaggerMethodParser, toObjectArray(context), context),
+            Arguments.of(swaggerMethodParser, toObjectArray(context), context)
         // Arguments.of(swaggerMethodParser, toObjectArray(statusOptionOptions), statusOptionOptions)
         );
     }
@@ -635,62 +630,60 @@ public class SwaggerMethodParserTests {
     }
 
     private static Stream<Arguments> isReturnTypeDecodableSupplier() {
-        return returnTypeSupplierForDecodable(true, false, false);
+        return returnTypeSupplierForDecodable();
     }
 
-    private static Stream<Arguments> returnTypeSupplierForDecodable(boolean nonBinaryTypeStatus,
-        boolean binaryTypeStatus, boolean voidTypeStatus) {
+    private static Stream<Arguments> returnTypeSupplierForDecodable() {
         return Stream.of(
             // Unknown response type can't be determined to be decodable.
             Arguments.of(null, false),
 
             // BinaryData, Byte arrays, ByteBuffers, InputStream, and voids aren't decodable.
-            Arguments.of(BinaryData.class, binaryTypeStatus),
+            Arguments.of(BinaryData.class, false),
 
-            Arguments.of(byte[].class, binaryTypeStatus),
+            Arguments.of(byte[].class, false),
 
             // Both ByteBuffer and subtypes shouldn't be decodable.
-            Arguments.of(ByteBuffer.class, binaryTypeStatus), Arguments.of(MappedByteBuffer.class, binaryTypeStatus),
+            Arguments.of(ByteBuffer.class, false), Arguments.of(MappedByteBuffer.class, false),
 
             // Both InputSteam and subtypes shouldn't be decodable.
-            Arguments.of(InputStream.class, binaryTypeStatus), Arguments.of(FileInputStream.class, binaryTypeStatus),
+            Arguments.of(InputStream.class, false), Arguments.of(FileInputStream.class, false),
 
-            Arguments.of(void.class, voidTypeStatus), Arguments.of(Void.class, voidTypeStatus),
-            Arguments.of(Void.TYPE, voidTypeStatus),
+            Arguments.of(void.class, false), Arguments.of(Void.class, false), Arguments.of(Void.TYPE, false),
 
             // Other POJO types are decodable.
-            Arguments.of(SimpleClass.class, nonBinaryTypeStatus),
+            Arguments.of(SimpleClass.class, true),
 
             // In addition to the direct types, reactive and Response generic types should be handled.
 
             // Response generics.
             // If the raw type is Response it should check the first, and only, generic type.
-            Arguments.of(createParameterizedResponse(BinaryData.class), binaryTypeStatus),
-            Arguments.of(createParameterizedResponse(byte[].class), binaryTypeStatus),
-            Arguments.of(createParameterizedResponse(ByteBuffer.class), binaryTypeStatus),
-            Arguments.of(createParameterizedResponse(MappedByteBuffer.class), binaryTypeStatus),
-            Arguments.of(createParameterizedResponse(InputStream.class), binaryTypeStatus),
-            Arguments.of(createParameterizedResponse(FileInputStream.class), binaryTypeStatus),
-            Arguments.of(createParameterizedResponse(void.class), voidTypeStatus),
-            Arguments.of(createParameterizedResponse(Void.class), voidTypeStatus),
-            Arguments.of(createParameterizedResponse(Void.TYPE), voidTypeStatus),
-            Arguments.of(createParameterizedResponse(SimpleClass.class), nonBinaryTypeStatus),
+            Arguments.of(createParameterizedResponse(BinaryData.class), false),
+            Arguments.of(createParameterizedResponse(byte[].class), false),
+            Arguments.of(createParameterizedResponse(ByteBuffer.class), false),
+            Arguments.of(createParameterizedResponse(MappedByteBuffer.class), false),
+            Arguments.of(createParameterizedResponse(InputStream.class), false),
+            Arguments.of(createParameterizedResponse(FileInputStream.class), false),
+            Arguments.of(createParameterizedResponse(void.class), false),
+            Arguments.of(createParameterizedResponse(Void.class), false),
+            Arguments.of(createParameterizedResponse(Void.TYPE), false),
+            Arguments.of(createParameterizedResponse(SimpleClass.class), true),
 
             // Custom implementations of Response.
-            Arguments.of(VoidResponse.class, voidTypeStatus), Arguments.of(StringResponse.class, nonBinaryTypeStatus));
+            Arguments.of(VoidResponse.class, false), Arguments.of(StringResponse.class, true));
     }
 
     private static ParameterizedType createParameterizedResponse(Type genericType) {
         return TypeUtil.createParameterizedType(Response.class, genericType);
     }
 
-    private static final class VoidResponse extends HttpResponse<Void> {
+    private static final class VoidResponse extends Response<Void> {
         VoidResponse(Response<?> response, Void value) {
             super(response.getRequest(), response.getStatusCode(), response.getHeaders(), value);
         }
     }
 
-    private static final class StringResponse extends HttpResponse<String> {
+    private static final class StringResponse extends Response<String> {
         StringResponse(Response<?> response, String value) {
             super(response.getRequest(), response.getStatusCode(), response.getHeaders(), value);
         }

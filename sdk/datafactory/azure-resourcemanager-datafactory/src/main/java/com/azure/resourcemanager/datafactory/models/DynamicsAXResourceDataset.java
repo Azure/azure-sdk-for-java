@@ -51,7 +51,7 @@ public final class DynamicsAXResourceDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private DynamicsAXResourceDatasetTypeProperties innerTypeProperties() {
+    DynamicsAXResourceDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

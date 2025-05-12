@@ -1,6 +1,6 @@
 # Release History
 
-## 11.8.0-beta.6 (Unreleased)
+## 11.8.0-beta.7 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,39 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.8.0-beta.6 (2025-04-17)
+
+### Features Added
+
+- Introduced new api `getIndexStatsSummary` into `SearchIndexClient` and `SearchIndexAsyncClient` to enable the retrieval of index stats summary.
+- Introduced `flightingOptIn` field onto `SemanticConfiguration` to enable flighting opt-in for semantic search.
+
+### Other Changes
+
+- Binary Quantization now supports configuring `rescoringOptions` to `true` with `rescoreStorageMethod` set to `discardOriginals`.
+
+## 11.7.6 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.7` to version `1.5.8`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
+## 11.7.5 (2025-02-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.4` to version `1.5.7`.
+- Upgraded `azure-json` from `1.3.0` to version `1.4.0`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
 
 ## 11.8.0-beta.5 (2025-02-18)
 

@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.Response;
@@ -14,6 +16,7 @@ import java.util.function.Predicate;
 /**
  * Options to configure the redirect policy's behavior.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class HttpRedirectOptions {
     private static final ClientLogger LOGGER = new ClientLogger(HttpRedirectOptions.class);
     private final int maxAttempts;
@@ -32,7 +35,7 @@ public final class HttpRedirectOptions {
     public HttpRedirectOptions(int maxAttempts, HttpHeaderName locationHeader,
         EnumSet<HttpMethod> allowedRedirectHttpMethods) {
         if (maxAttempts < 0) {
-            throw LOGGER.atError().log(null, new IllegalArgumentException("Max attempts cannot be less than 0."));
+            throw LOGGER.throwableAtError().log("Max attempts cannot be less than 0.", IllegalArgumentException::new);
         }
         this.maxAttempts = maxAttempts;
         this.allowedRedirectHttpMethods

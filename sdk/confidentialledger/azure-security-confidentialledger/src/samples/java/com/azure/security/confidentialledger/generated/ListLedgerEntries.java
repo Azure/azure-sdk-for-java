@@ -20,7 +20,7 @@ public class ListLedgerEntries {
                 .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.listledgerentries.listledgerentries
         RequestOptions requestOptions
-            = new RequestOptions().addQueryParam("fromTransactionId", "3.14").addQueryParam("toTransactionId", "3.42");
+            = new RequestOptions().addQueryParam("fromTransactionId", "2.15").addQueryParam("toTransactionId", "2.20");
         PagedIterable<BinaryData> response = confidentialLedgerClient.listLedgerEntries(requestOptions);
         // END:com.azure.security.confidentialledger.generated.listledgerentries.listledgerentries
     }

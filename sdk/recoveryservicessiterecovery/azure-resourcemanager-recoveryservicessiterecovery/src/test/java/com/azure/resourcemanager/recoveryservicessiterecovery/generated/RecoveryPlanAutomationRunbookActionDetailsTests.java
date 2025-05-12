@@ -13,22 +13,22 @@ public final class RecoveryPlanAutomationRunbookActionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPlanAutomationRunbookActionDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"AutomationRunbookActionDetails\",\"runbookId\":\"xljzvdovbrbl\",\"timeout\":\"lprdaqccddcbnygd\",\"fabricLocation\":\"Primary\"}")
+            "{\"instanceType\":\"AutomationRunbookActionDetails\",\"runbookId\":\"yftgpqoswgfqv\",\"timeout\":\"ghpakbqyhlsorn\",\"fabricLocation\":\"Primary\"}")
             .toObject(RecoveryPlanAutomationRunbookActionDetails.class);
-        Assertions.assertEquals("xljzvdovbrbl", model.runbookId());
-        Assertions.assertEquals("lprdaqccddcbnygd", model.timeout());
+        Assertions.assertEquals("yftgpqoswgfqv", model.runbookId());
+        Assertions.assertEquals("ghpakbqyhlsorn", model.timeout());
         Assertions.assertEquals(RecoveryPlanActionLocation.PRIMARY, model.fabricLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPlanAutomationRunbookActionDetails model
-            = new RecoveryPlanAutomationRunbookActionDetails().withRunbookId("xljzvdovbrbl")
-                .withTimeout("lprdaqccddcbnygd")
+            = new RecoveryPlanAutomationRunbookActionDetails().withRunbookId("yftgpqoswgfqv")
+                .withTimeout("ghpakbqyhlsorn")
                 .withFabricLocation(RecoveryPlanActionLocation.PRIMARY);
         model = BinaryData.fromObject(model).toObject(RecoveryPlanAutomationRunbookActionDetails.class);
-        Assertions.assertEquals("xljzvdovbrbl", model.runbookId());
-        Assertions.assertEquals("lprdaqccddcbnygd", model.timeout());
+        Assertions.assertEquals("yftgpqoswgfqv", model.runbookId());
+        Assertions.assertEquals("ghpakbqyhlsorn", model.timeout());
         Assertions.assertEquals(RecoveryPlanActionLocation.PRIMARY, model.fabricLocation());
     }
 }

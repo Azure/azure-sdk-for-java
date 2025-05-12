@@ -15,13 +15,13 @@ import java.util.List;
 
 /**
  * The Storage Account ManagementPolicies Rules. See more details in:
- * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+ * https://learn.microsoft.com/azure/storage/blobs/lifecycle-management-overview.
  */
 @Fluent
 public final class ManagementPolicySchema implements JsonSerializable<ManagementPolicySchema> {
     /*
      * The Storage Account ManagementPolicies Rules. See more details in:
-     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * https://learn.microsoft.com/azure/storage/blobs/lifecycle-management-overview.
      */
     private List<ManagementPolicyRule> rules;
 
@@ -33,7 +33,7 @@ public final class ManagementPolicySchema implements JsonSerializable<Management
 
     /**
      * Get the rules property: The Storage Account ManagementPolicies Rules. See more details in:
-     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * https://learn.microsoft.com/azure/storage/blobs/lifecycle-management-overview.
      * 
      * @return the rules value.
      */
@@ -43,7 +43,7 @@ public final class ManagementPolicySchema implements JsonSerializable<Management
 
     /**
      * Set the rules property: The Storage Account ManagementPolicies Rules. See more details in:
-     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * https://learn.microsoft.com/azure/storage/blobs/lifecycle-management-overview.
      * 
      * @param rules the rules value to set.
      * @return the ManagementPolicySchema object itself.

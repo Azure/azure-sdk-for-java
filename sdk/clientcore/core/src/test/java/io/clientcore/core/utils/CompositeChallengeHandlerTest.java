@@ -5,14 +5,19 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Tests for {@link ChallengeHandler.CompositeChallengeHandler}.
+ * Tests for {@link CompositeChallengeHandler}.
  */
 public class CompositeChallengeHandlerTest {
     @ParameterizedTest
@@ -69,16 +74,32 @@ public class CompositeChallengeHandlerTest {
         }
 
         @Override
-        public boolean canHandle(Response<?> response, boolean isProxy) {
+        public boolean canHandle(Response<BinaryData> response, boolean isProxy) {
             return canHandle;
         }
 
         @Override
-        public void handleChallenge(HttpRequest request, Response<?> response, boolean isProxy) {
+        public boolean canHandle(List<AuthenticateChallenge> challenges) {
+            return canHandle;
+        }
+
+        @Override
+        public void handleChallenge(HttpRequest request, Response<BinaryData> response, boolean isProxy) {
             handleChallengeCount++;
             if (handleChallengeThrows) {
                 throw new IllegalStateException("Should not be called");
             }
+        }
+
+        @Override
+        public Map.Entry<String, AuthenticateChallenge> handleChallenge(String method, URI uri,
+            List<AuthenticateChallenge> challenges) {
+            handleChallengeCount++;
+            if (handleChallengeThrows) {
+                throw new IllegalStateException("Should not be called");
+            }
+
+            return null;
         }
     }
 }

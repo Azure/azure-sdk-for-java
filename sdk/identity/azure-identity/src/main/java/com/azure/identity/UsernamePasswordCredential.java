@@ -33,27 +33,15 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p>In the scenario where 2FA/MFA (Multi-factored) authentication is turned on, please use
  * {@link DeviceCodeCredential} or {@link InteractiveBrowserCredential} instead.</p>
  *
- * <p><strong>Sample: Construct UsernamePasswordCredential</strong></p>
- *
- * <p>The following code sample demonstrates the creation of a {@link UsernamePasswordCredential},
- * using the {@link UsernamePasswordCredentialBuilder} to configure it. The {@code clientId},
- * {@code username} and {@code password} parameters are required to create
- * {@link UsernamePasswordCredential}. Once this credential is created, it may be passed into the
- * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
- *
- * <!-- src_embed com.azure.identity.credential.usernamepasswordcredential.construct -->
- * <pre>
- * TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;.clientId&#40;
- *     &quot;&lt;your app client ID&gt;&quot;&#41;.username&#40;&quot;&lt;your username&gt;&quot;&#41;.password&#40;&quot;&lt;your password&gt;&quot;&#41;.build&#40;&#41;;
- * </pre>
- * <!-- end com.azure.identity.credential.usernamepasswordcredential.construct -->
- *
  * @see com.azure.identity
  * @see UsernamePasswordCredentialBuilder
  * @see DeviceCodeCredential
  * @see InteractiveBrowserCredential
+ *
+ * @deprecated This credential is deprecated because it doesn't support multifactor authentication (MFA). See <a href="https://aka.ms/azsdk/identity/mfa">here</a> for details about MFA enforcement for Microsoft Entra ID and migration guidance.
  */
 @Immutable
+@Deprecated
 public class UsernamePasswordCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(UsernamePasswordCredential.class);
 

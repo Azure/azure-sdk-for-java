@@ -3,14 +3,15 @@
 
 package io.clientcore.core.implementation.utils;
 
+import io.clientcore.core.utils.CoreUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
-import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
-import static io.clientcore.core.implementation.utils.ImplUtils.stringJoin;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * Represents a single parameter to be added to a query string.
@@ -133,16 +134,39 @@ public final class QueryParameter {
      * @param value the value to add
      */
     public void addValue(String value) {
-        if (this.value == null && values == null) {
+        if (this.value == null && this.values == null) {
             this.value = value;
             return;
-        } else if (values == null) {
-            values = new ArrayList<>(4); // 4 was selected to add a buffer of 2 as seen in the constructor.
-            values.add(this.value);
+        } else if (this.values == null) {
+            this.values = new ArrayList<>(4); // 4 was selected to add a buffer of 2 as seen in the constructor.
+            this.values.add(this.value);
             this.value = null;
         }
 
         this.values.add(value);
+        CACHED_STRING_VALUE_UPDATER.set(this, null);
+    }
+
+    /**
+     * Add new values to the end of the QueryParameter.
+     *
+     * @param values the values to add
+     */
+    public void addValues(List<String> values) {
+        if (CoreUtils.isNullOrEmpty(values)) {
+            return;
+        }
+
+        if (this.value == null && this.values == null) {
+            this.values = new ArrayList<>(values);
+            return;
+        } else if (this.values == null) {
+            this.values = new ArrayList<>(values.size() + 1);
+            this.values.add(this.value);
+            this.value = null;
+        }
+
+        this.values.addAll(values);
         CACHED_STRING_VALUE_UPDATER.set(this, null);
     }
 
@@ -164,6 +188,6 @@ public final class QueryParameter {
     }
 
     private void checkCachedStringValue() {
-        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, stringJoin(",", values));
+        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, CoreUtils.stringJoin(",", values));
     }
 }

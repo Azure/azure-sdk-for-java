@@ -151,7 +151,7 @@ public final class OTelInitializer {
 
             instance = new OTelInitializer(true);
         } catch (Throwable t) {
-            LOGGER.atVerbose().log("OpenTelemetry was not initialized.", t);
+            LOGGER.atVerbose().setThrowable(t).log("OpenTelemetry was not initialized.");
             instance = new OTelInitializer(false);
         }
 
@@ -211,7 +211,7 @@ public final class OTelInitializer {
      * @param t the error
      */
     public static void initError(ClientLogger logger, Throwable t) {
-        logger.atVerbose().log("OpenTelemetry version is incompatible.", t);
+        logger.atVerbose().setThrowable(t).log("OpenTelemetry version is incompatible.");
         INSTANCE.initialized = false;
     }
 
@@ -223,7 +223,9 @@ public final class OTelInitializer {
      */
     public static void runtimeError(ClientLogger logger, Throwable t) {
         if (INSTANCE.initialized) {
-            logger.atWarning().log("Unexpected error when invoking OpenTelemetry, turning tracing off.", t);
+            logger.atWarning()
+                .setThrowable(t)
+                .log("Unexpected error when invoking OpenTelemetry, turning tracing off.");
         }
 
         INSTANCE.initialized = false;

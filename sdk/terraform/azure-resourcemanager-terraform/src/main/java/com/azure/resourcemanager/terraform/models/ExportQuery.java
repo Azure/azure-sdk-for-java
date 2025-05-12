@@ -37,6 +37,16 @@ public final class ExportQuery extends BaseExportModel {
      */
     private Boolean recursive;
 
+    /*
+     * The ARG table name
+     */
+    private String table;
+
+    /*
+     * The ARG Scope Filter parameter
+     */
+    private AuthorizationScopeFilter authorizationScopeFilter;
+
     /**
      * Creates an instance of ExportQuery class.
      */
@@ -116,6 +126,46 @@ public final class ExportQuery extends BaseExportModel {
     }
 
     /**
+     * Get the table property: The ARG table name.
+     * 
+     * @return the table value.
+     */
+    public String table() {
+        return this.table;
+    }
+
+    /**
+     * Set the table property: The ARG table name.
+     * 
+     * @param table the table value to set.
+     * @return the ExportQuery object itself.
+     */
+    public ExportQuery withTable(String table) {
+        this.table = table;
+        return this;
+    }
+
+    /**
+     * Get the authorizationScopeFilter property: The ARG Scope Filter parameter.
+     * 
+     * @return the authorizationScopeFilter value.
+     */
+    public AuthorizationScopeFilter authorizationScopeFilter() {
+        return this.authorizationScopeFilter;
+    }
+
+    /**
+     * Set the authorizationScopeFilter property: The ARG Scope Filter parameter.
+     * 
+     * @param authorizationScopeFilter the authorizationScopeFilter value to set.
+     * @return the ExportQuery object itself.
+     */
+    public ExportQuery withAuthorizationScopeFilter(AuthorizationScopeFilter authorizationScopeFilter) {
+        this.authorizationScopeFilter = authorizationScopeFilter;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -170,6 +220,9 @@ public final class ExportQuery extends BaseExportModel {
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("namePattern", this.namePattern);
         jsonWriter.writeBooleanField("recursive", this.recursive);
+        jsonWriter.writeStringField("table", this.table);
+        jsonWriter.writeStringField("authorizationScopeFilter",
+            this.authorizationScopeFilter == null ? null : this.authorizationScopeFilter.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -203,6 +256,11 @@ public final class ExportQuery extends BaseExportModel {
                     deserializedExportQuery.namePattern = reader.getString();
                 } else if ("recursive".equals(fieldName)) {
                     deserializedExportQuery.recursive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("table".equals(fieldName)) {
+                    deserializedExportQuery.table = reader.getString();
+                } else if ("authorizationScopeFilter".equals(fieldName)) {
+                    deserializedExportQuery.authorizationScopeFilter
+                        = AuthorizationScopeFilter.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

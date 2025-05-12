@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Presto server linked service.
+ * Presto server linked service. This linked service has supported version property. The Version 1.0 is scheduled for
+ * deprecation while your pipeline will continue to run after EOL but without any bug fix or new features.
  */
 @Fluent
 public final class PrestoLinkedService extends LinkedService {
@@ -51,7 +52,7 @@ public final class PrestoLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private PrestoLinkedServiceTypeProperties innerTypeProperties() {
+    PrestoLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -124,7 +125,7 @@ public final class PrestoLinkedService extends LinkedService {
     }
 
     /**
-     * Get the serverVersion property: The version of the Presto server. (i.e. 0.148-t).
+     * Get the serverVersion property: The version of the Presto server. (i.e. 0.148-t) Only used for Version 1.0.
      * 
      * @return the serverVersion value.
      */
@@ -133,7 +134,7 @@ public final class PrestoLinkedService extends LinkedService {
     }
 
     /**
-     * Set the serverVersion property: The version of the Presto server. (i.e. 0.148-t).
+     * Set the serverVersion property: The version of the Presto server. (i.e. 0.148-t) Only used for Version 1.0.
      * 
      * @param serverVersion the serverVersion value to set.
      * @return the PrestoLinkedService object itself.
@@ -171,7 +172,7 @@ public final class PrestoLinkedService extends LinkedService {
 
     /**
      * Get the port property: The TCP port that the Presto server uses to listen for client connections. The default
-     * value is 8080.
+     * value is 8080 when disable SSL, default value is 443 when enable SSL.
      * 
      * @return the port value.
      */
@@ -181,7 +182,7 @@ public final class PrestoLinkedService extends LinkedService {
 
     /**
      * Set the port property: The TCP port that the Presto server uses to listen for client connections. The default
-     * value is 8080.
+     * value is 8080 when disable SSL, default value is 443 when enable SSL.
      * 
      * @param port the port value to set.
      * @return the PrestoLinkedService object itself.
@@ -265,7 +266,7 @@ public final class PrestoLinkedService extends LinkedService {
 
     /**
      * Get the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
-     * value is false.
+     * value for legacy version is False. The default value for version 2.0 is True.
      * 
      * @return the enableSsl value.
      */
@@ -275,7 +276,7 @@ public final class PrestoLinkedService extends LinkedService {
 
     /**
      * Set the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
-     * value is false.
+     * value for legacy version is False. The default value for version 2.0 is True.
      * 
      * @param enableSsl the enableSsl value to set.
      * @return the PrestoLinkedService object itself.
@@ -289,9 +290,36 @@ public final class PrestoLinkedService extends LinkedService {
     }
 
     /**
+     * Get the enableServerCertificateValidation property: Specifies whether the connections to the server will validate
+     * server certificate, the default value is True. Only used for Version 2.0.
+     * 
+     * @return the enableServerCertificateValidation value.
+     */
+    public Object enableServerCertificateValidation() {
+        return this.innerTypeProperties() == null
+            ? null
+            : this.innerTypeProperties().enableServerCertificateValidation();
+    }
+
+    /**
+     * Set the enableServerCertificateValidation property: Specifies whether the connections to the server will validate
+     * server certificate, the default value is True. Only used for Version 2.0.
+     * 
+     * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
+     * @return the PrestoLinkedService object itself.
+     */
+    public PrestoLinkedService withEnableServerCertificateValidation(Object enableServerCertificateValidation) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new PrestoLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEnableServerCertificateValidation(enableServerCertificateValidation);
+        return this;
+    }
+
+    /**
      * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
      * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
+     * value is the cacerts.pem file installed with the IR. Only used for Version 1.0.
      * 
      * @return the trustedCertPath value.
      */
@@ -302,7 +330,7 @@ public final class PrestoLinkedService extends LinkedService {
     /**
      * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
      * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
+     * value is the cacerts.pem file installed with the IR. Only used for Version 1.0.
      * 
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the PrestoLinkedService object itself.
@@ -317,7 +345,7 @@ public final class PrestoLinkedService extends LinkedService {
 
     /**
      * Get the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
+     * from a specified PEM file. The default value is false. Only used for Version 1.0.
      * 
      * @return the useSystemTrustStore value.
      */
@@ -327,7 +355,7 @@ public final class PrestoLinkedService extends LinkedService {
 
     /**
      * Set the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
+     * from a specified PEM file. The default value is false. Only used for Version 1.0.
      * 
      * @param useSystemTrustStore the useSystemTrustStore value to set.
      * @return the PrestoLinkedService object itself.
@@ -342,7 +370,7 @@ public final class PrestoLinkedService extends LinkedService {
 
     /**
      * Get the allowHostnameCNMismatch property: Specifies whether to require a CA-issued SSL certificate name to match
-     * the host name of the server when connecting over SSL. The default value is false.
+     * the host name of the server when connecting over SSL. The default value is false. Only used for Version 1.0.
      * 
      * @return the allowHostnameCNMismatch value.
      */
@@ -352,7 +380,7 @@ public final class PrestoLinkedService extends LinkedService {
 
     /**
      * Set the allowHostnameCNMismatch property: Specifies whether to require a CA-issued SSL certificate name to match
-     * the host name of the server when connecting over SSL. The default value is false.
+     * the host name of the server when connecting over SSL. The default value is false. Only used for Version 1.0.
      * 
      * @param allowHostnameCNMismatch the allowHostnameCNMismatch value to set.
      * @return the PrestoLinkedService object itself.
@@ -367,7 +395,7 @@ public final class PrestoLinkedService extends LinkedService {
 
     /**
      * Get the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
-     * The default value is false.
+     * The default value is false. Only used for Version 1.0.
      * 
      * @return the allowSelfSignedServerCert value.
      */
@@ -377,7 +405,7 @@ public final class PrestoLinkedService extends LinkedService {
 
     /**
      * Set the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
-     * The default value is false.
+     * The default value is false. Only used for Version 1.0.
      * 
      * @param allowSelfSignedServerCert the allowSelfSignedServerCert value to set.
      * @return the PrestoLinkedService object itself.
@@ -392,7 +420,8 @@ public final class PrestoLinkedService extends LinkedService {
 
     /**
      * Get the timeZoneId property: The local time zone used by the connection. Valid values for this option are
-     * specified in the IANA Time Zone Database. The default value is the system time zone.
+     * specified in the IANA Time Zone Database. The default value for Version 1.0 is the client system time zone. The
+     * default value for Version 2.0 is server system timeZone.
      * 
      * @return the timeZoneId value.
      */
@@ -402,7 +431,8 @@ public final class PrestoLinkedService extends LinkedService {
 
     /**
      * Set the timeZoneId property: The local time zone used by the connection. Valid values for this option are
-     * specified in the IANA Time Zone Database. The default value is the system time zone.
+     * specified in the IANA Time Zone Database. The default value for Version 1.0 is the client system time zone. The
+     * default value for Version 2.0 is server system timeZone.
      * 
      * @param timeZoneId the timeZoneId value to set.
      * @return the PrestoLinkedService object itself.

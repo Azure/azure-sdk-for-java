@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.apimanagement.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.PortalConfigsClient;
-import com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigCollectionInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigContractInner;
-import com.azure.resourcemanager.apimanagement.models.PortalConfigCollection;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigContract;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigs;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigsGetEntityTagResponse;
@@ -30,25 +29,17 @@ public final class PortalConfigsImpl implements PortalConfigs {
         this.serviceManager = serviceManager;
     }
 
-    public Response<PortalConfigCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
-        Context context) {
-        Response<PortalConfigCollectionInner> inner
-            = this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PortalConfigCollectionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<PortalConfigContract> listByService(String resourceGroupName, String serviceName) {
+        PagedIterable<PortalConfigContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PortalConfigContractImpl(inner1, this.manager()));
     }
 
-    public PortalConfigCollection listByService(String resourceGroupName, String serviceName) {
-        PortalConfigCollectionInner inner = this.serviceClient().listByService(resourceGroupName, serviceName);
-        if (inner != null) {
-            return new PortalConfigCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public PagedIterable<PortalConfigContract> listByService(String resourceGroupName, String serviceName,
+        Context context) {
+        PagedIterable<PortalConfigContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PortalConfigContractImpl(inner1, this.manager()));
     }
 
     public PortalConfigsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,

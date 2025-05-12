@@ -2098,4 +2098,42 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         StepVerifier.create(aadContainer.exists()).expectNext(true);
     }
 
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    public void getSetAccessPolicyOAuth() {
+        // Arrange
+        BlobServiceAsyncClient serviceClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerClient = serviceClient.getBlobContainerAsyncClient(containerName);
+
+        Mono<Void> testMono = containerClient.exists().flatMap(exists -> {
+            if (!exists) {
+                return containerClient.create();
+            }
+            return Mono.empty();
+        })
+            .then(containerClient.getAccessPolicy())
+            .flatMap(response -> containerClient.setAccessPolicy(null, response.getIdentifiers()));
+
+        // Act & Assert
+        StepVerifier.create(testMono).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    public void getAccountInfoOAuth() {
+        // Arrange
+        BlobServiceAsyncClient serviceClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerClient = serviceClient.getBlobContainerAsyncClient(containerName);
+
+        Mono<Void> testMono = containerClient.exists().flatMap(exists -> {
+            if (!exists) {
+                return containerClient.create();
+            }
+            return Mono.empty();
+        }).then(containerClient.getAccountInfo()).then();
+
+        // Act & Assert
+        StepVerifier.create(testMono).verifyComplete();
+    }
+
 }

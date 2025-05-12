@@ -20,7 +20,6 @@ import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
@@ -49,7 +48,7 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
         try {
             uri = new URI(options.getServiceEndpoint());
         } catch (URISyntaxException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'uri' must be a valid URI.", ex));
+            throw LOGGER.throwableAtError().log("'uri' must be a valid URI.", ex, IllegalArgumentException::new);
         }
     }
 
@@ -60,12 +59,10 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
 
     private void runInternal() {
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
-        try (Response<?> response = pipeline.send(createRequest())) {
+        try (Response<BinaryData> response = pipeline.send(createRequest())) {
             int responseCode = response.getStatusCode();
             assert responseCode == 200 : "Unexpected response code: " + responseCode;
-            response.getBody().close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            response.getValue().close();
         }
     }
 

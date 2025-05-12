@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ResourceSkuResult;
@@ -21,17 +21,17 @@ public final class ApiManagementServiceSkusListAvailableServiceSkusMockTests {
     @Test
     public void testListAvailableServiceSkus() throws Exception {
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"trtc\",\"sku\":{\"name\":\"Basic\"},\"capacity\":{\"minimum\":1186943621,\"maximum\":1003026470,\"default\":73881680,\"scaleType\":\"manual\"}}]}";
+            = "{\"value\":[{\"resourceType\":\"atjgzkmwfwzl\",\"sku\":{\"name\":\"Consumption\"},\"capacity\":{\"minimum\":679315163,\"maximum\":63902004,\"default\":398610580,\"scaleType\":\"none\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ResourceSkuResult> response = manager.apiManagementServiceSkus()
-            .listAvailableServiceSkus("hcxwwwvun", "nsgvxhxrm", com.azure.core.util.Context.NONE);
+            .listAvailableServiceSkus("apesnbyoullyfz", "nxrmxxjv", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -1,8 +1,32 @@
 ## Release History
 
-### 4.67.0 (2025-02-20)
+### 4.69.0-beta.1 (Unreleased)
+
+#### Features Added
+* Added API to allow customers to wrap/extend `CosmosAsyncContainer` - [PR 43724](https://github.com/Azure/azure-sdk-for-java/pull/43724) and [PR 45087](https://github.com/Azure/azure-sdk-for-java/pull/45087) 
+* Added Per-Partition Automatic Failover which enables failover for writes at per-partition level for Single-Write Multi-Region accounts. - [PR 44099](https://github.com/Azure/azure-sdk-for-java/pull/44099)
+
+#### Breaking Changes
 
 #### Bugs Fixed
+* Fixed the fail back flow where not all partitions were failing back to original first preferred region for Per-Partition Circuit Breaker. - [PR 44099](https://github.com/Azure/azure-sdk-for-java/pull/44099)
+* Fixed diagnostics issue where operations in Gateway mode hitting end-to-end timeout would not capture diagnostics correctly. - [PR 44099](https://github.com/Azure/azure-sdk-for-java/pull/44099)
+* Enabled `excludeRegions` to be applied for `QueryPlan` calls. - [PR 45196](https://github.com/Azure/azure-sdk-for-java/pull/45196)
+* Fixed the behavior to correctly perform partition-level failover through circuit breaker for operations enabled with threshold-based availability strategy. - [PR 45244](https://github.com/Azure/azure-sdk-for-java/pull/45244)
+
+#### Other Changes
+* Added the `vectorIndexShardKeys` to the vectorIndexSpec for QuantizedFlat and DiskANN vector search. - [PR 44007](https://github.com/Azure/azure-sdk-for-java/pull/44007)
+* Added user agent suffixing if Per-Partition Automatic Failover or Per-Partition Circuit Breaker are enabled at client scope. - [PR 45197](https://github.com/Azure/azure-sdk-for-java/pull/45197)
+
+### 4.68.0 (2025-03-20)
+
+#### Bugs Fixed
+* Fixed applications possibly not closing gracefully due to thread `partition-availability-staleness-check` not being a daemon thread. - [PR 44441](https://github.com/Azure/azure-sdk-for-java/pull/44441).
+* Fixed an issue, which could result in missing to create lease documents when errors happen during the first initialization of the `ChangeFeedProcessor`. This would result in not processing change events for those partitions. - [PR 44648](https://github.com/Azure/azure-sdk-for-java/pull/44648).
+
+### 4.67.0 (2025-02-20)
+
+#### Other Changes
 * Block `ChangeFeedProcessor` from starting by throwing an `IllegalStateException` when the lease container contains leases with the same lease prefix but different `ChangeFeedMode` - [PR 43798](https://github.com/Azure/azure-sdk-for-java/pull/43798).
 
 ### 4.66.1 (2025-02-08)

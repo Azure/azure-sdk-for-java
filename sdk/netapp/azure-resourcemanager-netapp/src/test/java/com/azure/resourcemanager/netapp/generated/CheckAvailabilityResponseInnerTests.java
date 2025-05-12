@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckAvailabilityResponseInner model = BinaryData
-            .fromString("{\"isAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"czwtruwiqzbqjv\"}")
-            .toObject(CheckAvailabilityResponseInner.class);
-        Assertions.assertEquals(true, model.isAvailable());
-        Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, model.reason());
-        Assertions.assertEquals("czwtruwiqzbqjv", model.message());
+        CheckAvailabilityResponseInner model
+            = BinaryData.fromString("{\"isAvailable\":true,\"reason\":\"Invalid\",\"message\":\"npgacftade\"}")
+                .toObject(CheckAvailabilityResponseInner.class);
+        Assertions.assertTrue(model.isAvailable());
+        Assertions.assertEquals(InAvailabilityReasonType.INVALID, model.reason());
+        Assertions.assertEquals("npgacftade", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CheckAvailabilityResponseInner model = new CheckAvailabilityResponseInner().withIsAvailable(true)
-            .withReason(InAvailabilityReasonType.ALREADY_EXISTS)
-            .withMessage("czwtruwiqzbqjv");
+            .withReason(InAvailabilityReasonType.INVALID)
+            .withMessage("npgacftade");
         model = BinaryData.fromObject(model).toObject(CheckAvailabilityResponseInner.class);
-        Assertions.assertEquals(true, model.isAvailable());
-        Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, model.reason());
-        Assertions.assertEquals("czwtruwiqzbqjv", model.message());
+        Assertions.assertTrue(model.isAvailable());
+        Assertions.assertEquals(InAvailabilityReasonType.INVALID, model.reason());
+        Assertions.assertEquals("npgacftade", model.message());
     }
 }

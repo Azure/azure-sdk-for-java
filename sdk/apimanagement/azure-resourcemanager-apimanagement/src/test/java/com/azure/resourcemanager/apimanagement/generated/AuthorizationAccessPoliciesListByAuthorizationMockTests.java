@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationAccessPolicyContract;
@@ -22,20 +22,21 @@ public final class AuthorizationAccessPoliciesListByAuthorizationMockTests {
     @Test
     public void testListByAuthorization() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"tenantId\":\"ey\",\"objectId\":\"l\"},\"id\":\"fnflytfxu\",\"name\":\"uiqoomis\",\"type\":\"kqwopws\"}]}";
+            = "{\"value\":[{\"properties\":{\"appIds\":[\"mw\",\"ds\",\"krlnrpeylfiiul\",\"dgiql\"],\"tenantId\":\"cxwwwvunkn\",\"objectId\":\"vxhxrmeatrtcq\"},\"id\":\"fjvifbm\",\"name\":\"j\",\"type\":\"ehqyoytrcoufk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AuthorizationAccessPolicyContract> response = manager.authorizationAccessPolicies()
-            .listByAuthorization("eyrqve", "rmd", "izhvks", "ojklwjpzw", "ncw", 1651508713, 334003709,
+            .listByAuthorization("qly", "djvzmxyrazzstjvc", "zbdbrlbo", "ltyo", "acbibtk", 1234502889, 814925429,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ey", response.iterator().next().tenantId());
-        Assertions.assertEquals("l", response.iterator().next().objectId());
+        Assertions.assertEquals("mw", response.iterator().next().appIds().get(0));
+        Assertions.assertEquals("cxwwwvunkn", response.iterator().next().tenantId());
+        Assertions.assertEquals("vxhxrmeatrtcq", response.iterator().next().objectId());
     }
 }

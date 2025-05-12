@@ -97,7 +97,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
      * the list response.
      * @param filter Optional. When specified, it can be used to query using reporting properties. See [Constructing
      * Filter
-     * Strings](https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#constructing-filter-strings)
+     * Strings](https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#constructing-filter-strings)
      * for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -150,7 +150,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
      * the list response.
      * @param filter Optional. When specified, it can be used to query using reporting properties. See [Constructing
      * Filter
-     * Strings](https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#constructing-filter-strings)
+     * Strings](https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#constructing-filter-strings)
      * for details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,7 +203,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
      * the list response.
      * @param filter Optional. When specified, it can be used to query using reporting properties. See [Constructing
      * Filter
-     * Strings](https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#constructing-filter-strings)
+     * Strings](https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#constructing-filter-strings)
      * for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -255,7 +255,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
      * the list response.
      * @param filter Optional. When specified, it can be used to query using reporting properties. See [Constructing
      * Filter
-     * Strings](https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#constructing-filter-strings)
+     * Strings](https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#constructing-filter-strings)
      * for details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -306,7 +306,7 @@ public final class StorageTaskAssignmentInstancesReportsClientImpl
      * the list response.
      * @param filter Optional. When specified, it can be used to query using reporting properties. See [Constructing
      * Filter
-     * Strings](https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#constructing-filter-strings)
+     * Strings](https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#constructing-filter-strings)
      * for details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

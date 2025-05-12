@@ -4,10 +4,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-client-sdk-parent-v2</artifactId>
+  <groupId>com.azure.v2</groupId>
+  <artifactId>azure-client-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent-v2;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-client-sdk-parent;current} -->
 
   <name>Microsoft Azure SDK for Java V2 - Client Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java V2</description>
@@ -216,8 +216,6 @@
     <skipCompile>false</skipCompile>
     <skipTestCompile>false</skipTestCompile>
 
-    <compiler.proc>none</compiler.proc>
-
     <!-- Set this to an empty value to enable the compiler to fail on usage of deprecated APIs. -->
     <compiler.failondeprecatedstatus>-</compiler.failondeprecatedstatus>
 
@@ -258,7 +256,7 @@
       <groupId>org.jacoco</groupId>
       <artifactId>org.jacoco.agent</artifactId>
       <classifier>runtime</classifier>
-      <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+      <version>0.8.13</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -447,7 +445,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.13</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <dataFileIncludes>
             <dataFileInclude>${project.build.directory}/jacoco.exec</dataFileInclude>
@@ -578,7 +576,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <goals>
@@ -610,9 +608,7 @@
                 <exclude>*:*:*:*:provided</exclude>
               </excludes>
               <includes combine.children="append">
-                <include>com.azure:*</include>
-                <include>com.azure.resourcemanager:*</include>
-                <include>com.azure.spring:*</include>
+                <include>com.azure.v2:*</include>
                 <include>io.clientcore:*</include>
 
                 <!-- Used by many libraries to bring in annotations used by Reactor -->
@@ -750,7 +746,7 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.7.1</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
           </dependencies>
           <configuration>
@@ -865,14 +861,14 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.7.1</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
             <dependency>
               <!-- must be on the classpath -->
               <groupId>org.jacoco</groupId>
               <artifactId>org.jacoco.agent</artifactId>
               <classifier>runtime</classifier>
-              <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+              <version>0.8.13</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -915,14 +911,14 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.7.1</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
             <dependency>
               <!-- must be on the classpath -->
               <groupId>org.jacoco</groupId>
               <artifactId>org.jacoco.agent</artifactId>
               <classifier>runtime</classifier>
-              <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+              <version>0.8.13</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -931,7 +927,7 @@
         <plugin>
           <groupId>org.revapi</groupId>
           <artifactId>revapi-maven-plugin</artifactId>
-          <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+          <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
           <configuration>
             <skip>${revapi.skip}</skip>
             <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
@@ -970,17 +966,17 @@
             <dependency>
               <groupId>org.revapi</groupId>
               <artifactId>revapi-java</artifactId>
-              <version>0.26.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+              <version>0.28.3</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
             </dependency>
             <dependency>
               <groupId>org.revapi</groupId>
               <artifactId>revapi-reporter-json</artifactId>
-              <version>0.5.0</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+              <version>0.5.1</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
             </dependency>
             <dependency>
               <groupId>com.fasterxml.jackson.core</groupId>
               <artifactId>jackson-databind</artifactId>
-              <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+              <version>2.18.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -1084,7 +1080,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <checkDependencies>false</checkDependencies>
         </configuration>
@@ -1286,6 +1282,26 @@
                 ${additionalFailsafeArgLine}
               </argLine>
             </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>add-generated-sources</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>add-source</goal>
+                </goals>
+                <configuration>
+                  <sources>
+                    <source>${project.build.directory}/generated-sources/</source>
+                  </sources>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>

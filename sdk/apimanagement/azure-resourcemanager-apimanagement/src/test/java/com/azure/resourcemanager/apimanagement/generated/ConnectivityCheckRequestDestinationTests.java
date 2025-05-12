@@ -12,18 +12,18 @@ public final class ConnectivityCheckRequestDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectivityCheckRequestDestination model
-            = BinaryData.fromString("{\"address\":\"bqhvfdqqjwkr\",\"port\":7197041373683291133}")
+            = BinaryData.fromString("{\"address\":\"gixexkydfbwlj\",\"port\":8921670151383514863}")
                 .toObject(ConnectivityCheckRequestDestination.class);
-        Assertions.assertEquals("bqhvfdqqjwkr", model.address());
-        Assertions.assertEquals(7197041373683291133L, model.port());
+        Assertions.assertEquals("gixexkydfbwlj", model.address());
+        Assertions.assertEquals(8921670151383514863L, model.port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConnectivityCheckRequestDestination model
-            = new ConnectivityCheckRequestDestination().withAddress("bqhvfdqqjwkr").withPort(7197041373683291133L);
+            = new ConnectivityCheckRequestDestination().withAddress("gixexkydfbwlj").withPort(8921670151383514863L);
         model = BinaryData.fromObject(model).toObject(ConnectivityCheckRequestDestination.class);
-        Assertions.assertEquals("bqhvfdqqjwkr", model.address());
-        Assertions.assertEquals(7197041373683291133L, model.port());
+        Assertions.assertEquals("gixexkydfbwlj", model.address());
+        Assertions.assertEquals(8921670151383514863L, model.port());
     }
 }

@@ -13,22 +13,22 @@ public final class RecoveryPlanHyperVReplicaAzureFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPlanHyperVReplicaAzureFailoverInput model = BinaryData.fromString(
-            "{\"instanceType\":\"HyperVReplicaAzure\",\"primaryKekCertificatePfx\":\"vtzldzchubagwn\",\"secondaryKekCertificatePfx\":\"uvigv\",\"recoveryPointType\":\"Latest\"}")
+            "{\"instanceType\":\"HyperVReplicaAzure\",\"primaryKekCertificatePfx\":\"kgeseiphgl\",\"secondaryKekCertificatePfx\":\"pqscoobkjlcax\",\"recoveryPointType\":\"Latest\"}")
             .toObject(RecoveryPlanHyperVReplicaAzureFailoverInput.class);
-        Assertions.assertEquals("vtzldzchubagwn", model.primaryKekCertificatePfx());
-        Assertions.assertEquals("uvigv", model.secondaryKekCertificatePfx());
+        Assertions.assertEquals("kgeseiphgl", model.primaryKekCertificatePfx());
+        Assertions.assertEquals("pqscoobkjlcax", model.secondaryKekCertificatePfx());
         Assertions.assertEquals(HyperVReplicaAzureRpRecoveryPointType.LATEST, model.recoveryPointType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPlanHyperVReplicaAzureFailoverInput model
-            = new RecoveryPlanHyperVReplicaAzureFailoverInput().withPrimaryKekCertificatePfx("vtzldzchubagwn")
-                .withSecondaryKekCertificatePfx("uvigv")
+            = new RecoveryPlanHyperVReplicaAzureFailoverInput().withPrimaryKekCertificatePfx("kgeseiphgl")
+                .withSecondaryKekCertificatePfx("pqscoobkjlcax")
                 .withRecoveryPointType(HyperVReplicaAzureRpRecoveryPointType.LATEST);
         model = BinaryData.fromObject(model).toObject(RecoveryPlanHyperVReplicaAzureFailoverInput.class);
-        Assertions.assertEquals("vtzldzchubagwn", model.primaryKekCertificatePfx());
-        Assertions.assertEquals("uvigv", model.secondaryKekCertificatePfx());
+        Assertions.assertEquals("kgeseiphgl", model.primaryKekCertificatePfx());
+        Assertions.assertEquals("pqscoobkjlcax", model.secondaryKekCertificatePfx());
         Assertions.assertEquals(HyperVReplicaAzureRpRecoveryPointType.LATEST, model.recoveryPointType());
     }
 }

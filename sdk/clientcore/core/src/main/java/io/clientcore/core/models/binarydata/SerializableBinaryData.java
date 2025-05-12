@@ -3,6 +3,9 @@
 
 package io.clientcore.core.models.binarydata;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.ObjectSerializer;
@@ -10,7 +13,6 @@ import io.clientcore.core.serialization.ObjectSerializer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -20,6 +22,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 /**
  * A {@link BinaryData} implementation backed by a serializable object.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class SerializableBinaryData extends BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(SerializableBinaryData.class);
 
@@ -59,8 +62,12 @@ public final class SerializableBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromBytes(toBytes(), type);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        try {
+            return serializer.deserializeFromBytes(toBytes(), type);
+        } catch (IOException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
+        }
     }
 
     @Override
@@ -74,13 +81,17 @@ public final class SerializableBinaryData extends BinaryData {
     }
 
     @Override
-    public void writeTo(JsonWriter jsonWriter) throws IOException {
+    public void writeTo(JsonWriter jsonWriter) {
         Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
 
-        if (content == null) {
-            jsonWriter.writeNull();
-        } else {
-            jsonWriter.writeRawValue(toString());
+        try {
+            if (content == null) {
+                jsonWriter.writeNull();
+            } else {
+                jsonWriter.writeRawValue(toString());
+            }
+        } catch (IOException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -98,12 +109,12 @@ public final class SerializableBinaryData extends BinaryData {
         try {
             return serializer.serializeToBytes(content);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException("Failed to serialize the content.", e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         // no-op
     }
 }

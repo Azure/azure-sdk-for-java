@@ -6,6 +6,7 @@ package io.clientcore.core.instrumentation.logging;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
 import io.clientcore.core.instrumentation.InstrumentationContext;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonReader;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,6 +19,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UncheckedIOException;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,7 +31,8 @@ import java.util.stream.Stream;
 import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createInvalidInstrumentationContext;
 import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createRandomInstrumentationContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -118,10 +121,10 @@ public class ClientLoggerTests {
     public void logThrowableAsWarning(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
-        IOException ioException = createIOException(exceptionMessage);
 
-        assertThrows(IOException.class, () -> {
-            throw setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsWarning(ioException);
+        IOException ioException = assertThrows(IOException.class, () -> {
+            throw setupLogLevelAndGetLogger(logLevelToConfigure).throwableAtWarning()
+                .log(exceptionMessage, ClientLoggerTests::createIOException);
         });
 
         String logValues = byteArraySteamToString(logCaptureStream);
@@ -138,15 +141,177 @@ public class ClientLoggerTests {
     public void logCheckedExceptionAsWarning(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
-        IOException ioException = createIOException(exceptionMessage);
 
-        assertThrows(IOException.class, () -> {
-            throw setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsWarning(ioException);
+        IOException ioException = assertThrows(IOException.class, () -> {
+            throw setupLogLevelAndGetLogger(logLevelToConfigure).throwableAtWarning()
+                .log(exceptionMessage, ClientLoggerTests::createIOException);
         });
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage));
         assertEquals(logContainsStackTrace, logValues.contains(ioException.getStackTrace()[0].toString()));
+    }
+
+    /**
+     * Tests logging Throwable with context
+     */
+    @Test
+    public void logExceptionWithContext() {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
+
+        String shortMessage = "connection dropped";
+        IOException ioException = logger.throwableAtWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", 1)
+            .log(shortMessage, IOException::new);
+
+        assertEquals("connection dropped; {\"connectionId\":\"foo\",\"linkName\":1}", ioException.getMessage());
+
+        Map<String, Object> expectedMessage = new HashMap<>();
+        expectedMessage.put("message", shortMessage);
+        expectedMessage.put("connectionId", "foo");
+        expectedMessage.put("linkName", 1);
+        expectedMessage.put("exception.type", ioException.getClass().getCanonicalName());
+
+        String logValues = byteArraySteamToString(logCaptureStream);
+
+        System.out.println(logValues);
+        assertTrue(logValues.contains(shortMessage));
+        assertMessage(expectedMessage, logValues, LogLevel.INFORMATIONAL, LogLevel.WARNING);
+    }
+
+    @Test
+    public void logExceptionWithoutContext() {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
+
+        String shortMessage = "connection dropped";
+        IOException ioException = logger.throwableAtWarning().log(shortMessage, IOException::new);
+        assertEquals("connection dropped", ioException.getMessage());
+
+        Map<String, Object> expectedMessage = new HashMap<>();
+        expectedMessage.put("message", shortMessage);
+        expectedMessage.put("exception.type", ioException.getClass().getCanonicalName());
+
+        String logValues = byteArraySteamToString(logCaptureStream);
+
+        System.out.println(logValues);
+        assertTrue(logValues.contains(shortMessage));
+        assertMessage(expectedMessage, logValues, LogLevel.INFORMATIONAL, LogLevel.WARNING);
+    }
+
+    /**
+     * Tests logging Throwable with context
+     */
+    @Test
+    public void logExceptionWithoutMessage() {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
+
+        UnknownHostException cause = new UnknownHostException("Unable to resolve host www.xyz.com");
+        CoreException coreException = logger.throwableAtWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", 1)
+            .log(cause, CoreException::from);
+
+        String[] messageComponents = coreException.getMessage().split(";");
+        assertEquals(2, messageComponents.length);
+        assertEquals(cause.getMessage(), messageComponents[0].trim());
+        Map<String, Object> exceptionMessageMap = fromJson(messageComponents[1]);
+        assertEquals("foo", exceptionMessageMap.get("connectionId"));
+        assertEquals(1, exceptionMessageMap.get("linkName"));
+        assertEquals("java.net.UnknownHostException", exceptionMessageMap.get("cause.type"));
+        assertEquals("Unable to resolve host www.xyz.com", exceptionMessageMap.get("cause.message"));
+
+        Map<String, Object> expectedMessage = new HashMap<>();
+        expectedMessage.put("connectionId", "foo");
+        expectedMessage.put("linkName", 1);
+        expectedMessage.put("exception.type", coreException.getClass().getCanonicalName());
+        expectedMessage.put("cause.type", cause.getClass().getCanonicalName());
+        expectedMessage.put("cause.message", cause.getMessage());
+
+        String logValues = byteArraySteamToString(logCaptureStream);
+
+        assertTrue(logValues.contains(cause.getMessage()));
+        assertMessage(expectedMessage, logValues, LogLevel.INFORMATIONAL, LogLevel.WARNING);
+    }
+
+    /**
+     * Tests logging Throwable with context
+     */
+    @Test
+    public void logExceptionWithContextLevelDisabled() {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.ERROR);
+
+        String shortMessage = "connection dropped";
+        IOException ioException = logger.throwableAtWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", 1)
+            .log(shortMessage, IOException::new);
+
+        assertEquals("connection dropped; {\"connectionId\":\"foo\",\"linkName\":1}", ioException.getMessage());
+
+        String logValues = byteArraySteamToString(logCaptureStream);
+
+        assertFalse(logValues.contains(shortMessage));
+    }
+
+    /**
+     * Tests logging Throwable with disabled stack trace
+     */
+    @Test
+    public void logExceptionWithDisabledStackTrace() {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE);
+
+        String shortMessage = "connection dropped";
+        RuntimeException exception = logger.throwableAtWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", 1)
+            .log(shortMessage, ExceptionWithDisabledStackTrace::new);
+
+        assertEquals("connection dropped; {\"connectionId\":\"foo\",\"linkName\":1}", exception.getMessage());
+
+        Map<String, Object> expectedMessage = new HashMap<>();
+        expectedMessage.put("message", shortMessage);
+        expectedMessage.put("connectionId", "foo");
+        expectedMessage.put("linkName", 1);
+        expectedMessage.put("exception.type", exception.getClass().getCanonicalName());
+        expectedMessage.put("exception.stacktrace", "stacktrace disabled");
+
+        String logValues = byteArraySteamToString(logCaptureStream);
+
+        assertTrue(logValues.contains(shortMessage));
+        assertMessage(expectedMessage, logValues, LogLevel.VERBOSE, LogLevel.ERROR);
+    }
+
+    /**
+     * Tests logging Throwable with context and cause
+     */
+    @Test
+    public void logExceptionWithContextAndCause() {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
+
+        UnknownHostException ioException = new UnknownHostException("Unable to resolve host www.xyz.com");
+
+        String shortMessage = "Can't connect";
+        CoreException coreException = logger.throwableAtError()
+            .addKeyValue("server.address", "foo")
+            .addKeyValue("server.port", 42)
+            .log(shortMessage, ioException, CoreException::from);
+
+        assertEquals(
+            "Can't connect; {\"server.address\":\"foo\",\"server.port\":42,\"cause.type\":\"java.net.UnknownHostException\",\"cause.message\":\"Unable to resolve host www.xyz.com\"}",
+            coreException.getMessage());
+
+        Map<String, Object> expectedMessage = new HashMap<>();
+        expectedMessage.put("message", shortMessage);
+        expectedMessage.put("server.address", "foo");
+        expectedMessage.put("server.port", 42);
+        expectedMessage.put("exception.type", coreException.getClass().getCanonicalName());
+        expectedMessage.put("cause.type", ioException.getClass().getCanonicalName());
+        expectedMessage.put("cause.message", ioException.getMessage());
+
+        String logValues = byteArraySteamToString(logCaptureStream);
+        assertTrue(logValues.contains(shortMessage));
+        assertMessage(expectedMessage, logValues, LogLevel.INFORMATIONAL, LogLevel.ERROR);
     }
 
     /**
@@ -160,9 +325,8 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         IllegalStateException illegalStateException = createIllegalStateException(exceptionMessage);
 
-        assertThrows(IllegalStateException.class, () -> {
-            throw setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsError(illegalStateException);
-        });
+        assertInstanceOf(IllegalStateException.class, setupLogLevelAndGetLogger(logLevelToConfigure).throwableAtError()
+            .log(exceptionMessage, ClientLoggerTests::createIllegalStateException));
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage));
@@ -178,11 +342,10 @@ public class ClientLoggerTests {
     public void logCheckedExceptionAsError(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
-        IOException ioException = createIOException(exceptionMessage);
 
-        assertThrows(IOException.class, () -> {
-            throw setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsError(ioException);
-        });
+        IOException ioException
+            = assertInstanceOf(IOException.class, setupLogLevelAndGetLogger(logLevelToConfigure).throwableAtError()
+                .log(exceptionMessage, ClientLoggerTests::createIOException));
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage));
@@ -269,13 +432,13 @@ public class ClientLoggerTests {
         String message = "hello world";
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel);
         if (logLevel.equals(LogLevel.ERROR)) {
-            logger.atError().log(message, exception);
+            logger.atError().setThrowable(exception).log(message);
         } else if (logLevel.equals(LogLevel.WARNING)) {
-            logger.atWarning().log(message, exception);
+            logger.atWarning().setThrowable(exception).log(message);
         } else if (logLevel.equals(LogLevel.INFORMATIONAL)) {
-            logger.atInfo().log(message, exception);
+            logger.atInfo().setThrowable(exception).log(message);
         } else if (logLevel.equals(LogLevel.VERBOSE)) {
-            logger.atVerbose().log(message, exception);
+            logger.atVerbose().setThrowable(exception).log(message);
         } else {
             throw new IllegalArgumentException("Unknown log level: " + logLevel);
         }
@@ -289,18 +452,7 @@ public class ClientLoggerTests {
     public void logShouldEvaluateSupplierWithNullException(LogLevel logLevel) {
         String message = "hello world";
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel);
-        if (logLevel.equals(LogLevel.ERROR)) {
-            logger.atError().log(message, null);
-        } else if (logLevel.equals(LogLevel.WARNING)) {
-            logger.atWarning().log(message, null);
-        } else if (logLevel.equals(LogLevel.INFORMATIONAL)) {
-            logger.atInfo().log(message, null);
-        } else if (logLevel.equals(LogLevel.VERBOSE)) {
-            logger.atVerbose().log(message, null);
-        } else {
-            throw new IllegalArgumentException("Unknown log level: " + logLevel);
-        }
-
+        logger.atLevel(logLevel).setThrowable(null).log(message);
         String logValues = byteArraySteamToString(logCaptureStream);
         assertTrue(logValues.contains(message));
     }
@@ -580,7 +732,8 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log(String.format("Don't format strings when writing logs, %s!", "please"), runtimeException);
+            .setThrowable(runtimeException)
+            .log(String.format("Don't format strings when writing logs, %s!", "please"));
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "Don't format strings when writing logs, please!");
@@ -610,7 +763,8 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log("hello world", ioException);
+            .setThrowable(ioException)
+            .log("hello world");
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "hello world");
@@ -640,7 +794,8 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connection\tId", "foo")
             .addKeyValue("linkName", "\rbar")
-            .log("hello \"world\"", runtimeException);
+            .setThrowable(runtimeException)
+            .log("hello \"world\"");
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "hello \"world\"");
@@ -667,11 +822,11 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
 
-        assertSame(runtimeException,
-            logger.atWarning()
-                .addKeyValue("connectionId", "foo")
-                .addKeyValue("linkName", "bar")
-                .log(null, runtimeException));
+        logger.atWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", "bar")
+            .setThrowable(runtimeException)
+            .log();
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("connectionId", "foo");
@@ -697,11 +852,11 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
 
-        assertSame(ioException,
-            logger.atWarning()
-                .addKeyValue("connectionId", "foo")
-                .addKeyValue("linkName", "bar")
-                .log(null, ioException));
+        logger.atWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", "bar")
+            .setThrowable(ioException)
+            .log();
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("connectionId", "foo");
@@ -722,12 +877,11 @@ public class ClientLoggerTests {
         String message = "A log message";
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE);
         String expectedStackTrace = stackTraceToString(exception);
-        logger.atVerbose().log(message, exception);
+        logger.atVerbose().setThrowable(exception).log(message);
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", message);
         expectedMessage.put("exception.type", exception.getClass().getCanonicalName());
-        expectedMessage.put("exception.message", null);
         expectedMessage.put("exception.stacktrace", expectedStackTrace);
 
         assertMessage(expectedMessage, byteArraySteamToString(logCaptureStream), LogLevel.VERBOSE, LogLevel.WARNING);
@@ -803,7 +957,7 @@ public class ClientLoggerTests {
             return;
         }
 
-        logger.atLevel(logLevel).log(logMessage, runtimeException);
+        logger.atLevel(logLevel).setThrowable(runtimeException).log(logMessage);
     }
 
     private void logMessage(ClientLogger logger, LogLevel logLevel, String logMessage) {
@@ -1112,6 +1266,12 @@ public class ClientLoggerTests {
             return reader.readMap(JsonReader::readUntyped);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    static class ExceptionWithDisabledStackTrace extends RuntimeException {
+        ExceptionWithDisabledStackTrace(String message) {
+            super(message, null, true, false);
         }
     }
 }

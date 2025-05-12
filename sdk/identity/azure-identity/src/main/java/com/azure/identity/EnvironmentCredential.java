@@ -37,14 +37,6 @@ import reactor.core.publisher.Mono;
  *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
  * </ul>
  *
- * <p>The required environment variables for username password authentication are as follows:</p>
- * <ul>
- *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_ID AZURE_CLIENT_ID}</li>
- *     <li>{@link Configuration#PROPERTY_AZURE_USERNAME AZURE_USERNAME}</li>
- *     <li>{@link Configuration#PROPERTY_AZURE_PASSWORD AZURE_PASSWORD}</li>
- *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
- * </ul>
- *
  * <p>The credential looks for authentication scenarios in the order above, so ensure that only targeted authentication
  * scenario's environment variables are configured.</p>
  *
@@ -65,6 +57,7 @@ import reactor.core.publisher.Mono;
  * @see EnvironmentCredentialBuilder
  */
 @Immutable
+@SuppressWarnings("deprecation")
 public class EnvironmentCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(EnvironmentCredential.class);
     private final TokenCredential tokenCredential;
@@ -137,6 +130,8 @@ public class EnvironmentCredential implements TokenCredential {
             if (targetCredential == null && verifyNotNull(username, password)) {
                 // 2.1 - both username and password found
                 LOGGER.info("Azure Identity => EnvironmentCredential invoking UsernamePasswordCredential");
+                LOGGER.warning(
+                    "Environment is configured to use username and password authentication. This authentication method is deprecated, as it doesn't support multifactor authentication (MFA). Use a more secure credential. For more details, see https://aka.ms/azsdk/identity/mfa.");
                 targetCredential
                     = new UsernamePasswordCredential(clientId, tenantId, username, password, identityClientOptions);
             } else if (verifyNotNull(username) ^ verifyNotNull(password)) {
@@ -152,10 +147,8 @@ public class EnvironmentCredential implements TokenCredential {
                 String msg = String.format("Azure Identity => ERROR in EnvironmentCredential: Failed to determine an "
                     + "authentication scheme based on the available environment variables. Please specify %1$s and "
                     + "%2$s to authenticate through a ClientSecretCredential; %1$s and %3$s to authenticate through a "
-                    + "ClientCertificateCredential; or %4$s and %5$s to authenticate through a "
-                    + "UserPasswordCredential.", Configuration.PROPERTY_AZURE_TENANT_ID,
-                    Configuration.PROPERTY_AZURE_CLIENT_SECRET, Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH,
-                    Configuration.PROPERTY_AZURE_USERNAME, Configuration.PROPERTY_AZURE_PASSWORD);
+                    + "ClientCertificateCredential.", Configuration.PROPERTY_AZURE_TENANT_ID,
+                    Configuration.PROPERTY_AZURE_CLIENT_SECRET, Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
                 LoggingUtil.logError(LOGGER, identityClientOptions, msg);
             }
         } else {

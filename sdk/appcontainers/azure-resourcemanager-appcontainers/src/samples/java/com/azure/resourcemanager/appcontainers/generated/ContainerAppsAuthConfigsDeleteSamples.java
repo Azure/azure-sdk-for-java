@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsAuthConfigsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/AuthConfigs_Delete.json
+     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/AuthConfigs_Delete.json
      */
     /**
      * Sample code: Delete Container App AuthConfig.

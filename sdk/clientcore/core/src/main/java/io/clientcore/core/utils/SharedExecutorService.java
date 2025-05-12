@@ -5,9 +5,9 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.implementation.ReflectionUtils;
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.utils.EnvironmentConfiguration;
 import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import java.time.Duration;
 import java.util.Collection;
@@ -80,8 +80,7 @@ public final class SharedExecutorService implements ScheduledExecutorService {
 
     private static <T> T getConfig(String systemProperty, String envVar, Function<String, T> converter,
         T defaultValue) {
-        String foundValue = ImplUtils.getFromEnvironment(EnvironmentConfiguration.getGlobalConfiguration(),
-            systemProperty, envVar, ImplUtils.DEFAULT_SANITIZER, LOGGER);
+        String foundValue = Configuration.getGlobalConfiguration().get(systemProperty, envVar);
 
         if (foundValue == null) {
             LOGGER.atVerbose()
@@ -129,7 +128,8 @@ public final class SharedExecutorService implements ScheduledExecutorService {
         } catch (Exception | LinkageError e) {
             LOGGER.atVerbose()
                 .addKeyValue("runtime", System.getProperty("java.version"))
-                .log("Virtual threads are not supported in the current runtime.", e);
+                .setThrowable(e)
+                .log("Virtual threads are not supported in the current runtime.");
             virtualThreadSupported = false;
             getVirtualThreadBuilder = null;
             setVirtualThreadBuilderThreadName = null;
@@ -200,8 +200,8 @@ public final class SharedExecutorService implements ScheduledExecutorService {
         // allowing Client Core or Jackson to perform deep reflection on classes that are not normally allowed.
         Objects.requireNonNull(executorService, "'executorService' cannot be null.");
         if (executorService.isShutdown() || executorService.isTerminated()) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException("The passed executor service is shutdown or terminated."));
+            throw LOGGER.throwableAtError()
+                .log("The passed executor service is shutdown or terminated.", IllegalStateException::new);
         }
 
         ExecutorService existing = EXECUTOR_UPDATER.getAndSet(this, executorService);
@@ -236,8 +236,8 @@ public final class SharedExecutorService implements ScheduledExecutorService {
     @Override
     public void shutdown() {
         // This doesn't do anything as this is meant to be shared and shouldn't be shut down by one consumer.
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("This executor service is shared and cannot be shut down."));
+        throw LOGGER.throwableAtError()
+            .log("This executor service is shared and cannot be shut down.", UnsupportedOperationException::new);
     }
 
     /**
@@ -250,8 +250,8 @@ public final class SharedExecutorService implements ScheduledExecutorService {
      */
     @Override
     public List<Runnable> shutdownNow() {
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("This executor service is shared and cannot be shut down."));
+        throw LOGGER.throwableAtError()
+            .log("This executor service is shared and cannot be shut down.", UnsupportedOperationException::new);
     }
 
     /**
@@ -290,8 +290,8 @@ public final class SharedExecutorService implements ScheduledExecutorService {
      */
     @Override
     public boolean awaitTermination(long timeout, TimeUnit unit) {
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("This executor service is shared and cannot be terminated."));
+        throw LOGGER.throwableAtError()
+            .log("This executor service is shared and cannot be terminated.", UnsupportedOperationException::new);
     }
 
     @Override
@@ -370,7 +370,8 @@ public final class SharedExecutorService implements ScheduledExecutorService {
                 LOGGER.atVerbose().log("Successfully created a virtual thread factory.");
             } catch (Exception e) {
                 LOGGER.atInfo()
-                    .log("Failed to create a virtual thread factory, falling back to non-virtual threads.", e);
+                    .setThrowable(e)
+                    .log("Failed to create a virtual thread factory, falling back to non-virtual threads.");
                 threadFactory = createNonVirtualThreadFactory();
             }
         } else {

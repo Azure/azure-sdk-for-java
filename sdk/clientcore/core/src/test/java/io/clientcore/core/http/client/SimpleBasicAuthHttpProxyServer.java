@@ -45,13 +45,11 @@ public final class SimpleBasicAuthHttpProxyServer {
             if (proxyAuthorization == null) {
                 resp.setStatus(407);
                 resp.setHeader("Proxy-Authenticate", "Basic");
-
                 return;
             }
 
             if (!proxyAuthorization.startsWith("Basic")) {
                 resp.setStatus(401);
-
                 return;
             }
 

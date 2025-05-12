@@ -11,14 +11,15 @@ public final class AzureDatabricksDeltaLakeImportCommandTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDatabricksDeltaLakeImportCommand model = BinaryData.fromString(
-            "{\"type\":\"AzureDatabricksDeltaLakeImportCommand\",\"dateFormat\":\"datardb\",\"timestampFormat\":\"dataqtxpf\",\"\":{\"kqscmdsjgows\":\"datafvhbbnoevkkrlkdo\",\"peqlhhmbyfacexp\":\"datalgu\",\"pkqiqs\":\"datapqykicesqpvmoxil\"}}")
+            "{\"type\":\"AzureDatabricksDeltaLakeImportCommand\",\"dateFormat\":\"dataaezkbrvtaul\",\"timestampFormat\":\"dataqvtpkodijcn\",\"\":{\"hijbfiyuho\":\"datayqvcyqjj\"}}")
             .toObject(AzureDatabricksDeltaLakeImportCommand.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureDatabricksDeltaLakeImportCommand model
-            = new AzureDatabricksDeltaLakeImportCommand().withDateFormat("datardb").withTimestampFormat("dataqtxpf");
+            = new AzureDatabricksDeltaLakeImportCommand().withDateFormat("dataaezkbrvtaul")
+                .withTimestampFormat("dataqvtpkodijcn");
         model = BinaryData.fromObject(model).toObject(AzureDatabricksDeltaLakeImportCommand.class);
     }
 }

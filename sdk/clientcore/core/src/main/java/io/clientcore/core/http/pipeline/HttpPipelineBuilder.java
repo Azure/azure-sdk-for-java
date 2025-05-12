@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.configuration.Configuration;
@@ -35,13 +37,14 @@ import java.util.Objects;
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .httpClient&#40;HttpClient.getNewInstance&#40;&#41;&#41;
- *     .policies&#40;new HttpRetryPolicy&#40;&#41;&#41;
+ *     .addPolicy&#40;new HttpRetryPolicy&#40;&#41;&#41;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy -->
  *
  * @see HttpPipeline
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public class HttpPipelineBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineBuilder.class);
 
@@ -104,7 +107,7 @@ public class HttpPipelineBuilder {
         if (httpClient != null) {
             client = httpClient;
         } else {
-            if (Configuration.getGlobalConfiguration().get("ENABLE_HTTP_CLIENT_SHARING", Boolean.TRUE)) {
+            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_HTTP_CLIENT_SHARING"))) {
                 client = HttpClient.getSharedInstance();
             } else {
                 client = HttpClient.getNewInstance();
@@ -149,9 +152,9 @@ public class HttpPipelineBuilder {
 
         HttpPipelinePosition order = policy.getPipelinePosition();
         if (order == null) {
-            throw LOGGER.atError()
-                .addKeyValue("policyType", policy.getClass())
-                .log("Policy order cannot be null.", new IllegalArgumentException("Policy order cannot be null."));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("policyType", policy.getClass().getCanonicalName())
+                .log("Policy has invalid pipeline position - position cannot be null.", IllegalArgumentException::new);
         }
 
         if (order == HttpPipelinePosition.BEFORE_REDIRECT) {
@@ -165,10 +168,10 @@ public class HttpPipelineBuilder {
         } else if (order == HttpPipelinePosition.AFTER_INSTRUMENTATION) {
             afterInstrumentation.add(policy);
         } else {
-            throw LOGGER.atError()
-                .addKeyValue("policyType", policy.getClass())
-                .addKeyValue("order", order)
-                .log("Unknown policy order.", new IllegalArgumentException("Unknown policy order."));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("policyType", policy.getClass().getCanonicalName())
+                .addKeyValue("position", order.getValue())
+                .log("Policy has unexpected position.", IllegalArgumentException::new);
         }
 
         return this;

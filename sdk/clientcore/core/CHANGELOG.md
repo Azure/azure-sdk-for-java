@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.10 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,43 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.9 (2025-04-30)
+
+### Features Added
+- Added RestProxy back [#45149](https://github.com/Azure/azure-sdk-for-java/pull/45149)
+- Added CoreException type as the base type for all exceptions [#44892](https://github.com/Azure/azure-sdk-for-java/pull/44892)
+
+## 1.0.0-beta.8 (2025-04-03)
+
+### Breaking Changes
+- Redesign RequestOptions - merge with context [#44535](https://github.com/Azure/azure-sdk-for-java/pull/44535)
+- API updates to refactor [#44655](https://github.com/Azure/azure-sdk-for-java/pull/44655)
+- Remove ResponseBodyMode [#44635](https://github.com/Azure/azure-sdk-for-java/pull/44635)
+- Remove RestProxy code [#44660](https://github.com/Azure/azure-sdk-for-java/pull/44660)
+
+### Bugs Fixed
+- Fix vNext Bearer Token Policy [#44803](https://github.com/Azure/azure-sdk-for-java/pull/44803/)
+
+## 1.0.0-beta.7 (2025-03-12)
+
+### Breaking Changes
+ - API updates to refactor and cleanup public APIs [#44565](https://github.com/Azure/azure-sdk-for-java/pull/44565), [#44555](https://github.com/Azure/azure-sdk-for-java/pull/44555) and [#44592](https://github.com/Azure/azure-sdk-for-java/pull/44592)
+
+## 1.0.0-beta.6 (2025-03-10)
+
+### Breaking Changes
+
+- `JsonNumber` previously would use `float` when the floating point number was small enough to fit in `float` but it
+  now aligns behavior with `JsonReader.readUntyped()` where `double` will be the smallest floating point type used.
+  This aligns with floating point number behavior in Java where `double` is the default if no type is specified.
+- Support for special numeric `INF`, `-INF`, and `+INF` values have been removed to align with behaviors of `Float`
+  and `Double` in Java where only the `Infinity` variants are supported.
+
+### Bugs Fixed
+
+- `JsonReader.readUntyped()` had incomplete support for untyped numerics. Numerics too large for `double` and `long` are
+  now supported and a bug where exponents were not being parsed correctly is fixed.
 
 ## 1.0.0-beta.5 (2025-02-14)
 

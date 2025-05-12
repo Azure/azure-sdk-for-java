@@ -3,6 +3,8 @@
 
 package io.clientcore.core.instrumentation.logging;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
 import io.clientcore.core.utils.configuration.Configuration;
@@ -10,7 +12,6 @@ import io.clientcore.core.utils.configuration.Configuration;
 import java.nio.file.InvalidPathException;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * This is a fluent logger helper class that wraps an SLF4J Logger (if available) or a default implementation of the
@@ -28,6 +29,7 @@ import java.util.Objects;
  * Context can be provided in the constructor and populated on every message or added per each log record.</p>
  * @see Configuration
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class ClientLogger {
     private final Slf4jLoggerShim logger;
     private final Map<String, Object> globalContext;
@@ -71,7 +73,7 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context.</p>
-     * * <!-- src_embed io.clientcore.core.util.logging.clientlogger#globalcontext -->
+     * * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger#globalcontext -->
      * <pre>
      * Map&lt;String, Object&gt; context = new HashMap&lt;&gt;&#40;&#41;;
      * context.put&#40;&quot;connectionId&quot;, &quot;95a47cf&quot;&#41;;
@@ -79,7 +81,7 @@ public class ClientLogger {
      * ClientLogger loggerWithContext = new ClientLogger&#40;ClientLoggerJavaDocCodeSnippets.class, context&#41;;
      * loggerWithContext.info&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger#globalcontext -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger#globalcontext -->
      *
      * @param clazz Class creating the logger.
      * @param context Context to be populated on every log record written with this logger.
@@ -94,39 +96,6 @@ public class ClientLogger {
     ClientLogger(DefaultLogger defaultLogger, Map<String, Object> context) {
         logger = new Slf4jLoggerShim(defaultLogger);
         globalContext = context == null ? null : Collections.unmodifiableMap(context);
-    }
-
-    /**
-     * Logs the {@link Throwable} at the warning level and returns it to be thrown.
-     * <p>
-     * This API covers the cases where a checked exception type needs to be thrown and logged.
-     *
-     * @param throwable Throwable to be logged and returned.
-     * @param <T> Type of the Throwable being logged.
-     * @return The passed {@link Throwable}.
-     * @throws NullPointerException If {@code throwable} is {@code null}.
-     */
-    public <T extends Throwable> T logThrowableAsWarning(T throwable) {
-        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        LoggingEvent.create(logger, LogLevel.WARNING, globalContext).log(throwable.getMessage(), throwable);
-
-        return throwable;
-    }
-
-    /**
-     * Logs the {@link Throwable} at the error level and returns it to be thrown.
-     * <p>
-     * This API covers the cases where a checked exception type needs to be thrown and logged.
-     *
-     * @param throwable Throwable to be logged and returned.
-     * @param <T> Type of the Throwable being logged.
-     * @return The passed {@link Throwable}.
-     * @throws NullPointerException If {@code throwable} is {@code null}.
-     */
-    public <T extends Throwable> T logThrowableAsError(T throwable) {
-        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        LoggingEvent.create(logger, LogLevel.ERROR, globalContext).log(throwable.getMessage(), throwable);
-        return throwable;
     }
 
     /**
@@ -146,13 +115,13 @@ public class ClientLogger {
      *
      * <p>Logging with context at error level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#primitive -->
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
      *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEvent}  or no-op if error logging is disabled.
      */
@@ -167,13 +136,14 @@ public class ClientLogger {
      *
      * <p>Logging with context at warning level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atWarning -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atWarning -->
      * <pre>
      * logger.atWarning&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-     *     .log&#40;&quot;A structured log message with exception.&quot;, exception&#41;;
+     *     .setThrowable&#40;exception&#41;
+     *     .log&#40;&quot;A structured log message with exception.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atWarning -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atWarning -->
      *
      * @return instance of {@link LoggingEvent} or no-op if warn logging is disabled.
      */
@@ -189,14 +159,14 @@ public class ClientLogger {
      *
      * <p>Logging with context at info level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atInfo -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atInfo -->
      * <pre>
      * logger.atInfo&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
      *     .addKeyValue&#40;&quot;hello&quot;, name&#41;
      *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atInfo -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atInfo -->
      *
      * @return instance of {@link LoggingEvent} or no-op if info logging is disabled.
      */
@@ -211,13 +181,13 @@ public class ClientLogger {
      *
      * <p>Logging with context at verbose level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#primitive -->
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
      *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEvent} or no-op if verbose logging is disabled.
      */
@@ -233,15 +203,14 @@ public class ClientLogger {
      *
      * <p>Logging with context at provided level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atLevel -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atLevel -->
      * <pre>
-     * ClientLogger.LogLevel level = response.getStatusCode&#40;&#41; == 200
-     *     ? ClientLogger.LogLevel.INFORMATIONAL : ClientLogger.LogLevel.WARNING;
+     * LogLevel level = response.getStatusCode&#40;&#41; == 200 ? LogLevel.INFORMATIONAL : LogLevel.WARNING;
      * logger.atLevel&#40;level&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
      *     .log&#40;&quot;message&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atLevel -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atLevel -->
      *
      * @param level log level.
      * @return instance of {@link LoggingEvent} or no-op if logging at provided level is disabled.
@@ -260,4 +229,79 @@ public class ClientLogger {
         }
     }
 
+    /**
+     * Creates {@link ExceptionLoggingEvent} that creates and logs the exception augmented with
+     * additional context at the {@link LogLevel#ERROR} level.
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p> Creating new exception and logging it with context.</p>
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.message -->
+     * <pre>
+     * throw logger.throwableAtError&#40;&#41;
+     *     .addKeyValue&#40;&quot;url&quot;, url&#41;
+     *     .log&#40;&quot;Invalid URL&quot;, IllegalArgumentException::new&#41;;
+     * </pre>
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.message -->
+     *
+     * <p> Creating new exception with cause and logging it with context.</p>
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.cause -->
+     * <pre>
+     * try &#123;
+     *     connect&#40;&quot;xyz.com&quot;&#41;;
+     * &#125; catch &#40;Exception e&#41; &#123;
+     *     throw logger.throwableAtError&#40;&#41;
+     *         .addKeyValue&#40;&quot;requestId&quot;, requestId&#41;
+     *         .log&#40;e, CoreException::from&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.cause -->
+     *
+     * @return {@link ExceptionLoggingEvent}.
+     */
+    public ExceptionLoggingEvent throwableAtError() {
+        return new ExceptionLoggingEvent(new LoggingEvent(logger, LogLevel.ERROR, globalContext, true));
+    }
+
+    /**
+     * Creates {@link ExceptionLoggingEvent} that creates and logs the exception augmented with
+     * additional context at the {@link LogLevel#WARNING} level.
+     *
+     * @return {@link ExceptionLoggingEvent}.
+     */
+    public ExceptionLoggingEvent throwableAtWarning() {
+        return new ExceptionLoggingEvent(new LoggingEvent(logger, LogLevel.WARNING, globalContext, true));
+    }
+
+    /**
+     * Logs the {@link Throwable} at the warning level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a checked exception type needs to be thrown and logged.
+     *
+     * @param throwable Throwable to be logged and returned.
+     * @param <T> Type of the Throwable being logged.
+     * @return The passed {@link Throwable}.
+     * @throws NullPointerException If {@code throwable} is {@code null}.
+     * @deprecated Deprecated in favor of context-aware {@link #throwableAtWarning()}
+     */
+    @Deprecated
+    public <T extends Throwable> T logThrowableAsWarning(T throwable) {
+        LoggingEvent.create(logger, LogLevel.WARNING, globalContext).setThrowable(throwable).log();
+        return throwable;
+    }
+
+    /**
+     * Logs the {@link Throwable} at the error level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a checked exception type needs to be thrown and logged.
+     *
+     * @param throwable Throwable to be logged and returned.
+     * @param <T> Type of the Throwable being logged.
+     * @return The passed {@link Throwable}.
+     * @deprecated Deprecated in favor of context-aware {@link #throwableAtError()}
+     */
+    @Deprecated
+    public <T extends Throwable> T logThrowableAsError(T throwable) {
+        LoggingEvent.create(logger, LogLevel.ERROR, globalContext).setThrowable(throwable).log();
+        return throwable;
+    }
 }

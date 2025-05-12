@@ -13,7 +13,7 @@ public final class CopyTranslatorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CopyTranslator model = BinaryData.fromString(
-            "{\"type\":\"CopyTranslator\",\"\":{\"ybp\":\"datanrg\",\"rvqticgsdcpmclku\":\"datawjjbmkhxun\",\"dcqrssqwzndzuxlg\":\"datadabh\"}}")
+            "{\"type\":\"CopyTranslator\",\"\":{\"sxtsmzvaozfajalb\":\"dataugeaenk\",\"qzznwlxzms\":\"datawwbrllvvazuj\"}}")
             .toObject(CopyTranslator.class);
     }
 

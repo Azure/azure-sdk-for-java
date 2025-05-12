@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package io.clientcore.core.utils;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
@@ -16,6 +18,7 @@ import java.util.Map;
  * <p>
  * Some challenge information may be optional, meaning the getters may return null or an empty collection.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class AuthenticateChallenge {
     private static final ClientLogger LOGGER = new ClientLogger(AuthenticateChallenge.class);
 
@@ -56,8 +59,8 @@ public final class AuthenticateChallenge {
     }
 
     AuthenticateChallenge(String scheme, Map<String, String> parameters, String token68) {
-        if (scheme == null || scheme.isEmpty()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("scheme cannot be null or empty."));
+        if (CoreUtils.isNullOrEmpty(scheme)) {
+            throw LOGGER.throwableAtError().log("scheme cannot be null or empty.", IllegalArgumentException::new);
         }
 
         this.scheme = scheme;

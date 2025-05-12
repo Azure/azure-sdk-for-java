@@ -3,6 +3,8 @@
 
 package io.clientcore.core.credentials;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Objects;
@@ -10,6 +12,7 @@ import java.util.Objects;
 /**
  * Represents a credential that uses a key to authenticate.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public class KeyCredential {
     // KeyCredential is a commonly used credential type, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(KeyCredential.class);
@@ -25,7 +28,7 @@ public class KeyCredential {
     public KeyCredential(String key) {
         Objects.requireNonNull(key, "'key' cannot be null.");
         if (key.isEmpty()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'key' cannot be empty."));
+            throw LOGGER.throwableAtError().log("'key' cannot be empty.", IllegalArgumentException::new);
         }
 
         this.key = key;
@@ -51,7 +54,7 @@ public class KeyCredential {
     public KeyCredential update(String key) {
         Objects.requireNonNull(key, "'key' cannot be null.");
         if (key.isEmpty()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'key' cannot be empty."));
+            throw LOGGER.throwableAtError().log("'key' cannot be empty.", IllegalArgumentException::new);
         }
 
         this.key = key;

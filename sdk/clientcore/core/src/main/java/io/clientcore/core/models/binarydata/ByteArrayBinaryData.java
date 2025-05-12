@@ -3,6 +3,10 @@
 
 package io.clientcore.core.models.binarydata;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.serialization.ObjectSerializer;
 
@@ -17,7 +21,9 @@ import java.util.Objects;
 /**
  * A {@link BinaryData} implementation backed by a byte array.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class ByteArrayBinaryData extends BinaryData {
+    private static final ClientLogger LOGGER = new ClientLogger(ByteArrayBinaryData.class);
     private final byte[] content;
 
     /**
@@ -46,8 +52,12 @@ public final class ByteArrayBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromBytes(this.content, type);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        try {
+            return serializer.deserializeFromBytes(this.content, type);
+        } catch (IOException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
+        }
     }
 
     @Override
@@ -61,10 +71,14 @@ public final class ByteArrayBinaryData extends BinaryData {
     }
 
     @Override
-    public void writeTo(JsonWriter jsonWriter) throws IOException {
+    public void writeTo(JsonWriter jsonWriter) {
         Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
 
-        jsonWriter.writeBinary(toBytes());
+        try {
+            jsonWriter.writeBinary(toBytes());
+        } catch (IOException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
+        }
     }
 
     @Override
@@ -78,7 +92,7 @@ public final class ByteArrayBinaryData extends BinaryData {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         // no-op
     }
 }

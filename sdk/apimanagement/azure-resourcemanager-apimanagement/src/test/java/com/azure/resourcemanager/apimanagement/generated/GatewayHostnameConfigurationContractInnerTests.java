@@ -12,31 +12,31 @@ public final class GatewayHostnameConfigurationContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayHostnameConfigurationContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"hostname\":\"xvgjbfi\",\"certificateId\":\"pn\",\"negotiateClientCertificate\":true,\"tls10Enabled\":true,\"tls11Enabled\":true,\"http2Enabled\":false},\"id\":\"wmtqsmoxsaz\",\"name\":\"xej\",\"type\":\"wecy\"}")
+            "{\"properties\":{\"hostname\":\"wki\",\"certificateId\":\"dgfhbssdpje\",\"negotiateClientCertificate\":false,\"tls10Enabled\":true,\"tls11Enabled\":true,\"http2Enabled\":true},\"id\":\"f\",\"name\":\"wh\",\"type\":\"gxsur\"}")
             .toObject(GatewayHostnameConfigurationContractInner.class);
-        Assertions.assertEquals("xvgjbfi", model.hostname());
-        Assertions.assertEquals("pn", model.certificateId());
-        Assertions.assertEquals(true, model.negotiateClientCertificate());
-        Assertions.assertEquals(true, model.tls10Enabled());
-        Assertions.assertEquals(true, model.tls11Enabled());
-        Assertions.assertEquals(false, model.http2Enabled());
+        Assertions.assertEquals("wki", model.hostname());
+        Assertions.assertEquals("dgfhbssdpje", model.certificateId());
+        Assertions.assertFalse(model.negotiateClientCertificate());
+        Assertions.assertTrue(model.tls10Enabled());
+        Assertions.assertTrue(model.tls11Enabled());
+        Assertions.assertTrue(model.http2Enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GatewayHostnameConfigurationContractInner model
-            = new GatewayHostnameConfigurationContractInner().withHostname("xvgjbfi")
-                .withCertificateId("pn")
-                .withNegotiateClientCertificate(true)
+            = new GatewayHostnameConfigurationContractInner().withHostname("wki")
+                .withCertificateId("dgfhbssdpje")
+                .withNegotiateClientCertificate(false)
                 .withTls10Enabled(true)
                 .withTls11Enabled(true)
-                .withHttp2Enabled(false);
+                .withHttp2Enabled(true);
         model = BinaryData.fromObject(model).toObject(GatewayHostnameConfigurationContractInner.class);
-        Assertions.assertEquals("xvgjbfi", model.hostname());
-        Assertions.assertEquals("pn", model.certificateId());
-        Assertions.assertEquals(true, model.negotiateClientCertificate());
-        Assertions.assertEquals(true, model.tls10Enabled());
-        Assertions.assertEquals(true, model.tls11Enabled());
-        Assertions.assertEquals(false, model.http2Enabled());
+        Assertions.assertEquals("wki", model.hostname());
+        Assertions.assertEquals("dgfhbssdpje", model.certificateId());
+        Assertions.assertFalse(model.negotiateClientCertificate());
+        Assertions.assertTrue(model.tls10Enabled());
+        Assertions.assertTrue(model.tls11Enabled());
+        Assertions.assertTrue(model.http2Enabled());
     }
 }

@@ -11,19 +11,19 @@ public final class ConcurSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConcurSource model = BinaryData.fromString(
-            "{\"type\":\"ConcurSource\",\"query\":\"dataanirlydsdmacydqa\",\"queryTimeout\":\"datayvwxubgulyz\",\"additionalColumns\":\"dataasxpprohuabdu\",\"sourceRetryCount\":\"datavsoxnpuapt\",\"sourceRetryWait\":\"datawekiqlscmtcljopi\",\"maxConcurrentConnections\":\"datawxvcfchokkcjjnq\",\"disableMetricsCollection\":\"datajoayaj\",\"\":{\"fbzbxeqzvokfrhfa\":\"datacxjmap\",\"uaxdulv\":\"dataxcgjuc\",\"mksgeqpai\":\"dataefsrxqscdbbwej\",\"eotvnet\":\"datalfscosf\"}}")
+            "{\"type\":\"ConcurSource\",\"query\":\"datamwozwjinxyrt\",\"queryTimeout\":\"datafvzslttkpirkujc\",\"additionalColumns\":\"dataczh\",\"sourceRetryCount\":\"datapfoabmah\",\"sourceRetryWait\":\"dataxodddq\",\"maxConcurrentConnections\":\"datawrrytgsocqkd\",\"disableMetricsCollection\":\"databzqnaoxsgmpdc\",\"\":{\"kqlafiaywmc\":\"datazautuaysxhfupvq\"}}")
             .toObject(ConcurSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConcurSource model = new ConcurSource().withSourceRetryCount("datavsoxnpuapt")
-            .withSourceRetryWait("datawekiqlscmtcljopi")
-            .withMaxConcurrentConnections("datawxvcfchokkcjjnq")
-            .withDisableMetricsCollection("datajoayaj")
-            .withQueryTimeout("datayvwxubgulyz")
-            .withAdditionalColumns("dataasxpprohuabdu")
-            .withQuery("dataanirlydsdmacydqa");
+        ConcurSource model = new ConcurSource().withSourceRetryCount("datapfoabmah")
+            .withSourceRetryWait("dataxodddq")
+            .withMaxConcurrentConnections("datawrrytgsocqkd")
+            .withDisableMetricsCollection("databzqnaoxsgmpdc")
+            .withQueryTimeout("datafvzslttkpirkujc")
+            .withAdditionalColumns("dataczh")
+            .withQuery("datamwozwjinxyrt");
         model = BinaryData.fromObject(model).toObject(ConcurSource.class);
     }
 }

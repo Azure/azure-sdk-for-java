@@ -101,6 +101,28 @@ public interface NetAppAccount {
     Boolean disableShowmount();
 
     /**
+     * Gets the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
+     * 
+     * @return the nfsV4IdDomain value.
+     */
+    String nfsV4IdDomain();
+
+    /**
+     * Gets the multiAdStatus property: MultiAD Status for the account.
+     * 
+     * @return the multiAdStatus value.
+     */
+    MultiAdStatus multiAdStatus();
+
+    /**
+     * Gets the ldapConfiguration property: LDAP Configuration for the account.
+     * 
+     * @return the ldapConfiguration value.
+     */
+    LdapConfiguration ldapConfiguration();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -184,7 +206,8 @@ public interface NetAppAccount {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithActiveDirectories, DefinitionStages.WithEncryption {
+            DefinitionStages.WithActiveDirectories, DefinitionStages.WithEncryption, DefinitionStages.WithNfsV4IdDomain,
+            DefinitionStages.WithLdapConfiguration {
             /**
              * Executes the create request.
              * 
@@ -252,6 +275,34 @@ public interface NetAppAccount {
              */
             WithCreate withEncryption(AccountEncryption encryption);
         }
+
+        /**
+         * The stage of the NetAppAccount definition allowing to specify nfsV4IdDomain.
+         */
+        interface WithNfsV4IdDomain {
+            /**
+             * Specifies the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all
+             * NetApp accounts in the subscription and region and only affect non ldap NFSv4 volumes..
+             * 
+             * @param nfsV4IdDomain Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts
+             * in the subscription and region and only affect non ldap NFSv4 volumes.
+             * @return the next definition stage.
+             */
+            WithCreate withNfsV4IdDomain(String nfsV4IdDomain);
+        }
+
+        /**
+         * The stage of the NetAppAccount definition allowing to specify ldapConfiguration.
+         */
+        interface WithLdapConfiguration {
+            /**
+             * Specifies the ldapConfiguration property: LDAP Configuration for the account..
+             * 
+             * @param ldapConfiguration LDAP Configuration for the account.
+             * @return the next definition stage.
+             */
+            WithCreate withLdapConfiguration(LdapConfiguration ldapConfiguration);
+        }
     }
 
     /**
@@ -265,7 +316,7 @@ public interface NetAppAccount {
      * The template for NetAppAccount update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithActiveDirectories,
-        UpdateStages.WithEncryption {
+        UpdateStages.WithEncryption, UpdateStages.WithNfsV4IdDomain, UpdateStages.WithLdapConfiguration {
         /**
          * Executes the update request.
          * 
@@ -336,6 +387,34 @@ public interface NetAppAccount {
              * @return the next definition stage.
              */
             Update withEncryption(AccountEncryption encryption);
+        }
+
+        /**
+         * The stage of the NetAppAccount update allowing to specify nfsV4IdDomain.
+         */
+        interface WithNfsV4IdDomain {
+            /**
+             * Specifies the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all
+             * NetApp accounts in the subscription and region and only affect non ldap NFSv4 volumes..
+             * 
+             * @param nfsV4IdDomain Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts
+             * in the subscription and region and only affect non ldap NFSv4 volumes.
+             * @return the next definition stage.
+             */
+            Update withNfsV4IdDomain(String nfsV4IdDomain);
+        }
+
+        /**
+         * The stage of the NetAppAccount update allowing to specify ldapConfiguration.
+         */
+        interface WithLdapConfiguration {
+            /**
+             * Specifies the ldapConfiguration property: LDAP Configuration for the account..
+             * 
+             * @param ldapConfiguration LDAP Configuration for the account.
+             * @return the next definition stage.
+             */
+            Update withLdapConfiguration(LdapConfiguration ldapConfiguration);
         }
     }
 

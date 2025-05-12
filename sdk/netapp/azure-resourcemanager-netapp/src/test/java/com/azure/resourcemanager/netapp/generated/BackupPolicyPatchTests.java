@@ -14,31 +14,31 @@ public final class BackupPolicyPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPolicyPatch model = BinaryData.fromString(
-            "{\"properties\":{\"backupPolicyId\":\"vfelfktgplcrpwj\",\"provisioningState\":\"znoigbrn\",\"dailyBackupsToKeep\":509080980,\"weeklyBackupsToKeep\":820542416,\"monthlyBackupsToKeep\":1312335759,\"volumesAssigned\":650056423,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"oqkag\",\"volumeResourceId\":\"sxtta\",\"backupsCount\":1689987065,\"policyEnabled\":true},{\"volumeName\":\"aa\",\"volumeResourceId\":\"xdtnkdmkqjjlw\",\"backupsCount\":953269937,\"policyEnabled\":true}]},\"location\":\"kpyouaibrebqaay\",\"tags\":{\"ttezlw\":\"ixqtn\",\"pqqmted\":\"ffiakp\",\"wau\":\"tmmjihyeozph\"},\"id\":\"qncygupkvi\",\"name\":\"mdscwxqupev\",\"type\":\"hfstotxhojujbyp\"}")
+            "{\"properties\":{\"backupPolicyId\":\"fbgofeljagrqmqh\",\"provisioningState\":\"vriiio\",\"dailyBackupsToKeep\":514038226,\"weeklyBackupsToKeep\":664044730,\"monthlyBackupsToKeep\":524245347,\"volumesAssigned\":1358973508,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"sowueluqhhahhx\",\"volumeResourceId\":\"hmzk\",\"backupsCount\":968064298,\"policyEnabled\":false}]},\"location\":\"wspughftqsxhqx\",\"tags\":{\"fzdm\":\"ukndxdigrjgu\",\"otzi\":\"yqtfihwh\",\"phoszqz\":\"gamv\"},\"id\":\"dphqamv\",\"name\":\"kfwynw\",\"type\":\"vtbvkayh\"}")
             .toObject(BackupPolicyPatch.class);
-        Assertions.assertEquals("kpyouaibrebqaay", model.location());
-        Assertions.assertEquals("ixqtn", model.tags().get("ttezlw"));
-        Assertions.assertEquals(509080980, model.dailyBackupsToKeep());
-        Assertions.assertEquals(820542416, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1312335759, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("wspughftqsxhqx", model.location());
+        Assertions.assertEquals("ukndxdigrjgu", model.tags().get("fzdm"));
+        Assertions.assertEquals(514038226, model.dailyBackupsToKeep());
+        Assertions.assertEquals(664044730, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(524245347, model.monthlyBackupsToKeep());
+        Assertions.assertTrue(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPolicyPatch model = new BackupPolicyPatch().withLocation("kpyouaibrebqaay")
-            .withTags(mapOf("ttezlw", "ixqtn", "pqqmted", "ffiakp", "wau", "tmmjihyeozph"))
-            .withDailyBackupsToKeep(509080980)
-            .withWeeklyBackupsToKeep(820542416)
-            .withMonthlyBackupsToKeep(1312335759)
-            .withEnabled(false);
+        BackupPolicyPatch model = new BackupPolicyPatch().withLocation("wspughftqsxhqx")
+            .withTags(mapOf("fzdm", "ukndxdigrjgu", "otzi", "yqtfihwh", "phoszqz", "gamv"))
+            .withDailyBackupsToKeep(514038226)
+            .withWeeklyBackupsToKeep(664044730)
+            .withMonthlyBackupsToKeep(524245347)
+            .withEnabled(true);
         model = BinaryData.fromObject(model).toObject(BackupPolicyPatch.class);
-        Assertions.assertEquals("kpyouaibrebqaay", model.location());
-        Assertions.assertEquals("ixqtn", model.tags().get("ttezlw"));
-        Assertions.assertEquals(509080980, model.dailyBackupsToKeep());
-        Assertions.assertEquals(820542416, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1312335759, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("wspughftqsxhqx", model.location());
+        Assertions.assertEquals("ukndxdigrjgu", model.tags().get("fzdm"));
+        Assertions.assertEquals(514038226, model.dailyBackupsToKeep());
+        Assertions.assertEquals(664044730, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(524245347, model.monthlyBackupsToKeep());
+        Assertions.assertTrue(model.enabled());
     }
 
     // Use "Map.of" if available

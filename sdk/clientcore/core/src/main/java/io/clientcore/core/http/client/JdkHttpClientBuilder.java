@@ -3,6 +3,8 @@
 
 package io.clientcore.core.http.client;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.SharedExecutorService;
@@ -23,6 +25,7 @@ import java.util.concurrent.Executor;
  * using this functionality is running Java 12 or later but doesn't have {@code Multi-Release: true} in its
  * {@code META-INF/MANIFEST.MF} file.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public class JdkHttpClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);
 
@@ -33,10 +36,10 @@ public class JdkHttpClientBuilder {
         + "include a dependency on io.clientcore:http-okhttp3.";
 
     /**
-     * Creates DefaultHttpClientBuilder.
+     * Creates JdkHttpClientBuilder.
      */
     public JdkHttpClientBuilder() {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -53,7 +56,7 @@ public class JdkHttpClientBuilder {
      * @throws NullPointerException if {@code executor} is null
      */
     public JdkHttpClientBuilder executor(Executor executor) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -61,13 +64,13 @@ public class JdkHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed io.clientcore.core.http.client.DefaultHttpClientBuilder.connectionTimeout#Duration -->
+     * <!-- src_embed io.clientcore.core.http.client.JdkHttpClientBuilder.connectionTimeout#Duration -->
      * <pre>
-     * HttpClient client = new DefaultHttpClientBuilder&#40;&#41;
+     * HttpClient client = new JdkHttpClientBuilder&#40;&#41;
      *         .connectionTimeout&#40;Duration.ofSeconds&#40;250&#41;&#41; &#47;&#47; connection timeout of 250 seconds
      *         .build&#40;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.http.client.DefaultHttpClientBuilder.connectionTimeout#Duration -->
+     * <!-- end io.clientcore.core.http.client.JdkHttpClientBuilder.connectionTimeout#Duration -->
      *
      * The default connection timeout is 10 seconds.
      *
@@ -75,7 +78,7 @@ public class JdkHttpClientBuilder {
      * @return the updated {@link JdkHttpClientBuilder} object
      */
     public JdkHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -95,7 +98,7 @@ public class JdkHttpClientBuilder {
      * @return The updated {@link JdkHttpClientBuilder} object.
      */
     public JdkHttpClientBuilder writeTimeout(Duration writeTimeout) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -113,7 +116,7 @@ public class JdkHttpClientBuilder {
      * @return The updated {@link JdkHttpClientBuilder} object.
      */
     public JdkHttpClientBuilder responseTimeout(Duration responseTimeout) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -132,7 +135,7 @@ public class JdkHttpClientBuilder {
      * @return The updated {@link JdkHttpClientBuilder} object.
      */
     public JdkHttpClientBuilder readTimeout(Duration readTimeout) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -140,24 +143,24 @@ public class JdkHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed io.clientcore.core.http.client.DefaultHttpClientBuilder.proxy#ProxyOptions -->
+     * <!-- src_embed io.clientcore.core.http.client.JdkHttpClientBuilder.proxy#ProxyOptions -->
      * <pre>
      * final String proxyHost = &quot;&lt;proxy-host&gt;&quot;; &#47;&#47; e.g. localhost
      * final int proxyPort = 9999; &#47;&#47; Proxy port
      * ProxyOptions proxyOptions = new ProxyOptions&#40;ProxyOptions.Type.HTTP,
      *     new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
-     * HttpClient client = new DefaultHttpClientBuilder&#40;&#41;
+     * HttpClient client = new JdkHttpClientBuilder&#40;&#41;
      *     .proxy&#40;proxyOptions&#41;
      *     .build&#40;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.http.client.DefaultHttpClientBuilder.proxy#ProxyOptions -->
+     * <!-- end io.clientcore.core.http.client.JdkHttpClientBuilder.proxy#ProxyOptions -->
      *
      * @param proxyOptions The proxy configuration to use.
      * @return the updated {@link JdkHttpClientBuilder} object
      * @throws NullPointerException If {@code proxyOptions} is not null and the proxy type or address is not set.
      */
     public JdkHttpClientBuilder proxy(ProxyOptions proxyOptions) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -167,7 +170,7 @@ public class JdkHttpClientBuilder {
      * @return The updated {@link JdkHttpClientBuilder} object.
      */
     public JdkHttpClientBuilder sslContext(SSLContext sslContext) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -177,7 +180,7 @@ public class JdkHttpClientBuilder {
      * @return The updated {@link JdkHttpClientBuilder} object.
      */
     public JdkHttpClientBuilder configuration(Configuration configuration) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -186,6 +189,6 @@ public class JdkHttpClientBuilder {
      * @return a {@link HttpClient}.
      */
     public HttpClient build() {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 }
