@@ -22,9 +22,9 @@ steps:
     - pwsh: |
         # If the Artifacts array is set create the list PackageInfo files from them otherwise use
         # the PackageInfoFiles that were passed in to create the list.
-        $artifactList = ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
+        $artifactsList = ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
         $PackageInfoFiles = @()
-        if ($artifactList.Count -gt 0) {
+        if ($artifactsList.Count -gt 0) {
           $configDir = '${{ parameters.ConfigFileDir }}'
           foreach ($artifact in $artifactsList) {
             $PackageInfoFiles += "$configDir/$($artifact).json".Replace("\", "\\").Replace("\\", "/")
