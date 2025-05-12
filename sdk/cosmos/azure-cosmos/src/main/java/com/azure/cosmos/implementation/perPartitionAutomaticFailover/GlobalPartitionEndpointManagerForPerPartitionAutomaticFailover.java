@@ -109,7 +109,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-
         if (request.getResourceType() != ResourceType.Document) {
             return false;
         }
