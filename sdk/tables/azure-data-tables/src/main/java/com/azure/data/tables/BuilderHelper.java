@@ -60,26 +60,13 @@ final class BuilderHelper {
         RetryPolicy retryPolicy, RetryOptions retryOptions, HttpLogOptions logOptions, ClientOptions clientOptions,
         HttpClient httpClient, List<HttpPipelinePolicy> perCallAdditionalPolicies,
         List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration, ClientLogger logger,
-        boolean enableTenantDiscovery) {
-        return buildPipeline(azureNamedKeyCredential, azureSasCredential, tokenCredential, sasToken, endpoint,
-            retryPolicy, retryOptions, logOptions, clientOptions, httpClient, perCallAdditionalPolicies,
-            perRetryAdditionalPolicies, configuration, logger, enableTenantDiscovery, null);
-    }
-
-    static HttpPipeline buildPipeline(AzureNamedKeyCredential azureNamedKeyCredential,
-        AzureSasCredential azureSasCredential, TokenCredential tokenCredential, String sasToken, String endpoint,
-        RetryPolicy retryPolicy, RetryOptions retryOptions, HttpLogOptions logOptions, ClientOptions clientOptions,
-        HttpClient httpClient, List<HttpPipelinePolicy> perCallAdditionalPolicies,
-        List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration, ClientLogger logger,
         boolean enableTenantDiscovery, TableAudience audience) {
         configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
 
         audience = (audience != null)
             ? audience
-            : (TableUtils.isCosmosEndpoint(endpoint)
-                ? TableAudience.AZURE_COSMOS_PUBLIC_CLOUD
-                : TableAudience.AZURE_STORAGE_PUBLIC_CLOUD);
+            : getDefaulTableAudience(TableUtils.isCosmosEndpoint(endpoint));
 
         if (retryPolicy != null && retryOptions != null) {
             throw logger.logExceptionAsWarning(
@@ -225,5 +212,11 @@ final class BuilderHelper {
         TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
         return TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, TABLES_TRACING_NAMESPACE_VALUE, tracingOptions);
+    }
+
+    private static TableAudience getDefaulTableAudience(boolean isCosmosEndpoint) {
+        return isCosmosEndpoint
+            ? TableAudience.AZURE_COSMOS_PUBLIC_CLOUD
+            : TableAudience.AZURE_STORAGE_PUBLIC_CLOUD;
     }
 }

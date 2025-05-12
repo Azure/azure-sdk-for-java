@@ -4,6 +4,8 @@ package com.azure.data.tables;
 
 import com.azure.data.tables.models.TableAudience;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -33,25 +35,18 @@ public class TableAudienceTests {
         assertEquals("https://cosmos.azure.us/.default", audience.getDefaultScope());
     }
 
-    @Test
-    public void testCustomAudience() {
-        TableAudience audience = TableAudience.fromString("https://cosmos.azure.nz/");
-        assertEquals("https://cosmos.azure.nz/.default", audience.getDefaultScope());
-
-        audience = TableAudience.fromString("https://cosmos.azure.nz");
-        assertEquals("https://cosmos.azure.nz/.default", audience.getDefaultScope());
-
-        audience = TableAudience.fromString("https://cosmos.azure.nz/.default");
-        assertEquals("https://cosmos.azure.nz/.default", audience.getDefaultScope());
-
-        audience = TableAudience.fromString("https://storage.azure.nz/");
-        assertEquals("https://storage.azure.nz/.default", audience.getDefaultScope());
-
-        audience = TableAudience.fromString("https://storage.azure.nz");
-        assertEquals("https://storage.azure.nz/.default", audience.getDefaultScope());
-
-        audience = TableAudience.fromString("https://storage.azure.nz/.default");
-        assertEquals("https://storage.azure.nz/.default", audience.getDefaultScope());
+    @ParameterizedTest
+    @CsvSource({
+        "https://cosmos.azure.nz/, https://cosmos.azure.nz/.default",
+        "https://cosmos.azure.nz, https://cosmos.azure.nz/.default",
+        "https://cosmos.azure.nz/.default, https://cosmos.azure.nz/.default",
+        "https://storage.azure.nz/, https://storage.azure.nz/.default",
+        "https://storage.azure.nz, https://storage.azure.nz/.default",
+        "https://storage.azure.nz/.default, https://storage.azure.nz/.default"
+    })
+    public void testCustomAudience(String customAudienceString, String expectedDefaultScope) {
+        TableAudience audience = TableAudience.fromString(customAudienceString);
+        assertEquals(expectedDefaultScope, audience.getDefaultScope());
     }
 
 }

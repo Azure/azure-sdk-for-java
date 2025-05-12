@@ -53,13 +53,13 @@ public class TableAudience extends ExpandableStringEnum<TableAudience> {
      */
     public static final TableAudience AZURE_COSMOS_US_GOVERNMENT = fromString("https://cosmos.azure.us");
 
-    private final ClientLogger logger = new ClientLogger(TableAudience.class);
+    private static final ClientLogger logger = new ClientLogger(TableAudience.class);
 
     /**
      * @deprecated The audience is for the public.
      */
     @Deprecated
-    public TableAudience() {
+    TableAudience() {
         // This constructor is deprecated and should not be used.
     }
 

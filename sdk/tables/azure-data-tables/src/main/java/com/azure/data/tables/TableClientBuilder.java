@@ -220,10 +220,6 @@ public final class TableClientBuilder
     public TableClient buildClient() {
         TableServiceVersion serviceVersion = version != null ? version : TableServiceVersion.getLatest();
 
-        if (audience == null) {
-            audience = TableAudience.AZURE_STORAGE_PUBLIC_CLOUD;
-        }
-
         validateCredentials(azureNamedKeyCredential, azureSasCredential, tokenCredential, sasToken, connectionString,
             logger);
 
