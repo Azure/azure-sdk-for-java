@@ -53,7 +53,7 @@ public class TableAudience extends ExpandableStringEnum<TableAudience> {
      */
     public static final TableAudience AZURE_COSMOS_US_GOVERNMENT = fromString("https://cosmos.azure.us");
 
-    private static final ClientLogger logger = new ClientLogger(TableAudience.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TableAudience.class);
 
     /**
      * @deprecated The audience is for the public.
@@ -78,11 +78,11 @@ public class TableAudience extends ExpandableStringEnum<TableAudience> {
             if (scheme != null && host != null) {
                 return scheme + "://" + host + "/.default";
             } else {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Invalid scope: " + this.toString()));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid scope: " + this.toString()));
             }
         } catch (URISyntaxException e) {
             // Handle the exception
-            throw logger.logExceptionAsError(new RuntimeException("Invalid URI syntax: " + this.toString(), e));
+            throw LOGGER.logExceptionAsError(new RuntimeException("Invalid URI syntax: " + this.toString(), e));
 
         }
     }
