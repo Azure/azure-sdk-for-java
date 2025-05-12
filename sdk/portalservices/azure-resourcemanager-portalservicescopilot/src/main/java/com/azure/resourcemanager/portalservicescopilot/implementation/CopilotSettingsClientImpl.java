@@ -24,6 +24,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.portalservicescopilot.fluent.CopilotSettingsClient;
 import com.azure.resourcemanager.portalservicescopilot.fluent.models.CopilotSettingsResourceInner;
 import com.azure.resourcemanager.portalservicescopilot.models.CopilotSettingsResourceUpdate;
@@ -68,10 +69,25 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
         Mono<Response<CopilotSettingsResourceInner>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.PortalServices/copilotSettings/default")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CopilotSettingsResourceInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
         @Put("/providers/Microsoft.PortalServices/copilotSettings/default")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CopilotSettingsResourceInner>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") CopilotSettingsResourceInner resource,
+            Context context);
+
+        @Put("/providers/Microsoft.PortalServices/copilotSettings/default")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CopilotSettingsResourceInner> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") CopilotSettingsResourceInner resource,
             Context context);
@@ -84,12 +100,27 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json") CopilotSettingsResourceUpdate properties, Context context);
 
+        @Patch("/providers/Microsoft.PortalServices/copilotSettings/default")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CopilotSettingsResourceInner> updateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") CopilotSettingsResourceUpdate properties, Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Delete("/providers/Microsoft.PortalServices/copilotSettings/default")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/providers/Microsoft.PortalServices/copilotSettings/default")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -115,26 +146,6 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
     /**
      * Get a CopilotSettingsResource.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CopilotSettingsResource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CopilotSettingsResourceInner>> getWithResponseAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get a CopilotSettingsResource.
-     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a CopilotSettingsResource on successful completion of {@link Mono}.
@@ -155,7 +166,13 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopilotSettingsResourceInner> getWithResponse(Context context) {
-        return getWithResponseAsync(context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -204,36 +221,6 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
      * Create a CopilotSettingsResource.
      * 
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the copilot settings tenant resource definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CopilotSettingsResourceInner>>
-        createOrUpdateWithResponseAsync(CopilotSettingsResourceInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), contentType, accept,
-            resource, context);
-    }
-
-    /**
-     * Create a CopilotSettingsResource.
-     * 
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -257,7 +244,21 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopilotSettingsResourceInner> createOrUpdateWithResponse(CopilotSettingsResourceInner resource,
         Context context) {
-        return createOrUpdateWithResponseAsync(resource, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), contentType, accept,
+            resource, context);
     }
 
     /**
@@ -308,36 +309,6 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
      * Update a CopilotSettingsResource.
      * 
      * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the copilot settings tenant resource definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CopilotSettingsResourceInner>>
-        updateWithResponseAsync(CopilotSettingsResourceUpdate properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), contentType, accept, properties,
-            context);
-    }
-
-    /**
-     * Update a CopilotSettingsResource.
-     * 
-     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -361,7 +332,21 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopilotSettingsResourceInner> updateWithResponse(CopilotSettingsResourceUpdate properties,
         Context context) {
-        return updateWithResponseAsync(properties, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), contentType, accept,
+            properties, context);
     }
 
     /**
@@ -401,26 +386,6 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
     /**
      * Delete a CopilotSettingsResource.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Delete a CopilotSettingsResource.
-     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
@@ -441,7 +406,13 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Context context) {
-        return deleteWithResponseAsync(context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -454,4 +425,6 @@ public final class CopilotSettingsClientImpl implements CopilotSettingsClient {
     public void delete() {
         deleteWithResponse(Context.NONE);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CopilotSettingsClientImpl.class);
 }

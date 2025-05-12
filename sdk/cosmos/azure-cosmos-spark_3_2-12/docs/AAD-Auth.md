@@ -173,7 +173,7 @@ from cryptography.hazmat.primitives import serialization
 secret64 = mssparkutils.credentials.getSecret("xxx", "yyy", "zzz")
 
 # Decode to bytes.
-secret64Bytes = bytes(secret, "utf-8")
+secret64Bytes = bytes(secret64, "utf-8")
 secretBytes = base64.b64decode(secret64)
 
 # Load as a certificate: https://cryptography.io/en/latest/hazmat/primitives/asymmetric/serialization/#pkcs12.

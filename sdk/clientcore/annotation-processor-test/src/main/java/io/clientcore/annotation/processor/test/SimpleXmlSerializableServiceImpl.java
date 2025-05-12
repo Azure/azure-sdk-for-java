@@ -51,9 +51,8 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
     @SuppressWarnings("cast")
     @Override
     public void sendApplicationXml(SimpleXmlSerializable simpleXmlSerializable) {
-        String uri = "http://localhost/sendApplicationXml";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri("http://localhost/sendApplicationXml");
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
         if (simpleXmlSerializable != null) {
             SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
@@ -78,9 +77,8 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
     @SuppressWarnings("cast")
     @Override
     public void sendTextXml(SimpleXmlSerializable simpleXmlSerializable) {
-        String uri = "http://localhost/sendTextXml";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri("http://localhost/sendTextXml");
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/xml");
         if (simpleXmlSerializable != null) {
             SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
@@ -105,9 +103,8 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
     @SuppressWarnings("cast")
     @Override
     public SimpleXmlSerializable getXml(String contentType) {
-        String uri = "http://localhost/getXml";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/getXml");
         if (contentType != null) {
             httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, contentType));
         }
@@ -136,9 +133,8 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
     @SuppressWarnings("cast")
     @Override
     public SimpleXmlSerializable getInvalidXml(String contentType) {
-        String uri = "http://localhost/getInvalidXml";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/getInvalidXml");
         if (contentType != null) {
             httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, contentType));
         }
