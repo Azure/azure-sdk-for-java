@@ -27,7 +27,7 @@ steps:
         if ($artifactsList.Count -gt 0) {
           $configDir = '${{ parameters.ConfigFileDir }}'
           foreach ($artifact in $artifactsList) {
-            $PackageInfoFiles += "$configDir/$($artifact).json".Replace("\", "\\").Replace("\\", "/")
+            $PackageInfoFiles += "$configDir/$($artifact.Name).json".Replace("\", "\\").Replace("\\", "/")
           }
           $PackageInfoFilesList = $PackageInfoFiles -join ","
         } else {
