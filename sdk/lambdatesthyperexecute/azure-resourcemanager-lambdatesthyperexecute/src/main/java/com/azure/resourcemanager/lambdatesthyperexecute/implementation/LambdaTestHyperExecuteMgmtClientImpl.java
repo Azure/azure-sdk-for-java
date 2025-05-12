@@ -172,7 +172,7 @@ public final class LambdaTestHyperExecuteMgmtClientImpl implements LambdaTestHyp
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-02-01-preview";
+        this.apiVersion = "2024-02-01";
         this.operations = new OperationsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);
     }
