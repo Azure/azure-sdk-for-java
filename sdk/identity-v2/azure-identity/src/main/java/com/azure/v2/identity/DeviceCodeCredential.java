@@ -17,6 +17,8 @@ import com.azure.v2.identity.models.TokenCachePersistenceOptions;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
+import static com.azure.v2.identity.implementation.util.LoggingUtil.logAndThrowTokenError;
+
 /**
  * <p>Device code authentication is a type of authentication flow offered by
  * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> that
@@ -112,8 +114,7 @@ public class DeviceCodeCredential implements TokenCredential {
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
         } catch (RuntimeException e) {
-            LoggingUtil.logTokenError(LOGGER, request, e);
-            throw LOGGER.throwableAtError().log(e, CredentialAuthenticationException::new);
+            throw logAndThrowTokenError(LOGGER, request, e, CredentialAuthenticationException::new);
         }
     }
 

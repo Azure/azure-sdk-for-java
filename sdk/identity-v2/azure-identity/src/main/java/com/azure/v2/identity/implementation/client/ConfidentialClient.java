@@ -23,7 +23,6 @@ import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.SharedExecutorService;
-import io.clientcore.core.instrumentation.logging.LogLevel;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -147,7 +146,7 @@ public class ConfidentialClient extends ClientBase {
         } catch (ExecutionException | InterruptedException e) {
             // Cache misses should not throw an exception, but should log.
             if (e.getMessage().contains("Token not found in the cache")) {
-                LOGGER.atLevel(LogLevel.VERBOSE).log("Token not found in the MSAL cache.");
+                LOGGER.atVerbose().log("Token not found in the MSAL cache.");
                 return null;
             } else {
                 throw LOGGER.throwableAtError().log(e, CredentialAuthenticationException::new);
@@ -233,7 +232,7 @@ public class ConfidentialClient extends ClientBase {
                 .logPii(clientOptions.isUnsafeSupportLoggingEnabled());
 
             if (!clientOptions.isInstanceDiscoveryEnabled()) {
-                LOGGER.atLevel(LogLevel.VERBOSE)
+                LOGGER.atVerbose()
                     .log("Instance discovery and authority validation is disabled. In this"
                         + " state, the library will not fetch metadata to validate the specified authority host. As a"
                         + " result, it is crucial to ensure that the configured authority host is valid and trustworthy.");

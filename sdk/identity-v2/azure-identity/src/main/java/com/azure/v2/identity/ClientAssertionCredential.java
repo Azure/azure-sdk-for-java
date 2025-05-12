@@ -10,6 +10,9 @@ import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
+
+import static com.azure.v2.identity.implementation.util.LoggingUtil.logAndThrowTokenError;
 
 /**
  * <p>The ClientAssertionCredential acquires a token via client assertion and service principal authentication.
@@ -80,9 +83,7 @@ public class ClientAssertionCredential implements TokenCredential {
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return token;
         } catch (RuntimeException e) {
-            LoggingUtil.logTokenError(LOGGER, request, e);
-            // wrap the exception in a RuntimeException to avoid checked exception problems.
-            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
+            throw logAndThrowTokenError(LOGGER, request, e, CoreException::from);
         }
     }
 }

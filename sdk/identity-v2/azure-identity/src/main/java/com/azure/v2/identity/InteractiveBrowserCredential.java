@@ -15,6 +15,9 @@ import com.azure.v2.identity.models.AuthenticationRecord;
 import com.azure.v2.identity.models.TokenCachePersistenceOptions;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
+
+import static com.azure.v2.identity.implementation.util.LoggingUtil.logAndThrowTokenError;
 
 /**
  * <p>Interactive browser authentication is a type of authentication flow offered by
@@ -106,8 +109,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
         } catch (RuntimeException e) {
-            LoggingUtil.logTokenError(LOGGER, request, e);
-            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
+            throw logAndThrowTokenError(LOGGER, request, e, CoreException::from);
         }
     }
 

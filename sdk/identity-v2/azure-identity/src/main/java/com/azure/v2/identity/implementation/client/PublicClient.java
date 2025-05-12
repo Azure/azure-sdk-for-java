@@ -22,7 +22,6 @@ import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.SharedExecutorService;
 
@@ -128,7 +127,7 @@ public class PublicClient extends ClientBase {
         } catch (ExecutionException | InterruptedException e) {
             // Cache misses should not throw an exception, but should log.
             if (e.getMessage().contains("Token not found in the cache")) {
-                LOGGER.atLevel(LogLevel.VERBOSE).log("Token not found in the MSAL cache.");
+                LOGGER.atVerbose().log("Token not found in the MSAL cache.");
                 return null;
             } else {
                 throw LOGGER.throwableAtError().log(e, CredentialAuthenticationException::new);
@@ -157,7 +156,7 @@ public class PublicClient extends ClientBase {
                 .logPii(options.isUnsafeSupportLoggingEnabled());
 
             if (!options.isInstanceDiscoveryEnabled()) {
-                LOGGER.atLevel(LogLevel.VERBOSE)
+                LOGGER.atVerbose()
                     .log("Instance discovery and authority validation is disabled. In this"
                         + " state, the library will not fetch metadata to validate the specified authority host. As a"
                         + " result, it is crucial to ensure that the configured authority host is valid and trustworthy.");

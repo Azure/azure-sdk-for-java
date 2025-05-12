@@ -16,6 +16,8 @@ import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.CoreUtils;
 
+import static com.azure.v2.identity.implementation.util.LoggingUtil.logAndThrowTokenError;
+
 /**
  * <p><a href="https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/">Azure
  * Managed Identity</a> is a feature in
@@ -110,15 +112,10 @@ public final class ManagedIdentityCredential implements TokenCredential {
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return token;
         } catch (RuntimeException e) {
-            LoggingUtil.logTokenError(LOGGER, request, e);
-            if (clientOptions.isChained()) {
-                throw LOGGER.throwableAtError()
-                    .log("Managed Identity authentication is not available.", e, CredentialUnavailableException::new);
-            } else {
-                throw LOGGER.throwableAtError()
-                    .log("Managed Identity authentication is not available.", e,
-                        CredentialAuthenticationException::new);
-            }
+            throw logAndThrowTokenError(LOGGER, "Managed Identity authentication is not available.", request, e,
+                clientOptions.isChained()
+                    ? CredentialUnavailableException::new
+                    : CredentialAuthenticationException::new);
         }
     }
 

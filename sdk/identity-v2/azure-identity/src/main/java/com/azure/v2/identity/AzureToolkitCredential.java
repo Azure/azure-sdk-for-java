@@ -17,6 +17,8 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.v2.identity.implementation.util.LoggingUtil.logAndThrowTokenError;
+
 /**
  * <p>
  * The AzureToolkitCredential authenticates in a development environment and acquires a token on behalf of the
@@ -96,11 +98,10 @@ public class AzureToolkitCredential implements TokenCredential {
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return msalToken;
         } catch (RuntimeException ex) {
-            LoggingUtil.logTokenError(LOGGER, request, ex);
-            if (publicClient.getClientOptions().isChained()) {
-                throw LOGGER.throwableAtError().log(ex, CredentialUnavailableException::new);
-            }
-            throw LOGGER.throwableAtError().log(ex, CredentialAuthenticationException::new);
+            throw logAndThrowTokenError(LOGGER, request, ex,
+                publicClient.getClientOptions().isChained()
+                    ? CredentialUnavailableException::new
+                    : CredentialAuthenticationException::new);
         }
     }
 }

@@ -16,7 +16,6 @@ import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.utils.CoreUtils;
-import io.clientcore.core.instrumentation.logging.LogLevel;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -102,11 +101,10 @@ public class DevToolsClient extends ClientBase {
         for (int z = exceptions.size() - 2; z >= 0; z--) {
             CredentialUnavailableException current = exceptions.get(z);
             LOGGER.atError()
-                .setThrowable(last)
-                .log("Azure PowerShell authentication failed using default" + "powershell(pwsh) with following error: "
-                    + current.getMessage() + "\r\n"
-                    + "Azure PowerShell authentication failed using powershell-core(powershell)"
-                    + " with following error: ");
+                .addKeyValue("pwshError", current.getMessage())
+                .addKeyValue("powershellError", last.getMessage())
+                .log(
+                    "Azure PowerShell authentication failed using default powershell(pwsh) and powershell-core(powershell)");
         }
 
         return null;
@@ -264,7 +262,7 @@ public class DevToolsClient extends ClientBase {
                 }
             }
 
-            LOGGER.atLevel(LogLevel.VERBOSE)
+            LOGGER.atVerbose()
                 .log(
                     "Azure Developer CLI Authentication => A token response was received from Azure Developer CLI, deserializing the"
                         + " response into an Access Token.");
@@ -394,7 +392,7 @@ public class DevToolsClient extends ClientBase {
                 }
             }
 
-            LOGGER.atLevel(LogLevel.VERBOSE)
+            LOGGER.atVerbose()
                 .log("Azure CLI Authentication => A token response was received from Azure CLI, deserializing the"
                     + " response into an Access Token.");
             try (JsonReader reader = JsonReader.fromString(processOutput)) {

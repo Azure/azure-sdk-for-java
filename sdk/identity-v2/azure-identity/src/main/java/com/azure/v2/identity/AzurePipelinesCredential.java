@@ -18,10 +18,13 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonReader;
 
 import java.io.IOException;
+
+import static com.azure.v2.identity.implementation.util.LoggingUtil.logAndThrowTokenError;
 
 /**
  * The {@link AzurePipelinesCredential} acquires a token using the Azure Pipelines service connection.
@@ -106,8 +109,7 @@ public class AzurePipelinesCredential implements TokenCredential {
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return token;
         } catch (RuntimeException e) {
-            LoggingUtil.logTokenError(LOGGER, request, e);
-            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
+            throw logAndThrowTokenError(LOGGER, request, e, CoreException::from);
         }
     }
 }
