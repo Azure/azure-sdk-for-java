@@ -142,7 +142,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Tag("Record")
     @RecordWithoutRequestBody
     public void testRecordWithPath() {
-        
+
         HttpClient client = getRecordHttpClient();
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();

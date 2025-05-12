@@ -139,9 +139,9 @@ public class TestProxyPlaybackClient implements HttpClient {
         int retries = 0;
         while (true) {
             try {
-                String message = "Sending request to test proxy. RecordingID " + xRecordingId
-                    + " request: " + request.getUrl();
-                for(HttpHeader entry : request.getHeaders()) {
+                String message
+                    = "Sending request to test proxy. RecordingID " + xRecordingId + " request: " + request.getUrl();
+                for (HttpHeader entry : request.getHeaders()) {
                     message += " " + entry.getName() + ": " + entry.getValue();
                 }
                 if (request.getBody() != null) {

@@ -334,7 +334,8 @@ public class InterceptorManager implements AutoCloseable {
                 throw new IllegalStateException("A playback client can only be requested in PLAYBACK mode.");
             }
             if (testProxyPlaybackClient == null) {
-                reactor.netty.http.client.HttpClient client = reactor.netty.http.client.HttpClient.create().wiretap("reactor.netty.http.client.HttpClient", LogLevel.TRACE, AdvancedByteBufFormat.TEXTUAL);
+                reactor.netty.http.client.HttpClient client = reactor.netty.http.client.HttpClient.create()
+                    .wiretap("reactor.netty.http.client.HttpClient", LogLevel.TRACE, AdvancedByteBufFormat.TEXTUAL);
                 HttpClient localClient = new NettyAsyncHttpClientBuilder(client).build();
                 testProxyPlaybackClient = new TestProxyPlaybackClient(localClient, skipRecordingRequestBody);
                 proxyVariableQueue
