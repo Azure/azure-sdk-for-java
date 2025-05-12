@@ -150,9 +150,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        checkNotNull(request, "Argument 'request' cannot be null!");
-        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
-
         if (!isPerPartitionAutomaticFailoverApplicable(request)) {
             return false;
         }
@@ -161,10 +158,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         String resolvedCollectionRid = request.requestContext.resolvedCollectionRid;
 
         if (partitionKeyRange == null) {
+            logger.warn("PerPartitionAutomaticFailover is not applicable as partitionKeyRange is null");
             return false;
         }
 
         if (StringUtils.isEmpty(resolvedCollectionRid)) {
+            logger.warn("PerPartitionAutomaticFailover is not applicable as resolvedCollectionRid is null or empty");
             return false;
         }
 
@@ -231,6 +230,16 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
     public boolean isPerPartitionAutomaticFailoverApplicable(RxDocumentServiceRequest request) {
 
         if (!this.isPerPartitionAutomaticFailoverEnabled) {
+            return false;
+        }
+
+        if (request == null) {
+            logger.warn("PerPartitionAutomaticFailover is not applicable as request is null");
+            return false;
+        }
+
+        if (request.requestContext == null) {
+            logger.warn("PerPartitionAutomaticFailover is not applicable as request.requestContext is null");
             return false;
         }
 
