@@ -4,32 +4,33 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.FileDatasetVersion;
-import com.azure.ai.projects.models.FolderDatasetVersion;
 import com.azure.ai.projects.models.PendingUploadRequest;
-import com.azure.ai.projects.models.PendingUploadResponse;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
-public class DatasetsClientTest extends ClientTestBase {
+public class DatasetsAsyncClientTest extends ClientTestBase {
 
     private AIProjectClientBuilder clientBuilder;
-    private DatasetsClient datasetsClient;
+    private DatasetsAsyncClient datasetsAsyncClient;
 
     private void setup(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        datasetsClient = clientBuilder.buildDatasetsClient();
+        datasetsAsyncClient = clientBuilder.buildDatasetsAsyncClient();
     }
 
     /**
@@ -75,10 +76,10 @@ public class DatasetsClientTest extends ClientTestBase {
 
         Path filePath = getPath("product_info.md");
 
-        FileDatasetVersion createdDatasetVersion
-            = datasetsClient.createDatasetWithFile(datasetName, datasetVersionString, filePath);
-
-        assertFileDatasetVersion(createdDatasetVersion, datasetName, datasetVersionString, null);
+        StepVerifier.create(datasetsAsyncClient.createDatasetWithFile(datasetName, datasetVersionString, filePath))
+            .assertNext(createdDatasetVersion -> assertFileDatasetVersion(createdDatasetVersion, datasetName,
+                datasetVersionString, null))
+            .verifyComplete();
     }
 
     @Disabled
@@ -99,10 +100,11 @@ public class DatasetsClientTest extends ClientTestBase {
         Files.write(file2, "Test content 2".getBytes());
 
         try {
-            FolderDatasetVersion createdDatasetVersion
-                = datasetsClient.createDatasetWithFolder(datasetName, datasetVersionString, tempFolder);
-
-            assertDatasetVersion(createdDatasetVersion, datasetName, datasetVersionString);
+            StepVerifier
+                .create(datasetsAsyncClient.createDatasetWithFolder(datasetName, datasetVersionString, tempFolder))
+                .assertNext(createdDatasetVersion -> assertDatasetVersion(createdDatasetVersion, datasetName,
+                    datasetVersionString))
+                .verifyComplete();
         } finally {
             // Clean up temporary files
             Files.deleteIfExists(file1);
@@ -117,15 +119,19 @@ public class DatasetsClientTest extends ClientTestBase {
     public void testListDatasets(HttpClient httpClient) {
         setup(httpClient);
 
-        // Verify that listing datasets returns results
-        Iterable<DatasetVersion> datasets = datasetsClient.listLatestDatasetVersions();
-        Assertions.assertNotNull(datasets);
+        // Collect datasets into a list
+        List<DatasetVersion> datasetsList = new ArrayList<>();
 
-        // Verify that at least one dataset can be retrieved
-        // Note: This test assumes at least one dataset exists
-        datasets.forEach(dataset -> {
+        StepVerifier.create(datasetsAsyncClient.listLatestDatasetVersions().doOnNext(datasetsList::add).then())
+            .verifyComplete();
+
+        // Verify we found at least one dataset
+        Assertions.assertFalse(datasetsList.isEmpty(), "Expected at least one dataset");
+
+        // Verify each dataset
+        for (DatasetVersion dataset : datasetsList) {
             assertDatasetVersion(dataset, dataset.getName(), dataset.getVersion());
-        });
+        }
     }
 
     @Disabled
@@ -136,15 +142,19 @@ public class DatasetsClientTest extends ClientTestBase {
 
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "my-dataset");
 
-        // Verify that listing dataset versions returns results
-        Iterable<DatasetVersion> versions = datasetsClient.listDatasetVersions(datasetName);
-        Assertions.assertNotNull(versions);
+        // Collect dataset versions into a list
+        List<DatasetVersion> versionsList = new ArrayList<>();
 
-        // Verify that at least one dataset version can be retrieved
-        // Note: This test assumes the specified dataset exists with at least one version
-        versions.forEach(version -> {
+        StepVerifier.create(datasetsAsyncClient.listDatasetVersions(datasetName).doOnNext(versionsList::add).then())
+            .verifyComplete();
+
+        // Verify we found at least one version
+        Assertions.assertFalse(versionsList.isEmpty(), "Expected at least one dataset version");
+
+        // Verify each version
+        for (DatasetVersion version : versionsList) {
             assertDatasetVersion(version, datasetName, version.getVersion());
-        });
+        }
     }
 
     @Disabled
@@ -156,11 +166,9 @@ public class DatasetsClientTest extends ClientTestBase {
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "my-dataset");
         String datasetVersion = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1.0");
 
-        // Get a specific dataset version
-        DatasetVersion dataset = datasetsClient.getDatasetVersion(datasetName, datasetVersion);
-
-        // Verify the dataset properties
-        assertDatasetVersion(dataset, datasetName, datasetVersion);
+        StepVerifier.create(datasetsAsyncClient.getDatasetVersion(datasetName, datasetVersion))
+            .assertNext(dataset -> assertDatasetVersion(dataset, datasetName, datasetVersion))
+            .verifyComplete();
     }
 
     @Disabled
@@ -178,13 +186,13 @@ public class DatasetsClientTest extends ClientTestBase {
         FileDatasetVersion fileDataset
             = new FileDatasetVersion().setDataUri(dataUri).setDescription("Test dataset created via SDK tests");
 
-        // Create or update the dataset
-        FileDatasetVersion createdDataset = (FileDatasetVersion) datasetsClient
-            .createOrUpdateDatasetVersion(datasetName, datasetVersion, fileDataset);
-
-        // Verify the created dataset
-        assertFileDatasetVersion(createdDataset, datasetName, datasetVersion, dataUri);
-        Assertions.assertEquals("Test dataset created via SDK tests", createdDataset.getDescription());
+        StepVerifier.create(datasetsAsyncClient.createOrUpdateDatasetVersion(datasetName, datasetVersion, fileDataset))
+            .assertNext(createdDataset -> {
+                FileDatasetVersion fileDatasetVersion = (FileDatasetVersion) createdDataset;
+                assertFileDatasetVersion(fileDatasetVersion, datasetName, datasetVersion, dataUri);
+                Assertions.assertEquals("Test dataset created via SDK tests", fileDatasetVersion.getDescription());
+            })
+            .verifyComplete();
     }
 
     @Disabled
@@ -200,15 +208,15 @@ public class DatasetsClientTest extends ClientTestBase {
         // Create a pending upload request
         PendingUploadRequest request = new PendingUploadRequest();
 
-        // Get the pending upload response
-        PendingUploadResponse response = datasetsClient.pendingUpload(datasetName, datasetVersion, request);
-
-        // Verify the response
-        Assertions.assertNotNull(response);
-        Assertions.assertNotNull(response.getPendingUploadId());
-        Assertions.assertNotNull(response.getBlobReference());
-        Assertions.assertNotNull(response.getBlobReference().getBlobUri());
-        Assertions.assertNotNull(response.getBlobReference().getCredential());
+        StepVerifier.create(datasetsAsyncClient.pendingUpload(datasetName, datasetVersion, request))
+            .assertNext(response -> {
+                Assertions.assertNotNull(response);
+                Assertions.assertNotNull(response.getPendingUploadId());
+                Assertions.assertNotNull(response.getBlobReference());
+                Assertions.assertNotNull(response.getBlobReference().getBlobUri());
+                Assertions.assertNotNull(response.getBlobReference().getCredential());
+            })
+            .verifyComplete();
     }
 
     @Disabled
@@ -224,21 +232,15 @@ public class DatasetsClientTest extends ClientTestBase {
 
         Path filePath = getPath("product_info.md");
 
-        // Create a dataset
-        FileDatasetVersion createdDataset = datasetsClient.createDatasetWithFile(datasetName, datasetVersion, filePath);
-        Assertions.assertNotNull(createdDataset);
+        // Create and verify a dataset exists first
+        datasetsAsyncClient.createDatasetWithFile(datasetName, datasetVersion, filePath).block(); // We need to ensure the dataset is created before continuing
 
         // Delete the dataset
-        datasetsClient.deleteDatasetVersion(datasetName, datasetVersion);
+        StepVerifier.create(datasetsAsyncClient.deleteDatasetVersion(datasetName, datasetVersion)).verifyComplete();
 
-        // Verify deletion - this should throw ResourceNotFoundException
-        try {
-            datasetsClient.getDatasetVersion(datasetName, datasetVersion);
-            Assertions.fail("Expected ResourceNotFoundException was not thrown");
-        } catch (Exception e) {
-            // Expected exception
-            Assertions.assertTrue(e.getMessage().contains("404") || e.getMessage().contains("Not Found"));
-        }
+        // Verify deletion - this should cause an error
+        StepVerifier.create(datasetsAsyncClient.getDatasetVersion(datasetName, datasetVersion))
+            .expectErrorMatches(e -> e.getMessage().contains("404") || e.getMessage().contains("Not Found"))
+            .verify();
     }
-
 }

@@ -40,6 +40,103 @@ public final class EvaluationsClient {
     }
 
     /**
+     * Creates an agent evaluation run.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     runId: String (Required)
+     *     threadId: String (Optional)
+     *     evaluators (Required): {
+     *         String (Required): {
+     *             id: String (Required)
+     *             initParams (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             dataMapping (Optional): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     }
+     *     samplingConfiguration (Optional): {
+     *         name: String (Required)
+     *         samplingPercent: double (Required)
+     *         maxRequestRate: double (Required)
+     *     }
+     *     redactionConfiguration (Optional): {
+     *         redactScoreProperties: Boolean (Optional)
+     *     }
+     *     appInsightsConnectionString: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String (Required)
+     *     error: String (Optional)
+     *     result (Optional): [
+     *          (Optional){
+     *             evaluator: String (Required)
+     *             evaluatorId: String (Required)
+     *             score: double (Required)
+     *             status: String (Required)
+     *             reason: String (Optional)
+     *             version: String (Optional)
+     *             threadId: String (Optional)
+     *             runId: String (Required)
+     *             error: String (Optional)
+     *             additionalDetails (Optional): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param evaluation Agent evaluation to be run.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return evaluation response for agent evaluation run along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createAgentEvaluationWithResponse(BinaryData evaluation,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createAgentEvaluationWithResponse(evaluation, requestOptions);
+    }
+
+    /**
+     * Creates an agent evaluation run.
+     *
+     * @param evaluation Agent evaluation to be run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return evaluation response for agent evaluation run.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentEvaluation createAgentEvaluation(AgentEvaluationRequest evaluation) {
+        // Generated convenience method for createAgentEvaluationWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createAgentEvaluationWithResponse(BinaryData.fromObject(evaluation), requestOptions).getValue()
+            .toObject(AgentEvaluation.class);
+    }
+
+    /**
      * Get an evaluation run by name.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -84,8 +181,8 @@ public final class EvaluationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(name, requestOptions);
+    public Response<BinaryData> getEvaluationWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getEvaluationWithResponse(name, requestOptions);
     }
 
     /**
@@ -132,8 +229,8 @@ public final class EvaluationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.list(requestOptions);
+    public PagedIterable<BinaryData> listEvaluations(RequestOptions requestOptions) {
+        return this.serviceClient.listEvaluations(requestOptions);
     }
 
     /**
@@ -214,84 +311,8 @@ public final class EvaluationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(BinaryData evaluation, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponse(evaluation, requestOptions);
-    }
-
-    /**
-     * Creates an agent evaluation run.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     runId: String (Required)
-     *     threadId: String (Optional)
-     *     evaluators (Required): {
-     *         String (Required): {
-     *             id: String (Required)
-     *             initParams (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             dataMapping (Optional): {
-     *                 String: String (Required)
-     *             }
-     *         }
-     *     }
-     *     samplingConfiguration (Optional): {
-     *         name: String (Required)
-     *         samplingPercent: double (Required)
-     *         maxRequestRate: double (Required)
-     *     }
-     *     redactionConfiguration (Optional): {
-     *         redactScoreProperties: Boolean (Optional)
-     *     }
-     *     appInsightsConnectionString: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String (Required)
-     *     error: String (Optional)
-     *     result (Optional): [
-     *          (Optional){
-     *             evaluator: String (Required)
-     *             evaluatorId: String (Required)
-     *             score: double (Required)
-     *             status: String (Required)
-     *             reason: String (Optional)
-     *             version: String (Optional)
-     *             threadId: String (Optional)
-     *             runId: String (Required)
-     *             error: String (Optional)
-     *             additionalDetails (Optional): {
-     *                 String: String (Required)
-     *             }
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param evaluation Agent evaluation to be run.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return evaluation response for agent evaluation run along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAgentEvaluationWithResponse(BinaryData evaluation,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createAgentEvaluationWithResponse(evaluation, requestOptions);
+    public Response<BinaryData> createEvaluationWithResponse(BinaryData evaluation, RequestOptions requestOptions) {
+        return this.serviceClient.createEvaluationWithResponse(evaluation, requestOptions);
     }
 
     /**
@@ -308,10 +329,10 @@ public final class EvaluationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Evaluation get(String name) {
-        // Generated convenience method for getWithResponse
+    public Evaluation getEvaluation(String name) {
+        // Generated convenience method for getEvaluationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(name, requestOptions).getValue().toObject(Evaluation.class);
+        return getEvaluationWithResponse(name, requestOptions).getValue().toObject(Evaluation.class);
     }
 
     /**
@@ -326,10 +347,11 @@ public final class EvaluationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Evaluation> list() {
-        // Generated convenience method for list
+    public PagedIterable<Evaluation> listEvaluations() {
+        // Generated convenience method for listEvaluations
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Evaluation.class));
+        return serviceClient.listEvaluations(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Evaluation.class));
     }
 
     /**
@@ -346,31 +368,10 @@ public final class EvaluationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Evaluation create(Evaluation evaluation) {
-        // Generated convenience method for createWithResponse
+    public Evaluation createEvaluation(Evaluation evaluation) {
+        // Generated convenience method for createEvaluationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(BinaryData.fromObject(evaluation), requestOptions).getValue()
+        return createEvaluationWithResponse(BinaryData.fromObject(evaluation), requestOptions).getValue()
             .toObject(Evaluation.class);
-    }
-
-    /**
-     * Creates an agent evaluation run.
-     *
-     * @param evaluation Agent evaluation to be run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return evaluation response for agent evaluation run.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentEvaluation createAgentEvaluation(AgentEvaluationRequest evaluation) {
-        // Generated convenience method for createAgentEvaluationWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createAgentEvaluationWithResponse(BinaryData.fromObject(evaluation), requestOptions).getValue()
-            .toObject(AgentEvaluation.class);
     }
 }

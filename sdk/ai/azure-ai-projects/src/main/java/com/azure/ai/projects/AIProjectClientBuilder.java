@@ -23,6 +23,16 @@ import com.azure.ai.agents.persistent.VectorStoreFilesAsyncClient;
 import com.azure.ai.agents.persistent.VectorStoreFilesClient;
 import com.azure.ai.agents.persistent.VectorStoresAsyncClient;
 import com.azure.ai.agents.persistent.VectorStoresClient;
+import com.azure.ai.inference.ChatCompletionsAsyncClient;
+import com.azure.ai.inference.ChatCompletionsClient;
+import com.azure.ai.inference.ChatCompletionsClientBuilder;
+import com.azure.ai.inference.EmbeddingsAsyncClient;
+import com.azure.ai.inference.EmbeddingsClient;
+import com.azure.ai.inference.EmbeddingsClientBuilder;
+import com.azure.ai.inference.ImageEmbeddingsAsyncClient;
+import com.azure.ai.inference.ImageEmbeddingsClient;
+import com.azure.ai.inference.ImageEmbeddingsClientBuilder;
+import com.azure.ai.inference.ModelServiceVersion;
 import com.azure.ai.projects.implementation.AIProjectClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -463,15 +473,19 @@ public final class AIProjectClientBuilder
     }
 
     private PersistentAgentsAdministrationClientBuilder createPersistentAgentsAdministrationClientBuilder() {
-        return new PersistentAgentsAdministrationClientBuilder().endpoint(this.endpoint)
-            .credential(this.tokenCredential)
-            .httpClient(this.httpClient)
-            .pipeline(this.pipeline)
-            .httpLogOptions(this.httpLogOptions)
-            .clientOptions(this.clientOptions)
-            .retryOptions(this.retryOptions)
-            .configuration(this.configuration)
-            .serviceVersion(AgentsServiceVersion.valueOf(this.serviceVersion.name()));
+        PersistentAgentsAdministrationClientBuilder clientBuilder
+            = new PersistentAgentsAdministrationClientBuilder().endpoint(this.endpoint)
+                .credential(this.tokenCredential)
+                .httpClient(this.httpClient)
+                .pipeline(this.pipeline)
+                .httpLogOptions(this.httpLogOptions)
+                .clientOptions(this.clientOptions)
+                .retryOptions(this.retryOptions)
+                .configuration(this.configuration);
+        if (this.serviceVersion != null) {
+            clientBuilder.serviceVersion(AgentsServiceVersion.valueOf(this.serviceVersion.name()));
+        }
+        return clientBuilder;
     }
 
     /**
@@ -634,6 +648,142 @@ public final class AIProjectClientBuilder
      */
     public VectorStoreFileBatchesAsyncClient buildVectorStoreFileBatchesAsyncClient() {
         return createPersistentAgentsAdministrationClientBuilder().buildVectorStoreFileBatchesAsyncClient();
+    }
+
+    /**
+     * Creates a new instance of the EmbeddingsClientBuilder.
+     *
+     * @return a new instance of the EmbeddingsClientBuilder.
+     */
+    private EmbeddingsClientBuilder createEmbeddingsClientBuilder() {
+        EmbeddingsClientBuilder embeddingsClientBuilder = new EmbeddingsClientBuilder().endpoint(this.endpoint)
+            .credential(this.tokenCredential)
+            .httpClient(this.httpClient)
+            .pipeline(this.pipeline)
+            .httpLogOptions(this.httpLogOptions)
+            .clientOptions(this.clientOptions)
+            .retryOptions(this.retryOptions)
+            .configuration(this.configuration);
+        if (this.serviceVersion != null) {
+            embeddingsClientBuilder.serviceVersion(ModelServiceVersion.valueOf(this.serviceVersion.name()));
+        }
+        return embeddingsClientBuilder;
+    }
+
+    /**
+     * Creates a new instance of the ChatCompletionsClientBuilder.
+     *
+     * @return a new instance of the ChatCompletionsClientBuilder.
+     */
+    private ChatCompletionsClientBuilder createCompletionsClientBuilder() {
+        ChatCompletionsClientBuilder chatCompletionsClientBuilder
+            = new ChatCompletionsClientBuilder().endpoint(this.endpoint)
+                .credential(this.tokenCredential)
+                .httpClient(this.httpClient)
+                .pipeline(this.pipeline)
+                .httpLogOptions(this.httpLogOptions)
+                .clientOptions(this.clientOptions)
+                .retryOptions(this.retryOptions)
+                .configuration(this.configuration);
+        if (this.serviceVersion != null) {
+            chatCompletionsClientBuilder.serviceVersion(ModelServiceVersion.valueOf(this.serviceVersion.name()));
+        }
+        return chatCompletionsClientBuilder;
+    }
+
+    /**
+     * Creates a new instance of the ImageEmbeddingsClientBuilder.
+     *
+     * @return a new instance of the ImageEmbeddingsClientBuilder.
+     */
+    private ImageEmbeddingsClientBuilder createImageEmbeddingsClientBuilder() {
+        ImageEmbeddingsClientBuilder imageEmbeddingsClientBuilder
+            = new ImageEmbeddingsClientBuilder().endpoint(this.endpoint)
+                .credential(this.tokenCredential)
+                .httpClient(this.httpClient)
+                .pipeline(this.pipeline)
+                .httpLogOptions(this.httpLogOptions)
+                .clientOptions(this.clientOptions)
+                .retryOptions(this.retryOptions)
+                .configuration(this.configuration);
+        if (this.serviceVersion != null) {
+            imageEmbeddingsClientBuilder.serviceVersion(ModelServiceVersion.valueOf(this.serviceVersion.name()));
+        }
+        return imageEmbeddingsClientBuilder;
+    }
+
+    /**
+     * Builds an instance of EmbeddingsClient to interact with embeddings resources.
+     *
+     * @return an instance of EmbeddingsClient.
+     */
+    public EmbeddingsClient buildEmbeddingsClient() {
+        return createEmbeddingsClientBuilder().buildClient();
+    }
+
+    /**
+     * Builds an instance of EmbeddingsAsyncClient to interact with embeddings resources.
+     *
+     * @return an instance of EmbeddingsAsyncClient.
+     */
+    public EmbeddingsAsyncClient buildEmbeddingsAsyncClient() {
+        return createEmbeddingsClientBuilder().buildAsyncClient();
+    }
+
+    /**
+     * Builds an instance of ChatCompletionsClient to interact with chat completions resources.
+     *
+     * @return an instance of ChatCompletionsClient.
+     */
+    public ChatCompletionsClient buildChatCompletionsClient() {
+        return createCompletionsClientBuilder().buildClient();
+    }
+
+    /**
+     * Builds an instance of ChatCompletionsAsyncClient to interact with chat completions resources.
+     *
+     * @return an instance of ChatCompletionsAsyncClient.
+     */
+    public ChatCompletionsAsyncClient buildChatCompletionsAsyncClient() {
+        return createCompletionsClientBuilder().buildAsyncClient();
+    }
+
+    /**
+     * Builds an instance of ImageEmbeddingsClient to interact with image embeddings resources.
+     *
+     * @return an instance of ImageEmbeddingsClient.
+     */
+    public ImageEmbeddingsClient buildImageEmbeddingsClient() {
+        return createImageEmbeddingsClientBuilder().buildClient();
+    }
+
+    /**
+     * Builds an instance of ImageEmbeddingsAsyncClient to interact with image embeddings resources.
+     *
+     * @return an instance of ImageEmbeddingsAsyncClient.
+     */
+    public ImageEmbeddingsAsyncClient buildImageEmbeddingsAsyncClient() {
+        return createImageEmbeddingsClientBuilder().buildAsyncClient();
+    }
+
+    /**
+     * Builds an instance of TelemetryClient
+     *
+     * @return an instance of TelemetryClient.
+     */
+    public TelemetryClient buildTelemetryClient() {
+        ConnectionsClient connectionsClient = this.buildConnectionsClient();
+        return new TelemetryClient(connectionsClient);
+    }
+
+    /**
+     * Builds an instance of TelemetryAsyncClient
+     *
+     * @return an instance of TelemetryAsyncClient.
+     */
+    public TelemetryAsyncClient buildTelemetryAsyncClient() {
+        ConnectionsAsyncClient connectionsAsyncClient = this.buildConnectionsAsyncClient();
+        return new TelemetryAsyncClient(connectionsAsyncClient);
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AIProjectClientBuilder.class);

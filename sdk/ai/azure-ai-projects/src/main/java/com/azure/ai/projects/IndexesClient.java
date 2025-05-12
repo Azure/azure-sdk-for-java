@@ -67,8 +67,8 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listVersions(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listVersions(name, requestOptions);
+    public PagedIterable<BinaryData> listIndexVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listIndexVersions(name, requestOptions);
     }
 
     /**
@@ -99,8 +99,8 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.list(requestOptions);
+    public PagedIterable<BinaryData> listLatestIndexVersions(RequestOptions requestOptions) {
+        return this.serviceClient.listLatestIndexVersions(requestOptions);
     }
 
     /**
@@ -133,8 +133,9 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(name, version, requestOptions);
+    public Response<BinaryData> getIndexVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getIndexVersionWithResponse(name, version, requestOptions);
     }
 
     /**
@@ -151,8 +152,8 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponse(name, version, requestOptions);
+    public Response<Void> deleteIndexVersionWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.deleteIndexVersionWithResponse(name, version, requestOptions);
     }
 
     /**
@@ -203,9 +204,9 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(String name, String version, BinaryData body,
+    public Response<BinaryData> createOrUpdateIndexVersionWithResponse(String name, String version, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponse(name, version, body, requestOptions);
+        return this.serviceClient.createOrUpdateIndexVersionWithResponse(name, version, body, requestOptions);
     }
 
     /**
@@ -222,10 +223,10 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Index> listVersions(String name) {
-        // Generated convenience method for listVersions
+    public PagedIterable<Index> listIndexVersions(String name) {
+        // Generated convenience method for listIndexVersions
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listVersions(name, requestOptions)
+        return serviceClient.listIndexVersions(name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(Index.class));
     }
 
@@ -241,10 +242,11 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Index> list() {
-        // Generated convenience method for list
+    public PagedIterable<Index> listLatestIndexVersions() {
+        // Generated convenience method for listLatestIndexVersions
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Index.class));
+        return serviceClient.listLatestIndexVersions(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Index.class));
     }
 
     /**
@@ -262,10 +264,10 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Index get(String name, String version) {
-        // Generated convenience method for getWithResponse
+    public Index getIndexVersion(String name, String version) {
+        // Generated convenience method for getIndexVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(name, version, requestOptions).getValue().toObject(Index.class);
+        return getIndexVersionWithResponse(name, version, requestOptions).getValue().toObject(Index.class);
     }
 
     /**
@@ -282,10 +284,10 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String name, String version) {
-        // Generated convenience method for deleteWithResponse
+    public void deleteIndexVersion(String name, String version) {
+        // Generated convenience method for deleteIndexVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteWithResponse(name, version, requestOptions).getValue();
+        deleteIndexVersionWithResponse(name, version, requestOptions).getValue();
     }
 
     /**
@@ -304,15 +306,15 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Index createOrUpdate(String name, String version, Index body) {
-        // Generated convenience method for createOrUpdateWithResponse
+    public Index createOrUpdateIndexVersion(String name, String version, Index body) {
+        // Generated convenience method for createOrUpdateIndexVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(body, true);
         BinaryData bodyInBinaryData = BinaryData.fromObject(body);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         bodyInBinaryData.getLength();
         JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(body, false);
-        return createOrUpdateWithResponse(name, version, bodyInBinaryData, requestOptions).getValue()
+        return createOrUpdateIndexVersionWithResponse(name, version, bodyInBinaryData, requestOptions).getValue()
             .toObject(Index.class);
     }
 }

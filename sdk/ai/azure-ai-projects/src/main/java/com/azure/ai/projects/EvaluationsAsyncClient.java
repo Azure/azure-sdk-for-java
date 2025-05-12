@@ -46,6 +46,105 @@ public final class EvaluationsAsyncClient {
     }
 
     /**
+     * Creates an agent evaluation run.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     runId: String (Required)
+     *     threadId: String (Optional)
+     *     evaluators (Required): {
+     *         String (Required): {
+     *             id: String (Required)
+     *             initParams (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             dataMapping (Optional): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     }
+     *     samplingConfiguration (Optional): {
+     *         name: String (Required)
+     *         samplingPercent: double (Required)
+     *         maxRequestRate: double (Required)
+     *     }
+     *     redactionConfiguration (Optional): {
+     *         redactScoreProperties: Boolean (Optional)
+     *     }
+     *     appInsightsConnectionString: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String (Required)
+     *     error: String (Optional)
+     *     result (Optional): [
+     *          (Optional){
+     *             evaluator: String (Required)
+     *             evaluatorId: String (Required)
+     *             score: double (Required)
+     *             status: String (Required)
+     *             reason: String (Optional)
+     *             version: String (Optional)
+     *             threadId: String (Optional)
+     *             runId: String (Required)
+     *             error: String (Optional)
+     *             additionalDetails (Optional): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param evaluation Agent evaluation to be run.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return evaluation response for agent evaluation run along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createAgentEvaluationWithResponse(BinaryData evaluation,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createAgentEvaluationWithResponseAsync(evaluation, requestOptions);
+    }
+
+    /**
+     * Creates an agent evaluation run.
+     *
+     * @param evaluation Agent evaluation to be run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return evaluation response for agent evaluation run on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentEvaluation> createAgentEvaluation(AgentEvaluationRequest evaluation) {
+        // Generated convenience method for createAgentEvaluationWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createAgentEvaluationWithResponse(BinaryData.fromObject(evaluation), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentEvaluation.class));
+    }
+
+    /**
      * Get an evaluation run by name.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -90,8 +189,8 @@ public final class EvaluationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(name, requestOptions);
+    public Mono<Response<BinaryData>> getEvaluationWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getEvaluationWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -138,8 +237,8 @@ public final class EvaluationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(requestOptions);
+    public PagedFlux<BinaryData> listEvaluations(RequestOptions requestOptions) {
+        return this.serviceClient.listEvaluationsAsync(requestOptions);
     }
 
     /**
@@ -220,85 +319,9 @@ public final class EvaluationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWithResponse(BinaryData evaluation, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponseAsync(evaluation, requestOptions);
-    }
-
-    /**
-     * Creates an agent evaluation run.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     runId: String (Required)
-     *     threadId: String (Optional)
-     *     evaluators (Required): {
-     *         String (Required): {
-     *             id: String (Required)
-     *             initParams (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             dataMapping (Optional): {
-     *                 String: String (Required)
-     *             }
-     *         }
-     *     }
-     *     samplingConfiguration (Optional): {
-     *         name: String (Required)
-     *         samplingPercent: double (Required)
-     *         maxRequestRate: double (Required)
-     *     }
-     *     redactionConfiguration (Optional): {
-     *         redactScoreProperties: Boolean (Optional)
-     *     }
-     *     appInsightsConnectionString: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String (Required)
-     *     error: String (Optional)
-     *     result (Optional): [
-     *          (Optional){
-     *             evaluator: String (Required)
-     *             evaluatorId: String (Required)
-     *             score: double (Required)
-     *             status: String (Required)
-     *             reason: String (Optional)
-     *             version: String (Optional)
-     *             threadId: String (Optional)
-     *             runId: String (Required)
-     *             error: String (Optional)
-     *             additionalDetails (Optional): {
-     *                 String: String (Required)
-     *             }
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param evaluation Agent evaluation to be run.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return evaluation response for agent evaluation run along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAgentEvaluationWithResponse(BinaryData evaluation,
+    public Mono<Response<BinaryData>> createEvaluationWithResponse(BinaryData evaluation,
         RequestOptions requestOptions) {
-        return this.serviceClient.createAgentEvaluationWithResponseAsync(evaluation, requestOptions);
+        return this.serviceClient.createEvaluationWithResponseAsync(evaluation, requestOptions);
     }
 
     /**
@@ -315,10 +338,10 @@ public final class EvaluationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Evaluation> get(String name) {
-        // Generated convenience method for getWithResponse
+    public Mono<Evaluation> getEvaluation(String name) {
+        // Generated convenience method for getEvaluationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getEvaluationWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Evaluation.class));
     }
 
@@ -334,10 +357,10 @@ public final class EvaluationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Evaluation> list() {
-        // Generated convenience method for list
+    public PagedFlux<Evaluation> listEvaluations() {
+        // Generated convenience method for listEvaluations
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listEvaluations(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -366,32 +389,10 @@ public final class EvaluationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Evaluation> create(Evaluation evaluation) {
-        // Generated convenience method for createWithResponse
+    public Mono<Evaluation> createEvaluation(Evaluation evaluation) {
+        // Generated convenience method for createEvaluationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(BinaryData.fromObject(evaluation), requestOptions).flatMap(FluxUtil::toMono)
+        return createEvaluationWithResponse(BinaryData.fromObject(evaluation), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Evaluation.class));
-    }
-
-    /**
-     * Creates an agent evaluation run.
-     *
-     * @param evaluation Agent evaluation to be run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return evaluation response for agent evaluation run on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentEvaluation> createAgentEvaluation(AgentEvaluationRequest evaluation) {
-        // Generated convenience method for createAgentEvaluationWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createAgentEvaluationWithResponse(BinaryData.fromObject(evaluation), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentEvaluation.class));
     }
 }

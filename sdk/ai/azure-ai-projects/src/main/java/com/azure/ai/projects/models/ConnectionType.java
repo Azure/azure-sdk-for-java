@@ -31,12 +31,6 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
     public static final ConnectionType AZURE_STORAGE_ACCOUNT = fromString("AzureStorageAccount");
 
     /**
-     * Azure AI Search.
-     */
-    @Generated
-    public static final ConnectionType AZURE_AISEARCH = fromString("CognitiveSearch");
-
-    /**
      * CosmosDB.
      */
     @Generated
@@ -96,4 +90,10 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
     public static Collection<ConnectionType> values() {
         return values(ConnectionType.class);
     }
+
+    /**
+     * Azure AI Search.
+     */
+    @Generated
+    public static final ConnectionType AZURE_AI_SEARCH = fromString("CognitiveSearch");
 }

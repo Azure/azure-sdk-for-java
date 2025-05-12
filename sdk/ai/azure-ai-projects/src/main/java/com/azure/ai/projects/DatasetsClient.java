@@ -5,7 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.DatasetsImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.models.AssetCredentialResponse;
+import com.azure.ai.projects.models.AssetCredentialResult;
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.FileDatasetVersion;
 import com.azure.ai.projects.models.FolderDatasetVersion;
@@ -50,191 +50,6 @@ public final class DatasetsClient {
     @Generated
     DatasetsClient(DatasetsImpl serviceClient) {
         this.serviceClient = serviceClient;
-    }
-
-    /**
-     * List all versions of the given DatasetVersion.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(uri_file/uri_folder) (Required)
-     *     dataUri: String (Optional, Required on create)
-     *     isReference: Boolean (Optional)
-     *     connectionName: String (Optional)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listVersions(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listVersions(name, requestOptions);
-    }
-
-    /**
-     * List the latest version of each DatasetVersion.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(uri_file/uri_folder) (Required)
-     *     dataUri: String (Optional, Required on create)
-     *     isReference: Boolean (Optional)
-     *     connectionName: String (Optional)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.list(requestOptions);
-    }
-
-    /**
-     * Get the specific version of the DatasetVersion.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(uri_file/uri_folder) (Required)
-     *     dataUri: String (Optional, Required on create)
-     *     isReference: Boolean (Optional)
-     *     connectionName: String (Optional)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to retrieve.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the DatasetVersion along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(name, version, requestOptions);
-    }
-
-    /**
-     * Delete the specific version of the DatasetVersion.
-     *
-     * @param name The name of the resource.
-     * @param version The version of the DatasetVersion to delete.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponse(name, version, requestOptions);
-    }
-
-    /**
-     * Create a new or update an existing DatasetVersion with the given version id.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(uri_file/uri_folder) (Required)
-     *     dataUri: String (Optional, Required on create)
-     *     isReference: Boolean (Optional)
-     *     connectionName: String (Optional)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(uri_file/uri_folder) (Required)
-     *     dataUri: String (Optional, Required on create)
-     *     isReference: Boolean (Optional)
-     *     connectionName: String (Optional)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to create or replace.
-     * @param body The definition of the DatasetVersion to create or update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return datasetVersion Definition along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponse(name, version, body, requestOptions);
     }
 
     /**
@@ -324,115 +139,6 @@ public final class DatasetsClient {
     }
 
     /**
-     * List all versions of the given DatasetVersion.
-     *
-     * @param name The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatasetVersion> listVersions(String name) {
-        // Generated convenience method for listVersions
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listVersions(name, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(DatasetVersion.class));
-    }
-
-    /**
-     * List the latest version of each DatasetVersion.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatasetVersion> list() {
-        // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.list(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(DatasetVersion.class));
-    }
-
-    /**
-     * Get the specific version of the DatasetVersion.
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific version of the DatasetVersion.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasetVersion get(String name, String version) {
-        // Generated convenience method for getWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(name, version, requestOptions).getValue().toObject(DatasetVersion.class);
-    }
-
-    /**
-     * Delete the specific version of the DatasetVersion.
-     *
-     * @param name The name of the resource.
-     * @param version The version of the DatasetVersion to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String name, String version) {
-        // Generated convenience method for deleteWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteWithResponse(name, version, requestOptions).getValue();
-    }
-
-    /**
-     * Create a new or update an existing DatasetVersion with the given version id.
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the DatasetVersion to create or replace.
-     * @param body The definition of the DatasetVersion to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datasetVersion Definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasetVersion createOrUpdate(String name, String version, DatasetVersion body) {
-        // Generated convenience method for createOrUpdateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(body, true);
-        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        bodyInBinaryData.getLength();
-        JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(body, false);
-        return createOrUpdateWithResponse(name, version, bodyInBinaryData, requestOptions).getValue()
-            .toObject(DatasetVersion.class);
-    }
-
-    /**
      * Start a new or get an existing pending upload of a dataset for a specific version.
      *
      * @param name The name of the resource.
@@ -470,11 +176,11 @@ public final class DatasetsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetCredentialResponse getCredentials(String name, String version) {
+    public AssetCredentialResult getCredentials(String name, String version) {
         // Generated convenience method for getCredentialsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getCredentialsWithResponse(name, version, requestOptions).getValue()
-            .toObject(AssetCredentialResponse.class);
+            .toObject(AssetCredentialResult.class);
     }
 
     /**
@@ -500,7 +206,7 @@ public final class DatasetsClient {
         blobClient.upload(BinaryData.fromFile(filePath));
         RequestOptions requestOptions = new RequestOptions();
         FileDatasetVersion datasetVersion = this
-            .createOrUpdateWithResponse(name, version,
+            .createOrUpdateDatasetVersionWithResponse(name, version,
                 BinaryData.fromObject(new FileDatasetVersion().setDataUri(blobClient.getBlobUrl())), requestOptions)
             .getValue()
             .toObject(FileDatasetVersion.class);
@@ -543,10 +249,305 @@ public final class DatasetsClient {
         // Create a FolderDatasetVersion with the container URL
         RequestOptions requestOptions = new RequestOptions();
         FolderDatasetVersion datasetVersion = this
-            .createOrUpdateWithResponse(name, version,
+            .createOrUpdateDatasetVersionWithResponse(name, version,
                 BinaryData.fromObject(new FolderDatasetVersion().setDataUri(containerUrl)), requestOptions)
             .getValue()
             .toObject(FolderDatasetVersion.class);
         return datasetVersion;
+    }
+
+    /**
+     * List all versions of the given DatasetVersion.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(uri_file/uri_folder) (Required)
+     *     dataUri: String (Optional, Required on create)
+     *     isReference: Boolean (Optional)
+     *     connectionName: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the resource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listDatasetVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listDatasetVersions(name, requestOptions);
+    }
+
+    /**
+     * List the latest version of each DatasetVersion.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(uri_file/uri_folder) (Required)
+     *     dataUri: String (Optional, Required on create)
+     *     isReference: Boolean (Optional)
+     *     connectionName: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listLatestDatasetVersions(RequestOptions requestOptions) {
+        return this.serviceClient.listLatestDatasetVersions(requestOptions);
+    }
+
+    /**
+     * Get the specific version of the DatasetVersion.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(uri_file/uri_folder) (Required)
+     *     dataUri: String (Optional, Required on create)
+     *     isReference: Boolean (Optional)
+     *     connectionName: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the specific version of the DatasetVersion along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getDatasetVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getDatasetVersionWithResponse(name, version, requestOptions);
+    }
+
+    /**
+     * Delete the specific version of the DatasetVersion.
+     *
+     * @param name The name of the resource.
+     * @param version The version of the DatasetVersion to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteDatasetVersionWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.deleteDatasetVersionWithResponse(name, version, requestOptions);
+    }
+
+    /**
+     * Create a new or update an existing DatasetVersion with the given version id.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(uri_file/uri_folder) (Required)
+     *     dataUri: String (Optional, Required on create)
+     *     isReference: Boolean (Optional)
+     *     connectionName: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(uri_file/uri_folder) (Required)
+     *     dataUri: String (Optional, Required on create)
+     *     isReference: Boolean (Optional)
+     *     connectionName: String (Optional)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param body The definition of the DatasetVersion to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return datasetVersion Definition along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createOrUpdateDatasetVersionWithResponse(String name, String version, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateDatasetVersionWithResponse(name, version, body, requestOptions);
+    }
+
+    /**
+     * List all versions of the given DatasetVersion.
+     *
+     * @param name The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DatasetVersion> listDatasetVersions(String name) {
+        // Generated convenience method for listDatasetVersions
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listDatasetVersions(name, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DatasetVersion.class));
+    }
+
+    /**
+     * List the latest version of each DatasetVersion.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of DatasetVersion items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DatasetVersion> listLatestDatasetVersions() {
+        // Generated convenience method for listLatestDatasetVersions
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listLatestDatasetVersions(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DatasetVersion.class));
+    }
+
+    /**
+     * Get the specific version of the DatasetVersion.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specific version of the DatasetVersion.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatasetVersion getDatasetVersion(String name, String version) {
+        // Generated convenience method for getDatasetVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getDatasetVersionWithResponse(name, version, requestOptions).getValue().toObject(DatasetVersion.class);
+    }
+
+    /**
+     * Delete the specific version of the DatasetVersion.
+     *
+     * @param name The name of the resource.
+     * @param version The version of the DatasetVersion to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteDatasetVersion(String name, String version) {
+        // Generated convenience method for deleteDatasetVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteDatasetVersionWithResponse(name, version, requestOptions).getValue();
+    }
+
+    /**
+     * Create a new or update an existing DatasetVersion with the given version id.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param body The definition of the DatasetVersion to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return datasetVersion Definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatasetVersion createOrUpdateDatasetVersion(String name, String version, DatasetVersion body) {
+        // Generated convenience method for createOrUpdateDatasetVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(body, true);
+        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        bodyInBinaryData.getLength();
+        JsonMergePatchHelper.getDatasetVersionAccessor().prepareModelForJsonMergePatch(body, false);
+        return createOrUpdateDatasetVersionWithResponse(name, version, bodyInBinaryData, requestOptions).getValue()
+            .toObject(DatasetVersion.class);
     }
 }

@@ -8,6 +8,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.io.File;
@@ -30,7 +31,6 @@ public class ClientTestBase extends TestProxyTestBase {
         if (testMode != TestMode.LIVE) {
             addCustomMatchers();
             addTestRecordCustomSanitizers();
-            // Disable "$..id"=AZSDK3430, "Set-Cookie"=AZSDK2015 for both azure and non-azure clients from the list of common sanitizers.
             if (!sanitizersRemoved) {
                 interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493", "AZSDK2015");
                 sanitizersRemoved = true;
@@ -38,7 +38,7 @@ public class ClientTestBase extends TestProxyTestBase {
         }
 
         if (testMode == TestMode.PLAYBACK) {
-            builder.endpoint("https://localhost:8080");
+            builder.endpoint("https://localhost:8080").credential(new MockTokenCredential());
         } else if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))

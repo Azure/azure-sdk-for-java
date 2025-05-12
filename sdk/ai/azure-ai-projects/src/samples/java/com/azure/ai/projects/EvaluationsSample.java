@@ -34,7 +34,7 @@ public class EvaluationsSample {
         // BEGIN:com.azure.ai.projects.EvaluationsSample.listEvaluations
 
         System.out.println("Listing all evaluations:");
-        evaluationsClient.list().forEach(evaluation -> {
+        evaluationsClient.listEvaluations().forEach(evaluation -> {
             System.out.println("Display Name: " + evaluation.getDisplayName());
             System.out.println("Status: " + evaluation.getStatus());
             System.out.println("Data Type: " + evaluation.getData().getType());
@@ -57,7 +57,7 @@ public class EvaluationsSample {
 
         String evaluationId = Configuration.getGlobalConfiguration().get("EVALUATION_ID", "my-evaluation-id");
         
-        Evaluation evaluation = evaluationsClient.get(evaluationId);
+        Evaluation evaluation = evaluationsClient.getEvaluation(evaluationId);
         
         System.out.println("Retrieved evaluation:");
         System.out.println("Display Name: " + evaluation.getDisplayName());
@@ -96,7 +96,7 @@ public class EvaluationsSample {
         // Create an evaluation definition
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "test");
         String version = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1");
-        DatasetVersion datasetVersion = datasetsClient.get(datasetName, version);
+        DatasetVersion datasetVersion = datasetsClient.getDatasetVersion(datasetName, version);
 
         InputDataset dataset = new InputDataset(datasetVersion.getId());
         Evaluation evaluation = new Evaluation(
@@ -108,7 +108,7 @@ public class EvaluationsSample {
             .setDescription("This is a sample evaluation created using the SDK");
 
         // Create the evaluation
-        Evaluation createdEvaluation = evaluationsClient.create(evaluation);
+        Evaluation createdEvaluation = evaluationsClient.createEvaluation(evaluation);
 
         System.out.println("Created evaluation:");
         System.out.println("Display Name: " + createdEvaluation.getDisplayName());

@@ -73,8 +73,8 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listVersions(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listVersionsAsync(name, requestOptions);
+    public PagedFlux<BinaryData> listIndexVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listIndexVersionsAsync(name, requestOptions);
     }
 
     /**
@@ -105,8 +105,8 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(requestOptions);
+    public PagedFlux<BinaryData> listLatestIndexVersions(RequestOptions requestOptions) {
+        return this.serviceClient.listLatestIndexVersionsAsync(requestOptions);
     }
 
     /**
@@ -139,8 +139,9 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(name, version, requestOptions);
+    public Mono<Response<BinaryData>> getIndexVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getIndexVersionWithResponseAsync(name, version, requestOptions);
     }
 
     /**
@@ -157,8 +158,9 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(name, version, requestOptions);
+    public Mono<Response<Void>> deleteIndexVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deleteIndexVersionWithResponseAsync(name, version, requestOptions);
     }
 
     /**
@@ -209,9 +211,9 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(name, version, body, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateIndexVersionWithResponse(String name, String version,
+        BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateIndexVersionWithResponseAsync(name, version, body, requestOptions);
     }
 
     /**
@@ -228,10 +230,10 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Index> listVersions(String name) {
-        // Generated convenience method for listVersions
+    public PagedFlux<Index> listIndexVersions(String name) {
+        // Generated convenience method for listIndexVersions
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listVersions(name, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listIndexVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -258,10 +260,10 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Index> list() {
-        // Generated convenience method for list
+    public PagedFlux<Index> listLatestIndexVersions() {
+        // Generated convenience method for listLatestIndexVersions
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listLatestIndexVersions(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -291,10 +293,10 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Index> get(String name, String version) {
-        // Generated convenience method for getWithResponse
+    public Mono<Index> getIndexVersion(String name, String version) {
+        // Generated convenience method for getIndexVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
+        return getIndexVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Index.class));
     }
 
@@ -313,10 +315,10 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(String name, String version) {
-        // Generated convenience method for deleteWithResponse
+    public Mono<Void> deleteIndexVersion(String name, String version) {
+        // Generated convenience method for deleteIndexVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteIndexVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -335,15 +337,16 @@ public final class IndexesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Index> createOrUpdate(String name, String version, Index body) {
-        // Generated convenience method for createOrUpdateWithResponse
+    public Mono<Index> createOrUpdateIndexVersion(String name, String version, Index body) {
+        // Generated convenience method for createOrUpdateIndexVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(body, true);
         BinaryData bodyInBinaryData = BinaryData.fromObject(body);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         bodyInBinaryData.getLength();
         JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(body, false);
-        return createOrUpdateWithResponse(name, version, bodyInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+        return createOrUpdateIndexVersionWithResponse(name, version, bodyInBinaryData, requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Index.class));
     }
 }
