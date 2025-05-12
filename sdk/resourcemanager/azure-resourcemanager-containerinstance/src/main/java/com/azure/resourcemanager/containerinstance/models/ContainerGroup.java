@@ -395,6 +395,15 @@ public interface ContainerGroup extends GroupableResource<ContainerInstanceManag
              * @return the next stage of the definition
              */
             WithPrivateImageRegistryOrVolume withPrivateImageRegistry(String server, String username, String password);
+
+            /**
+             * Specifies the private container image registry server login for the container group.
+             *
+             * @param server Docker image registry server, without protocol such as "http" and "https"
+             * @param identity the managed identity (with "acrpull" role)
+             * @return the next stage of the definition
+             */
+            WithPrivateImageRegistryOrVolume withPrivateImageRegistry(String server, Identity identity);
         }
 
         /** The stage of the container group definition allowing to specify a private image registry or a volume. */

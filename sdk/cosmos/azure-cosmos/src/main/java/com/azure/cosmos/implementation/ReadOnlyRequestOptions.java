@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 
 import java.util.List;
@@ -28,6 +29,13 @@ public interface ReadOnlyRequestOptions {
      * @return the consistency level. It could be null if not defined or called on an irrelevant operation.
      */
     ConsistencyLevel getConsistencyLevel();
+
+    /**
+     * Gets the read consistency strategy.
+     *
+     * @return the read consistency strategy. It could be null if not defined or called on an irrelevant operation.
+     */
+    ReadConsistencyStrategy getReadConsistencyStrategy();
 
     /**
      * Gets the content response on write enabled.

@@ -37,7 +37,7 @@ private class ChangeFeedMicroBatchStream
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
   private val clientConfiguration = CosmosClientConfiguration.apply(
-    config, readConfig.forceEventualConsistency, sparkEnvironmentInfo)
+    config, readConfig.readConsistencyStrategy, sparkEnvironmentInfo)
   private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   private val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)

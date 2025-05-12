@@ -72,8 +72,8 @@ public final class AccessTokenCache {
 
     private AccessToken retrieveToken(TokenRequestContext tokenRequestContext, boolean forceFetchToken) {
         if (tokenRequestContext == null) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("The token request context input cannot be null."));
+            throw LOGGER.throwableAtError()
+                .log("The token request context input cannot be null.", IllegalArgumentException::new);
         }
 
         AccessTokenCacheInfo cache = this.cacheInfo;

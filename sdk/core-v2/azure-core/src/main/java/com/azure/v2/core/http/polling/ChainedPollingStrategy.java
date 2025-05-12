@@ -5,7 +5,6 @@ package com.azure.v2.core.http.polling;
 
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -36,13 +35,13 @@ public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U>
     public ChainedPollingStrategy(List<PollingStrategy<T, U>> strategies) {
         Objects.requireNonNull(strategies, "'strategies' cannot be null.");
         if (strategies.isEmpty()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'strategies' cannot be empty."));
+            throw LOGGER.throwableAtError().log("'strategies' cannot be empty.", IllegalArgumentException::new);
         }
         this.pollingStrategies = Collections.unmodifiableList(strategies);
     }
 
     @Override
-    public boolean canPoll(Response<BinaryData> initialResponse) {
+    public boolean canPoll(Response<T> initialResponse) {
         // Find the first strategy that can poll in series so that
         // pollableStrategy is only set once
         for (PollingStrategy<T, U> strategy : pollingStrategies) {
@@ -71,7 +70,7 @@ public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U>
      * @throws NullPointerException if {@link #canPoll(Response)} is not called prior to this, or if it returns false.
      */
     @Override
-    public PollResponse<T> onInitialResponse(Response<BinaryData> response, PollingContext<T> pollingContext,
+    public PollResponse<T> onInitialResponse(Response<T> response, PollingContext<T> pollingContext,
         Type pollResponseType) {
         return pollableStrategy.onInitialResponse(response, pollingContext, pollResponseType);
     }

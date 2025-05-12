@@ -11,10 +11,12 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonSerializer;
@@ -28,6 +30,7 @@ import java.util.Objects;
 
 import static com.azure.v2.core.implementation.polling.PollingUtils.getAbsolutePath;
 import static com.azure.v2.core.implementation.polling.PollingUtils.operationResourceCanPoll;
+import static com.azure.v2.core.implementation.polling.PollingUtils.serializeResponse;
 
 /**
  * Implements a operation resource polling strategy, typically from Operation-Location.
@@ -126,12 +129,12 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
     }
 
     @Override
-    public boolean canPoll(Response<BinaryData> initialResponse) {
+    public boolean canPoll(Response<T> initialResponse) {
         return operationResourceCanPoll(initialResponse, operationLocationHeaderName, endpoint, LOGGER);
     }
 
     @Override
-    public PollResponse<T> onInitialResponse(Response<BinaryData> response, PollingContext<T> pollingContext,
+    public PollResponse<T> onInitialResponse(Response<T> response, PollingContext<T> pollingContext,
         Type pollResponseType) {
         HttpHeader operationLocationHeader = response.getHeaders().get(operationLocationHeaderName);
         HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
@@ -157,11 +160,17 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
                 PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType), retryAfter);
         }
 
-        throw LOGGER.logThrowableAsError(new RuntimeException(
-            String.format("Operation failed or cancelled with status code %d, '%s' header: %s, and response body: %s",
-                response.getStatusCode(), operationLocationHeaderName, operationLocationHeader,
-                PollingUtils.serializeResponse(response.getValue(), serializer))));
+        Response<BinaryData> binaryDataResponse = new Response<>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), BinaryData.fromObject(response.getValue()));
 
+        throw LOGGER.throwableAtError()
+            .addKeyValue("http.response.status_code", response.getStatusCode())
+            .addKeyValue("http.response.body.content", serializeResponse(response.getValue(), serializer).toString())
+            .addKeyValue("operationLocationHeaderName", operationLocationHeaderName.getValue())
+            .addKeyValue("operationLocationHeaderValue",
+                operationLocationHeader == null ? null : operationLocationHeader.getValue())
+            .log("Operation failed or cancelled",
+                message -> new HttpResponseException(message, binaryDataResponse, null));
     }
 
     @Override
@@ -192,9 +201,9 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
     @Override
     public U getResult(PollingContext<T> pollingContext, Type resultType) {
         if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {
-            throw LOGGER.logThrowableAsError(new RuntimeException("Long running operation failed."));
+            throw LOGGER.throwableAtError().log("Long running operation failed.", CoreException::from);
         } else if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
-            throw LOGGER.logThrowableAsError(new RuntimeException("Long running operation cancelled."));
+            throw LOGGER.throwableAtError().log("Long running operation cancelled.", CoreException::from);
         }
         String finalGetUrl = pollingContext.getData(PollingConstants.RESOURCE_LOCATION);
         if (finalGetUrl == null) {
@@ -205,7 +214,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)) {
                 finalGetUrl = pollingContext.getData(PollingConstants.LOCATION);
             } else {
-                throw LOGGER.logThrowableAsError(new RuntimeException("Cannot get final result"));
+                throw LOGGER.throwableAtError().log("Cannot get final result.", CoreException::from);
             }
         }
 

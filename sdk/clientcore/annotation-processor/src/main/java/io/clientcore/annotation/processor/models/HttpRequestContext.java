@@ -5,15 +5,18 @@ package io.clientcore.annotation.processor.models;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.utils.CoreUtils;
+
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.lang.model.type.TypeMirror;
 
 /**
  * Represents the context of an HTTP request, including its configuration, parameters, headers, and other details.
@@ -26,6 +29,16 @@ public final class HttpRequestContext {
     private final List<MethodParameter> parameters;
     private HttpMethod httpMethod;
     private boolean isConvenience;
+
+    // This is a list of variable names that could be used when creating the HttpRequest.uri.
+    // A list of them is needed as these could conflict with the names of parameters in this request method.
+    // Every time a 'MethodParameter' is added to this request a remove call will be made to the set.
+    // If the set ever becomes empty an exception will be thrown.
+    private final LinkedHashSet<String> possibleUriParameterNames
+        = new LinkedHashSet<>(Arrays.asList("uri", "requestUri", "httpRequestUri"));
+    private String uriParameterName = null;
+
+    private boolean templateHasHost;
 
     // This comes from the @Host annotation that is applied to the entire service interface, it will likely have one
     // or more substitutions in it, which will be replaced with the appropriate parameter values annotated with @HostParam.
@@ -95,9 +108,17 @@ public final class HttpRequestContext {
      * Adds a parameter to the method.
      *
      * @param parameter the parameter to add.
+     * @throws IllegalStateException If the addition of the parameter caused there to be no available
+     * {@link #getUriParameterName()} choice left.
      */
     public void addParameter(MethodParameter parameter) {
         this.parameters.add(parameter);
+        this.possibleUriParameterNames.remove(parameter.getName());
+        if (this.possibleUriParameterNames.isEmpty()) {
+            throw new IllegalStateException("The acceptable URI variable names weren't sufficient to prevent collision "
+                + "with parameter names of the method. File an issue on azure-sdk-for-java to expand the available "
+                + "choices to prevent conflicts.");
+        }
     }
 
     /**
@@ -106,7 +127,38 @@ public final class HttpRequestContext {
      * @return the list of parameters.
      */
     public List<MethodParameter> getParameters() {
-        return parameters;
+        return Collections.unmodifiableList(parameters);
+    }
+
+    /**
+     * Gets the variable name that is used when creating the HttpRequest.uri.
+     *
+     * @return The variable name used when creating the HttpRequest.uri.
+     */
+    public String getUriParameterName() {
+        if (this.uriParameterName == null) {
+            this.uriParameterName = this.possibleUriParameterNames.iterator().next();
+        }
+
+        return this.uriParameterName;
+    }
+
+    /**
+     * Indicates whether the interface had a host configured.
+     *
+     * @return Whether the interface had a host configured.
+     */
+    public boolean isTemplateHasHost() {
+        return templateHasHost;
+    }
+
+    /**
+     * Sets whether the interface had a host configured.
+     *
+     * @param templateHasHost Whether the interface had a host configured.
+     */
+    public void setTemplateHasHost(boolean templateHasHost) {
+        this.templateHasHost = templateHasHost;
     }
 
     /**
@@ -196,17 +248,16 @@ public final class HttpRequestContext {
      *
      * @param key the query parameter key.
      * @param value the query parameter value.
-     * @param isMultiple boolean indicating whether this query parameter list values should be sent as individual query
-     * params or as a single Json
-     * @param shouldEncode boolean indicating whether the query parameter value is URL encoded.
-     *
+     * @param isMultiple Whether this query parameter list values should be sent as individual query param.
+     * @param shouldEncode Whether the query parameter value is URL encoded.
+     * @param isStatic Whether the query parameter is a static value.
      */
-    public void addQueryParam(String key, String value, boolean isMultiple, boolean shouldEncode) {
+    public void addQueryParam(String key, String value, boolean isMultiple, boolean shouldEncode, boolean isStatic) {
         QueryParameter existing = queryParams.get(key);
         if (existing != null) {
             existing.addValue(value);
         } else {
-            queryParams.put(key, new QueryParameter(value, isMultiple, shouldEncode));
+            queryParams.put(key, new QueryParameter(value, isMultiple, shouldEncode, isStatic));
         }
     }
 
@@ -328,7 +379,7 @@ public final class HttpRequestContext {
             String[] parts = queryParam.split("=", 2);
             String key = parts[0].trim();
             String value = parts.length > 1 ? parts[1].trim() : null;
-            addQueryParam(key, value, true, false);
+            addQueryParam(key, value, true, false, true);
         }
     }
 
@@ -339,6 +390,7 @@ public final class HttpRequestContext {
         private final TypeMirror type;
         private final String shortTypeName;
         private final String name;
+        private final VariableElement variableElement;
 
         /**
          * Constructs a new MethodParameter.
@@ -346,11 +398,13 @@ public final class HttpRequestContext {
          * @param type the type of the parameter.
          * @param shortTypeName the short type name of the parameter.
          * @param name the name of the parameter.
+         * @param variableElement The element that created the MethodParameter
          */
-        public MethodParameter(TypeMirror type, String shortTypeName, String name) {
+        public MethodParameter(TypeMirror type, String shortTypeName, String name, VariableElement variableElement) {
             this.type = type;
             this.shortTypeName = shortTypeName;
             this.name = name;
+            this.variableElement = variableElement;
         }
 
         /**
@@ -378,6 +432,18 @@ public final class HttpRequestContext {
          */
         public String getName() {
             return name;
+        }
+
+        /**
+         * Gets the {@link VariableElement} that resulted in this {@link MethodParameter} to be created.
+         * <p>
+         * The {@link VariableElement} contains reflection information that may be useful when consuming the
+         * {@link MethodParameter}.
+         *
+         * @return The {@link VariableElement} that resulted in this {@link MethodParameter} to be created.
+         */
+        public VariableElement getVariableElement() {
+            return variableElement;
         }
     }
 
@@ -443,6 +509,7 @@ public final class HttpRequestContext {
         private final List<String> values;
         private final boolean isMultiple;
         private final boolean shouldEncode;
+        private final boolean isStatic;
 
         /**
          * Constructs a new QueryParameter.
@@ -450,12 +517,14 @@ public final class HttpRequestContext {
          * @param value the value of the query parameter.
          * @param isMultiple whether the parameter can accept multiple values.
          * @param shouldEncode whether the parameter and value is encoded
+         * @param isStatic Whether the query parameter is a static value.
          */
-        public QueryParameter(String value, boolean isMultiple, boolean shouldEncode) {
+        public QueryParameter(String value, boolean isMultiple, boolean shouldEncode, boolean isStatic) {
             this.values = new ArrayList<>();
             this.values.add(value);
             this.isMultiple = isMultiple;
             this.shouldEncode = shouldEncode;
+            this.isStatic = isStatic;
         }
 
         /**
@@ -464,11 +533,13 @@ public final class HttpRequestContext {
          * @param values the values of the query parameter.
          * @param isMultiple whether the parameter can accept multiple values.
          * @param shouldEncode whether the parameter and value is encoded
+         * @param isStatic Whether the query parameter is a static value.
          */
-        public QueryParameter(List<String> values, boolean isMultiple, boolean shouldEncode) {
+        public QueryParameter(List<String> values, boolean isMultiple, boolean shouldEncode, boolean isStatic) {
             this.values = new ArrayList<>(values);
             this.isMultiple = isMultiple;
             this.shouldEncode = shouldEncode;
+            this.isStatic = isStatic;
         }
 
         /**
@@ -505,6 +576,15 @@ public final class HttpRequestContext {
          */
         public boolean shouldEncode() {
             return shouldEncode;
+        }
+
+        /**
+         * Whether the query parameter is a static value.
+         *
+         * @return Whether the query parameter is a static value.
+         */
+        public boolean isStatic() {
+            return isStatic;
         }
     }
 }

@@ -2551,4 +2551,21 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
 
         StepVerifier.create(aadFsClient.exists()).expectNext(true).verifyComplete();
     }
+
+    @Test
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2025-07-05")
+    public void getSetAccessPolicyOAuth() {
+        // Arrange
+        DataLakeServiceAsyncClient serviceClient = getOAuthServiceAsyncClient();
+        DataLakeFileSystemAsyncClient fileSystemClient
+            = serviceClient.getFileSystemAsyncClient(generateFileSystemName());
+
+        // Act
+        StepVerifier
+            .create(fileSystemClient.create()
+                .then(fileSystemClient.getAccessPolicy())
+                .flatMap(response -> fileSystemClient.setAccessPolicy(null, response.getIdentifiers())))
+            .verifyComplete();
+    }
+
 }

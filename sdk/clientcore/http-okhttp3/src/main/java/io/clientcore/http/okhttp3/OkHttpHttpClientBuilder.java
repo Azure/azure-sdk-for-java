@@ -173,7 +173,7 @@ public class OkHttpHttpClientBuilder {
     public OkHttpHttpClientBuilder callTimeout(Duration callTimeout) {
         // callTimeout can be null
         if (callTimeout != null && callTimeout.isNegative()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'callTimeout' cannot be negative"));
+            throw LOGGER.throwableAtError().log("'callTimeout' cannot be negative", IllegalArgumentException::new);
         }
 
         this.callTimeout = callTimeout;

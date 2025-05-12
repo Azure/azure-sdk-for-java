@@ -56,7 +56,7 @@ The client-core annotation processor for introducing compile-time code generatio
    ```
 2. Annotate your interfaces with `@ServiceInterface`,  `@HttpRequestInformation` and
    `@UnexpectedResponseExceptionDetail` such annotations:
-   ```java 
+   ```java
    @ServiceInterface(name = "ExampleClient", host = "{endpoint}/example")
    public interface ExampleService {
        @HttpRequestInformation(method = HttpMethod.GET, path = "/user/{userId}", expectedStatusCodes = { 200 })
@@ -89,7 +89,7 @@ The client-core annotation processor for introducing compile-time code generatio
       public HttpPipeline getPipeline() {
           return defaultPipeline;
       }
-      
+
       public Response<BinaryData> getUser(String userId, Context context) {
           return getUser(endpoint, apiVersion, userId, context);
       }
@@ -119,7 +119,7 @@ The client-core annotation processor for introducing compile-time code generatio
           if (!expectedResponse) {
               throw new RuntimeException("Unexpected response code: " + responseCode);
           }
-       
+
           networkResponse.close();
           return networkResponse;
       }

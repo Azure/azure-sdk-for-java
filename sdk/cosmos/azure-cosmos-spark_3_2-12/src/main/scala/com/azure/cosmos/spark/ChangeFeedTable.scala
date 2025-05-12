@@ -77,7 +77,7 @@ private class ChangeFeedTable(val session: SparkSession,
   private val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
   private val cosmosClientConfig = CosmosClientConfiguration(
     effectiveUserConfig,
-    useEventualConsistency = readConfig.forceEventualConsistency,
+    readConsistencyStrategy = readConfig.readConsistencyStrategy,
     sparkEnvironmentInfo)
   // This can only be used for data operation against a certain container.
   private lazy val containerStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots] =

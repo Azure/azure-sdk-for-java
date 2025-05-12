@@ -41,8 +41,7 @@ final class HeaderFilteringMap extends AbstractMap<String, List<String>> {
 
     @Override
     public Set<Entry<String, List<String>>> entrySet() {
-        throw logger.logThrowableAsError(
-            new UnsupportedOperationException("The only operation permitted by this Map is forEach."));
+        throw logger.throwableAtError().log("The only operation permitted by this Map is forEach.", UnsupportedOperationException::new);
     }
 
     @Override

@@ -20,6 +20,16 @@ import java.io.UncheckedIOException;
  */
 public abstract class CoreException extends RuntimeException {
     /**
+     * Creates a new {@link CoreException} with the specified message.
+     *
+     * @param message the exception message
+     * @return the {@link CoreException} that was created
+     */
+    public static CoreException from(String message) {
+        return from(message, null);
+    }
+
+    /**
      * Translates a {@link Throwable} into a {@link CoreException}.
      *
      * @param cause the {@link Throwable} to translate
@@ -59,7 +69,7 @@ public abstract class CoreException extends RuntimeException {
      * @param isRetryable whether the exception is retryable. When in doubt, set to {@code true}.
      * @return the {@link CoreException} that was created
      */
-    static CoreException from(String message, Throwable cause, boolean isRetryable) {
+    public static CoreException from(String message, Throwable cause, boolean isRetryable) {
         String updatedMessage = message;
         Throwable updatedCause = cause;
         if (cause instanceof CoreException) {

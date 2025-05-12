@@ -134,7 +134,8 @@ public class InterceptorManager implements AutoCloseable {
             if (!CoreUtils.isNullOrEmpty(proxyVariableQueue)) {
                 return proxyVariableQueue.remove();
             } else {
-                throw LOGGER.logThrowableAsError(new RuntimeException("'proxyVariableQueue' cannot be null or empty."));
+                throw LOGGER.throwableAtError()
+                    .log("'proxyVariableQueue' cannot be null or empty.", IllegalArgumentException::new);
             }
         };
     }

@@ -52,20 +52,20 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  *
  * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
  *
- * <!-- src_embed com.azure.data.applicationconfig.configurationclient.instantiation -->
+ * <!-- src_embed com.azure.v2.data.applicationconfig.configurationclient.instantiation -->
  * <pre>
  * ConfigurationClient configurationClient = new ConfigurationClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.data.applicationconfig.configurationclient.instantiation -->
+ * <!-- end com.azure.v2.data.applicationconfig.configurationclient.instantiation -->
  *
  * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline
  * and set the service endpoint with {@link #endpoint(String) this}. Using a pipeline requires additional setup but
  * allows for finer control on how the {@link ConfigurationClient} is built.</p>
  *
- * <!-- src_embed com.azure.data.applicationconfig.configurationclient.pipeline.instantiation -->
+ * <!-- src_embed com.azure.v2.data.applicationconfig.configurationclient.pipeline.instantiation -->
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .addPolicy&#40;new AddHeadersPolicy&#40;new HttpHeaders&#40;&#41;&#41;&#41;
@@ -76,7 +76,7 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  *     .connectionString&#40;connectionString&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.data.applicationconfig.configurationclient.pipeline.instantiation -->
+ * <!-- end com.azure.v2.data.applicationconfig.configurationclient.pipeline.instantiation -->
  *
  * @see ConfigurationClient
  */

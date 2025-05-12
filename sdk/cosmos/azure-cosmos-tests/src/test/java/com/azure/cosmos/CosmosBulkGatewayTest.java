@@ -56,7 +56,7 @@ public class CosmosBulkGatewayTest extends BatchTestBase {
         safeClose(this.bulkClient);
     }
 
-    @Test(groups = {"split"}, timeOut = TIMEOUT * 20)
+    @Test(groups = {"split"}, timeOut = TIMEOUT * 20, retryAnalyzer = SplitTestsRetryAnalyzer.class)
     public void createItem_withBulk_split() throws InterruptedException {
         String containerId = "bulksplittestcontainer_" + UUID.randomUUID();
         int totalRequest = getTotalRequest();
@@ -113,16 +113,26 @@ public class CosmosBulkGatewayTest extends BatchTestBase {
                     throughputResponse.getProperties().getManualThroughput());
         throughputResponse = container.readThroughput().block();
 
-
-        // Wait for the throughput update to complete so that we get the partition split
-        while (true) {
-            assert throughputResponse != null;
-            if (!throughputResponse.isReplacePending()) {
-                break;
-            }
+        int i = 0;
+        // Only wait for 10 minutes for the split to complete
+        // If backend does not finish split within 10 minutes
+        // something is off in the backend
+        // it could be due to limits on how many splits can be executed concurrently etc.
+        // nothing that can really be done in the SDK
+        while (i < 60 && throughputResponse.isReplacePending()) {
             logger.info("Waiting for split to complete");
             Thread.sleep(10 * 1000);
             throughputResponse = container.readThroughput().block();
+            i++;
+        }
+
+        if (throughputResponse.isReplacePending()) {
+            throw new SplitTimeoutException(
+                "Backend did not finish split for container '"
+                    + getEndpoint() + "/"
+                    + container.getDatabase().getId() + "/"
+                    + container.getId()
+                    + "' - skipping this test case");
         }
 
         // Read number of partitions. Should be greater than one
