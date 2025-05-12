@@ -1,9 +1,10 @@
 ## Release History
 
-### 4.38.0 (2025-05-13)
+### 4.37.2 (2025-05-13)
 
 #### Bugs Fixed
 * Fixed an issue during bulk write operations that could result in failing the Spark job in `BulkWriter.flushAndClose` too eagerly in certain cases. - See [PR 44992](https://github.com/Azure/azure-sdk-for-java/pull/44992)
+* Fixed hang issue in `CosmosPagedIterable#handle` by preventing race conditions in underlying subscription of `Flux<FeedResponse>`. - [PR 45290](https://github.com/Azure/azure-sdk-for-java/pull/45290)
 
 ### 4.37.1 (2025-03-04)
 
