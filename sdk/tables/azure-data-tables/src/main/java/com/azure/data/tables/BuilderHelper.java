@@ -64,9 +64,7 @@ final class BuilderHelper {
         configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
 
-        audience = (audience != null)
-            ? audience
-            : getDefaulTableAudience(TableUtils.isCosmosEndpoint(endpoint));
+        audience = (audience != null) ? audience : getDefaulTableAudience(TableUtils.isCosmosEndpoint(endpoint));
 
         if (retryPolicy != null && retryOptions != null) {
             throw logger.logExceptionAsWarning(
@@ -215,8 +213,6 @@ final class BuilderHelper {
     }
 
     private static TableAudience getDefaulTableAudience(boolean isCosmosEndpoint) {
-        return isCosmosEndpoint
-            ? TableAudience.AZURE_COSMOS_PUBLIC_CLOUD
-            : TableAudience.AZURE_STORAGE_PUBLIC_CLOUD;
+        return isCosmosEndpoint ? TableAudience.AZURE_COSMOS_PUBLIC_CLOUD : TableAudience.AZURE_STORAGE_PUBLIC_CLOUD;
     }
 }

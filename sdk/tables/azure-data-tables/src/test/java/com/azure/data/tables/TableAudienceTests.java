@@ -42,8 +42,7 @@ public class TableAudienceTests {
         "https://cosmos.azure.nz/.default, https://cosmos.azure.nz/.default",
         "https://storage.azure.nz/, https://storage.azure.nz/.default",
         "https://storage.azure.nz, https://storage.azure.nz/.default",
-        "https://storage.azure.nz/.default, https://storage.azure.nz/.default"
-    })
+        "https://storage.azure.nz/.default, https://storage.azure.nz/.default" })
     public void testCustomAudience(String customAudienceString, String expectedDefaultScope) {
         TableAudience audience = TableAudience.fromString(customAudienceString);
         assertEquals(expectedDefaultScope, audience.getDefaultScope());
