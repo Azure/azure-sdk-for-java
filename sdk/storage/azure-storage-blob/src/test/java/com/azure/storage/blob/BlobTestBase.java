@@ -1118,7 +1118,7 @@ public class BlobTestBase extends TestProxyTestBase {
         public Mono<HttpResponse> send(HttpRequest request) {
             String url = request.getUrl().toString();
             HttpResponse response;
-            int delay = isAsync ? 8 : 4;
+            int delay = isAsync ? 4 : 8;
 
             if (url.contains("?restype=container&comp=list&maxresults=")) {
                 // flat first request
@@ -1183,7 +1183,7 @@ public class BlobTestBase extends TestProxyTestBase {
         public Mono<HttpResponse> send(HttpRequest request) {
             String url = request.getUrl().toString();
             HttpResponse response;
-            int delay = isAsync ? 8 : 4;
+            int delay = isAsync ? 4 : 8;
 
             if (url.contains("marker")) {
                 // second request
@@ -1233,7 +1233,7 @@ public class BlobTestBase extends TestProxyTestBase {
         public Mono<HttpResponse> send(HttpRequest request) {
             String url = request.getUrl().toString();
             HttpResponse response;
-            int delay = isAsync ? 8 : 4;
+            int delay = isAsync ? 4 : 8;
 
             if (url.contains("?comp=list&maxresults=")) {
                 // flat first request
