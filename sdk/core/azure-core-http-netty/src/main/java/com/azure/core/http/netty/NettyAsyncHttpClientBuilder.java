@@ -40,9 +40,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
-import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 
 /**
@@ -186,10 +183,10 @@ public class NettyAsyncHttpClientBuilder {
             nettyHttpClient = HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE);
             addressResolverWasSetByBuilder = true;
         }
-
-        long writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis();
-        long responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout()).toMillis();
-        long readTimeout = getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis();
+        //
+        //        long writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis();
+        //        long responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout()).toMillis();
+        //        long readTimeout = getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis();
 
         // Get the initial HttpResponseDecoderSpec and update it.
         // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
