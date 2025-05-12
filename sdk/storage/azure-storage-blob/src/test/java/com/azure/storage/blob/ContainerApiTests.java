@@ -1070,38 +1070,43 @@ public class ContainerApiTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> cc.listBlobs().iterator().hasNext());
     }
 
+    /*
+     * For listBlobsFlatWithTimeoutStillBackedByPagedStream and listBlobsHierWithTimeoutStillBackedByPagedStream:
+     * The custom http client returns a generic xml list of 5 blobs total.
+     * The api call should return 2 pages, one page of 3 blobs and one page of 2 blobs.
+     * Although each page is set to take 4 seconds to return, the timeout being set to 6 seconds should not cause the test to fail,
+     * as the timeout is only on the page request and not the entire stream of pages.
+     */
+
     @Test
     public void listBlobsFlatWithTimeoutStillBackedByPagedStream() {
-        int numBlobs = 5;
-        int pageResults = 3;
+        BlobContainerClient containerClient
+            = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
+                .credential(new MockTokenCredential())
+                .containerName("foo")
+                .httpClient(new ListBlobsWithTimeoutTestClient())
+                .buildClient();
 
-        for (int i = 0; i < numBlobs; i++) {
-            BlockBlobClient blob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-            blob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-        }
-
-        // when: "Consume results by page, then still have paging functionality"
-        assertDoesNotThrow(
-            () -> cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults), Duration.ofSeconds(10))
+        assertEquals(2,
+            containerClient.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(3), Duration.ofSeconds(6))
                 .streamByPage()
                 .count());
     }
 
     @Test
     public void listBlobsHierWithTimeoutStillBackedByPagedStream() {
-        int numBlobs = 5;
-        int pageResults = 3;
+        BlobContainerClient containerClient
+            = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
+                .credential(new MockTokenCredential())
+                .containerName("foo")
+                .httpClient(new ListBlobsWithTimeoutTestClient())
+                .buildClient();
 
-        for (int i = 0; i < numBlobs; i++) {
-            BlockBlobClient blob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-            blob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-        }
-
-        // when: "Consume results by page, then still have paging functionality"
-        assertDoesNotThrow(() -> cc
-            .listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(pageResults), Duration.ofSeconds(10))
-            .streamByPage()
-            .count());
+        assertEquals(2,
+            containerClient
+                .listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(3), Duration.ofSeconds(6))
+                .streamByPage()
+                .count());
     }
 
     /*
@@ -1656,26 +1661,28 @@ public class ContainerApiTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> cc.findBlobsByTags("garbageTag").streamByPage().count());
     }
 
-    @SuppressWarnings("deprecation")
+    /*
+     * For findBlobsWithTimeoutStillBackedByPagedStream:
+     * The custom http client returns a generic xml list of 5 blobs total.
+     * The api call should return 2 pages, one page of 3 blobs and one page of 2 blobs.
+     * Although each page is set to take 4 seconds to return, the timeout being set to 6 seconds should not cause the test to fail,
+     * as the timeout is only on the page request and not the entire stream of pages.
+     */
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
     public void findBlobsWithTimeoutStillBackedByPagedStream() {
-        int numBlobs = 5;
-        int pageResults = 3;
-        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
+        BlobContainerClient containerClient
+            = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
+                .credential(new MockTokenCredential())
+                .containerName("foo")
+                .httpClient(new FindBlobsWithTimeoutClient())
+                .buildClient();
 
-        for (int i = 0; i < numBlobs; i++) {
-            cc.getBlobClient(generateBlobName())
-                .uploadWithResponse(
-                    new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize())
-                        .setTags(tags),
-                    null, null);
-        }
-
-        // when: "Consume results by page, still have paging functionality"
-        assertDoesNotThrow(() -> cc.findBlobsByTags(
-            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults),
-            Duration.ofSeconds(10), Context.NONE).streamByPage().count());
+        assertEquals(2,
+            containerClient.findBlobsByTags(
+                new FindBlobsOptions(String.format("\"%s\"='%s'", "dummyKey", "dummyValue")).setMaxResultsPerPage(3),
+                Duration.ofSeconds(6), Context.NONE).streamByPage().count());
     }
 
     @ParameterizedTest

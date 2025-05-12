@@ -1122,38 +1122,46 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         StepVerifier.create(ccAsync.listBlobs()).verifyError(BlobStorageException.class);
     }
 
+    /*
+     * For listBlobsFlatWithTimeoutStillBackedByPagedFlux and listBlobsHierWithTimeoutStillBackedByPagedFlux:
+     * The custom http client returns a generic xml list of 5 blobs total.
+     * The api call should return 2 pages, one page of 3 blobs and one page of 2 blobs.
+     * Although each page is set to take 4 seconds to return, the timeout being set to 6 seconds should not cause the test to fail,
+     * as the timeout is only on the page request and not the entire stream of pages.
+    */
     @Test
     public void listBlobsFlatWithTimeoutStillBackedByPagedFlux() {
-        int numBlobs = 5;
-        int pageResults = 3;
+        BlobContainerAsyncClient containerClient
+            = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
+                .credential(new MockTokenCredential())
+                .containerName("foo")
+                .httpClient(new ListBlobsWithTimeoutTestClient())
+                .buildAsyncClient();
 
-        Mono<List<BlockBlobItem>> createBlob = Flux.range(0, numBlobs).flatMap(i -> {
-            BlockBlobAsyncClient blob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-            return blob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize());
-        }).collectList();
-
-        // when: "Consume results by page, then still have paging functionality"
         StepVerifier
-            .create(createBlob
-                .thenMany(ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults)).byPage()))
+            .create(
+                containerClient
+                    .listBlobsFlatWithOptionalTimeout(new ListBlobsOptions().setMaxResultsPerPage(3), null,
+                        Duration.ofSeconds(6))
+                    .byPage())
             .expectNextCount(2)
             .verifyComplete();
     }
 
     @Test
     public void listBlobsHierWithTimeoutStillBackedByPagedFlux() {
-        int numBlobs = 5;
-        int pageResults = 3;
+        BlobContainerAsyncClient containerClient
+            = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
+                .credential(new MockTokenCredential())
+                .containerName("foo")
+                .httpClient(new ListBlobsWithTimeoutTestClient())
+                .buildAsyncClient();
 
-        Mono<List<BlockBlobItem>> createBlob = Flux.range(0, numBlobs).flatMap(i -> {
-            BlockBlobAsyncClient blob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-            return blob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize());
-        }).collectList();
-
-        // when: "Consume results by page, then still have paging functionality"
         StepVerifier
-            .create(createBlob.thenMany(
-                ccAsync.listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(pageResults)).byPage()))
+            .create(containerClient
+                .listBlobsHierarchyWithOptionalTimeout("/", new ListBlobsOptions().setMaxResultsPerPage(3),
+                    Duration.ofSeconds(6))
+                .byPage())
             .expectNextCount(2)
             .verifyComplete();
     }
@@ -1776,33 +1784,27 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         StepVerifier.create(ccAsync.findBlobsByTags("garbageTag").byPage()).verifyError(BlobStorageException.class);
     }
 
-    @SuppressWarnings("deprecation")
+    /*
+     * For findBlobsWithTimeoutStillBackedByPagedFlux:
+     * The custom http client returns a generic xml list of 5 blobs total.
+     * The api call should return 2 pages, one page of 3 blobs and one page of 2 blobs.
+     * Although each page is set to take 4 seconds to return, the timeout being set to 6 seconds should not cause the test to fail,
+     * as the timeout is only on the page request and not the entire stream of pages.
+     */
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
     public void findBlobsWithTimeoutStillBackedByPagedFlux() {
-        int numBlobs = 5;
-        int pageResults = 3;
-        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
+        BlobContainerAsyncClient containerClient
+            = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
+                .credential(new MockTokenCredential())
+                .containerName("foo")
+                .httpClient(new FindBlobsWithTimeoutClient())
+                .buildAsyncClient();
 
-        Mono<List<Response<BlockBlobItem>>> uploadBlob = Flux.range(0, numBlobs)
-            .flatMap(i -> ccAsync.getBlobAsyncClient(generateBlobName())
-                .uploadWithResponse(
-                    new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize())
-                        .setTags(tags)))
-            .collectList();
-
-        // when: "Consume results by page, still have paging functionality"
-        StepVerifier
-            .create(
-                uploadBlob
-                    .thenMany(
-                        ccAsync
-                            .findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
-                                .setMaxResultsPerPage(pageResults), Duration.ofSeconds(10), Context.NONE)
-                            .byPage()
-                            .count()))
-            .expectNextCount(1)
-            .verifyComplete();
+        StepVerifier.create(containerClient.findBlobsByTags(
+            new FindBlobsOptions(String.format("\"%s\"='%s'", "dummyKey", "dummyValue")).setMaxResultsPerPage(3),
+            Duration.ofSeconds(6), Context.NONE).byPage()).expectNextCount(2).verifyComplete();
     }
 
     @ParameterizedTest

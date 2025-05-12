@@ -9,6 +9,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.NoOpHttpClient;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
@@ -45,7 +46,6 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -292,25 +292,18 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void listContainersWithTimeoutStillBackedByPagedStream() {
-        int numContainers = 5;
-        int pageResults = 3;
+        BlobServiceClient serviceClient
+            = new BlobServiceClientBuilder().endpoint("https://account.blob.core.windows.net/")
+                .credential(new MockTokenCredential())
+                .httpClient(new ListContainersWithTimeoutTestClient())
+                .buildClient();
 
-        List<BlobContainerClient> containers = new ArrayList<>();
-        for (int i = 0; i < numContainers; i++) {
-            containers.add(primaryBlobServiceClient.createBlobContainer(generateContainerName()));
-        }
-        // when: "Consume results by page, then should still have paging functionality""
-        assertDoesNotThrow(
-            () -> primaryBlobServiceClient
-                .listBlobContainers(new ListBlobContainersOptions().setMaxResultsPerPage(pageResults),
-                    Duration.ofSeconds(10))
+        assertEquals(2,
+            serviceClient
+                .listBlobContainers(new ListBlobContainersOptions().setMaxResultsPerPage(3), Duration.ofSeconds(6))
                 .streamByPage()
                 .count());
 
-        // cleanup:
-        for (BlobContainerClient container : containers) {
-            container.delete();
-        }
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
@@ -525,30 +518,27 @@ public class ServiceApiTests extends BlobTestBase {
 
     }
 
-    @SuppressWarnings("deprecation")
+    /*
+     * For findBlobsWithTimeoutStillBackedByPagedStream:
+     * The custom http client returns a generic xml list of 5 blobs total.
+     * The api call should return 2 pages, one page of 3 blobs and one page of 2 blobs.
+     * Although each page is set to take 4 seconds to return, the timeout being set to 6 seconds should not cause the test to fail,
+     * as the timeout is only on the page request and not the entire stream of pages.
+     */
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsWithTimeoutStillBackedByPagedStream() {
-        int numBlobs = 5;
-        int pageResults = 3;
-        BlobContainerClient cc = primaryBlobServiceClient.createBlobContainer(generateContainerName());
-        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
+        BlobServiceClient serviceClient
+            = new BlobServiceClientBuilder().endpoint("https://account.blob.core.windows.net/")
+                .credential(new MockTokenCredential())
+                .httpClient(new FindBlobsWithTimeoutClient())
+                .buildClient();
 
-        for (int i = 0; i < numBlobs; i++) {
-            cc.getBlobClient(generateBlobName())
-                .uploadWithResponse(
-                    new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize())
-                        .setTags(tags),
-                    null, null);
-        }
-
-        // when: "Consume results by page, then still have paging functionality"
-        assertDoesNotThrow(() -> primaryBlobServiceClient.findBlobsByTags(
-            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults),
-            Duration.ofSeconds(10), Context.NONE).streamByPage().count());
-
-        // cleanup:
-        cc.delete();
+        assertEquals(2,
+            serviceClient.findBlobsByTags(
+                new FindBlobsOptions(String.format("\"%s\"='%s'", "dummyKey", "dummyValue")).setMaxResultsPerPage(3),
+                Duration.ofSeconds(6), Context.NONE).streamByPage().count());
     }
 
     private static void validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {
