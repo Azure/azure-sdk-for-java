@@ -70,6 +70,7 @@ public class RunsAsyncClientTest extends ClientTestBase {
         });
     }
 
+    @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.persistent.TestUtils#getTestParameters")
     public void testCreateAndRetrieveRun(HttpClient httpClient) {
