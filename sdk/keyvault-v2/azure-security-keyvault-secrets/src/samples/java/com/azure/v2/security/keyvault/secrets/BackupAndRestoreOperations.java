@@ -44,7 +44,7 @@ public class BackupAndRestoreOperations {
 
         // Let's create secrets holding storage account credentials valid for 1 year. If the secret already exists in
         // the key vault, then a new version of the secret is created.
-        client.setSecret(new KeyVaultSecret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
+        client.setSecret(new KeyVaultSecret("StorageAccountPassword", "<a-secure-password>")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 

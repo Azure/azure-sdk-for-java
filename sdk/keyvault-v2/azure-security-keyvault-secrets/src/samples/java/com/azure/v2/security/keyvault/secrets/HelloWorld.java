@@ -38,7 +38,7 @@ public class HelloWorld {
 
         // Let's create a secret holding bank account credentials valid for 1 year. If the secret already exists in the
         // key vault, then a new version of the secret is created.
-        secretClient.setSecret(new KeyVaultSecret("BankAccountPassword", "f4G34fMh8v")
+        secretClient.setSecret(new KeyVaultSecret("BankAccountPassword", "<a-secure-password>")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
@@ -59,7 +59,7 @@ public class HelloWorld {
         // Bank forced a password update for security purposes. Let's change the value of the secret in the key vault.
         // To achieve this, we need to create a new version of the secret in the key vault. The update operation cannot
         // change the value of the secret.
-        secretClient.setSecret(new KeyVaultSecret("BankAccountPassword", "bhjd4DDgsa")
+        secretClient.setSecret(new KeyVaultSecret("BankAccountPassword", "<a-different-secure-password>")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 

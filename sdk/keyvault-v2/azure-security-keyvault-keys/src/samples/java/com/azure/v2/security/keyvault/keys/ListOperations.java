@@ -61,11 +61,12 @@ public class ListOperations {
             .setExpiresOn(OffsetDateTime.now().plusYears(1))
             .setKeySize(4096));
 
-        // You need to check all the different versions RSA key had previously. Lets print all the versions of this key.
+        // You need to check all the different versions RSA key had previously. Let's print all the versions of this
+        // key.
         for (KeyProperties key : keyClient.listPropertiesOfKeyVersions("CloudRsaKey")) {
             KeyVaultKey keyWithMaterial = keyClient.getKey(key.getName(), key.getVersion());
 
-            System.out.printf("Received key's version with name %s, type %s and verison %s", keyWithMaterial.getName(),
+            System.out.printf("Received key's version with name %s, type %s and version %s", keyWithMaterial.getName(),
                 keyWithMaterial.getKeyType(), keyWithMaterial.getProperties().getVersion());
         }
     }

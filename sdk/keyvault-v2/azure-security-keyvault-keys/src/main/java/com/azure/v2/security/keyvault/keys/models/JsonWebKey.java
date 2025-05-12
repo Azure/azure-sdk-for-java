@@ -414,11 +414,11 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
     // TODO (vcolin7): Figure out how to print this as a JSON string with the new clientcore.
     /*@Override
     public String toString() {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            JsonWriter writer = new JsonProviders.createWriter(baos)) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            JsonWriter writer = new JsonProviders.createWriter(outputStream)) {
             this.toJson(writer).flush();
     
-            return baos.toString(StandardCharsets.UTF_8);
+            return outputStream.toString(StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new IllegalStateException(e));
         }
@@ -808,25 +808,22 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     // Matches the curve of the keyPair to supported curves.
     private static KeyCurveName getCurveFromKeyPair(KeyPair keyPair, Provider provider) {
-
         try {
-            ECPublicKey key = (ECPublicKey) keyPair.getPublic();
-            ECParameterSpec spec = key.getParams();
-            EllipticCurve crv = spec.getCurve();
+            ECPublicKey publicKey = (ECPublicKey) keyPair.getPublic();
+            EllipticCurve ellipticCurve = publicKey.getParams().getCurve();
 
             for (KeyCurveName curve : KNOWN_CURVE_NAMES) {
-                ECGenParameterSpec gps = new ECGenParameterSpec(getCurveSpecName(curve));
-                KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", provider);
-                kpg.initialize(gps);
+                ECGenParameterSpec genParameterSpec = new ECGenParameterSpec(getCurveSpecName(curve));
+                KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("EC", provider);
+                keyPairGenerator.initialize(genParameterSpec);
 
-                // Generate dummy keypair to get parameter spec.
-                KeyPair apair = kpg.generateKeyPair();
-                ECPublicKey apub = (ECPublicKey) apair.getPublic();
-                ECParameterSpec aspec = apub.getParams();
-                EllipticCurve acurve = aspec.getCurve();
+                // Generate dummy key pair to get parameter spec.
+                KeyPair generatedKeyPair = keyPairGenerator.generateKeyPair();
+                ECPublicKey generatedPublicKey = (ECPublicKey) generatedKeyPair.getPublic();
+                EllipticCurve generatedEllipticCurve = generatedPublicKey.getParams().getCurve();
 
                 // Matches the parameter spec
-                if (acurve.equals(crv)) {
+                if (ellipticCurve.equals(generatedEllipticCurve)) {
                     return curve;
                 }
             }
