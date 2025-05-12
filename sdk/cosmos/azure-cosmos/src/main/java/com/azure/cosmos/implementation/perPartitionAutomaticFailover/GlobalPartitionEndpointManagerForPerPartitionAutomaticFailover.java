@@ -21,6 +21,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -30,6 +31,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
     private final ConcurrentHashMap<PartitionKeyRangeWrapper, EndToEndTimeoutErrorTracker> partitionKeyRangeToEndToEndTimeoutErrorTracker;
     private final GlobalEndpointManager globalEndpointManager;
     private final boolean isPerPartitionAutomaticFailoverEnabled;
+    private final AtomicInteger warnLevelLoggedCounts = new AtomicInteger(0);
 
     public GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(
         GlobalEndpointManager globalEndpointManager,
@@ -47,8 +49,17 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        checkNotNull(request, "Argument 'request' cannot be null!");
-        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
+        if (request == null) {
+            logAsWarnOrDebug("Argument 'request' is null, " +
+                "hence resetEndToEndTimeoutErrorCountIfPossible cannot be performed", this.warnLevelLoggedCounts);
+            return false;
+        }
+
+        if (request.requestContext == null) {
+            logAsWarnOrDebug("Argument 'request.requestContext' is null, " +
+                "hence resetEndToEndTimeoutErrorCountIfPossible cannot be performed", this.warnLevelLoggedCounts);
+            return false;
+        }
 
         if (!isPerPartitionAutomaticFailoverApplicable(request)) {
             return false;
@@ -58,10 +69,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         String resolvedCollectionRid = request.requestContext.resolvedCollectionRid;
 
         if (partitionKeyRange == null) {
+            logAsWarnOrDebug("Argument 'request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover' " +
+                "is null, hence resetEndToEndTimeoutErrorCountIfPossible cannot be performed", this.warnLevelLoggedCounts);
             return false;
         }
 
         if (StringUtils.isEmpty(resolvedCollectionRid)) {
+            logAsWarnOrDebug("Argument 'request.requestContext.resolvedCollectionRid' is null, " +
+                "hence resetEndToEndTimeoutErrorCountIfPossible cannot be performed", this.warnLevelLoggedCounts);
             return false;
         }
 
@@ -82,8 +97,17 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        checkNotNull(request, "Argument 'request' cannot be null!");
-        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
+        if (request == null) {
+            logAsWarnOrDebug("Argument 'request' is null, " +
+                "hence tryAddPartitionLevelLocationOverride cannot be performed", this.warnLevelLoggedCounts);
+            return false;
+        }
+
+        if (request.requestContext == null) {
+            logAsWarnOrDebug("Argument 'request.requestContext' is null, " +
+                "hence tryAddPartitionLevelLocationOverride cannot be performed", this.warnLevelLoggedCounts);
+            return false;
+        }
 
 
         if (request.getResourceType() != ResourceType.Document) {
@@ -98,10 +122,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         String resolvedCollectionRid = request.requestContext.resolvedCollectionRid;
 
         if (partitionKeyRange == null) {
+            logAsWarnOrDebug("Argument 'request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover' " +
+                "is null, hence tryAddPartitionLevelLocationOverride cannot be performed", this.warnLevelLoggedCounts);
             return false;
         }
 
         if (StringUtils.isEmpty(resolvedCollectionRid)) {
+            logAsWarnOrDebug("Argument 'request.requestContext.resolvedCollectionRid' is null, " +
+                "hence tryAddPartitionLevelLocationOverride cannot be performed", this.warnLevelLoggedCounts);
             return false;
         }
 
@@ -109,7 +137,11 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
                 = request.requestContext.getCrossRegionAvailabilityContext();
 
-            checkNotNull(crossRegionAvailabilityContextForRequest, "Argument 'crossRegionAvailabilityContextForRequest' cannot be null!");
+            if (crossRegionAvailabilityContextForRequest == null) {
+                logAsWarnOrDebug("Argument 'request.requestContext.getCrossRegionAvailabilityContext()' is null, " +
+                    "hence tryAddPartitionLevelLocationOverride cannot be performed", this.warnLevelLoggedCounts);
+                return false;
+            }
 
             if (!crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable()) {
                 return false;
@@ -158,10 +190,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         String resolvedCollectionRid = request.requestContext.resolvedCollectionRid;
 
         if (partitionKeyRange == null) {
+            logAsWarnOrDebug("Argument 'request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover' " +
+                "is null, hence tryMarkEndpointAsUnavailableForPartitionKeyRange cannot be performed", this.warnLevelLoggedCounts);
             return false;
         }
 
         if (StringUtils.isEmpty(resolvedCollectionRid)) {
+            logAsWarnOrDebug("Argument 'request.requestContext.resolvedCollectionRid' is null, " +
+                "hence tryMarkEndpointAsUnavailableForPartitionKeyRange cannot be performed", this.warnLevelLoggedCounts);
             return false;
         }
 
@@ -232,10 +268,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         if (request == null) {
+            logAsWarnOrDebug("Argument 'request' is null, " +
+                "hence isPerPartitionAutomaticFailoverApplicable cannot be performed", this.warnLevelLoggedCounts);
             return false;
         }
 
         if (request.requestContext == null) {
+            logAsWarnOrDebug("Argument 'request.requestContext' is null, " +
+                "hence isPerPartitionAutomaticFailoverApplicable cannot be performed", this.warnLevelLoggedCounts);
             return false;
         }
 
@@ -248,10 +288,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         if (request.getResourceType() == null) {
+            logAsWarnOrDebug("Argument 'request.getResourceType()' is null, " +
+                "hence isPerPartitionAutomaticFailoverApplicable cannot be performed", this.warnLevelLoggedCounts);
             return false;
         }
 
         if (request.getOperationType() == null) {
+            logAsWarnOrDebug("Argument 'request.getOperationType()' is null, " +
+                "hence isPerPartitionAutomaticFailoverApplicable cannot be performed", this.warnLevelLoggedCounts);
             return false;
         }
 
@@ -271,5 +315,16 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         return false;
+    }
+
+    private static void logAsWarnOrDebug(String message, AtomicInteger warnLogThreshold) {
+        // warnLogThreshold is not atomic still but with interleaved
+        // updates there would be few extra warn logs in the worst case
+        if (warnLogThreshold.get() < Configs.getWarnLevelLoggingThresholdForPpaf()) {
+            logger.warn(message);
+            warnLogThreshold.incrementAndGet();
+        } else {
+            logger.debug(message);
+        }
     }
 }
