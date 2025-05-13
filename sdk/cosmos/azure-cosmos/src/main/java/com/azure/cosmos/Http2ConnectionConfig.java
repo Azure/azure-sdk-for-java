@@ -122,7 +122,7 @@ public class Http2ConnectionConfig {
         return this;
     }
 
-    public String toDiagnosticsString() {
+    String toDiagnosticsString() {
         return String.format("(enabled:%s, maxc:%s, minc:%s, maxs:%s)",
             isEnabled(),
             maxConnectionPoolSize,
