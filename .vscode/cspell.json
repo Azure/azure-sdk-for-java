@@ -1369,6 +1369,18 @@
       ]
     },
     {
+      "filename": "sdk/ai/azure-ai-projects/**",
+      "words": [
+        "UPIA",
+        "ANSII",
+        "ansii",
+        "AISEARCH",
+        "azureai",
+        "gleu",
+        "GLEU"
+      ]
+    },
+    {
       "filename": "sdk/ai/azure-ai-agents-persistent/**",
       "words": [
         "AISEARCH"
