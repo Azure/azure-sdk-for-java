@@ -4,8 +4,8 @@
 
 ### Features Added
 - Added `AZURE_TOKEN_CREDENTIALS` environment variable to `DefaultAzureCredential` to allow for choosing groups of credentials.
-  - `dev` for `EnvironmentCredential`, `WorkloadIdentityCredential`,  and `ManagedIdentityCredential`.
-  - `prod` for `SharedTokenCredential`, `IntelliJCredential`, `AureCliCredential`, `AzurePowershellCredential`, and `AzureDeveloperCliCredential`. 
+  - `prod` for `EnvironmentCredential`, `WorkloadIdentityCredential`,  and `ManagedIdentityCredential`.
+  - `dev` for `SharedTokenCredential`, `IntelliJCredential`, `AureCliCredential`, `AzurePowershellCredential`, and `AzureDeveloperCliCredential`. 
 
 ### Breaking Changes
 
