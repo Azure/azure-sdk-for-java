@@ -163,6 +163,10 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected String prefix;
 
+    // used to support cross package tests without taking a dependency on the package
+    protected HttpPipeline dataPlanePipeline;
+    protected HttpHeaders genericHeaders;
+
     // used to build pipeline to management plane
     protected static final String RESOURCE_GROUP_NAME = ENVIRONMENT.getResourceGroupName();
     protected static final String SUBSCRIPTION_ID = ENVIRONMENT.getSubscriptionId();
@@ -872,13 +876,6 @@ public class BlobTestBase extends TestProxyTestBase {
 
         return setPolicyMono;
     }
-
-    protected String generateShareName() {
-        return generateResourceName(entityNo++);
-    }
-
-    private HttpPipeline dataPlanePipeline;
-    private HttpHeaders genericHeaders;
 
     protected String createFileAndDirectoryWithoutFileShareDependency(byte[] data, String shareName)
         throws IOException {
