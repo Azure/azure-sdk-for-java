@@ -38,6 +38,10 @@ parameters:
     displayName: 'azure-ai-projects'
     type: boolean
     default: false
+  - name: release_azureaiagentspersistent
+    displayName: 'azure-ai-agents-persistent'
+    type: boolean
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -52,3 +56,7 @@ extends:
         groupId: com.azure
         safeName: azureaiprojects
         releaseInBatch: ${{ parameters.release_azureaiprojects }}
+      - name: azure-ai-agents-persistent
+        groupId: com.azure
+        safeName: azureaiagentspersistent
+        releaseInBatch: ${{ parameters.release_azureaiagentspersistent }}
