@@ -15,7 +15,7 @@ import com.azure.compute.batch.BatchClient;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.compute.batch.models.BatchTaskCreateResult;
 import com.azure.compute.batch.models.BatchTaskAddStatus;
-import com.azure.compute.batch.models.BatchTaskCreateContent;
+import com.azure.compute.batch.models.BatchTaskCreateParameters;
 import com.azure.compute.batch.models.BatchTaskGroup;
 import com.azure.compute.batch.models.CreateTasksErrorException;
 import com.azure.core.exception.HttpResponseException;
@@ -39,12 +39,12 @@ public class TaskManager {
 
         private final TaskSubmitter taskSubmitter;
         private final String jobId;
-        private final Queue<BatchTaskCreateContent> pendingList;
+        private final Queue<BatchTaskCreateParameters> pendingList;
         private final List<BatchTaskCreateResult> failures;
         private volatile Exception exception;
         private final Object lock;
 
-        public WorkingThread(TaskSubmitter taskSubmitter, String jobId, Queue<BatchTaskCreateContent> pendingList,
+        public WorkingThread(TaskSubmitter taskSubmitter, String jobId, Queue<BatchTaskCreateParameters> pendingList,
             List<BatchTaskCreateResult> failures, Object lock) {
             this.taskSubmitter = taskSubmitter;
             this.jobId = jobId;
@@ -69,7 +69,7 @@ public class TaskManager {
          *
          * @param taskList The list of tasks to be submitted.
          */
-        private void submitChunk(List<BatchTaskCreateContent> taskList) {
+        private void submitChunk(List<BatchTaskCreateParameters> taskList) {
             try {
                 taskSubmitter.submitTasks(jobId, new BatchTaskGroup(taskList)).doOnError(e -> {
                     if (e instanceof HttpResponseException) {
@@ -86,7 +86,7 @@ public class TaskManager {
                             if (result.getError() != null) {
                                 if (result.getStatus() == BatchTaskAddStatus.SERVER_ERROR) {
                                     // Server error will be retried
-                                    for (BatchTaskCreateContent batchTaskToCreate : taskList) {
+                                    for (BatchTaskCreateParameters batchTaskToCreate : taskList) {
                                         if (batchTaskToCreate.getId().equals(result.getTaskId())) {
                                             pendingList.add(batchTaskToCreate);
                                             break;
@@ -114,7 +114,7 @@ public class TaskManager {
          * @param e The HttpResponseException encountered.
          * @param taskList The list of tasks that were being submitted when the exception occurred.
          */
-        private void handleException(HttpResponseException e, List<BatchTaskCreateContent> taskList) {
+        private void handleException(HttpResponseException e, List<BatchTaskCreateParameters> taskList) {
             if (e.getResponse().getStatusCode() == 413 && taskList.size() > 1) {
                 // Use binary reduction to decrease size of submitted chunks
                 int midpoint = taskList.size() / 2;
@@ -139,11 +139,11 @@ public class TaskManager {
         @Override
         public void run() {
             try {
-                List<BatchTaskCreateContent> taskList = new LinkedList<>();
+                List<BatchTaskCreateParameters> taskList = new LinkedList<>();
                 int count = 0;
                 int maxAmount = CURRENT_MAX_TASKS.get();
                 while (count < maxAmount) {
-                    BatchTaskCreateContent param = pendingList.poll();
+                    BatchTaskCreateParameters param = pendingList.poll();
                     if (param != null) {
                         taskList.add(param);
                         count++;
@@ -172,7 +172,7 @@ public class TaskManager {
      * @param batchClientParallelOptions Options for configuring the parallelism of task submissions.
      */
     public static Mono<Void> createTasks(TaskSubmitter taskSubmitter, String jobId,
-        List<BatchTaskCreateContent> taskList, BatchClientParallelOptions batchClientParallelOptions) {
+        List<BatchTaskCreateParameters> taskList, BatchClientParallelOptions batchClientParallelOptions) {
 
         final ClientLogger logger = new ClientLogger(BatchClient.class);
 
@@ -183,7 +183,7 @@ public class TaskManager {
                 threadNumber = batchClientParallelOptions.getMaxConcurrency();
             }
             final Object lock = new Object();
-            ConcurrentLinkedQueue<BatchTaskCreateContent> pendingList = new ConcurrentLinkedQueue<>(taskList);
+            ConcurrentLinkedQueue<BatchTaskCreateParameters> pendingList = new ConcurrentLinkedQueue<>(taskList);
             CopyOnWriteArrayList<BatchTaskCreateResult> failures = new CopyOnWriteArrayList<>();
             Map<Thread, WorkingThread> threads = new HashMap<>();
             Exception innerException = null;
@@ -264,8 +264,8 @@ public class TaskManager {
             }
 
             if (!failures.isEmpty()) {
-                List<BatchTaskCreateContent> notFinished = new ArrayList<>(pendingList);
-                for (BatchTaskCreateContent param : pendingList) {
+                List<BatchTaskCreateParameters> notFinished = new ArrayList<>(pendingList);
+                for (BatchTaskCreateParameters param : pendingList) {
                     notFinished.add(param);
                 }
                 sink.error(
