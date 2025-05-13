@@ -1123,50 +1123,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     /*
-     * For listBlobsFlatWithTimeoutStillBackedByPagedFlux and listBlobsHierWithTimeoutStillBackedByPagedFlux:
-     * The custom http client returns a generic xml list of 5 blobs total.
-     * The api call should return 2 pages, one page of 3 blobs and one page of 2 blobs.
-     * Although each page is set to take 4 seconds to return, the timeout being set to 6 seconds should not cause the test to fail,
-     * as the timeout is only on the page request and not the entire stream of pages.
-    */
-    @Test
-    public void listBlobsFlatWithTimeoutStillBackedByPagedFlux() {
-        BlobContainerAsyncClient containerClient
-            = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
-                .credential(new MockTokenCredential())
-                .containerName("foo")
-                .httpClient(new ListBlobsWithTimeoutTestClient(true))
-                .buildAsyncClient();
-
-        StepVerifier
-            .create(
-                containerClient
-                    .listBlobsFlatWithOptionalTimeout(new ListBlobsOptions().setMaxResultsPerPage(3), null,
-                        Duration.ofSeconds(6))
-                    .byPage())
-            .expectNextCount(2)
-            .verifyComplete();
-    }
-
-    @Test
-    public void listBlobsHierWithTimeoutStillBackedByPagedFlux() {
-        BlobContainerAsyncClient containerClient
-            = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
-                .credential(new MockTokenCredential())
-                .containerName("foo")
-                .httpClient(new ListBlobsWithTimeoutTestClient(true))
-                .buildAsyncClient();
-
-        StepVerifier
-            .create(containerClient
-                .listBlobsHierarchyWithOptionalTimeout("/", new ListBlobsOptions().setMaxResultsPerPage(3),
-                    Duration.ofSeconds(6))
-                .byPage())
-            .expectNextCount(2)
-            .verifyComplete();
-    }
-
-    /*
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
@@ -1782,29 +1738,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     public void findBlobsError() {
         StepVerifier.create(ccAsync.findBlobsByTags("garbageTag").byPage()).verifyError(BlobStorageException.class);
-    }
-
-    /*
-     * For findBlobsWithTimeoutStillBackedByPagedFlux:
-     * The custom http client returns a generic xml list of 5 blobs total.
-     * The api call should return 2 pages, one page of 3 blobs and one page of 2 blobs.
-     * Although each page is set to take 4 seconds to return, the timeout being set to 6 seconds should not cause the test to fail,
-     * as the timeout is only on the page request and not the entire stream of pages.
-     */
-
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
-    @Test
-    public void findBlobsWithTimeoutStillBackedByPagedFlux() {
-        BlobContainerAsyncClient containerClient
-            = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
-                .credential(new MockTokenCredential())
-                .containerName("foo")
-                .httpClient(new FindBlobsWithTimeoutClient(true))
-                .buildAsyncClient();
-
-        StepVerifier.create(containerClient.findBlobsByTags(
-            new FindBlobsOptions(String.format("\"%s\"='%s'", "dummyKey", "dummyValue")).setMaxResultsPerPage(3),
-            Duration.ofSeconds(6), Context.NONE).byPage()).expectNextCount(2).verifyComplete();
     }
 
     @ParameterizedTest

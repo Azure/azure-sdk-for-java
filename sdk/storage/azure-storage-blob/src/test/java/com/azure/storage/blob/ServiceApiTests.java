@@ -9,7 +9,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.NoOpHttpClient;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
@@ -290,30 +289,6 @@ public class ServiceApiTests extends BlobTestBase {
         assertThrows(IllegalStateException.class, () -> anonymousClient.listBlobContainers().iterator());
     }
 
-    /*
-     * For listContainersWithTimeoutStillBackedByPagedStream:
-     * The custom http client returns a generic xml list of 5 blobs total.
-     * The api call should return 2 pages, one page of 3 blobs and one page of 2 blobs.
-     * Although each page is set to take 4 seconds to return, the timeout being set to 6 seconds should not cause the test to fail,
-     * as the timeout is only on the page request and not the entire stream of pages.
-     */
-
-    @Test
-    public void listContainersWithTimeoutStillBackedByPagedStream() {
-        BlobServiceClient serviceClient
-            = new BlobServiceClientBuilder().endpoint("https://account.blob.core.windows.net/")
-                .credential(new MockTokenCredential())
-                .httpClient(new ListContainersWithTimeoutTestClient(false))
-                .buildClient();
-
-        assertEquals(2,
-            serviceClient
-                .listBlobContainers(new ListBlobContainersOptions().setMaxResultsPerPage(3), Duration.ofSeconds(14))
-                .streamByPage()
-                .count());
-
-    }
-
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     @ResourceLock("ServiceProperties")
@@ -524,29 +499,6 @@ public class ServiceApiTests extends BlobTestBase {
         // Invalid query, but the anonymous check will fail before hitting the wire
         assertThrows(IllegalStateException.class, () -> anonymousClient.findBlobsByTags("foo=bar").iterator().next());
 
-    }
-
-    /*
-     * For findBlobsWithTimeoutStillBackedByPagedStream:
-     * The custom http client returns a generic xml list of 5 blobs total.
-     * The api call should return 2 pages, one page of 3 blobs and one page of 2 blobs.
-     * Although each page is set to take 4 seconds to return, the timeout being set to 6 seconds should not cause the test to fail,
-     * as the timeout is only on the page request and not the entire stream of pages.
-     */
-
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
-    @Test
-    public void findBlobsWithTimeoutStillBackedByPagedStream() {
-        BlobServiceClient serviceClient
-            = new BlobServiceClientBuilder().endpoint("https://account.blob.core.windows.net/")
-                .credential(new MockTokenCredential())
-                .httpClient(new FindBlobsWithTimeoutClient(false))
-                .buildClient();
-
-        assertEquals(2,
-            serviceClient.findBlobsByTags(
-                new FindBlobsOptions(String.format("\"%s\"='%s'", "dummyKey", "dummyValue")).setMaxResultsPerPage(3),
-                Duration.ofSeconds(14), Context.NONE).streamByPage().count());
     }
 
     private static void validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {

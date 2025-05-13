@@ -30,6 +30,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
+import org.junit.jupiter.api.parallel.Isolated;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,8 +57,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Set of tests that use <a href="">HTTP fault injecting</a> to simulate scenarios where the network has random errors.
+ * Isolated is used to ensure that timeouts caused by resource related issues are not mistaken for fault injections.
  */
 @EnabledIf("shouldRun")
+@Isolated
 public class HttpFaultInjectingTests {
     private static final ClientLogger LOGGER = new ClientLogger(HttpFaultInjectingTests.class);
     private static final HttpHeaderName UPSTREAM_URI_HEADER = HttpHeaderName.fromString("X-Upstream-Base-Uri");
