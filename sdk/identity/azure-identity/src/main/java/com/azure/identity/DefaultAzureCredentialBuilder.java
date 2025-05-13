@@ -274,17 +274,22 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             ? Configuration.getGlobalConfiguration().clone()
             : identityClientOptions.getConfiguration();
         String selectedCredentials = configuration.get("AZURE_TOKEN_CREDENTIALS");
-        boolean useProductionCredentials = true;
-        boolean useDeveloperCredentials = true;
+        boolean useProductionCredentials = false;
+        boolean useDeveloperCredentials = false;
         if (!CoreUtils.isNullOrEmpty(selectedCredentials)) {
+            selectedCredentials = selectedCredentials.trim();
             if ("prod".equalsIgnoreCase(selectedCredentials)) {
-                useDeveloperCredentials = false;
+                useProductionCredentials = true;
             } else if ("dev".equalsIgnoreCase(selectedCredentials)) {
-                useProductionCredentials = false;
+                useDeveloperCredentials = true;
             } else {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "Invalid value for AZURE_TOKEN_CREDENTIALS. Valid values are 'prod' or 'dev'."));
             }
+        }
+        if (!useProductionCredentials && !useDeveloperCredentials) {
+            useProductionCredentials = true;
+            useDeveloperCredentials = true;
         }
 
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(8);
