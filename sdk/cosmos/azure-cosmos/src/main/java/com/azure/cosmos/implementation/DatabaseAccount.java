@@ -282,6 +282,19 @@ public final class DatabaseAccount extends Resource {
         this.set(Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS, value);
     }
 
+    public Boolean isPerPartitionFailoverBehaviorEnabled() {
+
+        if (super.has(Constants.Properties.ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR)) {
+            return ObjectUtils.defaultIfNull(super.getBoolean(Constants.Properties.ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR), false);
+        }
+
+        return null;
+    }
+
+    public void setIsPerPartitionFailoverBehaviorEnabled(boolean value) {
+        this.set(Constants.Properties.ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR, value);
+    }
+
     public void populatePropertyBag() {
         super.populatePropertyBag();
         if (this.consistencyPolicy != null) {
