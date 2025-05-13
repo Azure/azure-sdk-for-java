@@ -3,6 +3,7 @@
 ## 1.17.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `AZURE_TOKEN_CREDENTIALS` environment variable to `DefaultAzureCredential` to allow for choosing groups of credentials.
 
 ### Breaking Changes
 
