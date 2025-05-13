@@ -156,6 +156,12 @@ public final class SearchKnowledgeAgentClientBuilder implements
         return this;
     }
 
+    /**
+     * Sets the audience for the Azure AI Search instance.
+     *
+     * @param audience The audience to use.
+     * @return The updated builder object.
+     */
     public SearchKnowledgeAgentClientBuilder audience(SearchAudience audience) {
         this.audience = audience;
         return this;
