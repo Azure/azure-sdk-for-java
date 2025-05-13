@@ -31,7 +31,7 @@ service libraries in the `/sdk/keyvault-v2/azure-security-keyvault-<subcomponent
 [azure_keyvault]: https://learn.microsoft.com/azure/key-vault/general/overview
 [azure_keyvault_java]: https://learn.microsoft.com/java/api/overview/azure/keyvault
 [azure_keyvault_mhsm]: https://learn.microsoft.com/azure/key-vault/managed-hsm/overview
-[azure_keyvault_administration_library]: ./azure-security-keyvault-administration/README.md
-[azure_keyvault_certificates_library]: ./azure-security-keyvault-certificates/README.md
-[azure_keyvault_keys_library]: ./azure-security-keyvault-keys/README.md
-[azure_keyvault_secrets_library]: ./azure-security-keyvault-secrets/README.md
+[azure_keyvault_administration_library]: https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-administration/README.md
+[azure_keyvault_certificates_library]: https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-certificates/README.md
+[azure_keyvault_keys_library]: https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-keys/README.md
+[azure_keyvault_secrets_library]: https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-secrets/README.md
