@@ -113,7 +113,6 @@
     "com.azure.messaging.eventgrid.systemevents.ApiManagementCircuitBreakerClosedEventData": "Microsoft.EventGrid.SystemEvents.ApiManagementCircuitBreakerClosedEventData",
     "com.azure.messaging.eventgrid.systemevents.ApiManagementCircuitBreakerOpenedEventData": "Microsoft.EventGrid.SystemEvents.ApiManagementCircuitBreakerOpenedEventData",
     "com.azure.messaging.eventgrid.systemevents.ApiManagementCircuitBreakerProperties": "Microsoft.EventGrid.SystemEvents.ApiManagementCircuitBreakerProperties",
-    "com.azure.messaging.eventgrid.systemevents.ApiManagementCircuitBreakerPropertiesRule": "Microsoft.EventGrid.SystemEvents.ApiManagementCircuitBreakerProperties.rule.anonymous",
     "com.azure.messaging.eventgrid.systemevents.ApiManagementExpiredGatewayTokenProperties": "Microsoft.EventGrid.SystemEvents.ApiManagementExpiredGatewayTokenProperties",
     "com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayApiAddedEventData": "Microsoft.EventGrid.SystemEvents.ApiManagementGatewayApiAddedEventData",
     "com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayApiRemovedEventData": "Microsoft.EventGrid.SystemEvents.ApiManagementGatewayApiRemovedEventData",

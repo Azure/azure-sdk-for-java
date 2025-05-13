@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,7 +24,7 @@ public final class ApiManagementCircuitBreakerProperties
      * Overview of all configured rules and respective details.
      */
     @Generated
-    private final Map<String, ApiManagementCircuitBreakerPropertiesRule> rules;
+    private final Map<String, Map<String, BinaryData>> rules;
 
     /**
      * Creates an instance of ApiManagementCircuitBreakerProperties class.
@@ -31,7 +32,7 @@ public final class ApiManagementCircuitBreakerProperties
      * @param rules the rules value to set.
      */
     @Generated
-    private ApiManagementCircuitBreakerProperties(Map<String, ApiManagementCircuitBreakerPropertiesRule> rules) {
+    private ApiManagementCircuitBreakerProperties(Map<String, Map<String, BinaryData>> rules) {
         this.rules = rules;
     }
 
@@ -41,7 +42,7 @@ public final class ApiManagementCircuitBreakerProperties
      * @return the rules value.
      */
     @Generated
-    public Map<String, ApiManagementCircuitBreakerPropertiesRule> getRules() {
+    public Map<String, Map<String, BinaryData>> getRules() {
         return this.rules;
     }
 
@@ -52,7 +53,8 @@ public final class ApiManagementCircuitBreakerProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("rules", this.rules, (writer, element) -> writer.writeMap(element,
+            (writer1, element1) -> writer1.writeUntyped(element1 == null ? null : element1.toObject(Object.class))));
         return jsonWriter.writeEndObject();
     }
 
@@ -68,13 +70,14 @@ public final class ApiManagementCircuitBreakerProperties
     @Generated
     public static ApiManagementCircuitBreakerProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, ApiManagementCircuitBreakerPropertiesRule> rules = null;
+            Map<String, Map<String, BinaryData>> rules = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("rules".equals(fieldName)) {
-                    rules = reader.readMap(reader1 -> ApiManagementCircuitBreakerPropertiesRule.fromJson(reader1));
+                    rules = reader.readMap(reader1 -> reader1.readMap(reader2 -> reader2
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()))));
                 } else {
                     reader.skipChildren();
                 }

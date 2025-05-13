@@ -46,7 +46,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
      * List of Router Communication Errors
      */
     @Generated
-    private List<AcsRouterCommunicationError> errors;
+    private List<AcsRouterCommunicationError> details;
 
     /**
      * Creates an instance of AcsRouterCommunicationError class.
@@ -99,13 +99,13 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
     }
 
     /**
-     * Get the errors property: List of Router Communication Errors.
+     * Get the details property: List of Router Communication Errors.
      * 
-     * @return the errors value.
+     * @return the details value.
      */
     @Generated
-    public List<AcsRouterCommunicationError> getErrors() {
-        return this.errors;
+    public List<AcsRouterCommunicationError> getDetails() {
+        return this.details;
     }
 
     /**
@@ -135,7 +135,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
     public static AcsRouterCommunicationError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsRouterCommunicationError innererror = null;
-            List<AcsRouterCommunicationError> errors = null;
+            List<AcsRouterCommunicationError> details = null;
             String code = null;
             String message = null;
             String target = null;
@@ -145,8 +145,8 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
 
                 if ("innererror".equals(fieldName)) {
                     innererror = AcsRouterCommunicationError.fromJson(reader);
-                } else if ("errors".equals(fieldName)) {
-                    errors = reader.readArray(reader1 -> AcsRouterCommunicationError.fromJson(reader1));
+                } else if ("details".equals(fieldName)) {
+                    details = reader.readArray(reader1 -> AcsRouterCommunicationError.fromJson(reader1));
                 } else if ("code".equals(fieldName)) {
                     code = reader.getString();
                 } else if ("message".equals(fieldName)) {
@@ -159,7 +159,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
             }
             AcsRouterCommunicationError deserializedAcsRouterCommunicationError
                 = new AcsRouterCommunicationError(innererror);
-            deserializedAcsRouterCommunicationError.errors = errors;
+            deserializedAcsRouterCommunicationError.details = details;
             deserializedAcsRouterCommunicationError.code = code;
             deserializedAcsRouterCommunicationError.message = message;
             deserializedAcsRouterCommunicationError.target = target;
