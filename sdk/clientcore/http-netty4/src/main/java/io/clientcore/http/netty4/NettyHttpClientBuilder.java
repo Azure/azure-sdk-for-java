@@ -259,8 +259,10 @@ public class NettyHttpClientBuilder {
      * @return A configured NettyHttpClient instance.
      */
     public HttpClient build() {
-        EventLoopGroup group = getEventLoopGroupToUse();
-        Class<? extends Channel> channelClass = getChannelClass(group);
+        EventLoopGroup group = getEventLoopGroupToUse(this.eventLoopGroup, this.channelClass, IS_EPOLL_AVAILABLE,
+            EPOLL_EVENT_LOOP_GROUP_CREATOR, IS_KQUEUE_AVAILABLE, KQUEUE_EVENT_LOOP_GROUP_CREATOR);
+        Class<? extends Channel> channelClass
+            = getChannelClass(this.channelClass, group.getClass(), IS_EPOLL_AVAILABLE, IS_KQUEUE_AVAILABLE);
 
         // Leave breadcrumbs about the NettyHttpClient configuration, in case troubleshooting is needed.
         LOGGER.atVerbose()
@@ -310,18 +312,20 @@ public class NettyHttpClientBuilder {
         return (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
     }
 
-    private EventLoopGroup getEventLoopGroupToUse() {
-        if (this.eventLoopGroup != null) {
-            return this.eventLoopGroup;
+    static EventLoopGroup getEventLoopGroupToUse(EventLoopGroup configuredGroup,
+        Class<? extends SocketChannel> configuredChannelClass, boolean isEpollAvailable,
+        MethodHandle epollEventLoopGroupCreator, boolean isKqueueAvailable, MethodHandle kqueueEventLoopGroupCreator) {
+        if (configuredGroup != null) {
+            return configuredGroup;
         }
 
         ThreadFactory threadFactory = new DefaultThreadFactory("clientcore-netty-client");
 
         // Use EpollEventLoopGroup if Epoll is available and 'channelClass' wasn't configured or was configured to
         // EpollSocketChannel.
-        if (IS_EPOLL_AVAILABLE && (this.channelClass == null || this.channelClass == EPOLL_CHANNEL_CLASS)) {
+        if (isEpollAvailable && (configuredChannelClass == null || configuredChannelClass == EPOLL_CHANNEL_CLASS)) {
             try {
-                return (EventLoopGroup) EPOLL_EVENT_LOOP_GROUP_CREATOR.invoke(threadFactory);
+                return (EventLoopGroup) epollEventLoopGroupCreator.invoke(threadFactory);
             } catch (Throwable ex) {
                 LOGGER.atVerbose().setThrowable(ex).log("Failed to create an EpollEventLoopGroup.");
             }
@@ -329,9 +333,9 @@ public class NettyHttpClientBuilder {
 
         // Use KQueueEventLoopGroup if KQueue is available and 'channelClass' wasn't configured or was configured to
         // KQueueSocketChannel.
-        if (IS_KQUEUE_AVAILABLE && (this.channelClass == null || this.channelClass == KQUEUE_CHANNEL_CLASS)) {
+        if (isKqueueAvailable && (configuredChannelClass == null || configuredChannelClass == KQUEUE_CHANNEL_CLASS)) {
             try {
-                return (EventLoopGroup) KQUEUE_EVENT_LOOP_GROUP_CREATOR.invoke(threadFactory);
+                return (EventLoopGroup) kqueueEventLoopGroupCreator.invoke(threadFactory);
             } catch (Throwable ex) {
                 LOGGER.atVerbose().setThrowable(ex).log("Failed to create a KQueueEventLoopGroup.");
             }
@@ -341,14 +345,15 @@ public class NettyHttpClientBuilder {
         return new NioEventLoopGroup(threadFactory);
     }
 
-    private Class<? extends SocketChannel> getChannelClass(EventLoopGroup eventLoopGroup) {
-        if (this.channelClass != null) {
+    static Class<? extends SocketChannel> getChannelClass(Class<? extends SocketChannel> configuredChannelClass,
+        Class<? extends EventLoopGroup> configuredGroupClass, boolean isEpollAvailable, boolean isKqueueAvailable) {
+        if (configuredChannelClass != null) {
             // If the Channel class was manually set, use it.
-            return this.channelClass;
-        } else if (IS_EPOLL_AVAILABLE && eventLoopGroup.getClass() == EPOLL_EVENT_LOOP_GROUP_CLASS) {
+            return configuredChannelClass;
+        } else if (isEpollAvailable && configuredGroupClass == EPOLL_EVENT_LOOP_GROUP_CLASS) {
             // If Epoll is available and the EventLoopGroup is EpollEventLoopGroup, use EpollSocketChannel.
             return EPOLL_CHANNEL_CLASS;
-        } else if (IS_KQUEUE_AVAILABLE && eventLoopGroup.getClass() == KQUEUE_EVENT_LOOP_GROUP_CLASS) {
+        } else if (isKqueueAvailable && configuredGroupClass == KQUEUE_EVENT_LOOP_GROUP_CLASS) {
             // If KQueue is available and the EventLoopGroup is KQueueEventLoopGroup, use KQueueSocketChannel.
             return KQUEUE_CHANNEL_CLASS;
         } else {
