@@ -16,9 +16,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.utils.CoreUtils;
-import java.lang.reflect.ParameterizedType;
-import io.clientcore.core.serialization.SerializationFormat;
+import java.util.Collections;
 
 /**
  * Initializes a new instance of the SpecialReturnBodiesServiceImpl type.
@@ -166,16 +164,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        List<BinaryData> deserializedResult;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, BinaryData.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
-        if (jsonSerializer.supportsFormat(serializationFormat)) {
-            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
-        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
-        } else {
-            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
-        }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
+        List<BinaryData> binaryDataList = Collections.singletonList(networkResponse.getValue());
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), binaryDataList);
     }
 }

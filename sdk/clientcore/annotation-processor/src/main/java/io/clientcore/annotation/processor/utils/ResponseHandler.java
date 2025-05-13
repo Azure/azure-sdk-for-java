@@ -19,6 +19,7 @@ import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.lang.model.element.TypeElement;
@@ -155,8 +156,12 @@ public final class ResponseHandler {
                         && ((TypeElement) ((DeclaredType) declaredType.getTypeArguments().get(0)).asElement())
                             .getQualifiedName()
                             .contentEquals(List.class.getCanonicalName())) {
-                        // Response<List<BinaryData>> or other generics
-                        handleDeclaredTypes(body, returnType, serializationFormatSet, true);
+                        // Response<List<BinaryData>> or similar
+                        // For List<BinaryData>, wrap the BinaryData in a list, do not deserialize
+                        body.tryAddImportToParentCompilationUnit(Collections.class);
+                        body.addStatement(
+                            "List<BinaryData> binaryDataList = Collections.singletonList(networkResponse.getValue());");
+                        addReturnStatement(body, true, "binaryDataList");
                         return;
                     }
                 }
