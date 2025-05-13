@@ -165,6 +165,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1755004c92eefdc7a66b4cd90df27d0af4cb0456/specification/search/data-plane/Azure.Search/preview/2025-05-01-preview/knowledgeagent.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
+custom-types: ErrorResponse,ErrorDetail,ErrorAdditionalInfo,ErrorResponseException,RequestOptions
 ```
 
 ---

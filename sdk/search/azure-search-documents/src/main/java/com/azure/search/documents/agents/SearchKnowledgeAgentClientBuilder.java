@@ -180,11 +180,6 @@ public final class SearchKnowledgeAgentClientBuilder implements
         return this;
     }
 
-    public SearchKnowledgeAgentClientBuilder serializer(JsonSerializer jsonSerializer) {
-        this.jsonSerializer = jsonSerializer;
-        return this;
-    }
-
     @Override
     public SearchKnowledgeAgentClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
@@ -203,10 +198,6 @@ public final class SearchKnowledgeAgentClientBuilder implements
         return this;
     }
 
-    public SearchKnowledgeAgentClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
-        return this;
-    }
 
     @Override
     public SearchKnowledgeAgentClientBuilder retryOptions(RetryOptions retryOptions) {

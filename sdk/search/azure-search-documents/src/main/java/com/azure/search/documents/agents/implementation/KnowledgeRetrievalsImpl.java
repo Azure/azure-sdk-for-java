@@ -21,10 +21,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.search.documents.agents.models.ErrorResponseException;
+import com.azure.search.documents.agents.implementation.models.ErrorResponseException;
+import com.azure.search.documents.agents.implementation.models.RequestOptions;
 import com.azure.search.documents.agents.models.KnowledgeAgentRetrievalRequest;
 import com.azure.search.documents.agents.models.KnowledgeAgentRetrievalResponse;
-import com.azure.search.documents.agents.models.RequestOptions;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
