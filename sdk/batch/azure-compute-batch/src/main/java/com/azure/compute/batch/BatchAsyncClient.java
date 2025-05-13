@@ -85,12 +85,12 @@ import com.azure.compute.batch.models.BatchNodesRemoveOptions;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolAutoScaleDisableOptions;
 import com.azure.compute.batch.models.BatchPoolAutoScaleEnableOptions;
+import com.azure.compute.batch.models.BatchPoolAutoScaleEnableParameters;
 import com.azure.compute.batch.models.BatchPoolAutoScaleEvaluateOptions;
+import com.azure.compute.batch.models.BatchPoolAutoScaleEvaluateParameters;
 import com.azure.compute.batch.models.BatchPoolCreateOptions;
 import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchPoolDeleteOptions;
-import com.azure.compute.batch.models.BatchPoolEnableAutoScaleParameters;
-import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolExistsOptions;
 import com.azure.compute.batch.models.BatchPoolGetOptions;
 import com.azure.compute.batch.models.BatchPoolNodeCounts;
@@ -15664,155 +15664,6 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Enables automatic scaling for a Pool.
-     *
-     * You cannot enable automatic scaling on a Pool if a resize operation is in
-     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
-     * you must specify a valid autoscale formula as part of the request. If automatic
-     * scaling of the Pool is already enabled, you may specify a new autoscale formula
-     * and/or a new evaluation interval. You cannot call this API for the same Pool
-     * more than once every 30 seconds.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param parameters The options to use for enabling automatic scaling.
-     * @param options Optional parameters for Enable Pool AutoScale operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters,
-        BatchPoolAutoScaleEnableOptions options, RequestConditions requestConditions) {
-        // Generated convenience method for enablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Enables automatic scaling for a Pool.
-     *
-     * You cannot enable automatic scaling on a Pool if a resize operation is in
-     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
-     * you must specify a valid autoscale formula as part of the request. If automatic
-     * scaling of the Pool is already enabled, you may specify a new autoscale formula
-     * and/or a new evaluation interval. You cannot call this API for the same Pool
-     * more than once every 30 seconds.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param parameters The options to use for enabling automatic scaling.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters) {
-        // Generated convenience method for enablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets the result of evaluating an automatic scaling formula on the Pool.
-     *
-     * This API is primarily for validating an autoscale formula, as it simply returns
-     * the result without applying the formula to the Pool. The Pool must have auto
-     * scaling enabled in order to evaluate a formula.
-     *
-     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param parameters The options to use for evaluating the automatic scaling formula.
-     * @param options Optional parameters for Evaluate Pool AutoScale operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of evaluating an automatic scaling formula on the Pool.
-     *
-     * This API is primarily for validating an autoscale formula, as it simply returns
-     * the result without applying the formula to the Pool on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AutoScaleRun> evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleParameters parameters,
-        BatchPoolAutoScaleEvaluateOptions options) {
-        // Generated convenience method for evaluatePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AutoScaleRun.class));
-    }
-
-    /**
-     * Gets the result of evaluating an automatic scaling formula on the Pool.
-     *
-     * This API is primarily for validating an autoscale formula, as it simply returns
-     * the result without applying the formula to the Pool. The Pool must have auto
-     * scaling enabled in order to evaluate a formula.
-     *
-     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param parameters The options to use for evaluating the automatic scaling formula.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of evaluating an automatic scaling formula on the Pool.
-     *
-     * This API is primarily for validating an autoscale formula, as it simply returns
-     * the result without applying the formula to the Pool on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AutoScaleRun> evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleParameters parameters) {
-        // Generated convenience method for evaluatePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AutoScaleRun.class));
-    }
-
-    /**
      * Changes the number of Compute Nodes that are assigned to a Pool.
      *
      * You can only resize a Pool when its allocation state is steady. If the Pool is
@@ -16635,5 +16486,154 @@ public final class BatchAsyncClient {
         return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(parameters), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(UploadBatchServiceLogsResult.class));
+    }
+
+    /**
+     * Enables automatic scaling for a Pool.
+     *
+     * You cannot enable automatic scaling on a Pool if a resize operation is in
+     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
+     * you must specify a valid autoscale formula as part of the request. If automatic
+     * scaling of the Pool is already enabled, you may specify a new autoscale formula
+     * and/or a new evaluation interval. You cannot call this API for the same Pool
+     * more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for enabling automatic scaling.
+     * @param options Optional parameters for Enable Pool AutoScale operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters,
+        BatchPoolAutoScaleEnableOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for enablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Enables automatic scaling for a Pool.
+     *
+     * You cannot enable automatic scaling on a Pool if a resize operation is in
+     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
+     * you must specify a valid autoscale formula as part of the request. If automatic
+     * scaling of the Pool is already enabled, you may specify a new autoscale formula
+     * and/or a new evaluation interval. You cannot call this API for the same Pool
+     * more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for enabling automatic scaling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters) {
+        // Generated convenience method for enablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool. The Pool must have auto
+     * scaling enabled in order to evaluate a formula.
+     *
+     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
+     * @param parameters The options to use for evaluating the automatic scaling formula.
+     * @param options Optional parameters for Evaluate Pool AutoScale operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AutoScaleRun> evaluatePoolAutoScale(String poolId, BatchPoolAutoScaleEvaluateParameters parameters,
+        BatchPoolAutoScaleEvaluateOptions options) {
+        // Generated convenience method for evaluatePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AutoScaleRun.class));
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool. The Pool must have auto
+     * scaling enabled in order to evaluate a formula.
+     *
+     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
+     * @param parameters The options to use for evaluating the automatic scaling formula.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AutoScaleRun> evaluatePoolAutoScale(String poolId, BatchPoolAutoScaleEvaluateParameters parameters) {
+        // Generated convenience method for evaluatePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AutoScaleRun.class));
     }
 }
