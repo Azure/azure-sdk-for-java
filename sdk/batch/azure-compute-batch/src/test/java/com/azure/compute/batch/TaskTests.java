@@ -291,8 +291,8 @@ public class TaskTests extends BatchClientTestBase {
             // CREATE
             List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(String.format("mytask%d", i),
-                    String.format("cmd /c echo hello %d", i));
+                BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(
+                    String.format("mytask%d", i), String.format("cmd /c echo hello %d", i));
                 tasksToAdd.add(taskCreateParameters);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
@@ -331,8 +331,8 @@ public class TaskTests extends BatchClientTestBase {
             // CREATE
             List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(String.format("mytask%d", i),
-                    String.format("cmd /c echo hello %d", i));
+                BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(
+                    String.format("mytask%d", i), String.format("cmd /c echo hello %d", i));
                 tasksToAdd.add(taskCreateParameters);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
@@ -476,8 +476,8 @@ public class TaskTests extends BatchClientTestBase {
             // CREATE
             List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(String.format("mytask%d", i),
-                    String.format("cmd /c echo hello %d", i));
+                BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(
+                    String.format("mytask%d", i), String.format("cmd /c echo hello %d", i));
                 tasksToAdd.add(taskCreateParameters);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
