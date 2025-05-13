@@ -14,6 +14,7 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.CosmosOperationPolicy;
@@ -191,6 +192,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
         "ParallelDocumentQueryExecutioncontext, but not used";
+
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
     private final CosmosItemSerializer defaultCustomSerializer;
     private final static Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
@@ -265,7 +267,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean sessionCapturingDisabled;
     private final boolean isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig;
     private List<CosmosOperationPolicy> operationPolicies;
-    private AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
+    private final AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
+    private final CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -599,6 +602,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.queryPlanCache = new ConcurrentHashMap<>();
             this.apiType = apiType;
             this.clientTelemetryConfig = clientTelemetryConfig;
+            this.ppafEnforcedE2ELatencyPolicyConfigForReads = evaluatePpafEnforcedE2eLatencyPolicyCfgForReads(
+                this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                this.connectionPolicy
+            );
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -2465,7 +2472,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         crossRegionAvailabilityContextForRxDocumentServiceRequest),
                 requestRetryPolicy),
             scopedDiagnosticsFactory
-        ), requestReference);
+        ), requestReference, endToEndPolicyConfig);
     }
 
     private Mono<ResourceResponse<Document>> createDocumentInternal(
@@ -2575,7 +2582,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private <T> Mono<T> handleCircuitBreakingFeedbackForPointOperation(
         Mono<T> response,
-        AtomicReference<RxDocumentServiceRequest> requestReference) {
+        AtomicReference<RxDocumentServiceRequest> requestReference,
+        CosmosEndToEndOperationLatencyPolicyConfig effectiveEndToEndPolicyConfig) {
+
+        applyEndToEndLatencyPolicyCfgToRequestContext(requestReference.get(), effectiveEndToEndPolicyConfig);
 
         return response
             .doOnSuccess(ignore -> {
@@ -2768,6 +2778,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return exception;
     }
 
+    private static void applyEndToEndLatencyPolicyCfgToRequestContext(RxDocumentServiceRequest rxDocumentServiceRequest, CosmosEndToEndOperationLatencyPolicyConfig effectiveEndToEndPolicyConfig) {
+
+        if (rxDocumentServiceRequest == null) {
+            return;
+        }
+
+        if (rxDocumentServiceRequest.requestContext == null) {
+            return;
+        }
+
+        if (effectiveEndToEndPolicyConfig == null) {
+            return;
+        }
+
+        rxDocumentServiceRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(effectiveEndToEndPolicyConfig);
+    }
+
     @Override
     public Mono<ResourceResponse<Document>> upsertDocument(String collectionLink, Object document,
                                                                  RequestOptions options, boolean disableAutomaticIdGeneration) {
@@ -2830,7 +2857,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         requestReference,
                         crossRegionAvailabilityContextForRequest),
                     finalRetryPolicyInstance),
-                scopedDiagnosticsFactory), requestReference);
+                scopedDiagnosticsFactory), requestReference, endToEndPolicyConfig);
     }
 
     private Mono<ResourceResponse<Document>> upsertDocumentInternal(
@@ -2973,7 +3000,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         requestReference,
                         crossRegionAvailabilityContextForRequest),
                     requestRetryPolicy),
-                scopedDiagnosticsFactory), requestReference);
+                scopedDiagnosticsFactory), requestReference, endToEndPolicyConfig);
     }
 
     private Mono<ResourceResponse<Document>> replaceDocumentInternal(
@@ -3055,7 +3082,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientContextOverride,
                 requestReference,
                 crossRegionAvailabilityContextForRequest),
-            requestRetryPolicy), requestReference);
+            requestRetryPolicy), requestReference, cosmosEndToEndOperationLatencyPolicyConfig);
     }
 
     private Mono<ResourceResponse<Document>> replaceDocumentInternal(
@@ -3231,7 +3258,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return null;
         }
 
-        return this.cosmosEndToEndOperationLatencyPolicyConfig;
+        if (this.cosmosEndToEndOperationLatencyPolicyConfig != null) {
+            return this.cosmosEndToEndOperationLatencyPolicyConfig;
+        }
+
+        // If request options level and client-level e2e latency policy config,
+        // rely on PPAF enforced defaults
+        if (operationType.isReadOnlyOperation()) {
+            return this.ppafEnforcedE2ELatencyPolicyConfigForReads;
+        }
+
+        return null;
     }
 
     @Override
@@ -3294,7 +3331,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         requestReference,
                         crossRegionAvailabilityContextForRequest),
                     documentClientRetryPolicy),
-                scopedDiagnosticsFactory), requestReference);
+                scopedDiagnosticsFactory), requestReference, cosmosEndToEndOperationLatencyPolicyConfig);
     }
 
     private Mono<ResourceResponse<Document>> patchDocumentInternal(
@@ -3503,7 +3540,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         requestReference,
                         crossRegionAvailabilityContextForRequest),
                     requestRetryPolicy),
-                scopedDiagnosticsFactory), requestReference);
+                scopedDiagnosticsFactory), requestReference, endToEndPolicyConfig);
     }
 
     private Mono<ResourceResponse<Document>> deleteDocumentInternal(
@@ -3691,7 +3728,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     crossRegionAvailabilityContextForRequest),
                 retryPolicyInstance),
             scopedDiagnosticsFactory
-        ), requestReference);
+        ), requestReference, endToEndPolicyConfig);
     }
 
     private Mono<ResourceResponse<Document>> readDocumentInternal(
@@ -4882,7 +4919,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         requestReference), documentClientRetryPolicy),
                 scopedDiagnosticsFactory
             ),
-            requestReference);
+            requestReference, endToEndPolicyConfig);
     }
 
     private Mono<StoredProcedureResponse> executeStoredProcedureInternal(String storedProcedureLink,
@@ -7144,6 +7181,49 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return false;
     }
 
+    private static CosmosEndToEndOperationLatencyPolicyConfig evaluatePpafEnforcedE2eLatencyPolicyCfgForReads(
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+        ConnectionPolicy connectionPolicy) {
+
+        if (!globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
+            return null;
+        }
+
+        if (Configs.isReadAvailabilityStrategyEnabledWithPpaf()) {
+
+            if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT) {
+                Duration networkRequestTimeout = connectionPolicy.getTcpNetworkRequestTimeout();
+
+                checkNotNull(networkRequestTimeout, "Argument 'networkRequestTimeout' cannot be null!");
+
+                Duration overallE2eLatencyTimeout = networkRequestTimeout.plus(Utils.ONE_SECOND);
+                Duration threshold = Utils.min(networkRequestTimeout.dividedBy(2), Utils.ONE_SECOND);
+                Duration thresholdStep = Utils.min(threshold.dividedBy(2), Utils.HALF_SECOND);
+
+                return new CosmosEndToEndOperationLatencyPolicyConfigBuilder(overallE2eLatencyTimeout)
+                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(threshold, thresholdStep))
+                .build();
+            } else {
+
+                Duration httpNetworkRequestTimeout = connectionPolicy.getHttpNetworkRequestTimeout();
+
+                checkNotNull(httpNetworkRequestTimeout, "Argument 'httpNetworkRequestTimeout' cannot be null!");
+
+                // 6s was chosen to accommodate for control-plane hot path read timeout retries (like QueryPlan / PartitionKeyRange)
+                Duration overallE2eLatencyTimeout = Utils.min(Utils.SIX_SECONDS, httpNetworkRequestTimeout);
+
+                Duration threshold = Utils.min(overallE2eLatencyTimeout.dividedBy(2), Utils.ONE_SECOND);
+                Duration thresholdStep = Utils.min(threshold.dividedBy(2), Utils.HALF_SECOND);
+
+                return new CosmosEndToEndOperationLatencyPolicyConfigBuilder(overallE2eLatencyTimeout)
+                .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(threshold, thresholdStep))
+                .build();
+            }
+        }
+
+        return null;
+    }
+
     private DiagnosticsClientContext getEffectiveClientContext(DiagnosticsClientContext clientContextOverride) {
         if (clientContextOverride != null) {
             return clientContextOverride;
@@ -7259,6 +7339,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
             this.getEffectiveEndToEndOperationLatencyPolicyConfig(
                 req.requestContext.getEndToEndOperationLatencyPolicyConfig(), resourceType, operationType);
+
+        req.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfig);
 
         List<String> initialExcludedRegions = req.requestContext.getExcludeRegions();
         List<String> orderedApplicableRegionsForSpeculation = this.getApplicableRegionsForSpeculation(

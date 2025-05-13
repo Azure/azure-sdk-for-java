@@ -185,6 +185,7 @@
     <module>sdk/powerbidedicated</module>
     <module>sdk/programmableconnectivity</module>
     <module>sdk/providerhub</module>
+    <module>sdk/purestorageblock</module>
     <module>sdk/purview</module>
     <module>sdk/quantum</module>
     <module>sdk/qumulo</module>

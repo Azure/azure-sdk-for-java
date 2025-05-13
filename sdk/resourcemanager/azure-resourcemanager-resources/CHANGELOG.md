@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Updated `api-version` of resources to `2025-03-01`.
+
 ## 2.50.0 (2025-04-24)
 
 ### Other Changes
