@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
  *
  * <h2>Overview</h2>
  * <p>
- * The {@code SearchKnowledgeAgentAsyncClient} exposes asynchronous APIs for sending retrieval requests to a knowledge agent in Azure AI Search. The agent can aggregate and return relevant data from multiple sources, such as Azure Cognitive Search indexes, vector stores, and other knowledge bases configured in your Azure AI Search instance.
+ * The {@code SearchKnowledgeAgentAsyncClient} exposes asynchronous APIs for sending retrieval requests to a knowledge agent in Azure AI Search. The agent can aggregate and return relevant data from multiple sources, such as Azure AI Search indexes, vector stores, and other knowledge bases configured in your Azure AI Search instance.
  * </p>
  *
  * <h2>Getting Started</h2>
