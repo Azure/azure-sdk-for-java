@@ -199,7 +199,8 @@
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/SnowballTokenFilterLanguage.java",
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TextTranslationSkillLanguage.java",
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TokenFilterName.java",
-    "sdk/openai/azure-ai-openai-realtime/tsp-location.yaml"
+    "sdk/openai/azure-ai-openai-realtime/tsp-location.yaml",
+    ".github/CODEOWNERS"
   ],
   "words": [
     "adal",
@@ -1365,6 +1366,12 @@
         "rservice", // appears in the name SignalRService
         "gcch",
         "updation" // current typo in a swagger
+      ]
+    },
+    {
+      "filename": "sdk/ai/azure-ai-agents-persistent/**",
+      "words": [
+        "AISEARCH"
       ]
     }
   ],
