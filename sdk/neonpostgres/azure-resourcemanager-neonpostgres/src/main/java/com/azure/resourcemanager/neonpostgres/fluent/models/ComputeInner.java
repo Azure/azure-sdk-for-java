@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.neonpostgres.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * The Compute resource type.
  */
-@Fluent
+@Immutable
 public final class ComputeInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
@@ -46,7 +46,7 @@ public final class ComputeInner extends ProxyResource {
     /**
      * Creates an instance of ComputeInner class.
      */
-    public ComputeInner() {
+    private ComputeInner() {
     }
 
     /**
@@ -56,17 +56,6 @@ public final class ComputeInner extends ProxyResource {
      */
     public ComputeProperties properties() {
         return this.properties;
-    }
-
-    /**
-     * Set the properties property: The resource-specific properties for this resource.
-     * 
-     * @param properties the properties value to set.
-     * @return the ComputeInner object itself.
-     */
-    public ComputeInner withProperties(ComputeProperties properties) {
-        this.properties = properties;
-        return this;
     }
 
     /**
