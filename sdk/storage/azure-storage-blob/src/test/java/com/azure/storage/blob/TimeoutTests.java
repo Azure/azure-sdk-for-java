@@ -41,7 +41,7 @@ public class TimeoutTests {
             = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
                 .containerName("foo")
-                .httpClient(new ListBlobsWithTimeoutTestClient(false))
+                .httpClient(new ListBlobsWithTimeoutTestClient())
                 .buildClient();
 
         assertEquals(2,
@@ -56,7 +56,7 @@ public class TimeoutTests {
             = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
                 .containerName("foo")
-                .httpClient(new ListBlobsWithTimeoutTestClient(false))
+                .httpClient(new ListBlobsWithTimeoutTestClient())
                 .buildClient();
 
         assertEquals(2,
@@ -73,7 +73,7 @@ public class TimeoutTests {
             = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
                 .containerName("foo")
-                .httpClient(new FindBlobsWithTimeoutClient(false))
+                .httpClient(new FindBlobsWithTimeoutClient())
                 .buildClient();
 
         assertEquals(2,
@@ -87,7 +87,7 @@ public class TimeoutTests {
         BlobServiceClient serviceClient
             = new BlobServiceClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
-                .httpClient(new ListContainersWithTimeoutTestClient(false))
+                .httpClient(new ListContainersWithTimeoutTestClient())
                 .buildClient();
 
         assertEquals(2,
@@ -104,7 +104,7 @@ public class TimeoutTests {
         BlobServiceClient serviceClient
             = new BlobServiceClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
-                .httpClient(new FindBlobsWithTimeoutClient(false))
+                .httpClient(new FindBlobsWithTimeoutClient())
                 .buildClient();
 
         assertEquals(2,
@@ -118,12 +118,6 @@ public class TimeoutTests {
      */
 
     protected static final class ListBlobsWithTimeoutTestClient implements HttpClient {
-        private final boolean isAsync;
-
-        ListBlobsWithTimeoutTestClient(Boolean isAsync) {
-            this.isAsync = isAsync;
-        }
-
         private HttpResponse response(HttpRequest request, String xml) {
             HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
             return new MockHttpResponse(request, 200, headers, xml.getBytes(StandardCharsets.UTF_8));
@@ -153,7 +147,7 @@ public class TimeoutTests {
         public Mono<HttpResponse> send(HttpRequest request) {
             String url = request.getUrl().toString();
             HttpResponse response;
-            int delay = isAsync ? 4 : 8;
+            int delay = 4;
 
             if (url.contains("?restype=container&comp=list&maxresults=")) {
                 // flat first request
@@ -177,12 +171,6 @@ public class TimeoutTests {
     }
 
     protected static final class FindBlobsWithTimeoutClient implements HttpClient {
-        private final boolean isAsync;
-
-        FindBlobsWithTimeoutClient(Boolean isAsync) {
-            this.isAsync = isAsync;
-        }
-
         private HttpResponse response(HttpRequest request, String xml) {
             HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
             return new MockHttpResponse(request, 200, headers, xml.getBytes(StandardCharsets.UTF_8));
@@ -218,7 +206,7 @@ public class TimeoutTests {
         public Mono<HttpResponse> send(HttpRequest request) {
             String url = request.getUrl().toString();
             HttpResponse response;
-            int delay = isAsync ? 4 : 8;
+            int delay = 4;
 
             if (url.contains("marker")) {
                 // second request
@@ -236,12 +224,6 @@ public class TimeoutTests {
     }
 
     protected static final class ListContainersWithTimeoutTestClient implements HttpClient {
-        private final boolean isAsync;
-
-        ListContainersWithTimeoutTestClient(Boolean isAsync) {
-            this.isAsync = isAsync;
-        }
-
         private HttpResponse response(HttpRequest request, String xml) {
             HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
             return new MockHttpResponse(request, 200, headers, xml.getBytes(StandardCharsets.UTF_8));
@@ -268,7 +250,7 @@ public class TimeoutTests {
         public Mono<HttpResponse> send(HttpRequest request) {
             String url = request.getUrl().toString();
             HttpResponse response;
-            int delay = isAsync ? 4 : 8;
+            int delay = 4;
 
             if (url.contains("?comp=list&maxresults=")) {
                 // flat first request
