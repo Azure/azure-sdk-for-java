@@ -28,6 +28,9 @@ public final class ConnectionPolicy {
     private static final int defaultGatewayMaxConnectionPoolSize = GatewayConnectionConfig.getDefaultConfig()
         .getMaxConnectionPoolSize();
 
+    private static final ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor httpCfgAccessor =
+        ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
+
     private ConnectionMode connectionMode;
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
@@ -696,7 +699,7 @@ public final class ConnectionPolicy {
             ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
             ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
-            ", http2ConnectionConfig=" + this.http2ConnectionConfig.toDiagnosticsString() +
+            ", http2ConnectionConfig=" + httpCfgAccessor.toDiagnosticsString(this.http2ConnectionConfig) +
             ", pendingAcquireMaxCount=" + Objects.toString(this.pendingAcquireMaxCount,"DEFAULT") +
             '}';
     }

@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.util.Beta;
 
 /***
@@ -129,4 +130,20 @@ public class Http2ConnectionConfig {
             minConnectionPoolSize,
             maxConcurrentStreams);
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    static void initialize() {
+        ImplementationBridgeHelpers.Http2ConnectionConfigHelper.setHttp2ConnectionConfigAccessor(
+            new ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor() {
+                @Override
+                public String toDiagnosticsString(Http2ConnectionConfig cfg) {
+                    return cfg.toDiagnosticsString();
+                }
+            }
+        );
+    }
+
+    static { initialize(); }
 }

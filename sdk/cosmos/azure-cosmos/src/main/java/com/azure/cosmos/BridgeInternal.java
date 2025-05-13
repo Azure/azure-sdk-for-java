@@ -623,5 +623,6 @@ public final class BridgeInternal {
         SessionRetryOptions.initialize();
         CosmosItemSerializer.initialize();
         ReadConsistencyStrategy.initialize();
+        Http2ConnectionConfig.initialize();
     }
 }

@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.http;
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 
 import java.time.Duration;
 
@@ -13,7 +14,8 @@ import java.time.Duration;
  * Helper class internally used for instantiating reactor netty http client.
  */
 public class HttpClientConfig {
-
+    private static final ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor httpCfgAccessor =
+        ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
     private final Configs configs;
     private Duration connectionAcquireTimeout = Configs.getConnectionAcquireTimeout();
     private int maxPoolSize = Configs.getDefaultHttpPoolSize();
@@ -178,6 +180,6 @@ public class HttpClientConfig {
             maxIdleConnectionTimeout,
             connectionAcquireTimeout,
             proxy != null,
-            http2ConnectionConfig == null ? null : http2ConnectionConfig.toDiagnosticsString());
+            http2ConnectionConfig == null ? null : httpCfgAccessor.toDiagnosticsString(http2ConnectionConfig));
     }
 }
