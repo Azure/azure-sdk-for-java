@@ -54,7 +54,6 @@ import java.util.concurrent.ExecutorService;
  */
 public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<DefaultAzureCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(DefaultAzureCredentialBuilder.class);
-    private final Configuration configuration;
     private String tenantId;
     private String managedIdentityClientId;
     private String workloadIdentityClientId;
@@ -68,9 +67,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     public DefaultAzureCredentialBuilder() {
         this.identityClientOptions.setIdentityLogOptionsImpl(new IdentityLogOptionsImpl(true));
         this.identityClientOptions.setChained(true);
-        this.configuration = identityClientOptions.getConfiguration() == null
-                ? Configuration.getGlobalConfiguration().clone()
-                : identityClientOptions.getConfiguration();
     }
 
     /**
@@ -263,6 +259,9 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     private void loadFallbackValuesFromEnvironment() {
+        Configuration configuration = identityClientOptions.getConfiguration() == null
+            ? Configuration.getGlobalConfiguration().clone()
+            : identityClientOptions.getConfiguration();
         tenantId
             = CoreUtils.isNullOrEmpty(tenantId) ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : tenantId;
         managedIdentityClientId = CoreUtils.isNullOrEmpty(managedIdentityClientId)
@@ -271,15 +270,17 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
-
+        Configuration configuration = identityClientOptions.getConfiguration() == null
+            ? Configuration.getGlobalConfiguration().clone()
+            : identityClientOptions.getConfiguration();
         String selectedCredentials = configuration.get("AZURE_TOKEN_CREDENTIALS");
         boolean useProductionCredentials = true;
         boolean useDeveloperCredentials = true;
         if (!CoreUtils.isNullOrEmpty(selectedCredentials)) {
-            if (selectedCredentials.equalsIgnoreCase("prod")) {
-                useProductionCredentials = false;
-            } else if (selectedCredentials.equalsIgnoreCase("dev")) {
+            if ("prod".equalsIgnoreCase(selectedCredentials)) {
                 useDeveloperCredentials = false;
+            } else if ("dev".equalsIgnoreCase(selectedCredentials)) {
+                useProductionCredentials = false;
             } else {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "Invalid value for AZURE_TOKEN_CREDENTIALS. Valid values are 'prod' or 'dev'."));
@@ -291,12 +292,12 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             output.add(new EnvironmentCredential(identityClientOptions.clone()));
             output.add(getWorkloadIdentityCredential());
             output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, null,
-                    identityClientOptions.clone()));
+                identityClientOptions.clone()));
         }
 
         if (useDeveloperCredentials) {
             output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID, tenantId,
-                    identityClientOptions.clone()));
+                identityClientOptions.clone()));
             output.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));
             output.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
             output.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
@@ -307,7 +308,9 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     private WorkloadIdentityCredential getWorkloadIdentityCredential() {
-
+        Configuration configuration = identityClientOptions.getConfiguration() == null
+            ? Configuration.getGlobalConfiguration().clone()
+            : identityClientOptions.getConfiguration();
         String azureAuthorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST);
         String clientId
             = CoreUtils.isNullOrEmpty(workloadIdentityClientId) ? managedIdentityClientId : workloadIdentityClientId;
