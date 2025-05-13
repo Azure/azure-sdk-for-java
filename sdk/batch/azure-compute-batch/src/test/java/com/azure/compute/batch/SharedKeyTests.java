@@ -96,8 +96,9 @@ public class SharedKeyTests extends BatchClientTestBase {
              */
             updatedMetadata.clear();
             updatedMetadata.add(new BatchMetadataItem("key1", "value1"));
-            BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters().setMetadata(updatedMetadata)
-                .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.CLASSIC);
+            BatchPoolUpdateParameters poolUpdateParameters
+                = new BatchPoolUpdateParameters().setMetadata(updatedMetadata)
+                    .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.CLASSIC);
             Response<Void> updatePoolResponse = batchClientWithSharedKey.updatePoolWithResponse(sharedKeyPoolId,
                 BinaryData.fromObject(poolUpdateParameters), null);
             HttpRequest updatePoolRequest = updatePoolResponse.getRequest();
