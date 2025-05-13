@@ -112,7 +112,7 @@ System.out.println(sync.get("Az:testKey"));
 public static class AzureRedisCredentials implements RedisCredentials {
     // Note: The Scopes value will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
     private TokenRequestContext tokenRequestContext = new TokenRequestContext()
-        .addScopes("cca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+        .addScopes("https://redis.azure.com/.default");
     private TokenCredential tokenCredential;
     private final String username;
 
@@ -198,7 +198,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
 String token = defaultAzureCredential
     .getToken(new TokenRequestContext()
-        .addScopes("cca5fbb-b7e4-4009-81f1-37e38fd66d78/.default")).block().getToken();
+        .addScopes("https://redis.azure.com/.default")).block().getToken();
 
 String username = extractUsernameFromToken(token);
 
