@@ -17,6 +17,8 @@ import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.CoreUtils;
 
+import static com.azure.v2.identity.implementation.util.LoggingUtil.logAndThrowTokenError;
+
 /**
  * <p>Authorization Code authentication in Azure is a type of authentication mechanism that allows users to
  * authenticate with <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>
@@ -96,9 +98,8 @@ public class AuthorizationCodeCredential implements TokenCredential {
             cache.updateCache(accessToken, publicClientOptions, request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
-        } catch (Exception e) {
-            LoggingUtil.logTokenError(LOGGER, request, e);
-            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
+        } catch (RuntimeException e) {
+            throw logAndThrowTokenError(LOGGER, request, e, CredentialAuthenticationException::new);
         }
     }
 }

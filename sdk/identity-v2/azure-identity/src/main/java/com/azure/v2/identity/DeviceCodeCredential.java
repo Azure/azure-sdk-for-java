@@ -4,7 +4,6 @@
 package com.azure.v2.identity;
 
 import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
-import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.azure.v2.identity.implementation.client.MsalAuthenticationAccountCache;
 import com.azure.v2.identity.implementation.client.PublicClient;
 import com.azure.v2.identity.implementation.models.MsalAuthenticationAccount;
@@ -17,6 +16,8 @@ import com.azure.v2.identity.models.AuthenticationRecord;
 import com.azure.v2.identity.models.TokenCachePersistenceOptions;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+
+import static com.azure.v2.identity.implementation.util.LoggingUtil.logAndThrowTokenError;
 
 /**
  * <p>Device code authentication is a type of authentication flow offered by
@@ -98,22 +99,22 @@ public class DeviceCodeCredential implements TokenCredential {
                     LoggingUtil.logTokenSuccess(LOGGER, request);
                     return token;
                 }
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
             }
         }
         try {
             if (!publicClientOptions.isAutomaticAuthentication()) {
-                throw LOGGER.logThrowableAsError(new AuthenticationRequiredException("Interactive "
-                    + "authentication is needed to acquire token. Call Authenticate to initiate the device "
-                    + "code authentication.", request));
+                throw LOGGER.throwableAtError()
+                    .log("Interactive "
+                        + "authentication is needed to acquire token. Call Authenticate to initiate the device "
+                        + "code authentication.", message -> new AuthenticationRequiredException(message, request));
             }
             MsalToken accessToken = publicClient.authenticateWithDeviceCode(request);
             cache.updateCache(accessToken, publicClientOptions, request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
-        } catch (Exception e) {
-            LoggingUtil.logTokenError(LOGGER, request, e);
-            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
+        } catch (RuntimeException e) {
+            throw logAndThrowTokenError(LOGGER, request, e, CredentialAuthenticationException::new);
         }
     }
 
@@ -151,8 +152,7 @@ public class DeviceCodeCredential implements TokenCredential {
     public AuthenticationRecord authenticate() {
         String defaultScope = AzureAuthorityHosts.getDefaultScope(publicClientOptions.getAuthorityHost());
         if (defaultScope == null) {
-            LoggingUtil.logCredentialUnavailableException(LOGGER, new CredentialUnavailableException(
-                "Authenticating in this " + "environment requires specifying a TokenRequestContext."));
+            LOGGER.atError().log("Authenticating in this environment requires specifying a TokenRequestContext.");
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }

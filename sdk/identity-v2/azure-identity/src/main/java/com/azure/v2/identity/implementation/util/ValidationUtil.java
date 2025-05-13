@@ -34,8 +34,10 @@ public final class ValidationUtil {
         }
 
         if (!missing.isEmpty()) {
-            throw logger.logThrowableAsWarning(new IllegalArgumentException(
-                "Must provide non-null values for " + missing + " properties in " + className));
+            throw logger.throwableAtError()
+                .addKeyValue("missingParameters", missing)
+                .addKeyValue("className", className)
+                .log("Some required parameters are not provided.", IllegalArgumentException::new);
         }
     }
 
@@ -62,8 +64,9 @@ public final class ValidationUtil {
         }
 
         if (!missing.isEmpty()) {
-            throw logger.logThrowableAsWarning(
-                new IllegalArgumentException("Must provide non-null values for " + missing + " properties."));
+            throw logger.throwableAtError()
+                .addKeyValue("missingParameters", missing)
+                .log("Some required parameters are not provided.", IllegalArgumentException::new);
         }
     }
 
@@ -96,8 +99,9 @@ public final class ValidationUtil {
         }
 
         if (!missing.isEmpty()) {
-            throw logger.logThrowableAsWarning(
-                new IllegalArgumentException("Must provide non-null values for " + missing + " properties."));
+            throw logger.throwableAtError()
+                .addKeyValue("missingParameters", missing)
+                .log("Some required parameters are not provided.", IllegalArgumentException::new);
         }
     }
 
@@ -112,11 +116,11 @@ public final class ValidationUtil {
         try {
             new URI(authHost);
         } catch (URISyntaxException e) {
-            throw logger
-                .logThrowableAsError(new IllegalArgumentException("Must provide a valid URI for authority host.", e));
+            throw logger.throwableAtError()
+                .log("Must provide a valid URI for authority host.", e, IllegalArgumentException::new);
         }
         if (!authHost.startsWith("https")) {
-            throw logger.logThrowableAsError(new IllegalArgumentException("Authority host must use https scheme."));
+            throw logger.throwableAtError().log("Authority host must use https scheme.", IllegalArgumentException::new);
         }
     }
 
@@ -131,9 +135,11 @@ public final class ValidationUtil {
         if (id != null) {
             for (int i = 0; i < id.length(); i++) {
                 if (!isValidTenantCharacter(id.charAt(i))) {
-                    throw logger.logThrowableAsError(new IllegalArgumentException(
-                        "Invalid tenant id provided. You can locate your tenant id by following the instructions"
-                            + " listed here: https://learn.microsoft.com/partner-center/find-ids-and-domain-names"));
+                    throw logger.throwableAtError()
+                        .log(
+                            "Invalid tenant id provided. You can locate your tenant id by following the instructions"
+                                + " listed here: https://learn.microsoft.com/partner-center/find-ids-and-domain-names",
+                            IllegalArgumentException::new);
                 }
             }
         }
@@ -176,8 +182,8 @@ public final class ValidationUtil {
         }
 
         if (nonNullIdCount > 1) {
-            throw logger.logThrowableAsError(
-                new IllegalStateException("Only one of clientId, resourceId, or objectId can be specified."));
+            throw logger.throwableAtError()
+                .log("Only one of clientId, resourceId, or objectId can be specified.", IllegalStateException::new);
         }
     }
 
@@ -211,8 +217,10 @@ public final class ValidationUtil {
         }
 
         if (!missing.isEmpty()) {
-            throw logger.logThrowableAsWarning(new IllegalArgumentException(
-                "Must provide non-null values for " + missing + " properties in " + className));
+            throw logger.throwableAtError()
+                .addKeyValue("missingParameters", missing)
+                .addKeyValue("className", className)
+                .log("Some required parameters are not provided.", IllegalArgumentException::new);
         }
     }
 
@@ -240,8 +248,10 @@ public final class ValidationUtil {
         }
 
         if (!missing.isEmpty()) {
-            throw logger.logThrowableAsWarning(new IllegalArgumentException(
-                "Must provide non-null values for " + missing + " properties in " + className));
+            throw logger.throwableAtError()
+                .addKeyValue("missingParameters", missing)
+                .addKeyValue("className", className)
+                .log("Some required parameters are not provided.", IllegalArgumentException::new);
         }
     }
 
@@ -271,10 +281,13 @@ public final class ValidationUtil {
         if (subscription != null) {
             for (int i = 0; i < subscription.length(); i++) {
                 if (!isValidSubscriptionCharacter(subscription.charAt(i))) {
-                    throw logger.logThrowableAsError(new IllegalArgumentException("Invalid subscription: "
-                        + subscription + " provided. If this is the name of a subscription, use its ID instead."
-                        + " You can locate your subscription ID by following the instructions"
-                        + " listed here: https://learn.microsoft.com/azure/azure-portal/get-subscription-tenant-id"));
+                    throw logger.throwableAtError()
+                        .addKeyValue("subscription", subscription)
+                        .log(
+                            "Invalid subscription if provided. If this is the name of a subscription, use its ID instead."
+                                + " You can locate your subscription ID by following the instructions"
+                                + " listed here: https://learn.microsoft.com/azure/azure-portal/get-subscription-tenant-id",
+                            IllegalArgumentException::new);
                 }
             }
         }
