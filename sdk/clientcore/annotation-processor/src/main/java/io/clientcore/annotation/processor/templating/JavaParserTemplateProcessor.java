@@ -45,11 +45,6 @@ import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.GeneratedCodeUtils;
 import io.clientcore.core.utils.UriBuilder;
-
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
-import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -63,6 +58,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
+import javax.tools.Diagnostic;
 
 import static io.clientcore.annotation.processor.utils.ResponseHandler.generateResponseHandling;
 
@@ -363,6 +362,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         } else {
             urlStatement = method.getHost();
         }
+        System.out.println("url statement: " + urlStatement);
 
         // If the method doesn't have query parameters to set, inline the call to HttpRequest.setUri and return.
         if (method.getQueryParams().isEmpty()) {

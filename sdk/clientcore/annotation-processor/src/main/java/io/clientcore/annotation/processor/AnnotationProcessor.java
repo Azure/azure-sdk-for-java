@@ -24,7 +24,6 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -222,20 +221,23 @@ public class AnnotationProcessor extends AbstractProcessor {
 
     private String getHost(HttpRequestContext method) {
         String path = method.getPath();
-        // Set the path after host, concatenating the path segment in the host.
-        if (path != null && !path.isEmpty() && !"/".equals(path)) {
-            String hostPath = method.getHost();
-            if (hostPath == null || hostPath.isEmpty() || "/".equals(hostPath) || path.contains("://")) {
+        String hostPath = method.getHost();
+
+        // If hostPath is set (from @ServiceInterface), always use it as the base.
+        if (hostPath != null && !hostPath.isEmpty() && !"/".equals(hostPath)) {
+            if (path == null || path.isEmpty() || "/".equals(path)) {
+                // Path is "/" or empty, so append "/" to the host
+                method.setPath(hostPath + "/");
+            } else if (path.contains("://")) {
+                // Path is a full URL, use as is
                 method.setPath(path);
+            } else if (path.startsWith("/")) {
+                method.setPath(hostPath + path);
             } else {
-                if (path.startsWith("/")) {
-                    method.setPath(hostPath + path);
-                } else {
-                    method.setPath(hostPath + "/" + path);
-                }
+                method.setPath(hostPath + "/" + path);
             }
         }
-
+        // else: hostPath is empty, use the path as is
         return PathBuilder.buildPath(method.getPath(), method);
     }
 }
