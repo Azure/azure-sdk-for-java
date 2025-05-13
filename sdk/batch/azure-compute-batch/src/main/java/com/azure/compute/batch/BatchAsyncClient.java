@@ -111,7 +111,6 @@ import com.azure.compute.batch.models.BatchSupportedImage;
 import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskCollectionCreateOptions;
 import com.azure.compute.batch.models.BatchTaskCountsResult;
-import com.azure.compute.batch.models.BatchTaskCreateContent;
 import com.azure.compute.batch.models.BatchTaskCreateOptions;
 import com.azure.compute.batch.models.BatchTaskCreateParameters;
 import com.azure.compute.batch.models.BatchTaskDeleteOptions;
@@ -177,11 +176,11 @@ public final class BatchAsyncClient {
      * Adds multiple tasks to a job.
      *
      * @param jobId The ID of the job to which to add the task.
-     * @param taskList A list of {@link BatchTaskCreateContent tasks} to add.
+     * @param taskList A list of {@link BatchTaskCreateParameters tasks} to add.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createTasks(String jobId, List<BatchTaskCreateContent> taskList) {
+    public Mono<Void> createTasks(String jobId, List<BatchTaskCreateParameters> taskList) {
         return createTasks(jobId, taskList, null);
     }
 
@@ -201,12 +200,12 @@ public final class BatchAsyncClient {
      * was in at that time.
      *
      * @param jobId The ID of the job to which to add the task.
-     * @param taskList A list of {@link BatchTaskCreateContent tasks} to add.
+     * @param taskList A list of {@link BatchTaskCreateParameters tasks} to add.
      * @param batchClientParallelOptions Option that configure the parallelization of the method.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createTasks(String jobId, List<BatchTaskCreateContent> taskList,
+    public Mono<Void> createTasks(String jobId, List<BatchTaskCreateParameters> taskList,
         BatchClientParallelOptions batchClientParallelOptions) {
         TaskSubmitter taskSubmitter = new AsyncTaskSubmitter(this);
         return TaskManager.createTasks(taskSubmitter, jobId, taskList, batchClientParallelOptions);
