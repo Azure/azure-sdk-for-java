@@ -4,10 +4,10 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.BatchJobSchedule;
 import com.azure.compute.batch.models.BatchJobScheduleConfiguration;
-import com.azure.compute.batch.models.BatchJobScheduleCreateContent;
+import com.azure.compute.batch.models.BatchJobScheduleCreateParameters;
 import com.azure.compute.batch.models.BatchJobScheduleState;
 import com.azure.compute.batch.models.BatchJobScheduleStatistics;
-import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
+import com.azure.compute.batch.models.BatchJobScheduleUpdateParameters;
 import com.azure.compute.batch.models.BatchJobSpecification;
 import com.azure.compute.batch.models.BatchMetadataItem;
 import com.azure.compute.batch.models.BatchPool;
@@ -62,7 +62,7 @@ public class JobScheduleTests extends BatchClientTestBase {
             .setDoNotRunAfter(now().plusHours(5))
             .setStartWindow(Duration.ofDays(5));
         BatchJobSpecification spec = new BatchJobSpecification(poolInfo).setPriority(100);
-        batchClient.createJobSchedule(new BatchJobScheduleCreateContent(jobScheduleId, schedule, spec));
+        batchClient.createJobSchedule(new BatchJobScheduleCreateParameters(jobScheduleId, schedule, spec));
 
         try {
             // GET
@@ -108,9 +108,9 @@ public class JobScheduleTests extends BatchClientTestBase {
             // UPDATE
             LinkedList<BatchMetadataItem> metadata = new LinkedList<BatchMetadataItem>();
             metadata.add((new BatchMetadataItem("key1", "value1")));
-            BatchJobScheduleUpdateContent jobScheduleUpdateContent = new BatchJobScheduleUpdateContent();
-            jobScheduleUpdateContent.setMetadata(metadata);
-            batchClient.updateJobSchedule(jobScheduleId, jobScheduleUpdateContent);
+            BatchJobScheduleUpdateParameters jobScheduleUpdateParameters = new BatchJobScheduleUpdateParameters();
+            jobScheduleUpdateParameters.setMetadata(metadata);
+            batchClient.updateJobSchedule(jobScheduleId, jobScheduleUpdateParameters);
 
             jobSchedule = batchClient.getJobSchedule(jobScheduleId);
             Assertions.assertEquals(1, jobSchedule.getMetadata().size());
@@ -150,7 +150,7 @@ public class JobScheduleTests extends BatchClientTestBase {
         BatchJobScheduleConfiguration schedule = new BatchJobScheduleConfiguration().setDoNotRunUntil(now())
             .setDoNotRunAfter(now().plusHours(5))
             .setStartWindow(Duration.ofDays(5));
-        batchClient.createJobSchedule(new BatchJobScheduleCreateContent(jobScheduleId, schedule, spec));
+        batchClient.createJobSchedule(new BatchJobScheduleCreateParameters(jobScheduleId, schedule, spec));
 
         try {
             // GET
