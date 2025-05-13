@@ -15,8 +15,8 @@ import java.io.IOException;
  * Parameters for evaluating an automatic scaling formula on an Azure Batch Pool.
  */
 @Immutable
-public final class BatchPoolEvaluateAutoScaleParameters
-    implements JsonSerializable<BatchPoolEvaluateAutoScaleParameters> {
+public final class BatchPoolAutoScaleEvaluateParameters
+    implements JsonSerializable<BatchPoolAutoScaleEvaluateParameters> {
 
     /*
      * The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results
@@ -28,12 +28,12 @@ public final class BatchPoolEvaluateAutoScaleParameters
     private final String autoScaleFormula;
 
     /**
-     * Creates an instance of BatchPoolEvaluateAutoScaleParameters class.
+     * Creates an instance of BatchPoolAutoScaleEvaluateParameters class.
      *
      * @param autoScaleFormula the autoScaleFormula value to set.
      */
     @Generated
-    public BatchPoolEvaluateAutoScaleParameters(String autoScaleFormula) {
+    public BatchPoolAutoScaleEvaluateParameters(String autoScaleFormula) {
         this.autoScaleFormula = autoScaleFormula;
     }
 
@@ -62,16 +62,16 @@ public final class BatchPoolEvaluateAutoScaleParameters
     }
 
     /**
-     * Reads an instance of BatchPoolEvaluateAutoScaleParameters from the JsonReader.
+     * Reads an instance of BatchPoolAutoScaleEvaluateParameters from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchPoolEvaluateAutoScaleParameters if the JsonReader was pointing to an instance of it,
+     * @return An instance of BatchPoolAutoScaleEvaluateParameters if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BatchPoolEvaluateAutoScaleParameters.
+     * @throws IOException If an error occurs while reading the BatchPoolAutoScaleEvaluateParameters.
      */
     @Generated
-    public static BatchPoolEvaluateAutoScaleParameters fromJson(JsonReader jsonReader) throws IOException {
+    public static BatchPoolAutoScaleEvaluateParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String autoScaleFormula = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -83,7 +83,7 @@ public final class BatchPoolEvaluateAutoScaleParameters
                     reader.skipChildren();
                 }
             }
-            return new BatchPoolEvaluateAutoScaleParameters(autoScaleFormula);
+            return new BatchPoolAutoScaleEvaluateParameters(autoScaleFormula);
         });
     }
 }
