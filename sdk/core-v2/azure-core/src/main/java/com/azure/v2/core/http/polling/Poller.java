@@ -166,10 +166,10 @@ public interface Poller<T, U> {
     }
 
     /**
-     * Creates default SyncPoller.
+     * Creates default Poller.
      *
      * @param pollInterval the polling interval.
-     * @param syncActivationOperation the operation to synchronously activate (start) the long-running operation, this
+     * @param activationOperation the operation to activate (start) the long-running operation, this
      * operation will be called with a new {@link PollingContext}.
      * @param pollOperation the operation to poll the current state of long-running operation, this parameter is
      * required and the operation will be called with current {@link PollingContext}.
@@ -184,21 +184,21 @@ public interface Poller<T, U> {
      * @param <T> The type of poll response value.
      * @param <U> The type of the final result of long-running operation.
      * @return new {@link Poller} instance.
-     * @throws NullPointerException if {@code pollInterval}, {@code syncActivationOperation}, {@code pollOperation},
+     * @throws NullPointerException if {@code pollInterval}, {@code activationOperation}, {@code pollOperation},
      * {@code cancelOperation} or {@code fetchResultOperation} is {@code null}.
      * @throws IllegalArgumentException if {@code pollInterval} is zero or negative.
      */
     static <T, U> Poller<T, U> createPoller(Duration pollInterval,
-        Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
+        Function<PollingContext<T>, PollResponse<T>> activationOperation,
         Function<PollingContext<T>, PollResponse<T>> pollOperation,
         BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation,
         Function<PollingContext<T>, U> fetchResultOperation) {
-        return new SimplePoller<>(pollInterval, syncActivationOperation, pollOperation, cancelOperation,
+        return new SimplePoller<>(pollInterval, activationOperation, pollOperation, cancelOperation,
             fetchResultOperation);
     }
 
     /**
-     * Creates PollerFlux.
+     * Creates Poller.
      * <p>
      * This method uses a {@link PollingStrategy} to poll the status of a long-running operation after the
      * activation operation is invoked. See {@link PollingStrategy} for more details of known polling strategies and
@@ -209,7 +209,7 @@ public interface Poller<T, U> {
      * will be invoked at most once across all subscriptions. This parameter is required. If there is no specific
      * activation work to be done then invocation should return null, this operation will be called with a new
      * {@link PollingContext}.
-     * @param strategy a known synchronous strategy for polling a long-running operation in Azure
+     * @param strategy a known strategy for polling a long-running operation in Azure
      * @param pollResponseType the {@link Type} of the response type from a polling call, or BinaryData if raw
      * response body should be kept. This should match the generic parameter {@link U}.
      * @param resultType the {@link Type} of the final result object to deserialize into, or BinaryData if raw
@@ -223,7 +223,7 @@ public interface Poller<T, U> {
      */
     static <T, U> Poller<T, U> createPoller(Duration pollInterval, Supplier<Response<T>> initialOperation,
         PollingStrategy<T, U> strategy, Type pollResponseType, Type resultType) {
-        Function<PollingContext<T>, PollResponse<T>> syncActivationOperation = pollingContext -> {
+        Function<PollingContext<T>, PollResponse<T>> activationOperation = pollingContext -> {
             Response<T> response = initialOperation.get();
             if (!strategy.canPoll(response)) {
                 throw new IllegalStateException("Cannot poll with strategy " + strategy.getClass().getSimpleName());
@@ -237,8 +237,7 @@ public interface Poller<T, U> {
         BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation = strategy::cancel;
         Function<PollingContext<T>, U> fetchResultOperation = context -> strategy.getResult(context, resultType);
 
-        return createPoller(pollInterval, syncActivationOperation, pollOperation, cancelOperation,
-            fetchResultOperation);
+        return createPoller(pollInterval, activationOperation, pollOperation, cancelOperation, fetchResultOperation);
     }
 
 }
