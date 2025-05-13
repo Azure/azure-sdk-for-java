@@ -24,7 +24,7 @@ public class SimSwapVerifyDebug {
                 .buildSimSwapClient();
 
             // Gateway ID
-            String gatewayId = "/subscriptions/28269522-1d13-498d-92e9-23c999c3c997/resourceGroups/gteixeira-orange-testing2/providers/Private.programmableconnectivity/gateways/gateway-uksouth-2505021457";
+            String gatewayId = "/subscriptions/28269522-1d13-498d-92e9-23c999c3c997/resourceGroups/gteixeira-orange-testing2/providers/Private.programmableconnectivity/gateways/gateway-uksouth-2505081537";
             System.out.println("Using gateway ID: " + gatewayId);
             
             // Create verification content

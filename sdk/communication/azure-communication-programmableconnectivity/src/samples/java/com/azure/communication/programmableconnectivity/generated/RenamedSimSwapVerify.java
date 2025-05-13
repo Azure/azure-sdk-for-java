@@ -35,7 +35,7 @@ public class RenamedSimSwapVerify {
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
             .buildSimSwapClient();
         // BEGIN:com.azure.communication.programmableconnectivity.generated.renamedsimswapverify.renamedsimswapverify
-        SimSwapVerificationResult response = simSwapClient.verify("/subscriptions/28269522-1d13-498d-92e9-23c999c3c997/resourceGroups/gteixeira-orange-testing2/providers/Private.programmableconnectivity/gateways/gateway-uksouth-2505021457",
+        SimSwapVerificationResult response = simSwapClient.verify("/subscriptions/28269522-1d13-498d-92e9-23c999c3c997/resourceGroups/gteixeira-orange-testing2/providers/Private.programmableconnectivity/gateways/gateway-uksouth-2505081537",
             new SimSwapVerificationContent(new NetworkIdentifier("NetworkCode", "E2E_Test_Operator_Contoso"))
                 .setPhoneNumber("10000100")
                 .setMaxAgeHours(941));

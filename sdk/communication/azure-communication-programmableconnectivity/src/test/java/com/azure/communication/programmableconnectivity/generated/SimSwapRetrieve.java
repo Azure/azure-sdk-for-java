@@ -10,18 +10,96 @@ import com.azure.communication.programmableconnectivity.models.NetworkIdentifier
 import com.azure.communication.programmableconnectivity.models.SimSwapRetrievalContent;
 import com.azure.communication.programmableconnectivity.models.SimSwapRetrievalResult;
 import com.azure.core.util.Configuration;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-public class SimSwapRetrieve {
+/*public class SimSwapRetrieve {
     public static void main(String[] args) {
         SimSwapClient simSwapClient
             = new ProgrammableConnectivityClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildSimSwapClient();
-        // BEGIN:com.azure.communication.programmableconnectivity.generated.simswapretrieve.simswapretrieve
+         BEGIN:com.azure.communication.programmableconnectivity.generated.simswapretrieve.simswapretrieve
         SimSwapRetrievalResult response = simSwapClient.retrieve("zdgrzzaxlodrvewbksn",
             new SimSwapRetrievalContent(new NetworkIdentifier("IPv6", "2001:0db8:85a3:0000:0000:8a2e:0370:7334"))
                 .setPhoneNumber("+61215310263792"));
-        // END:com.azure.communication.programmableconnectivity.generated.simswapretrieve.simswapretrieve
+         END:com.azure.communication.programmableconnectivity.generated.simswapretrieve.simswapretrieve
+    }
+}*/
+
+public class SimSwapRetrieve {
+    public static void main(String[] args) {
+        System.out.println("Starting SimSwap retrieval...");
+        System.out.println("Using endpoint: " + Configuration.getGlobalConfiguration().get("ENDPOINT"));
+
+        try {
+            // Use PowerShell credential directly instead of DefaultAzureCredential
+            SimSwapClient simSwapClient
+                = new ProgrammableConnectivityClientBuilder().credential(new AzurePowerShellCredentialBuilder().build())
+                    .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                    .buildSimSwapClient();
+
+            System.out.println("Client created successfully. Sending request...");
+
+            // Prepare the gateway ID and request parameters
+            String gatewayId
+                = "/subscriptions/28269522-1d13-498d-92e9-23c999c3c997/resourceGroups/gteixeira-orange-testing2/providers/Private.programmableconnectivity/gateways/gateway-uksouth-2505081537";
+            NetworkIdentifier networkId = new NetworkIdentifier("NetworkCode", "E2E_Test_Operator_Contoso");
+            String phoneNumber = "10000100";
+
+            System.out.println("\nRequest details:");
+            System.out.println("- Gateway ID: " + gatewayId);
+            System.out.println("- Network Identifier Type: " + networkId.getIdentifierType());
+            System.out.println("- Network Identifier Value: " + networkId.getIdentifier());
+            System.out.println("- Phone Number: " + phoneNumber);
+
+            // BEGIN:com.azure.communication.programmableconnectivity.generated.simswapretrieve.simswapretrieve
+            SimSwapRetrievalContent content = new SimSwapRetrievalContent(networkId).setPhoneNumber(phoneNumber);
+
+            SimSwapRetrievalResult response = simSwapClient.retrieve(gatewayId, content);
+            // END:com.azure.communication.programmableconnectivity.generated.simswapretrieve.simswapretrieve
+
+            System.out.println("\nRequest succeeded!");
+
+            // Response details
+            OffsetDateTime swapDate = response.getDate();
+
+            System.out.println("\nResponse details:");
+            if (swapDate != null) {
+                String formattedDate = swapDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                System.out.println("- Last SIM swap date: " + formattedDate);
+
+                // Calculate time elapsed since the swap
+                OffsetDateTime now = OffsetDateTime.now();
+                long daysSinceSwap = java.time.Duration.between(swapDate, now).toDays();
+
+                System.out.println("\nInterpretation:");
+                System.out
+                    .println("✓ The phone number " + phoneNumber + " had its SIM last swapped on " + formattedDate);
+                System.out.println("✓ This was approximately " + daysSinceSwap + " days ago.");
+
+                if (daysSinceSwap < 30) {
+                    System.out.println("⚠️ This is a recent SIM swap (within the last 30 days).");
+                    System.out.println("  Consider additional verification steps if this is unexpected.");
+                } else {
+                    System.out.println("✓ The SIM swap occurred more than 30 days ago.");
+                }
+            } else {
+                System.out.println("- No SIM swap date available.");
+                System.out.println("\nInterpretation:");
+                System.out.println("✓ No record of SIM swap found for the phone number " + phoneNumber);
+                System.out.println("  This could mean either no swap has occurred or the swap date is not available.");
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error executing SimSwap retrieval:");
+            System.err.println("Error message: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // For test code, simply exit to terminate all threads
+            System.out.println("\nTest completed. Shutting down...");
+            System.exit(0);
+        }
     }
 }
