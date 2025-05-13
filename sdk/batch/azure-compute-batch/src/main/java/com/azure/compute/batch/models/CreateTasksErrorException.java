@@ -22,7 +22,7 @@ public class CreateTasksErrorException extends AzureException {
      * @param pendingTaskList The list of {@link BatchTask} instances containing the tasks that were not added, but for which the operation can be retried.
      */
     public CreateTasksErrorException(final String message, List<BatchTaskCreateResult> failureTaskList,
-        List<BatchTaskCreateContent> pendingTaskList) {
+        List<BatchTaskCreateParameters> pendingTaskList) {
         super(message, null);
         this.failureTaskList = unmodifiableList(failureTaskList);
         this.pendingTaskList = unmodifiableList(pendingTaskList);
@@ -36,7 +36,7 @@ public class CreateTasksErrorException extends AzureException {
     /**
      * The list of {@link BatchTask} instances containing the tasks that were not added, but for which the operation can be retried.
      */
-    private final List<BatchTaskCreateContent> pendingTaskList;
+    private final List<BatchTaskCreateParameters> pendingTaskList;
 
     /**
      * Gets the list of {@link BatchTaskCreateResult} instances containing failure details for tasks that were not successfully created.
@@ -52,7 +52,7 @@ public class CreateTasksErrorException extends AzureException {
      *
      * @return The list of {@link BatchTask} instances containing the tasks that were not added, but for which the operation can be retried.
      */
-    public List<BatchTaskCreateContent> pendingTaskList() {
+    public List<BatchTaskCreateParameters> pendingTaskList() {
         return pendingTaskList;
     }
 }
