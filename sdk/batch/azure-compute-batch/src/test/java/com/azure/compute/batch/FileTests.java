@@ -59,7 +59,8 @@ public class FileTests extends BatchClientTestBase {
 
             batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo));
 
-            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
+            BatchTaskCreateParameters taskToCreate
+                = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
 
             batchClient.createTask(jobId, taskToCreate);
 
@@ -113,7 +114,8 @@ public class FileTests extends BatchClientTestBase {
             poolInfo.setPoolId(poolId);
 
             batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo));
-            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
+            BatchTaskCreateParameters taskToCreate
+                = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
             batchClient.createTask(jobId, taskToCreate);
 
             if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
