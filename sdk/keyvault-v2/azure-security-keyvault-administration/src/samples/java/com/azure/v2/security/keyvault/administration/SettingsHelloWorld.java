@@ -27,7 +27,7 @@ public class SettingsHelloWorld {
         https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable.
 
         To get started, you'll need a URL to an Azure Key Vault Managed HSM. See the README
-        (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md)
+        (https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-administration/README.md)
         for links and instructions. */
         KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder()
             .endpoint("<your-managed-hsm-url>")

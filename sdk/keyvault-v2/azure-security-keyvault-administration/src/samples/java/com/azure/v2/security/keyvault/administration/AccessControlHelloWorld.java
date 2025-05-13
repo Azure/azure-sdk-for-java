@@ -27,7 +27,7 @@ public class AccessControlHelloWorld {
         https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable.
 
         To get started, you'll need a URL to an Azure Key Vault Managed HSM. See the README
-        (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md)
+        (https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-administration/README.md)
         for links and instructions. */
         KeyVaultAccessControlClient accessControlClient = new KeyVaultAccessControlClientBuilder()
             .endpoint("<your-managed-hsm-url>")
@@ -52,7 +52,7 @@ public class AccessControlHelloWorld {
         principal object ID. A role definition ID can be obtained from the 'id' property of one of the role definitions
         returned from listRoleAssignments().
 
-        See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md#authenticate-the-client)
+        See the README (https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-administration/README.md#authenticate-the-client)
         for links and instructions on how to generate a new service principal and obtain it's object ID. You can also
         get the object ID for your currently signed in account by running the following Azure CLI command:
         az ad signed-in-user show --query objectId */

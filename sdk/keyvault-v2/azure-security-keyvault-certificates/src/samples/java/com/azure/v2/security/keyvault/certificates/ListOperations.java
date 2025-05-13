@@ -35,7 +35,7 @@ public class ListOperations {
         https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable.
 
         To get started, you'll need a URL to an Azure Key Vault. See the README
-        (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
+        (https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-certificates/README.md)
         for links and instructions. */
         CertificateClient certificateClient = new CertificateClientBuilder()
             .endpoint("<your-key-vault-url>")

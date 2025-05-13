@@ -28,7 +28,7 @@ public class EncryptDecryptOperations {
         https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable.
 
         To get started, you'll need a key identifier for a key stored in a key vault. See the README
-        (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md)
+        (https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-keys/README.md)
         for links and instructions. */
         CryptographyClient cryptoClient = new CryptographyClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())

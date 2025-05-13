@@ -29,7 +29,7 @@ public class BackupAndRestoreHelloWorld {
         https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable.
 
         To get started, you'll need a URL to an Azure Key Vault Managed HSM. See the README
-        (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md)
+        (https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-administration/README.md)
         for links and instructions. */
 
         /* Using the KeyVaultBackupClient, you can back up your entire collection of keys. The backing store for full
@@ -38,7 +38,7 @@ public class BackupAndRestoreHelloWorld {
         Alternatively, it is possible to generate a SAS token in Storage Explorer (https://docs.microsoft.com/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#generate-a-shared-access-signature-in-storage-explorer).
 
         To ensure you have some keys for backup, you may want to first create a key using the KeyClient. To create a
-        new KeyClient to create a key, see the 'Azure Key Vault Key client library for Java' README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md#create-key-client).
+        new KeyClient to create a key, see the 'Azure Key Vault Key client library for Java' README (https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-keys/README.md#create-key-client).
 
         In the sample below, you can set blobStorageUrl and sasToken based on environment variables, configuration
         settings, or any way that works for your application. */
