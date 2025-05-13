@@ -6,7 +6,7 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.AllocationState;
 import com.azure.compute.batch.models.BatchPool;
-import com.azure.compute.batch.models.BatchPoolCreateContent;
+import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskState;
 import com.azure.compute.batch.models.ElevationLevel;
@@ -171,7 +171,7 @@ class BatchClientTestBase extends TestProxyTestBase {
             // Need VNet to allow security to inject NSGs
             NetworkConfiguration networkConfiguration = createNetworkConfiguration();
 
-            BatchPoolCreateContent poolToCreate = new BatchPoolCreateContent(poolId, poolVmSize);
+            BatchPoolCreateParameters poolToCreate = new BatchPoolCreateParameters(poolId, poolVmSize);
             poolToCreate.setTargetDedicatedNodes(poolVmCount)
                 .setVirtualMachineConfiguration(configuration)
                 .setUserAccounts(userList)

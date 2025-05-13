@@ -111,7 +111,6 @@ import com.azure.compute.batch.models.BatchSupportedImage;
 import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskCollectionCreateOptions;
 import com.azure.compute.batch.models.BatchTaskCountsResult;
-import com.azure.compute.batch.models.BatchTaskCreateContent;
 import com.azure.compute.batch.models.BatchTaskCreateOptions;
 import com.azure.compute.batch.models.BatchTaskCreateParameters;
 import com.azure.compute.batch.models.BatchTaskDeleteOptions;
@@ -172,10 +171,10 @@ public final class BatchClient {
      * Adds multiple tasks to a job.
      *
      * @param jobId The ID of the job to which to add the task.
-     * @param taskList A list of {@link BatchTaskCreateContent tasks} to add.
+     * @param taskList A list of {@link BatchTaskCreateParameters tasks} to add.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createTasks(String jobId, List<BatchTaskCreateContent> taskList) {
+    public void createTasks(String jobId, List<BatchTaskCreateParameters> taskList) {
         createTasks(jobId, taskList, null);
     }
 
@@ -195,11 +194,11 @@ public final class BatchClient {
      * was in at that time.
      *
      * @param jobId The ID of the job to which to add the task.
-     * @param taskList A list of {@link BatchTaskCreateContent tasks} to add.
+     * @param taskList A list of {@link BatchTaskCreateParameters tasks} to add.
      * @param batchClientParallelOptions Option that configure the parallelization of the method.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createTasks(String jobId, List<BatchTaskCreateContent> taskList,
+    public void createTasks(String jobId, List<BatchTaskCreateParameters> taskList,
         BatchClientParallelOptions batchClientParallelOptions) {
         TaskSubmitter taskSubmitter = new SyncTaskSubmitter(this);
         TaskManager.createTasks(taskSubmitter, jobId, taskList, batchClientParallelOptions).block();
