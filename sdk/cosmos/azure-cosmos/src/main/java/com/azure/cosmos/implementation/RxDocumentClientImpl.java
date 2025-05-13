@@ -7615,6 +7615,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         initializePerPartitionAutomaticFailover(databaseAccountSnapshot);
         initializePerPartitionCircuitBreaker();
         enableAvailabilityStrategyForReads();
+
+        checkNotNull(this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover, "Argument 'globalPartitionEndpointManagerForPerPartitionAutomaticFailover' cannot be null.");
+        checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "Argument 'globalPartitionEndpointManagerForPerPartitionCircuitBreaker' cannot be null.");
     }
 
     private void initializePerPartitionAutomaticFailover(DatabaseAccount databaseAccountSnapshot) {
