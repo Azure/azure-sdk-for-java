@@ -5,9 +5,9 @@ package com.azure.compute.batch;
 import com.azure.compute.batch.models.BatchMetadataItem;
 import com.azure.compute.batch.models.BatchNodeCommunicationMode;
 import com.azure.compute.batch.models.BatchPool;
-import com.azure.compute.batch.models.BatchPoolCreateContent;
-import com.azure.compute.batch.models.BatchPoolReplaceContent;
-import com.azure.compute.batch.models.BatchPoolUpdateContent;
+import com.azure.compute.batch.models.BatchPoolCreateParameters;
+import com.azure.compute.batch.models.BatchPoolReplaceParameters;
+import com.azure.compute.batch.models.BatchPoolUpdateParameters;
 import com.azure.compute.batch.models.BatchVmImageReference;
 import com.azure.compute.batch.models.VirtualMachineConfiguration;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -53,13 +53,13 @@ public class SharedKeyTests extends BatchClientTestBase {
 
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, nodeAgentSkuId);
 
-            BatchPoolCreateContent poolCreateContent = new BatchPoolCreateContent(sharedKeyPoolId, vmSize);
-            poolCreateContent.setTargetDedicatedNodes(2)
+            BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(sharedKeyPoolId, vmSize);
+            poolCreateParameters.setTargetDedicatedNodes(2)
                 .setVirtualMachineConfiguration(configuration)
                 .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.DEFAULT);
 
             Response<Void> response
-                = batchClientWithSharedKey.createPoolWithResponse(BinaryData.fromObject(poolCreateContent), null);
+                = batchClientWithSharedKey.createPoolWithResponse(BinaryData.fromObject(poolCreateParameters), null);
             String authorizationValue = response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             Assertions.assertTrue(authorizationValue.contains("SharedKey"),
                 "Test is not using SharedKey authentication");
@@ -79,12 +79,12 @@ public class SharedKeyTests extends BatchClientTestBase {
             ArrayList<BatchMetadataItem> updatedMetadata = new ArrayList<BatchMetadataItem>();
             updatedMetadata.add(new BatchMetadataItem("foo", "bar"));
 
-            BatchPoolReplaceContent poolReplaceContent
-                = new BatchPoolReplaceContent(new ArrayList<>(), new ArrayList<>(), updatedMetadata);
+            BatchPoolReplaceParameters poolReplaceParameters
+                = new BatchPoolReplaceParameters(new ArrayList<>(), new ArrayList<>(), updatedMetadata);
 
-            poolReplaceContent.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
+            poolReplaceParameters.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
 
-            batchClientWithSharedKey.replacePoolProperties(sharedKeyPoolId, poolReplaceContent);
+            batchClientWithSharedKey.replacePoolProperties(sharedKeyPoolId, poolReplaceParameters);
 
             pool = batchClientWithSharedKey.getPool(sharedKeyPoolId);
             Assertions.assertEquals(BatchNodeCommunicationMode.SIMPLIFIED, pool.getTargetNodeCommunicationMode());
@@ -96,10 +96,10 @@ public class SharedKeyTests extends BatchClientTestBase {
              */
             updatedMetadata.clear();
             updatedMetadata.add(new BatchMetadataItem("key1", "value1"));
-            BatchPoolUpdateContent poolUpdateContent = new BatchPoolUpdateContent().setMetadata(updatedMetadata)
+            BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters().setMetadata(updatedMetadata)
                 .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.CLASSIC);
             Response<Void> updatePoolResponse = batchClientWithSharedKey.updatePoolWithResponse(sharedKeyPoolId,
-                BinaryData.fromObject(poolUpdateContent), null);
+                BinaryData.fromObject(poolUpdateParameters), null);
             HttpRequest updatePoolRequest = updatePoolResponse.getRequest();
             HttpHeader ocpDateHeader = updatePoolRequest.getHeaders().get(HttpHeaderName.fromString("ocp-date"));
             Assertions.assertNull(ocpDateHeader);
