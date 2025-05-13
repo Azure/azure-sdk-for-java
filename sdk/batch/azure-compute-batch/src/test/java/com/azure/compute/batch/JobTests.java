@@ -44,7 +44,7 @@ public class JobTests extends BatchClientTestBase {
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(poolId);
-        BatchJobCreateContent jobToCreate = new BatchJobCreateContent(jobId, poolInfo);
+        BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
 
         batchClient.createJob(jobToCreate);
 
@@ -107,7 +107,7 @@ public class JobTests extends BatchClientTestBase {
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(poolId);
 
-        BatchJobCreateContent jobToCreate = new BatchJobCreateContent(jobId, poolInfo);
+        BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
         batchClient.createJob(jobToCreate);
 
         try {
@@ -127,7 +127,7 @@ public class JobTests extends BatchClientTestBase {
             Assertions.assertEquals(priority, job.getPriority());
             Assertions.assertEquals(maxTaskRetryCount, job.getConstraints().getMaxTaskRetryCount());
 
-            batchClient.disableJob(jobId, new BatchJobDisableContent(DisableBatchJobOption.REQUEUE));
+            batchClient.disableJob(jobId, new BatchJobDisableParameters(DisableBatchJobOption.REQUEUE));
             job = batchClient.getJob(jobId);
             Assertions.assertEquals(BatchJobState.DISABLING, job.getState());
 
@@ -139,9 +139,9 @@ public class JobTests extends BatchClientTestBase {
             Assertions.assertEquals(BatchAllTasksCompleteMode.NO_ACTION, job.getAllTasksCompleteMode());
 
             // UPDATE
-            BatchJobUpdateContent jobUpdateContent = new BatchJobUpdateContent();
-            jobUpdateContent.setAllTasksCompleteMode(BatchAllTasksCompleteMode.TERMINATE_JOB);
-            batchClient.updateJob(jobId, jobUpdateContent);
+            BatchJobUpdateParameters jobUpdateParameters = new BatchJobUpdateParameters();
+            jobUpdateParameters.setAllTasksCompleteMode(BatchAllTasksCompleteMode.TERMINATE_JOB);
+            batchClient.updateJob(jobId, jobUpdateParameters);
             job = batchClient.getJob(jobId);
             Assertions.assertEquals(BatchAllTasksCompleteMode.TERMINATE_JOB, job.getAllTasksCompleteMode());
 
@@ -149,9 +149,9 @@ public class JobTests extends BatchClientTestBase {
             job = batchClient.getJob(jobId);
             Assertions.assertEquals(BatchJobState.ACTIVE, job.getState());
 
-            BatchJobTerminateContent terminateContent = new BatchJobTerminateContent().setTerminationReason("myreason");
+            BatchJobTerminateParameters terminateParameters = new BatchJobTerminateParameters().setTerminationReason("myreason");
             BatchJobTerminateOptions options = new BatchJobTerminateOptions();
-            options.setParameters(terminateContent);
+            options.setParameters(terminateParameters);
 
             batchClient.terminateJob(jobId, options, null);
             job = batchClient.getJob(jobId);
@@ -189,7 +189,7 @@ public class JobTests extends BatchClientTestBase {
         poolInfo
             .setAutoPoolSpecification(new BatchAutoPoolSpecification(BatchPoolLifetimeOption.JOB).setPool(poolSpec));
 
-        BatchJobCreateContent jobToCreate = new BatchJobCreateContent(jobId, poolInfo);
+        BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
         batchClient.createJob(jobToCreate);
 
         try {
