@@ -345,9 +345,9 @@ public class PoolTests extends BatchClientTestBase {
                     .setOsDisk(osDisk);
 
             // Create the pool
-            BatchPoolCreateParameters poolCreateParameters
-                = new BatchPoolCreateParameters(poolId, "STANDARD_D2S_V3").setVirtualMachineConfiguration(vmConfiguration)
-                    .setTargetDedicatedNodes(0);
+            BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, "STANDARD_D2S_V3")
+                .setVirtualMachineConfiguration(vmConfiguration)
+                .setTargetDedicatedNodes(0);
 
             batchClient.createPool(poolCreateParameters);
         }
