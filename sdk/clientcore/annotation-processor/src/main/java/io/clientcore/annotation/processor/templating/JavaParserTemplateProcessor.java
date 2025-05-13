@@ -362,8 +362,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         } else {
             urlStatement = method.getHost();
         }
-        System.out.println("url statement: " + urlStatement);
-
         // If the method doesn't have query parameters to set, inline the call to HttpRequest.setUri and return.
         if (method.getQueryParams().isEmpty()) {
             // The 'createHttpRequest' expression is the scope for the method call expression being added.
