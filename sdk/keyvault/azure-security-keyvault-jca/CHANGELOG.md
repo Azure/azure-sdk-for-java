@@ -9,7 +9,7 @@
 
 #### Dependency Updates
 
-- Upgraded from `org.apache.httpcomponents:httpclient:4.5.14` to `org.apache.httpcomponents.client5:httpclient5:5.4.3`.
+- Replaced `org.apache.httpcomponents:httpclient:4.5.14` with `org.apache.httpcomponents.client5:httpclient5:5.4.3`.
 - Updated `com.azure:azure-json:1.3.0` to `com.azure:azure-json:1.5.0`.
 
 ## 2.10.0 (2024-11-26)
