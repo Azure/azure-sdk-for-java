@@ -51,9 +51,9 @@ mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true 
 Take these files:
 ```
 mkdir ~/Deskop/spark-release
-cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-5_2-12/target/azure-cosmos-spark_3-5_2-12-4.38.0-beta.1-javadoc.jar ~/Deskop/spark-release/
-cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-5_2-12/target/azure-cosmos-spark_3-5_2-12-4.38.0-beta.1-sources.jar ~/Deskop/spark-release/
-cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-5_2-12/target/azure-cosmos-spark_3-5_2-12-4.38.0-beta.1.jar ~/Deskop/spark-release/
+cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-5_2-12/target/azure-cosmos-spark_3-5_2-12-4.37.2-beta.1-javadoc.jar ~/Deskop/spark-release/
+cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-5_2-12/target/azure-cosmos-spark_3-5_2-12-4.37.2-beta.1-sources.jar ~/Deskop/spark-release/
+cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-5_2-12/target/azure-cosmos-spark_3-5_2-12-4.37.2-beta.1.jar ~/Deskop/spark-release/
 cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-5_2-12/dependency-reduced-pom.xml ~/Deskop/spark-release/
 ```
 
