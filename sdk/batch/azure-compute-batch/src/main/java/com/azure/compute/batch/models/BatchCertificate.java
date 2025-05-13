@@ -76,7 +76,7 @@ public final class BatchCertificate implements JsonSerializable<BatchCertificate
      * Certificate is in the DeleteFailed state.
      */
     @Generated
-    private DeleteBatchCertificateError deleteCertificateError;
+    private BatchCertificateDeleteError deleteCertificateError;
 
     /*
      * The base64-encoded contents of the Certificate. The maximum size is 10KB.
@@ -186,7 +186,7 @@ public final class BatchCertificate implements JsonSerializable<BatchCertificate
      * @return the deleteCertificateError value.
      */
     @Generated
-    public DeleteBatchCertificateError getDeleteCertificateError() {
+    public BatchCertificateDeleteError getDeleteCertificateError() {
         return this.deleteCertificateError;
     }
 
@@ -283,7 +283,7 @@ public final class BatchCertificate implements JsonSerializable<BatchCertificate
             BatchCertificateState previousState = null;
             OffsetDateTime previousStateTransitionTime = null;
             String publicData = null;
-            DeleteBatchCertificateError deleteCertificateError = null;
+            BatchCertificateDeleteError deleteCertificateError = null;
             BatchCertificateFormat certificateFormat = null;
             String password = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -310,7 +310,7 @@ public final class BatchCertificate implements JsonSerializable<BatchCertificate
                 } else if ("publicData".equals(fieldName)) {
                     publicData = reader.getString();
                 } else if ("deleteCertificateError".equals(fieldName)) {
-                    deleteCertificateError = DeleteBatchCertificateError.fromJson(reader);
+                    deleteCertificateError = BatchCertificateDeleteError.fromJson(reader);
                 } else if ("certificateFormat".equals(fieldName)) {
                     certificateFormat = BatchCertificateFormat.fromString(reader.getString());
                 } else if ("password".equals(fieldName)) {

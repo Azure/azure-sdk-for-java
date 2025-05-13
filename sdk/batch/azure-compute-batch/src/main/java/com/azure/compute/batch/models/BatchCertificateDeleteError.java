@@ -16,7 +16,7 @@ import java.util.List;
  * An error encountered by the Batch service when deleting a Certificate.
  */
 @Immutable
-public final class DeleteBatchCertificateError implements JsonSerializable<DeleteBatchCertificateError> {
+public final class BatchCertificateDeleteError implements JsonSerializable<BatchCertificateDeleteError> {
 
     /*
      * An identifier for the Certificate deletion error. Codes are invariant and are intended to be consumed
@@ -40,10 +40,10 @@ public final class DeleteBatchCertificateError implements JsonSerializable<Delet
     private List<NameValuePair> values;
 
     /**
-     * Creates an instance of DeleteBatchCertificateError class.
+     * Creates an instance of BatchCertificateDeleteError class.
      */
     @Generated
-    private DeleteBatchCertificateError() {
+    private BatchCertificateDeleteError() {
     }
 
     /**
@@ -94,32 +94,32 @@ public final class DeleteBatchCertificateError implements JsonSerializable<Delet
     }
 
     /**
-     * Reads an instance of DeleteBatchCertificateError from the JsonReader.
+     * Reads an instance of BatchCertificateDeleteError from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DeleteBatchCertificateError if the JsonReader was pointing to an instance of it, or null
+     * @return An instance of BatchCertificateDeleteError if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DeleteBatchCertificateError.
+     * @throws IOException If an error occurs while reading the BatchCertificateDeleteError.
      */
     @Generated
-    public static DeleteBatchCertificateError fromJson(JsonReader jsonReader) throws IOException {
+    public static BatchCertificateDeleteError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DeleteBatchCertificateError deserializedDeleteBatchCertificateError = new DeleteBatchCertificateError();
+            BatchCertificateDeleteError deserializedBatchCertificateDeleteError = new BatchCertificateDeleteError();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("code".equals(fieldName)) {
-                    deserializedDeleteBatchCertificateError.code = reader.getString();
+                    deserializedBatchCertificateDeleteError.code = reader.getString();
                 } else if ("message".equals(fieldName)) {
-                    deserializedDeleteBatchCertificateError.message = reader.getString();
+                    deserializedBatchCertificateDeleteError.message = reader.getString();
                 } else if ("values".equals(fieldName)) {
                     List<NameValuePair> values = reader.readArray(reader1 -> NameValuePair.fromJson(reader1));
-                    deserializedDeleteBatchCertificateError.values = values;
+                    deserializedBatchCertificateDeleteError.values = values;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedDeleteBatchCertificateError;
+            return deserializedBatchCertificateDeleteError;
         });
     }
 }
