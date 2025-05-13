@@ -227,6 +227,61 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     }
   }
 
+  "Config Parser" should "parse custom azure environment" in {
+
+    for (authType <- Array("ServicePrinciple", "ServicePrincipal")) {
+      val userConfig = Map(
+        "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+        "spark.cosmos.auth.type" -> authType,
+        "spark.cosmos.account.subscriptionId" -> testAccountSubscriptionId,
+        "spark.cosmos.account.tenantId" -> testAccountTenantId,
+        "spark.cosmos.account.resourceGroupName" -> testAccountResourceGroupName,
+        "spark.cosmos.auth.aad.clientId" -> testServicePrincipalClientId,
+        "spark.cosmos.auth.aad.clientSecret" -> testServicePrincipalClientSecret,
+        "spark.cosmos.account.azureEnvironment" -> "CuSTom",
+        "spark.cosmos.account.azureEnvironment.AaD" -> "CustomAadEndpoint",
+        "spark.cosmos.account.azureEnvironment.mANagement" -> "CustomARMEndpoint"
+      )
+
+      val userCfgMissingAadEndpoint = userConfig.toMap.filter { case (key, _) => key != "spark.cosmos.account.azureEnvironment.AaD" }
+      try {
+        CosmosAccountConfig.parseCosmosAccountConfig(userCfgMissingAadEndpoint)
+        throw new  IllegalStateException("Should never reach here when AAD endpoint config is missing")
+      } catch {
+        case _: IllegalArgumentException =>
+        case otherError: Throwable => throw otherError
+      }
+
+      val userCfgMissingArmEndpoint = userConfig.toMap.filterKeys(_ != "spark.cosmos.account.azureEnvironment.mANagement")
+      try {
+        CosmosAccountConfig.parseCosmosAccountConfig(userCfgMissingArmEndpoint)
+        throw new IllegalStateException("Should never reach here when ARM endpoint config is missing")
+      } catch {
+        case _: IllegalArgumentException =>
+        case otherError: Throwable => throw otherError
+      }
+
+      val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+
+      endpointConfig.endpoint shouldEqual sampleProdEndpoint
+
+      val servicePrincipalAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosServicePrincipalAuthConfig]
+      endpointConfig.subscriptionId.get shouldEqual testAccountSubscriptionId
+      servicePrincipalAuthConfig.tenantId shouldEqual testAccountTenantId
+      endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
+      servicePrincipalAuthConfig.clientId shouldEqual testServicePrincipalClientId
+      servicePrincipalAuthConfig.clientSecret.isDefined shouldEqual true
+      servicePrincipalAuthConfig.clientSecret.get shouldEqual testServicePrincipalClientSecret
+      servicePrincipalAuthConfig.clientCertPemBase64.isDefined shouldEqual false
+      servicePrincipalAuthConfig.sendChain shouldEqual false
+      endpointConfig.accountName shouldEqual "boson-test"
+      endpointConfig.azureEnvironmentEndpoints should not be null
+      endpointConfig.azureEnvironmentEndpoints.size() shouldEqual 2
+      endpointConfig.azureEnvironmentEndpoints.get("activeDirectoryEndpointUrl") shouldEqual "CustomAadEndpoint"
+      endpointConfig.azureEnvironmentEndpoints.get("resourceManagerEndpointUrl") shouldEqual "CustomARMEndpoint"
+    }
+  }
+
   it should "validate account endpoint" in {
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "invalidUrl",
