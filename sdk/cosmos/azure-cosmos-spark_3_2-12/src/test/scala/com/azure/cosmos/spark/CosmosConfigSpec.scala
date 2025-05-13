@@ -243,7 +243,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
         "spark.cosmos.account.azureEnvironment.mANagement" -> "CustomARMEndpoint"
       )
 
-      val userCfgMissingAadEndpoint = userConfig.toMap.filterKeys(_ != "spark.cosmos.account.azureEnvironment.AaD")
+      val userCfgMissingAadEndpoint = userConfig.toMap.filter { case (key, _) => key != "spark.cosmos.account.azureEnvironment.AaD" }
       try {
         CosmosAccountConfig.parseCosmosAccountConfig(userCfgMissingAadEndpoint)
         throw new  IllegalStateException("Should never reach here when AAD endpoint config is missing")
