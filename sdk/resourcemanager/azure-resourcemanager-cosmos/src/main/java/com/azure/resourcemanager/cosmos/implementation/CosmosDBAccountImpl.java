@@ -64,6 +64,7 @@ class CosmosDBAccountImpl
         this.failoverPolicies = new ArrayList<>();
         this.privateEndpointConnections
             = new PrivateEndpointConnectionsImpl(this.manager().serviceClient().getPrivateEndpointConnections(), this);
+        this.innerModel().withDisableLocalAuth(true);
     }
 
     @Override
@@ -508,7 +509,7 @@ class CosmosDBAccountImpl
             this.virtualNetworkRulesMap = null;
         }
         createUpdateParametersInner.withPublicNetworkAccess(inner.publicNetworkAccess());
-
+        createUpdateParametersInner.withDisableLocalAuth(inner.disableLocalAuth());
         return createUpdateParametersInner;
     }
 
