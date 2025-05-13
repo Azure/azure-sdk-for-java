@@ -4,7 +4,6 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
@@ -18,7 +17,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class QueryTests extends QueryTestBase {
 
@@ -57,15 +55,15 @@ public class QueryTests extends QueryTestBase {
             PagedIterable<BasicDigitalTwin> pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class,
                 new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
 
-            // [TODO]Bug: query complains invalid continuation token. 
+            // [TODO]Bug: query complains invalid continuation token.
 
             /*for (BasicDigitalTwin digitalTwin : pagedQueryResponse) {
                 assertNotNull(digitalTwin.getContents().get("IsOccupied"));
             }
-            
+
             /*pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class,
                 new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
-            
+
             // Test that page size hint works, and that all returned pages either have the page size hint amount of
             // elements, or have no continuation token (signaling that it is the last page)
             int pageCount = 0;
@@ -75,12 +73,12 @@ public class QueryTests extends QueryTestBase {
                 for (BasicDigitalTwin ignored : digitalTwinsPage.getElements()) {
                     elementsPerPage++;
                 }
-            
+
                 if (digitalTwinsPage.getContinuationToken() != null) {
                     assertFalse(elementsPerPage < pageSize, "Unexpected page size for a non-terminal page");
                 }
             }
-            
+
             assertTrue(pageCount > 1, "Expected more than one page of query results");*/
         } finally {
             // Cleanup
