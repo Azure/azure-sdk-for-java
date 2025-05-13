@@ -4,7 +4,7 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.communication.callautomation.implementation.models.TranscriptionSubscriptionInternal;
 import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionSubscriptionConstructorProxy;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * Transcription Subscription Object.
  */
-@Fluent
+@Immutable
 public final class TranscriptionSubscription implements JsonSerializable<TranscriptionSubscription> {
     /*
      * Gets or Sets subscription Id.

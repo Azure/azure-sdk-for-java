@@ -126,6 +126,7 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
+     * The display form of the recognized word
      * Get the text property.
      *
      * @return the text value.
@@ -144,6 +145,7 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
+     * Confidence of recognition of the whole phrase, from 0.0 (no confidence) to 1.0 (full confidence)
      * Get the confidence property.
      *
      * @return the confidence value.
@@ -153,6 +155,7 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
+     * The position of this payload
      * Get the offset property.
      *
      * @return the offset value.
@@ -162,6 +165,7 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
+     * Duration in ticks. 1 tick = 100 nanoseconds.
      * Get the duration property.
      *
      * @return the duration value.
@@ -171,6 +175,7 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
+     * The result for each word of the phrase
      * Get the words property.
      *
      * @return the words value.

@@ -33,7 +33,7 @@ public final class AudioMetadata extends StreamingData {
     private final Channels channels;
 
     /*
-     * The size of the audio data being sent, based on the sample rate and duration.
+     * The size of the audio data (base64 byte) being sent, based on the sample rate and duration.
      */
     private final Integer length;
 
@@ -72,6 +72,7 @@ public final class AudioMetadata extends StreamingData {
     }
 
     /**
+     * A unique identifier for the media subscription.
      * Get the mediaSubscriptionId property.
      *
      * @return the mediaSubscriptionId value.
@@ -81,6 +82,7 @@ public final class AudioMetadata extends StreamingData {
     }
 
     /**
+     * The format used to encode the audio. Currently, only "pcm" (Pulse Code Modulation) is supported.
      * Get the encoding property.
      *
      * @return the encoding value.
@@ -90,6 +92,7 @@ public final class AudioMetadata extends StreamingData {
     }
 
     /**
+     * The number of samples per second in the audio. Supported values are 16kHz or 24kHz.
      * Get the sampleRate property.
      *
      * @return the sampleRate value.
@@ -99,6 +102,7 @@ public final class AudioMetadata extends StreamingData {
     }
 
     /**
+     * Specifies the number of audio channels in the audio configuration. Currently, only "mono" (single channel) is supported.
      * Get the channels property.
      *
      * @return the channels value.
@@ -108,6 +112,7 @@ public final class AudioMetadata extends StreamingData {
     }
 
     /**
+     * The size of the audio data (base64 byte) being sent, based on the sample rate and duration.
      * Get the length property.
      *
      * @return the length value.

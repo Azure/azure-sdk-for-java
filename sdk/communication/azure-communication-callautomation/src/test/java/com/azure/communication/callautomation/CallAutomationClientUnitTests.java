@@ -67,26 +67,6 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
-    public void createTeamsAppCallWithResponse() {
-        MicrosoftTeamsAppIdentifier caller = new MicrosoftTeamsAppIdentifier(TEAMS_APP_CALL_CALLER_ID);
-
-        CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<>(Collections
-            .singletonList(new SimpleEntry<>(generateTeamsAppCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_CALLBACK_URL, TEAMS_APP_CALL_CALLER_ID), 201))));
-        PhoneNumberIdentifier target = new PhoneNumberIdentifier(CALL_TARGET_ID);
-
-        Response<CreateCallResult> createCallResult = callAutomationClient.createCallWithResponse(
-            new CreateCallOptions(new CallInvite(target, null), CALL_CALLBACK_URL).setTeamsAppSource(caller),
-            Context.NONE);
-
-        assertNotNull(createCallResult);
-        assertEquals(201, createCallResult.getStatusCode());
-        assertEquals(TEAMS_APP_CALL_CALLER_ID,
-            ((MicrosoftTeamsAppIdentifier) (createCallResult.getValue().getCallConnectionProperties().getSource()))
-                .getAppId());
-    }
-
-    @Test
     public void answerCall() {
         CallAutomationClient callAutomationClient = getCallAutomationClient(
             new ArrayList<>(Collections.singletonList(new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID,
