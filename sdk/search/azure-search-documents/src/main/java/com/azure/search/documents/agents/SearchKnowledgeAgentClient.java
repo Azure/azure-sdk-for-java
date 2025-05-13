@@ -13,7 +13,6 @@ import com.azure.search.documents.agents.implementation.KnowledgeAgentRetrievalC
 import com.azure.search.documents.agents.implementation.KnowledgeRetrievalsImpl;
 import com.azure.search.documents.agents.models.KnowledgeAgentRetrievalRequest;
 import com.azure.search.documents.agents.models.KnowledgeAgentRetrievalResponse;
-import com.azure.search.documents.agents.models.RequestOptions;
 
 /**
  * This class provides a client that contains the operations for retrieving knowledge from an Azure AI Search agent.
@@ -115,9 +114,8 @@ public final class SearchKnowledgeAgentClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeAgentRetrievalResponse retrieve(
         KnowledgeAgentRetrievalRequest retrievalRequest,
-        String xMsQuerySourceAuthorization,
-        RequestOptions requestOptions) {
-        return retrievals.retrieve(retrievalRequest, xMsQuerySourceAuthorization, requestOptions);
+        String xMsQuerySourceAuthorization) {
+        return retrievals.retrieve(retrievalRequest, xMsQuerySourceAuthorization, null);
     }
 
     /**
@@ -133,8 +131,7 @@ public final class SearchKnowledgeAgentClient {
     public Response<KnowledgeAgentRetrievalResponse> retrieveWithResponse(
         KnowledgeAgentRetrievalRequest retrievalRequest,
         String xMsQuerySourceAuthorization,
-        RequestOptions requestOptions,
         Context context) {
-        return retrievals.retrieveWithResponse(retrievalRequest, xMsQuerySourceAuthorization, requestOptions, context);
+        return retrievals.retrieveWithResponse(retrievalRequest, xMsQuerySourceAuthorization, null, context);
     }
 }

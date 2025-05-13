@@ -13,7 +13,6 @@ import com.azure.search.documents.agents.implementation.KnowledgeAgentRetrievalC
 import com.azure.search.documents.agents.implementation.KnowledgeRetrievalsImpl;
 import com.azure.search.documents.agents.models.KnowledgeAgentRetrievalRequest;
 import com.azure.search.documents.agents.models.KnowledgeAgentRetrievalResponse;
-import com.azure.search.documents.agents.models.RequestOptions;
 import reactor.core.publisher.Mono;
 
 /**
@@ -115,9 +114,8 @@ public final class SearchKnowledgeAgentAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeAgentRetrievalResponse> retrieve(
         KnowledgeAgentRetrievalRequest retrievalRequest,
-        String xMsQuerySourceAuthorization,
-        RequestOptions requestOptions) {
-        return retrievals.retrieveAsync(retrievalRequest, xMsQuerySourceAuthorization, requestOptions);
+        String xMsQuerySourceAuthorization) {
+        return retrievals.retrieveAsync(retrievalRequest, xMsQuerySourceAuthorization, null);
     }
 
     /**
@@ -133,8 +131,7 @@ public final class SearchKnowledgeAgentAsyncClient {
     public Mono<Response<KnowledgeAgentRetrievalResponse>> retrieveWithResponse(
         KnowledgeAgentRetrievalRequest retrievalRequest,
         String xMsQuerySourceAuthorization,
-        RequestOptions requestOptions,
         Context context) {
-        return retrievals.retrieveWithResponseAsync(retrievalRequest, xMsQuerySourceAuthorization, requestOptions, context);
+        return retrievals.retrieveWithResponseAsync(retrievalRequest, xMsQuerySourceAuthorization, null, context);
     }
 }
