@@ -16,7 +16,7 @@ import java.util.List;
  * A set of index resources used by the `azure_ai_search` tool.
  */
 @Fluent
-public final class AzureAISearchResource implements JsonSerializable<AzureAISearchResource> {
+public final class AzureAISearchToolResource implements JsonSerializable<AzureAISearchToolResource> {
 
     /*
      * The indices attached to this agent. There can be a maximum of 1 index
@@ -26,10 +26,10 @@ public final class AzureAISearchResource implements JsonSerializable<AzureAISear
     private List<AISearchIndexResource> indexList;
 
     /**
-     * Creates an instance of AzureAISearchResource class.
+     * Creates an instance of AzureAISearchToolResource class.
      */
     @Generated
-    public AzureAISearchResource() {
+    public AzureAISearchToolResource() {
     }
 
     /**
@@ -48,10 +48,10 @@ public final class AzureAISearchResource implements JsonSerializable<AzureAISear
      * resource attached to the agent.
      *
      * @param indexList the indexList value to set.
-     * @return the AzureAISearchResource object itself.
+     * @return the AzureAISearchToolResource object itself.
      */
     @Generated
-    public AzureAISearchResource setIndexList(List<AISearchIndexResource> indexList) {
+    public AzureAISearchToolResource setIndexList(List<AISearchIndexResource> indexList) {
         this.indexList = indexList;
         return this;
     }
@@ -68,29 +68,29 @@ public final class AzureAISearchResource implements JsonSerializable<AzureAISear
     }
 
     /**
-     * Reads an instance of AzureAISearchResource from the JsonReader.
+     * Reads an instance of AzureAISearchToolResource from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureAISearchResource if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AzureAISearchResource.
+     * @return An instance of AzureAISearchToolResource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureAISearchToolResource.
      */
     @Generated
-    public static AzureAISearchResource fromJson(JsonReader jsonReader) throws IOException {
+    public static AzureAISearchToolResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AzureAISearchResource deserializedAzureAISearchResource = new AzureAISearchResource();
+            AzureAISearchToolResource deserializedAzureAISearchToolResource = new AzureAISearchToolResource();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("indexes".equals(fieldName)) {
                     List<AISearchIndexResource> indexList
                         = reader.readArray(reader1 -> AISearchIndexResource.fromJson(reader1));
-                    deserializedAzureAISearchResource.indexList = indexList;
+                    deserializedAzureAISearchToolResource.indexList = indexList;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedAzureAISearchResource;
+            return deserializedAzureAISearchToolResource;
         });
     }
 }
