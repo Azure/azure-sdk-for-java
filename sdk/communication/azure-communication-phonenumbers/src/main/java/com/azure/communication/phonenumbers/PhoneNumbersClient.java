@@ -172,9 +172,9 @@ public final class PhoneNumbersClient {
      * @throws NullPointerException if {@code reservationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PhoneNumbersReservation> getReservationWithResponse(UUID reservationId, Context context) {
+    public Response<PhoneNumbersReservation> getReservationWithResponse(String reservationId, Context context) {
         Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
-        return client.getReservationWithResponse(reservationId, context);
+        return client.getReservationWithResponse(UUID.fromString(reservationId), context);
     }
 
     /**
