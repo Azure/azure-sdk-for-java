@@ -228,12 +228,12 @@ class CosmosDBAccountImpl
 
     @Override
     public boolean multipleWriteLocationsEnabled() {
-        return Boolean.TRUE.equals(this.innerModel().enableMultipleWriteLocations());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableMultipleWriteLocations());
     }
 
     @Override
     public boolean cassandraConnectorEnabled() {
-        return Boolean.TRUE.equals(this.innerModel().enableCassandraConnector());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableCassandraConnector());
     }
 
     @Override
@@ -243,7 +243,7 @@ class CosmosDBAccountImpl
 
     @Override
     public boolean keyBasedMetadataWriteAccessDisabled() {
-        return Boolean.TRUE.equals(this.innerModel().disableKeyBasedMetadataWriteAccess());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().disableKeyBasedMetadataWriteAccess());
     }
 
     @Override
@@ -319,7 +319,7 @@ class CosmosDBAccountImpl
 
     @Override
     public boolean localAuthDisabled() {
-        return Boolean.TRUE.equals(this.innerModel().disableLocalAuth());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().disableLocalAuth());
     }
 
     @Override
