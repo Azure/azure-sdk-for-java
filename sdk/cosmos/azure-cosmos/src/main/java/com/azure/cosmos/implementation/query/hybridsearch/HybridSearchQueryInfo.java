@@ -19,6 +19,8 @@ public class HybridSearchQueryInfo extends JsonSerializable {
     private String globalStatisticsQuery;
     @JsonProperty(Constants.Properties.COMPONENT_QUERY_INFOS)
     private List<QueryInfo> componentQueryInfoList;
+    @JsonProperty(Constants.Properties.COMPONENT_WEIGHTS)
+    private List<Double> componentWeights;
     @JsonProperty(Constants.Properties.PROJECTION_QUERY_INFO)
     private QueryInfo projectionQueryInfo;
     @JsonProperty(Constants.Properties.SKIP)
@@ -59,6 +61,15 @@ public class HybridSearchQueryInfo extends JsonSerializable {
     public List<QueryInfo> getComponentQueryInfoList() {
 
         return componentQueryInfoList != null ? this.componentQueryInfoList : (this.componentQueryInfoList = super.getList(Constants.Properties.COMPONENT_QUERY_INFOS, QueryInfo.class));
+    }
+
+    /**
+     * Gets the list for componentWeights for hybrid search
+     *
+     * @return componentWeights
+     */
+    public List<Double> getComponentWeights() {
+        return componentWeights != null ? this.componentWeights : (this.componentWeights = super.getList(Constants.Properties.COMPONENT_WEIGHTS, Double.class));
     }
 
     /**

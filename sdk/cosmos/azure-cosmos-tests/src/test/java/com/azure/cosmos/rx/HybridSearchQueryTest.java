@@ -150,6 +150,78 @@ public class HybridSearchQueryTest {
     }
 
     @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
+    public void hybridQueryWeightedRRFTest(){
+        // test case 1
+        String query = "SELECT TOP 15 c.index AS Index, c.title AS Title, c.text AS Text FROM c " +
+            "WHERE FullTextContains(c.title, 'John') OR FullTextContains(c.text, 'John') OR FullTextContains(c.text, 'United States')" +
+            "ORDER BY RANK RRF(FullTextScore(c.title, ['John']), FullTextScore(c.text, ['United States']), [1, 1])";
+        List<Document> resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(resultDocs).hasSize(15);
+        validateResults(
+            Arrays.asList("61", "51", "49", "54", "75", "24", "77", "76", "80", "25", "22", "2", "66", "57", "85"),
+            Arrays.asList("61", "51", "49", "54", "75", "24", "77", "76", "80", "25", "22", "2", "66", "85", "57"),
+            resultDocs
+        );
+
+        // test case 2
+        query = "SELECT TOP 15 c.index AS Index, c.title AS Title, c.text AS Text FROM c " +
+            "WHERE FullTextContains(c.title, 'John') OR FullTextContains(c.text, 'John') OR FullTextContains(c.text, 'United States')" +
+            "ORDER BY RANK RRF(FullTextScore(c.title, ['John']), FullTextScore(c.text, ['United States']), [10, 10])";
+        resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(resultDocs).hasSize(15);
+        validateResults(
+            Arrays.asList("61", "51", "49", "54", "75", "24", "77", "76", "80", "25", "22", "2", "66", "57", "85"),
+            Arrays.asList("61", "51", "49", "54", "75", "24", "77", "76", "80", "25", "22", "2", "66", "85", "57"),
+            resultDocs
+        );
+
+        // test case 3
+        query = "SELECT TOP 10 c.index AS Index, c.title AS Title, c.text AS Text FROM c " +
+            "WHERE FullTextContains(c.title, 'John') OR FullTextContains(c.text, 'John') OR FullTextContains(c.text, 'United States')" +
+            "ORDER BY RANK RRF(FullTextScore(c.title, ['John']), FullTextScore(c.text, ['United States']), [0.1, 0.1])";
+        resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(resultDocs).hasSize(10);
+        validateResults(
+            Arrays.asList("61", "51", "49", "54", "75", "24", "77", "76", "80", "25"),
+            resultDocs
+        );
+
+        // test case 4
+        query = "SELECT TOP 10 c.index AS Index, c.title AS Title, c.text AS Text FROM c " +
+            "WHERE FullTextContains(c.title, 'John') OR FullTextContains(c.text, 'John') OR FullTextContains(c.text, 'United States')" +
+            "ORDER BY RANK RRF(FullTextScore(c.title, ['John']), FullTextScore(c.text, ['United States']), [-1, -1])";
+        resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(resultDocs).hasSize(15);
+        validateResults(
+            Arrays.asList("85", "57", "66", "2", "22", "25", "77", "76", "80", "75", "24", "49", "54", "51", "81"),
+            Arrays.asList("57", "85", "2", "66", "22", "25", "80", "76", "77", "24", "75", "54", "49", "51", "61"),
+            resultDocs
+        );
+
+        // test case 5
+        String vector = getQueryVector();
+        query = String.format("SELECT c.index, c.title FROM c " +
+            "ORDER BY RANK RRF(FullTextScore(c.text, ['United States']), VectorDistance(c.vector, [%s]), [1,1]) " +
+            "OFFSET 0 LIMIT 10", vector);
+        resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(resultDocs).hasSize(10);
+        validateResults(
+            Arrays.asList("51", "54", "28", "70", "24", "61", "56", "26", "58", "77"),
+            resultDocs
+        );
+    }
+
+    @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
     public void wrongHybridQueryTest() {
         String query = "";
         try {
@@ -256,6 +328,16 @@ public class HybridSearchQueryTest {
 
         List<String> resultsIds = results.stream().map(Document::getId).collect(Collectors.toList());
         assertThat(resultsIds).isEqualTo(actualIds);
+    }
+
+    private void validateResults(List<String> expectedOrder1, List<String> expectedOrder2, List<Document> results) {
+        assertThat(results).isNotNull();
+
+        List<String> resultsIds = results.stream().map(Document::getId).collect(Collectors.toList());
+        assertThat(resultsIds).satisfiesAnyOf(
+            actual -> assertThat(actual).isEqualTo(expectedOrder1),
+            actual -> assertThat(actual).isEqualTo(expectedOrder2)
+        );
     }
 
 
