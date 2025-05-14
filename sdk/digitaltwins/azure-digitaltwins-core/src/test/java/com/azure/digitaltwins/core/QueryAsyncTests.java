@@ -81,7 +81,7 @@ public class QueryAsyncTests extends QueryTestBase {
                     return true;
                 })
                 .verifyComplete();
-
+            
             assertTrue(pageCount.get() > 1, "Expected more than one page of query results");*/
         } finally {
             // Cleanup
