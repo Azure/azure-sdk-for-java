@@ -250,7 +250,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-jca</artifactId>
-      <version>2.10.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;dependency} -->
+      <version>2.10.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
