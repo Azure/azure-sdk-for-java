@@ -83,10 +83,10 @@ import com.azure.compute.batch.models.BatchNodeVMExtension;
 import com.azure.compute.batch.models.BatchNodesListOptions;
 import com.azure.compute.batch.models.BatchNodesRemoveOptions;
 import com.azure.compute.batch.models.BatchPool;
-import com.azure.compute.batch.models.BatchPoolAutoScaleDisableOptions;
 import com.azure.compute.batch.models.BatchPoolCreateOptions;
 import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchPoolDeleteOptions;
+import com.azure.compute.batch.models.BatchPoolDisableAutoScaleOptions;
 import com.azure.compute.batch.models.BatchPoolEnableAutoScaleOptions;
 import com.azure.compute.batch.models.BatchPoolEnableAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleOptions;
@@ -12977,30 +12977,6 @@ public final class BatchClient {
     }
 
     /**
-     * Disables automatic scaling for a Pool.
-     *
-     * @param poolId The ID of the Pool on which to disable automatic scaling.
-     * @param options Optional parameters for Disable Pool AutoScale operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disablePoolAutoScale(String poolId, BatchPoolAutoScaleDisableOptions options) {
-        // Generated convenience method for disablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        disablePoolAutoScaleWithResponse(poolId, requestOptions).getValue();
-    }
-
-    /**
      * Stops an ongoing resize operation on the Pool.
      *
      * This does not restore the Pool to its previous state before the resize
@@ -16128,5 +16104,29 @@ public final class BatchClient {
         }
         return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue()
             .toObject(AutoScaleRun.class);
+    }
+
+    /**
+     * Disables automatic scaling for a Pool.
+     *
+     * @param poolId The ID of the Pool on which to disable automatic scaling.
+     * @param options Optional parameters for Disable Pool AutoScale operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void disablePoolAutoScale(String poolId, BatchPoolDisableAutoScaleOptions options) {
+        // Generated convenience method for disablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        disablePoolAutoScaleWithResponse(poolId, requestOptions).getValue();
     }
 }
