@@ -961,8 +961,9 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF", "2");
                 }
 
+                System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
+
                 CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
-                    .perPartitionAutomaticFailoverEnabled(true)
                     .preferredRegions(preferredRegions);
 
                 // todo: evaluate whether Batch operation needs op-level e2e timeout and availability strategy
@@ -1044,6 +1045,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
                 System.clearProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF");
+                System.clearProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED");
                 safeClose(cosmosAsyncClientValueHolder.v);
             }
         }
@@ -1060,8 +1062,9 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF", "2");
                 }
 
+                System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
+
                 CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
-                    .perPartitionAutomaticFailoverEnabled(true)
                     .preferredRegions(preferredRegions);
 
                 // todo: evaluate whether Batch operation needs op-level e2e timeout and availability strategy
@@ -1139,6 +1142,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
                 System.clearProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF");
+                System.clearProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED");
                 safeClose(cosmosAsyncClientValueHolder.v);
             }
         }

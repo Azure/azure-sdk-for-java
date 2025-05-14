@@ -248,8 +248,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      */
     private final QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
     private final GlobalEndpointManager globalEndpointManager;
-    private GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
-    private GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+    private final GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
+    private final GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
     private final RetryPolicy retryPolicy;
     private HttpClient reactorHttpClient;
     private Function<HttpClient, HttpClient> httpClientInterceptor;
@@ -292,8 +292,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 SessionRetryOptions sessionRetryOptions,
                                 CosmosContainerProactiveInitConfig containerProactiveInitConfig,
                                 CosmosItemSerializer defaultCustomSerializer,
-                                boolean isRegionScopedSessionCapturingEnabled,
-                                boolean isPerPartitionAutomaticFailoverEnabled) {
+                                boolean isRegionScopedSessionCapturingEnabled) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -581,9 +580,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
 
-            this.cachedCosmosAsyncClientSnapshot = new AtomicReference<>();
+            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+                = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManager);
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.globalEndpointManager, false);
 
-            this.diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig());
+            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
+            this.cachedCosmosAsyncClientSnapshot = new AtomicReference<>();
 
             this.retryPolicy = new RetryPolicy(
                 this,
@@ -7611,13 +7614,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private void initializePerPartitionFailover(DatabaseAccount databaseAccountSnapshot) {
+    // this is a one time call, so we can afford to synchronize as the benefit is now all PPAF and PPCB related dependencies are visible
+    // if initializePerPartitionFailover has been invoked prior
+    private synchronized void initializePerPartitionFailover(DatabaseAccount databaseAccountSnapshot) {
         initializePerPartitionAutomaticFailover(databaseAccountSnapshot);
         initializePerPartitionCircuitBreaker();
         enableAvailabilityStrategyForReads();
 
         checkNotNull(this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover, "Argument 'globalPartitionEndpointManagerForPerPartitionAutomaticFailover' cannot be null.");
         checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "Argument 'globalPartitionEndpointManagerForPerPartitionCircuitBreaker' cannot be null.");
+
+        this.diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig());
     }
 
     private void initializePerPartitionAutomaticFailover(DatabaseAccount databaseAccountSnapshot) {
@@ -7626,24 +7633,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             = databaseAccountSnapshot.isPerPartitionFailoverBehaviorEnabled();
 
         if (isPerPartitionAutomaticFailoverEnabledAsMandatedByService != null) {
-            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
-                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(
-                this.globalEndpointManager,
-                isPerPartitionAutomaticFailoverEnabledAsMandatedByService);
-
-            return;
-        }
-
-        if (Configs.isPerPartitionAutomaticFailoverEnabled().equalsIgnoreCase("true")) {
-            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
-                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(
-                this.globalEndpointManager,
-                true);
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.resetPerPartitionAutomaticFailoverEnabled(isPerPartitionAutomaticFailoverEnabledAsMandatedByService);
         } else {
-            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
-                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(
-                this.globalEndpointManager,
-                false);
+            boolean isPerPartitionAutomaticFailoverOptedIntoByClient
+                = Configs.isPerPartitionAutomaticFailoverEnabled().equalsIgnoreCase("true");
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.resetPerPartitionAutomaticFailoverEnabled(isPerPartitionAutomaticFailoverOptedIntoByClient);
         }
     }
 
@@ -7658,8 +7652,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
-        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
-            = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManager);
+        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.resetCircuitBreakerConfig();
         this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
     }
 
