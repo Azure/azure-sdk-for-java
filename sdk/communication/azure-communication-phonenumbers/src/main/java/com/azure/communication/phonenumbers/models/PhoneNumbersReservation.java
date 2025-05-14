@@ -61,15 +61,6 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
     }
 
     /**
-     * Get the id property: The id of the reservation.
-     *
-     * @return the id value.
-     */
-    public UUID getId() {
-        return this.id;
-    }
-
-    /**
      * Get the expiresAt property: The time at which the reservation will expire. If a reservation is not purchased
      * before this time, all of the reserved phone numbers will be released and made available for others to purchase.
      *
@@ -153,5 +144,14 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
     private PhoneNumbersReservation setPhoneNumbers(Map<String, AvailablePhoneNumber> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
         return this;
+    }
+
+    /**
+     * Get the id property: The id of the reservation.
+     *
+     * @return the id value.
+     */
+    public String getId() {
+        return this.id.toString();
     }
 }

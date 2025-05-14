@@ -44,6 +44,15 @@ public class PhoneNumbersCustomization extends Customization {
                 .addBlockTag("param", "phoneNumbers the phone numbers in the reservation.")
                 .addBlockTag("return", "the PhoneNumbersReservation object itself."));
 
+        clazz.getMethodsByName("getId").forEach(method -> method.remove());
+
+        clazz.addMethod("getId", Modifier.Keyword.PUBLIC)
+            .setType("String")
+            .setBody(StaticJavaParser.parseBlock("{ return this.id.toString(); }"))
+            .setJavadocComment(new Javadoc(
+                JavadocDescription.parseText("Get the id property: The id of the reservation."))
+                .addBlockTag("return", "the id value."));
+
         // Add Accessor to PhoneNumbersReservation
         clazz.setMembers(clazz.getMembers()
             .addFirst(StaticJavaParser.parseBodyDeclaration(String.join("\n", "static {",
@@ -146,5 +155,5 @@ public class PhoneNumbersCustomization extends Customization {
         ast.getImports().removeIf(importDeclaration ->
             importDeclaration.getNameAsString().equals("com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchResultError"));
     });
-}
+  }
 }
