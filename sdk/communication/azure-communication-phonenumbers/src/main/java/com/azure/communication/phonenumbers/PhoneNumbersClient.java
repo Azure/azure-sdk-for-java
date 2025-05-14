@@ -1071,7 +1071,7 @@ public final class PhoneNumbersClient {
      * 
      * @param reservationOptions The request object containing the reservation ID,
      *                           phone numbers to add, and phone numbers to remove.
-     * @param context            A {@link Context} representing the request context.
+     * @param context A {@link Context} representing the request context.
      * @return represents a reservation for phone numbers along with
      *         {@link Response}.
      */
