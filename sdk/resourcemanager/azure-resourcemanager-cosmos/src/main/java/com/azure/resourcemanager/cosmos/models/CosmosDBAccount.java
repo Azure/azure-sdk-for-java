@@ -534,7 +534,7 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
             WithCreate disablePublicNetworkAccess();
         }
 
-        /** The stage of CosmosDB account definition allowing to configure network access settings. */
+        /** The stage of CosmosDB account definition allowing to configure local auth settings. */
         interface WithLocalAuth {
             /**
              * Disables local auth for the CosmosDB account.
