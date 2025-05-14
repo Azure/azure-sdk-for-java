@@ -1026,10 +1026,6 @@ public class BlobTestBase extends TestProxyTestBase {
         implements JsonSerializable<ImmutableStorageWithVersioning> {
         private boolean enabled;
 
-        public boolean isEnabled() {
-            return enabled;
-        }
-
         public void setEnabled(boolean enabled) {
             this.enabled = enabled;
         }
@@ -1077,5 +1073,4 @@ public class BlobTestBase extends TestProxyTestBase {
             return new MockTokenCredential();
         }
     }
-
 }

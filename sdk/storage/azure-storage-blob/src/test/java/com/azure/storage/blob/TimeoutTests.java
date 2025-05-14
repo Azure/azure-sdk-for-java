@@ -117,13 +117,13 @@ public class TimeoutTests {
      * Used for sync and async tests
      */
 
-    protected static final class ListBlobsWithTimeoutTestClient implements HttpClient {
-        private HttpResponse response(HttpRequest request, String xml) {
-            HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
-            return new MockHttpResponse(request, 200, headers, xml.getBytes(StandardCharsets.UTF_8));
-        }
+    private static HttpResponse responseHelper(HttpRequest request, String xml) {
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
+        return new MockHttpResponse(request, 200, headers, xml.getBytes(StandardCharsets.UTF_8));
+    }
 
-        private String buildFirstRequest(Boolean useDelimiter) {
+    protected static final class ListBlobsWithTimeoutTestClient implements HttpClient {
+        private String buildFirstResponse(Boolean useDelimiter) {
             String delimiterString = useDelimiter ? "<Delimiter>/</Delimiter>" : "";
 
             return "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -133,7 +133,7 @@ public class TimeoutTests {
                 + "</Blobs>" + "<NextMarker>MARKER--</NextMarker>" + "</EnumerationResults>";
         }
 
-        private String buildSecondRequest(Boolean useDelimiter) {
+        private String buildSecondResponse(Boolean useDelimiter) {
             String delimiterString = useDelimiter ? "<Delimiter>/</Delimiter>" : "";
 
             return "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -151,16 +151,16 @@ public class TimeoutTests {
 
             if (url.contains("?restype=container&comp=list&maxresults=")) {
                 // flat first request
-                response = response(request, buildFirstRequest(false));
+                response = responseHelper(request, buildFirstResponse(false));
             } else if (url.contains("?restype=container&comp=list&marker=")) {
                 // flat second request
-                response = response(request, buildSecondRequest(false));
+                response = responseHelper(request, buildSecondResponse(false));
             } else if (url.contains("?restype=container&comp=list&delimiter=/&maxresults=")) {
                 // hierarchy first request
-                response = response(request, buildFirstRequest(true));
+                response = responseHelper(request, buildFirstResponse(true));
             } else if (url.contains("?restype=container&comp=list&delimiter=/&marker=")) {
                 // hierarchy second request
-                response = response(request, buildSecondRequest(true));
+                response = responseHelper(request, buildSecondResponse(true));
             } else {
                 // fallback
                 return Mono.just(new MockHttpResponse(request, 404));
@@ -171,12 +171,7 @@ public class TimeoutTests {
     }
 
     protected static final class FindBlobsWithTimeoutClient implements HttpClient {
-        private HttpResponse response(HttpRequest request, String xml) {
-            HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
-            return new MockHttpResponse(request, 200, headers, xml.getBytes(StandardCharsets.UTF_8));
-        }
-
-        private String buildFirstRequest() {
+        private String buildFirstResponse() {
             return "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                 + "<EnumerationResults ServiceEndpoint=\"https://account.blob.core.windows.net/\">"
                 + "<Where>&quot;dummyKey&quot;=&apos;dummyValue&apos;</Where>" + "<MaxResults>3</MaxResults>"
@@ -190,7 +185,7 @@ public class TimeoutTests {
                 + "<NextMarker>MARKER-</NextMarker>" + "</EnumerationResults>";
         }
 
-        private String buildSecondRequest() {
+        private String buildSecondResponse() {
             return "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                 + "<EnumerationResults ServiceEndpoint=\"https://account.blob.core.windows.net/\">"
                 + "<Marker>MARKER-</Marker>" + "<Where>&quot;dummyKey&quot;=&apos;dummyValue&apos;</Where>"
@@ -210,10 +205,10 @@ public class TimeoutTests {
 
             if (url.contains("marker")) {
                 // second request
-                response = response(request, buildSecondRequest());
+                response = responseHelper(request, buildSecondResponse());
             } else if (url.contains("?comp=blobs&where=%") || url.contains("?restype=container&comp=blobs&where=%")) {
                 // first request
-                response = response(request, buildFirstRequest());
+                response = responseHelper(request, buildFirstResponse());
             } else {
                 // fallback
                 return Mono.just(new MockHttpResponse(request, 404));
@@ -224,12 +219,7 @@ public class TimeoutTests {
     }
 
     protected static final class ListContainersWithTimeoutTestClient implements HttpClient {
-        private HttpResponse response(HttpRequest request, String xml) {
-            HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
-            return new MockHttpResponse(request, 200, headers, xml.getBytes(StandardCharsets.UTF_8));
-        }
-
-        private String buildFirstRequest() {
+        private String buildFirstResponse() {
             return "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                 + "<EnumerationResults ServiceEndpoint=\"https://account.blob.core.windows.net/\">"
                 + "<MaxResults>3</MaxResults>" + "<Containers>" + "<Container>" + "<Name>container1</Name>"
@@ -238,7 +228,7 @@ public class TimeoutTests {
                 + "<NextMarker>/marker/marker</NextMarker>" + "</EnumerationResults>";
         }
 
-        private String buildSecondRequest() {
+        private String buildSecondResponse() {
             return "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                 + "<EnumerationResults ServiceEndpoint=\"https://account.blob.core.windows.net/\">"
                 + "<Marker>/marker/marker</Marker>" + "<MaxResults>3</MaxResults>" + "<Containers>" + "<Container>"
@@ -254,10 +244,10 @@ public class TimeoutTests {
 
             if (url.contains("?comp=list&maxresults=")) {
                 // flat first request
-                response = response(request, buildFirstRequest());
+                response = responseHelper(request, buildFirstResponse());
             } else if (url.contains("?comp=list&marker=")) {
                 // flat second request
-                response = response(request, buildSecondRequest());
+                response = responseHelper(request, buildSecondResponse());
             } else {
                 // fallback
                 return Mono.just(new MockHttpResponse(request, 404));
