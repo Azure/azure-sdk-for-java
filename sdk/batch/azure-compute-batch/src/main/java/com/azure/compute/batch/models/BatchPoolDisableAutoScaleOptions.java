@@ -11,7 +11,7 @@ import java.time.Duration;
  * Optional parameters for Disable Pool AutoScale operation.
  */
 @Fluent
-public final class BatchPoolAutoScaleDisableOptions {
+public final class BatchPoolDisableAutoScaleOptions {
 
     /*
      * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
@@ -21,10 +21,10 @@ public final class BatchPoolAutoScaleDisableOptions {
     private Long timeOutInSeconds;
 
     /**
-     * Creates an instance of BatchPoolAutoScaleDisableOptions class.
+     * Creates an instance of BatchPoolDisableAutoScaleOptions class.
      */
     @Generated
-    public BatchPoolAutoScaleDisableOptions() {
+    public BatchPoolDisableAutoScaleOptions() {
     }
 
     /**
@@ -46,10 +46,10 @@ public final class BatchPoolAutoScaleDisableOptions {
      * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
      * @param timeOutInSeconds the timeOutInSeconds value to set.
-     * @return the BatchPoolAutoScaleDisableOptions object itself.
+     * @return the BatchPoolDisableAutoScaleOptions object itself.
      */
     @Generated
-    public BatchPoolAutoScaleDisableOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
+    public BatchPoolDisableAutoScaleOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
         if (timeOutInSeconds == null) {
             this.timeOutInSeconds = null;
         } else {
