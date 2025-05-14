@@ -5,7 +5,6 @@ package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.QueryOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -82,7 +81,7 @@ public class QueryAsyncTests extends QueryTestBase {
                     return true;
                 })
                 .verifyComplete();
-            
+
             assertTrue(pageCount.get() > 1, "Expected more than one page of query results");*/
         } finally {
             // Cleanup
