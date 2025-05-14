@@ -1,22 +1,16 @@
 # Release History
 
-## 1.17.0-beta.1 (Unreleased)
+## 1.16.1 (2025-05-14)
 
 ### Features Added
 - Added `AZURE_TOKEN_CREDENTIALS` environment variable to `DefaultAzureCredential` to allow for choosing groups of credentials.
   - `prod` for `EnvironmentCredential`, `WorkloadIdentityCredential`, and `ManagedIdentityCredential`.
-  - `dev` for `SharedTokenCredential`, `IntelliJCredential`, `AzureCliCredential`, `AzurePowershellCredential`, and `AzureDeveloperCliCredential`. 
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+  - `dev` for `SharedTokenCredential`, `IntelliJCredential`, `AzureCliCredential`, `AzurePowershellCredential`, and `AzureDeveloperCliCredential`.
 
 ## 1.16.0 (2025-05-06)
 
 ### Other Changes
- 
+ [version_client.txt](..%2F..%2F..%2Feng%2Fversioning%2Fversion_client.txt)
 - Marked `VisualStudioCodeCredential` and `VisualStudioCodeCredentialBuilder` as deprecated.[#44527](https://github.com/Azure/azure-sdk-for-java/issues/44527)
 - Added deprecation message to `EnvironmentCredential` when a username/password is used. [#45185](https://github.com/Azure/azure-sdk-for-java/pull/45185) 
 
