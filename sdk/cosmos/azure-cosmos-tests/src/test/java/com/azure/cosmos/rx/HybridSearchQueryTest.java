@@ -105,7 +105,7 @@ public class HybridSearchQueryTest {
     public void hybridQueryTest() {
 
         String query = "SELECT TOP 10 c.id, c.text, c.title FROM c WHERE FullTextContains(c.text, 'John') OR " +
-            "FullTextContains(c.title, 'John') ORDER BY RANK FullTextScore(c.title, ['John'])";
+            "FullTextContains(c.title, 'John') ORDER BY RANK FullTextScore(c.title, 'John')";
         List<Document> resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
@@ -113,7 +113,7 @@ public class HybridSearchQueryTest {
         validateResults(Arrays.asList("2","57","85"), resultDocs);
 
         query = "SELECT c.id, c.title FROM c WHERE FullTextContains(c.title, 'John') " +
-            "OR FullTextContains(c.text, 'John') ORDER BY RANK FullTextScore(c.title, ['John']) OFFSET 1 LIMIT 5";
+            "OR FullTextContains(c.text, 'John') ORDER BY RANK FullTextScore(c.title, 'John') OFFSET 1 LIMIT 5";
         resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
@@ -122,7 +122,7 @@ public class HybridSearchQueryTest {
 
         query = "SELECT TOP 20 c.id, c.title FROM c WHERE FullTextContains(c.title, 'John') OR " +
             "FullTextContains(c.text, 'John') OR FullTextContains(c.text, 'United States') " +
-            "ORDER BY RANK RRF(FullTextScore(c.title, ['John']), FullTextScore(c.text, ['United States']))";
+            "ORDER BY RANK RRF(FullTextScore(c.title, 'John'), FullTextScore(c.text, 'United States'))";
         resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
@@ -131,7 +131,7 @@ public class HybridSearchQueryTest {
 
         query = "SELECT c.id, c.title FROM c WHERE FullTextContains(c.title, 'John') " +
             "OR FullTextContains(c.text, 'John') OR FullTextContains(c.text, 'United States') ORDER BY " +
-            "RANK RRF(FullTextScore(c.title, ['John']), FullTextScore(c.text, ['United States'])) OFFSET 5 LIMIT 10";
+            "RANK RRF(FullTextScore(c.title, 'John'), FullTextScore(c.text, 'United States')) OFFSET 5 LIMIT 10";
         resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
@@ -140,7 +140,7 @@ public class HybridSearchQueryTest {
 
         String vector = getQueryVector();
         query = String.format("SELECT TOP 10 c.id, c.text, c.title FROM c " +
-            "ORDER BY RANK RRF(FullTextScore(c.text, ['John']), FullTextScore(c.text, ['United States']), " +
+            "ORDER BY RANK RRF(FullTextScore(c.text, 'John'), FullTextScore(c.text, 'United States'), " +
             "VectorDistance(c.vector, [%s]))",vector);
         resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
@@ -154,7 +154,7 @@ public class HybridSearchQueryTest {
         // test case 1
         String query = "SELECT TOP 15 c.index AS Index, c.title AS Title, c.text AS Text FROM c " +
             "WHERE FullTextContains(c.title, 'John') OR FullTextContains(c.text, 'John') OR FullTextContains(c.text, 'United States')" +
-            "ORDER BY RANK RRF(FullTextScore(c.title, ['John']), FullTextScore(c.text, ['United States']), [1, 1])";
+            "ORDER BY RANK RRF(FullTextScore(c.title, 'John'), FullTextScore(c.text, 'United States'), [1, 1])";
         List<Document> resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
@@ -168,7 +168,7 @@ public class HybridSearchQueryTest {
         // test case 2
         query = "SELECT TOP 15 c.index AS Index, c.title AS Title, c.text AS Text FROM c " +
             "WHERE FullTextContains(c.title, 'John') OR FullTextContains(c.text, 'John') OR FullTextContains(c.text, 'United States')" +
-            "ORDER BY RANK RRF(FullTextScore(c.title, ['John']), FullTextScore(c.text, ['United States']), [10, 10])";
+            "ORDER BY RANK RRF(FullTextScore(c.title, 'John'), FullTextScore(c.text, 'United States'), [10, 10])";
         resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
@@ -195,7 +195,7 @@ public class HybridSearchQueryTest {
         // test case 4
         query = "SELECT TOP 10 c.index AS Index, c.title AS Title, c.text AS Text FROM c " +
             "WHERE FullTextContains(c.title, 'John') OR FullTextContains(c.text, 'John') OR FullTextContains(c.text, 'United States')" +
-            "ORDER BY RANK RRF(FullTextScore(c.title, ['John']), FullTextScore(c.text, ['United States']), [-1, -1])";
+            "ORDER BY RANK RRF(FullTextScore(c.title, 'John'), FullTextScore(c.text, 'United States'), [-1, -1])";
         resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
@@ -209,7 +209,7 @@ public class HybridSearchQueryTest {
         // test case 5
         String vector = getQueryVector();
         query = String.format("SELECT c.index, c.title FROM c " +
-            "ORDER BY RANK RRF(FullTextScore(c.text, ['United States']), VectorDistance(c.vector, [%s]), [1,1]) " +
+            "ORDER BY RANK RRF(FullTextScore(c.text, 'United States'), VectorDistance(c.vector, [%s]), [1,1]) " +
             "OFFSET 0 LIMIT 10", vector);
         resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
@@ -236,7 +236,7 @@ public class HybridSearchQueryTest {
         }
 
         try {
-            query = "SELECT TOP 10 c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK FullTextScore(c.title, ['John']) DESC";
+            query = "SELECT TOP 10 c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK FullTextScore(c.title, 'John') DESC";
             container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
                 .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
                 .collectList().block();
@@ -247,7 +247,7 @@ public class HybridSearchQueryTest {
         }
 
         try {
-            query = "SELECT TOP 10 c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, ['John']), VectorDistance(c.vector, [1,2,3])) DESC";
+            query = "SELECT TOP 10 c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, 'John'), VectorDistance(c.vector, [1,2,3])) DESC";
             container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
                 .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
                 .collectList().block();
@@ -258,7 +258,7 @@ public class HybridSearchQueryTest {
         }
 
         try {
-            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, ['John']), VectorDistance(c.vector, [1,2,3]))";
+            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, 'John'), VectorDistance(c.vector, [1,2,3]))";
             container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
                 .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
                 .collectList().block();
@@ -270,7 +270,7 @@ public class HybridSearchQueryTest {
         }
 
         try {
-            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, ['John']), VectorDistance(c.vector, [1,2,3])) OFFSET 10 LIMIT 5";
+            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, 'John'), VectorDistance(c.vector, [1,2,3])) OFFSET 10 LIMIT 5";
             container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
                 .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
                 .collectList().block();
@@ -281,7 +281,7 @@ public class HybridSearchQueryTest {
         }
 
         try {
-            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, ['John']), VectorDistance(c.vector, [1,2,3])) OFFSET 10 LIMIT 10";
+            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, 'John'), VectorDistance(c.vector, [1,2,3])) OFFSET 10 LIMIT 10";
             container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
                 .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
                 .collectList().block();
