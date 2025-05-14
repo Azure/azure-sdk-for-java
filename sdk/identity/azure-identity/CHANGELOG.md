@@ -7,7 +7,6 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fix invalid scope in Lettuce sample using identity for Redis Cache.
 
 ### Other Changes
 
