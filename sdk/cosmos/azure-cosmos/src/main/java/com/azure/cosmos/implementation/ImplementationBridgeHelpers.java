@@ -1491,6 +1491,10 @@ public class ImplementationBridgeHelpers {
 
         public interface Http2ConnectionConfigAccessor {
             String toDiagnosticsString(Http2ConnectionConfig cfg);
+            int getEffectiveMaxConcurrentStreams(Http2ConnectionConfig cfg);
+            int getEffectiveMaxConnectionPoolSize(Http2ConnectionConfig cfg);
+            int getEffectiveMinConnectionPoolSize(Http2ConnectionConfig cfg);
+            boolean isEffectivelyEnabled(Http2ConnectionConfig cfg);
         }
     }
     public static final class CosmosDiagnosticsThresholdsHelper {
