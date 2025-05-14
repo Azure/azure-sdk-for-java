@@ -1060,19 +1060,19 @@ public final class PhoneNumbersClient {
      * time. Partial success is possible, in which case the response will have a 207
      * status code.
      * 
-     * @param request The request object containing the reservation ID, phone numbers to add, and phone numbers to remove.
+     * @param reservationOptions The request object containing the reservation ID, phone numbers to add, and phone numbers to remove.
      * @param context A {@link Context} representing the request context.
      * @return represents a reservation for phone numbers along with
      *         {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PhoneNumbersReservation>
-        createOrUpdateReservationWithResponse(CreateOrUpdateReservationOptions request, Context context) {
-        Objects.requireNonNull(request.getReservationId(), "'reservationId' cannot be null.");
-        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
+        createOrUpdateReservationWithResponse(CreateOrUpdateReservationOptions reservationOptions, Context context) {
+        Objects.requireNonNull(reservationOptions.getReservationId(), "'reservationId' cannot be null.");
+        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), reservationOptions);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation();
         PhoneNumbersReservationAccessHelper.setPhoneNumbers(reservation, phoneNumbersMap);
-        return client.createOrUpdateReservationWithResponse(UUID.fromString(request.getReservationId()), reservation,
+        return client.createOrUpdateReservationWithResponse(UUID.fromString(reservationOptions.getReservationId()), reservation,
             context);
     }
 
