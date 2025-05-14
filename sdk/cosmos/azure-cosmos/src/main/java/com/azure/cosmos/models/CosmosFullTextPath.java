@@ -5,13 +5,11 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Path settings within {@link CosmosFullTextPolicy}
  */
-@Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosFullTextPath {
     @JsonProperty(Constants.Properties.PATH)
     private String path;
@@ -21,7 +19,6 @@ public final class CosmosFullTextPath {
     /**
      * Constructor
      */
-    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosFullTextPath() {}
 
     /**
@@ -29,7 +26,6 @@ public final class CosmosFullTextPath {
      *
      * @return path
      */
-    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getPath() {
         return path;
     }
@@ -40,7 +36,6 @@ public final class CosmosFullTextPath {
      * @param path the path for the cosmosFullText.
      * @return CosmosFullTextPath
      */
-    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosFullTextPath setPath(String path) {
         if (StringUtils.isEmpty(path)) {
             throw new NullPointerException("Full text search path is either null or empty");
@@ -58,7 +53,6 @@ public final class CosmosFullTextPath {
      * Gets the language for the cosmosFullText path.
      * @return language
      */
-    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getLanguage() {
         return language;
     }
@@ -68,7 +62,6 @@ public final class CosmosFullTextPath {
      * @param language the language for the cosmosFullText path.
      * @return CosmosFullTextPath
      */
-    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosFullTextPath setLanguage(String language) {
         this.language = language;
         return this;
