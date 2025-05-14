@@ -19,7 +19,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class QueryAsyncTests extends QueryTestBase {
@@ -66,8 +65,8 @@ public class QueryAsyncTests extends QueryTestBase {
                 return true;
             }).verifyComplete();
 
-            // [TODO]Bug: query complains invalid continuation token. 
-            
+            // [TODO]Bug: query complains invalid continuation token.
+
             // Test that page size hint works, and that all returned pages either have the page size hint amount of
             // elements, or have no continuation token (signaling that it is the last page)
             AtomicInteger pageCount = new AtomicInteger(0);
@@ -83,7 +82,7 @@ public class QueryAsyncTests extends QueryTestBase {
                     return true;
                 })
                 .verifyComplete();
-            
+
             assertTrue(pageCount.get() > 1, "Expected more than one page of query results");*/
         } finally {
             // Cleanup
