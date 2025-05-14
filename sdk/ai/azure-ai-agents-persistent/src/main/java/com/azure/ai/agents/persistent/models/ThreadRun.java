@@ -186,7 +186,7 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      * Override the tools the agent can use for this run. This is useful for modifying the behavior on a per-run basis
      */
     @Generated
-    private UpdateToolResourcesOptions toolResources;
+    private ToolResources toolResources;
 
     /*
      * Determines if tools can be executed in parallel within the run.
@@ -566,7 +566,7 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      * @return the toolResources value.
      */
     @Generated
-    public UpdateToolResourcesOptions getToolResources() {
+    public ToolResources getToolResources() {
         return this.toolResources;
     }
 
@@ -658,7 +658,7 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
             RequiredAction requiredAction = null;
             Double temperature = null;
             Double topP = null;
-            UpdateToolResourcesOptions toolResources = null;
+            ToolResources toolResources = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -734,7 +734,7 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
                 } else if ("top_p".equals(fieldName)) {
                     topP = reader.getNullable(JsonReader::getDouble);
                 } else if ("tool_resources".equals(fieldName)) {
-                    toolResources = UpdateToolResourcesOptions.fromJson(reader);
+                    toolResources = ToolResources.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

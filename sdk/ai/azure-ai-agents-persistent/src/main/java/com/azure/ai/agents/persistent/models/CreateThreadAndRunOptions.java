@@ -49,7 +49,7 @@ public final class CreateThreadAndRunOptions {
      * Override the tools the agent can use for this run. This is useful for modifying the behavior on a per-run basis
      */
     @Generated
-    private UpdateToolResourcesOptions toolResources;
+    private ToolResources toolResources;
 
     /*
      * If `true`, returns a stream of events that happen during the Run as server-sent events,
@@ -244,21 +244,8 @@ public final class CreateThreadAndRunOptions {
      * @return the toolResources value.
      */
     @Generated
-    public UpdateToolResourcesOptions getToolResources() {
+    public ToolResources getToolResources() {
         return this.toolResources;
-    }
-
-    /**
-     * Set the toolResources property: Override the tools the agent can use for this run. This is useful for modifying
-     * the behavior on a per-run basis.
-     *
-     * @param toolResources the toolResources value to set.
-     * @return the CreateThreadAndRunOptions object itself.
-     */
-    @Generated
-    public CreateThreadAndRunOptions setToolResources(UpdateToolResourcesOptions toolResources) {
-        this.toolResources = toolResources;
-        return this;
     }
 
     /**
@@ -514,6 +501,19 @@ public final class CreateThreadAndRunOptions {
     @Generated
     public CreateThreadAndRunOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Set the toolResources property: Override the tools the agent can use for this run. This is useful for modifying
+     * the behavior on a per-run basis.
+     *
+     * @param toolResources the toolResources value to set.
+     * @return the CreateThreadAndRunOptions object itself.
+     */
+    @Generated
+    public CreateThreadAndRunOptions setToolResources(ToolResources toolResources) {
+        this.toolResources = toolResources;
         return this;
     }
 }
