@@ -245,14 +245,14 @@ public final class PhoneNumbersAsyncClient {
      * available to purchase matching the browsing criteria. This operation is not paginated. Since the results are
      * randomized, repeating the same request will not guarantee the same results.
      * 
-     * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
+     * @param browsePhoneNumbersOptions An object defining the criteria to browse for available phone numbers.
      * @return the result of a phone number browse operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersBrowseResult> browseAvailableNumbers(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
-        Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
-        return client.browseAvailableNumbersAsync(phoneNumbersBrowseRequest.getCountryCode(),
-            phoneNumbersBrowseRequest);
+    public Mono<PhoneNumbersBrowseResult> browseAvailableNumbers(BrowsePhoneNumbersOptions browsePhoneNumbersOptions) {
+        Objects.requireNonNull(browsePhoneNumbersOptions.getCountryCode(), "'countryCode' cannot be null.");
+        return client.browseAvailableNumbersAsync(browsePhoneNumbersOptions.getCountryCode(),
+            browsePhoneNumbersOptions);
     }
 
     /**
@@ -262,15 +262,15 @@ public final class PhoneNumbersAsyncClient {
      * available to purchase matching the browsing criteria. This operation is not paginated. Since the results are
      * randomized, repeating the same request will not guarantee the same results.
      * 
-     * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
+     * @param browsePhoneNumbersOptions An object defining the criteria to browse for available phone numbers.
      * @return the result of a phone number browse operation on successful completion of {@link PhoneNumbersBrowseResult}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumbersBrowseResult>>
-        browseAvailableNumbersWithResponse(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
-        Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
-        return client.browseAvailableNumbersWithResponseAsync(phoneNumbersBrowseRequest.getCountryCode(),
-            phoneNumbersBrowseRequest);
+        browseAvailableNumbersWithResponse(BrowsePhoneNumbersOptions browsePhoneNumbersOptions) {
+        Objects.requireNonNull(browsePhoneNumbersOptions.getCountryCode(), "'countryCode' cannot be null.");
+        return client.browseAvailableNumbersWithResponseAsync(browsePhoneNumbersOptions.getCountryCode(),
+            browsePhoneNumbersOptions);
     }
 
     /**
@@ -989,15 +989,17 @@ public final class PhoneNumbersAsyncClient {
      * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
      * time. Partial success is possible, in which case the response will have a 207 status code.
      * 
-     * @param request The request object containing the reservation ID and the phone numbers to add or remove.
+     * @param reservationOptions The request object containing the reservation ID and the phone numbers to add or remove.
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> createOrUpdateReservation(CreateOrUpdateReservationOptions request) {
-        String reservationId
-            = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID().toString();
+    public Mono<PhoneNumbersReservation>
+        createOrUpdateReservation(CreateOrUpdateReservationOptions reservationOptions) {
+        String reservationId = reservationOptions.getReservationId() != null
+            ? reservationOptions.getReservationId()
+            : UUID.randomUUID().toString();
 
-        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
+        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), reservationOptions);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation();
         PhoneNumbersReservationAccessHelper.setPhoneNumbers(reservation, phoneNumbersMap);
         return client.createOrUpdateReservationAsync(UUID.fromString(reservationId), reservation);
@@ -1014,16 +1016,17 @@ public final class PhoneNumbersAsyncClient {
      * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
      * time. Partial success is possible, in which case the response will have a 207 status code.
      * 
-     * @param request The request object containing the reservation ID and the phone numbers to add or remove.
+     * @param reservationOptions The request object containing the reservation ID and the phone numbers to add or remove.
      * @return represents a reservation for phone numbers on successful completion of {@link PhoneNumbersReservation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumbersReservation>>
-        createOrUpdateReservationWithResponse(CreateOrUpdateReservationOptions request) {
-        String reservationId
-            = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID().toString();
+        createOrUpdateReservationWithResponse(CreateOrUpdateReservationOptions reservationOptions) {
+        String reservationId = reservationOptions.getReservationId() != null
+            ? reservationOptions.getReservationId()
+            : UUID.randomUUID().toString();
 
-        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
+        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), reservationOptions);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation();
         PhoneNumbersReservationAccessHelper.setPhoneNumbers(reservation, phoneNumbersMap);
         return client.createOrUpdateReservationWithResponseAsync(UUID.fromString(reservationId), reservation);

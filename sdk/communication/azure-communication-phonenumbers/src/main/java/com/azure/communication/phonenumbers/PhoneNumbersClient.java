@@ -238,13 +238,13 @@ public final class PhoneNumbersClient {
      * available to purchase matching the browsing criteria. This operation is not paginated. Since the results are
      * randomized, repeating the same request will not guarantee the same results.
      * 
-     * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
+     * @param browsePhoneNumbersOptions An object defining the criteria to browse for available phone numbers.
      * @return the result of a phone number browse operation {@link PhoneNumbersBrowseResult}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersBrowseResult browseAvailableNumbers(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
-        Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
-        return client.browseAvailableNumbers(phoneNumbersBrowseRequest.getCountryCode(), phoneNumbersBrowseRequest);
+    public PhoneNumbersBrowseResult browseAvailableNumbers(BrowsePhoneNumbersOptions browsePhoneNumbersOptions) {
+        Objects.requireNonNull(browsePhoneNumbersOptions.getCountryCode(), "'countryCode' cannot be null.");
+        return client.browseAvailableNumbers(browsePhoneNumbersOptions.getCountryCode(), browsePhoneNumbersOptions);
     }
 
     /**
@@ -254,17 +254,17 @@ public final class PhoneNumbersClient {
      * available to purchase matching the browsing criteria. This operation is not paginated. Since the results are
      * randomized, repeating the same request will not guarantee the same results.
      * 
-     * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
+     * @param browsePhoneNumbersOptions An object defining the criteria to browse for available phone numbers.
      * @param context The context to associate with this operation.
      * @return the result of a phone number browse operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PhoneNumbersBrowseResult>
-        browseAvailableNumbersWithResponse(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest, Context context) {
-        Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
+        browseAvailableNumbersWithResponse(BrowsePhoneNumbersOptions browsePhoneNumbersOptions, Context context) {
+        Objects.requireNonNull(browsePhoneNumbersOptions.getCountryCode(), "'countryCode' cannot be null.");
 
-        return client.browseAvailableNumbersWithResponse(phoneNumbersBrowseRequest.getCountryCode(),
-            phoneNumbersBrowseRequest, context);
+        return client.browseAvailableNumbersWithResponse(browsePhoneNumbersOptions.getCountryCode(),
+            browsePhoneNumbersOptions, context);
     }
 
     /**
@@ -1030,16 +1030,16 @@ public final class PhoneNumbersClient {
      * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
      * time. Partial success is possible, in which case the response will have a 207 status code.
      * 
-     * @param request The request object containing the reservation ID, phone numbers to add, and phone numbers to remove.
+     * @param reservationOptions The request object containing the reservation ID, phone numbers to add, and phone numbers to remove.
      * @return represents a reservation for phone numbers {@link PhoneNumbersReservation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersReservation createOrUpdateReservation(CreateOrUpdateReservationOptions request) {
-        Objects.requireNonNull(request.getReservationId(), "'reservationId' cannot be null.");
-        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
+    public PhoneNumbersReservation createOrUpdateReservation(CreateOrUpdateReservationOptions reservationOptions) {
+        Objects.requireNonNull(reservationOptions.getReservationId(), "'reservationId' cannot be null.");
+        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), reservationOptions);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation();
         PhoneNumbersReservationAccessHelper.setPhoneNumbers(reservation, phoneNumbersMap);
-        return client.createOrUpdateReservation(UUID.fromString(request.getReservationId()), reservation);
+        return client.createOrUpdateReservation(UUID.fromString(reservationOptions.getReservationId()), reservation);
     }
 
     /**
