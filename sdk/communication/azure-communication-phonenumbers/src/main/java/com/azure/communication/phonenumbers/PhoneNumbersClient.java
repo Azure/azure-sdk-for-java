@@ -1022,16 +1022,25 @@ public final class PhoneNumbersClient {
     /**
      * Updates a reservation by its ID.
      * 
-     * Adds and removes phone numbers from the reservation with the given ID. The response will be the updated state of
-     * the reservation. Phone numbers can be reserved by including them in the payload. If a number is already in the
-     * reservation, it will be ignored. To remove a phone number, set it explicitly to null in the request payload. This
-     * operation is idempotent. If a reservation with the same ID already exists, it will be updated, otherwise a new
-     * one is created. Only reservations with 'active' status can be updated. Updating a reservation will extend the
-     * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
-     * time. Partial success is possible, in which case the response will have a 207 status code.
+     * Adds and removes phone numbers from the reservation with the given ID. The
+     * response will be the updated state of
+     * the reservation. Phone numbers can be reserved by including them in the
+     * payload. If a number is already in the
+     * reservation, it will be ignored. To remove a phone number, set it explicitly
+     * to null in the request payload. This
+     * operation is idempotent. If a reservation with the same ID already exists, it
+     * will be updated, otherwise a new
+     * one is created. Only reservations with 'active' status can be updated.
+     * Updating a reservation will extend the
+     * expiration time of the reservation to 15 minutes after the last change, up to
+     * a maximum of 2 hours from creation
+     * time. Partial success is possible, in which case the response will have a 207
+     * status code.
      * 
-     * @param reservationOptions The request object containing the reservation ID, phone numbers to add, and phone numbers to remove.
-     * @return represents a reservation for phone numbers {@link PhoneNumbersReservation}.
+     * @param reservationOptions The request object containing the reservation ID,
+     *                           phone numbers to add, and phone numbers to remove.
+     * @return represents a reservation for phone numbers
+     *         {@link PhoneNumbersReservation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PhoneNumbersReservation createOrUpdateReservation(CreateOrUpdateReservationOptions reservationOptions) {
@@ -1060,8 +1069,9 @@ public final class PhoneNumbersClient {
      * time. Partial success is possible, in which case the response will have a 207
      * status code.
      * 
-     * @param reservationOptions The request object containing the reservation ID, phone numbers to add, and phone numbers to remove.
-     * @param context A {@link Context} representing the request context.
+     * @param reservationOptions The request object containing the reservation ID,
+     *                           phone numbers to add, and phone numbers to remove.
+     * @param context            A {@link Context} representing the request context.
      * @return represents a reservation for phone numbers along with
      *         {@link Response}.
      */
@@ -1072,8 +1082,8 @@ public final class PhoneNumbersClient {
         Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), reservationOptions);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation();
         PhoneNumbersReservationAccessHelper.setPhoneNumbers(reservation, phoneNumbersMap);
-        return client.createOrUpdateReservationWithResponse(UUID.fromString(reservationOptions.getReservationId()), reservation,
-            context);
+        return client.createOrUpdateReservationWithResponse(UUID.fromString(reservationOptions.getReservationId()),
+            reservation, context);
     }
 
     /**
