@@ -2,20 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Http2ConnectionConfigTests {
-    @BeforeTest(groups = { "unit" })
-    public void before_Test() throws Exception {
+    @BeforeMethod(groups = { "unit" })
+    public void before_Method() throws Exception {
         this.cleanup();
     }
 
-    @AfterTest(groups = { "unit" })
-    public void after_Test() throws Exception {
+    @AfterMethod(groups = { "unit" })
+    public void after_Method() throws Exception {
         this.cleanup();
     }
 
