@@ -582,6 +582,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManager);
+
+            // enablement of PPAF is revaluated in RxDocumentClientImpl#init
             this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
                 = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.globalEndpointManager, false);
 

@@ -680,7 +680,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 ONLY_GATEWAY_MODE
             },
             {
-                "Test failover handling for CREATE when REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT is injected into first preferred region for a specific server partition.",
+                "Test failover handling for CREATE when SERVICE_UNAVAILABLE / GATEWAY_ENDPOINT_UNAVAILABLE is injected into first preferred region for a specific server partition.",
                 OperationType.Create,
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
@@ -963,8 +963,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                 System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
 
-                CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
-                    .preferredRegions(preferredRegions);
+                CosmosClientBuilder cosmosClientBuilder = getClientBuilder();
 
                 // todo: evaluate whether Batch operation needs op-level e2e timeout and availability strategy
                 if (operationType.equals(OperationType.Batch) && shouldUseE2ETimeout) {
@@ -1064,8 +1063,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                 System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
 
-                CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
-                    .preferredRegions(preferredRegions);
+                CosmosClientBuilder cosmosClientBuilder = getClientBuilder();
 
                 // todo: evaluate whether Batch operation needs op-level e2e timeout and availability strategy
                 if (operationType.equals(OperationType.Batch) && shouldUseE2ETimeout) {
