@@ -34,9 +34,9 @@ public class Http2ConnectionConfig {
         return maxConnectionPoolSize;
     }
 
-    public int getEffectiveMaxConnectionPoolSize() {
+    int getEffectiveMaxConnectionPoolSize() {
         Integer snapshot = maxConnectionPoolSize;
-        return snapshot != null ? snapshot : Configs.getDefaultHttpPoolSize();
+        return snapshot != null ? snapshot : Configs.getHttp2MaxConnectionPoolSize();
     }
 
     /***
