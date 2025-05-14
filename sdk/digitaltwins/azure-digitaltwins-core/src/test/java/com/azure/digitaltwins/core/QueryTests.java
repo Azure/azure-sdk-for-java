@@ -52,17 +52,17 @@ public class QueryTests extends QueryTestBase {
 
             /*
             String queryString = "SELECT * FROM digitaltwins where IsOccupied = true";
-
+            
             PagedIterable<BasicDigitalTwin> pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class,
                 new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
-
+            
             for (BasicDigitalTwin digitalTwin : pagedQueryResponse) {
                 assertNotNull(digitalTwin.getContents().get("IsOccupied"));
             }
-
+            
             /*pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class,
                 new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
-
+            
             // Test that page size hint works, and that all returned pages either have the page size hint amount of
             // elements, or have no continuation token (signaling that it is the last page)
             int pageCount = 0;
@@ -72,12 +72,12 @@ public class QueryTests extends QueryTestBase {
                 for (BasicDigitalTwin ignored : digitalTwinsPage.getElements()) {
                     elementsPerPage++;
                 }
-
+            
                 if (digitalTwinsPage.getContinuationToken() != null) {
                     assertFalse(elementsPerPage < pageSize, "Unexpected page size for a non-terminal page");
                 }
             }
-
+            
             assertTrue(pageCount > 1, "Expected more than one page of query results");
              */
         } finally {
