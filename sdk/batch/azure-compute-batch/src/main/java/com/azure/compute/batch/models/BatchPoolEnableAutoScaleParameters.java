@@ -17,7 +17,7 @@ import java.time.Duration;
  * Parameters for enabling automatic scaling on an Azure Batch Pool.
  */
 @Fluent
-public final class BatchPoolAutoScaleEnableParameters implements JsonSerializable<BatchPoolAutoScaleEnableParameters> {
+public final class BatchPoolEnableAutoScaleParameters implements JsonSerializable<BatchPoolEnableAutoScaleParameters> {
 
     /*
      * The formula for the desired number of Compute Nodes in the Pool. The default value is 15 minutes. The minimum and
@@ -42,10 +42,10 @@ public final class BatchPoolAutoScaleEnableParameters implements JsonSerializabl
     private Duration autoScaleEvaluationInterval;
 
     /**
-     * Creates an instance of BatchPoolAutoScaleEnableParameters class.
+     * Creates an instance of BatchPoolEnableAutoScaleParameters class.
      */
     @Generated
-    public BatchPoolAutoScaleEnableParameters() {
+    public BatchPoolEnableAutoScaleParameters() {
     }
 
     /**
@@ -72,10 +72,10 @@ public final class BatchPoolAutoScaleEnableParameters implements JsonSerializabl
      * evaluation schedule will be started, with its starting time being the time when this request was issued.
      *
      * @param autoScaleFormula the autoScaleFormula value to set.
-     * @return the BatchPoolAutoScaleEnableParameters object itself.
+     * @return the BatchPoolEnableAutoScaleParameters object itself.
      */
     @Generated
-    public BatchPoolAutoScaleEnableParameters setAutoScaleFormula(String autoScaleFormula) {
+    public BatchPoolEnableAutoScaleParameters setAutoScaleFormula(String autoScaleFormula) {
         this.autoScaleFormula = autoScaleFormula;
         return this;
     }
@@ -106,10 +106,10 @@ public final class BatchPoolAutoScaleEnableParameters implements JsonSerializabl
      * the time when this request was issued.
      *
      * @param autoScaleEvaluationInterval the autoScaleEvaluationInterval value to set.
-     * @return the BatchPoolAutoScaleEnableParameters object itself.
+     * @return the BatchPoolEnableAutoScaleParameters object itself.
      */
     @Generated
-    public BatchPoolAutoScaleEnableParameters setAutoScaleEvaluationInterval(Duration autoScaleEvaluationInterval) {
+    public BatchPoolEnableAutoScaleParameters setAutoScaleEvaluationInterval(Duration autoScaleEvaluationInterval) {
         this.autoScaleEvaluationInterval = autoScaleEvaluationInterval;
         return this;
     }
@@ -128,31 +128,31 @@ public final class BatchPoolAutoScaleEnableParameters implements JsonSerializabl
     }
 
     /**
-     * Reads an instance of BatchPoolAutoScaleEnableParameters from the JsonReader.
+     * Reads an instance of BatchPoolEnableAutoScaleParameters from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchPoolAutoScaleEnableParameters if the JsonReader was pointing to an instance of it, or
+     * @return An instance of BatchPoolEnableAutoScaleParameters if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the BatchPoolAutoScaleEnableParameters.
+     * @throws IOException If an error occurs while reading the BatchPoolEnableAutoScaleParameters.
      */
     @Generated
-    public static BatchPoolAutoScaleEnableParameters fromJson(JsonReader jsonReader) throws IOException {
+    public static BatchPoolEnableAutoScaleParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BatchPoolAutoScaleEnableParameters deserializedBatchPoolAutoScaleEnableParameters
-                = new BatchPoolAutoScaleEnableParameters();
+            BatchPoolEnableAutoScaleParameters deserializedBatchPoolEnableAutoScaleParameters
+                = new BatchPoolEnableAutoScaleParameters();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("autoScaleFormula".equals(fieldName)) {
-                    deserializedBatchPoolAutoScaleEnableParameters.autoScaleFormula = reader.getString();
+                    deserializedBatchPoolEnableAutoScaleParameters.autoScaleFormula = reader.getString();
                 } else if ("autoScaleEvaluationInterval".equals(fieldName)) {
-                    deserializedBatchPoolAutoScaleEnableParameters.autoScaleEvaluationInterval
+                    deserializedBatchPoolEnableAutoScaleParameters.autoScaleEvaluationInterval
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedBatchPoolAutoScaleEnableParameters;
+            return deserializedBatchPoolEnableAutoScaleParameters;
         });
     }
 }
