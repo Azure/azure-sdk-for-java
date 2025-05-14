@@ -36,6 +36,8 @@ com.microsoft.azure:qpid-proton-j-extensions;1.2.5
 com.microsoft.sqlserver:mssql-jdbc;10.2.3.jre8
 com.microsoft.azure:azure-functions-maven-plugin;1.30.0
 com.microsoft.azure.functions:azure-functions-java-library;2.2.0
+com.azure:azure-ai-agents-persistent;1.0.0-alpha.20250508.5
+com.azure:azure-ai-inference;1.0.0-beta.4
 com.mysql:mysql-connector-j;9.0.0
 com.openai:openai-java;1.3.1
 com.squareup.okhttp3:okhttp;4.12.0

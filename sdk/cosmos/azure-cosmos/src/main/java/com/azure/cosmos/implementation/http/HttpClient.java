@@ -51,12 +51,12 @@ public interface HttpClient {
         fixedConnectionProviderBuilder.pendingAcquireTimeout(httpClientConfig.getConnectionAcquireTimeout());
         fixedConnectionProviderBuilder.maxIdleTime(httpClientConfig.getMaxIdleConnectionTimeout());
 
-        if (httpClientConfig.getHttp2Config().isEnabled()) {
+        if (httpClientConfig.getHttp2ConnectionConfig().isEnabled()) {
             fixedConnectionProviderBuilder.allocationStrategy(
                 Http2AllocationStrategy.builder()
-                    .maxConnections(httpClientConfig.getHttp2Config().getMaxConnectionPoolSize())
-                    .minConnections(httpClientConfig.getHttp2Config().getMinConnectionPoolSize())
-                    .maxConcurrentStreams(httpClientConfig.getHttp2Config().getMaxConcurrentStreams())
+                    .minConnections(httpClientConfig.getHttp2ConnectionConfig().getMinConnectionPoolSize())
+                    .maxConnections(httpClientConfig.getHttp2ConnectionConfig().getMaxConnectionPoolSize())
+                    .maxConcurrentStreams(httpClientConfig.getHttp2ConnectionConfig().getMaxConcurrentStreams())
                     .build()
             );
         }

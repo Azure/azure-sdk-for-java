@@ -31,6 +31,7 @@ import org.apache.spark.sql.types.{DataType, NumericType, StructType}
 import java.net.{URI, URISyntaxException, URL}
 import java.time.format.DateTimeFormatter
 import java.time.{Duration, Instant}
+import java.util
 import java.util.{Locale, ServiceLoader}
 import scala.collection.concurrent.TrieMap
 import scala.collection.immutable.{HashSet, List, Map}
@@ -48,6 +49,8 @@ private[spark] object CosmosConfigNames {
   val TenantId = "spark.cosmos.account.tenantId"
   val ResourceGroupName = "spark.cosmos.account.resourceGroupName"
   val AzureEnvironment = "spark.cosmos.account.azureEnvironment"
+  val AzureEnvironmentAAD = "spark.cosmos.account.azureEnvironment.aad"
+  val AzureEnvironmentManagement = "spark.cosmos.account.azureEnvironment.management"
   val AuthType = "spark.cosmos.auth.type"
   val ClientId = "spark.cosmos.auth.aad.clientId"
   val ResourceId = "spark.cosmos.auth.aad.resourceId"
@@ -160,6 +163,8 @@ private[spark] object CosmosConfigNames {
     ClientCertPemBase64,
     ClientCertSendChain,
     AzureEnvironment,
+    AzureEnvironmentAAD,
+    AzureEnvironmentManagement,
     Database,
     Container,
     PreferredRegionsList,
@@ -615,6 +620,18 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
       parseFromStringFunction = resourceGroupName => resourceGroupName,
       helpMessage = "The resource group of the CosmosDB account. Required for `ServicePrincipal` authentication.")
 
+  private val AzureEnvironmentManagementUri = CosmosConfigEntry[String](key = CosmosConfigNames.AzureEnvironmentManagement,
+    defaultValue = None,
+    mandatory = false,
+    parseFromStringFunction = managementUri => managementUri,
+    helpMessage = "The ARM management endpoint to be used when selecting AzureEnvironment `Custom`.")
+
+  private val AzureEnvironmentAadUri = CosmosConfigEntry[String](key = CosmosConfigNames.AzureEnvironmentAAD,
+    defaultValue = None,
+    mandatory = false,
+    parseFromStringFunction = aadUri => aadUri,
+    helpMessage = "The AAD endpoint to be used when selecting AzureEnvironment `Custom`.")
+
   private val AzureEnvironmentTypeEnum = CosmosConfigEntry[java.util.Map[String, String]](key = CosmosConfigNames.AzureEnvironment,
       defaultValue = Option.apply(AzureEnvironment.AZURE.getEndpoints),
       mandatory = false,
@@ -671,7 +688,6 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     val subscriptionIdOpt = CosmosConfigEntry.parse(cfg, SubscriptionId)
     val resourceGroupNameOpt = CosmosConfigEntry.parse(cfg, ResourceGroupName)
     val tenantIdOpt = CosmosConfigEntry.parse(cfg, TenantId)
-    val azureEnvironmentOpt = CosmosConfigEntry.parse(cfg, AzureEnvironmentTypeEnum)
     val clientBuilderInterceptors = CosmosConfigEntry.parse(cfg, ClientBuilderInterceptors)
     val clientInterceptors = CosmosConfigEntry.parse(cfg, ClientInterceptors)
 
@@ -681,6 +697,34 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
 
     if (allowDuplicateJsonPropertiesOverride.isDefined && allowDuplicateJsonPropertiesOverride.get) {
       SparkBridgeImplementationInternal.configureSimpleObjectMapper(true)
+    }
+
+    val azureEnvironmentOpt : Option[util.Map[String, String]] = if (cfg.exists(kvp =>
+        CosmosConfigNames.AzureEnvironment.equalsIgnoreCase(kvp._1)
+        && "Custom".equalsIgnoreCase(kvp._2))) {
+
+      val endpoints: util.Map[String, String] = new util.HashMap[String, String]()
+      val mgmtEndpoint = CosmosConfigEntry.parse(cfg, AzureEnvironmentManagementUri)
+      if (mgmtEndpoint.isDefined) {
+        endpoints.put("resourceManagerEndpointUrl", mgmtEndpoint.get)
+      } else {
+        throw new IllegalArgumentException(
+          s"The configuration '${CosmosConfigNames.AzureEnvironmentManagement}' is required when "
+            + "choosing AzureEnvironment 'Custom'.")
+      }
+
+      val aadEndpoint = CosmosConfigEntry.parse(cfg, AzureEnvironmentAadUri)
+      if (aadEndpoint.isDefined) {
+        endpoints.put("activeDirectoryEndpointUrl", aadEndpoint.get)
+      } else {
+        throw new IllegalArgumentException(
+          s"The configuration '${CosmosConfigNames.AzureEnvironmentAAD}' is required when "
+            + "choosing AzureEnvironment 'Custom'.")
+      }
+
+      Option.apply(endpoints)
+    } else {
+      CosmosConfigEntry.parse(cfg, AzureEnvironmentTypeEnum)
     }
 
     // parsing above already validated these assertions
