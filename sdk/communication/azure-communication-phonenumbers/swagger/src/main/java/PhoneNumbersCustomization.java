@@ -119,7 +119,9 @@ public class PhoneNumbersCustomization extends Customization {
         // Remove the default constructor
         clazz.getConstructors().forEach(constructor -> constructor.remove());
         clazz.addConstructor(Modifier.Keyword.PRIVATE);
-
+        // Remove a specific method by name
+        clazz.getMethodsByName("setCountryCode").forEach(method -> method.remove());
+        clazz.getMethodsByName("setPhoneNumberType").forEach(method -> method.remove());
         // Add a new constructor with required parameters
         clazz.addConstructor(Modifier.Keyword.PUBLIC)
             .addParameter("String", "countryCode")

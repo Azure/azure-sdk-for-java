@@ -52,17 +52,6 @@ public final class BrowsePhoneNumbersOptions implements JsonSerializable<BrowseP
     }
 
     /**
-     * Set the phoneNumberType property: Represents the number type of the offering.
-     *
-     * @param phoneNumberType the phoneNumberType value to set.
-     * @return the BrowsePhoneNumbersOptions object itself.
-     */
-    public BrowsePhoneNumbersOptions setPhoneNumberType(PhoneNumberType phoneNumberType) {
-        this.phoneNumberType = phoneNumberType;
-        return this;
-    }
-
-    /**
      * Get the capabilities property: Capabilities of a phone number.
      *
      * @return the capabilities value.
@@ -131,17 +120,6 @@ public final class BrowsePhoneNumbersOptions implements JsonSerializable<BrowseP
      */
     public String getCountryCode() {
         return this.countryCode;
-    }
-
-    /**
-     * Set the countryCode property: The ISO 3166-2 country code, e.g. US.
-     *
-     * @param countryCode the countryCode value to set.
-     * @return the BrowsePhoneNumbersOptions object itself.
-     */
-    public BrowsePhoneNumbersOptions setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-        return this;
     }
 
     /**
