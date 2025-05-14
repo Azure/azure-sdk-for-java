@@ -8,10 +8,10 @@ import com.azure.core.annotation.Generated;
 import java.time.Duration;
 
 /**
- * Optional parameters for Enable Pool AutoScale operation.
+ * Optional parameters for Evaluate Pool AutoScale operation.
  */
 @Fluent
-public final class BatchPoolAutoScaleEnableOptions {
+public final class BatchPoolEvaluateAutoScaleOptions {
 
     /*
      * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
@@ -21,10 +21,10 @@ public final class BatchPoolAutoScaleEnableOptions {
     private Long timeOutInSeconds;
 
     /**
-     * Creates an instance of BatchPoolAutoScaleEnableOptions class.
+     * Creates an instance of BatchPoolEvaluateAutoScaleOptions class.
      */
     @Generated
-    public BatchPoolAutoScaleEnableOptions() {
+    public BatchPoolEvaluateAutoScaleOptions() {
     }
 
     /**
@@ -46,10 +46,10 @@ public final class BatchPoolAutoScaleEnableOptions {
      * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
      * @param timeOutInSeconds the timeOutInSeconds value to set.
-     * @return the BatchPoolAutoScaleEnableOptions object itself.
+     * @return the BatchPoolEvaluateAutoScaleOptions object itself.
      */
     @Generated
-    public BatchPoolAutoScaleEnableOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
+    public BatchPoolEvaluateAutoScaleOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
         if (timeOutInSeconds == null) {
             this.timeOutInSeconds = null;
         } else {
