@@ -4,13 +4,12 @@
 
 package com.azure.communication.phonenumbers.siprouting.models;
 
-import java.io.IOException;
-
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The overall health status of Trunk.

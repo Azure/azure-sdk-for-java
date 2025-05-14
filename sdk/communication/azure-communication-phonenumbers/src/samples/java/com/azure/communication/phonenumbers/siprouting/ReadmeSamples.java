@@ -92,12 +92,16 @@ public class ReadmeSamples {
     /**
      * Sample code for listing SIP trunks and routes.
      */
-    public void listTrunksAndRoutes() {
+    public void listDomainsTrunksAndRoutes() {
         SipRoutingClient sipRoutingClient = createSipRoutingClient();
 
-        // BEGIN: readme-sample-listTrunksAndRoutes
+        // BEGIN: readme-sample-listDomainsTrunksAndRoutes
+        PagedIterable<SipDomain> domains = sipRoutingClient.listDomains();
         PagedIterable<SipTrunk> trunks = sipRoutingClient.listTrunks();
         PagedIterable<SipTrunkRoute> routes = sipRoutingClient.listRoutes();
+        for (SipDomain domain : domains) {
+            System.out.println("Domains " + domain.getFqdn() + ":" + domain.isEnabled());
+        }
         for (SipTrunk trunk : trunks) {
             System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
         }
@@ -107,7 +111,7 @@ public class ReadmeSamples {
             System.out.println("Route number pattern: " + route.getNumberPattern());
             System.out.println("Route trunks: " + String.join(",", route.getTrunks()));
         }
-        // END: readme-sample-listTrunksAndRoutes
+        // END: readme-sample-listDomainsTrunksAndRoutes
     }
 
     /**
@@ -147,10 +151,13 @@ public class ReadmeSamples {
     /**
      * Sample code for setting SIP trunks and routes.
      */
-    public void setTrunksAndRoutes() {
+    public void setDomainsTrunksAndRoutes() {
         SipRoutingClient sipRoutingClient = createSipRoutingClient();
 
-        // BEGIN: readme-sample-setTrunksAndRoutes
+        // BEGIN: readme-sample-setDomainsTrunksAndRoutes
+        sipRoutingClient.setDomains(asList(
+            new SipDomain("<domain fqdn>", false)
+        ));
         sipRoutingClient.setTrunks(asList(
             new SipTrunk("<first trunk fqdn>", 12345),
             new SipTrunk("<second trunk fqdn>", 23456)
@@ -159,7 +166,7 @@ public class ReadmeSamples {
             new SipTrunkRoute("route name1", ".*9").setTrunks(asList("<first trunk fqdn>", "<second trunk fqdn>")),
             new SipTrunkRoute("route name2", ".*").setTrunks(asList("<second trunk fqdn>"))
         ));
-        // END: readme-sample-setTrunksAndRoutes
+        // END: readme-sample-setDomainsTrunksAndRoutes
     }
 
     /**

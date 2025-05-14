@@ -447,7 +447,7 @@ public final class SipRoutingAsyncClient {
     public Mono<SipDomain> getDomain(String domainName) {
         return getSipConfiguration().flatMap(config -> {
             SipDomain domain = convertFromApi(config.getDomains()).stream()
-                .filter(sipDomain -> domainName.equals(sipDomain.toString()))
+                .filter(sipDomain -> domainName.equals(sipDomain.getFqdn()))
                 .findAny()
                 .orElse(null);
             return domain != null ? Mono.just(domain) : Mono.empty();
@@ -478,7 +478,7 @@ public final class SipRoutingAsyncClient {
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .map(result -> new SimpleResponse<>(result,
                 convertFromApi(result.getValue().getDomains()).stream()
-                    .filter(sipDomain -> domainName.equals(sipDomain.toString()))
+                    .filter(sipDomain -> domainName.equals(sipDomain.getFqdn()))
                     .findAny()
                     .orElse(null)));
     }
@@ -531,7 +531,7 @@ public final class SipRoutingAsyncClient {
     public Mono<Void> setDomain(SipDomain domain) {
         Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain> domains
             = new HashMap<>();
-        domains.put(domain.toString(), convertToApi(domain));
+        domains.put(domain.getFqdn(), convertToApi(domain));
         return setSipConfiguration(new SipConfiguration().setDomains(domains)).then();
     }
 
@@ -557,8 +557,8 @@ public final class SipRoutingAsyncClient {
         SipConfiguration update = new SipConfiguration().setDomains(convertToApi(domains));
         List<SipDomain> currentDomains = getDomainsInternal().block();
         if (currentDomains != null) {
-            List<String> storedDomains = currentDomains.stream().map(SipDomain::toString).collect(Collectors.toList());
-            Set<String> updatedDomains = domains.stream().map(SipDomain::toString).collect(Collectors.toSet());
+            List<String> storedDomains = currentDomains.stream().map(SipDomain::getFqdn).collect(Collectors.toList());
+            Set<String> updatedDomains = domains.stream().map(SipDomain::getFqdn).collect(Collectors.toSet());
             for (String storedDomain : storedDomains) {
                 if (!updatedDomains.contains(storedDomain)) {
                     update.getDomains().put(storedDomain, null);
@@ -597,8 +597,8 @@ public final class SipRoutingAsyncClient {
         SipConfiguration update = new SipConfiguration().setDomains(convertToApi(domains));
         List<SipDomain> currentDomainss = getDomainsInternal().block();
         if (currentDomainss != null) {
-            List<String> storedDomains = currentDomainss.stream().map(SipDomain::toString).collect(Collectors.toList());
-            Set<String> updatedDomains = domains.stream().map(SipDomain::toString).collect(Collectors.toSet());
+            List<String> storedDomains = currentDomainss.stream().map(SipDomain::getFqdn).collect(Collectors.toList());
+            Set<String> updatedDomains = domains.stream().map(SipDomain::getFqdn).collect(Collectors.toSet());
             for (String storedDomain : storedDomains) {
                 if (!updatedDomains.contains(storedDomain)) {
                     update.getDomains().put(storedDomain, null);
@@ -635,7 +635,7 @@ public final class SipRoutingAsyncClient {
         }
 
         List<SipDomain> deletedDomains
-            = domains.stream().filter(domain -> domainName.equals(domain.toString())).collect(Collectors.toList());
+            = domains.stream().filter(domain -> domainName.equals(domain.getFqdn())).collect(Collectors.toList());
 
         if (!deletedDomains.isEmpty()) {
             Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain> domainsUpdate
@@ -670,7 +670,7 @@ public final class SipRoutingAsyncClient {
         }
 
         List<SipDomain> deletedDomains
-            = domains.stream().filter(domain -> domainName.equals(domain.toString())).collect(Collectors.toList());
+            = domains.stream().filter(domain -> domainName.equals(domain.getFqdn())).collect(Collectors.toList());
 
         if (!deletedDomains.isEmpty()) {
             Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain> domainsUpdate

@@ -4,24 +4,31 @@
 
 package com.azure.communication.phonenumbers.siprouting.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-import com.azure.core.util.ExpandableStringEnum;
-
-/** The reason overall status of Trunk is inactive. */
+/**
+ * The reason overall status of Trunk is inactive.
+ */
 public final class HealthStatusReason extends ExpandableStringEnum<HealthStatusReason> {
-    /** Indicates no recent calls. */
+    /**
+     * Indicates no recent calls.
+     */
     public static final HealthStatusReason NO_RECENT_CALLS = fromString("noRecentCalls");
 
-    /** Indicates ping status is expired. */
+    /**
+     * Indicates ping status is expired.
+     */
     public static final HealthStatusReason NO_RECENT_PINGS = fromString("noRecentPings");
 
-    /** Indicates no recent calls and ping status is expired. */
+    /**
+     * Indicates no recent calls and ping status is expired.
+     */
     public static final HealthStatusReason NO_RECENT_CALLS_AND_PINGS = fromString("noRecentCallsAndPings");
 
     /**
      * Creates a new instance of HealthStatusReason value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +37,7 @@ public final class HealthStatusReason extends ExpandableStringEnum<HealthStatusR
 
     /**
      * Creates or finds a HealthStatusReason from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HealthStatusReason.
      */
@@ -40,7 +47,7 @@ public final class HealthStatusReason extends ExpandableStringEnum<HealthStatusR
 
     /**
      * Gets known HealthStatusReason values.
-     *
+     * 
      * @return known HealthStatusReason values.
      */
     public static Collection<HealthStatusReason> values() {

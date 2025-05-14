@@ -54,6 +54,18 @@ public final class SipTrunk {
     }
 
     /**
+     * Constructor with required properties.
+     * @param fqdn the FQDN of the trunk.
+     * @param sipSignalingPort the SIP signaling port of the trunk.
+     * @param enabled the flag setting the trunk as enabled or disabled.
+     */
+    public SipTrunk(String fqdn, int sipSignalingPort, boolean enabled) {
+        this.fqdn = fqdn;
+        this.sipSignalingPort = sipSignalingPort;
+        this.enabled = enabled;
+    }
+
+    /**
      * Get the fqdn property: Gets or sets FQDN of the trunk.
      *
      * @return the fqdn value.

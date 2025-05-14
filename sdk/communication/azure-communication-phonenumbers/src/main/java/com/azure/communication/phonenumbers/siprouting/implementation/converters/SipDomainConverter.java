@@ -37,7 +37,7 @@ public final class SipDomainConverter {
     /**
      * Maps from {@link com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain} to {@link SipDomain}.
      * @param obj {@link com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain}
-     * @param fqdn FQDN of the trunk
+     * @param fqdn FQDN of the domain
      * @return {@link SipDomain}
      */
     public static SipDomain convertFromApi(
@@ -63,7 +63,7 @@ public final class SipDomainConverter {
         Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain> map
             = new HashMap<>();
         for (SipDomain domain : obj) {
-            map.put(domain.toString(), convertToApi(domain));
+            map.put(domain.getFqdn(), convertToApi(domain));
         }
         return map;
     }

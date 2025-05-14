@@ -19,17 +19,17 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
     /*
      * The status of the TLS connections of the Trunk.
      */
-    private TlsHealth tls;
+    private TlsHealth tlsHealth;
 
     /*
      * The status of SIP OPTIONS message sent by Trunk.
      */
-    private PingHealth ping;
+    private PingHealth pingHealth;
 
     /*
      * The overall health status of Trunk.
      */
-    private OverallHealth overall;
+    private OverallHealth overallHealth;
 
     /**
      * Creates an instance of TrunkHealth class.
@@ -42,8 +42,8 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
      * 
      * @return the tls value.
      */
-    public TlsHealth getTls() {
-        return this.tls;
+    public TlsHealth getTlsHealth() {
+        return this.tlsHealth;
     }
 
     /**
@@ -52,8 +52,8 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
      * @param tls the tls value to set.
      * @return the TrunkHealth object itself.
      */
-    public TrunkHealth setTls(TlsHealth tls) {
-        this.tls = tls;
+    public TrunkHealth setTlsHealth(TlsHealth tls) {
+        this.tlsHealth = tls;
         return this;
     }
 
@@ -62,8 +62,8 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
      * 
      * @return the ping value.
      */
-    public PingHealth getPing() {
-        return this.ping;
+    public PingHealth getPingHealth() {
+        return this.pingHealth;
     }
 
     /**
@@ -72,8 +72,8 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
      * @param ping the ping value to set.
      * @return the TrunkHealth object itself.
      */
-    public TrunkHealth setPing(PingHealth ping) {
-        this.ping = ping;
+    public TrunkHealth setPingHealth(PingHealth ping) {
+        this.pingHealth = ping;
         return this;
     }
 
@@ -82,8 +82,8 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
      * 
      * @return the overall value.
      */
-    public OverallHealth getOverall() {
-        return this.overall;
+    public OverallHealth getOverallHealth() {
+        return this.overallHealth;
     }
 
     /**
@@ -92,8 +92,8 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
      * @param overall the overall value to set.
      * @return the TrunkHealth object itself.
      */
-    public TrunkHealth setOverall(OverallHealth overall) {
-        this.overall = overall;
+    public TrunkHealth setOverallHealth(OverallHealth overall) {
+        this.overallHealth = overall;
         return this;
     }
 
@@ -103,9 +103,9 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("tls", this.tls);
-        jsonWriter.writeJsonField("ping", this.ping);
-        jsonWriter.writeJsonField("overall", this.overall);
+        jsonWriter.writeJsonField("tls", this.tlsHealth);
+        jsonWriter.writeJsonField("ping", this.pingHealth);
+        jsonWriter.writeJsonField("overall", this.overallHealth);
         return jsonWriter.writeEndObject();
     }
 
@@ -126,11 +126,11 @@ public final class TrunkHealth implements JsonSerializable<TrunkHealth> {
                 reader.nextToken();
 
                 if ("tls".equals(fieldName)) {
-                    deserializedTrunkHealth.tls = TlsHealth.fromJson(reader);
+                    deserializedTrunkHealth.tlsHealth = TlsHealth.fromJson(reader);
                 } else if ("ping".equals(fieldName)) {
-                    deserializedTrunkHealth.ping = PingHealth.fromJson(reader);
+                    deserializedTrunkHealth.pingHealth = PingHealth.fromJson(reader);
                 } else if ("overall".equals(fieldName)) {
-                    deserializedTrunkHealth.overall = OverallHealth.fromJson(reader);
+                    deserializedTrunkHealth.overallHealth = OverallHealth.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
