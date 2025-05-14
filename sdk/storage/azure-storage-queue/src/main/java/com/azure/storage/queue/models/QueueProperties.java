@@ -21,6 +21,18 @@ public final class QueueProperties {
      *
      * @param metadata Metadata associated with the queue.
      * @param approximateMessagesCount Approximate number of messages contained in the queue.
+     * @deprecated Use {@link #QueueProperties(Map, long)} instead.
+     */
+    @Deprecated
+    public QueueProperties(Map<String, String> metadata, int approximateMessagesCount) {
+        this(metadata, (long) approximateMessagesCount);
+    }
+
+    /**
+     * Creates an instance that contains properties of a queue.
+     *
+     * @param metadata Metadata associated with the queue.
+     * @param approximateMessagesCount Approximate number of messages contained in the queue.
      */
     public QueueProperties(Map<String, String> metadata, long approximateMessagesCount) {
         this.metadata = metadata;
@@ -42,6 +54,7 @@ public final class QueueProperties {
      *
      * @return the approximate number of messages contained in the queue at the time of properties retrieval.
      */
+    @Deprecated
     public int getApproximateMessagesCount() {
         return approximateMessagesCount;
     }

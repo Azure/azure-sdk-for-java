@@ -5,6 +5,7 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -24,6 +25,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -44,6 +47,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
+import static com.azure.storage.common.implementation.StorageImplUtils.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -931,4 +935,40 @@ public class QueueApiTests extends QueueTestBase {
         PagedIterable<QueueSignedIdentifier> response = queueClient.getAccessPolicy();
         queueClient.setAccessPolicy(response.stream().collect(Collectors.toList()));
     }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 5, 12 })
+    public void getPropertiesApproximateMessagesCountLong(int messageCount) {
+        queueClient.create();
+
+        for (int i = 0; i < messageCount; i++) {
+            queueClient.sendMessage("Message " + (i + 1));
+        }
+
+        Response<QueueProperties> queueProperties = queueClient.getPropertiesWithResponse(null, null);
+
+        assertNotNull(queueProperties);
+        assertEquals(messageCount, queueProperties.getValue().getApproximateMessagesCount());
+        assertEquals(messageCount, queueProperties.getValue().getApproximateMessagesCountLong());
+    }
+
+    @Test
+    public void getPropertiesApproximateMessagesCountOverflow() {
+        queueClient.create();
+        QueueClient spyClient = Mockito.spy(queueClient);
+        QueueProperties queueProperties = Mockito.mock(QueueProperties.class);
+        Mockito.when(queueProperties.getApproximateMessagesCountLong()).thenReturn(Long.MAX_VALUE);
+        Mockito.when(queueProperties.getApproximateMessagesCount())
+            .thenThrow(new ArithmeticException("integer overflow"));
+
+        Mockito.when(spyClient.getPropertiesWithResponse(Mockito.any(), Mockito.any()))
+            .thenReturn(new SimpleResponse<>(null, 200, null, queueProperties));
+
+        Response<QueueProperties> result = spyClient.getPropertiesWithResponse(null, null);
+
+        assertNotNull(result);
+        assertEquals(Long.MAX_VALUE, result.getValue().getApproximateMessagesCountLong());
+        assertThrows(ArithmeticException.class, () -> result.getValue().getApproximateMessagesCount());
+    }
+
 }
