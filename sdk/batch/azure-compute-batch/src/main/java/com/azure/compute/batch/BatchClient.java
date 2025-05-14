@@ -85,12 +85,12 @@ import com.azure.compute.batch.models.BatchNodesRemoveOptions;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolAutoScaleDisableOptions;
 import com.azure.compute.batch.models.BatchPoolAutoScaleEnableOptions;
-import com.azure.compute.batch.models.BatchPoolAutoScaleEnableParameters;
 import com.azure.compute.batch.models.BatchPoolAutoScaleEvaluateOptions;
-import com.azure.compute.batch.models.BatchPoolAutoScaleEvaluateParameters;
 import com.azure.compute.batch.models.BatchPoolCreateOptions;
 import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchPoolDeleteOptions;
+import com.azure.compute.batch.models.BatchPoolEnableAutoScaleParameters;
+import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolExistsOptions;
 import com.azure.compute.batch.models.BatchPoolGetOptions;
 import com.azure.compute.batch.models.BatchPoolNodeCounts;
@@ -16010,7 +16010,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters,
+    public void enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters,
         BatchPoolAutoScaleEnableOptions options, RequestConditions requestConditions) {
         // Generated convenience method for enablePoolAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -16060,7 +16060,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters) {
+    public void enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters) {
         // Generated convenience method for enablePoolAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
@@ -16089,7 +16089,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutoScaleRun evaluatePoolAutoScale(String poolId, BatchPoolAutoScaleEvaluateParameters parameters,
+    public AutoScaleRun evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleParameters parameters,
         BatchPoolAutoScaleEvaluateOptions options) {
         // Generated convenience method for evaluatePoolAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -16123,7 +16123,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutoScaleRun evaluatePoolAutoScale(String poolId, BatchPoolAutoScaleEvaluateParameters parameters) {
+    public AutoScaleRun evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleParameters parameters) {
         // Generated convenience method for evaluatePoolAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue()
