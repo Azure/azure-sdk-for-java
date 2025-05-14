@@ -64,7 +64,6 @@ class CosmosDBAccountImpl
         this.failoverPolicies = new ArrayList<>();
         this.privateEndpointConnections
             = new PrivateEndpointConnectionsImpl(this.manager().serviceClient().getPrivateEndpointConnections(), this);
-        this.innerModel().withDisableLocalAuth(true);
     }
 
     @Override
@@ -316,6 +315,11 @@ class CosmosDBAccountImpl
             .getDatabaseAccounts()
             .regenerateKeyAsync(this.resourceGroupName(), this.name(),
                 new DatabaseAccountRegenerateKeyParameters().withKeyKind(keyKind));
+    }
+
+    @Override
+    public boolean localAuthDisabled() {
+        return this.innerModel().disableLocalAuth();
     }
 
     @Override
@@ -788,6 +792,12 @@ class CosmosDBAccountImpl
     @Override
     public CosmosDBAccountImpl disablePublicNetworkAccess() {
         this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        return this;
+    }
+
+    @Override
+    public CosmosDBAccountImpl disableLocalAuth() {
+        this.innerModel().withDisableLocalAuth(true);
         return this;
     }
 
