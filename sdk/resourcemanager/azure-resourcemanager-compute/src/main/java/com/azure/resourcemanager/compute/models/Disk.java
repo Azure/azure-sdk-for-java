@@ -46,6 +46,8 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
 
     /**
      * Gets the resource ID of the virtual machine this disk is attached to.
+     * <p>
+     * If the disk can be shared, use {@link #virtualMachineIds()} to get the list of all virtual machines.
      *
      * @return the resource ID of the virtual machine this disk is attached to, or null if the disk is in a detached
      *     state
@@ -54,6 +56,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
 
     /**
      * Gets the list of the virtual machines that this disk is attached to.
+     * <p>
      * A disk could be attached to multiple virtual machines.
      *
      * @return the resource ID of the virtual machines this disk is attached to

@@ -2277,6 +2277,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
             .create();
 
+        disk = disk.refresh();
+        Assertions.assertNotNull(disk.virtualMachineId());
+        Assertions.assertEquals(1, disk.virtualMachineIds().size());
+
         Network network = this.networkManager.networks().listByResourceGroup(rgName).iterator().next();
 
         VirtualMachine vm2 = computeManager.virtualMachines()
