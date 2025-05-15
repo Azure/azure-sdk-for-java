@@ -553,7 +553,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
         interface WithIops {
             /**
              * The number of IOPS allowed for this disk.
-             * It is only settable for UltraSSD disks.
+             * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskIopsReadWrite The number of IOPS allowed for this disk. One operation can transfer between 4k and 256k bytes.
              * @return the next stage of the definition
@@ -562,7 +562,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
 
             /**
              * The throughput (MBps) allowed for this disk.
-             * It is only settable for UltraSSD disks.
+             * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskMBpsReadWrite The bandwidth allowed for this disk.
              * @return the next stage of the definition
@@ -571,7 +571,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
 
             /**
              * The total number of IOPS allowed for this shared read-only disk across all VMs.
-             * It is only settable for UltraSSD disks.
+             * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskIopsReadOnly The total number of IOPS allowed for this shared read-only disk across all VMs. One operation can transfer between 4k and 256k bytes.
              * @return the next stage of the definition
@@ -580,7 +580,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
 
             /**
              * The total throughput (MBps) allowed for this shared read-only disk across all VMs.
-             * It is only settable for UltraSSD disks.
+             * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskMBpsReadOnly The total throughput (MBps) allowed for this shared read-only disk across all VMs.
              * @return the next stage of the definition
@@ -700,7 +700,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
         interface WithIops {
             /**
              * The number of IOPS allowed for this disk.
-             * It is only settable for UltraSSD disks.
+             * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskIopsReadWrite The number of IOPS allowed for this disk. One operation can transfer between 4k and 256k bytes.
              * @return the next stage of the definition
@@ -709,7 +709,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
 
             /**
              * The throughput (MBps) allowed for this disk.
-             * It is only settable for UltraSSD disks.
+             * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskMBpsReadWrite The bandwidth allowed for this disk.
              * @return the next stage of the definition
@@ -718,7 +718,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
 
             /**
              * The total number of IOPS allowed for this shared read-only disk across all VMs.
-             * It is only settable for UltraSSD disks.
+             * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskIopsReadOnly The total number of IOPS allowed for this shared read-only disk across all VMs. One operation can transfer between 4k and 256k bytes.
              * @return the next stage of the definition
@@ -727,7 +727,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
 
             /**
              * The total throughput (MBps) allowed for this shared read-only disk across all VMs.
-             * It is only settable for UltraSSD disks.
+             * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskMBpsReadOnly The total throughput (MBps) allowed for this shared read-only disk across all VMs.
              * @return the next stage of the definition
