@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.37.2 (2025-05-13)
+### 4.37.2 (2025-05-14)
 
 #### Features Added
 * Added option to use the connector in non-public Azure clouds. - See [PR 45310](https://github.com/Azure/azure-sdk-for-java/pull/45310)

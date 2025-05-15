@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
+import com.azure.cosmos.Http2ConnectionConfig;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.Http2AllocationStrategy;
 import reactor.netty.resources.ConnectionProvider;
@@ -51,12 +53,15 @@ public interface HttpClient {
         fixedConnectionProviderBuilder.pendingAcquireTimeout(httpClientConfig.getConnectionAcquireTimeout());
         fixedConnectionProviderBuilder.maxIdleTime(httpClientConfig.getMaxIdleConnectionTimeout());
 
-        if (httpClientConfig.getHttp2ConnectionConfig().isEnabled()) {
+        ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor =
+            ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
+        Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
+        if (http2CfgAccessor.isEffectivelyEnabled(http2Cfg)) {
             fixedConnectionProviderBuilder.allocationStrategy(
                 Http2AllocationStrategy.builder()
-                    .minConnections(httpClientConfig.getHttp2ConnectionConfig().getMinConnectionPoolSize())
-                    .maxConnections(httpClientConfig.getHttp2ConnectionConfig().getMaxConnectionPoolSize())
-                    .maxConcurrentStreams(httpClientConfig.getHttp2ConnectionConfig().getMaxConcurrentStreams())
+                    .minConnections(http2CfgAccessor.getEffectiveMinConnectionPoolSize(http2Cfg))
+                    .maxConnections(http2CfgAccessor.getEffectiveMaxConnectionPoolSize(http2Cfg))
+                    .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))
                     .build()
             );
         }

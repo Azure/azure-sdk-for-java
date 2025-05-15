@@ -13,11 +13,10 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A list of search configurations currently used by the `bing_grounding` tool.
+ * The bing grounding search tool parameters.
  */
 @Immutable
-public final class BingGroundingSearchConfigurationList
-    implements JsonSerializable<BingGroundingSearchConfigurationList> {
+public final class BingGroundingSearchToolParameters implements JsonSerializable<BingGroundingSearchToolParameters> {
 
     /*
      * The search configurations attached to this tool. There can be a maximum of 1
@@ -27,12 +26,12 @@ public final class BingGroundingSearchConfigurationList
     private final List<BingGroundingSearchConfiguration> searchConfigurations;
 
     /**
-     * Creates an instance of BingGroundingSearchConfigurationList class.
+     * Creates an instance of BingGroundingSearchToolParameters class.
      *
      * @param searchConfigurations the searchConfigurations value to set.
      */
     @Generated
-    public BingGroundingSearchConfigurationList(List<BingGroundingSearchConfiguration> searchConfigurations) {
+    public BingGroundingSearchToolParameters(List<BingGroundingSearchConfiguration> searchConfigurations) {
         this.searchConfigurations = searchConfigurations;
     }
 
@@ -61,16 +60,16 @@ public final class BingGroundingSearchConfigurationList
     }
 
     /**
-     * Reads an instance of BingGroundingSearchConfigurationList from the JsonReader.
+     * Reads an instance of BingGroundingSearchToolParameters from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BingGroundingSearchConfigurationList if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
+     * @return An instance of BingGroundingSearchToolParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BingGroundingSearchConfigurationList.
+     * @throws IOException If an error occurs while reading the BingGroundingSearchToolParameters.
      */
     @Generated
-    public static BingGroundingSearchConfigurationList fromJson(JsonReader jsonReader) throws IOException {
+    public static BingGroundingSearchToolParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<BingGroundingSearchConfiguration> searchConfigurations = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -83,7 +82,7 @@ public final class BingGroundingSearchConfigurationList
                     reader.skipChildren();
                 }
             }
-            return new BingGroundingSearchConfigurationList(searchConfigurations);
+            return new BingGroundingSearchToolParameters(searchConfigurations);
         });
     }
 }
