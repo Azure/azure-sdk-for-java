@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/
      * PutDeploymentResourceGroup.json
      */
     /**
@@ -43,7 +43,7 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/
      * PutDeploymentResourceGroupTemplateSpecsWithId.json
      */
     /**
@@ -66,7 +66,7 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/
      * PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
      */
     /**
@@ -91,7 +91,7 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/
      * PutDeploymentWithOnErrorDeploymentLastSuccessful.json
      */
     /**

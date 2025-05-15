@@ -75,6 +75,7 @@
     <module>sdk/dataprotection</module>
     <module>sdk/defendereasm</module>
     <module>sdk/delegatednetwork</module>
+    <module>sdk/dell</module>
     <module>sdk/dependencymap</module>
     <module>sdk/deploymentmanager</module>
     <module>sdk/desktopvirtualization</module>
@@ -131,6 +132,7 @@
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>
     <module>sdk/labservices</module>
+    <module>sdk/lambdatesthyperexecute</module>
     <module>sdk/largeinstance</module>
     <module>sdk/loadtesting</module>
     <module>sdk/loganalytics</module>
@@ -152,6 +154,7 @@
     <module>sdk/mobilenetwork</module>
     <module>sdk/modelsrepository</module>
     <module>sdk/mongocluster</module>
+    <module>sdk/mongodbatlas</module>
     <module>sdk/monitor</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
@@ -164,6 +167,7 @@
     <module>sdk/nginx</module>
     <module>sdk/notificationhubs</module>
     <module>sdk/oep</module>
+    <module>sdk/onlineexperimentation</module>
     <module>sdk/openai</module>
     <module>sdk/operationsmanagement</module>
     <module>sdk/oracledatabase</module>
@@ -179,7 +183,9 @@
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
+    <module>sdk/programmableconnectivity</module>
     <module>sdk/providerhub</module>
+    <module>sdk/purestorageblock</module>
     <module>sdk/purview</module>
     <module>sdk/quantum</module>
     <module>sdk/qumulo</module>
@@ -201,6 +207,7 @@
     <module>sdk/schemaregistry</module>
     <module>sdk/scvmm</module>
     <module>sdk/search</module>
+    <module>sdk/secretsstoreextension</module>
     <module>sdk/security</module>
     <module>sdk/securitydevops</module>
     <module>sdk/securityinsights</module>
@@ -212,6 +219,7 @@
     <module>sdk/servicelinker</module>
     <module>sdk/servicenetworking</module>
     <module>sdk/signalr</module>
+    <module>sdk/sitemanager</module>
     <module>sdk/sphere</module>
     <module>sdk/spring</module>
     <module>sdk/spring-experimental</module>

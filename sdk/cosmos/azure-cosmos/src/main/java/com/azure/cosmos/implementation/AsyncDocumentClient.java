@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.CosmosOperationPolicy;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
@@ -92,6 +93,7 @@ public interface AsyncDocumentClient {
         Configs configs = new Configs();
         ConnectionPolicy connectionPolicy;
         ConsistencyLevel desiredConsistencyLevel;
+        ReadConsistencyStrategy readConsistencyStrategy;
         List<Permission> permissionFeed;
         String masterKeyOrResourceToken;
         URI serviceEndpoint;
@@ -184,6 +186,11 @@ public interface AsyncDocumentClient {
 
         public Builder withConsistencyLevel(ConsistencyLevel desiredConsistencyLevel) {
             this.desiredConsistencyLevel = desiredConsistencyLevel;
+            return this;
+        }
+
+        public Builder withReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+            this.readConsistencyStrategy = readConsistencyStrategy;
             return this;
         }
 
@@ -301,6 +308,7 @@ public interface AsyncDocumentClient {
                     permissionFeed,
                     connectionPolicy,
                     desiredConsistencyLevel,
+                    readConsistencyStrategy,
                     configs,
                     cosmosAuthorizationTokenResolver,
                     credential,
@@ -344,6 +352,8 @@ public interface AsyncDocumentClient {
             return desiredConsistencyLevel;
         }
 
+        public ReadConsistencyStrategy getReadConsistencyStrategy() { return this.readConsistencyStrategy; }
+
         public URI getServiceEndpoint() {
             return serviceEndpoint;
         }
@@ -375,6 +385,8 @@ public interface AsyncDocumentClient {
      * @return the consistency level
      */
     ConsistencyLevel getConsistencyLevel();
+
+    ReadConsistencyStrategy getReadConsistencyStrategy();
 
     /**
      * Gets the client telemetry

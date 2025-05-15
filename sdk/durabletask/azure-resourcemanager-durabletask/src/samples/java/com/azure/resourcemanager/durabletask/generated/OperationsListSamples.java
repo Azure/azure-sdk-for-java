@@ -9,7 +9,7 @@ package com.azure.resourcemanager.durabletask.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-10-01-preview/Operations_List.json
+     * x-ms-original-file: 2025-04-01-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.

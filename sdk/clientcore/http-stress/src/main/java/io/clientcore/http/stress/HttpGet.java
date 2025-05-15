@@ -53,7 +53,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         try {
             uri = new URI(options.getServiceEndpoint());
         } catch (URISyntaxException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'uri' must be a valid URI.", ex));
+            throw LOGGER.throwableAtError().log("'uri' must be a valid URI.", ex, IllegalArgumentException::new);
         }
     }
 
@@ -101,8 +101,6 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         return CompletableFuture.supplyAsync(() -> {
             try (Response<BinaryData> response = pipeline.send(createRequest())) {
                 response.getValue().toBytes();
-            } catch (Exception e) {
-                LOGGER.logThrowableAsError(e);
             }
             return null;
         }, executorService);
@@ -113,8 +111,6 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         return () -> {
             try (Response<BinaryData> response = pipeline.send(createRequest())) {
                 response.getValue().toBytes();
-            } catch (Exception e) {
-                LOGGER.logThrowableAsError(e);
             }
         };
     }
@@ -124,8 +120,6 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         return () -> {
             try (Response<BinaryData> response = pipeline.send(createRequest())) {
                 response.getValue().toBytes();
-            } catch (Exception e) {
-                LOGGER.logThrowableAsError(e);
             }
         };
     }

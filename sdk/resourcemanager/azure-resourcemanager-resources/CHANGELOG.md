@@ -1,5 +1,17 @@
 # Release History
 
+## 2.51.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+- Updated `api-version` of resources to `2025-03-01`.
+
 ## 2.50.0 (2025-04-24)
 
 ### Other Changes

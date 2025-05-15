@@ -61,7 +61,9 @@ public final class HttpMessage implements JsonSerializable<HttpMessage> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("content", this.content);
+        if (this.content != null) {
+            jsonWriter.writeUntypedField("content", this.content);
+        }
         return jsonWriter.writeEndObject();
     }
 

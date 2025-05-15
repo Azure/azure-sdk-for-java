@@ -263,7 +263,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     }
 
     @Disabled
-    
+
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
@@ -347,7 +347,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     }
 
     @Disabled("Deprecated feature not working.")
-    
+
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionGivenFunction(String apiType, String apiVersion, String testModel) {
