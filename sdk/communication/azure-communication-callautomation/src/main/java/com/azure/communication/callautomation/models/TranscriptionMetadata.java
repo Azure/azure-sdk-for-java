@@ -31,6 +31,11 @@ public final class TranscriptionMetadata extends StreamingData {
      */
     private final String correlationId;
 
+    /*
+     * The custom speech recognition model endpoint id
+     */
+    private final String speechRecognitionModelEndpointId;
+
     static {
         TranscriptionMetadataContructorProxy
             .setAccessor(new TranscriptionMetadataContructorProxy.TranscriptionMetadataContructorProxyAccessor() {
@@ -50,6 +55,7 @@ public final class TranscriptionMetadata extends StreamingData {
         this.locale = internalData.getLocale();
         this.callConnectionId = internalData.getCallConnectionId();
         this.correlationId = internalData.getCorrelationId();
+        this.speechRecognitionModelEndpointId = internalData.getSpeechRecognitionModelEndpointId();
     }
 
     /**
@@ -60,6 +66,7 @@ public final class TranscriptionMetadata extends StreamingData {
         this.locale = null;
         this.callConnectionId = null;
         this.correlationId = null;
+        this.speechRecognitionModelEndpointId = null;
     }
 
     /**
@@ -96,5 +103,14 @@ public final class TranscriptionMetadata extends StreamingData {
      */
     public String getCorrelationId() {
         return correlationId;
+    }
+
+    /**
+     * Get the speechRecognitionModelEndpointId property.
+     *
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return speechRecognitionModelEndpointId;
     }
 }
