@@ -126,14 +126,14 @@ public class HttpFaultInjectingTests {
 
         Set<OpenOption> overwriteOptions
             = new HashSet<>(Arrays.asList(StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, // If the file already exists and it is opened for WRITE access, then its length is truncated to 0.
-            StandardOpenOption.READ, StandardOpenOption.WRITE));
+                StandardOpenOption.READ, StandardOpenOption.WRITE));
 
         CountDownLatch countDownLatch = new CountDownLatch(500);
         SharedExecutorService.getInstance().invokeAll(files.stream().map(it -> (Callable<Void>) () -> {
             try {
                 downloadClient.downloadToFileWithResponse(
                     new BlobDownloadToFileOptions(it.getAbsolutePath()).setOpenOptions(overwriteOptions)
-                            .setParallelTransferOptions(new ParallelTransferOptions().setMaxConcurrency(2)),
+                        .setParallelTransferOptions(new ParallelTransferOptions().setMaxConcurrency(2)),
                     null, Context.NONE);
                 byte[] actualFileBytes = Files.readAllBytes(it.toPath());
                 TestUtils.assertArraysEqual(realFileBytes, actualFileBytes);
