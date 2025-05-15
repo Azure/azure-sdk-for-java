@@ -12,20 +12,16 @@ import com.azure.cosmos.util.Beta;
  */
 @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class Http2ConnectionConfig {
-    private int maxConnectionPoolSize;
-    private int minConnectionPoolSize;
-    private int maxConcurrentStreams;
-    private boolean enabled;
+    private Integer maxConnectionPoolSize;
+    private Integer minConnectionPoolSize;
+    private Integer maxConcurrentStreams;
+    private Boolean enabled;
 
     /***
      * The constructor of Http2ConnectionConfig.
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig() {
-        this.maxConnectionPoolSize = Configs.getHttp2MaxConnectionPoolSize(); // overlapping with the maxConnectionPoolSize in gateway connection config
-        this.minConnectionPoolSize = Configs.getHttp2MinConnectionPoolSize();
-        this.maxConcurrentStreams = Configs.getHttp2MaxConcurrentStreams();
-        this.enabled = Configs.isHttp2Enabled();
     }
 
     /***
@@ -34,8 +30,13 @@ public class Http2ConnectionConfig {
      * @return the configured max number of live connections to keep in the pool.
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public int getMaxConnectionPoolSize() {
+    public Integer getMaxConnectionPoolSize() {
         return maxConnectionPoolSize;
+    }
+
+    int getEffectiveMaxConnectionPoolSize() {
+        Integer snapshot = maxConnectionPoolSize;
+        return snapshot != null ? snapshot : Configs.getHttp2MaxConnectionPoolSize();
     }
 
     /***
@@ -43,14 +44,12 @@ public class Http2ConnectionConfig {
      * If not configured, will be default to 1000.
      *
      * @param maxConnectionPoolSize the maximum number of live connections to keep in the pool.
-     * If null, the default value `1000` will be applied.
+     * If null, the default value `1000` will be applied for http/2.
      * @return the current {@link Http2ConnectionConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig setMaxConnectionPoolSize(Integer maxConnectionPoolSize) {
-        this.maxConnectionPoolSize = maxConnectionPoolSize != null
-            ? maxConnectionPoolSize
-            : Configs.getDefaultHttpPoolSize();
+        this.maxConnectionPoolSize = maxConnectionPoolSize;
         return this;
     }
 
@@ -59,8 +58,13 @@ public class Http2ConnectionConfig {
      * @return the maximum number of the concurrent streams that can be opened to the remote peer.
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public int getMaxConcurrentStreams() {
+    public Integer getMaxConcurrentStreams() {
         return maxConcurrentStreams;
+    }
+
+    int getEffectiveMaxConcurrentStreams() {
+        Integer snapshot = this.maxConcurrentStreams;
+        return snapshot != null ? snapshot : Configs.getHttp2MaxConcurrentStreams();
     }
 
     /***
@@ -69,14 +73,12 @@ public class Http2ConnectionConfig {
      * Default to 30.
      *
      * @param maxConcurrentStreams the maximum number of the concurrent streams that can be opened to the remote peer.
-     * If null, the default value `30` will be used.
+     * If null, the default value `30` will be applied for http/2.
      * @return the current {@link Http2ConnectionConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig setMaxConcurrentStreams(Integer maxConcurrentStreams) {
-        this.maxConcurrentStreams = maxConcurrentStreams != null
-            ? maxConcurrentStreams
-            : Configs.getHttp2MaxConcurrentStreams();
+        this.maxConcurrentStreams = maxConcurrentStreams;
         return this;
     }
 
@@ -85,21 +87,25 @@ public class Http2ConnectionConfig {
      * @return the minimum number of live connections to keep in the pool (can be the best effort).
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public int getMinConnectionPoolSize() {
+    public Integer getMinConnectionPoolSize() {
         return minConnectionPoolSize;
+    }
+
+    int getEffectiveMinConnectionPoolSize() {
+        Integer snapshot = minConnectionPoolSize;
+        return snapshot != null ? snapshot : Configs.getHttp2MinConnectionPoolSize();
     }
 
     /***
      * Configures the minimum number of live connections to keep in the pool (can be the best effort). Default to 1.
      * @param minConnectionPoolSize the minimum number of live connections to keep in the pool (can be the best effort).
-     * If null, the default value `1` will be applied.
+     * If null, the default value `1` will be applied for http/2.
      * @return the current {@link Http2ConnectionConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig setMinConnectionPoolSize(Integer minConnectionPoolSize) {
-        this.minConnectionPoolSize = minConnectionPoolSize != null
-            ? minConnectionPoolSize
-            : Configs.getHttp2MinConnectionPoolSize();
+        this.minConnectionPoolSize = minConnectionPoolSize;
+
         return this;
     }
 
@@ -108,27 +114,33 @@ public class Http2ConnectionConfig {
      * @return the flag to indicate whether http2 is enabled.
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public boolean isEnabled() {
+    public Boolean isEnabled() {
         return enabled;
     }
 
+    boolean isEffectivelyEnabled() {
+        Boolean snapshot = enabled;
+        return snapshot != null ? snapshot : Configs.isHttp2Enabled();
+    }
+
     /***
-     * Configure the flag to indicate whether http2 is enabled.
+     * Configure the flag to indicate whether http2 is enabled. If null, the default value (`false` while
+     * in preview, `true` later) will be applied for http/2.
      * @param enabled the flag to indicate whether http2 is enabled.
      * @return the current {@link Http2ConnectionConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Http2ConnectionConfig setEnabled(boolean enabled) {
+    public Http2ConnectionConfig setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
 
     String toDiagnosticsString() {
         return String.format("(enabled:%s, maxc:%s, minc:%s, maxs:%s)",
-            isEnabled(),
-            maxConnectionPoolSize,
-            minConnectionPoolSize,
-            maxConcurrentStreams);
+            isEffectivelyEnabled(),
+            getEffectiveMaxConnectionPoolSize(),
+            getEffectiveMinConnectionPoolSize(),
+            getEffectiveMaxConcurrentStreams());
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -140,6 +152,26 @@ public class Http2ConnectionConfig {
                 @Override
                 public String toDiagnosticsString(Http2ConnectionConfig cfg) {
                     return cfg.toDiagnosticsString();
+                }
+
+                @Override
+                public int getEffectiveMaxConcurrentStreams(Http2ConnectionConfig cfg) {
+                    return cfg.getEffectiveMaxConcurrentStreams();
+                }
+
+                @Override
+                public int getEffectiveMaxConnectionPoolSize(Http2ConnectionConfig cfg) {
+                    return cfg.getEffectiveMaxConnectionPoolSize();
+                }
+
+                @Override
+                public int getEffectiveMinConnectionPoolSize(Http2ConnectionConfig cfg) {
+                    return cfg.getEffectiveMinConnectionPoolSize();
+                }
+
+                @Override
+                public boolean isEffectivelyEnabled(Http2ConnectionConfig cfg) {
+                    return cfg.isEffectivelyEnabled();
                 }
             }
         );

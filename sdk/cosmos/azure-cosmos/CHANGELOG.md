@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.69.0 (2025-05-13)
+### 4.69.0 (2025-05-14)
 
 #### Features Added
 * Added Beta public API to enable http2. - See [PR 43123](https://github.com/Azure/azure-sdk-for-java/pull/43123)
