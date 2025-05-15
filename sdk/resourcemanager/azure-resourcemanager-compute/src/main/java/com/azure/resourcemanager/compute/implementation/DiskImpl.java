@@ -159,6 +159,26 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     }
 
     @Override
+    public Long diskIopsReadWrite() {
+        return innerModel().diskIopsReadWrite();
+    }
+
+    @Override
+    public Long diskMBpsReadWrite() {
+        return innerModel().diskMBpsReadWrite();
+    }
+
+    @Override
+    public Long diskIopsReadOnly() {
+        return innerModel().diskIopsReadOnly();
+    }
+
+    @Override
+    public Long diskMBpsReadOnly() {
+        return innerModel().diskMBpsReadOnly();
+    }
+
+    @Override
     public DiskImpl withLinuxFromVhd(String vhdUrl) {
         this.innerModel()
             .withOsType(OperatingSystemTypes.LINUX)
@@ -462,6 +482,30 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public DiskImpl disablePublicNetworkAccess() {
         this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withIopsReadWrite(long diskIopsReadWrite) {
+        this.innerModel().withDiskIopsReadWrite(diskIopsReadWrite);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withMBpsReadWrite(long diskMBpsReadWrite) {
+        this.innerModel().withDiskMBpsReadWrite(diskMBpsReadWrite);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withIopsReadOnly(long diskIopsReadOnly) {
+        this.innerModel().withDiskIopsReadOnly(diskIopsReadOnly);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withMBpsReadOnly(long diskMBpsReadOnly) {
+        this.innerModel().withDiskMBpsReadOnly(diskMBpsReadOnly);
         return this;
     }
 }

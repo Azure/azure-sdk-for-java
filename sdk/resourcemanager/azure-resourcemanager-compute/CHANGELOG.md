@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported setting disk IOPS and throughput for `Disk`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

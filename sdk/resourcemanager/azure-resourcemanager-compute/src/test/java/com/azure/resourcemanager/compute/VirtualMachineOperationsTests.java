@@ -2172,6 +2172,71 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertFalse(vm.isOsDiskWriteAcceleratorEnabled());
     }
 
+    @Test
+    public void canCreatePremiumDiskWithIops() {
+        Region region1 = Region.US_WEST3;
+
+        String diskName = generateRandomResourceName("disk", 15);
+        Disk disk = computeManager.disks()
+            .define(diskName)
+            .withRegion(region1)
+            .withNewResourceGroup(rgName)
+            .withData()
+            .withSizeInGB(50)
+            .withSku(DiskSkuTypes.PREMIUM_V2_LRS)
+            // disk and VM must be in availability zone
+            .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
+            .withIopsReadWrite(4000L)
+            .withMBpsReadWrite(125L)
+            .withIopsReadOnly(8000L)
+            .withMBpsReadOnly(250L)
+            .create();
+
+        // verify after create
+        Assertions.assertEquals(4000L, disk.diskIopsReadWrite());
+        Assertions.assertEquals(125L, disk.diskMBpsReadWrite());
+        Assertions.assertEquals(8000L, disk.diskIopsReadOnly());
+        Assertions.assertEquals(250L, disk.diskMBpsReadOnly());
+
+        disk.update()
+            .withIopsReadWrite(8000L)
+            .withMBpsReadWrite(250L)
+            .withIopsReadOnly(16000L)
+            .withMBpsReadOnly(500L)
+            .apply();
+
+        // verify after update
+        Assertions.assertEquals(8000L, disk.diskIopsReadWrite());
+        Assertions.assertEquals(250L, disk.diskMBpsReadWrite());
+        Assertions.assertEquals(16000L, disk.diskIopsReadOnly());
+        Assertions.assertEquals(500L, disk.diskMBpsReadOnly());
+
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region1)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            // require cache type NONE
+            .withExistingDataDisk(disk, 1, CachingTypes.NONE)
+            // require availability zone
+            .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
+            // require VM sku with "S", hence "DS" type
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+            .create();
+
+        // verify after attach to VM
+        disk = disk.refresh();
+        Assertions.assertEquals(8000L, disk.diskIopsReadWrite());
+        Assertions.assertEquals(250L, disk.diskMBpsReadWrite());
+        Assertions.assertEquals(16000L, disk.diskIopsReadOnly());
+        Assertions.assertEquals(500L, disk.diskMBpsReadOnly());
+    }
+
     // *********************************** helper methods ***********************************
 
     private CreatablesInfo prepareCreatableVirtualMachines(Region region, String vmNamePrefix, String networkNamePrefix,

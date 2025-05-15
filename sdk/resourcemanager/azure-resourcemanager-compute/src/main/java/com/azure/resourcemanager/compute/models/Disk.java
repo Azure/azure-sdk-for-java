@@ -153,6 +153,34 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
      */
     PublicNetworkAccess publicNetworkAccess();
 
+    /**
+     * Gets the number of IOPS allowed for this disk.
+     *
+     * @return the number of IOPS allowed for this disk.
+     */
+    Long diskIopsReadWrite();
+
+    /**
+     * Gets the throughput (MBps) allowed for this disk.
+     *
+     * @return the throughput (MBps) allowed for this disk.
+     */
+    Long diskMBpsReadWrite();
+
+    /**
+     * Gets the total number of IOPS allowed for this shared read-only disk across all VMs.
+     *
+     * @return the total number of IOPS allowed for this shared read-only disk.
+     */
+    Long diskIopsReadOnly();
+
+    /**
+     * Gets the total throughput (MBps) allowed for this shared read-only disk across all VMs.
+     *
+     * @return the total throughput (MBps) allowed for this shared read-only disk.
+     */
+    Long diskMBpsReadOnly();
+
     /** The entirety of the managed disk definition. */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithDiskSource,
         DefinitionStages.WithWindowsDiskSource, DefinitionStages.WithLinuxDiskSource, DefinitionStages.WithData,
@@ -521,13 +549,52 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             WithCreate disablePublicNetworkAccess();
         }
 
+        /** The stage of disk definition allowing to configure IOPS settings. */
+        interface WithIops {
+            /**
+             * The number of IOPS allowed for this disk.
+             * It is only settable for UltraSSD disks.
+             *
+             * @param diskIopsReadWrite The number of IOPS allowed for this disk. One operation can transfer between 4k and 256k bytes.
+             * @return the next stage of the definition
+             */
+            WithCreate withIopsReadWrite(long diskIopsReadWrite);
+
+            /**
+             * The throughput (MBps) allowed for this disk.
+             * It is only settable for UltraSSD disks.
+             *
+             * @param diskMBpsReadWrite The bandwidth allowed for this disk.
+             * @return the next stage of the definition
+             */
+            WithCreate withMBpsReadWrite(long diskMBpsReadWrite);
+
+            /**
+             * The total number of IOPS allowed for this shared read-only disk across all VMs.
+             * It is only settable for UltraSSD disks.
+             *
+             * @param diskIopsReadOnly The total number of IOPS allowed for this shared read-only disk across all VMs. One operation can transfer between 4k and 256k bytes.
+             * @return the next stage of the definition
+             */
+            WithCreate withIopsReadOnly(long diskIopsReadOnly);
+
+            /**
+             * The total throughput (MBps) allowed for this shared read-only disk across all VMs.
+             * It is only settable for UltraSSD disks.
+             *
+             * @param diskMBpsReadOnly The total throughput (MBps) allowed for this shared read-only disk across all VMs.
+             * @return the next stage of the definition
+             */
+            WithCreate withMBpsReadOnly(long diskMBpsReadOnly);
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
         interface WithCreate extends Creatable<Disk>, Resource.DefinitionWithTags<Disk.DefinitionStages.WithCreate>,
             WithSku, WithAvailabilityZone, WithDiskEncryption, WithHibernationSupport, WithLogicalSectorSize,
-            WithHyperVGeneration, WithPublicNetworkAccess {
+            WithHyperVGeneration, WithPublicNetworkAccess, WithIops {
 
             /**
              * Begins creating the disk resource.
@@ -628,11 +695,51 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
              */
             Update disablePublicNetworkAccess();
         }
+
+        /** The stage of disk update allowing to configure IOPS settings. */
+        interface WithIops {
+            /**
+             * The number of IOPS allowed for this disk.
+             * It is only settable for UltraSSD disks.
+             *
+             * @param diskIopsReadWrite The number of IOPS allowed for this disk. One operation can transfer between 4k and 256k bytes.
+             * @return the next stage of the definition
+             */
+            Update withIopsReadWrite(long diskIopsReadWrite);
+
+            /**
+             * The throughput (MBps) allowed for this disk.
+             * It is only settable for UltraSSD disks.
+             *
+             * @param diskMBpsReadWrite The bandwidth allowed for this disk.
+             * @return the next stage of the definition
+             */
+            Update withMBpsReadWrite(long diskMBpsReadWrite);
+
+            /**
+             * The total number of IOPS allowed for this shared read-only disk across all VMs.
+             * It is only settable for UltraSSD disks.
+             *
+             * @param diskIopsReadOnly The total number of IOPS allowed for this shared read-only disk across all VMs. One operation can transfer between 4k and 256k bytes.
+             * @return the next stage of the definition
+             */
+            Update withIopsReadOnly(long diskIopsReadOnly);
+
+            /**
+             * The total throughput (MBps) allowed for this shared read-only disk across all VMs.
+             * It is only settable for UltraSSD disks.
+             *
+             * @param diskMBpsReadOnly The total throughput (MBps) allowed for this shared read-only disk across all VMs.
+             * @return the next stage of the definition
+             */
+            Update withMBpsReadOnly(long diskMBpsReadOnly);
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update extends Appliable<Disk>, Resource.UpdateWithTags<Disk.Update>, UpdateStages.WithSku,
-        UpdateStages.WithSize, UpdateStages.WithOSSettings, UpdateStages.WithDiskEncryption,
-        UpdateStages.WithHibernationSupport, UpdateStages.WithHyperVGeneration, UpdateStages.WithPublicNetworkAccess {
+    interface Update
+        extends Appliable<Disk>, Resource.UpdateWithTags<Disk.Update>, UpdateStages.WithSku, UpdateStages.WithSize,
+        UpdateStages.WithOSSettings, UpdateStages.WithDiskEncryption, UpdateStages.WithHibernationSupport,
+        UpdateStages.WithHyperVGeneration, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithIops {
     }
 }
