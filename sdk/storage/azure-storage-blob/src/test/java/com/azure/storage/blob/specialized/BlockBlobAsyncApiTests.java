@@ -439,9 +439,9 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void stageBlockFromUrlSourceErrorAndStatusCode() {
         BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-
+    
         String blockID = getBlockID();
-
+    
         StepVerifier.create(destBlob.stageBlockFromUrl(blockID, blockBlobAsyncClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
@@ -2398,7 +2398,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void uploadFromUrlSourceErrorAndStatusCode() {
         BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-
+    
         StepVerifier.create(destBlob.uploadFromUrl(blockBlobAsyncClient.getBlobUrl()))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
