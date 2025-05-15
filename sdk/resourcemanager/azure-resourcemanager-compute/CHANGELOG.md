@@ -5,6 +5,7 @@
 ### Features Added
 
 - Supported setting disk IOPS and throughput for `Disk`.
+- Supported setting maximum shares for `Disk`.
 
 ### Breaking Changes
 

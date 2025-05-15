@@ -15,6 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+
+import java.util.List;
 import java.util.Set;
 import reactor.core.publisher.Mono;
 
@@ -180,6 +182,20 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
      * @return the total throughput (MBps) allowed for this shared read-only disk.
      */
     Long diskMBpsReadOnly();
+
+    /**
+     * Gets the maximum number of VMs that can attach to the disk at the same time.
+     *
+     * @return the maximum number of VMs that can attach to the disk at the same time.
+     */
+    int maximumShares();
+
+    /**
+     * Gets the information about the VMs that have the disk attached.
+     *
+     * @return the information about the VMs that have the disk attached.
+     */
+    List<ShareInfoElement> shareInfo();
 
     /** The entirety of the managed disk definition. */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithDiskSource,
@@ -552,7 +568,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
         /** The stage of disk definition allowing to configure IOPS and throughput settings. */
         interface WithIopsThroughput {
             /**
-             * The number of IOPS allowed for this disk.
+             * Sets the number of IOPS allowed for this disk.
              * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskIopsReadWrite The number of IOPS allowed for this disk. One operation can transfer between 4k and 256k bytes.
@@ -561,7 +577,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             WithCreate withIopsReadWrite(long diskIopsReadWrite);
 
             /**
-             * The throughput (MBps) allowed for this disk.
+             * Sets the throughput (MBps) allowed for this disk.
              * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskMBpsReadWrite The bandwidth allowed for this disk.
@@ -570,7 +586,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             WithCreate withMBpsReadWrite(long diskMBpsReadWrite);
 
             /**
-             * The total number of IOPS allowed across all VMs mounting this shared disk as read-only.
+             * Sets the total number of IOPS allowed across all VMs mounting this shared disk as read-only.
              * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskIopsReadOnly The total number of IOPS allowed across all VMs mounting this shared disk as read-only. One operation can transfer between 4k and 256k bytes.
@@ -579,7 +595,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             WithCreate withIopsReadOnly(long diskIopsReadOnly);
 
             /**
-             * The total throughput (MBps) allowed across all VMs mounting this shared disk as read-only.
+             * Sets the total throughput (MBps) allowed across all VMs mounting this shared disk as read-only.
              * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskMBpsReadOnly The total throughput (MBps) allowed across all VMs mounting this shared disk as read-only.
@@ -588,13 +604,24 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             WithCreate withMBpsReadOnly(long diskMBpsReadOnly);
         }
 
+        /** The stage of disk definition allowing to configure managed disk sharing settings. */
+        interface WithDiskSharing {
+            /**
+             * Sets the maximum number of VMs that can attach to the disk at the same time.
+             *
+             * @param maximumShares the maximum number of VMs that can attach to the disk at the same time
+             * @return the next stage of the definition
+             */
+            WithCreate withMaximumShares(int maximumShares);
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
         interface WithCreate extends Creatable<Disk>, Resource.DefinitionWithTags<Disk.DefinitionStages.WithCreate>,
             WithSku, WithAvailabilityZone, WithDiskEncryption, WithHibernationSupport, WithLogicalSectorSize,
-            WithHyperVGeneration, WithPublicNetworkAccess, WithIopsThroughput {
+            WithHyperVGeneration, WithPublicNetworkAccess, WithIopsThroughput, WithDiskSharing {
 
             /**
              * Begins creating the disk resource.
@@ -699,7 +726,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
         /** The stage of disk update allowing to configure IOPS and throughput settings. */
         interface WithIopsThroughput {
             /**
-             * The number of IOPS allowed for this disk.
+             * Sets the number of IOPS allowed for this disk.
              * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskIopsReadWrite The number of IOPS allowed for this disk. One operation can transfer between 4k and 256k bytes.
@@ -708,7 +735,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             Update withIopsReadWrite(long diskIopsReadWrite);
 
             /**
-             * The throughput (MBps) allowed for this disk.
+             * Sets the throughput (MBps) allowed for this disk.
              * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskMBpsReadWrite The bandwidth allowed for this disk.
@@ -717,7 +744,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             Update withMBpsReadWrite(long diskMBpsReadWrite);
 
             /**
-             * The total number of IOPS allowed across all VMs mounting this shared disk as read-only.
+             * Sets the total number of IOPS allowed across all VMs mounting this shared disk as read-only.
              * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskIopsReadOnly The total number of IOPS allowed across all VMs mounting this shared disk as read-only. One operation can transfer between 4k and 256k bytes.
@@ -726,7 +753,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             Update withIopsReadOnly(long diskIopsReadOnly);
 
             /**
-             * The total throughput (MBps) allowed across all VMs mounting this shared disk as read-only.
+             * Sets the total throughput (MBps) allowed across all VMs mounting this shared disk as read-only.
              * It is only settable for UltraSSD disks or Premium SSD v2 disks.
              *
              * @param diskMBpsReadOnly The total throughput (MBps) allowed across all VMs mounting this shared disk as read-only.
@@ -734,12 +761,23 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
              */
             Update withMBpsReadOnly(long diskMBpsReadOnly);
         }
+
+        /** The stage of disk update allowing to configure managed disk sharing settings. */
+        interface WithDiskSharing {
+            /**
+             * Sets the maximum number of VMs that can attach to the disk at the same time.
+             *
+             * @param maximumShares the maximum number of VMs that can attach to the disk at the same time
+             * @return the next stage of the update
+             */
+            Update withMaximumShares(int maximumShares);
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<Disk>, Resource.UpdateWithTags<Disk.Update>, UpdateStages.WithSku, UpdateStages.WithSize,
-        UpdateStages.WithOSSettings, UpdateStages.WithDiskEncryption, UpdateStages.WithHibernationSupport,
-        UpdateStages.WithHyperVGeneration, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithIopsThroughput {
+    interface Update extends Appliable<Disk>, Resource.UpdateWithTags<Disk.Update>, UpdateStages.WithSku,
+        UpdateStages.WithSize, UpdateStages.WithOSSettings, UpdateStages.WithDiskEncryption,
+        UpdateStages.WithHibernationSupport, UpdateStages.WithHyperVGeneration, UpdateStages.WithPublicNetworkAccess,
+        UpdateStages.WithIopsThroughput, UpdateStages.WithDiskSharing {
     }
 }

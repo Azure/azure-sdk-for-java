@@ -2237,6 +2237,66 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(500L, disk.diskMBpsReadOnly());
     }
 
+    @Test
+    public void canCreateDiskWithShares() {
+        Region region1 = Region.US_WEST3;
+
+        String diskName = generateRandomResourceName("disk", 15);
+        Disk disk = computeManager.disks()
+            .define(diskName)
+            .withRegion(region1)
+            .withNewResourceGroup(rgName)
+            .withData()
+            .withSizeInGB(50)
+            .withSku(DiskSkuTypes.STANDARD_SSD_LRS)
+            .withMaximumShares(3)
+            .create();
+
+        // verify after create
+        Assertions.assertEquals(3, disk.maximumShares());
+
+        disk.update().withMaximumShares(2).apply();
+
+        // verify after update
+        Assertions.assertEquals(2, disk.maximumShares());
+
+        Assertions.assertEquals(0, disk.shareInfo().size());
+
+        VirtualMachine vm1 = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region1)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withExistingDataDisk(disk, 1, CachingTypes.NONE)
+            .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+            .create();
+
+        Network network = this.networkManager.networks().listByResourceGroup(rgName).iterator().next();
+
+        VirtualMachine vm2 = computeManager.virtualMachines()
+            .define(vmName + "2")
+            .withRegion(region1)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet(network.subnets().keySet().iterator().next())
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withExistingDataDisk(disk, 1, CachingTypes.NONE)
+            .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+            .create();
+
+        disk.refresh();
+        Assertions.assertEquals(2, disk.shareInfo().size());
+    }
+
     // *********************************** helper methods ***********************************
 
     private CreatablesInfo prepareCreatableVirtualMachines(Region region, String vmNamePrefix, String networkNamePrefix,

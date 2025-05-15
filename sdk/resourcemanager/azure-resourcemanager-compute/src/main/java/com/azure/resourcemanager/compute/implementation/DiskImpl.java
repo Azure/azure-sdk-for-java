@@ -21,6 +21,7 @@ import com.azure.resourcemanager.compute.models.GrantAccessData;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PublicNetworkAccess;
+import com.azure.resourcemanager.compute.models.ShareInfoElement;
 import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.fluent.models.DiskInner;
 import com.azure.resourcemanager.compute.models.SnapshotSkuType;
@@ -35,6 +36,7 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import reactor.core.publisher.Flux;
@@ -176,6 +178,18 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public Long diskMBpsReadOnly() {
         return innerModel().diskMBpsReadOnly();
+    }
+
+    @Override
+    public int maximumShares() {
+        return innerModel().maxShares() == null ? 1 : innerModel().maxShares();
+    }
+
+    @Override
+    public List<ShareInfoElement> shareInfo() {
+        return innerModel().shareInfo() == null
+            ? Collections.emptyList()
+            : Collections.unmodifiableList(innerModel().shareInfo());
     }
 
     @Override
@@ -506,6 +520,12 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public DiskImpl withMBpsReadOnly(long diskMBpsReadOnly) {
         this.innerModel().withDiskMBpsReadOnly(diskMBpsReadOnly);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withMaximumShares(int maximumShares) {
+        this.innerModel().withMaxShares(maximumShares);
         return this;
     }
 }
