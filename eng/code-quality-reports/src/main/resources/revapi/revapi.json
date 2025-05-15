@@ -768,6 +768,257 @@
           "regex": true,
           "code": "java\\.method\\.varargOverloadsOnlyDifferInVarargParameter",
           "old": "method com\\.azure\\.communication\\.email\\.models\\.EmailMessage com\\.azure\\.communication\\.email\\.models\\.EmailMessage::set(Cc|Bcc|To)Recipients.*"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityReduced",
+          "old" : "method void com.azure.resourcemanager.chaos.models.ActionStatus::<init>()",
+          "justification": "Visibility reduced"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityReduced",
+          "old" : "method void com.azure.resourcemanager.chaos.models.BranchStatus::<init>()",
+          "justification": "Visibility reduced"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.chaos.models.CapabilityListResult",
+          "justification": "Class was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.lang.String com.azure.resourcemanager.chaos.models.CapabilityType::location()",
+          "justification": "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.chaos.models.CapabilityTypeListResult",
+          "justification": "Class was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityReduced",
+          "old" : "method void com.azure.resourcemanager.chaos.models.CapabilityTypePropertiesRuntimeProperties::<init>()",
+          "justification": "Visibility reduced."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method java.lang.String com.azure.resourcemanager.chaos.models.ChaosExperimentAction::type()",
+          "new" : "method com.azure.resourcemanager.chaos.models.ExperimentActionType com.azure.resourcemanager.chaos.models.ChaosExperimentAction::type()",
+          "justification": "The return type changed."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : "method java.util.Map<java.lang.String, java.lang.Object> com.azure.resourcemanager.chaos.models.ChaosTargetSelector::additionalProperties()",
+          "justification": "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.chaos.models.ChaosTargetSelector com.azure.resourcemanager.chaos.models.ChaosTargetSelector::withAdditionalProperties(java.util.Map<java.lang.String, java.lang.Object>)",
+          "justification": "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method java.lang.String com.azure.resourcemanager.chaos.models.ContinuousAction::type()",
+          "new" : "method com.azure.resourcemanager.chaos.models.ExperimentActionType com.azure.resourcemanager.chaos.models.ContinuousAction::type()",
+          "justification" : "The return type changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method java.lang.String com.azure.resourcemanager.chaos.models.DelayAction::type()",
+          "new" : "method com.azure.resourcemanager.chaos.models.ExperimentActionType com.azure.resourcemanager.chaos.models.DelayAction::type()",
+          "justification" : "The return type changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method java.lang.String com.azure.resourcemanager.chaos.models.DiscreteAction::type()",
+          "new" : "method com.azure.resourcemanager.chaos.models.ExperimentActionType com.azure.resourcemanager.chaos.models.DiscreteAction::type()",
+          "justification" : "The return type changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityReduced",
+          "old" : "method void com.azure.resourcemanager.chaos.models.ExperimentExecutionActionTargetDetailsError::<init>()",
+          "justification" : "Visibility reduced"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityReduced",
+          "old" : "method void com.azure.resourcemanager.chaos.models.ExperimentExecutionActionTargetDetailsProperties::<init>()",
+          "justification" : "Visibility reduced"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityReduced",
+          "old" : "method void com.azure.resourcemanager.chaos.models.ExperimentExecutionDetailsPropertiesRunInformation::<init>()",
+          "justification" : "Visibility reduced"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.chaos.models.ExperimentExecutionListResult",
+          "justification" : "Class was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.chaos.models.ExperimentListResult",
+          "justification" : "Class was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.chaos.models.ExperimentExecutionDetails com.azure.resourcemanager.chaos.models.Experiments::executionDetails(java.lang.String, java.lang.String, java.lang.String)",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.core.http.rest.Response<com.azure.resourcemanager.chaos.models.ExperimentExecutionDetails> com.azure.resourcemanager.chaos.models.Experiments::executionDetailsWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.chaos.models.ExperimentExecution com.azure.resourcemanager.chaos.models.Experiments::getExecution(java.lang.String, java.lang.String, java.lang.String)",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.core.http.rest.Response<com.azure.resourcemanager.chaos.models.ExperimentExecution> com.azure.resourcemanager.chaos.models.Experiments::getExecutionWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.core.http.rest.PagedIterable<com.azure.resourcemanager.chaos.models.ExperimentExecution> com.azure.resourcemanager.chaos.models.Experiments::listAllExecutions(java.lang.String, java.lang.String)",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.core.http.rest.PagedIterable<com.azure.resourcemanager.chaos.models.ExperimentExecution> com.azure.resourcemanager.chaos.models.Experiments::listAllExecutions(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityReduced",
+          "old" : "method void com.azure.resourcemanager.chaos.models.OperationDisplay::<init>()",
+          "justification" : "visibility reduced"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.chaos.models.OperationListResult",
+          "justification" : "Class was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "interface com.azure.resourcemanager.chaos.models.OperationStatus",
+          "justification" : "Class was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.chaos.models.OperationStatus com.azure.resourcemanager.chaos.models.OperationStatuses::get(java.lang.String, java.lang.String)",
+          "new" : "method com.azure.resourcemanager.chaos.models.OperationStatusResult com.azure.resourcemanager.chaos.models.OperationStatuses::get(java.lang.String, java.lang.String)",
+          "justification" : "The return type changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeTypeParametersChanged",
+          "old" : "method com.azure.core.http.rest.Response<com.azure.resourcemanager.chaos.models.OperationStatus> com.azure.resourcemanager.chaos.models.OperationStatuses::getWithResponse(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.core.http.rest.Response<com.azure.resourcemanager.chaos.models.OperationStatusResult> com.azure.resourcemanager.chaos.models.OperationStatuses::getWithResponse(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "The return type changed type parameter"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.core.http.rest.PagedIterable<com.azure.resourcemanager.chaos.models.Operation> com.azure.resourcemanager.chaos.models.Operations::listAll()",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.core.http.rest.PagedIterable<com.azure.resourcemanager.chaos.models.Operation> com.azure.resourcemanager.chaos.models.Operations::listAll(com.azure.core.util.Context)",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.chaos.models.ResourceIdentityType com.azure.resourcemanager.chaos.models.ResourceIdentity::type()",
+          "new" : "method com.azure.resourcemanager.chaos.models.ManagedServiceIdentityType com.azure.resourcemanager.chaos.models.ResourceIdentity::type()",
+          "justification" : "The return type changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter com.azure.resourcemanager.chaos.models.ResourceIdentity com.azure.resourcemanager.chaos.models.ResourceIdentity::withType(===com.azure.resourcemanager.chaos.models.ResourceIdentityType===)",
+          "new" : "parameter com.azure.resourcemanager.chaos.models.ResourceIdentity com.azure.resourcemanager.chaos.models.ResourceIdentity::withType(===com.azure.resourcemanager.chaos.models.ManagedServiceIdentityType===)",
+          "justification" : "The parameter type changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "enum com.azure.resourcemanager.chaos.models.ResourceIdentityType",
+          "justification" : "Class was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityReduced",
+          "old" : "method void com.azure.resourcemanager.chaos.models.StepStatus::<init>()",
+          "justification" : "visibility reduced"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeTypeParametersChanged",
+          "old" : "method java.util.Map<java.lang.String, java.lang.Object> com.azure.resourcemanager.chaos.models.Target::properties()",
+          "new" : "method java.util.Map<java.lang.String, com.azure.core.util.BinaryData> com.azure.resourcemanager.chaos.models.Target::properties()",
+          "justification" : "The return type changed type parameter"
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.chaos.models.TargetListResult",
+          "justification" : "Class was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method java.lang.String com.azure.resourcemanager.chaos.models.TargetType::location()",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.chaos.models.TargetTypeListResult",
+          "justification" : "Class was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method java.util.UUID com.azure.resourcemanager.chaos.models.UserAssignedIdentity::clientId()",
+          "new" : "method java.lang.String com.azure.resourcemanager.chaos.models.UserAssignedIdentity::clientId()",
+          "justification" : "The return type changed"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method java.util.UUID com.azure.resourcemanager.chaos.models.UserAssignedIdentity::principalId()",
+          "new" : "method java.lang.String com.azure.resourcemanager.chaos.models.UserAssignedIdentity::principalId()",
+          "justification" : "The return type changed"
         }
       ]
     }
