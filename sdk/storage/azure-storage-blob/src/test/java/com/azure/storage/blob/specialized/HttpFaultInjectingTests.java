@@ -133,7 +133,7 @@ public class HttpFaultInjectingTests {
             try {
                 downloadClient.downloadToFileWithResponse(
                     new BlobDownloadToFileOptions(it.getAbsolutePath()).setOpenOptions(overwriteOptions)
-                        .setParallelTransferOptions(new ParallelTransferOptions().setMaxConcurrency(2)),
+                            .setParallelTransferOptions(new ParallelTransferOptions().setMaxConcurrency(2)),
                     null, Context.NONE);
                 byte[] actualFileBytes = Files.readAllBytes(it.toPath());
                 TestUtils.assertArraysEqual(realFileBytes, actualFileBytes);
