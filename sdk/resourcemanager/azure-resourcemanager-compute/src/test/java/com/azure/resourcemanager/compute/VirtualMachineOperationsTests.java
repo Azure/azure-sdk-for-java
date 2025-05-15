@@ -2294,7 +2294,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .create();
 
         disk.refresh();
-        Assertions.assertEquals(2, disk.shareInfo().size());
+        if (!isPlaybackMode()) {
+            // content appears redacted
+            Assertions.assertEquals(2, disk.shareInfo().size());
+        }
     }
 
     // *********************************** helper methods ***********************************
