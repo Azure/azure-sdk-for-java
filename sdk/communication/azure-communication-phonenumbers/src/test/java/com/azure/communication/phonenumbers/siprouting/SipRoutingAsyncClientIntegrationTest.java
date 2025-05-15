@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers.siprouting;
 
+import com.azure.communication.phonenumbers.siprouting.models.SipDomain;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
 import com.azure.core.exception.HttpResponseException;
@@ -14,14 +15,15 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
 import static java.util.Arrays.asList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @Execution(value = ExecutionMode.SAME_THREAD)
@@ -872,6 +874,98 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
         StepVerifier.create(client.getTrunk(DELETE_FQDN)).verifyComplete();
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
+    public void testRoutesWithNumberWithResponse(HttpClient httpClient) {
+        SipRoutingAsyncClient client = getClientWithManagedIdentity(httpClient, "testRoutesWithNumberWithResponse");
+        String targetPhonenumber = "+11234567890";
+        List<com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute> trunkRoute = new ArrayList<>();
+
+        StepVerifier.create(client.getRoutesForNumberWithResponse(targetPhonenumber, trunkRoute))
+            .assertNext(response -> {
+                assertNotNull(response);
+                assertEquals(200, response.getStatusCode());
+                assertNotNull(response.getValue());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
+    public void testRoutesWithNumber(HttpClient httpClient) {
+        SipRoutingAsyncClient client = getClientWithManagedIdentity(httpClient, "testRoutesWithNumber");
+        String targetPhonenumber = "+11234567890";
+        List<com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute> trunkRoute = new ArrayList<>();
+
+        StepVerifier.create(client.getRoutesForNumber(targetPhonenumber, trunkRoute)).assertNext(response -> {
+            assertNotNull(response);
+        }).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
+    public void manageDomains(HttpClient httpClient) {
+        SipRoutingAsyncClient client = getClientWithConnectionString(httpClient, "manageDomainsAsync");
+        StepVerifier.create(client.setDomains(EXPECTED_DOMAINS)).verifyComplete();
+
+        validateDomains(EXPECTED_DOMAINS, client.listDomains());
+
+        SipDomain newDomain = new SipDomain("anotherdomain.com", false);
+        StepVerifier.create(client.setDomain(newDomain)).verifyComplete();
+        StepVerifier.create(client.getDomain(newDomain.getFqdn())).assertNext(response -> {
+            assertNotNull(response);
+            assertEquals(response.isEnabled(), newDomain.isEnabled());
+        }).verifyComplete();
+
+        StepVerifier.create(client.deleteDomain(newDomain.getFqdn())).verifyComplete();
+        validateDomains(EXPECTED_DOMAINS, client.listDomains());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
+    public void manageDomainsWithResponse(HttpClient httpClient) {
+        SipRoutingAsyncClient client = getClientWithConnectionString(httpClient, "manageDomainsWithContextAsync");
+
+        StepVerifier.create(client.setDomainsWithResponse(EXPECTED_DOMAINS)).assertNext(response -> {
+            assertNotNull(response);
+            assertEquals(200, response.getStatusCode());
+        }).verifyComplete();
+        validateDomains(EXPECTED_DOMAINS, client.listDomains());
+
+        SipDomain newDomain = new SipDomain("anotherdomain.com", false);
+        StepVerifier.create(client.setDomain(newDomain)).verifyComplete();
+
+        StepVerifier.create(client.getDomainWithResponse(newDomain.getFqdn())).assertNext(response -> {
+            assertNotNull(response);
+            assertEquals(200, response.getStatusCode());
+            assertEquals(response.getValue().isEnabled(), newDomain.isEnabled());
+        }).verifyComplete();
+
+        StepVerifier.create(client.deleteDomainWithResponse(newDomain.getFqdn())).assertNext(response -> {
+            assertNotNull(response);
+            assertEquals(200, response.getStatusCode());
+        }).verifyComplete();
+        validateDomains(EXPECTED_DOMAINS, client.listDomains());
+    }
+
+    private void validateDomains(List<SipDomain> expected, PagedFlux<SipDomain> actual) {
+        assertNotNull(actual);
+        List<SipDomain> domainsList = getAsList(actual);
+        assertEquals(expected.size(), domainsList.size());
+        for (SipDomain expectedDomain : expected) {
+            Optional<SipDomain> actualDomain = domainsList.stream()
+                .filter(value -> Objects.equals(expectedDomain.getFqdn(), value.getFqdn()))
+                .findAny();
+
+            assertTrue(actualDomain.isPresent());
+            assertEquals(expectedDomain.isEnabled(), actualDomain.get().isEnabled());
+        }
+    }
+
     private void validateTrunks(List<SipTrunk> expected, List<SipTrunk> actual) {
         assertEquals(expected.size(), actual.size());
         for (SipTrunk expectedTrunk : expected) {
@@ -879,6 +973,19 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
                 = actual.stream().filter(value -> Objects.equals(expectedTrunk.getFqdn(), value.getFqdn())).findAny();
             assertTrue(actualTrunk.isPresent());
             assertEquals(expectedTrunk.getSipSignalingPort(), actualTrunk.get().getSipSignalingPort());
+
+            if (expectedTrunk.isEnabled() != null) {
+                assertEquals(expectedTrunk.isEnabled(), actualTrunk.get().isEnabled());
+            }
+            if (expectedTrunk.isDirectTransfer() != null) {
+                assertEquals(expectedTrunk.isDirectTransfer(), actualTrunk.get().isDirectTransfer());
+            }
+            if (expectedTrunk.getPrivacyHeader() != null) {
+                assertEquals(expectedTrunk.getPrivacyHeader(), actualTrunk.get().getPrivacyHeader());
+            }
+            if (expectedTrunk.getIpAddressVersion() != null) {
+                assertEquals(expectedTrunk.getIpAddressVersion(), actualTrunk.get().getIpAddressVersion());
+            }
         }
     }
 
@@ -893,6 +1000,9 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
             assertEquals("desc" + i, route.getDescription());
             assertTrue(route.getTrunks().isEmpty());
         }
+        assertEquals(EXPECTED_ROUTES.get(0).getCallerIdOverride(), routesList.get(0).getCallerIdOverride());
+        assertEquals(null, routesList.get(1).getCallerIdOverride());
+        assertEquals(null, routesList.get(2).getCallerIdOverride());
     }
 
     private SipRoutingAsyncClient getClientWithConnectionString(HttpClient httpClient, String testName) {
