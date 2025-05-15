@@ -112,8 +112,7 @@ public final class SearchKnowledgeAgentAsyncClient {
      * @return a {@link Mono} emitting the output contract for the retrieval response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgentRetrievalResponse> retrieve(
-        KnowledgeAgentRetrievalRequest retrievalRequest,
+    public Mono<KnowledgeAgentRetrievalResponse> retrieve(KnowledgeAgentRetrievalRequest retrievalRequest,
         String xMsQuerySourceAuthorization) {
         return retrievals.retrieveAsync(retrievalRequest, xMsQuerySourceAuthorization, null);
     }
@@ -129,9 +128,7 @@ public final class SearchKnowledgeAgentAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KnowledgeAgentRetrievalResponse>> retrieveWithResponse(
-        KnowledgeAgentRetrievalRequest retrievalRequest,
-        String xMsQuerySourceAuthorization,
-        Context context) {
+        KnowledgeAgentRetrievalRequest retrievalRequest, String xMsQuerySourceAuthorization, Context context) {
         return retrievals.retrieveWithResponseAsync(retrievalRequest, xMsQuerySourceAuthorization, null, context);
     }
 }

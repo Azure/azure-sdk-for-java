@@ -42,7 +42,6 @@ public @interface SearchableField {
      */
     boolean isFacetable() default false;
 
-
     /**
      * Indicates if the field or method should be used as a permission filter {@link SearchField field}.
      *

@@ -77,12 +77,10 @@ import java.util.Objects;
  * @see com.azure.search.documents.agents
  */
 @ServiceClientBuilder(serviceClients = { SearchKnowledgeAgentClient.class, SearchKnowledgeAgentAsyncClient.class })
-public final class SearchKnowledgeAgentClientBuilder implements
-    AzureKeyCredentialTrait<SearchKnowledgeAgentClientBuilder>,
-    ConfigurationTrait<SearchKnowledgeAgentClientBuilder>,
-    EndpointTrait<SearchKnowledgeAgentClientBuilder>,
-    HttpTrait<SearchKnowledgeAgentClientBuilder>,
-    TokenCredentialTrait<SearchKnowledgeAgentClientBuilder> {
+public final class SearchKnowledgeAgentClientBuilder
+    implements AzureKeyCredentialTrait<SearchKnowledgeAgentClientBuilder>,
+    ConfigurationTrait<SearchKnowledgeAgentClientBuilder>, EndpointTrait<SearchKnowledgeAgentClientBuilder>,
+    HttpTrait<SearchKnowledgeAgentClientBuilder>, TokenCredentialTrait<SearchKnowledgeAgentClientBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(SearchKnowledgeAgentClientBuilder.class);
 
@@ -204,7 +202,6 @@ public final class SearchKnowledgeAgentClientBuilder implements
         return this;
     }
 
-
     @Override
     public SearchKnowledgeAgentClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
@@ -219,7 +216,8 @@ public final class SearchKnowledgeAgentClientBuilder implements
     public SearchKnowledgeAgentClient buildClient() {
         validateRequiredFields();
         HttpPipeline pipeline = this.httpPipeline != null ? this.httpPipeline : buildPipeline();
-        JsonSerializer serializer = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
+        JsonSerializer serializer
+            = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
         return new SearchKnowledgeAgentClient(endpoint, agentName, apiVersion, pipeline);
     }
 
@@ -231,7 +229,8 @@ public final class SearchKnowledgeAgentClientBuilder implements
     public SearchKnowledgeAgentAsyncClient buildAsyncClient() {
         validateRequiredFields();
         HttpPipeline pipeline = this.httpPipeline != null ? this.httpPipeline : buildPipeline();
-        JsonSerializer serializer = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
+        JsonSerializer serializer
+            = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
         return new SearchKnowledgeAgentAsyncClient(endpoint, agentName, apiVersion, pipeline);
     }
 
@@ -243,19 +242,8 @@ public final class SearchKnowledgeAgentClientBuilder implements
 
     private HttpPipeline buildPipeline() {
         // Closely follows the pattern in Utility.buildHttpPipeline and SearchClientBuilder
-        return com.azure.search.documents.implementation.util.Utility.buildHttpPipeline(
-            clientOptions,
-            httpLogOptions,
-            configuration,
-            retryPolicy,
-            retryOptions,
-            azureKeyCredential,
-            tokenCredential,
-            audience,
-            perCallPolicies,
-            perRetryPolicies,
-            httpClient,
-            LOGGER
-        );
+        return com.azure.search.documents.implementation.util.Utility.buildHttpPipeline(clientOptions, httpLogOptions,
+            configuration, retryPolicy, retryOptions, azureKeyCredential, tokenCredential, audience, perCallPolicies,
+            perRetryPolicies, httpClient, LOGGER);
     }
 }

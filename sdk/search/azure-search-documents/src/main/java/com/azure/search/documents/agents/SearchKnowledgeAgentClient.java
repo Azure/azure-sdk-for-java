@@ -112,8 +112,7 @@ public final class SearchKnowledgeAgentClient {
      * @return the output contract for the retrieval response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeAgentRetrievalResponse retrieve(
-        KnowledgeAgentRetrievalRequest retrievalRequest,
+    public KnowledgeAgentRetrievalResponse retrieve(KnowledgeAgentRetrievalRequest retrievalRequest,
         String xMsQuerySourceAuthorization) {
         return retrievals.retrieve(retrievalRequest, xMsQuerySourceAuthorization, null);
     }
@@ -129,9 +128,7 @@ public final class SearchKnowledgeAgentClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KnowledgeAgentRetrievalResponse> retrieveWithResponse(
-        KnowledgeAgentRetrievalRequest retrievalRequest,
-        String xMsQuerySourceAuthorization,
-        Context context) {
+        KnowledgeAgentRetrievalRequest retrievalRequest, String xMsQuerySourceAuthorization, Context context) {
         return retrievals.retrieveWithResponse(retrievalRequest, xMsQuerySourceAuthorization, null, context);
     }
 }
