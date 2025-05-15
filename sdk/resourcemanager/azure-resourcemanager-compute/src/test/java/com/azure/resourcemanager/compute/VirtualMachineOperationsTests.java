@@ -2261,6 +2261,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(2, disk.maximumShares());
 
         Assertions.assertNull(disk.virtualMachineId());
+        Assertions.assertEquals(0, disk.virtualMachineIds().size());
 
         VirtualMachine vm1 = computeManager.virtualMachines()
             .define(vmName)
@@ -2295,6 +2296,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         disk = disk.refresh();
         Assertions.assertNotNull(disk.virtualMachineId());
+        Assertions.assertEquals(2, disk.virtualMachineIds().size());
     }
 
     // *********************************** helper methods ***********************************

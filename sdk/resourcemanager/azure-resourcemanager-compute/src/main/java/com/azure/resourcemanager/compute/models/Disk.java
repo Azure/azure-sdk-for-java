@@ -16,6 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 
+import java.util.List;
 import java.util.Set;
 import reactor.core.publisher.Mono;
 
@@ -50,6 +51,14 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
      *     state
      */
     String virtualMachineId();
+
+    /**
+     * Gets the list of the virtual machines that this disk is attached to.
+     * A disk could be attached to multiple virtual machines.
+     *
+     * @return the resource ID of the virtual machines this disk is attached to
+     */
+    List<String> virtualMachineIds();
 
     /**
      * Gets disk size in GB.

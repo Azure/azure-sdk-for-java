@@ -73,6 +73,17 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     }
 
     @Override
+    public List<String> virtualMachineIds() {
+        if (innerModel().managedByExtended() != null) {
+            return Collections.unmodifiableList(innerModel().managedByExtended());
+        } else if (this.virtualMachineId() != null) {
+            return Collections.singletonList(this.virtualMachineId());
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
     public int sizeInGB() {
         return ResourceManagerUtils.toPrimitiveInt(this.innerModel().diskSizeGB());
     }
