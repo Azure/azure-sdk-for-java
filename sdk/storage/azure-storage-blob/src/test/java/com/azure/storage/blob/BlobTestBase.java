@@ -37,6 +37,7 @@ import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.json.JsonProviders;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import com.azure.storage.blob.models.BlobContainerItem;
@@ -67,6 +68,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -162,10 +164,6 @@ public class BlobTestBase extends TestProxyTestBase {
     protected String containerName;
 
     protected String prefix;
-
-    // used to support cross package tests without taking a dependency on the package
-    protected HttpPipeline dataPlanePipeline;
-    protected HttpHeaders genericHeaders;
 
     // used to build pipeline to management plane
     protected static final String RESOURCE_GROUP_NAME = ENVIRONMENT.getResourceGroupName();
@@ -877,6 +875,10 @@ public class BlobTestBase extends TestProxyTestBase {
         return setPolicyMono;
     }
 
+    protected String generateShareName() {
+        return generateResourceName(entityNo++);
+    }
+
     protected String createFileAndDirectoryWithoutFileShareDependency(byte[] data, String shareName)
         throws IOException {
         String accountName = ENVIRONMENT.getPrimaryAccount().getName();
@@ -884,8 +886,11 @@ public class BlobTestBase extends TestProxyTestBase {
         BearerTokenAuthenticationPolicy credentialPolicyDataPlane = new BearerTokenAuthenticationPolicy(
             getTokenCredential(ENVIRONMENT.getTestMode()), Constants.STORAGE_SCOPE);
 
+        //create share through management plane
+        createFileShareWithoutDependency(shareName);
+
         //setup headers that will be used in every request
-        genericHeaders = new HttpHeaders().set(X_MS_VERSION, "2025-07-05")
+        HttpHeaders genericHeaders = new HttpHeaders().set(X_MS_VERSION, "2025-07-05")
             .set(HttpHeaderName.ACCEPT, "application/xml")
             .set(HttpHeaderName.HOST, accountName + ".file.core.windows.net")
             .set(HttpHeaderName.CONTENT_LENGTH, "0")
@@ -899,15 +904,8 @@ public class BlobTestBase extends TestProxyTestBase {
         policies.add(new RequestIdPolicy());
 
         // create data plane pipeline
-        dataPlanePipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0])).build();
-
-        // create share through data plane pipeline
-        String shareUrl = String.format("https://%s.file.core.windows.net/%s?restype=share", accountName, shareName);
-
-        HttpResponse shareCreateResponse
-            = dataPlanePipeline.send(new HttpRequest(HttpMethod.PUT, new URL(shareUrl), genericHeaders)).block();
-        assertNotNull(shareCreateResponse);
-        assertEquals(201, shareCreateResponse.getStatusCode());
+        HttpPipeline dataPlanePipeline
+            = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0])).build();
 
         // create directory
         String directoryName = generateBlobName();
@@ -947,14 +945,48 @@ public class BlobTestBase extends TestProxyTestBase {
         return fileUrl;
     }
 
-    protected void deleteFileShareWithoutDependency(String shareName) throws IOException {
-        String shareUrl = String.format("https://%s.file.core.windows.net/%s?restype=share",
-            ENVIRONMENT.getPrimaryAccount().getName(), shareName);
+    protected void createFileShareWithoutDependency(String shareName) throws IOException {
+        String shareID = getFileShareID(shareName);
+        Body shareBody = new Body();
+        shareBody.setId(shareID);
+        shareBody.setName(shareName);
+        shareBody.setType("Microsoft.Storage/storageAccounts/fileServices/shares");
 
-        HttpResponse shareDeleteResponse
-            = dataPlanePipeline.send(new HttpRequest(HttpMethod.DELETE, new URL(shareUrl), genericHeaders)).block();
-        assertNotNull(shareDeleteResponse);
-        assertEquals(202, shareDeleteResponse.getStatusCode());
+        ByteArrayOutputStream shareJson = new ByteArrayOutputStream();
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(shareJson)) {
+            shareBody.toJson(jsonWriter);
+        }
+        HttpResponse response
+            = getManagementPlanePipeline().send(new HttpRequest(HttpMethod.PUT, new URL(getFileShareUri(shareID)),
+                new HttpHeaders(), Flux.just(ByteBuffer.wrap(shareJson.toByteArray())))).block();
+        assertNotNull(response);
+        assertEquals(201, response.getStatusCode());
+    }
+
+    protected void deleteFileShareWithoutDependency(String shareName) throws IOException {
+        String shareID = getFileShareID(shareName);
+        HttpResponse response = getManagementPlanePipeline()
+            .send(new HttpRequest(HttpMethod.DELETE, new URL(getFileShareUri(shareID)), new HttpHeaders()))
+            .block();
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+    }
+
+    protected HttpPipeline getManagementPlanePipeline() {
+        BearerTokenAuthenticationPolicy credentialPolicyManagementPlane = new BearerTokenAuthenticationPolicy(
+            getTokenCredential(ENVIRONMENT.getTestMode()), "https://management.azure.com/.default");
+        return new HttpPipelineBuilder().policies(credentialPolicyManagementPlane).build();
+    }
+
+    protected String getFileShareID(String shareName) {
+        return String.format(
+            "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
+                + "%s/fileServices/default/shares/%s",
+            SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ENVIRONMENT.getPrimaryAccount().getName(), shareName);
+    }
+
+    protected String getFileShareUri(String fileShareID) {
+        return "https://management.azure.com" + fileShareID + "?api-version=2024-01-01";
     }
 
     public static final class Body implements JsonSerializable<Body> {
@@ -1026,6 +1058,10 @@ public class BlobTestBase extends TestProxyTestBase {
         implements JsonSerializable<ImmutableStorageWithVersioning> {
         private boolean enabled;
 
+        public boolean isEnabled() {
+            return enabled;
+        }
+
         public void setEnabled(boolean enabled) {
             this.enabled = enabled;
         }
@@ -1037,7 +1073,7 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    //todo isbr: change the copy of this method in StorageCommonTestUtils to take in TestMode instead of interception manager
+    //todo: change the copy of this method in StorageCommonTestUtils to take in TestMode instead of interception manager
     protected static TokenCredential getTokenCredential(TestMode testMode) {
         if (testMode == TestMode.RECORD) {
             return new DefaultAzureCredentialBuilder().build();

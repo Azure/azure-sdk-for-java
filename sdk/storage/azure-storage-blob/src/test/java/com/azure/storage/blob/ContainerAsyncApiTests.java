@@ -1794,7 +1794,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
-    @PlaybackOnly
     public void rootExplicit() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1810,7 +1809,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
-    @PlaybackOnly
     public void rootExplicitInEndpoint() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1830,7 +1828,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
-    @PlaybackOnly
     public void blobClientBuilderRootImplicit() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // createroot container if not exist.
@@ -1855,7 +1852,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
-    @PlaybackOnly
     public void containerClientBuilderRootImplicit() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1884,10 +1880,10 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     public void serviceClientImplicitRoot() {
-        assertEquals(BlobContainerAsyncClient.ROOT_CONTAINER_NAME,
-            primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(null).getBlobContainerName());
-        assertEquals(BlobContainerAsyncClient.ROOT_CONTAINER_NAME,
-            primaryBlobServiceAsyncClient.getBlobContainerAsyncClient("").getBlobContainerName());
+        assertEquals(primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(null).getBlobContainerName(),
+            BlobContainerAsyncClient.ROOT_CONTAINER_NAME);
+        assertEquals(primaryBlobServiceAsyncClient.getBlobContainerAsyncClient("").getBlobContainerName(),
+            BlobContainerAsyncClient.ROOT_CONTAINER_NAME);
     }
 
     @Test

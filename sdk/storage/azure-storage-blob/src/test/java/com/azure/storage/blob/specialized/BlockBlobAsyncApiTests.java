@@ -2531,12 +2531,10 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
         Mono<Response<BlockBlobItem>> response = sourceBlob.upload(DATA.getDefaultFlux(), null).flatMap(r -> {
             String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
                 new BlobContainerSasPermission().setReadPermission(true)));
-
-            return blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true).flatMap(r2 -> {
-                BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
-                    .setSourceRequestConditions(requestConditions);
-                return blockBlobAsyncClient.uploadFromUrlWithResponse(options);
-            });
+            BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+                .setSourceRequestConditions(requestConditions);
+            return blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true)
+                .then(blockBlobAsyncClient.uploadFromUrlWithResponse(options));
         });
 
         StepVerifier.create(response).verifyErrorSatisfies(r -> {
@@ -2548,7 +2546,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     private static Stream<Arguments> uploadFromUrlSourceRequestConditionsSupplier() {
         return Stream.of(
             Arguments.of(new BlobRequestConditions().setIfMatch("dummy"), BlobErrorCode.SOURCE_CONDITION_NOT_MET),
-            Arguments.of(new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusDays(10)),
+            Arguments.of(new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusSeconds(10)),
                 BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE),
             Arguments.of(new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1)),
                 BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE));
