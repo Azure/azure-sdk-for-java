@@ -16,7 +16,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 
-import java.util.List;
 import java.util.Set;
 import reactor.core.publisher.Mono;
 
@@ -189,13 +188,6 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
      * @return the maximum number of VMs that can attach to the disk at the same time.
      */
     int maximumShares();
-
-    /**
-     * Gets the information about the VMs that have the disk attached.
-     *
-     * @return the information about the VMs that have the disk attached.
-     */
-    List<ShareInfoElement> shareInfo();
 
     /** The entirety of the managed disk definition. */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithDiskSource,

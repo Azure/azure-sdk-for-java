@@ -186,13 +186,6 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     }
 
     @Override
-    public List<ShareInfoElement> shareInfo() {
-        return innerModel().shareInfo() == null
-            ? Collections.emptyList()
-            : Collections.unmodifiableList(innerModel().shareInfo());
-    }
-
-    @Override
     public DiskImpl withLinuxFromVhd(String vhdUrl) {
         this.innerModel()
             .withOsType(OperatingSystemTypes.LINUX)
