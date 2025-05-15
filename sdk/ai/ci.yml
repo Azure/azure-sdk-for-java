@@ -10,9 +10,13 @@ trigger:
     include:
       - sdk/ai/ci.yml
       - sdk/ai/azure-ai-inference/
+      - sdk/ai/azure-ai-projects/
+      - sdk/ai/azure-ai-agents-persistent/
     exclude:
       - sdk/ai/pom.xml
       - sdk/ai/azure-ai-inference/pom.xml
+      - sdk/ai/azure-ai-projects/pom.xml
+      - sdk/ai/azure-ai-agents-persistent/pom.xml
 
 pr:
   branches:
@@ -25,9 +29,13 @@ pr:
     include:
       - sdk/ai/ci.yml
       - sdk/ai/azure-ai-inference/
+      - sdk/ai/azure-ai-projects/
+      - sdk/ai/azure-ai-agents-persistent/
     exclude:
       - sdk/ai/pom.xml
       - sdk/ai/azure-ai-inference/pom.xml
+      - sdk/ai/azure-ai-projects/pom.xml
+      - sdk/ai/azure-ai-agents-persistent/pom.xml
 
 parameters:
   - name: release_azureaiinference
@@ -37,11 +45,11 @@ parameters:
   - name: release_azureaiprojects
     displayName: 'azure-ai-projects'
     type: boolean
-    default: false
+    default: true
   - name: release_azureaiagentspersistent
     displayName: 'azure-ai-agents-persistent'
     type: boolean
-    default: false
+    default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
