@@ -156,7 +156,7 @@ public final class ResponseHandler {
                             .getQualifiedName()
                             .contentEquals(List.class.getCanonicalName())) {
                         // Response<List<BinaryData>> or other generics
-                        handleDeclaredTypes(body, returnType, serializationFormatSet, true);
+                        handleDeclaredTypes(body, returnType, serializationFormatSet, true, true);
                         return;
                     }
                 }
@@ -168,18 +168,20 @@ public final class ResponseHandler {
         } else {
             // Fallback to a generalized code path that handles declared types as the entity, which uses deserialization
             // to create the return.
-            handleDeclaredTypes(body, returnType, serializationFormatSet, returnIsResponse);
+            handleDeclaredTypes(body, returnType, serializationFormatSet, returnIsResponse, false);
         }
     }
 
     private static void handleDeclaredTypes(BlockStmt body, TypeMirror returnType, boolean serializationFormatSet,
-        boolean returnIsResponse) {
+        boolean returnIsResponse, boolean closeResponse) {
         String typeCast = determineTypeCast(returnType, body);
 
         // Initialize the variable that will be used in the return statement.
         body.addStatement(StaticJavaParser.parseStatement(typeCast + " deserializedResult;"));
         handleDeclaredTypeResponse(body, (DeclaredType) returnType, serializationFormatSet, typeCast);
-
+        if (closeResponse) {
+            body.addStatement(StaticJavaParser.parseStatement("networkResponse.close();"));
+        }
         addReturnStatement(body, returnIsResponse, "deserializedResult");
     }
 

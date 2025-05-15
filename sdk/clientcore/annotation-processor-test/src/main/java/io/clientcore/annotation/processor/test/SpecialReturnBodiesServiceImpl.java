@@ -176,6 +176,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         } else {
             throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
+        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 }
