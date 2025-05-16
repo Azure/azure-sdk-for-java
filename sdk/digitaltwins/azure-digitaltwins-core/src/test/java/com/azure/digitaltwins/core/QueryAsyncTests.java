@@ -5,6 +5,7 @@ package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
+import com.azure.digitaltwins.core.models.QueryOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -17,8 +18,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class QueryAsyncTests extends QueryTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -64,12 +64,10 @@ public class QueryAsyncTests extends QueryTestBase {
                 return true;
             }).verifyComplete();
 
-            // [TODO]Bug: query complains invalid continuation token.
-
             // Test that page size hint works, and that all returned pages either have the page size hint amount of
             // elements, or have no continuation token (signaling that it is the last page)
             AtomicInteger pageCount = new AtomicInteger(0);
-            /*StepVerifier.create(
+            StepVerifier.create(
                 asyncClient.query(queryString, BasicDigitalTwin.class, new QueryOptions().setMaxItemsPerPage(pageSize))
                     .byPage())
                 .thenConsumeWhile(digitalTwinsPage -> {
@@ -81,8 +79,8 @@ public class QueryAsyncTests extends QueryTestBase {
                     return true;
                 })
                 .verifyComplete();
-            
-            assertTrue(pageCount.get() > 1, "Expected more than one page of query results");*/
+
+            assertTrue(pageCount.get() > 1, "Expected more than one page of query results");
         } finally {
             // Cleanup
             for (String roomTwinId : roomTwinIds) {
