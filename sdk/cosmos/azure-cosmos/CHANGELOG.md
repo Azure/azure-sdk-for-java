@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added a way to opt-in into Per-Partition Automatic Failover using enablement flag from the account metadata. - [PR 45317](https://github.com/Azure/azure-sdk-for-java/pull/45317)
 
 ### 4.69.0 (2025-05-14)
 
