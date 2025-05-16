@@ -41,7 +41,8 @@
 
 ### 4.68.1 (2025-05-16)
 > [!IMPORTANT]
-> We strongly recommend our customers with an intention to upgrade to directly to at least 4.70.0 or above if they have been using 4.68.1 to contain the relevant bug fix.
+> We strongly recommend customers upgrade to version 4.70.0 or later to include this bug fix.
+
 #### Bugs Fixed
 * Fixed an issue where child partition is getting overridden with null continuation token if a split happens during the first request of a parent partition. - See [PR 45363](https://github.com/Azure/azure-sdk-for-java/pull/45363)
 
