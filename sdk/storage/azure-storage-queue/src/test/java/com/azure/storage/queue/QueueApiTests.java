@@ -5,7 +5,6 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -47,7 +46,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
-import static com.azure.storage.common.implementation.StorageImplUtils.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -936,10 +934,11 @@ public class QueueApiTests extends QueueTestBase {
         queueClient.setAccessPolicy(response.stream().collect(Collectors.toList()));
     }
 
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @ValueSource(ints = { 0, 5, 12 })
     public void getPropertiesApproximateMessagesCountLong(int messageCount) {
-        queueClient.create();
+        queueClient.createIfNotExists();
 
         for (int i = 0; i < messageCount; i++) {
             queueClient.sendMessage("Message " + (i + 1));
@@ -952,23 +951,22 @@ public class QueueApiTests extends QueueTestBase {
         assertEquals(messageCount, queueProperties.getValue().getApproximateMessagesCountLong());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPropertiesApproximateMessagesCountOverflow() {
-        queueClient.create();
-        QueueClient spyClient = Mockito.spy(queueClient);
+        QueueClient mockClient = Mockito.mock(QueueClient.class);
         QueueProperties queueProperties = Mockito.mock(QueueProperties.class);
         Mockito.when(queueProperties.getApproximateMessagesCountLong()).thenReturn(Long.MAX_VALUE);
         Mockito.when(queueProperties.getApproximateMessagesCount())
             .thenThrow(new ArithmeticException("integer overflow"));
 
-        Mockito.when(spyClient.getPropertiesWithResponse(Mockito.any(), Mockito.any()))
-            .thenReturn(new SimpleResponse<>(null, 200, null, queueProperties));
+        Mockito.when(mockClient.getProperties()).thenReturn(queueProperties);
 
-        Response<QueueProperties> result = spyClient.getPropertiesWithResponse(null, null);
+        QueueProperties result = mockClient.getProperties();
 
         assertNotNull(result);
-        assertEquals(Long.MAX_VALUE, result.getValue().getApproximateMessagesCountLong());
-        assertThrows(ArithmeticException.class, () -> result.getValue().getApproximateMessagesCount());
+        assertEquals(Long.MAX_VALUE, result.getApproximateMessagesCountLong());
+        assertThrows(ArithmeticException.class, result::getApproximateMessagesCount);
     }
 
 }

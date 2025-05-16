@@ -13,19 +13,18 @@ import java.util.Map;
 @Immutable
 public final class QueueProperties {
     private final Map<String, String> metadata;
-    private final int approximateMessagesCount;
-    private final long approximateMessagesCountLong;
+    private final Long approximateMessagesCount;
 
     /**
      * Creates an instance that contains properties of a queue.
      *
      * @param metadata Metadata associated with the queue.
      * @param approximateMessagesCount Approximate number of messages contained in the queue.
-     * @deprecated Use {@link #QueueProperties(Map, long)} instead.
+     * @deprecated Use {@link #QueueProperties(Map, Long)} instead.
      */
     @Deprecated
     public QueueProperties(Map<String, String> metadata, int approximateMessagesCount) {
-        this(metadata, (long) approximateMessagesCount);
+        this(metadata, Long.valueOf(approximateMessagesCount));
     }
 
     /**
@@ -34,10 +33,9 @@ public final class QueueProperties {
      * @param metadata Metadata associated with the queue.
      * @param approximateMessagesCount Approximate number of messages contained in the queue.
      */
-    public QueueProperties(Map<String, String> metadata, long approximateMessagesCount) {
+    public QueueProperties(Map<String, String> metadata, Long approximateMessagesCount) {
         this.metadata = metadata;
-        this.approximateMessagesCount = Math.toIntExact(approximateMessagesCount);
-        this.approximateMessagesCountLong = approximateMessagesCount;
+        this.approximateMessagesCount = approximateMessagesCount;
     }
 
     /**
@@ -53,10 +51,11 @@ public final class QueueProperties {
      * Gets the approximate number of messages contained in the queue at the time of properties retrieval.
      *
      * @return the approximate number of messages contained in the queue at the time of properties retrieval.
+     * @deprecated Use {@link #QueueProperties(Map, Long)} instead.
      */
     @Deprecated
     public int getApproximateMessagesCount() {
-        return approximateMessagesCount;
+        return this.approximateMessagesCount == null ? 0 : Math.toIntExact(this.approximateMessagesCount);
     }
 
     /**
@@ -64,7 +63,7 @@ public final class QueueProperties {
      *
      * @return the approximate number of messages contained in the queue at the time of properties retrieval.
      */
-    public long getApproximateMessagesCountLong() {
-        return approximateMessagesCountLong;
+    public Long getApproximateMessagesCountLong() {
+        return approximateMessagesCount;
     }
 }
