@@ -26,7 +26,7 @@ public final class QueuesGetPropertiesHeaders {
     /*
      * The x-ms-approximate-messages-count property.
      */
-    private Integer xMsApproximateMessagesCount;
+    private Long xMsApproximateMessagesCount;
 
     /*
      * The x-ms-meta- property.
@@ -58,7 +58,7 @@ public final class QueuesGetPropertiesHeaders {
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String xMsApproximateMessagesCount = rawHeaders.getValue(X_MS_APPROXIMATE_MESSAGES_COUNT);
         if (xMsApproximateMessagesCount != null) {
-            this.xMsApproximateMessagesCount = Integer.parseInt(xMsApproximateMessagesCount);
+            this.xMsApproximateMessagesCount = Long.parseLong(xMsApproximateMessagesCount);
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
@@ -102,7 +102,7 @@ public final class QueuesGetPropertiesHeaders {
      * 
      * @return the xMsApproximateMessagesCount value.
      */
-    public Integer getXMsApproximateMessagesCount() {
+    public Long getXMsApproximateMessagesCount() {
         return this.xMsApproximateMessagesCount;
     }
 
@@ -112,7 +112,7 @@ public final class QueuesGetPropertiesHeaders {
      * @param xMsApproximateMessagesCount the xMsApproximateMessagesCount value to set.
      * @return the QueuesGetPropertiesHeaders object itself.
      */
-    public QueuesGetPropertiesHeaders setXMsApproximateMessagesCount(Integer xMsApproximateMessagesCount) {
+    public QueuesGetPropertiesHeaders setXMsApproximateMessagesCount(Long xMsApproximateMessagesCount) {
         this.xMsApproximateMessagesCount = xMsApproximateMessagesCount;
         return this;
     }

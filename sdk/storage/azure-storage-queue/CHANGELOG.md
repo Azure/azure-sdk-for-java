@@ -5,6 +5,8 @@
 ### Features Added
 
 ### Breaking Changes
+- 'QueueProperties.ApproximateMessagesCount' will now throw an OverflowException if the value exceeds int.MaxValue.
+   Please use 'QueueProperties.ApproximateMessagesCountLong' instead.
 
 ### Bugs Fixed
 

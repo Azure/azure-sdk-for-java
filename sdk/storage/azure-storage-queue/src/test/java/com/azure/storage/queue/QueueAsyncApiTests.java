@@ -13,12 +13,16 @@ import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueAudience;
 import com.azure.storage.queue.models.QueueErrorCode;
 import com.azure.storage.queue.models.QueueMessageItem;
+import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mockito;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -900,4 +904,42 @@ public class QueueAsyncApiTests extends QueueTestBase {
             .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
+
+    @SuppressWarnings("deprecation")
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 5, 12 })
+    public void getPropertiesApproximateMessagesCountLong(int messageCount) {
+        Mono<Boolean> createQueue = queueAsyncClient.createIfNotExists();
+
+        Mono<Void> sendMessages
+            = Flux.range(1, messageCount).flatMap(i -> queueAsyncClient.sendMessage("Message " + i)).then();
+
+        StepVerifier.create(createQueue.then(sendMessages).then(queueAsyncClient.getPropertiesWithResponse()))
+            .assertNext(response -> {
+                assertNotNull(response);
+                assertEquals(messageCount, response.getValue().getApproximateMessagesCount());
+                assertEquals(messageCount, response.getValue().getApproximateMessagesCountLong());
+            })
+            .verifyComplete();
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void getPropertiesApproximateMessagesCountOverflow() {
+        QueueAsyncClient mockAsyncClient = Mockito.mock(QueueAsyncClient.class);
+        QueueProperties queueProperties = Mockito.mock(QueueProperties.class);
+
+        Mockito.when(queueProperties.getApproximateMessagesCountLong()).thenReturn(Long.MAX_VALUE);
+        Mockito.when(queueProperties.getApproximateMessagesCount())
+            .thenThrow(new ArithmeticException("integer overflow"));
+
+        Mockito.when(mockAsyncClient.getProperties()).thenReturn(Mono.just(queueProperties));
+
+        StepVerifier.create(mockAsyncClient.getProperties()).assertNext(response -> {
+            assertNotNull(response);
+            assertEquals(Long.MAX_VALUE, response.getApproximateMessagesCountLong());
+            assertThrows(ArithmeticException.class, () -> response.getApproximateMessagesCount());
+        }).verifyComplete();
+    }
+
 }
