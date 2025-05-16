@@ -39,6 +39,12 @@
 * Added user agent suffixing if Per-Partition Automatic Failover or Per-Partition Circuit Breaker are enabled at client scope. - [PR 45197](https://github.com/Azure/azure-sdk-for-java/pull/45197)
 * Enable threshold-based availability strategy for reads by default when Per-Partition Automatic Failover is also enabled. - [PR 45267](https://github.com/Azure/azure-sdk-for-java/pull/45267) 
 
+### 4.68.1 (2025-05-16)
+> [!IMPORTANT]
+> We strongly recommend our customers to upgrade directly to at least 4.70.0 or above if they have been using 4.68.1 to contain the relevant bug fix.
+#### Bugs Fixed
+* Fixed an issue where child partition is getting overridden with null continuation token if a split happens during the first request of a parent partition. - See [PR 45363](https://github.com/Azure/azure-sdk-for-java/pull/45363)
+
 ### 4.68.0 (2025-03-20)
 
 #### Bugs Fixed
