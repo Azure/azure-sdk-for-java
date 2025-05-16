@@ -93,7 +93,7 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.5.18</version>
+      <version>1.5.18</version> <!-- {x-version-update;springboot3_ch.qos.logback:logback-classic;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
