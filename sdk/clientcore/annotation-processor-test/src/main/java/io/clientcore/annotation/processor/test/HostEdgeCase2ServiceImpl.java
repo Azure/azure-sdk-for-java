@@ -55,13 +55,19 @@ public class HostEdgeCase2ServiceImpl implements HostEdgeCase2Service {
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData value = networkResponse.getValue();
-                if (value == null || value.toBytes().length == 0) {
-                    throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                BinaryData networkResponseValue = networkResponse.getValue();
+                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
+                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                    exceptionMessage.append("(empty body)");
+                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
                 } else {
+                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
                     ParameterizedType returnType = null;
-                    Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
+                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
                 }
             }
             BinaryData responseBody = networkResponse.getValue();

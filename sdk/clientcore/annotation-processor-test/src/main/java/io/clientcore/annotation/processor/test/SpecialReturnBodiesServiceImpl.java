@@ -56,15 +56,22 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData value = networkResponse.getValue();
-            if (value == null || value.toBytes().length == 0) {
+            BinaryData networkResponseValue = networkResponse.getValue();
+            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                exceptionMessage.append("(empty body)");
+                networkResponse.close();
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
             } else {
+                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
                 ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.models.binarydata.BinaryData.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
+                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
             }
         }
         return networkResponse.getValue();
@@ -80,15 +87,22 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData value = networkResponse.getValue();
-            if (value == null || value.toBytes().length == 0) {
+            BinaryData networkResponseValue = networkResponse.getValue();
+            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                exceptionMessage.append("(empty body)");
+                networkResponse.close();
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
             } else {
+                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
                 ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, BinaryData.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
+                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
             }
         }
         return networkResponse;
@@ -104,13 +118,19 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData value = networkResponse.getValue();
-                if (value == null || value.toBytes().length == 0) {
-                    throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                BinaryData networkResponseValue = networkResponse.getValue();
+                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
+                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                    exceptionMessage.append("(empty body)");
+                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
                 } else {
+                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
                     ParameterizedType returnType = null;
-                    Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
+                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
                 }
             }
             BinaryData responseBody = networkResponse.getValue();
@@ -128,13 +148,19 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData value = networkResponse.getValue();
-                if (value == null || value.toBytes().length == 0) {
-                    throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                BinaryData networkResponseValue = networkResponse.getValue();
+                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
+                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                    exceptionMessage.append("(empty body)");
+                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
                 } else {
+                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
                     ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, byte[].class);
-                    Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
+                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
                 }
             }
             BinaryData responseBody = networkResponse.getValue();
@@ -152,15 +178,22 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData value = networkResponse.getValue();
-            if (value == null || value.toBytes().length == 0) {
+            BinaryData networkResponseValue = networkResponse.getValue();
+            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                exceptionMessage.append("(empty body)");
+                networkResponse.close();
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
             } else {
+                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
                 ParameterizedType returnType = CoreUtils.createParameterizedType(java.io.InputStream.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
+                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
             }
         }
         return networkResponse.getValue().toStream();
@@ -176,15 +209,22 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData value = networkResponse.getValue();
-            if (value == null || value.toBytes().length == 0) {
+            BinaryData networkResponseValue = networkResponse.getValue();
+            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                exceptionMessage.append("(empty body)");
+                networkResponse.close();
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
             } else {
+                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
                 ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, InputStream.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
+                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
             }
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), networkResponse.getValue().toStream());

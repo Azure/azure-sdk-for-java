@@ -57,15 +57,22 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData value = networkResponse.getValue();
-            if (value == null || value.toBytes().length == 0) {
+            BinaryData networkResponseValue = networkResponse.getValue();
+            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                exceptionMessage.append("(empty body)");
+                networkResponse.close();
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
             } else {
+                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
                 ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(value, jsonSerializer, returnType);
+                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, value, decoded);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
             }
         }
         HttpBinJSON deserializedResult;
