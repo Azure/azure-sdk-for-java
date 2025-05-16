@@ -11,6 +11,7 @@ import com.azure.v2.data.appconfiguration.models.SecretReferenceConfigurationSet
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 
@@ -99,11 +100,12 @@ public final class ConfigurationSettingDeserializationHelper {
                 // Configuration Setting
                 return setting;
             }
-        } catch (Exception exception) {
-            throw LOGGER.logThrowableAsError(
-                new RuntimeException("The setting is neither a 'FeatureFlagConfigurationSetting' nor "
-                    + "'SecretReferenceConfigurationSetting', return the setting as 'ConfigurationSetting'. "
-                    + "Error: ", exception));
+        } catch (RuntimeException exception) {
+            throw LOGGER.throwableAtError()
+                .log(
+                    "The setting is neither a 'FeatureFlagConfigurationSetting' nor "
+                        + "'SecretReferenceConfigurationSetting', return the setting as 'ConfigurationSetting'. ",
+                    exception, CoreException::from);
         }
     }
 
@@ -121,7 +123,7 @@ public final class ConfigurationSettingDeserializationHelper {
         try (JsonReader jsonReader = JsonReader.fromString(valueInJson)) {
             return getFeatureFlagPropertyValue(jsonReader);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(e));
+            throw LOGGER.throwableAtError().log(e, IllegalStateException::new);
         }
     }
 
@@ -145,7 +147,7 @@ public final class ConfigurationSettingDeserializationHelper {
                 return new SecretReferenceConfigurationSetting(key, secretId);
             });
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(e));
+            throw LOGGER.throwableAtError().log(e, IllegalStateException::new);
         }
     }
 

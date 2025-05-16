@@ -63,5 +63,5 @@ variables:
   ComponentDetection.Timeout: 1200
 
   # Docs publishing variables for repo/owner
-  DocRepoOwner: 'Azure'
+  DocRepoOwner: 'MicrosoftDocs'
   DocRepoName: 'azure-docs-sdk-java'

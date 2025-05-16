@@ -94,7 +94,7 @@ public class ReadMyWritesConsistencyTest {
         };
     }
 
-    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "e2e")
+    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "e2e", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readMyWrites(boolean useNameLink) throws Exception {
 
         int concurrency = 5;

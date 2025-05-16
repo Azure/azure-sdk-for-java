@@ -4,6 +4,7 @@
 package com.azure.v2.data.appconfiguration.models;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -90,10 +91,9 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
     public String getValue() {
         // Lazily update: Update 'value' by all latest property values when this getValue() method is called.
         String newValue = null;
-        try {
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            final JsonWriter writer = JsonWriter.toStream(outputStream);
 
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            JsonWriter writer = JsonWriter.toStream(outputStream)) {
             boolean isUriWritten = false;
 
             writer.writeStartObject();
@@ -112,7 +112,7 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
                         writer.writeUntypedField(name, jsonValue);
                     }
                 } catch (IOException e) {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(e));
+                    throw LOGGER.throwableAtError().log(e, CoreException::from);
                 }
             }
 
@@ -124,10 +124,9 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
             writer.flush();
 
             newValue = outputStream.toString(StandardCharsets.UTF_8.name());
-            outputStream.close();
         } catch (IOException exception) {
-            LOGGER.logThrowableAsError(
-                new IllegalArgumentException("Can't parse Secret Reference configuration setting value.", exception));
+            throw LOGGER.throwableAtError()
+                .log("Can't parse Secret Reference configuration setting value.", exception, CoreException::from);
         }
 
         super.setValue(newValue);
@@ -201,8 +200,11 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
 
     private void checkValid() {
         if (!isValidSecretReferenceValue) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("The content of the " + super.getValue()
-                + " property do not represent a valid secret reference configuration setting."));
+            throw LOGGER.throwableAtError()
+                .log(
+                    "The content of the " + super.getValue()
+                        + " property do not represent a valid secret reference configuration setting.",
+                    IllegalArgumentException::new);
         }
     }
 
@@ -239,7 +241,7 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
             });
         } catch (IOException e) {
             isValidSecretReferenceValue = false;
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(e));
+            throw LOGGER.throwableAtError().log(e, IllegalArgumentException::new);
         }
     }
 }

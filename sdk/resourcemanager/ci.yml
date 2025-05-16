@@ -84,10 +84,6 @@ parameters:
   displayName: 'azure-resourcemanager'
   type: boolean
   default: true
-- name: release_azureresourcemanagerappplatform
-  displayName: 'azure-resourcemanager-appplatform'
-  type: boolean
-  default: true
 - name: release_azureresourcemanagerappservice
   displayName: 'azure-resourcemanager-appservice'
   type: boolean
@@ -186,10 +182,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanager
         releaseInBatch: ${{ parameters.release_azureresourcemanager }}
-      - name: azure-resourcemanager-appplatform
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerappplatform
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerappplatform }}
       - name: azure-resourcemanager-appservice
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerappservice
