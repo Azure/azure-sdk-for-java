@@ -1385,6 +1385,14 @@
       "words": [
         "AISEARCH"
       ]
+    },
+    {
+      "filename": "sdk/onlineexperimentation/**",
+      "words": [
+        "momo",
+        "RESOURCEID",
+        "sweedencentral"
+      ]
     }
   ],
   "allowCompoundWords": true

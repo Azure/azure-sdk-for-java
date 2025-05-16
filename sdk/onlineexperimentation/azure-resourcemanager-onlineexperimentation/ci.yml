@@ -8,10 +8,8 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/onlineexperimentation/ci.yml
       - sdk/onlineexperimentation/azure-resourcemanager-onlineexperimentation/
     exclude:
-      - sdk/onlineexperimentation/pom.xml
       - sdk/onlineexperimentation/azure-resourcemanager-onlineexperimentation/pom.xml
 
 pr:
@@ -23,24 +21,15 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/onlineexperimentation/ci.yml
       - sdk/onlineexperimentation/azure-resourcemanager-onlineexperimentation/
     exclude:
-      - sdk/onlineexperimentation/pom.xml
       - sdk/onlineexperimentation/azure-resourcemanager-onlineexperimentation/pom.xml
 
-parameters:
-  - name: release_azureresourcemanageronlineexperimentation
-    displayName: azure-resourcemanager-onlineexperimentation
-    type: boolean
-    default: false
-
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: onlineexperimentation
+    ServiceDirectory: onlineexperimentation/azure-resourcemanager-onlineexperimentation
     Artifacts:
       - name: azure-resourcemanager-onlineexperimentation
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanageronlineexperimentation
-        releaseInBatch: ${{ parameters.release_azureresourcemanageronlineexperimentation }}
