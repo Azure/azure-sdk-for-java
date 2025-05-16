@@ -51,10 +51,10 @@ import java.util.concurrent.CountDownLatch;
 import java.util.function.Predicate;
 
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document
+ * The SampleRadiologyProcedureInferenceAsync class processes a sample radiology document
  * with the Radiology Insights service. It will initialize an asynchronous
  * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the
- * results and display the Critical Results extracted by the Radiology Insights service.
+ * results and display the Radiology Procedure extracted by the Radiology Insights service.
  *
  */
 public class SampleRadiologyProcedureInferenceAsync {
@@ -110,7 +110,6 @@ public class SampleRadiologyProcedureInferenceAsync {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     mono = completedResult.getFinalResult();
-                    displayRadiologyProcedures(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -118,6 +117,7 @@ public class SampleRadiologyProcedureInferenceAsync {
             });
 
         latch.await();
+        displayRadiologyProcedures(mono.block());
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;

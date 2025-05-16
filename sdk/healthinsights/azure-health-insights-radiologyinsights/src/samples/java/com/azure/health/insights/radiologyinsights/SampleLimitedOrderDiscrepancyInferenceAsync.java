@@ -50,10 +50,10 @@ import java.util.concurrent.CountDownLatch;
 import java.util.function.Predicate;
 
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document
+ * The SampleLimitedOrderDiscrepancyInferenceAsync class processes a sample radiology document
  * with the Radiology Insights service. It will initialize an asynchronous
  * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the
- * results and display the Critical Results extracted by the Radiology Insights service.
+ * results and display the Limited Order Discrepancy extracted by the Radiology Insights service.
  *
  */
 public class SampleLimitedOrderDiscrepancyInferenceAsync {
@@ -105,7 +105,6 @@ public class SampleLimitedOrderDiscrepancyInferenceAsync {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     mono = completedResult.getFinalResult();
-                    displayLimitedOrderDiscrepancies(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -113,6 +112,7 @@ public class SampleLimitedOrderDiscrepancyInferenceAsync {
             });
 
         latch.await();
+        displayLimitedOrderDiscrepancies(mono.block());
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;
