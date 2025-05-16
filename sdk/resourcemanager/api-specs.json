@@ -82,7 +82,7 @@
     "dir": "azure-resourcemanager-cosmos",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
-    "args": "--tag=package-2024-11-15 --modelerfour.lenient-model-deduplication --rename-model=DataTransferServiceResourceCreateUpdateProperties:DataTransferServiceResourceCreateUpdateParameters,GraphApiComputeServiceResourceCreateUpdateProperties:GraphApiComputeServiceResourceCreateUpdateParameters,MaterializedViewsBuilderServiceResourceCreateUpdateProperties:MaterializedViewsBuilderServiceResourceCreateUpdateParameters,SqlDedicatedGatewayServiceResourceCreateUpdateProperties:SqlDedicatedGatewayServiceResourceCreateUpdateParameters --enable-sync-stack=false"
+    "args": "--tag=package-2025-04-15 --modelerfour.lenient-model-deduplication --rename-model=DataTransferServiceResourceCreateUpdateProperties:DataTransferServiceResourceCreateUpdateParameters,GraphApiComputeServiceResourceCreateUpdateProperties:GraphApiComputeServiceResourceCreateUpdateParameters,MaterializedViewsBuilderServiceResourceCreateUpdateProperties:MaterializedViewsBuilderServiceResourceCreateUpdateParameters,SqlDedicatedGatewayServiceResourceCreateUpdateProperties:SqlDedicatedGatewayServiceResourceCreateUpdateParameters --enable-sync-stack=false"
   },
   "deploymentstacks": {
     "dir": "azure-resourcemanager-resources",
@@ -226,7 +226,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2024-11 --add-inner=Deployment --enable-sync-stack=false",
+    "args": "--tag=package-resources-2025-03 --add-inner=Deployment --enable-sync-stack=false",
     "note": "Remove `final` from `ResourceReference`, as it is used as superclass in deploymentstacks."
   },
   "resources-hybrid": {

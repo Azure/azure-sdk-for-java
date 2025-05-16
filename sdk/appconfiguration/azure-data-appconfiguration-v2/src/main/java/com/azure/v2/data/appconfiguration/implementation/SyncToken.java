@@ -43,12 +43,12 @@ public final class SyncToken {
     public static SyncToken createSyncToken(String syncToken) {
         final SyncToken token = new SyncToken();
         if (CoreUtils.isNullOrEmpty(syncToken)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(CANNOT_EMPTY_OR_NULL));
+            throw LOGGER.throwableAtError().log(CANNOT_EMPTY_OR_NULL, IllegalArgumentException::new);
         }
 
         final String[] syncTokenParts = syncToken.split(SEMICOLON, 2);
         if (syncTokenParts.length != 2) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(VALID_FORMAT_ERROR_MESSAGE));
+            throw LOGGER.throwableAtError().log(VALID_FORMAT_ERROR_MESSAGE, IllegalArgumentException::new);
         }
 
         final String[] idParts = syncTokenParts[0].split(EQUAL, 2);
@@ -59,13 +59,13 @@ public final class SyncToken {
             || idParts[1].isEmpty()
             || snParts[0].isEmpty()
             || snParts[1].isEmpty()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(VALID_FORMAT_ERROR_MESSAGE));
+            throw LOGGER.throwableAtError().log(VALID_FORMAT_ERROR_MESSAGE, IllegalArgumentException::new);
         }
 
         try {
             token.sequenceNumber = Long.parseLong(snParts[1]);
         } catch (NumberFormatException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(SEQUENCE_NUMBER_CANNOT_PARSED));
+            throw LOGGER.throwableAtError().log(SEQUENCE_NUMBER_CANNOT_PARSED, IllegalArgumentException::new);
         }
         token.id = idParts[0];
         token.value = idParts[1];

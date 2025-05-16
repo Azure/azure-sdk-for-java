@@ -11,7 +11,6 @@ import io.clientcore.core.http.models.HttpMatchConditions;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedResponse;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 
@@ -118,20 +117,19 @@ public class Utility {
     }
 
     // Sync Handler
-    public static PagedResponse<ConfigurationSetting> handleNotModifiedErrorToValidResponse(HttpResponseException error,
-        ClientLogger logger) {
+    public static PagedResponse<ConfigurationSetting>
+        handleNotModifiedErrorToValidResponse(HttpResponseException error) {
         Response<BinaryData> httpResponse = error.getResponse();
-        if (httpResponse == null) {
-            throw logger.logThrowableAsError(error);
+        if (httpResponse != null) {
+            String continuationToken = parseNextLink(httpResponse.getHeaders().getValue(HttpHeaderName.LINK));
+            if (httpResponse.getStatusCode() == 304) {
+                return new PagedResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                    httpResponse.getHeaders(), null, continuationToken, null, null, null, null);
+            }
         }
 
-        String continuationToken = parseNextLink(httpResponse.getHeaders().getValue(HttpHeaderName.LINK));
-        if (httpResponse.getStatusCode() == 304) {
-            return new PagedResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
-                httpResponse.getHeaders(), null, continuationToken, null, null, null, null);
-        }
-
-        throw logger.logThrowableAsError(error);
+        // HttpResponseException is already logged in instrumentation policy
+        throw error;
     }
 
     // Get the ETag from a list

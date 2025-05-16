@@ -42,7 +42,6 @@ import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
-import com.azure.cosmos.implementation.http.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -892,7 +891,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .withProxy(this.connectionPolicy.getProxy())
             .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout())
             .withServerCertValidationDisabled(this.connectionPolicy.isServerCertValidationDisabled())
-            .withHttp2Config(new Http2ConnectionConfig());
+            .withHttp2ConnectionConfig(this.connectionPolicy.getHttp2ConnectionConfig());
 
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);

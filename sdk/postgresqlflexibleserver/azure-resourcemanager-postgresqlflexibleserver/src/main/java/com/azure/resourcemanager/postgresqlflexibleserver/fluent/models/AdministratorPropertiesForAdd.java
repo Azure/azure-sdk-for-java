@@ -13,22 +13,22 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.PrincipalType;
 import java.io.IOException;
 
 /**
- * The properties of an Active Directory administrator.
+ * The properties of an Microsoft Entra Administrator.
  */
 @Fluent
 public final class AdministratorPropertiesForAdd implements JsonSerializable<AdministratorPropertiesForAdd> {
     /*
-     * The principal type used to represent the type of Active Directory Administrator.
+     * The principal type used to represent the type of Microsoft Entra Administrator.
      */
     private PrincipalType principalType;
 
     /*
-     * Active Directory administrator principal name.
+     * Microsoft Entra Administrator principal name.
      */
     private String principalName;
 
     /*
-     * The tenantId of the Active Directory administrator.
+     * The tenantId of the Microsoft Entra Administrator.
      */
     private String tenantId;
 
@@ -39,7 +39,7 @@ public final class AdministratorPropertiesForAdd implements JsonSerializable<Adm
     }
 
     /**
-     * Get the principalType property: The principal type used to represent the type of Active Directory Administrator.
+     * Get the principalType property: The principal type used to represent the type of Microsoft Entra Administrator.
      * 
      * @return the principalType value.
      */
@@ -48,7 +48,7 @@ public final class AdministratorPropertiesForAdd implements JsonSerializable<Adm
     }
 
     /**
-     * Set the principalType property: The principal type used to represent the type of Active Directory Administrator.
+     * Set the principalType property: The principal type used to represent the type of Microsoft Entra Administrator.
      * 
      * @param principalType the principalType value to set.
      * @return the AdministratorPropertiesForAdd object itself.
@@ -59,7 +59,7 @@ public final class AdministratorPropertiesForAdd implements JsonSerializable<Adm
     }
 
     /**
-     * Get the principalName property: Active Directory administrator principal name.
+     * Get the principalName property: Microsoft Entra Administrator principal name.
      * 
      * @return the principalName value.
      */
@@ -68,7 +68,7 @@ public final class AdministratorPropertiesForAdd implements JsonSerializable<Adm
     }
 
     /**
-     * Set the principalName property: Active Directory administrator principal name.
+     * Set the principalName property: Microsoft Entra Administrator principal name.
      * 
      * @param principalName the principalName value to set.
      * @return the AdministratorPropertiesForAdd object itself.
@@ -79,7 +79,7 @@ public final class AdministratorPropertiesForAdd implements JsonSerializable<Adm
     }
 
     /**
-     * Get the tenantId property: The tenantId of the Active Directory administrator.
+     * Get the tenantId property: The tenantId of the Microsoft Entra Administrator.
      * 
      * @return the tenantId value.
      */
@@ -88,7 +88,7 @@ public final class AdministratorPropertiesForAdd implements JsonSerializable<Adm
     }
 
     /**
-     * Set the tenantId property: The tenantId of the Active Directory administrator.
+     * Set the tenantId property: The tenantId of the Microsoft Entra Administrator.
      * 
      * @param tenantId the tenantId value to set.
      * @return the AdministratorPropertiesForAdd object itself.

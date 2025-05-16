@@ -31,6 +31,7 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -138,6 +139,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
         for (boolean disableLatencyMeter: disableLatencyMeterTestCases) {
 
+            logger.info("Disable latency meter: {}", disableLatencyMeter);
             try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
                 if (disableLatencyMeter) {
                     state.inputMetricsOptions
@@ -1455,6 +1457,7 @@ public class ClientMetricsTest extends BatchTestBase {
         private Tag clientCorrelationTag;
         private long diagnosticHandlerFailuresBaseline;
         private DiagnosticsProvider diagnosticsProvider;
+        private final CosmosClientBuilder clientBuilder;
 
         public TestState(CosmosClientBuilder clientBuilder, CosmosMetricCategory... metricCategories) {
             this(clientBuilder, null, metricCategories);
@@ -1464,6 +1467,7 @@ public class ClientMetricsTest extends BatchTestBase {
                          CosmosDiagnosticsThresholds thresholds,
                          CosmosMetricCategory... metricCategories) {
 
+            this.clientBuilder = clientBuilder;
             this.meterRegistry = Log4jDebugLoggingRegistryFactory.create(1);
             this.inputMetricsOptions = new CosmosMicrometerMetricsOptions()
                 .meterRegistry(this.meterRegistry)
@@ -1504,9 +1508,27 @@ public class ClientMetricsTest extends BatchTestBase {
             assertThat(writeRegions).isNotNull().isNotEmpty();
             this.preferredRegion = writeRegions.iterator().next();
 
-            CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
-            this.databaseId = asyncContainer.getDatabase().getId();
-            this.containerId = asyncContainer.getId();
+            CosmosClient mgmtClient = clientBuilder
+                .clientTelemetryConfig(
+                    new CosmosClientTelemetryConfig().metricsOptions(new CosmosMicrometerMetricsOptions().setEnabled(false))
+                )
+                .buildClient();
+            try {
+                CosmosAsyncDatabase db = getSharedCosmosDatabase(mgmtClient.asyncClient());
+                CosmosAsyncContainer asyncContainer = createCollection(
+                    db,
+                    getCollectionDefinitionWithRangeRangeIndex(),
+                    new CosmosContainerRequestOptions(),
+                    10100);
+
+                this.databaseId = db.getId();
+                this.containerId = asyncContainer.getId();
+                mgmtClient.close();
+            } catch (Exception error) {
+                logger.error(error.getMessage(), error);
+                throw error;
+            }
+
             this.clientCorrelationTag = client.asyncClient().getClientCorrelationTag();
             this.container = client.getDatabase(databaseId).getContainer(containerId);
         }
@@ -1523,6 +1545,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
                 this.diagnosticsProvider = null;
             }
+
             CosmosClient clientSnapshot = this.client;
             if (clientSnapshot != null) {
                 try {
@@ -1530,6 +1553,18 @@ public class ClientMetricsTest extends BatchTestBase {
                 } catch (Exception error) {
                     logger.error(error.getMessage(), error);
                 }
+            }
+
+            CosmosClient mgmtClient = clientBuilder
+                .clientTelemetryConfig(
+                    new CosmosClientTelemetryConfig().metricsOptions(new CosmosMicrometerMetricsOptions().setEnabled(false))
+                )
+                .buildClient();
+            try {
+                mgmtClient.getDatabase(this.databaseId).getContainer(this.containerId).delete();
+                mgmtClient.close();
+            } catch (Exception error) {
+                logger.error(error.getMessage(), error);
             }
 
             MeterRegistry meterRegistrySnapshot = this.meterRegistry;

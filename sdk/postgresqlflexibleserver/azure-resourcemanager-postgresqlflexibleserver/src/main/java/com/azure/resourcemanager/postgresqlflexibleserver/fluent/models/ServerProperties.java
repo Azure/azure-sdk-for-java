@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfig;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.Cluster;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
@@ -141,6 +142,11 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
      * List of private endpoint connections associated with the specified resource.
      */
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /*
+     * Cluster properties of a server.
+     */
+    private Cluster cluster;
 
     /**
      * Creates an instance of ServerProperties class.
@@ -527,6 +533,26 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
     }
 
     /**
+     * Get the cluster property: Cluster properties of a server.
+     * 
+     * @return the cluster value.
+     */
+    public Cluster cluster() {
+        return this.cluster;
+    }
+
+    /**
+     * Set the cluster property: Cluster properties of a server.
+     * 
+     * @param cluster the cluster value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withCluster(Cluster cluster) {
+        this.cluster = cluster;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -559,6 +585,9 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+        if (cluster() != null) {
+            cluster().validate();
+        }
     }
 
     /**
@@ -585,6 +614,7 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
             this.replicationRole == null ? null : this.replicationRole.toString());
         jsonWriter.writeJsonField("replica", this.replica);
         jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
+        jsonWriter.writeJsonField("cluster", this.cluster);
         return jsonWriter.writeEndObject();
     }
 
@@ -648,6 +678,8 @@ public final class ServerProperties implements JsonSerializable<ServerProperties
                     List<PrivateEndpointConnectionInner> privateEndpointConnections
                         = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
                     deserializedServerProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("cluster".equals(fieldName)) {
+                    deserializedServerProperties.cluster = Cluster.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

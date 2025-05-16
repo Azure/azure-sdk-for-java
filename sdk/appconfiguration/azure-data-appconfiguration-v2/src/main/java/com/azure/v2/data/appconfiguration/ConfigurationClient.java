@@ -657,7 +657,8 @@ public final class ConfigurationClient {
                 return new Response<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
                     httpResponse.getHeaders(), null);
             }
-            throw LOGGER.logThrowableAsError(ex);
+            // HttpResponseException is logged in the instrumentation policy.
+            throw ex;
         }
     }
 
@@ -994,7 +995,7 @@ public final class ConfigurationClient {
                     acceptDateTime, settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
                     tagsFilter, context);
             } catch (HttpResponseException ex) {
-                return handleNotModifiedErrorToValidResponse(ex, LOGGER);
+                return handleNotModifiedErrorToValidResponse(ex);
             }
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         }, (nextLink, ignored) -> {
@@ -1003,7 +1004,7 @@ public final class ConfigurationClient {
                 pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink.getContinuationToken(), null, null,
                     acceptDateTime, null, getPageETag(matchConditionsList, pageETagIndex), context);
             } catch (HttpResponseException ex) {
-                return handleNotModifiedErrorToValidResponse(ex, LOGGER);
+                return handleNotModifiedErrorToValidResponse(ex);
             }
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         });
