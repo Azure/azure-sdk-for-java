@@ -1145,6 +1145,8 @@ public final class SearchAsyncClient {
      * <!-- end com.azure.search.documents.SearchAsyncClient.search#String -->
      *
      * @param searchText A full-text search query expression.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed.
+     * This token is used to enforce security restrictions on documents.
      * @return A {@link SearchPagedFlux} that iterates over {@link SearchResult} objects and provides access to the
      * {@link SearchPagedResponse} object for each page containing HTTP response and count, facet, and coverage
      * information.

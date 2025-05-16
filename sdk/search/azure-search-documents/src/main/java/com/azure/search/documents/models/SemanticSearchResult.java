@@ -25,7 +25,7 @@ public final class SemanticSearchResult {
      * RerankerScore/RerankerBoostedScore based on useScoringProfileBoostedRanking in the Semantic Config.
      * RerankerBoostedScore is only returned for queries of type 'semantic'
      */
-    private Double rerankerBoostedScore;
+    private final Double rerankerBoostedScore;
 
     SemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> queryCaptions, Double rerankerBoostedScore) {
         this.rerankerBoostedScore = rerankerBoostedScore;

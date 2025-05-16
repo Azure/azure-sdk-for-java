@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.agents;
 
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
+
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -13,6 +16,8 @@ import com.azure.search.documents.agents.implementation.KnowledgeAgentRetrievalC
 import com.azure.search.documents.agents.implementation.KnowledgeRetrievalsImpl;
 import com.azure.search.documents.agents.models.KnowledgeAgentRetrievalRequest;
 import com.azure.search.documents.agents.models.KnowledgeAgentRetrievalResponse;
+import com.azure.search.documents.implementation.util.MappingUtils;
+
 import reactor.core.publisher.Mono;
 
 /**
@@ -108,7 +113,6 @@ public final class SearchKnowledgeAgentAsyncClient {
      *
      * @param retrievalRequest The retrieval request to process.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed.
-     * @param requestOptions Parameter group.
      * @return a {@link Mono} emitting the output contract for the retrieval response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -122,13 +126,21 @@ public final class SearchKnowledgeAgentAsyncClient {
      *
      * @param retrievalRequest The retrieval request to process.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed.
-     * @param requestOptions Parameter group.
-     * @param context The context to associate with this operation.
      * @return a {@link Mono} emitting the output contract for the retrieval response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgentRetrievalResponse>> retrieveWithResponse(
+    public Mono<Response<KnowledgeAgentRetrievalResponse>>
+        retrieveWithResponse(KnowledgeAgentRetrievalRequest retrievalRequest, String xMsQuerySourceAuthorization) {
+        return withContext(context -> retrieveWithResponse(retrievalRequest, xMsQuerySourceAuthorization, context));
+    }
+
+    Mono<Response<KnowledgeAgentRetrievalResponse>> retrieveWithResponse(
         KnowledgeAgentRetrievalRequest retrievalRequest, String xMsQuerySourceAuthorization, Context context) {
-        return retrievals.retrieveWithResponseAsync(retrievalRequest, xMsQuerySourceAuthorization, null, context);
+        try {
+            return retrievals.retrieveWithResponseAsync(retrievalRequest, xMsQuerySourceAuthorization, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
     }
 }

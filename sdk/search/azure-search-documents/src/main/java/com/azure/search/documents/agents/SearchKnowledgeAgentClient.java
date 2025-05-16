@@ -108,7 +108,6 @@ public final class SearchKnowledgeAgentClient {
      *
      * @param retrievalRequest The retrieval request to process.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed.
-     * @param requestOptions Parameter group.
      * @return the output contract for the retrieval response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -122,7 +121,6 @@ public final class SearchKnowledgeAgentClient {
      *
      * @param retrievalRequest The retrieval request to process.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed.
-     * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @return the output contract for the retrieval response along with {@link Response}.
      */

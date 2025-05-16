@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.agents;
 
-import com.azure.core.util.serializer.JsonSerializerProviders;
-
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -22,6 +20,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.models.SearchAudience;
 import java.util.ArrayList;
 import java.util.List;
@@ -215,9 +214,10 @@ public final class SearchKnowledgeAgentClientBuilder
      */
     public SearchKnowledgeAgentClient buildClient() {
         validateRequiredFields();
-        HttpPipeline pipeline = this.httpPipeline != null ? this.httpPipeline : buildPipeline();
-        JsonSerializer serializer
-            = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
+        HttpPipeline pipeline = this.httpPipeline != null
+            ? this.httpPipeline
+            : Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy, retryOptions,
+                azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient, LOGGER);
         return new SearchKnowledgeAgentClient(endpoint, agentName, apiVersion, pipeline);
     }
 
@@ -228,9 +228,10 @@ public final class SearchKnowledgeAgentClientBuilder
      */
     public SearchKnowledgeAgentAsyncClient buildAsyncClient() {
         validateRequiredFields();
-        HttpPipeline pipeline = this.httpPipeline != null ? this.httpPipeline : buildPipeline();
-        JsonSerializer serializer
-            = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
+        HttpPipeline pipeline = this.httpPipeline != null
+            ? this.httpPipeline
+            : Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy, retryOptions,
+                azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient, LOGGER);
         return new SearchKnowledgeAgentAsyncClient(endpoint, agentName, apiVersion, pipeline);
     }
 
@@ -238,12 +239,5 @@ public final class SearchKnowledgeAgentClientBuilder
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         Objects.requireNonNull(agentName, "'agentName' cannot be null.");
         Objects.requireNonNull(apiVersion, "'apiVersion' cannot be null.");
-    }
-
-    private HttpPipeline buildPipeline() {
-        // Closely follows the pattern in Utility.buildHttpPipeline and SearchClientBuilder
-        return com.azure.search.documents.implementation.util.Utility.buildHttpPipeline(clientOptions, httpLogOptions,
-            configuration, retryPolicy, retryOptions, azureKeyCredential, tokenCredential, audience, perCallPolicies,
-            perRetryPolicies, httpClient, LOGGER);
     }
 }
