@@ -1,0 +1,49 @@
+{
+  "displayNames": {
+    "@{ enableAttestation = $true }": "",
+    "@{ enableAttestation = $false }": "NoAttestation",
+    "@{ enableHsm = $true }": "HSM"
+  },
+  "matrix": {
+    "$IMPORT": "eng/pipelines/templates/stages/platform-matrix.json",
+    "ArmTemplateParameters": "@{ enableAttestation = $true }"
+  },
+  "exclude": [
+    {
+      "TestFromSource": true
+    },
+    {
+      "TestGoals": "verify"
+    }
+  ],
+  "include": [
+    {
+      "Agent": {
+        "ubuntu-20.04_TestFromSource": {
+          "OSVmImage": "env:LINUXVMIMAGE",
+          "Pool": "env:LINUXPOOL",
+          "TestGoals": "surefire:test",
+          "TestFromSource": true
+        }
+      },
+      "ArmTemplateParameters": "@{ enableHsm = $true }",
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "JavaTestVersion": "1.8",
+      "TestOptions": ""
+    },
+    {
+      "Agent": {
+        "ubuntu-20.04_TestFromSource": {
+          "OSVmImage": "env:LINUXVMIMAGE",
+          "Pool": "env:LINUXPOOL",
+          "TestGoals": "surefire:test",
+          "TestFromSource": true
+        }
+      },
+      "ArmTemplateParameters": "@{ enableHsm = $true }",
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "JavaTestVersion": "1.21",
+      "TestOptions": ""
+    }
+  ]
+}
