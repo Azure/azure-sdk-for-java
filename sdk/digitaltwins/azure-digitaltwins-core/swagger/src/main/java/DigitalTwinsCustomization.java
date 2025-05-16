@@ -6,7 +6,6 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import org.slf4j.Logger;
 
@@ -38,7 +37,7 @@ public class DigitalTwinsCustomization extends Customization {
             // Replace 'jsonWriter.writeStringField("continuationToken", this.continuationToken)' with
             // if (this.continuationToken != null) { jsonWriter.writeRawField("continuationToken", this.continuationToken); }
             // to have the continuationToken written as raw JSON as needed by the service to prevent double
-            // stringifying.
+            // stringify.
             toJsonMethodBodyString = toJsonMethodBodyString.replace(
                 "jsonWriter.writeStringField(\"continuationToken\", this.continuationToken);",
                 "if (this.continuationToken != null) {jsonWriter.writeRawField(\"continuationToken\", this.continuationToken);}");
