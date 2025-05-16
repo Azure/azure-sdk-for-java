@@ -1,10 +1,6 @@
 ## Release History
 
-### 4.70.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.70.0 (2025-05-16)
 
 #### Bugs Fixed
 * Fixed an issue where child partition is getting overridden with null continuation token if a split happens during the first request of a parent partition. - See [PR 45363](https://github.com/Azure/azure-sdk-for-java/pull/45363)
