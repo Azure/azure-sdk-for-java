@@ -306,10 +306,9 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
 
                 for (int index = 0; index < results.size(); ++index) {
                     double rrfScore = 0.0;
-                    for (List<Integer> integers : ranksInternal) {
-                        rrfScore += componentWeights.get(index).getWeight() / (RRF_CONSTANT + integers.get(index));
+                    for (int componentIndex = 0; componentIndex < ranksInternal.size(); ++componentIndex) {
+                        rrfScore += componentWeights.get(componentIndex).getWeight() / (RRF_CONSTANT + ranksInternal.get(componentIndex).get(index));
                     }
-
                     results.get(index).setScore(rrfScore);
                 }
                 // Sort on the RRF scores to build the final result
