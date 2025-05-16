@@ -21,7 +21,6 @@ public final class LocationVerifyTest extends ProgrammableConnectivityClientTest
 
     @Override
     protected void beforeTest() {
-        // Call the parent method to set up the client
         super.beforeTest();
     }
 
@@ -33,15 +32,12 @@ public final class LocationVerifyTest extends ProgrammableConnectivityClientTest
     public void testLocationVerify() {
         System.out.println("Starting Location Verify test...");
 
-        // Prepare test parameters
         String gatewayId
-            = "/subscriptions/28269522-1d13-498d-92e9-23c999c3c997/resourceGroups/gteixeira-orange-testing2/providers/Private.programmableconnectivity/gateways/gateway-uksouth-2505131009";
+            = "/subscriptions/28269522-1d13-498d-92e9-23c999c3c997/resourceGroups/gteixeira-orange-testing2/providers/Private.programmableconnectivity/gateways/gateway-uksouth-2505151425";
         NetworkIdentifier networkId = new NetworkIdentifier("NetworkCode", "E2E_Test_Operator_Contoso");
 
-        // Create device information with phone number
         LocationDevice device = new LocationDevice().setPhoneNumber("+8000000000000");
 
-        // Create the location verification content
         DeviceLocationVerificationContent content = new DeviceLocationVerificationContent(networkId,   // Network identifier
             80.0,        // Latitude
             85.0,        // Longitude
@@ -59,10 +55,8 @@ public final class LocationVerifyTest extends ProgrammableConnectivityClientTest
         // Execute the API call
         DeviceLocationVerificationResult result = deviceLocationClient.verify(gatewayId, content);
 
-        // Validate response
         System.out.println("Verification result: " + result.isVerificationResult());
 
-        // Assert the result - expected to be false based on the .NET test assertion
         Assertions.assertNotNull(result, "Verification result should not be null");
         Assertions.assertFalse(result.isVerificationResult(),
             "Expected the verification result to be false for these coordinates");

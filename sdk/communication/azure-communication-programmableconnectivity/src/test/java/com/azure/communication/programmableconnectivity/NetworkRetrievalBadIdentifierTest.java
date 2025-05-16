@@ -23,16 +23,6 @@ public final class NetworkRetrievalBadIdentifierTest extends ProgrammableConnect
         // Call the parent method to set up the client
         super.beforeTest();
 
-        // Add sanitizers for sensitive information in recordings
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("/subscriptions/[a-zA-Z0-9-]+/", "/subscriptions/sanitized-subscription-id/",
-                    TestProxySanitizerType.URL),
-                new TestProxySanitizer("/resourceGroups/[a-zA-Z0-9-]+/", "/resourceGroups/sanitized-resource-group/",
-                    TestProxySanitizerType.URL),
-                new TestProxySanitizer("/gateways/[a-zA-Z0-9-]+", "/gateways/sanitized-gateway",
-                    TestProxySanitizerType.URL)));
-        }
     }
 
     /**
@@ -43,11 +33,10 @@ public final class NetworkRetrievalBadIdentifierTest extends ProgrammableConnect
     public void testNetworkRetrievalBadIdentifier() {
         System.out.println("Starting Network Retrieval Bad Identifier test...");
 
-        // Prepare test parameters
         String gatewayId
-            = "/subscriptions/28269522-1d13-498d-92e9-23c999c3c997/resourceGroups/gteixeira-orange-testing2/providers/Private.programmableconnectivity/gateways/gateway-uksouth-2505131009";
+            = "/subscriptions/28269522-1d13-498d-92e9-23c999c3c997/resourceGroups/gteixeira-orange-testing2/providers/Private.programmableconnectivity/gateways/gateway-uksouth-2505151425";
 
-        // Create an invalid network identifier (IPv5 doesn't exist)
+        // Create an invalid network identifier
         NetworkIdentifier networkId = new NetworkIdentifier("IPv5", "127.0.0.1");
 
         System.out.println("Request parameters:");
@@ -63,20 +52,16 @@ public final class NetworkRetrievalBadIdentifierTest extends ProgrammableConnect
             Assertions.fail("Expected HttpResponseException was not thrown for invalid network identifier type");
 
         } catch (HttpResponseException ex) {
-            // Log the exception details for debugging
             System.out.println("Caught expected exception: " + ex.getMessage());
             System.out.println("Exception type: " + ex.getClass().getName());
             System.out.println("Status code: " + ex.getResponse().getStatusCode());
 
-            // Verify the status code is 400 Bad Request
             Assertions.assertEquals(400, ex.getResponse().getStatusCode(),
                 "Expected status code 400 for invalid network identifier type");
 
-            // Additional assertions can be added to check specific error details
             String errorMessage = ex.getMessage();
             System.out.println("Error message: " + errorMessage);
 
-            // Check if the error message contains relevant information about the invalid identifier
             Assertions.assertTrue(errorMessage.contains("IPv5")
                 || errorMessage.contains("identifier")
                 || errorMessage.contains("validation"), "Error message should mention the invalid identifier type");

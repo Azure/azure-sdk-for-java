@@ -42,28 +42,21 @@ public final class NetworkRetrievalTest extends ProgrammableConnectivityClientTe
         System.out.println("- Network Type: " + networkId.getIdentifierType());
         System.out.println("- Network Value: " + networkId.getIdentifier());
 
-        // Execute the API call
         NetworkRetrievalResult result = deviceNetworkClient.retrieve(gatewayId, networkId);
 
-        // Validate response
         System.out.println("Network code: " + result.getNetworkCode());
 
-        // Assert the network code matches expected value
         Assertions.assertNotNull(result, "Network retrieval result should not be null");
         Assertions.assertNotNull(result.getNetworkCode(), "Network code should not be null");
 
         if (interceptorManager.isPlaybackMode()) {
-            // In playback mode, the recorded response should match the expected value
             Assertions.assertEquals("E2E_Test_Operator_Contoso", result.getNetworkCode(),
                 "Expected network code to be E2E_Test_Operator_Contoso in playback mode");
         } else {
-            // In live or record mode, just log the actual value
             System.out.println("Retrieved network code: " + result.getNetworkCode());
         }
 
-        // Sanitize the recording file after test execution (only in RECORD mode)
         if (getTestMode() == TestMode.RECORD) {
-            // The recording file path is based on test class and method name
             String recordingFilePath = "src/test/resources/session-records/" + this.getClass().getSimpleName() + "."
                 + Thread.currentThread().getStackTrace()[1].getMethodName() + ".json";
             TestRecordingSanitizer.sanitizeRecording(recordingFilePath);

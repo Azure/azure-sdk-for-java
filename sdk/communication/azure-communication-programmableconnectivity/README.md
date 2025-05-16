@@ -43,8 +43,8 @@ Various documentation is available to help you get started
 
 ```java com.azure.communication.programmableconnectivity.readme
 // Initialize the Programmable Connectivity client
-// Create a client using DefaultAzureCredential
 String endpoint = "https://your-resource-name.communication.azure.com";
+String gatewayId = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/your-resource-group/providers/Private.programmableconnectivity/gateways/your-gateway";
 
 // Example 1: Verify device location
 DeviceLocationClient deviceLocationClient = new ProgrammableConnectivityClientBuilder()
@@ -52,25 +52,24 @@ DeviceLocationClient deviceLocationClient = new ProgrammableConnectivityClientBu
     .endpoint(endpoint)
     .buildDeviceLocationClient();
 
-// Prepare device information for verification
-LocationDevice deviceInfo = new LocationDevice()
-    .setNetworkAccessIdentifier("user@example.com")
-    .setPhoneNumber("+12065550100")
-    .setIpv4Address(new Ipv4Address("192.0.2.10", 8080));
+// Prepare the device information
+LocationDevice device = new LocationDevice().setPhoneNumber("+12065550100");
 
-// Create verification content with location coordinates
+// Create network identifier (usually NetworkCode, IPv4, or IPv6)
+NetworkIdentifier networkId = new NetworkIdentifier("NetworkCode", "YourOperatorNetwork");
+
+// Create location verification content with coordinates
 DeviceLocationVerificationContent verificationContent = new DeviceLocationVerificationContent(
-    new NetworkIdentifier("ipv4", "192.0.2.10"), // Type and value
-    47.6062,                                     // Latitude
-    -122.3321,                                   // Longitude
-    50,                                          // Accuracy in meters
-    deviceInfo
+    networkId,    // Network identifier
+    47.6062,      // Latitude
+    -122.3321,    // Longitude
+    50,           // Accuracy in meters
+    device        // Device information
 );
 
-// Perform the verification
-String correlationId = "my-correlation-id-123";
-DeviceLocationVerificationResult result = deviceLocationClient.verify(correlationId, verificationContent);
-System.out.println("Verification result: " + result.isVerificationResult());
+// Execute the verification request
+DeviceLocationVerificationResult locationResult = deviceLocationClient.verify(gatewayId, verificationContent);
+System.out.println("Location verification result: " + locationResult.isVerificationResult());
 
 // Example 2: Retrieve device network information
 DeviceNetworkClient deviceNetworkClient = new ProgrammableConnectivityClientBuilder()
@@ -78,32 +77,75 @@ DeviceNetworkClient deviceNetworkClient = new ProgrammableConnectivityClientBuil
     .endpoint(endpoint)
     .buildDeviceNetworkClient();
 
-// Retrieve network information using an IPv4 address
-NetworkRetrievalResult networkInfo = deviceNetworkClient.retrieve(
-    "correlation-id-456",
-    new NetworkIdentifier("ipv4", "203.0.113.45")
-);
+// Create a network identifier (IPv4, IPv6, or NetworkCode)
+NetworkIdentifier ipNetworkId = new NetworkIdentifier("IPv4", "203.0.113.45");
 
-// Access network information
-System.out.println("Network code: " + networkInfo.getNetworkCode());
+// Retrieve network information
+NetworkRetrievalResult networkInfo = deviceNetworkClient.retrieve(gatewayId, ipNetworkId);
 
-// Example 3: Retrieve SIM Swap information
+// Process the network information
+if (networkInfo != null && networkInfo.getNetworkCode() != null) {
+    System.out.println("Network code: " + networkInfo.getNetworkCode());
+}
+
+// Example 3: SIM Swap verification
 SimSwapClient simSwapClient = new ProgrammableConnectivityClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint(endpoint)
     .buildSimSwapClient();
+    
+// Set up verification with phone number and max age (hours)
+SimSwapVerificationContent verifyContent = new SimSwapVerificationContent(networkId)
+    .setPhoneNumber("12065550100")
+    .setMaxAgeHours(120);
+    
+// Execute verification request
+SimSwapVerificationResult verifyResult = simSwapClient.verify(gatewayId, verifyContent);
+System.out.println("SIM swap verification result: " + verifyResult.isVerificationResult());
 
-// Create the request content with network identifier and phone number
-SimSwapRetrievalContent simSwapContent = new SimSwapRetrievalContent(
-    new NetworkIdentifier("ipv4", "192.0.2.10"))
-    .setPhoneNumber("+12065550199");
+// Example 4: Retrieve SIM Swap information
+SimSwapRetrievalContent retrieveContent = new SimSwapRetrievalContent(networkId)
+    .setPhoneNumber("12065550100");
+    
+// Execute retrieval request
+SimSwapRetrievalResult swapResult = simSwapClient.retrieve(gatewayId, retrieveContent);
 
-// Perform SIM swap information retrieval
-String simSwapCorrelationId = "sim-swap-correlation-123";
-SimSwapRetrievalResult simSwapResult = simSwapClient.retrieve(simSwapCorrelationId, simSwapContent);
+// Process the SIM swap date information
+OffsetDateTime swapDate = swapResult.getDate();
+if (swapDate != null) {
+    String formattedDate = swapDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    System.out.println("SIM swap date: " + formattedDate);
+} else {
+    System.out.println("No SIM swap date available");
+}
 
-// Process the SIM swap information
-System.out.println("SIM swap date: " + simSwapResult.getDate());
+// Example 5: Number verification with authentication flow
+NumberVerificationClient numberVerificationClient = new ProgrammableConnectivityClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint(endpoint)
+    .buildNumberVerificationClient();
+    
+// Start the verification flow (this initiates a redirect to operator authentication)
+String redirectUri = "https://your-app.example.com/callback";
+NumberVerificationWithoutCodeContent initialContent = new NumberVerificationWithoutCodeContent(
+    networkId, redirectUri).setPhoneNumber("12065550100");
+    
+// Create options to prevent auto-following redirects
+RequestOptions requestOptions = new RequestOptions();
+
+// Make the initial request (in a real app, this would redirect to operator)
+Response<Void> initialResponse = numberVerificationClient.verifyWithoutCodeWithResponse(
+    gatewayId, BinaryData.fromObject(initialContent), requestOptions);
+    
+// After user authenticates with operator, your callback endpoint receives a code
+// You then complete verification using that code:
+String apcCode = "apc_received_from_operator"; // This would come from your callback handler
+
+// Final verification step with the code
+NumberVerificationWithCodeContent finalContent = new NumberVerificationWithCodeContent(apcCode);
+NumberVerificationResult numberResult = numberVerificationClient.verifyWithCode(gatewayId, finalContent);
+
+System.out.println("Number verification result: " + numberResult.isVerificationResult());
 ```
 
 ### Service API versions

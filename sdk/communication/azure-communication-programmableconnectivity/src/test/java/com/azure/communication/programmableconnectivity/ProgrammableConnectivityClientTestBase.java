@@ -35,11 +35,8 @@ public class ProgrammableConnectivityClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         super.beforeTest();
 
-        // Standard sanitizers for URL paths with fixed regex patterns
         if (!interceptorManager.isLiveMode()) {
-            // Use fixed regex patterns that won't cause JSON escaping issues
             interceptorManager.addSanitizers(Arrays.asList(
-                // Use simpler patterns without potentially problematic regex constructs
                 new TestProxySanitizer("/subscriptions/[a-zA-Z0-9-]+/", "/subscriptions/sanitized-subscription-id/",
                     TestProxySanitizerType.URL),
                 new TestProxySanitizer("/resourceGroups/[a-zA-Z0-9-]+/", "/resourceGroups/sanitized-resource-group/",
@@ -101,7 +98,7 @@ public class ProgrammableConnectivityClientTestBase extends TestProxyTestBase {
         }
         numberVerificationClient = numberVerificationClientbuilder.buildNumberVerificationClient();
 
-        // And finally for simSwapClient:
+        // And for simSwapClient:
         ProgrammableConnectivityClientBuilder simSwapClientbuilder = new ProgrammableConnectivityClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
@@ -147,16 +144,11 @@ public class ProgrammableConnectivityClientTestBase extends TestProxyTestBase {
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             return next.process().map(response -> {
-                // Save the headers from the response
                 lastResponseHeaders = response.getHeaders();
                 return response;
             });
         }
 
-        /**
-         * Gets the headers from the last HTTP response.
-         * @return The HTTP headers from the last response.
-         */
         public HttpHeaders getLastResponseHeaders() {
             return lastResponseHeaders;
         }

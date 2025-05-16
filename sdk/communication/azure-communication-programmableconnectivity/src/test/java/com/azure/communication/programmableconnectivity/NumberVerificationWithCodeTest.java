@@ -28,7 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Tests the full number verification flow using both verifyWithoutCode and verifyWithCode APIs.
+ * Tests the full number verification flow.
  * This represents a complete verification workflow:
  * 1. Initial request without code (redirects to operator auth) - Using SDK
  * 2. User authentication at operator endpoint (simulated)
@@ -39,19 +39,8 @@ public final class NumberVerificationWithCodeTest extends ProgrammableConnectivi
 
     @Override
     protected void beforeTest() {
-        // Call the parent method to set up the client
         super.beforeTest();
 
-        // Add sanitizers for sensitive information in recordings
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("/subscriptions/[a-zA-Z0-9-]+/", "/subscriptions/sanitized-subscription-id/",
-                    TestProxySanitizerType.URL),
-                new TestProxySanitizer("/resourceGroups/[a-zA-Z0-9-]+/", "/resourceGroups/sanitized-resource-group/",
-                    TestProxySanitizerType.URL),
-                new TestProxySanitizer("/gateways/[a-zA-Z0-9-]+", "/gateways/sanitized-gateway",
-                    TestProxySanitizerType.URL)));
-        }
     }
 
     /**
@@ -66,7 +55,7 @@ public final class NumberVerificationWithCodeTest extends ProgrammableConnectivi
         System.out.println("Starting Full Number Verification Flow test...");
 
         String gatewayId
-            = "/subscriptions/28269522-1d13-498d-92e9-23c999c3c997/resourceGroups/gteixeira-orange-testing2/providers/Private.programmableconnectivity/gateways/gateway-uksouth-2505131009";
+            = "/subscriptions/28269522-1d13-498d-92e9-23c999c3c997/resourceGroups/gteixeira-orange-testing2/providers/Private.programmableconnectivity/gateways/gateway-uksouth-2505151425";
         NetworkIdentifier networkId = new NetworkIdentifier("NetworkCode", "E2E_Test_Operator_Contoso");
         String phoneNumber = "10000100";
 
@@ -76,18 +65,15 @@ public final class NumberVerificationWithCodeTest extends ProgrammableConnectivi
         // STEP 1: Initial request to verify without code 
         System.out.println("\nSTEP 1: Making initial verification request (verifyWithoutCode)");
 
-        // Create verification content for the initial request
         NumberVerificationWithoutCodeContent initialContent
             = new NumberVerificationWithoutCodeContent(networkId, redirectUri).setPhoneNumber(phoneNumber);
 
         // Create request options that don't automatically follow redirects
         RequestOptions requestOptions = new RequestOptions();
 
-        // Execute the initial API call
         Response<Void> initialResponse = numberVerificationClient.verifyWithoutCodeWithResponse(gatewayId,
             BinaryData.fromObject(initialContent), requestOptions);
 
-        // Validate initial response
         System.out.println("Initial response status code: " + initialResponse.getStatusCode());
         Assertions.assertEquals(302, initialResponse.getStatusCode(),
             "Expected a 302 redirect status code for initial verification");
@@ -102,7 +88,6 @@ public final class NumberVerificationWithCodeTest extends ProgrammableConnectivi
         // STEP 2: Extract parameters from the redirect URL
         System.out.println("\nSTEP 2: Extracting parameters from redirect URL");
 
-        // Extract state parameter from the redirect URL
         String state = extractParameterFromUrl(redirectToOperatorAuth, "state");
         String redirectUriFromUrl = extractParameterFromUrl(redirectToOperatorAuth, "redirect_uri");
 
@@ -127,8 +112,7 @@ public final class NumberVerificationWithCodeTest extends ProgrammableConnectivi
         String apcCode = null;
 
         if (getTestMode() == TestMode.PLAYBACK) {
-            // Have not figure out if PLAYBACK is possible
-            apcCode = "apc_1a1550d9383b49d7b592a4670aab0d9c";
+            apcCode = "apc_1166237efb124d8483aa542f06537f4a";
             System.out.println("In playback mode, using predefined APC code: " + apcCode);
         } else {
             // In RECORD or LIVE mode, make an actual HTTP request to the authcallback endpoint
@@ -169,10 +153,8 @@ public final class NumberVerificationWithCodeTest extends ProgrammableConnectivi
             // Execute the final API call with the APC code
             NumberVerificationResult result = numberVerificationClient.verifyWithCode(gatewayId, finalContent);
 
-            // Log and validate the verification result
             System.out.println("Final verification result: " + result.isVerificationResult());
 
-            // The test expects a successful verification
             Assertions.assertTrue(result.isVerificationResult(), "Expected a successful verification result");
 
         } catch (Exception ex) {
@@ -184,7 +166,6 @@ public final class NumberVerificationWithCodeTest extends ProgrammableConnectivi
             } else {
                 // In LIVE/RECORD mode, this might happen with test codes
                 System.out.println("Error during verification with code: " + ex.getMessage());
-                // We can still fail the test here if we want to enforce success
                 throw new IllegalStateException("Verification with APC code failed: " + ex.getMessage(), ex);
             }
         }
