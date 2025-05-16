@@ -4,15 +4,15 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.BatchJobSchedule;
 import com.azure.compute.batch.models.BatchJobScheduleConfiguration;
-import com.azure.compute.batch.models.BatchJobScheduleCreateContent;
+import com.azure.compute.batch.models.BatchJobScheduleCreateParameters;
 import com.azure.compute.batch.models.BatchJobScheduleState;
 import com.azure.compute.batch.models.BatchJobScheduleStatistics;
-import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
+import com.azure.compute.batch.models.BatchJobScheduleUpdateParameters;
 import com.azure.compute.batch.models.BatchJobSpecification;
+import com.azure.compute.batch.models.BatchMetadataItem;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolInfo;
-import com.azure.compute.batch.models.ListBatchJobSchedulesOptions;
-import com.azure.compute.batch.models.MetadataItem;
+import com.azure.compute.batch.models.BatchJobSchedulesListOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestMode;
@@ -62,7 +62,7 @@ public class JobScheduleTests extends BatchClientTestBase {
             .setDoNotRunAfter(now().plusHours(5))
             .setStartWindow(Duration.ofDays(5));
         BatchJobSpecification spec = new BatchJobSpecification(poolInfo).setPriority(100);
-        batchClient.createJobSchedule(new BatchJobScheduleCreateContent(jobScheduleId, schedule, spec));
+        batchClient.createJobSchedule(new BatchJobScheduleCreateParameters(jobScheduleId, schedule, spec));
 
         try {
             // GET
@@ -79,7 +79,7 @@ public class JobScheduleTests extends BatchClientTestBase {
             }
 
             // LIST
-            ListBatchJobSchedulesOptions listOptions = new ListBatchJobSchedulesOptions();
+            BatchJobSchedulesListOptions listOptions = new BatchJobSchedulesListOptions();
             listOptions.setFilter(String.format("id eq '%s'", jobScheduleId));
             PagedIterable<BatchJobSchedule> jobSchedules = batchClient.listJobSchedules(listOptions);
             Assertions.assertNotNull(jobSchedules);
@@ -94,9 +94,9 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertTrue(found);
 
             // REPLACE
-            List<MetadataItem> metadataList = new ArrayList<>();
-            metadataList.add(new MetadataItem("name1", "value1"));
-            metadataList.add(new MetadataItem("name2", "value2"));
+            List<BatchMetadataItem> metadataList = new ArrayList<>();
+            metadataList.add(new BatchMetadataItem("name1", "value1"));
+            metadataList.add(new BatchMetadataItem("name2", "value2"));
 
             jobSchedule.setMetadata(metadataList);
             batchClient.replaceJobSchedule(jobScheduleId, jobSchedule);
@@ -106,11 +106,11 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertEquals("value2", jobSchedule.getMetadata().get(1).getValue());
 
             // UPDATE
-            LinkedList<MetadataItem> metadata = new LinkedList<MetadataItem>();
-            metadata.add((new MetadataItem("key1", "value1")));
-            BatchJobScheduleUpdateContent jobScheduleUpdateContent = new BatchJobScheduleUpdateContent();
-            jobScheduleUpdateContent.setMetadata(metadata);
-            batchClient.updateJobSchedule(jobScheduleId, jobScheduleUpdateContent);
+            LinkedList<BatchMetadataItem> metadata = new LinkedList<BatchMetadataItem>();
+            metadata.add((new BatchMetadataItem("key1", "value1")));
+            BatchJobScheduleUpdateParameters jobScheduleUpdateParameters = new BatchJobScheduleUpdateParameters();
+            jobScheduleUpdateParameters.setMetadata(metadata);
+            batchClient.updateJobSchedule(jobScheduleId, jobScheduleUpdateParameters);
 
             jobSchedule = batchClient.getJobSchedule(jobScheduleId);
             Assertions.assertEquals(1, jobSchedule.getMetadata().size());
@@ -150,7 +150,7 @@ public class JobScheduleTests extends BatchClientTestBase {
         BatchJobScheduleConfiguration schedule = new BatchJobScheduleConfiguration().setDoNotRunUntil(now())
             .setDoNotRunAfter(now().plusHours(5))
             .setStartWindow(Duration.ofDays(5));
-        batchClient.createJobSchedule(new BatchJobScheduleCreateContent(jobScheduleId, schedule, spec));
+        batchClient.createJobSchedule(new BatchJobScheduleCreateParameters(jobScheduleId, schedule, spec));
 
         try {
             // GET
@@ -214,13 +214,13 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertEquals(Duration.parse("PT1H"), stats.getUserCpuTime());
             Assertions.assertEquals(Duration.parse("PT30M"), stats.getKernelCpuTime());
             Assertions.assertEquals(Duration.parse("PT1H30M"), stats.getWallClockTime());
-            Assertions.assertEquals(1000, stats.getReadIOps());
-            Assertions.assertEquals(500, stats.getWriteIOps());
-            Assertions.assertEquals(0.5, stats.getReadIOGiB());
-            Assertions.assertEquals(0.25, stats.getWriteIOGiB());
-            Assertions.assertEquals(10, stats.getNumSucceededTasks());
-            Assertions.assertEquals(2, stats.getNumFailedTasks());
-            Assertions.assertEquals(3, stats.getNumTaskRetries());
+            Assertions.assertEquals(1000, stats.getReadIops());
+            Assertions.assertEquals(500, stats.getWriteIops());
+            Assertions.assertEquals(0.5, stats.getReadIoGiB());
+            Assertions.assertEquals(0.25, stats.getWriteIoGiB());
+            Assertions.assertEquals(10, stats.getSucceededTasksCount());
+            Assertions.assertEquals(2, stats.getFailedTasksCount());
+            Assertions.assertEquals(3, stats.getTaskRetriesCount());
             Assertions.assertEquals(Duration.parse("PT10M"), stats.getWaitTime());
         } catch (IOException e) {
             throw new RuntimeException(e);
