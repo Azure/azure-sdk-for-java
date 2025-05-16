@@ -79,6 +79,7 @@ public final class TranscriptionMetadata extends StreamingData {
     }
 
     /**
+     * The target locale in which the translated text needs to be
      * Get the locale property.
      *
      * @return the locale value.

@@ -14,7 +14,7 @@ import java.util.Base64;
 /** The MediaStreamingAudio model. */
 public final class AudioData extends StreamingData {
     /*
-     * The audio data, encoded as a base64 string.
+     * The audio data, encoded as a base64 byte.
      */
     private final byte[] data;
 
@@ -87,6 +87,7 @@ public final class AudioData extends StreamingData {
     }
 
     /**
+     * The audio data, encoded as a base64 byte.
      * Get the data property.
      *
      * @return the data value.
@@ -96,6 +97,8 @@ public final class AudioData extends StreamingData {
     }
 
     /**
+     * The timestamp indicating when the media content was received by the bot, or if the bot is sending media, 
+     * the timestamp of when the media was sourced. The format is ISO 8601 (yyyy-mm-ddThh:mm)
      * Get the timestamp property.
      *
      * @return the timestamp value.
@@ -105,6 +108,7 @@ public final class AudioData extends StreamingData {
     }
 
     /**
+     * The raw ID of the participant.
      * Get the participantRawID property.
      *
      * @return the participantRawID value.

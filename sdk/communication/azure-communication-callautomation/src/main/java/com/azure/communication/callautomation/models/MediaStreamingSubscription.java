@@ -4,7 +4,7 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingSubscriptionInternal;
 import com.azure.communication.callautomation.implementation.accesshelpers.MediaStreamingSubscriptionConstructorProxy;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * Media streaming Subscription Object.
  */
-@Fluent
+@Immutable
 public final class MediaStreamingSubscription implements JsonSerializable<MediaStreamingSubscription> {
     /*
      * Gets or Sets subscription Id.
