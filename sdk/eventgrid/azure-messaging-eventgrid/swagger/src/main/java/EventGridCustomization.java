@@ -716,7 +716,12 @@ public class EventGridCustomization extends Customization {
                 m.setName("setCallDuration")
                     .setType("AcsCallEndedEventData")
                     .setParameters(new NodeList<>( new Parameter().setType("Duration").setName("callDuration")))
-                    .setBody(parseBlock("{ if (callDuration != null) { this.callDurationInSeconds = callDuration.toNanos() / 1_000_000_000f; } return null; }"))
+                    .setBody(parseBlock("{ if (callDuration != null) {\n" +
+                        "        this.callDurationInSeconds = callDuration.toNanos() / 1_000_000_000f;\n" +
+                        "    } else {\n" +
+                        "        this.callDurationInSeconds = null;\n" +
+                        "    }\n" +
+                        "    return this; }"))
                     .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Set the callDuration property: Duration of the call in seconds."))))
                         .addBlockTag("param", "callDuration the callDuration value to set.")
                         .addBlockTag("return", "the AcsCallEndedEventData object itself."));

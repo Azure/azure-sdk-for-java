@@ -33,7 +33,7 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
      * Duration of the call in seconds.
      */
     @Generated
-    private Double callDurationInSeconds;
+    private Double callDuration;
 
     /*
      * Is the calling event a room call.
@@ -92,16 +92,16 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
     }
 
     /**
-     * Get the callDurationInSeconds property: Duration of the call in seconds.
+     * Get the callDuration property: Duration of the call in seconds.
      * 
-     * @return the callDurationInSeconds value.
+     * @return the callDuration value.
      */
     @Generated
-    public Duration getCallDurationInSeconds() {
-        if (this.callDurationInSeconds == null) {
+    public Duration getCallDuration() {
+        if (this.callDuration == null) {
             return null;
         }
-        return Duration.ofNanos((long) (this.callDurationInSeconds * 1000_000_000L));
+        return Duration.ofNanos((long) (this.callDuration * 1000_000_000L));
     }
 
     /**
@@ -164,7 +164,7 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
         jsonWriter.writeBooleanField("isRoomsCall", isRoomsCall());
         jsonWriter.writeJsonField("endedBy", this.endedBy);
         jsonWriter.writeJsonField("reason", this.reason);
-        jsonWriter.writeNumberField("callDurationInSeconds", this.callDurationInSeconds);
+        jsonWriter.writeNumberField("callDurationInSeconds", this.callDuration);
         return jsonWriter.writeEndObject();
     }
 
@@ -189,7 +189,7 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
             Boolean isRoomsCall = null;
             AcsCallEndedByProperties endedBy = null;
             AcsCallEndReasonProperties reason = null;
-            Double callDurationInSeconds = null;
+            Double callDuration = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -213,7 +213,7 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
                 } else if ("reason".equals(fieldName)) {
                     reason = AcsCallEndReasonProperties.fromJson(reader);
                 } else if ("callDurationInSeconds".equals(fieldName)) {
-                    callDurationInSeconds = reader.getNullable(JsonReader::getDouble);
+                    callDuration = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }
@@ -226,7 +226,7 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
             deserializedAcsCallEndedEventData.isRoomsCall = isRoomsCall;
             deserializedAcsCallEndedEventData.endedBy = endedBy;
             deserializedAcsCallEndedEventData.reason = reason;
-            deserializedAcsCallEndedEventData.callDurationInSeconds = callDurationInSeconds;
+            deserializedAcsCallEndedEventData.callDuration = callDuration;
 
             return deserializedAcsCallEndedEventData;
         });

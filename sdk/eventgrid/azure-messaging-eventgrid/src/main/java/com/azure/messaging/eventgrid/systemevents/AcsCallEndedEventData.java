@@ -98,8 +98,10 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
     public AcsCallEndedEventData setCallDuration(Duration callDuration) {
         if (callDuration != null) {
             this.callDurationInSeconds = callDuration.toNanos() / 1_000_000_000f;
+        } else {
+            this.callDurationInSeconds = null;
         }
-        return null;
+        return this;
     }
 
     /**
