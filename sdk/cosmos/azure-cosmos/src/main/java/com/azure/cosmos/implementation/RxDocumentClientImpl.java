@@ -587,7 +587,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
                 = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.globalEndpointManager, false);
 
-            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
             this.cachedCosmosAsyncClientSnapshot = new AtomicReference<>();
 
             this.retryPolicy = new RetryPolicy(
