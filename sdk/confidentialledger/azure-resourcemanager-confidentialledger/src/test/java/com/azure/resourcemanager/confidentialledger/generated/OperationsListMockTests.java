@@ -7,8 +7,8 @@ package com.azure.resourcemanager.confidentialledger.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager;
 import com.azure.resourcemanager.confidentialledger.models.ResourceProviderOperationDefinition;
@@ -22,23 +22,23 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"bhtqqrolfpfpsa\",\"isDataAction\":false,\"display\":{\"provider\":\"xigjyjgzjaoyfhr\",\"resource\":\"ilnerkujysvlejuv\",\"operation\":\"awrlyx\",\"description\":\"kcprbnw\"}}]}";
+            = "{\"value\":[{\"name\":\"gwdkcglhsl\",\"isDataAction\":true,\"display\":{\"provider\":\"ggd\",\"resource\":\"ixhbkuofqweykhm\",\"operation\":\"evfyexfwhybcib\",\"description\":\"vdcsitynn\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ConfidentialLedgerManager manager = ConfidentialLedgerManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ResourceProviderOperationDefinition> response
             = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bhtqqrolfpfpsa", response.iterator().next().name());
-        Assertions.assertEquals(false, response.iterator().next().isDataAction());
-        Assertions.assertEquals("xigjyjgzjaoyfhr", response.iterator().next().display().provider());
-        Assertions.assertEquals("ilnerkujysvlejuv", response.iterator().next().display().resource());
-        Assertions.assertEquals("awrlyx", response.iterator().next().display().operation());
-        Assertions.assertEquals("kcprbnw", response.iterator().next().display().description());
+        Assertions.assertEquals("gwdkcglhsl", response.iterator().next().name());
+        Assertions.assertTrue(response.iterator().next().isDataAction());
+        Assertions.assertEquals("ggd", response.iterator().next().display().provider());
+        Assertions.assertEquals("ixhbkuofqweykhm", response.iterator().next().display().resource());
+        Assertions.assertEquals("evfyexfwhybcib", response.iterator().next().display().operation());
+        Assertions.assertEquals("vdcsitynn", response.iterator().next().display().description());
     }
 }
