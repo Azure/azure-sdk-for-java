@@ -34,7 +34,7 @@ public class FeatureFlagTracing {
 
     private Boolean usesTargetingFilter = false;
 
-    public boolean usesAnyFilter() {
+    boolean usesAnyFilter() {
         return usesCustomFilter || usesPercentageFilter || usesTimeWindowFilter || usesTargetingFilter;
     }
 

@@ -118,7 +118,7 @@ public final class AppConfigurationStoreMonitoring {
      * Validates refreshIntervals are at least 1 second, and if enabled triggers are valid.
      */
     @PostConstruct
-    public void validateAndInit() {
+    void validateAndInit() {
         if (enabled) {
             Assert.notEmpty(triggers, "Triggers need to be set if refresh is enabled.");
             for (AppConfigurationStoreTrigger trigger : triggers) {

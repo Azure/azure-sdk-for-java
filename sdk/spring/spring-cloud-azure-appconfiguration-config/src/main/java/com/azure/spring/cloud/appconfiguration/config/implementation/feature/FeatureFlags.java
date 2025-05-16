@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 
 public class FeatureFlags {
 
@@ -14,25 +13,9 @@ public class FeatureFlags {
 
     private List<ConfigurationSetting> featureFlags;
 
-    private ConfigStore configStore;
-
     public FeatureFlags(SettingSelector settingSelector, List<ConfigurationSetting> featureFlags) {
         this.settingSelector = settingSelector;
         this.featureFlags = featureFlags;
-    }
-
-    /**
-     * @return the configStore
-     */
-    public ConfigStore getConfigStore() {
-        return configStore;
-    }
-
-    /**
-     * @param configStore the configStore to set
-     */
-    public void setConfigStore(ConfigStore configStore) {
-        this.configStore = configStore;
     }
 
     /**

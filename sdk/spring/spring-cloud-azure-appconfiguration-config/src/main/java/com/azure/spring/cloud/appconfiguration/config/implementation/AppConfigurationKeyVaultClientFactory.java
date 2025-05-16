@@ -10,7 +10,7 @@ import com.azure.spring.cloud.appconfiguration.config.SecretClientCustomizer;
 import com.azure.spring.cloud.appconfiguration.config.implementation.stores.AppConfigurationSecretClientManager;
 import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 
-public class AppConfigurationKeyVaultClientFactory {
+class AppConfigurationKeyVaultClientFactory {
 
     private final Map<String, AppConfigurationSecretClientManager> keyVaultClients;
 
@@ -23,27 +23,24 @@ public class AppConfigurationKeyVaultClientFactory {
     private final boolean credentialsConfigured;
 
     private final boolean isConfigured;
-    
-    private final int timeout;
 
-    public AppConfigurationKeyVaultClientFactory(SecretClientCustomizer keyVaultClientProvider,
+    AppConfigurationKeyVaultClientFactory(SecretClientCustomizer keyVaultClientProvider,
         KeyVaultSecretProvider keyVaultSecretProvider, SecretClientBuilderFactory secretClientFactory,
-        boolean credentialsConfigured, int timeout) {
+        boolean credentialsConfigured) {
         this.keyVaultClientProvider = keyVaultClientProvider;
         this.keyVaultSecretProvider = keyVaultSecretProvider;
         this.secretClientFactory = secretClientFactory;
         keyVaultClients = new HashMap<>();
         this.credentialsConfigured = credentialsConfigured;
         isConfigured = keyVaultClientProvider != null || credentialsConfigured;
-        this.timeout = timeout;
     }
 
-    public AppConfigurationSecretClientManager getClient(String host) {
+    AppConfigurationSecretClientManager getClient(String host) {
         // Check if we already have a client for this key vault, if not we will make
         // one
         if (!keyVaultClients.containsKey(host)) {
             AppConfigurationSecretClientManager client = new AppConfigurationSecretClientManager(host,
-                keyVaultClientProvider, keyVaultSecretProvider, secretClientFactory, credentialsConfigured, timeout);
+                keyVaultClientProvider, keyVaultSecretProvider, secretClientFactory, credentialsConfigured);
             keyVaultClients.put(host, client);
         }
         return keyVaultClients.get(host);

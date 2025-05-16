@@ -3,12 +3,12 @@
 
 package com.azure.spring.cloud.feature.management.implementation.models;
 
+import java.time.ZonedDateTime;
+import java.util.Arrays;
+
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowUtils;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import java.time.ZonedDateTime;
-import java.util.Arrays;
 
 /**
  * The recurrence range specifying how long the recurrence pattern repeats
