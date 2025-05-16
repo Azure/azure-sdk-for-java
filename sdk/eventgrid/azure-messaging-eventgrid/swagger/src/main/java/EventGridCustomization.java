@@ -705,24 +705,23 @@ public class EventGridCustomization extends Customization {
             ClassOrInterfaceDeclaration clazz = compilationUnit.getClassByName("AcsCallEndedEventData").get();
             compilationUnit.addImport("java.time.Duration");
             clazz.getMethodsByName("getCallDurationInSeconds").forEach(m -> {
-                m.setName("getCallDurationInSeconds")
+                m.setName("getCallDuration")
                     .setType("Duration")
                     .setBody(parseBlock("{ if (this.callDurationInSeconds != null) { return Duration.ofNanos((long) (this.callDurationInSeconds * 1000_000_000L)); } return null; }"))
-                    .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Get the recordingDurationcallDurationInSeconds property:Duration of the call in seconds."))))
-                        .addBlockTag("return", "the callDurationInSeconds value."));
+                    .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Get the callDuration property:Duration of the call in seconds."))))
+                        .addBlockTag("return", "the callDuration value."));
             });
 
             clazz.getMethodsByName("setCallDurationInSeconds").forEach(m -> {
-                m.setName("setCallDurationInSeconds")
+                m.setName("setCallDuration")
                     .setType("AcsCallEndedEventData")
-                    .setParameters(new NodeList<>( new Parameter().setType("Float").setName("callDurationInSeconds")))
-                    .setBody(parseBlock("{ this.callDurationInSeconds = callDurationInSeconds; return this; }"))
-                    .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Set the callDurationInSeconds property: Duration of the call in seconds."))))
-                        .addBlockTag("param", "callDurationInSeconds the callDurationInSeconds value to set.")
+                    .setParameters(new NodeList<>( new Parameter().setType("Duration").setName("callDuration")))
+                    .setBody(parseBlock("{ if (callDuration != null) { this.callDurationInSeconds = callDuration.toNanos() / 1_000_000_000f; } return null; }"))
+                    .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Set the callDuration property: Duration of the call in seconds."))))
+                        .addBlockTag("param", "callDuration the callDuration value to set.")
                         .addBlockTag("return", "the AcsCallEndedEventData object itself."));
             });
         });
-
     }
 
     private static final Map<String, String> replacementNames = new HashMap<String,String>() {

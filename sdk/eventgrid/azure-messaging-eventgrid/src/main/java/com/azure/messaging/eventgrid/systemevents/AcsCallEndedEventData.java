@@ -78,11 +78,11 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
     }
 
     /**
-     * Get the recordingDurationcallDurationInSeconds property:Duration of the call in seconds.
+     * Get the callDuration property:Duration of the call in seconds.
      *
-     * @return the callDurationInSeconds value.
+     * @return the callDuration value.
      */
-    public Duration getCallDurationInSeconds() {
+    public Duration getCallDuration() {
         if (this.callDurationInSeconds != null) {
             return Duration.ofNanos((long) (this.callDurationInSeconds * 1000_000_000L));
         }
@@ -90,14 +90,16 @@ public final class AcsCallEndedEventData extends AcsCallingEventProperties {
     }
 
     /**
-     * Set the callDurationInSeconds property: Duration of the call in seconds.
+     * Set the callDuration property: Duration of the call in seconds.
      *
-     * @param callDurationInSeconds the callDurationInSeconds value to set.
+     * @param callDuration the callDuration value to set.
      * @return the AcsCallEndedEventData object itself.
      */
-    public AcsCallEndedEventData setCallDurationInSeconds(Float callDurationInSeconds) {
-        this.callDurationInSeconds = callDurationInSeconds;
-        return this;
+    public AcsCallEndedEventData setCallDuration(Duration callDuration) {
+        if (callDuration != null) {
+            this.callDurationInSeconds = callDuration.toNanos() / 1_000_000_000f;
+        }
+        return null;
     }
 
     /**
