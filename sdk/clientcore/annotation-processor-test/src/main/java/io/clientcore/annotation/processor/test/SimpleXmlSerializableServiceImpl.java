@@ -16,7 +16,6 @@ import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
-import io.clientcore.core.http.models.HttpResponseException;
 import java.lang.reflect.ParameterizedType;
 import io.clientcore.core.http.models.HttpHeader;
 
@@ -68,14 +67,21 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             BinaryData networkResponseValue = networkResponse.getValue();
-            if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                exceptionMessage.append("(empty body)");
+                networkResponse.close();
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
             } else {
+                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
                 ParameterizedType returnType = null;
                 Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, networkResponseValue, decoded);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
             }
         }
         networkResponse.close();
@@ -101,14 +107,21 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             BinaryData networkResponseValue = networkResponse.getValue();
-            if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                exceptionMessage.append("(empty body)");
+                networkResponse.close();
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
             } else {
+                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
                 ParameterizedType returnType = null;
                 Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, networkResponseValue, decoded);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
             }
         }
         networkResponse.close();
@@ -128,14 +141,21 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             BinaryData networkResponseValue = networkResponse.getValue();
-            if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                exceptionMessage.append("(empty body)");
+                networkResponse.close();
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
             } else {
+                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
                 ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.SimpleXmlSerializable.class);
                 Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, networkResponseValue, decoded);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
             }
         }
         SimpleXmlSerializable deserializedResult;
@@ -165,14 +185,21 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             BinaryData networkResponseValue = networkResponse.getValue();
-            if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                exceptionMessage.append("(empty body)");
+                networkResponse.close();
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
             } else {
+                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
                 ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.SimpleXmlSerializable.class);
                 Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
                 networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, networkResponseValue, decoded);
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
             }
         }
         SimpleXmlSerializable deserializedResult;

@@ -99,44 +99,58 @@ public final class ResponseHandler {
         }
         body.addStatement(StaticJavaParser.parseStatement("boolean expectedResponse = " + expectedResponseCheck + ";"));
 
-        body.tryAddImportToParentCompilationUnit(HttpResponseException.class);
-
         // Take value from networkResponse before closing
         BlockStmt errorBlock = new BlockStmt();
         errorBlock.addStatement(
-            StaticJavaParser.parseStatement("BinaryData networkResponseValue = networkResponse" + ".getValue();"));
+            StaticJavaParser.parseStatement("BinaryData networkResponseValue = networkResponse.getValue();"));
+        errorBlock.addStatement(StaticJavaParser.parseStatement(
+            "StringBuilder exceptionMessage = new StringBuilder(\"Status code \").append(responseCode).append(\", \");"));
 
-        // Early throw for null/empty
-        IfStmt nullOrEmptyCheck = new IfStmt();
-        nullOrEmptyCheck.setCondition(StaticJavaParser
-            .parseExpression("networkResponseValue == null || networkResponseValue.toBytes().length == 0"));
-        BlockStmt throwNullBlock = new BlockStmt();
+        BlockStmt ifBlock = new BlockStmt();
+        ifBlock.addStatement(StaticJavaParser
+            .parseStatement("exceptionMessage.append(\"(\").append(networkResponse.getHeaders().getValue"
+                + "(HttpHeaderName.CONTENT_LENGTH)).append(\"-byte body)\");"));
         if (!usingTryWithResources) {
-            closeResponse(throwNullBlock);
+            closeResponse(ifBlock);
         }
-        throwNullBlock.addStatement(StaticJavaParser.parseStatement(
-            "throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, " + "null);"));
-        nullOrEmptyCheck.setThenStmt(throwNullBlock);
+        ifBlock.addStatement(StaticJavaParser.parseStatement(
+            "throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);"));
 
-        // Only execute the rest if not null/empty
-        BlockStmt notNullBlock = new BlockStmt();
+        BlockStmt elseIfBlock = new BlockStmt();
+        elseIfBlock.addStatement(StaticJavaParser.parseStatement("exceptionMessage.append(\"(empty body)\");"));
+        if (!usingTryWithResources) {
+            closeResponse(elseIfBlock);
+        }
+        elseIfBlock.addStatement(StaticJavaParser.parseStatement(
+            "throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);"));
+
+        BlockStmt elseBlock = new BlockStmt();
+        elseBlock.addStatement(StaticJavaParser.parseStatement(
+            "exceptionMessage.append('\"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('\"');"));
         // Dynamically generate ParameterizedType if a return type is declared
         TypeMirror returnType = method.getMethodReturnType();
-        notNullBlock.addStatement(AnnotationProcessorUtils.createParameterizedTypeStatement(returnType, body));
+        elseBlock.addStatement(AnnotationProcessorUtils.createParameterizedTypeStatement(returnType, body));
         body.tryAddImportToParentCompilationUnit(ParameterizedType.class);
         body.tryAddImportToParentCompilationUnit(CoreUtils.class);
-
-        notNullBlock.addStatement(StaticJavaParser.parseStatement(
+        elseBlock.addStatement(StaticJavaParser.parseStatement(
             "Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);"));
         if (!usingTryWithResources) {
-            closeResponse(notNullBlock);
+            closeResponse(elseBlock);
         }
-        notNullBlock.addStatement(StaticJavaParser.parseStatement(
-            "throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, networkResponseValue, decoded);"));
+        elseBlock.addStatement(StaticJavaParser.parseStatement(
+            "throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);"));
 
-        nullOrEmptyCheck.setElseStmt(notNullBlock);
+        IfStmt contentTypeIf = new IfStmt();
+        contentTypeIf.setCondition(StaticJavaParser.parseExpression(
+            "\"application/octet-stream\".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))"));
+        contentTypeIf.setThenStmt(ifBlock);
+        contentTypeIf
+            .setElseStmt(new IfStmt(
+                StaticJavaParser
+                    .parseExpression("networkResponseValue == null || networkResponseValue.toBytes().length == 0"),
+                elseIfBlock, elseBlock));
 
-        errorBlock.addStatement(nullOrEmptyCheck);
+        errorBlock.addStatement(contentTypeIf);
 
         IfStmt ifStmt = new IfStmt()
             .setCondition(new UnaryExpr(new NameExpr("expectedResponse"), UnaryExpr.Operator.LOGICAL_COMPLEMENT))

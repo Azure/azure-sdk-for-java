@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -503,28 +502,20 @@ public final class CoreUtils {
     /**
      * Instantiates an {@link HttpResponseException} for unexpected responses.
      *
-     * @param responseCode The HTTP response code.
+     * @param exceptionMessage The error message to use for the exception.
      * @param response The HTTP response.
-     * @param data The body of the HTTP response.
-     * @param decodedValue The decoded value.
+     * @param decodedValue The decoded value, typically the declared exception type (e.g., ErrorValue).
      * @return An {@link HttpResponseException} for unexpected responses.
      */
-    public static HttpResponseException instantiateUnexpectedException(int responseCode, Response<BinaryData> response,
-        BinaryData data, Object decodedValue) {
-        StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-        String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
-        if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            String contentLength = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
-            exceptionMessage.append("(").append(contentLength).append("-byte body)");
-        } else if (data == null || data.toBytes().length == 0) {
-            exceptionMessage.append("(empty body)");
-        } else {
-            exceptionMessage.append('"').append(new String(data.toBytes(), StandardCharsets.UTF_8)).append('"');
+    public static HttpResponseException instantiateUnexpectedException(String exceptionMessage,
+        Response<BinaryData> response, Object decodedValue) {
+
+        // The decodedValue should be the declared exception type (e.g., ErrorValue), not a Throwable.
+        // Only wrap as cause if decodedValue is a Throwable.
+        if (decodedValue instanceof Throwable) {
+            return new HttpResponseException(exceptionMessage, response, (Throwable) decodedValue);
         }
-        if (decodedValue instanceof IOException || decodedValue instanceof IllegalStateException) {
-            return new HttpResponseException(exceptionMessage.toString(), response, (Throwable) decodedValue);
-        }
-        return new HttpResponseException(exceptionMessage.toString(), response, decodedValue);
+        return new HttpResponseException(exceptionMessage, response, decodedValue);
     }
 
     private CoreUtils() {

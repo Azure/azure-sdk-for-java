@@ -20,6 +20,9 @@ public class AnnotationProcessorUtils {
 
     /**
      * Generates a JavaParser Statement for creating a ParameterizedType for the given return type.
+     * @param returnType The {@link TypeMirror} representing the return type to generate a {@code ParameterizedType} for.
+     * @param body The {@link BlockStmt} to which imports may be added if necessary.
+     * @return A JavaParser {@link Statement} that creates a {@code ParameterizedType} for the given return type.
      */
     public static Statement createParameterizedTypeStatement(TypeMirror returnType, BlockStmt body) {
         if (returnType.getKind() == TypeKind.DECLARED) {

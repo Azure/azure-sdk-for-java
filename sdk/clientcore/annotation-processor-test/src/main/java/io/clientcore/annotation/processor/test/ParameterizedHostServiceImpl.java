@@ -13,7 +13,6 @@ import io.clientcore.annotation.processor.test.implementation.ParameterizedHostS
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
-import io.clientcore.core.http.models.HttpResponseException;
 import java.lang.reflect.ParameterizedType;
 import io.clientcore.core.utils.CoreUtils;
 
@@ -56,12 +55,18 @@ public class ParameterizedHostServiceImpl implements ParameterizedHostService {
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 BinaryData networkResponseValue = networkResponse.getValue();
-                if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                    throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
+                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                    exceptionMessage.append("(empty body)");
+                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
                 } else {
+                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
                     ParameterizedType returnType = null;
                     Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(responseCode, networkResponse, networkResponseValue, decoded);
+                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
                 }
             }
             BinaryData responseBody = networkResponse.getValue();

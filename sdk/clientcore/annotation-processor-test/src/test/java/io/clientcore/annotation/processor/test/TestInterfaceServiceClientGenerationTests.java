@@ -1292,11 +1292,11 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    public void unexpectedHTTPOKDeserializeError() {
-        CoreException e = assertThrows(CoreException.class,
+    public void unexpectedHTTPOK() {
+        HttpResponseException e = assertThrows(HttpResponseException.class,
             () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class).getBytes(getRequestUri()));
 
-        assertTrue(e.getMessage().startsWith("Unexpected character"));
+        assertEquals("Status code 200, (1024-byte body)", e.getMessage());
     }
 
     @Test
