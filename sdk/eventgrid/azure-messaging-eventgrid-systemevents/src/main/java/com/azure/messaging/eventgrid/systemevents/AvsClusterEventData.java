@@ -136,12 +136,6 @@ public class AvsClusterEventData implements JsonSerializable<AvsClusterEventData
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operationId", this.operationId);
-        jsonWriter.writeArrayField("addedHostNames", this.addedHostNames,
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("removedHostNames", this.removedHostNames,
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("inMaintenanceHostNames", this.inMaintenanceHostNames,
-            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
