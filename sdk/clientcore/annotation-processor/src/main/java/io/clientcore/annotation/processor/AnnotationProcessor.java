@@ -135,7 +135,6 @@ public class AnnotationProcessor extends AbstractProcessor {
             .map(e -> e.getAnnotation(UnexpectedResponseExceptionDetail.class))
             .filter(Objects::nonNull) // Exclude null annotations
             .collect(Collectors.toList()));
-
         // Process the template
         TemplateProcessor.getInstance().process(templateInput, processingEnv);
     }

@@ -15,8 +15,8 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.utils.CoreUtils;
 import java.lang.reflect.ParameterizedType;
+import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.serialization.SerializationFormat;
 
 /**
@@ -57,9 +57,23 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+            BinaryData networkResponseValue = networkResponse.getValue();
+            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
+                networkResponse.close();
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
+                exceptionMessage.append("(empty body)");
+                networkResponse.close();
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
+            } else {
+                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
+                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
+                networkResponse.close();
+                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
+            }
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
