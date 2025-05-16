@@ -10,7 +10,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class MigrationsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * Migrations_GetMigrationWithSuccessfulValidationOnly.json
      */
     /**
@@ -27,8 +27,8 @@ public final class MigrationsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/Migrations_Get.
-     * json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * Migrations_Get.json
      */
     /**
      * Sample code: Migrations_Get.
@@ -43,7 +43,7 @@ public final class MigrationsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * Migrations_GetMigrationWithSuccessfulValidationButMigrationFailure.json
      */
     /**
@@ -60,7 +60,7 @@ public final class MigrationsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * Migrations_GetMigrationWithSuccessfulValidationAndMigration.json
      */
     /**
@@ -77,7 +77,7 @@ public final class MigrationsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * Migrations_GetMigrationWithValidationFailures.json
      */
     /**
