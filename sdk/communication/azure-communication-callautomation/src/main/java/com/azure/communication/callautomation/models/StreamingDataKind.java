@@ -27,11 +27,6 @@ public final class StreamingDataKind extends ExpandableStringEnum<StreamingDataK
     public static final StreamingDataKind DTMF_DATA = fromString("dtmfData");
 
     /**
-     * Streamind Data kind "dtmfMetadata".
-     */
-    public static final StreamingDataKind DTMF_METADATA = fromString("dtmfMetadata");
-
-    /**
     * Streamind Data kind "transcriptionData".
     */
     public static final StreamingDataKind TRANSCRIPTION_DATA = fromString("transcriptionData");
