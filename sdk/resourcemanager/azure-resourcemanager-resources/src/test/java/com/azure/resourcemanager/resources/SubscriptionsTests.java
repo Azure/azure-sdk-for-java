@@ -66,7 +66,7 @@ public class SubscriptionsTests extends ResourceManagementTest {
         String name;
         String label;
 
-        public RegionBrief(String name, String label) {
+        RegionBrief(String name, String label) {
             this.name = name;
             this.label = label;
         }
