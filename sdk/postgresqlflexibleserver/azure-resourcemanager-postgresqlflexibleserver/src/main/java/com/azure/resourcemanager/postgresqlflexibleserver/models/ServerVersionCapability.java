@@ -27,6 +27,11 @@ public final class ServerVersionCapability extends CapabilityBase {
     private List<String> supportedVersionsToUpgrade;
 
     /*
+     * The supported features.
+     */
+    private List<SupportedFeature> supportedFeatures;
+
+    /*
      * The reason for the capability not being available.
      */
     private String reason;
@@ -61,6 +66,15 @@ public final class ServerVersionCapability extends CapabilityBase {
     }
 
     /**
+     * Get the supportedFeatures property: The supported features.
+     * 
+     * @return the supportedFeatures value.
+     */
+    public List<SupportedFeature> supportedFeatures() {
+        return this.supportedFeatures;
+    }
+
+    /**
      * Get the reason property: The reason for the capability not being available.
      * 
      * @return the reason value.
@@ -87,6 +101,9 @@ public final class ServerVersionCapability extends CapabilityBase {
      */
     @Override
     public void validate() {
+        if (supportedFeatures() != null) {
+            supportedFeatures().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -122,6 +139,10 @@ public final class ServerVersionCapability extends CapabilityBase {
                 } else if ("supportedVersionsToUpgrade".equals(fieldName)) {
                     List<String> supportedVersionsToUpgrade = reader.readArray(reader1 -> reader1.getString());
                     deserializedServerVersionCapability.supportedVersionsToUpgrade = supportedVersionsToUpgrade;
+                } else if ("supportedFeatures".equals(fieldName)) {
+                    List<SupportedFeature> supportedFeatures
+                        = reader.readArray(reader1 -> SupportedFeature.fromJson(reader1));
+                    deserializedServerVersionCapability.supportedFeatures = supportedFeatures;
                 } else {
                     reader.skipChildren();
                 }
