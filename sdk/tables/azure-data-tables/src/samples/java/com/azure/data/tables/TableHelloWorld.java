@@ -3,12 +3,8 @@
 package com.azure.data.tables;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableItem;
-
-import java.util.List;
 
 /**
  * This sample demonstrates how to create, update, upsert, get, list and delete table entities synchronously on a table.
@@ -73,15 +69,7 @@ public class TableHelloWorld {
         System.out.printf("Upserted entity with partition key '%s' and row key '%s'.%n", partitionKey, rowKey);
 
         // Let's now retrieve all the entities on the table and print their partition and row keys.
-        ListEntitiesOptions options = new ListEntitiesOptions()
-            .setTop(10);
-        PagedIterable<TableEntity> entities = tableClient.listEntities(options, null, null);
-        if (entities == null) {
-            System.out.println("No entities found.");
-            throw new RuntimeException("No entities found.");
-        }
-        // assuming the page is there
-        List<TableEntity> topEntities = entities.streamByPage().findFirst().get().getValue();
+        PagedIterable<TableEntity> entities = tableClient.listEntities();
 
         entities.forEach(entity ->
             System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.%n", entity.getPartitionKey(),
