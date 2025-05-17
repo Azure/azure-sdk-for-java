@@ -4,6 +4,13 @@
 
 ### Features Added
 
+- Added new Azure regions:
+  - `Region.MEXICO_CENTRAL`
+  - `Region.SPAIN_CENTRAL`
+  - `Region.POLAND_CENTRAL`
+  - `Region.INDONESIA_CENTRAL`
+  - `Region.NEW_ZEALAND_NORTH`
+
 ### Breaking Changes
 
 ### Bugs Fixed
