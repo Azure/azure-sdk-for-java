@@ -20,6 +20,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.models.SearchAudience;
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public final class SearchKnowledgeAgentClientBuilder
     private SearchAudience audience;
     private String endpoint;
     private String agentName;
-    private String apiVersion;
+    private SearchServiceVersion serviceVersion;
     private HttpClient httpClient;
     private HttpPipeline httpPipeline;
     private HttpLogOptions httpLogOptions;
@@ -136,8 +137,8 @@ public final class SearchKnowledgeAgentClientBuilder
      * @param apiVersion The API version.
      * @return The updated builder object.
      */
-    public SearchKnowledgeAgentClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    public SearchKnowledgeAgentClientBuilder serviceVersion(SearchServiceVersion apiVersion) {
+        this.serviceVersion = apiVersion;
         return this;
     }
 
@@ -214,11 +215,13 @@ public final class SearchKnowledgeAgentClientBuilder
      */
     public SearchKnowledgeAgentClient buildClient() {
         validateRequiredFields();
+        SearchServiceVersion serviceVersion
+            = this.serviceVersion != null ? this.serviceVersion : SearchServiceVersion.getLatest();
         HttpPipeline pipeline = this.httpPipeline != null
             ? this.httpPipeline
             : Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy, retryOptions,
                 azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient, LOGGER);
-        return new SearchKnowledgeAgentClient(endpoint, agentName, apiVersion, pipeline);
+        return new SearchKnowledgeAgentClient(endpoint, agentName, serviceVersion, pipeline);
     }
 
     /**
@@ -228,16 +231,17 @@ public final class SearchKnowledgeAgentClientBuilder
      */
     public SearchKnowledgeAgentAsyncClient buildAsyncClient() {
         validateRequiredFields();
+        SearchServiceVersion serviceVersion
+            = this.serviceVersion != null ? this.serviceVersion : SearchServiceVersion.getLatest();
         HttpPipeline pipeline = this.httpPipeline != null
             ? this.httpPipeline
             : Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy, retryOptions,
                 azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient, LOGGER);
-        return new SearchKnowledgeAgentAsyncClient(endpoint, agentName, apiVersion, pipeline);
+        return new SearchKnowledgeAgentAsyncClient(endpoint, agentName, serviceVersion, pipeline);
     }
 
     private void validateRequiredFields() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         Objects.requireNonNull(agentName, "'agentName' cannot be null.");
-        Objects.requireNonNull(apiVersion, "'apiVersion' cannot be null.");
     }
 }

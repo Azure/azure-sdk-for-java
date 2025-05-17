@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.agents.implementation.KnowledgeAgentRetrievalClientImpl;
 import com.azure.search.documents.agents.implementation.KnowledgeRetrievalsImpl;
 import com.azure.search.documents.agents.models.KnowledgeAgentRetrievalRequest;
@@ -50,7 +51,7 @@ public final class SearchKnowledgeAgentClient {
 
     private final String endpoint;
     private final String agentName;
-    private final String apiVersion;
+    private final SearchServiceVersion serviceVersion;
     private final HttpPipeline httpPipeline;
     private final KnowledgeAgentRetrievalClientImpl impl;
     private final KnowledgeRetrievalsImpl retrievals;
@@ -58,12 +59,14 @@ public final class SearchKnowledgeAgentClient {
     /**
      * Package-private constructor to be used by {@link SearchKnowledgeAgentClientBuilder}.
      */
-    SearchKnowledgeAgentClient(String endpoint, String agentName, String apiVersion, HttpPipeline httpPipeline) {
+    SearchKnowledgeAgentClient(String endpoint, String agentName, SearchServiceVersion serviceVersion,
+        HttpPipeline httpPipeline) {
         this.endpoint = endpoint;
         this.agentName = agentName;
-        this.apiVersion = apiVersion;
+        this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
-        this.impl = new KnowledgeAgentRetrievalClientImpl(httpPipeline, endpoint, agentName, apiVersion);
+        this.impl
+            = new KnowledgeAgentRetrievalClientImpl(httpPipeline, endpoint, agentName, serviceVersion.getVersion());
         this.retrievals = impl.getKnowledgeRetrievals();
     }
 
@@ -90,8 +93,8 @@ public final class SearchKnowledgeAgentClient {
      *
      * @return the apiVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
+    public SearchServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /**

@@ -295,6 +295,7 @@ public final class FieldBuilder {
             filterable = simpleField.isFilterable();
             sortable = simpleField.isSortable();
             facetable = simpleField.isFacetable();
+            permissionFilter = simpleField.permissionFilter();
         } else {
             key = searchableField.isKey();
             hidden = searchableField.isHidden();
