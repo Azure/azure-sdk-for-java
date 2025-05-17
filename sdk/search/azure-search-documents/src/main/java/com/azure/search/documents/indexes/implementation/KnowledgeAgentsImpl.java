@@ -692,7 +692,7 @@ public final class KnowledgeAgentsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KnowledgeAgent> list(RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(() -> listSinglePage(requestOptions, context));
     }
