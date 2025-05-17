@@ -66,6 +66,13 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      */
     private String filterOverride;
 
+    /*
+     * Controls how many vectors can be matched from each document in a vector search query. Setting it to 1 ensures at
+     * most one vector per document is matched, guaranteeing results come from distinct documents. Setting it to 0
+     * (unlimited) allows multiple relevant vectors from the same document to be matched. Default is 0.
+     */
+    private Integer perDocumentVectorLimit;
+
     /**
      * Creates an instance of VectorQuery class.
      */
@@ -244,6 +251,32 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
     }
 
     /**
+     * Get the perDocumentVectorLimit property: Controls how many vectors can be matched from each document in a vector
+     * search query. Setting it to 1 ensures at most one vector per document is matched, guaranteeing results come from
+     * distinct documents. Setting it to 0 (unlimited) allows multiple relevant vectors from the same document to be
+     * matched. Default is 0.
+     *
+     * @return the perDocumentVectorLimit value.
+     */
+    public Integer getPerDocumentVectorLimit() {
+        return this.perDocumentVectorLimit;
+    }
+
+    /**
+     * Set the perDocumentVectorLimit property: Controls how many vectors can be matched from each document in a vector
+     * search query. Setting it to 1 ensures at most one vector per document is matched, guaranteeing results come from
+     * distinct documents. Setting it to 0 (unlimited) allows multiple relevant vectors from the same document to be
+     * matched. Default is 0.
+     *
+     * @param perDocumentVectorLimit the perDocumentVectorLimit value to set.
+     * @return the VectorQuery object itself.
+     */
+    public VectorQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
+        this.perDocumentVectorLimit = perDocumentVectorLimit;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -257,6 +290,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
         jsonWriter.writeNumberField("weight", this.weight);
         jsonWriter.writeJsonField("threshold", this.threshold);
         jsonWriter.writeStringField("filterOverride", this.filterOverride);
+        jsonWriter.writeNumberField("perDocumentVectorLimit", this.perDocumentVectorLimit);
         return jsonWriter.writeEndObject();
     }
 
@@ -322,6 +356,8 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
                     deserializedVectorQuery.threshold = VectorThreshold.fromJson(reader);
                 } else if ("filterOverride".equals(fieldName)) {
                     deserializedVectorQuery.filterOverride = reader.getString();
+                } else if ("perDocumentVectorLimit".equals(fieldName)) {
+                    deserializedVectorQuery.perDocumentVectorLimit = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

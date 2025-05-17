@@ -25,6 +25,11 @@ public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
     public static final IndexingMode INDEXING_RESET_DOCS = fromString("indexingResetDocs");
 
     /**
+     * The indexer is resyncing and indexing selective option(s) from the datasource.
+     */
+    public static final IndexingMode INDEXING_RESYNC = fromString("indexingResync");
+
+    /**
      * Creates a new instance of IndexingMode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

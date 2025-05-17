@@ -35,6 +35,13 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
     private Double rerankerScore;
 
     /*
+     * The relevance score computed by boosting the Reranker Score. Search results are sorted by the
+     * RerankerScore/RerankerBoostedScore based on useScoringProfileBoostedRanking in the Semantic Config.
+     * RerankerBoostedScore is only returned for queries of type 'semantic'
+     */
+    private Double rerankerBoostedScore;
+
+    /*
      * Text fragments from the document that indicate the matching search terms, organized by each applicable field;
      * null if hit highlighting was not enabled for the query.
      */
@@ -83,6 +90,17 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
      */
     public Double getRerankerScore() {
         return this.rerankerScore;
+    }
+
+    /**
+     * Get the rerankerBoostedScore property: The relevance score computed by boosting the Reranker Score. Search
+     * results are sorted by the RerankerScore/RerankerBoostedScore based on useScoringProfileBoostedRanking in the
+     * Semantic Config. RerankerBoostedScore is only returned for queries of type 'semantic'.
+     * 
+     * @return the rerankerBoostedScore value.
+     */
+    public Double getRerankerBoostedScore() {
+        return this.rerankerBoostedScore;
     }
 
     /**
@@ -163,6 +181,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
             boolean scoreFound = false;
             double score = 0.0;
             Double rerankerScore = null;
+            Double rerankerBoostedScore = null;
             Map<String, List<String>> highlights = null;
             List<QueryCaptionResult> captions = null;
             DocumentDebugInfo documentDebugInfo = null;
@@ -176,6 +195,8 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
                     scoreFound = true;
                 } else if ("@search.rerankerScore".equals(fieldName)) {
                     rerankerScore = reader.getNullable(JsonReader::getDouble);
+                } else if ("@search.rerankerBoostedScore".equals(fieldName)) {
+                    rerankerBoostedScore = reader.getNullable(JsonReader::getDouble);
                 } else if ("@search.highlights".equals(fieldName)) {
                     highlights = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
                 } else if ("@search.captions".equals(fieldName)) {
@@ -193,6 +214,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
             if (scoreFound) {
                 SearchResult deserializedSearchResult = new SearchResult(score);
                 deserializedSearchResult.rerankerScore = rerankerScore;
+                deserializedSearchResult.rerankerBoostedScore = rerankerBoostedScore;
                 deserializedSearchResult.highlights = highlights;
                 deserializedSearchResult.captions = captions;
                 deserializedSearchResult.documentDebugInfo = documentDebugInfo;

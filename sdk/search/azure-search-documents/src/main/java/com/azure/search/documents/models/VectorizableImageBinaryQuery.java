@@ -133,6 +133,15 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
      * {@inheritDoc}
      */
     @Override
+    public VectorizableImageBinaryQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
+        super.setPerDocumentVectorLimit(perDocumentVectorLimit);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
@@ -142,6 +151,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
         jsonWriter.writeNumberField("weight", getWeight());
         jsonWriter.writeJsonField("threshold", getThreshold());
         jsonWriter.writeStringField("filterOverride", getFilterOverride());
+        jsonWriter.writeNumberField("perDocumentVectorLimit", getPerDocumentVectorLimit());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("base64Image", this.base64Image);
         return jsonWriter.writeEndObject();
@@ -176,6 +186,9 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
                     deserializedVectorizableImageBinaryQuery.setThreshold(VectorThreshold.fromJson(reader));
                 } else if ("filterOverride".equals(fieldName)) {
                     deserializedVectorizableImageBinaryQuery.setFilterOverride(reader.getString());
+                } else if ("perDocumentVectorLimit".equals(fieldName)) {
+                    deserializedVectorizableImageBinaryQuery
+                        .setPerDocumentVectorLimit(reader.getNullable(JsonReader::getInt));
                 } else if ("kind".equals(fieldName)) {
                     deserializedVectorizableImageBinaryQuery.kind = VectorQueryKind.fromString(reader.getString());
                 } else if ("base64Image".equals(fieldName)) {

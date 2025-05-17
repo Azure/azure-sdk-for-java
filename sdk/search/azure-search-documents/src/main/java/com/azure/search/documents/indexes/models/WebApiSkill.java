@@ -21,7 +21,7 @@ import java.util.Map;
  * A skill that can call a Web API endpoint, allowing you to extend a skillset by having it call your custom code.
  */
 @Fluent
-public final class WebApiSkill extends SearchIndexerSkill {
+public class WebApiSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
@@ -318,6 +318,31 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * @throws IOException If an error occurs while reading the WebApiSkill.
      */
     public static WebApiSkill fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("@odata.type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("#Microsoft.Skills.Custom.ChatCompletionSkill".equals(discriminatorValue)) {
+                    return ChatCompletionSkill.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static WebApiSkill fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;
             List<InputFieldMappingEntry> inputs = null;
