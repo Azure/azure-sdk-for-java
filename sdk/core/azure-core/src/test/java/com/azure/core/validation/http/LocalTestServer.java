@@ -55,7 +55,9 @@ public class LocalTestServer {
     public LocalTestServer(RequestHandler requestHandler, int maxThreads) {
         this.server = new Server(new ExecutorThreadPool(maxThreads));
 
-        HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory();
+        HttpConfiguration httpConfiguration = new HttpConfiguration();
+        httpConfiguration.setResponseHeaderSize(16 * 1024);
+        HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory(httpConfiguration);
         this.httpConnector = new ServerConnector(server, httpConnectionFactory);
         this.httpConnector.setHost("localhost");
 
@@ -72,11 +74,11 @@ public class LocalTestServer {
         SslConnectionFactory sslConnectionFactory
             = new SslConnectionFactory(sslContextFactory, httpConnectionFactory.getProtocol());
 
-        HttpConfiguration httpConfiguration = new HttpConfiguration();
-        httpConfiguration.addCustomizer(new SecureRequestCustomizer());
+        HttpConfiguration httpsConfiguration = new HttpConfiguration(httpConfiguration);
+        httpsConfiguration.addCustomizer(new SecureRequestCustomizer());
 
         this.httpsConnector
-            = new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(httpConfiguration));
+            = new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(httpsConfiguration));
         this.httpsConnector.setHost("localhost");
 
         server.addConnector(this.httpsConnector);
