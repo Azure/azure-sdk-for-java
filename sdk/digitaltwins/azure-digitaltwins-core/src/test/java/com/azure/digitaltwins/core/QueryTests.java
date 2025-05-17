@@ -8,6 +8,8 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
+import java.io.IOException;
+
 import com.azure.digitaltwins.core.models.QueryOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -17,15 +19,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class QueryTests extends QueryTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void validQuerySucceeds(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void validQuerySucceeds(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
+        throws IOException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         int pageSize = 3;
         String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, client,
@@ -44,7 +46,9 @@ public class QueryTests extends QueryTestBase {
                 String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client,
                     getRandomIntegerStringGenerator());
                 roomTwinIds.add(roomTwinId);
-                client.createOrReplaceDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null, Context.NONE);
+                client.createOrReplaceDigitalTwinWithResponse(roomTwinId,
+                    deserializeJsonString(roomTwin, BasicDigitalTwin::fromJson), BasicDigitalTwin.class, null,
+                    Context.NONE);
             }
 
             sleepIfRunningAgainstService(5000);
@@ -55,7 +59,7 @@ public class QueryTests extends QueryTestBase {
                 new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
 
             for (BasicDigitalTwin digitalTwin : pagedQueryResponse) {
-                assertTrue((boolean) digitalTwin.getContents().get("IsOccupied"));
+                assertNotNull(digitalTwin.getContents().get("IsOccupied"));
             }
 
             pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class,

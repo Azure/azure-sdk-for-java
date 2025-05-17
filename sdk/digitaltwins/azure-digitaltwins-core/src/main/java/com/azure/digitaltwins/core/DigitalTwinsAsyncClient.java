@@ -46,12 +46,17 @@ import com.azure.digitaltwins.core.models.QueryOptions;
 import com.azure.digitaltwins.core.models.UpdateComponentOptions;
 import com.azure.digitaltwins.core.models.UpdateDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.UpdateRelationshipOptions;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -1541,7 +1546,23 @@ public final class DigitalTwinsAsyncClient {
             context = Context.NONE;
         }
 
-        QuerySpecification querySpecification = new QuerySpecification().setContinuationToken(nextLink);
+        // The nextLink continuation token is a stringified JSON object. Attempt to deserialize the nextLink into any
+        // Object and inspect whether is what a stringified JSON value (List = array, Map = object, String = string).
+        // If it was a stringified value, use nextLink as-is. If not, serialize the nextLink into a JSON string.
+        String nextLinkToUse;
+        try (JsonReader jsonReader = JsonProviders.createReader(nextLink)) {
+            Object untyped = jsonReader.readUntyped();
+
+            if (untyped instanceof List || untyped instanceof Map || untyped instanceof String) {
+                nextLinkToUse = nextLink;
+            } else {
+                nextLinkToUse = serializeNextLink(nextLink);
+            }
+        } catch (IOException ex) {
+            nextLinkToUse = serializeNextLink(nextLink);
+        }
+
+        QuerySpecification querySpecification = new QuerySpecification().setContinuationToken(nextLinkToUse);
 
         return protocolLayer.getQueries()
             .queryTwinsWithResponseAsync(querySpecification, OptionsConverter.toProtocolLayerOptions(options), context)
@@ -1555,6 +1576,15 @@ public final class DigitalTwinsAsyncClient {
                     .collect(Collectors.toList()),
                 SerializationHelpers.serializeContinuationToken(objectPagedResponse.getValue().getContinuationToken()),
                 objectPagedResponse.getDeserializedHeaders()));
+    }
+
+    private static String serializeNextLink(String nextLink) {
+        try (StringWriter writer = new StringWriter(); JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
+            jsonWriter.writeString(nextLink);
+            return writer.toString();
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
     }
 
     //endregion Query APIs
@@ -2056,7 +2086,8 @@ public final class DigitalTwinsAsyncClient {
             : new DigitalTwinsResponseHeaders().setETag(response.getHeaders().getValue(HttpHeaderName.ETAG));
     }
 
-    private <T> Mono<DigitalTwinsResponse<T>> deserializeHelper(Response<Object> response, Class<T> clazz) {
+    private <T> Mono<DigitalTwinsResponse<T>> deserializeHelper(Response<Map<String, Object>> response,
+        Class<T> clazz) {
         try {
             T genericResponse = DeserializationHelpers.deserializeObject(protocolLayer.getSerializerAdapter(),
                 response.getValue(), clazz, this.serializer);
