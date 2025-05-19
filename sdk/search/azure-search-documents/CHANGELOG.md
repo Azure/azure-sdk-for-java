@@ -1,5 +1,17 @@
 # Release History
 
+
+## 11.8.0-beta.8 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+
 ## 11.8.0-beta.7 (2025-05-16)
 
 ### Features Added
