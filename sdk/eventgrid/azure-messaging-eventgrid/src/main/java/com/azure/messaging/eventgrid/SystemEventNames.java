@@ -4,6 +4,11 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.models.CloudEvent;
+import com.azure.messaging.eventgrid.systemevents.AcsCallEndedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsCallParticipantAddedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsCallParticipantRemovedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsCallStartedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatAzureBotCommandReceivedInThreadEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedEventData;
@@ -22,6 +27,7 @@ import com.azure.messaging.eventgrid.systemevents.AcsChatThreadDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedPerUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatTypingIndicatorReceivedInThreadEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsEmailDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsEmailEngagementTrackingReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsIncomingCallEventData;
@@ -61,6 +67,8 @@ import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseCreated
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementCircuitBreakerClosedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementCircuitBreakerOpenedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayApiAddedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayApiRemovedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayCertificateAuthorityCreatedEventData;
@@ -71,6 +79,8 @@ import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayDeletedEve
 import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayHostnameConfigurationCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayHostnameConfigurationDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayHostnameConfigurationUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayTokenExpiredEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayTokenNearExpiryEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementProductCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementProductDeletedEventData;
@@ -240,6 +250,34 @@ import java.util.Map;
  */
 public final class SystemEventNames {
     /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.CallEnded event.
+     */
+    public static final String COMMUNICATION_CALL_ENDED = "Microsoft.Communication.CallEnded";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.CallParticipantAdded event.
+     */
+    public static final String COMMUNICATION_CALL_PARTICIPANT_ADDED = "Microsoft.Communication.CallParticipantAdded";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.CallParticipantRemoved event.
+     */
+    public static final String COMMUNICATION_CALL_PARTICIPANT_REMOVED
+        = "Microsoft.Communication.CallParticipantRemoved";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.CallStarted event.
+     */
+    public static final String COMMUNICATION_CALL_STARTED = "Microsoft.Communication.CallStarted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.Communication.ChatAzureBotCommandReceivedInThread event.
+     */
+    public static final String COMMUNICATION_CHAT_AZURE_BOT_COMMAND_RECEIVED_IN_THREAD
+        = "Microsoft.Communication.ChatAzureBotCommandReceivedInThread";
+
+    /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeleted event.
      */
     public static final String COMMUNICATION_CHAT_MESSAGE_DELETED = "Microsoft.Communication.ChatMessageDeleted";
@@ -333,6 +371,13 @@ public final class SystemEventNames {
      */
     public static final String COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED
         = "Microsoft.Communication.ChatThreadWithUserDeleted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.Communication.ChatTypingIndicatorReceivedInThread event.
+     */
+    public static final String COMMUNICATION_CHAT_TYPING_INDICATOR_RECEIVED_IN_THREAD
+        = "Microsoft.Communication.ChatTypingIndicatorReceivedInThread";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.EmailDeliveryReportReceived event.
@@ -552,6 +597,16 @@ public final class SystemEventNames {
     public static final String API_MANAGEMENT_API_UPDATED = "Microsoft.ApiManagement.APIUpdated";
 
     /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.CircuitBreaker.Closed event.
+     */
+    public static final String API_MANAGEMENT_CIRCUIT_BREAKER_CLOSED = "Microsoft.ApiManagement.CircuitBreaker.Closed";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.CircuitBreaker.Opened event.
+     */
+    public static final String API_MANAGEMENT_CIRCUIT_BREAKER_OPENED = "Microsoft.ApiManagement.CircuitBreaker.Opened";
+
+    /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayAPIAdded event.
      */
     public static final String API_MANAGEMENT_GATEWAY_API_ADDED = "Microsoft.ApiManagement.GatewayAPIAdded";
@@ -612,6 +667,17 @@ public final class SystemEventNames {
      */
     public static final String API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_UPDATED
         = "Microsoft.ApiManagement.GatewayHostnameConfigurationUpdated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayTokenExpired event.
+     */
+    public static final String API_MANAGEMENT_GATEWAY_TOKEN_EXPIRED = "Microsoft.ApiManagement.GatewayTokenExpired";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayTokenNearExpiry event.
+     */
+    public static final String API_MANAGEMENT_GATEWAY_TOKEN_NEAR_EXPIRY
+        = "Microsoft.ApiManagement.GatewayTokenNearExpiry";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayUpdated event.
@@ -1482,6 +1548,12 @@ public final class SystemEventNames {
         = "Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser";
     private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<String, Class<?>>() {
         {
+            put(COMMUNICATION_CALL_ENDED, AcsCallEndedEventData.class);
+            put(COMMUNICATION_CALL_PARTICIPANT_ADDED, AcsCallParticipantAddedEventData.class);
+            put(COMMUNICATION_CALL_PARTICIPANT_REMOVED, AcsCallParticipantRemovedEventData.class);
+            put(COMMUNICATION_CALL_STARTED, AcsCallStartedEventData.class);
+            put(COMMUNICATION_CHAT_AZURE_BOT_COMMAND_RECEIVED_IN_THREAD,
+                AcsChatAzureBotCommandReceivedInThreadEventData.class);
             put(COMMUNICATION_CHAT_MESSAGE_DELETED, AcsChatMessageDeletedEventData.class);
             put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatMessageDeletedInThreadEventData.class);
             put(COMMUNICATION_CHAT_MESSAGE_EDITED, AcsChatMessageEditedEventData.class);
@@ -1501,6 +1573,8 @@ public final class SystemEventNames {
             put(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER,
                 AcsChatThreadPropertiesUpdatedPerUserEventData.class);
             put(COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED, AcsChatThreadWithUserDeletedEventData.class);
+            put(COMMUNICATION_CHAT_TYPING_INDICATOR_RECEIVED_IN_THREAD,
+                AcsChatTypingIndicatorReceivedInThreadEventData.class);
             put(COMMUNICATION_EMAIL_DELIVERY_REPORT_RECEIVED, AcsEmailDeliveryReportReceivedEventData.class);
             put(COMMUNICATION_EMAIL_ENGAGEMENT_TRACKING_REPORT_RECEIVED,
                 AcsEmailEngagementTrackingReportReceivedEventData.class);
@@ -1541,6 +1615,8 @@ public final class SystemEventNames {
             put(API_MANAGEMENT_API_RELEASE_DELETED, ApiManagementApiReleaseDeletedEventData.class);
             put(API_MANAGEMENT_API_RELEASE_UPDATED, ApiManagementApiReleaseUpdatedEventData.class);
             put(API_MANAGEMENT_API_UPDATED, ApiManagementApiUpdatedEventData.class);
+            put(API_MANAGEMENT_CIRCUIT_BREAKER_CLOSED, ApiManagementCircuitBreakerClosedEventData.class);
+            put(API_MANAGEMENT_CIRCUIT_BREAKER_OPENED, ApiManagementCircuitBreakerOpenedEventData.class);
             put(API_MANAGEMENT_GATEWAY_API_ADDED, ApiManagementGatewayApiAddedEventData.class);
             put(API_MANAGEMENT_GATEWAY_API_REMOVED, ApiManagementGatewayApiRemovedEventData.class);
             put(API_MANAGEMENT_GATEWAY_CERTIFICATE_AUTHORITY_CREATED,
@@ -1557,6 +1633,8 @@ public final class SystemEventNames {
                 ApiManagementGatewayHostnameConfigurationDeletedEventData.class);
             put(API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_UPDATED,
                 ApiManagementGatewayHostnameConfigurationUpdatedEventData.class);
+            put(API_MANAGEMENT_GATEWAY_TOKEN_EXPIRED, ApiManagementGatewayTokenExpiredEventData.class);
+            put(API_MANAGEMENT_GATEWAY_TOKEN_NEAR_EXPIRY, ApiManagementGatewayTokenNearExpiryEventData.class);
             put(API_MANAGEMENT_GATEWAY_UPDATED, ApiManagementGatewayUpdatedEventData.class);
             put(API_MANAGEMENT_PRODUCT_CREATED, ApiManagementProductCreatedEventData.class);
             put(API_MANAGEMENT_PRODUCT_DELETED, ApiManagementProductDeletedEventData.class);

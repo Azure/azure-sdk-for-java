@@ -17,16 +17,15 @@ import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
-
+import java.io.InputStream;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import java.io.InputStream;
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Utility class to generate response body mode assignment and response handling based on the response body mode.
@@ -148,9 +147,20 @@ public final class ResponseHandler {
             addReturnStatement(body, returnIsResponse, "networkResponse.getValue().toStream()");
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
             // Return type is a BinaryData. Return the network response body.
-            // DO NOT close the network response for this return as it will result in the BinaryData either being
-            // closed or invalid when it is returned.
+            // DO NOT close the network response for this return as it will result in the BinaryData either being closed or invalid when it is returned.
             if (returnIsResponse) {
+                if (returnType instanceof DeclaredType) {
+                    DeclaredType declaredType = (DeclaredType) returnType;
+                    if (!declaredType.getTypeArguments().isEmpty()
+                        && ((TypeElement) ((DeclaredType) declaredType.getTypeArguments().get(0)).asElement())
+                            .getQualifiedName()
+                            .contentEquals(List.class.getCanonicalName())) {
+                        // Response<List<BinaryData>> or other generics
+                        handleDeclaredTypes(body, returnType, serializationFormatSet, true, true);
+                        return;
+                    }
+                }
+                // Raw Response or not a DeclaredType
                 body.addStatement(StaticJavaParser.parseStatement("return networkResponse;"));
             } else {
                 body.addStatement(StaticJavaParser.parseStatement("return networkResponse.getValue();"));
@@ -158,14 +168,21 @@ public final class ResponseHandler {
         } else {
             // Fallback to a generalized code path that handles declared types as the entity, which uses deserialization
             // to create the return.
-            String typeCast = determineTypeCast(returnType, body);
-
-            // Initialize the variable that will be used in the return statement.
-            body.addStatement(StaticJavaParser.parseStatement(typeCast + " deserializedResult;"));
-            handleDeclaredTypeResponse(body, (DeclaredType) returnType, serializationFormatSet, typeCast);
-
-            addReturnStatement(body, returnIsResponse, "deserializedResult");
+            handleDeclaredTypes(body, returnType, serializationFormatSet, returnIsResponse, false);
         }
+    }
+
+    private static void handleDeclaredTypes(BlockStmt body, TypeMirror returnType, boolean serializationFormatSet,
+        boolean returnIsResponse, boolean closeResponse) {
+        String typeCast = determineTypeCast(returnType, body);
+
+        // Initialize the variable that will be used in the return statement.
+        body.addStatement(StaticJavaParser.parseStatement(typeCast + " deserializedResult;"));
+        handleDeclaredTypeResponse(body, (DeclaredType) returnType, serializationFormatSet, typeCast);
+        if (closeResponse) {
+            body.addStatement(StaticJavaParser.parseStatement("networkResponse.close();"));
+        }
+        addReturnStatement(body, returnIsResponse, "deserializedResult");
     }
 
     // Helper method that creates the return statement as either Response<T> or T.

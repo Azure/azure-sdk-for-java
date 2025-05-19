@@ -1,10 +1,16 @@
 ## Release History
 
-### 4.70.0-beta.1 (Unreleased)
+### 4.71.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.70.0 (2025-05-16)
 
 #### Bugs Fixed
 * Fixed an issue where child partition is getting overridden with null continuation token if a split happens during the first request of a parent partition. - See [PR 45363](https://github.com/Azure/azure-sdk-for-java/pull/45363)
@@ -33,6 +39,13 @@
 * Added the `vectorIndexShardKeys` to the vectorIndexSpec for QuantizedFlat and DiskANN vector search. - [PR 44007](https://github.com/Azure/azure-sdk-for-java/pull/44007)
 * Added user agent suffixing if Per-Partition Automatic Failover or Per-Partition Circuit Breaker are enabled at client scope. - [PR 45197](https://github.com/Azure/azure-sdk-for-java/pull/45197)
 * Enable threshold-based availability strategy for reads by default when Per-Partition Automatic Failover is also enabled. - [PR 45267](https://github.com/Azure/azure-sdk-for-java/pull/45267) 
+
+### 4.68.1 (2025-05-16)
+> [!IMPORTANT]
+> We strongly recommend customers with an intent to upgrade to version 4.70.0 or later to include this bug fix.
+
+#### Bugs Fixed
+* Fixed an issue where child partition is getting overridden with null continuation token if a split happens during the first request of a parent partition. - See [PR 45363](https://github.com/Azure/azure-sdk-for-java/pull/45363)
 
 ### 4.68.0 (2025-03-20)
 

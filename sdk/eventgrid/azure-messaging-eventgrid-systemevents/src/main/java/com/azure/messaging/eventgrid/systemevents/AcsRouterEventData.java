@@ -21,7 +21,7 @@ public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> 
      * Router Event Job ID
      */
     @Generated
-    private String jobId;
+    private final String jobId;
 
     /*
      * Router Event Channel Reference
@@ -37,9 +37,12 @@ public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> 
 
     /**
      * Creates an instance of AcsRouterEventData class.
+     * 
+     * @param jobId the jobId value to set.
      */
     @Generated
-    protected AcsRouterEventData() {
+    protected AcsRouterEventData(String jobId) {
+        this.jobId = jobId;
     }
 
     /**
@@ -50,18 +53,6 @@ public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> 
     @Generated
     public String getJobId() {
         return this.jobId;
-    }
-
-    /**
-     * Set the jobId property: Router Event Job ID.
-     * 
-     * @param jobId the jobId value to set.
-     * @return the AcsRouterEventData object itself.
-     */
-    @Generated
-    AcsRouterEventData setJobId(String jobId) {
-        this.jobId = jobId;
-        return this;
     }
 
     /**
@@ -127,26 +118,32 @@ public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsRouterEventData if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterEventData.
      */
     @Generated
     public static AcsRouterEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsRouterEventData deserializedAcsRouterEventData = new AcsRouterEventData();
+            String jobId = null;
+            String channelReference = null;
+            String channelId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("jobId".equals(fieldName)) {
-                    deserializedAcsRouterEventData.jobId = reader.getString();
+                    jobId = reader.getString();
                 } else if ("channelReference".equals(fieldName)) {
-                    deserializedAcsRouterEventData.channelReference = reader.getString();
+                    channelReference = reader.getString();
                 } else if ("channelId".equals(fieldName)) {
-                    deserializedAcsRouterEventData.channelId = reader.getString();
+                    channelId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsRouterEventData deserializedAcsRouterEventData = new AcsRouterEventData(jobId);
+            deserializedAcsRouterEventData.channelReference = channelReference;
+            deserializedAcsRouterEventData.channelId = channelId;
 
             return deserializedAcsRouterEventData;
         });
