@@ -241,3 +241,4 @@ zhusijia26 is an invalid user. Ensure the user exists, is public member of Azure
 XiaofeiCao is not a public member of Azure.
 Path entry, /eng/versioning/version_client.txt, is missing owners
 Path entry, /eng/versioning/version_data.txt, is missing owners
+xinanqiu is not a public member of Azure.
