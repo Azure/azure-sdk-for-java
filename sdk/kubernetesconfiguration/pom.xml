@@ -10,6 +10,7 @@
   <version>1.0.0</version><!-- Need not change for every release-->
 
   <modules>
-      <module>azure-resourcemanager-kubernetesconfiguration</module>
+    <module>azure-resourcemanager-kubernetesconfiguration</module>
+    <module>azure-resourcemanager-kubernetesconfiguration-extensiontypes</module>
   </modules>
 </project>
