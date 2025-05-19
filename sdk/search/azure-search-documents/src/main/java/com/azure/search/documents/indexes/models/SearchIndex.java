@@ -26,6 +26,11 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     private final String name;
 
     /*
+     * The description of the index.
+     */
+    private String description;
+
+    /*
      * The fields of the index.
      */
     private List<SearchField> fields;
@@ -104,6 +109,11 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     private VectorSearch vectorSearch;
 
     /*
+     * A value indicating whether permission filtering is enabled for the index.
+     */
+    private SearchIndexPermissionFilterOption permissionFilterOption;
+
+    /*
      * The ETag of the index.
      */
     private String eTag;
@@ -124,6 +134,26 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Get the description property: The description of the index.
+     *
+     * @return the description value.
+     */
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: The description of the index.
+     *
+     * @param description the description value to set.
+     * @return the SearchIndex object itself.
+     */
+    public SearchIndex setDescription(String description) {
+        this.description = description;
+        return this;
     }
 
     /**
@@ -427,6 +457,28 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     }
 
     /**
+     * Get the permissionFilterOption property: A value indicating whether permission filtering is enabled for the
+     * index.
+     *
+     * @return the permissionFilterOption value.
+     */
+    public SearchIndexPermissionFilterOption getPermissionFilterOption() {
+        return this.permissionFilterOption;
+    }
+
+    /**
+     * Set the permissionFilterOption property: A value indicating whether permission filtering is enabled for the
+     * index.
+     *
+     * @param permissionFilterOption the permissionFilterOption value to set.
+     * @return the SearchIndex object itself.
+     */
+    public SearchIndex setPermissionFilterOption(SearchIndexPermissionFilterOption permissionFilterOption) {
+        this.permissionFilterOption = permissionFilterOption;
+        return this;
+    }
+
+    /**
      * Get the eTag property: The ETag of the index.
      *
      * @return the eTag value.
@@ -453,6 +505,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("scoringProfiles", this.scoringProfiles,
             (writer, element) -> writer.writeJson(element));
@@ -468,6 +521,8 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         jsonWriter.writeJsonField("similarity", this.similarity);
         jsonWriter.writeJsonField("semantic", this.semanticSearch);
         jsonWriter.writeJsonField("vectorSearch", this.vectorSearch);
+        jsonWriter.writeStringField("permissionFilterOption",
+            this.permissionFilterOption == null ? null : this.permissionFilterOption.toString());
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         return jsonWriter.writeEndObject();
     }
@@ -485,6 +540,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
             String name = null;
+            String description = null;
             List<SearchField> fields = null;
             List<ScoringProfile> scoringProfiles = null;
             String defaultScoringProfile = null;
@@ -499,6 +555,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             SimilarityAlgorithm similarity = null;
             SemanticSearch semanticSearch = null;
             VectorSearch vectorSearch = null;
+            SearchIndexPermissionFilterOption permissionFilterOption = null;
             String eTag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -506,6 +563,8 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                     nameFound = true;
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
                 } else if ("fields".equals(fieldName)) {
                     fields = reader.readArray(reader1 -> SearchField.fromJson(reader1));
                 } else if ("scoringProfiles".equals(fieldName)) {
@@ -534,6 +593,8 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                     semanticSearch = SemanticSearch.fromJson(reader);
                 } else if ("vectorSearch".equals(fieldName)) {
                     vectorSearch = VectorSearch.fromJson(reader);
+                } else if ("permissionFilterOption".equals(fieldName)) {
+                    permissionFilterOption = SearchIndexPermissionFilterOption.fromString(reader.getString());
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else {
@@ -542,6 +603,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             }
             if (nameFound) {
                 SearchIndex deserializedSearchIndex = new SearchIndex(name);
+                deserializedSearchIndex.description = description;
                 deserializedSearchIndex.fields = fields;
                 deserializedSearchIndex.scoringProfiles = scoringProfiles;
                 deserializedSearchIndex.defaultScoringProfile = defaultScoringProfile;
@@ -556,6 +618,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                 deserializedSearchIndex.similarity = similarity;
                 deserializedSearchIndex.semanticSearch = semanticSearch;
                 deserializedSearchIndex.vectorSearch = vectorSearch;
+                deserializedSearchIndex.permissionFilterOption = permissionFilterOption;
                 deserializedSearchIndex.eTag = eTag;
                 return deserializedSearchIndex;
             }
