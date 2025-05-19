@@ -36,9 +36,86 @@ Various documentation is available to help you get started
 
 ## Key concepts
 
+### Online Experimentation Workspace
+
+[`Microsoft.OnlineExperimentation/workspaces`][az_exp_workspace] Azure resources work in conjunction with [Azure App Configuration][app_config] and [Azure Monitor][azure_monitor]. The Online Experimentation workspace handles management of metrics definitions and their continuous computation to monitor and evaluate experiment results.
+
+### Experiment Metrics
+
+Metrics are used to measure the impact of your online experiments. See the [samples][azure_exp_samples] for how to create and manage various types of experiment metrics.
+
 ## Examples
 
 ```java com.azure.analytics.onlineexperimentation.readme
+// [Step 1] Initialize the SDK client
+// The endpoint URL from the Microsoft.OnlineExperimentation/workspaces resource
+String endpoint = System.getenv("AZURE_ONLINEEXPERIMENTATION_ENDPOINT");
+
+System.out.printf("AZURE_ONLINEEXPERIMENTATION_ENDPOINT is %s%n", endpoint);
+
+OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+
+// [Step 2] Define the experiment metric
+ExperimentMetric exampleMetric = new ExperimentMetric(
+    LifecycleStage.ACTIVE,
+    "% users with LLM interaction who made a high-value purchase",
+    "Percentage of users who received a response from the LLM and then made a purchase of $100 or more",
+    Arrays.asList("Business"),
+    DesiredDirection.INCREASE,
+    new EventRateMetricDefinition(
+        "ResponseReceived",
+        "Revenue > 100"
+    )
+);
+
+// [Optional][Step 2a] Validate the metric - checks for input errors without persisting anything.
+System.out.println("Checking if the experiment metric definition is valid...");
+
+ExperimentMetricValidationResult validationResult = client.validateMetric(exampleMetric);
+
+System.out.printf("Experiment metric definition valid: %s.%n", validationResult.isValid());
+if (validationResult.getDiagnostics() != null) {
+    for (DiagnosticDetail detail : validationResult.getDiagnostics()) {
+        // Inspect details of why the metric definition was rejected as Invalid.
+        System.out.printf("- %s: %s%n", detail.getCode(), detail.getMessage());
+    }
+}
+
+if (!validationResult.isValid()) {
+    System.out.println("Metric validation failed. Exiting sample.");
+    return;
+}
+
+// [Step 3] Create the experiment metric
+String exampleMetricId = "sample_metric_id_" + (new Random().nextInt(10000) + 10000);
+
+System.out.printf("Creating the experiment metric %s...%n", exampleMetricId);
+
+// Create with If-None-Match to ensure no one else created this metric in the meantime
+RequestConditions createConditions = new RequestConditions().setIfNoneMatch("*");
+ExperimentMetric createdMetric = client.createOrUpdateMetric(exampleMetricId, exampleMetric, createConditions);
+
+System.out.printf("Experiment metric %s created, etag: %s.%n", createdMetric.getId(), createdMetric.getETag());
+
+// [Step 4] Deactivate the experiment metric and update the description.
+ExperimentMetric updateRequest = new ExperimentMetric()
+    .setLifecycle(LifecycleStage.INACTIVE) // pauses computation of this metric
+    .setDescription("No longer need to compute this.");
+
+// Update with If-Match to ensure no one else updated the metric in the meantime
+RequestConditions updateConditions = new RequestConditions().setIfMatch(createdMetric.getETag());
+ExperimentMetric updatedMetric = client.createOrUpdateMetric(exampleMetricId, updateRequest, updateConditions);
+
+System.out.printf("Updated metric: %s, etag: %s.%n", updatedMetric.getId(), updatedMetric.getETag());
+
+// [Step 5] Delete the experiment metric.
+RequestConditions deleteConditions = new RequestConditions().setIfMatch(updatedMetric.getETag());
+client.deleteMetric(exampleMetricId, deleteConditions);
+
+System.out.printf("Deleted metric: %s.%n", exampleMetricId);
 ```
 
 ### Service API versions
@@ -76,3 +153,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[app_config]: https://learn.microsoft.com/azure/azure-app-configuration/overview
+[azure_monitor]: https://learn.microsoft.com/azure/azure-monitor/overview
+[azure_exp_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/onlineexperimentation/azure-resourcemanager-onlineexperimentation/SAMPLE.md
