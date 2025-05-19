@@ -371,7 +371,7 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
 
     /**
      * Creates a new instance of ShareErrorCode value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -380,7 +380,7 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
 
     /**
      * Creates or finds a ShareErrorCode from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ShareErrorCode.
      */
@@ -390,7 +390,7 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
 
     /**
      * Gets known ShareErrorCode values.
-     * 
+     *
      * @return known ShareErrorCode values.
      */
     public static Collection<ShareErrorCode> values() {

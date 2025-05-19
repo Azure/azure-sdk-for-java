@@ -248,7 +248,7 @@ public class RequestRetryPolicyTest {
     @ParameterizedTest
     @MethodSource("retryPolicyRetriesStatusCodeSupplier")
     public void retryPolicyRetriesStatusCode(int statusCode, boolean isPrimary, boolean shouldBeRetried) {
-        assertEquals(shouldBeRetried, RequestRetryPolicy.shouldStatusCodeBeRetried(statusCode, isPrimary));
+        assertEquals(shouldBeRetried, RequestRetryPolicy.shouldStatusCodeBeRetried(statusCode, isPrimary, null));
     }
 
     private static Mono<HttpResponse> sendRequest(HttpPipeline pipeline) {

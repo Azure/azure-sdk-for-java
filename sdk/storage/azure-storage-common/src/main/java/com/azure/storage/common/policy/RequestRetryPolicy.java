@@ -41,6 +41,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
     private final RequestRetryOptions requestRetryOptions;
     private static final HttpHeaderName X_MS_COPY_SOURCE_ERROR_CODE
         = HttpHeaderName.fromString("x-ms-copy-source-error-code");
+    private static final HttpHeaderName X_MS_COPY_SOURCE_STATUS_CODE
+        = HttpHeaderName.fromString("x-ms-copy-source-status-code");
 
     /**
      * Constructs the policy using the retry options.
@@ -157,7 +159,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             int statusCode = response.getStatusCode();
 
             //boolean retry = shouldResponseBeRetried(statusCode, tryingPrimary, response);
-            boolean retry = shouldStatusCodeBeRetried(statusCode, tryingPrimary);
+            boolean retry = shouldStatusCodeBeRetried(statusCode, tryingPrimary, response);
             if (!tryingPrimary && statusCode == 404) {
                 newConsiderSecondary = false;
             }
@@ -271,7 +273,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
 
             boolean newConsiderSecondary = considerSecondary;
             int statusCode = response.getStatusCode();
-            boolean retry = shouldStatusCodeBeRetried(statusCode, tryingPrimary);
+            boolean retry = shouldStatusCodeBeRetried(statusCode, tryingPrimary, response);
             //boolean retry = shouldResponseBeRetried(statusCode, tryingPrimary, response);
             if (!tryingPrimary && statusCode == 404) {
                 newConsiderSecondary = false;
@@ -404,8 +406,24 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
     //return statusCodeRetry || headerRetry;
     //}
 
-    static boolean shouldStatusCodeBeRetried(int statusCode, boolean isPrimary) {
-        return (statusCode == 429 || statusCode == 500 || statusCode == 503) || (!isPrimary && statusCode == 404);
+    static boolean shouldStatusCodeBeRetried(int statusCode, boolean isPrimary, HttpResponse response) {
+        if ((statusCode == 429 || statusCode == 500 || statusCode == 503) || (!isPrimary && statusCode == 404)) {
+            return true;
+        }
+
+        if (response != null) {
+            String copySourceErrorCode = response.getHeaderValue(X_MS_COPY_SOURCE_ERROR_CODE);
+            String copySourceStatusCode = response.getHeaderValue(X_MS_COPY_SOURCE_STATUS_CODE);
+
+            return "InternalError".equalsIgnoreCase(copySourceErrorCode)
+                || "OperationTimedOut".equalsIgnoreCase(copySourceErrorCode)
+                || "ServerBusy".equalsIgnoreCase(copySourceErrorCode)
+                || "InternalError".equalsIgnoreCase(copySourceStatusCode)
+                || "OperationTimedOut".equalsIgnoreCase(copySourceStatusCode)
+                || "ServerBusy".equalsIgnoreCase(copySourceStatusCode);
+        }
+
+        return false;
     }
 
     static final class ExceptionRetryStatus {
