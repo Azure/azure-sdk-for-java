@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,15 +18,14 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class QueryAsyncTests extends QueryTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void validQuerySucceeds(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void validQuerySucceeds(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
+        throws IOException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
         int pageSize = 5;
         String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient,
@@ -49,8 +49,8 @@ public class QueryAsyncTests extends QueryTestBase {
                     asyncClient, getRandomIntegerStringGenerator());
                 roomTwinIds.add(roomTwinId);
                 StepVerifier
-                    .create(
-                        asyncClient.createOrReplaceDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null))
+                    .create(asyncClient.createOrReplaceDigitalTwinWithResponse(roomTwinId,
+                        deserializeJsonString(roomTwin, BasicDigitalTwin::fromJson), BasicDigitalTwin.class, null))
                     .assertNext(response -> assertEquals(HttpURLConnection.HTTP_OK, response.getStatusCode()))
                     .verifyComplete();
             }
