@@ -54,7 +54,7 @@
 
 # ServiceLabel: %OpenTelemetry
 # AzureSdkOwners:                                    @lmolkova
-# ServiceOwners:                                     @trask @ramthi @jeanbisutti @harsimar @rajkumar-rangaraj @TimothyMothra @xiang17
+# ServiceOwners:                                     @trask @ramthi @jeanbisutti @harsimar @rajkumar-rangaraj @xiang17
 
 # PRLabel: %Azure.Core
 /sdk/parents/                                        @alzimmermsft @srnagar @jonathangiles @samvaity
@@ -180,7 +180,7 @@
 # ServiceOwners:                                     @maertendMSFT
 
 # PRLabel: %Cognitive - Text Analytics
-/sdk/textanalytics/                                  @samvaity @quentinRobinson @wangyuantao
+/sdk/textanalytics/                                  @samvaity @quentinRobinson
 
 # ServiceLabel: %Cognitive - Text Analytics
 # AzureSdkOwners:                                    @samvaity
@@ -208,7 +208,7 @@
 # ServiceOwners:                                     @vkurpad
 
 # PRLabel: %Cognitive - Anomaly Detector
-/sdk/anomalydetector/                                @conhua @mengaims @juaduan @moreOver0
+/sdk/anomalydetector/                                @mengaims
 
 # ServiceLabel: %Cognitive - Anomaly Detector
 # ServiceOwners:                                     @yingqunpku @bowgong
@@ -292,13 +292,13 @@
 /sdk/communication/azure-communication-phonenumbers/   @Arazan @whisper6284 @danielortega-msft @sofiar-msft
 
 # PRLabel: %Communication - SMS
-/sdk/communication/azure-communication-sms/            @DimaKolomiiets @gfeitosa-msft @besh2014 @phermanov-msft @ilyapaliakou-msft
+/sdk/communication/azure-communication-sms/            @gfeitosa-msft @besh2014 @phermanov-msft @ilyapaliakou-msft
 
 # PRLabel: %Communication - Resource Manager
 /sdk/communication/azure-resourcemanager-communication/
 
 # PRLabel: %Communication - Rooms
-/sdk/communication/azure-communication-rooms/        @minnieliu @paolamvhz @alexokun @Mrayyan @shwali-msft @allchiang-msft @mikehang-msft
+/sdk/communication/azure-communication-rooms/        @minnieliu @paolamvhz @shwali-msft @allchiang-msft @mikehang-msft
 
 # ServiceLabel: %Compute
 # ServiceOwners:                                     @Drewm3 @avirishuv @vaibhav-agar @amjads1
@@ -443,7 +443,7 @@
 # ServiceOwners:                                     @Tanmayeekamath
 
 # PRLabel: %Digital Twins
-/sdk/digitaltwins/                                   @johngallardo @efriesner @abhinav-ghai @Aashish93-stack @sjiherzig @Satya-Kolluri
+/sdk/digitaltwins/                                   @johngallardo @abhinav-ghai @Aashish93-stack @sjiherzig
 
 # ServiceLabel: %Digital Twins
 # ServiceOwners:                                     @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @barustum @jamdavi
@@ -473,7 +473,7 @@
 
 # ServiceLabel: %Health Deidentification
 # PRLabel: %Health Deidentification
-/sdk/healthdataaiservices/                           @GrahamMThomas @alexathomases @Azure/healthdatadeidentification
+/sdk/healthdataaiservices/                           @alexathomases @Azure/healthdatadeidentification
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs/            @sjkwak
@@ -581,7 +581,7 @@
 # ServiceOwners:                                     @kpiteira
 
 # PRLabel: %Models Repository
-/sdk/modelsrepository/                               @drwill-ms @timtay-microsoft @abhipsaMisra @digimaun @andyk-ms @brycewang-microsoft @tmahmood-microsoft @ngastelum-ms
+/sdk/modelsrepository/                               @timtay-microsoft @abhipsaMisra @digimaun @andyk-ms @brycewang-microsoft
 
 # PRLabel:  %Monitor
 /sdk/monitor/azure-monitor-query*/                   @srnagar @jairmyree @lmolkova @Azure/azure-sdk-write-monitor-data-plane
@@ -603,7 +603,7 @@
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti @harsimar
 
 # PRLabel:  %Monitor - Autoconfigure
-/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/   @trask @ramthi @heyams @jeanbisutti @harsimar @rajkumar-rangaraj @TimothyMothra @xiang17
+/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/   @trask @ramthi @heyams @jeanbisutti @harsimar @rajkumar-rangaraj @xiang17
 
 # ServiceLabel: %Network
 # ServiceOwners:                                     @aznetsuppgithub
@@ -695,7 +695,7 @@
 /sdk/purview/                                        @yifan-zhou922
 
 # PRLabel: %Azure Quantum
-/sdk/quantum/                                        @vxfield @cgranade @ricardo-espinoza @anjbur @msoeken @guenp
+/sdk/quantum/                                        @vxfield
 
 # ServiceLabel: %Recovery Services Backup
 # ServiceOwners:                                     @Daya-Patil
@@ -864,13 +864,13 @@
 /sdk/spring-experimental/                            @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan @rajkumar-rangaraj @TimothyMothra @xiang17
+/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan @rajkumar-rangaraj @xiang17
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan @rajkumar-rangaraj @TimothyMothra @xiang17
+/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan @rajkumar-rangaraj @xiang17
 
 # ServiceLabel:  %Monitor - Spring
-# AzureSdkOwners:                                    @jeanbisutti @trask @ramthi @heyams @harsimar @rajkumar-rangaraj @TimothyMothra @xiang17
+# AzureSdkOwners:                                    @jeanbisutti @trask @ramthi @heyams @harsimar @rajkumar-rangaraj @xiang17
 
 # PRLabel: %azure-spring
 /sdk/spring/spring-cloud-azure-appconfiguration-config*/        @mrm9084 @rujche @netyyyy @saragluna @moarychan
