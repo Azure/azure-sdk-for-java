@@ -866,26 +866,26 @@ Display information about the quality measure. See [SampleQualityMeasureInferenc
 
 ```java com.azure.health.insights.radiologyinsights.displayresults.qualitymeasure
 private static void displayQualityMeasureInference(RadiologyInsightsInferenceResult radiologyInsightsResult) {
-        List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
-        for (RadiologyInsightsPatientResult patientResult : patientResults) {
-            List<RadiologyInsightsInference> inferences = patientResult.getInferences();
-            for (RadiologyInsightsInference inference : inferences) {
-                if (inference instanceof QualityMeasureInference) {
-                    QualityMeasureInference qualityMeasureInference = (QualityMeasureInference) inference;
-                    System.out.println("Quality Measure Inference found");
-                    // Extract qualityMeasureDenominator
-                    String qualityMeasureDenominator = qualityMeasureInference.getQualityMeasureDenominator();
-                    System.out.println("QualityMeasureDenominator: " + qualityMeasureDenominator);
-                    // Extract qualityMeasureComplianceType
-                    QualityMeasureComplianceType qualityMeasureComplianceType = qualityMeasureInference.getComplianceType();
-                    System.out.println("QualityMeasureComplianceType: " + qualityMeasureComplianceType.getValue());
-                    // Extract Quality Criteria
-                    List<String> qualityCriteriaList = qualityMeasureInference.getQualityCriteria();
-                    qualityCriteriaList.forEach(qualityCriteria -> System.out.println("QualityCriteria: " + qualityCriteria));
-                }
+    List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
+    for (RadiologyInsightsPatientResult patientResult : patientResults) {
+        List<RadiologyInsightsInference> inferences = patientResult.getInferences();
+        for (RadiologyInsightsInference inference : inferences) {
+            if (inference instanceof QualityMeasureInference) {
+                QualityMeasureInference qualityMeasureInference = (QualityMeasureInference) inference;
+                System.out.println("Quality Measure Inference found");
+                // Extract qualityMeasureDenominator
+                String qualityMeasureDenominator = qualityMeasureInference.getQualityMeasureDenominator();
+                System.out.println("QualityMeasureDenominator: " + qualityMeasureDenominator);
+                // Extract qualityMeasureComplianceType
+                QualityMeasureComplianceType qualityMeasureComplianceType = qualityMeasureInference.getComplianceType();
+                System.out.println("QualityMeasureComplianceType: " + qualityMeasureComplianceType.getValue());
+                // Extract Quality Criteria
+                List<String> qualityCriteriaList = qualityMeasureInference.getQualityCriteria();
+                qualityCriteriaList.forEach(qualityCriteria -> System.out.println("QualityCriteria: " + qualityCriteria));
             }
         }
     }
+}
 ```
 
 ### Get Scoring And Assessment Inference information
@@ -894,33 +894,33 @@ Display information about the scoring and assessment. See [SampleScoringAndAsses
 
 ```java com.azure.health.insights.radiologyinsights.displayresults.scoringandassessment
 private static void displayScoringAndAssessmentInference(RadiologyInsightsInferenceResult radiologyInsightsResult) {
-        List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
-        for (RadiologyInsightsPatientResult patientResult : patientResults) {
-            List<RadiologyInsightsInference> inferences = patientResult.getInferences();
-            for (RadiologyInsightsInference inference : inferences) {
-                if (inference instanceof ScoringAndAssessmentInference) {
-                    ScoringAndAssessmentInference scoringAndAssessmentInference = (ScoringAndAssessmentInference) inference;
-                    System.out.println("Scoring and Assessment Inference found");
-                    // Extract scoringAndAssessmentCategory
-                    ScoringAndAssessmentCategoryType scoringAndAssessmentCategoryType = scoringAndAssessmentInference.getCategory();
-                    System.out.println("Scoring And Assessment Category: " + scoringAndAssessmentCategoryType.getValue());
-                    // Extract scoringAndAssessmentCategoryDescription
-                    String scoringAndAssessmentCategoryDescription = scoringAndAssessmentInference.getCategoryDescription();
-                    System.out.println("Scoring And Assessment Category Description: " + scoringAndAssessmentCategoryDescription);
-                    // Extract scoringAndAssessment singleValue
-                    if (scoringAndAssessmentInference.getSingleValue() != null) {
-                        System.out.println("Single Value: " + scoringAndAssessmentInference.getSingleValue());
-                    }
-                    // Extract scoringAndAssessment rangeValue
-                    if (scoringAndAssessmentInference.getRangeValue() != null) {
-                        System.out.println("Min Value: " + scoringAndAssessmentInference.getRangeValue().getMinimum());
-                        System.out.println("Max Value: " + scoringAndAssessmentInference.getRangeValue().getMaximum());
-                    }
+    List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
+    for (RadiologyInsightsPatientResult patientResult : patientResults) {
+        List<RadiologyInsightsInference> inferences = patientResult.getInferences();
+        for (RadiologyInsightsInference inference : inferences) {
+            if (inference instanceof ScoringAndAssessmentInference) {
+                ScoringAndAssessmentInference scoringAndAssessmentInference = (ScoringAndAssessmentInference) inference;
+                System.out.println("Scoring and Assessment Inference found");
+                // Extract scoringAndAssessmentCategory
+                ScoringAndAssessmentCategoryType scoringAndAssessmentCategoryType = scoringAndAssessmentInference.getCategory();
+                System.out.println("Scoring And Assessment Category: " + scoringAndAssessmentCategoryType.getValue());
+                // Extract scoringAndAssessmentCategoryDescription
+                String scoringAndAssessmentCategoryDescription = scoringAndAssessmentInference.getCategoryDescription();
+                System.out.println("Scoring And Assessment Category Description: " + scoringAndAssessmentCategoryDescription);
+                // Extract scoringAndAssessment singleValue
+                if (scoringAndAssessmentInference.getSingleValue() != null) {
+                    System.out.println("Single Value: " + scoringAndAssessmentInference.getSingleValue());
+                }
+                // Extract scoringAndAssessment rangeValue
+                if (scoringAndAssessmentInference.getRangeValue() != null) {
+                    System.out.println("Min Value: " + scoringAndAssessmentInference.getRangeValue().getMinimum());
+                    System.out.println("Max Value: " + scoringAndAssessmentInference.getRangeValue().getMaximum());
                 }
             }
-
         }
+
     }
+}
 ```
 
 ## Troubleshooting
