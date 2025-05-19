@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
@@ -21,6 +22,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -119,12 +121,11 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         }
         // todo - neharao1 - validate b/w name() v/s toString()
         request.setThinclientHeaders(
-            request.getOperationType().name(),
-            request.getResourceType().name(),
+            request.getOperationType(),
+            request.getResourceType(),
             this.globalDatabaseAccountName,
             request.getResourceId());
 
-        byte[] epk = request.getPartitionKeyInternal().getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
         if (request.properties == null) {
             request.properties = new HashMap<>();
         }
@@ -135,7 +136,20 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         headers.set(HttpConstants.HttpHeaders.ACTIVITY_ID, request.getActivityId().toString());
 
         RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
-        rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey, epk);
+
+        PartitionKeyInternal partitionKey = request.getPartitionKeyInternal();
+
+        if (partitionKey != null) {
+            byte[] epk = partitionKey.getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
+            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey, epk);
+        }
+
+        PartitionKeyRange pkRange = request.requestContext.resolvedPartitionKeyRange;
+        request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_START_EPK, pkRange.getMinInclusive());
+        request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_END_EPK, pkRange.getMaxExclusive());
+
+        /*rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.StartEpk, pkRange.getMinInclusive().getBytes(StandardCharsets.UTF_8));
+        rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EndEpk, pkRange.getMaxExclusive().getBytes(StandardCharsets.UTF_8));*/
 
         // todo: eventually need to use pooled buffer
         ByteBuf byteBuf = Unpooled.buffer();

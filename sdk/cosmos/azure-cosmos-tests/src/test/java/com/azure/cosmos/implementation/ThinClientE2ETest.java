@@ -2,24 +2,71 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.*;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 // End to end sanity tests for basic thin client functionality.
-public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
+public class ThinClientE2ETest {
+    @Test(groups = {"thinclient"})
+    public void testThinClientQuery() {
+        CosmosAsyncClient client = null;
+        try {
+            // it's set in the test profile, but when running locally you need to set them manually
+            // so having it here makes it easier to not forget
+            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+
+            client = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .gatewayMode()
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
+            String idName = "id";
+            String partitionKeyName = "partitionKey";
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode doc = mapper.createObjectNode();
+            String idValue = UUID.randomUUID().toString();
+            doc.put(idName, idValue);
+            doc.put(partitionKeyName, idValue);
+
+            String query = "select * from c WHERE c.id=@id";
+            SqlQuerySpec querySpec = new SqlQuerySpec(query);
+            querySpec.setParameters(Arrays.asList(new SqlParameter("@id", idValue)));
+            FeedResponse<ObjectNode> response = container
+                .queryItems(querySpec, ObjectNode.class)
+                .byPage()
+                .blockFirst();
+
+            ObjectNode docFromResponse = response.getResults().get(0);
+            assertThat(docFromResponse.get(idName)).isEqualTo(idValue);
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+            System.clearProperty("COSMOS.HTTP2_ENABLED");
+            if (client != null) {
+                client.close();
+            }
+        }
+    }
+
     @Test(groups = {"thinclient"})
     public void testThinClientDocumentPointOperations() {
         CosmosAsyncClient client = null;
         try {
-            // it's set in the profile, but when running locally you need to set them manually
+            // it's set in the test profile, but when running locally you need to set them manually
             // so having it here makes it easier to not forget
             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
@@ -100,7 +147,9 @@ public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
             System.clearProperty("COSMOS.HTTP2_ENABLED");
-            client.close();
+            if (client != null) {
+                client.close();
+            }
         }
     }
 }
