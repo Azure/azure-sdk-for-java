@@ -68,6 +68,8 @@ keyvault:
   suffix: generated
 kubernetesconfiguration/Microsoft.KubernetesConfiguration/extensionTypes:
   service: kubernetesconfiguration
+kubernetesconfiguration/Microsoft.KubernetesConfiguration/fluxConfigurations:
+  service: kubernetesconfiguration
 liftrastronomer:
   service: astro
 liftrqumulo:

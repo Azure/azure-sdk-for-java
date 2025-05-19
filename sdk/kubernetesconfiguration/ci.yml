@@ -40,3 +40,6 @@ extends:
       - name: azure-resourcemanager-kubernetesconfiguration-extensiontypes
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerkubernetesconfigurationextensiontypes
+      - name: azure-resourcemanager-kubernetesconfiguration-fluxconfigurations
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerkubernetesconfigurationfluxconfigurations
