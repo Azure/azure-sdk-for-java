@@ -3,6 +3,13 @@
 
 package com.azure.communication.phonenumbers;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
+import com.azure.communication.phonenumbers.models.BrowsePhoneNumbersOptions;
+import com.azure.communication.phonenumbers.models.CreateOrUpdateReservationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
@@ -10,7 +17,10 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
+import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
+import com.azure.communication.phonenumbers.models.PurchaseReservationResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.credential.AzureKeyCredential;
@@ -82,6 +92,80 @@ public class AsyncClientJavaDocCodeSnippets {
         // END: com.azure.communication.phonenumbers.asyncclient.getPurchasedWithResponse
 
         return phoneNumber;
+    }
+
+    /**
+     * Sample code for browsing and reserving available phone numbers and purchasing
+     * the reservation.
+     *
+     */
+    public void browseAndReservePhoneNumbers() {
+        // BEGIN:
+        // com.azure.communication.phonenumbers.asyncclient.browseAndReservePhoneNumbers
+        PhoneNumbersAsyncClient phoneNumberAsyncClient = createPhoneNumberAsyncClient();
+        String reservationId = UUID.randomUUID().toString();
+
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("US", PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+                .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+
+        PhoneNumbersBrowseResult result = phoneNumberAsyncClient.browseAvailableNumbers(browseRequest).block();
+
+        List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
+
+        numbersToAdd.add(result.getPhoneNumbers().get(0));
+
+        PhoneNumbersReservation reservationResponse = phoneNumberAsyncClient.createOrUpdateReservation(
+                new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToAdd(numbersToAdd)).block();
+        System.out.println("Reservation ID: " + reservationResponse.getId());
+        // END:
+        // com.azure.communication.phonenumbers.asyncclient.browseAndReservePhoneNumbers
+
+        // BEGIN: com.azure.communication.phonenumbers.asyncclient.purchaseReservation
+        AsyncPollResponse<PhoneNumberOperation, PurchaseReservationResult> purchaseResponse = phoneNumberAsyncClient
+                .beginPurchaseReservation(reservationId).blockFirst();
+        System.out.println("Purchase reservation is complete: " + purchaseResponse.getStatus());
+        // END: com.azure.communication.phonenumbers.asyncclient.purchaseReservation
+    }
+
+    /**
+     * Sample code for browsing and reserving available phone numbers and purchasing
+     * the reservation with response.
+     *
+     */
+    public void browseAndReservePhoneNumbersWithResponse() {
+        // BEGIN:
+        // com.azure.communication.phonenumbers.asyncclient.browseAndReservePhoneNumbersWithResponse
+        PhoneNumbersAsyncClient phoneNumberAsyncClient = createPhoneNumberAsyncClient();
+        String reservationId = UUID.randomUUID().toString();
+
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("US", PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+                .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+
+        PhoneNumbersBrowseResult result = phoneNumberAsyncClient.browseAvailableNumbersWithResponse(browseRequest)
+                .block().getValue();
+
+        List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
+
+        numbersToAdd.add(result.getPhoneNumbers().get(0));
+
+        PhoneNumbersReservation reservationResponse = phoneNumberAsyncClient.createOrUpdateReservationWithResponse(
+                new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToAdd(numbersToAdd)).block()
+                .getValue();
+        System.out.println("Reservation ID: " + reservationResponse.getId());
+        // END:
+        // com.azure.communication.phonenumbers.asyncclient.browseAndReservePhoneNumbersWithResponse
+
+        // BEGIN:
+        // com.azure.communication.phonenumbers.asyncclient.purchaseReservationWithResponse
+        AsyncPollResponse<PhoneNumberOperation, PurchaseReservationResult> purchaseResponse = phoneNumberAsyncClient
+                .beginPurchaseReservation(reservationId).blockFirst();
+        System.out.println("Purchase reservation is complete: " + purchaseResponse.getStatus());
+        // END:
+        // com.azure.communication.phonenumbers.asyncclient.purchaseReservationWithResponse
     }
 
     /**
