@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -22,7 +23,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -149,8 +149,8 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                 + request.getOperationType());
         } else {
             PartitionKeyRange pkRange = request.requestContext.resolvedPartitionKeyRange;
-            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.StartEpkHash, pkRange.getMinInclusive().getBytes(StandardCharsets.UTF_8));
-            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EndEpkHash, pkRange.getMaxExclusive().getBytes(StandardCharsets.UTF_8));
+            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.StartEpkHash, HexConvert.hexToBytes(pkRange.getMinInclusive()));
+            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EndEpkHash, HexConvert.hexToBytes(pkRange.getMaxExclusive()));
         }
 
         // todo: eventually need to use pooled buffer

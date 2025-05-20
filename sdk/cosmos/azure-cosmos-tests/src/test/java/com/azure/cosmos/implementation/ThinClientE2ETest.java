@@ -43,16 +43,22 @@ public class ThinClientE2ETest {
             doc.put(idName, idValue);
             doc.put(partitionKeyName, idValue);
 
-            String query = "select * from c WHERE c.id=@id";
+            container.createItem(doc, new PartitionKey(idValue), null).block();
+
+            String query = "select * from c WHERE c." + partitionKeyName + "=@id";
             SqlQuerySpec querySpec = new SqlQuerySpec(query);
             querySpec.setParameters(Arrays.asList(new SqlParameter("@id", idValue)));
+            CosmosQueryRequestOptions requestOptions =
+                new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(idValue));
             FeedResponse<ObjectNode> response = container
-                .queryItems(querySpec, ObjectNode.class)
+                .queryItems(querySpec, requestOptions, ObjectNode.class)
                 .byPage()
                 .blockFirst();
 
             ObjectNode docFromResponse = response.getResults().get(0);
-            assertThat(docFromResponse.get(idName)).isEqualTo(idValue);
+            assertThat(docFromResponse.get(partitionKeyName).textValue()).isEqualTo(idValue);
+            assertThat(docFromResponse.get(idName).textValue()).isEqualTo(idValue);
+
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
             System.clearProperty("COSMOS.HTTP2_ENABLED");
