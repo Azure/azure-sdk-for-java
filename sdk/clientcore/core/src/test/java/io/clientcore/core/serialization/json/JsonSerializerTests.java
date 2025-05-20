@@ -1,17 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.utils.serializers;
+package io.clientcore.core.serialization.json;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.models.SimpleClass;
-import io.clientcore.core.serialization.json.JsonReader;
-import io.clientcore.core.serialization.json.JsonSerializable;
-import io.clientcore.core.serialization.json.JsonSerializer;
-import io.clientcore.core.serialization.json.JsonToken;
-import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -194,6 +190,22 @@ public class JsonSerializerTests {
         } else {
             assertEquals(expected, outputStream.toString(StandardCharsets.UTF_8));
         }
+    }
+
+    @Test
+    public void testBinaryDataListDeserialization() throws IOException {
+        byte[] bytes = "[\"hello\", 5]".getBytes(StandardCharsets.UTF_8);
+
+        ParameterizedType type = TypeUtil.createParameterizedType(List.class, BinaryData.class);
+
+        List<BinaryData> models = SERIALIZER.deserializeFromBytes(bytes, type);
+        assertNotNull(models);
+        assertEquals(2, models.size());
+        assertTrue(models.get(0) instanceof BinaryData);
+        assertTrue(models.get(1) instanceof BinaryData);
+
+        assertEquals("hello", models.get(0).toObject(String.class));
+        assertEquals(5, (int) models.get(1).toObject(Integer.class));
     }
 
     private static Stream<Arguments> textSerializationSupplier() {

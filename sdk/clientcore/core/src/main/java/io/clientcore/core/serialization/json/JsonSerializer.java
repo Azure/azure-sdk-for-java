@@ -5,6 +5,7 @@ package io.clientcore.core.serialization.json;
 
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
 
@@ -15,6 +16,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,6 +78,24 @@ public class JsonSerializer implements ObjectSerializer {
                         }
                     });
                     return (T) list;
+                } else if (BinaryData.class.isAssignableFrom(TypeUtil.getRawClass(listElementType))) {
+                    JsonToken token = jsonReader.currentToken();
+                    if (token == null) {
+                        token = jsonReader.nextToken();
+                    }
+
+                    // Untyped fields cannot begin with END_OBJECT, END_ARRAY, or FIELD_NAME as these would constitute invalid JSON.
+                    if (token != JsonToken.START_ARRAY) {
+                        throw new IllegalStateException("Unexpected token to begin an untyped field: " + token);
+                    }
+
+                    List<BinaryData> list = new ArrayList<>();
+                    while (jsonReader.nextToken() != JsonToken.END_ARRAY) {
+                        list.add(BinaryData.fromObject(jsonReader.readUntyped()));
+                    }
+                    return (T) list;
+                } else {
+                    return (T) jsonReader.readUntyped();
                 }
             } else if (type instanceof Class<?>
                 && JsonSerializable.class.isAssignableFrom(TypeUtil.getRawClass(type))) {
