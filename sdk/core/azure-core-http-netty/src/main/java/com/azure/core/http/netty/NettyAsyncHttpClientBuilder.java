@@ -221,10 +221,10 @@ public class NettyAsyncHttpClientBuilder {
                     // The HttpResponseDecoderSpec didn't have its maxChunkSize configured externally, set it to a
                     // larger value than the default to reduce the number of chunks emitted. Doing so, in theory, should
                     // help improve performance by reducing the number of chunks emitted. Though, it may cause worse
-                    // memory fragmentation.
-                    // Try using 32KB as the max chunk size, a 4x increase over the default. This number is arbitrary
+                    // memory fragmentation and reduce how often TLAB allocations can be used.
+                    // Try using 16KB as the max chunk size, a 2x increase over the default. This number is arbitrary
                     // and maybe should be configurable, but is a good starting point to get performance information.
-                    initialSpec.maxChunkSize(32768);
+                    initialSpec.maxChunkSize(16384);
                 }
 
                 // TODO (alzimmer): What does validating HTTP response headers get us?
