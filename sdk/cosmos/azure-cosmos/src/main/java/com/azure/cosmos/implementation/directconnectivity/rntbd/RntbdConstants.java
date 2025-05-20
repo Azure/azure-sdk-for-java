@@ -604,14 +604,13 @@ public final class RntbdConstants {
             DatabaseName,
             CollectionName,
             CollectionRid,
-            // ResourceId,
+            ResourceId,
             PayloadPresent,
             DocumentName,
             AuthorizationToken,
             Date);
 
         private static final List<RntbdRequestHeader> thinClientExclusionList = Arrays.asList(
-            RntbdConstants.RntbdRequestHeader.ResourceId,
             RntbdConstants.RntbdRequestHeader.TransportRequestID,
             RntbdRequestHeader.IntendedCollectionRid,
             RntbdConstants.RntbdRequestHeader.ReplicaPath);

@@ -21,10 +21,10 @@ object CosmosAsyncClientCache {
   def getCosmosClientFromCache(userProvidedConfig: Map[String, String]): CosmosAsyncClientCacheItem = {
     val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, userProvidedConfig)
     val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
-    val useEventualConsistency = readConfig.forceEventualConsistency
+    val readConsistencyStrategy = readConfig.readConsistencyStrategy
     val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(SparkSession.getActiveSession)
 
-    new CosmosAsyncClientCacheItem(effectiveUserConfig, useEventualConsistency, sparkEnvironmentInfo)
+    new CosmosAsyncClientCacheItem(effectiveUserConfig, readConsistencyStrategy, sparkEnvironmentInfo)
   }
 
   /**
@@ -40,12 +40,12 @@ object CosmosAsyncClientCache {
   def getCosmosClientFuncFromCache(userProvidedConfig: Map[String, String]): () => CosmosAsyncClientCacheItem = {
     val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, userProvidedConfig)
     val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
-    val useEventualConsistency = readConfig.forceEventualConsistency
+    val readConsistencyStrategy = readConfig.readConsistencyStrategy
     val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(SparkSession.getActiveSession)
 
     // delay getting the client from cache here to allow this to be executed on executors
     // as well - not just on the driver
     () =>
-      new CosmosAsyncClientCacheItem(effectiveUserConfig, useEventualConsistency, sparkEnvironmentInfo)
+      new CosmosAsyncClientCacheItem(effectiveUserConfig, readConsistencyStrategy, sparkEnvironmentInfo)
   }
 }

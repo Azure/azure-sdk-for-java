@@ -59,9 +59,9 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
         return this.serviceManager;
     }
 
-    private String resourceName;
-
     private String resourceGroupName;
+
+    private String resourceName;
 
     private String policyName;
 
@@ -69,23 +69,23 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
 
     private UpdatePolicyInput updateInput;
 
-    public PolicyImpl withExistingVault(String resourceName, String resourceGroupName) {
-        this.resourceName = resourceName;
+    public PolicyImpl withExistingVault(String resourceGroupName, String resourceName) {
         this.resourceGroupName = resourceGroupName;
+        this.resourceName = resourceName;
         return this;
     }
 
     public Policy create() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationPolicies()
-            .create(resourceName, resourceGroupName, policyName, createInput, Context.NONE);
+            .create(resourceGroupName, resourceName, policyName, createInput, Context.NONE);
         return this;
     }
 
     public Policy create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationPolicies()
-            .create(resourceName, resourceGroupName, policyName, createInput, context);
+            .create(resourceGroupName, resourceName, policyName, createInput, context);
         return this;
     }
 
@@ -104,14 +104,14 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
     public Policy apply() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationPolicies()
-            .update(resourceName, resourceGroupName, policyName, updateInput, Context.NONE);
+            .update(resourceGroupName, resourceName, policyName, updateInput, Context.NONE);
         return this;
     }
 
     public Policy apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationPolicies()
-            .update(resourceName, resourceGroupName, policyName, updateInput, context);
+            .update(resourceGroupName, resourceName, policyName, updateInput, context);
         return this;
     }
 
@@ -119,15 +119,15 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
         this.policyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationPolicies");
     }
 
     public Policy refresh() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationPolicies()
-            .getWithResponse(resourceName, resourceGroupName, policyName, Context.NONE)
+            .getWithResponse(resourceGroupName, resourceName, policyName, Context.NONE)
             .getValue();
         return this;
     }
@@ -135,7 +135,7 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
     public Policy refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationPolicies()
-            .getWithResponse(resourceName, resourceGroupName, policyName, context)
+            .getWithResponse(resourceGroupName, resourceName, policyName, context)
             .getValue();
         return this;
     }

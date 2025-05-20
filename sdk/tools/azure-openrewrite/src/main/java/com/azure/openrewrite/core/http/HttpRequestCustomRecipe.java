@@ -59,7 +59,7 @@ public class HttpRequestCustomRecipe extends Recipe {
 
             @Override
             public J visitNewClass(J.NewClass newClass, ExecutionContext ctx) {
-                
+
                 // Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.lang.String)
                 // After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.lang.String)
                 J n = super.visitNewClass(newClass, ctx);
@@ -133,10 +133,6 @@ public class HttpRequestCustomRecipe extends Recipe {
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest setBody(java.lang.String)");
                 if (methodMatcher.matches((J.MethodInvocation) n)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("setBody(BinaryData.fromString(#{any(java.lang.String)}))")
-                        .javaParser(
-                            JavaParser.fromJavaVersion()
-                                .classpath("azure-core", "core")
-                        )
                         .imports("io.clientcore.core.models.binarydata.BinaryData")
                         .build();
                     n = replacementTemplate.apply(updateCursor(n), methodInvocation.getCoordinates().replaceMethod(), methodInvocation.getArguments().toArray());

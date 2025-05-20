@@ -11,23 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class TagDescriptionBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagDescriptionBaseProperties model = BinaryData
-            .fromString(
-                "{\"description\":\"jmtbd\",\"externalDocsUrl\":\"cqguef\",\"externalDocsDescription\":\"ompheqdur\"}")
+        TagDescriptionBaseProperties model = BinaryData.fromString(
+            "{\"description\":\"ukvhd\",\"externalDocsUrl\":\"wyojbfqzdkfnjyi\",\"externalDocsDescription\":\"afr\"}")
             .toObject(TagDescriptionBaseProperties.class);
-        Assertions.assertEquals("jmtbd", model.description());
-        Assertions.assertEquals("cqguef", model.externalDocsUrl());
-        Assertions.assertEquals("ompheqdur", model.externalDocsDescription());
+        Assertions.assertEquals("ukvhd", model.description());
+        Assertions.assertEquals("wyojbfqzdkfnjyi", model.externalDocsUrl());
+        Assertions.assertEquals("afr", model.externalDocsDescription());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagDescriptionBaseProperties model = new TagDescriptionBaseProperties().withDescription("jmtbd")
-            .withExternalDocsUrl("cqguef")
-            .withExternalDocsDescription("ompheqdur");
+        TagDescriptionBaseProperties model = new TagDescriptionBaseProperties().withDescription("ukvhd")
+            .withExternalDocsUrl("wyojbfqzdkfnjyi")
+            .withExternalDocsDescription("afr");
         model = BinaryData.fromObject(model).toObject(TagDescriptionBaseProperties.class);
-        Assertions.assertEquals("jmtbd", model.description());
-        Assertions.assertEquals("cqguef", model.externalDocsUrl());
-        Assertions.assertEquals("ompheqdur", model.externalDocsDescription());
+        Assertions.assertEquals("ukvhd", model.description());
+        Assertions.assertEquals("wyojbfqzdkfnjyi", model.externalDocsUrl());
+        Assertions.assertEquals("afr", model.externalDocsDescription());
     }
 }

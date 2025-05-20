@@ -2383,6 +2383,20 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertTrue(aadFsClient.exists());
     }
 
+    @Test
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2025-07-05")
+    public void getSetAccessPolicyOAuth() {
+        // Arrange
+        DataLakeServiceClient serviceClient = getOAuthServiceClient();
+        DataLakeFileSystemClient fileSystemClient = serviceClient.getFileSystemClient(generateFileSystemName());
+        fileSystemClient.create();
+
+        // Act
+        FileSystemAccessPolicies response = fileSystemClient.getAccessPolicy();
+        fileSystemClient.setAccessPolicy(null, response.getIdentifiers());
+
+    }
+
     //    @Test
     //    public void rename() {
     //        DataLakeFileSystemClient renamedContainer = dataLakeFileSystemClient.rename(generateFileSystemName());

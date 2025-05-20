@@ -4,7 +4,11 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
 import java.io.IOException;
 import java.io.InputStream;
@@ -235,8 +239,10 @@ public final class CoreUtils {
 
         if (index == -1) {
             // No size segment.
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("The Content-Range header wasn't properly "
-                + "formatted and didn't contain a '/size' segment. The 'contentRange' was: " + contentRange));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("Content-Range", contentRange)
+                .log("The Content-Range header wasn't properly formatted and didn't contain a '/size' segment",
+                    IllegalArgumentException::new);
         }
 
         String sizeString = contentRange.substring(index + 1).trim();
@@ -425,46 +431,6 @@ public final class CoreUtils {
         return SerializationFormat.JSON;
     }
 
-    /**
-     * Appends a query parameter to the given URL.
-     *
-     * @param host The base URL to which the query parameter will be appended.
-     * @param queryParams A map containing the query parameters and their values.
-     * @return The URL with the appended query parameter.
-     */
-    public static String appendQueryParams(String host, Map<String, Object> queryParams) {
-        if (queryParams == null || queryParams.isEmpty()) {
-            return host;  // No parameters to append
-        }
-
-        StringBuilder urlBuilder = new StringBuilder(host);
-        boolean hasExistingQuery = host.contains("?");
-
-        // Process each key-value pair in the queryParams map
-        for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-
-            // Skip null values
-            if (value == null) {
-                continue;
-            }
-
-            if (value instanceof List<?>) {
-                List<?> valueList = (List<?>) value;
-                for (Object item : valueList) {
-                    urlBuilder.append(hasExistingQuery ? "&" : "?").append(key).append("=").append(item.toString());
-                    hasExistingQuery = true; // Ensure subsequent parameters use '&'
-                }
-            } else {
-                urlBuilder.append(hasExistingQuery ? "&" : "?").append(key).append("=").append(value.toString());
-                hasExistingQuery = true; // Ensure subsequent parameters use '&'
-            }
-        }
-
-        return urlBuilder.toString();
-    }
-
     /*
      * There is a limited set of serialization encodings that are known ahead of time. Instead of using a TreeMap with
      * a case-insensitive comparator, use an optimized search specifically for the known encodings.
@@ -502,6 +468,34 @@ public final class CoreUtils {
         }
 
         return null;
+    }
+
+    /**
+     * Decodes the body of an {@link Response} into the type returned by the called API.
+     * @param data The BinaryData to decode.
+     * @param serializer The serializer to use.
+     * @param returnType The type of the ParameterizedType return value.
+     * @param <T> The decoded value type.
+     * @return The decoded value.
+     * @throws CoreException If the deserialization fails.
+     */
+    public static <T> T decodeNetworkResponse(BinaryData data, ObjectSerializer serializer,
+        ParameterizedType returnType) {
+        if (data == null) {
+            return null;
+        }
+        try {
+            if (List.class.isAssignableFrom((Class<?>) returnType.getRawType())) {
+                return serializer.deserializeFromBytes(data.toBytes(), returnType);
+            }
+            Type token = returnType.getRawType();
+            if (Response.class.isAssignableFrom((Class<?>) token)) {
+                token = returnType.getActualTypeArguments()[0];
+            }
+            return serializer.deserializeFromBytes(data.toBytes(), token);
+        } catch (IOException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
+        }
     }
 
     private CoreUtils() {

@@ -3,6 +3,10 @@
 
 package io.clientcore.annotation.processor.test;
 
+import io.clientcore.annotation.processor.test.implementation.HostEdgeCase1Service;
+import io.clientcore.annotation.processor.test.implementation.HostEdgeCase2Service;
+import io.clientcore.annotation.processor.test.implementation.ParameterizedHostService;
+import io.clientcore.annotation.processor.test.implementation.ParameterizedMultipleHostService;
 import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientImpl;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
@@ -160,14 +164,43 @@ public class TestInterfaceServiceClientGenerationTests {
      * Tests that the response body is correctly returned as a byte array.
      */
     @Test
-    @Disabled("TODO https://github.com/Azure/azure-sdk-for-java/issues/44298")
     public void requestWithByteArrayReturnTypeAndParameterizedHostAndPath() {
-        TestInterfaceClientImpl.TestInterfaceClientService service =
-            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        ParameterizedHostService service
+            = ParameterizedHostService.getNewInstance(pipeline);
         final byte[] result = service.getByteArray("http", "localhost:" + server.getHttpPort(), 100);
 
         assertNotNull(result);
-        assertEquals(result.length, 100);
+        assertEquals(100, result.length);
+    }
+
+    /**
+     * Tests that the response body is correctly returned as a byte array.
+     */
+    @Test
+    public void requestWithByteArrayReturnTypeAndHostEdgeCase1() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        byte[] result = HostEdgeCase1Service.getNewInstance(pipeline)
+            .getByteArray("http://localhost:" + server.getHttpPort(), 100);
+
+        assertNotNull(result);
+        assertEquals(100, result.length);
+    }
+
+    /**
+     * Tests that the response body is correctly returned as a byte array.
+     */
+    @Test
+    public void requestWithByteArrayReturnTypeAndHostEdgeCase2() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        byte[] result = HostEdgeCase2Service.getNewInstance(pipeline)
+            .getByteArray("http://localhost:" + server.getHttpPort(), 100);
+
+        assertNotNull(result);
+        assertEquals(100, result.length);
     }
 
     /**
@@ -921,7 +954,7 @@ public class TestInterfaceServiceClientGenerationTests {
         try {
             return UriBuilder.parse(getServerUri(isSecure()) + "/" + requestPath).toUri();
         } catch (URISyntaxException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
     }
 
@@ -960,12 +993,11 @@ public class TestInterfaceServiceClientGenerationTests {
      * Tests that the response body is correctly returned as a byte array.
      */
     @Test
-    @Disabled("TODO https://github.com/Azure/azure-sdk-for-java/issues/44298")
     public void requestWithEmptyByteArrayReturnTypeAndParameterizedHostAndPath() {
-        final byte[] result = createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+        final byte[] result = createService(ParameterizedHostService.class)
             .getByteArray(getRequestScheme(), "localhost:" + getPort(), 0);
 
-        assertNull(result);
+        assertEquals(0, result.length);
     }
 
     private static final HttpHeaderName HEADER_A = HttpHeaderName.fromString("A");
@@ -1167,9 +1199,12 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("TODO https://github.com/Azure/azure-sdk-for-java/issues/44298")
     public void requestWithMultipleHostParams() {
-        final HttpBinJSON result = createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        ParameterizedMultipleHostService service
+            = ParameterizedMultipleHostService.getNewInstance(pipeline);
+        final HttpBinJSON result = service
             .get(getRequestScheme(), "local", "host:" + getPort());
 
         assertNotNull(result);
@@ -1688,7 +1723,8 @@ public class TestInterfaceServiceClientGenerationTests {
 
         assertNotNull(queryParams);
         assertEquals(1, queryParams.size());
-        assertTrue(json.uri().substring(json.uri().indexOf('?'), json.uri().length()).contains("some=value"));
+        assertTrue(json.uri().substring(json.uri().indexOf('?')).contains("some=value"),
+            "Expected URI query to contain 'some=value', but it didn't and was: " + json.uri());
     }
 
     @Test

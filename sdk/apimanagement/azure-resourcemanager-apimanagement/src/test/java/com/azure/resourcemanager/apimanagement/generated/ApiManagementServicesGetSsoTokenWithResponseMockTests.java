@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceGetSsoTokenResult;
@@ -20,19 +20,19 @@ import reactor.core.publisher.Mono;
 public final class ApiManagementServicesGetSsoTokenWithResponseMockTests {
     @Test
     public void testGetSsoTokenWithResponse() throws Exception {
-        String responseStr = "{\"redirectUri\":\"huecxhgs\"}";
+        String responseStr = "{\"redirectUri\":\"tmblmf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApiManagementServiceGetSsoTokenResult response = manager.apiManagementServices()
-            .getSsoTokenWithResponse("aoksddkkrajfyu", "lxkelmzpyq", com.azure.core.util.Context.NONE)
+            .getSsoTokenWithResponse("mivapesbfzllej", "wwsfvtgh", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("huecxhgs", response.redirectUri());
+        Assertions.assertEquals("tmblmf", response.redirectUri());
     }
 }

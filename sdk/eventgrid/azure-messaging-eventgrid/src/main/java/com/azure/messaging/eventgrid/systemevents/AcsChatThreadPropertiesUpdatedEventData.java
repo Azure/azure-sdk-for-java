@@ -176,10 +176,10 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
             getCreateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreateTime()));
         jsonWriter.writeNumberField("version", getVersion());
         jsonWriter.writeJsonField("editedByCommunicationIdentifier", this.editedByCommunicationIdentifier);
-        jsonWriter.writeStringField("editTime",
-            this.editTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.editTime));
         jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("editTime",
+            this.editTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.editTime));
         return jsonWriter.writeEndObject();
     }
 
@@ -189,6 +189,7 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatThreadPropertiesUpdatedEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatThreadPropertiesUpdatedEventData.
      */
     public static AcsChatThreadPropertiesUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -212,15 +213,15 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
                 } else if ("editedByCommunicationIdentifier".equals(fieldName)) {
                     deserializedAcsChatThreadPropertiesUpdatedEventData.editedByCommunicationIdentifier
                         = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("editTime".equals(fieldName)) {
-                    deserializedAcsChatThreadPropertiesUpdatedEventData.editTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("properties".equals(fieldName)) {
                     Map<String, Object> properties = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedAcsChatThreadPropertiesUpdatedEventData.properties = properties;
                 } else if ("metadata".equals(fieldName)) {
                     Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
                     deserializedAcsChatThreadPropertiesUpdatedEventData.metadata = metadata;
+                } else if ("editTime".equals(fieldName)) {
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.editTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

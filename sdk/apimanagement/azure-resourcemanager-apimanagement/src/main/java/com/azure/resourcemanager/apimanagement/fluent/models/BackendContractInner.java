@@ -9,11 +9,14 @@ import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.apimanagement.models.BackendBaseParametersPool;
+import com.azure.resourcemanager.apimanagement.models.BackendCircuitBreaker;
 import com.azure.resourcemanager.apimanagement.models.BackendCredentialsContract;
 import com.azure.resourcemanager.apimanagement.models.BackendProperties;
 import com.azure.resourcemanager.apimanagement.models.BackendProtocol;
 import com.azure.resourcemanager.apimanagement.models.BackendProxyContract;
 import com.azure.resourcemanager.apimanagement.models.BackendTlsProperties;
+import com.azure.resourcemanager.apimanagement.models.BackendType;
 import java.io.IOException;
 
 /**
@@ -292,6 +295,75 @@ public final class BackendContractInner extends ProxyResource {
             this.innerProperties = new BackendContractProperties();
         }
         this.innerProperties().withTls(tls);
+        return this;
+    }
+
+    /**
+     * Get the circuitBreaker property: Backend Circuit Breaker Configuration.
+     * 
+     * @return the circuitBreaker value.
+     */
+    public BackendCircuitBreaker circuitBreaker() {
+        return this.innerProperties() == null ? null : this.innerProperties().circuitBreaker();
+    }
+
+    /**
+     * Set the circuitBreaker property: Backend Circuit Breaker Configuration.
+     * 
+     * @param circuitBreaker the circuitBreaker value to set.
+     * @return the BackendContractInner object itself.
+     */
+    public BackendContractInner withCircuitBreaker(BackendCircuitBreaker circuitBreaker) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendContractProperties();
+        }
+        this.innerProperties().withCircuitBreaker(circuitBreaker);
+        return this;
+    }
+
+    /**
+     * Get the pool property: The pool property.
+     * 
+     * @return the pool value.
+     */
+    public BackendBaseParametersPool pool() {
+        return this.innerProperties() == null ? null : this.innerProperties().pool();
+    }
+
+    /**
+     * Set the pool property: The pool property.
+     * 
+     * @param pool the pool value to set.
+     * @return the BackendContractInner object itself.
+     */
+    public BackendContractInner withPool(BackendBaseParametersPool pool) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendContractProperties();
+        }
+        this.innerProperties().withPool(pool);
+        return this;
+    }
+
+    /**
+     * Get the type property: Type of the backend. A backend can be either Single or Pool.
+     * 
+     * @return the type value.
+     */
+    public BackendType typePropertiesType() {
+        return this.innerProperties() == null ? null : this.innerProperties().type();
+    }
+
+    /**
+     * Set the type property: Type of the backend. A backend can be either Single or Pool.
+     * 
+     * @param type the type value to set.
+     * @return the BackendContractInner object itself.
+     */
+    public BackendContractInner withTypePropertiesType(BackendType type) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendContractProperties();
+        }
+        this.innerProperties().withType(type);
         return this;
     }
 

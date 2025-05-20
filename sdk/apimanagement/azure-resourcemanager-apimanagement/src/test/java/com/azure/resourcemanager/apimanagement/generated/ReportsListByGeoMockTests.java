@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ReportRecordContract;
@@ -22,41 +22,41 @@ public final class ReportsListByGeoMockTests {
     @Test
     public void testListByGeo() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"hxhuhhnrmmfzfkh\",\"timestamp\":\"2021-06-03T12:36:09Z\",\"interval\":\"ffajh\",\"country\":\"bskgciedlqvpd\",\"region\":\"l\",\"zip\":\"srwlfgbuu\",\"userId\":\"hjtpszcawfu\",\"productId\":\"ypl\",\"apiId\":\"vrjselauzrpe\",\"operationId\":\"eb\",\"apiRegion\":\"gzx\",\"subscriptionId\":\"safvflyqauuohsk\",\"callCountSuccess\":151113976,\"callCountBlocked\":493167519,\"callCountFailed\":1506951299,\"callCountOther\":1160373419,\"callCountTotal\":579287148,\"bandwidth\":302334485723878906,\"cacheHitCount\":1174671747,\"cacheMissCount\":1071783436,\"apiTimeAvg\":39.879957569063166,\"apiTimeMin\":75.58332370596563,\"apiTimeMax\":0.4303330170923658,\"serviceTimeAvg\":46.24646399588619,\"serviceTimeMin\":60.07676627004604,\"serviceTimeMax\":51.15112161314216}]}";
+            = "{\"value\":[{\"name\":\"bbfgmeqhtngrxfq\",\"timestamp\":\"2021-07-11T08:14:14Z\",\"interval\":\"wfbllegezv\",\"country\":\"wii\",\"region\":\"sggjacmazilqgv\",\"zip\":\"proqp\",\"userId\":\"zykmdklwbqkmtwua\",\"productId\":\"qtmpgrzciltw\",\"apiId\":\"llp\",\"operationId\":\"ebolhyiohcjugd\",\"apiRegion\":\"ggxszmyxguyk\",\"subscriptionId\":\"zpmwzplcrzdwe\",\"callCountSuccess\":1684235761,\"callCountBlocked\":472430177,\"callCountFailed\":17110724,\"callCountOther\":558680846,\"callCountTotal\":1504464393,\"bandwidth\":5088683445144491086,\"cacheHitCount\":2114560142,\"cacheMissCount\":565176326,\"apiTimeAvg\":2.95593633544623,\"apiTimeMin\":66.67033980278863,\"apiTimeMax\":70.61867838950481,\"serviceTimeAvg\":92.40173475677146,\"serviceTimeMin\":60.32064888719908,\"serviceTimeMax\":30.20913859853134}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ReportRecordContract> response = manager.reports()
-            .listByGeo("ysykhdap", "diibjjw", "ek", 758586650, 1831566634, com.azure.core.util.Context.NONE);
+            .listByGeo("ftcjw", "fhdfo", "scwlcfcpz", 372158540, 477919150, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hxhuhhnrmmfzfkh", response.iterator().next().name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-03T12:36:09Z"), response.iterator().next().timestamp());
-        Assertions.assertEquals("ffajh", response.iterator().next().interval());
-        Assertions.assertEquals("bskgciedlqvpd", response.iterator().next().country());
-        Assertions.assertEquals("l", response.iterator().next().region());
-        Assertions.assertEquals("srwlfgbuu", response.iterator().next().zip());
-        Assertions.assertEquals("vrjselauzrpe", response.iterator().next().apiId());
-        Assertions.assertEquals("eb", response.iterator().next().operationId());
-        Assertions.assertEquals("gzx", response.iterator().next().apiRegion());
-        Assertions.assertEquals("safvflyqauuohsk", response.iterator().next().subscriptionId());
-        Assertions.assertEquals(151113976, response.iterator().next().callCountSuccess());
-        Assertions.assertEquals(493167519, response.iterator().next().callCountBlocked());
-        Assertions.assertEquals(1506951299, response.iterator().next().callCountFailed());
-        Assertions.assertEquals(1160373419, response.iterator().next().callCountOther());
-        Assertions.assertEquals(579287148, response.iterator().next().callCountTotal());
-        Assertions.assertEquals(302334485723878906L, response.iterator().next().bandwidth());
-        Assertions.assertEquals(1174671747, response.iterator().next().cacheHitCount());
-        Assertions.assertEquals(1071783436, response.iterator().next().cacheMissCount());
-        Assertions.assertEquals(39.879957569063166D, response.iterator().next().apiTimeAvg());
-        Assertions.assertEquals(75.58332370596563D, response.iterator().next().apiTimeMin());
-        Assertions.assertEquals(0.4303330170923658D, response.iterator().next().apiTimeMax());
-        Assertions.assertEquals(46.24646399588619D, response.iterator().next().serviceTimeAvg());
-        Assertions.assertEquals(60.07676627004604D, response.iterator().next().serviceTimeMin());
-        Assertions.assertEquals(51.15112161314216D, response.iterator().next().serviceTimeMax());
+        Assertions.assertEquals("bbfgmeqhtngrxfq", response.iterator().next().name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-11T08:14:14Z"), response.iterator().next().timestamp());
+        Assertions.assertEquals("wfbllegezv", response.iterator().next().interval());
+        Assertions.assertEquals("wii", response.iterator().next().country());
+        Assertions.assertEquals("sggjacmazilqgv", response.iterator().next().region());
+        Assertions.assertEquals("proqp", response.iterator().next().zip());
+        Assertions.assertEquals("llp", response.iterator().next().apiId());
+        Assertions.assertEquals("ebolhyiohcjugd", response.iterator().next().operationId());
+        Assertions.assertEquals("ggxszmyxguyk", response.iterator().next().apiRegion());
+        Assertions.assertEquals("zpmwzplcrzdwe", response.iterator().next().subscriptionId());
+        Assertions.assertEquals(1684235761, response.iterator().next().callCountSuccess());
+        Assertions.assertEquals(472430177, response.iterator().next().callCountBlocked());
+        Assertions.assertEquals(17110724, response.iterator().next().callCountFailed());
+        Assertions.assertEquals(558680846, response.iterator().next().callCountOther());
+        Assertions.assertEquals(1504464393, response.iterator().next().callCountTotal());
+        Assertions.assertEquals(5088683445144491086L, response.iterator().next().bandwidth());
+        Assertions.assertEquals(2114560142, response.iterator().next().cacheHitCount());
+        Assertions.assertEquals(565176326, response.iterator().next().cacheMissCount());
+        Assertions.assertEquals(2.95593633544623D, response.iterator().next().apiTimeAvg());
+        Assertions.assertEquals(66.67033980278863D, response.iterator().next().apiTimeMin());
+        Assertions.assertEquals(70.61867838950481D, response.iterator().next().apiTimeMax());
+        Assertions.assertEquals(92.40173475677146D, response.iterator().next().serviceTimeAvg());
+        Assertions.assertEquals(60.32064888719908D, response.iterator().next().serviceTimeMin());
+        Assertions.assertEquals(30.20913859853134D, response.iterator().next().serviceTimeMax());
     }
 }

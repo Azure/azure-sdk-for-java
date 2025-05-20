@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.TagContract;
@@ -22,19 +22,19 @@ public final class TagsListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"nlvkmnbzk\"},\"id\":\"paiildcpudkhqu\",\"name\":\"syjo\",\"type\":\"pgve\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"qzzdckhsq\"},\"id\":\"rrjsurnowobw\",\"name\":\"rxmyokohlsf\",\"type\":\"fouqjpzhea\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TagContract> response = manager.tags()
-            .listByService("oprwkampyh", "pbldz", "iudrcycmwhuzym", 1750801275, 1723638902, "ih",
+            .listByService("bfb", "divixzhpjgqzmiao", "weacfxaubu", 1849259166, 1378032691, "etcnx",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nlvkmnbzk", response.iterator().next().displayName());
+        Assertions.assertEquals("qzzdckhsq", response.iterator().next().displayName());
     }
 }

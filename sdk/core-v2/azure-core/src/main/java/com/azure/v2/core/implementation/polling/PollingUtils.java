@@ -13,6 +13,7 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.utils.CoreUtils;
@@ -112,8 +113,8 @@ public final class PollingUtils {
                 if (intermediatePollResponse.getStatus().equals(statusToWaitFor) || isWaitForStatus) {
                     return intermediatePollResponse;
                 } else {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(
-                        new TimeoutException("Polling didn't complete before the timeout period.")));
+                    throw LOGGER.throwableAtError()
+                        .log("Polling didn't complete before the timeout period.", CoreException::from);
                 }
             }
 
@@ -140,7 +141,7 @@ public final class PollingUtils {
                 if (isWaitForStatus) {
                     return intermediatePollResponse;
                 }
-                throw LOGGER.logThrowableAsError(new RuntimeException(e));
+                throw LOGGER.throwableAtError().log(e, CoreException::from);
             }
         }
 
@@ -172,7 +173,7 @@ public final class PollingUtils {
      * @param logger The logger.
      * @return Whether the location can poll.
      */
-    public static boolean locationCanPoll(Response<BinaryData> initialResponse, String endpoint, ClientLogger logger) {
+    public static boolean locationCanPoll(Response<?> initialResponse, String endpoint, ClientLogger logger) {
         HttpHeader locationHeader = initialResponse.getHeaders().get(HttpHeaderName.LOCATION);
 
         if (locationHeader != null) {
@@ -226,8 +227,8 @@ public final class PollingUtils {
     public static void validateTimeout(Duration timeout, ClientLogger logger) {
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         if (timeout.isNegative() || timeout.isZero()) {
-            throw logger.logThrowableAsWarning(
-                new IllegalArgumentException("Negative or zero value for timeout is not allowed."));
+            throw logger.throwableAtWarning()
+                .log("Negative or zero value for timeout is not allowed.", IllegalArgumentException::new);
         }
     }
 
@@ -243,8 +244,8 @@ public final class PollingUtils {
     public static Duration validatePollInterval(Duration pollInterval, ClientLogger logger) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw logger.logThrowableAsWarning(
-                new IllegalArgumentException("Negative or zero value for pollInterval is not allowed."));
+            throw logger.throwableAtWarning()
+                .log("Negative or zero value for pollInterval is not allowed.", IllegalArgumentException::new);
         }
         return pollInterval;
     }
@@ -263,8 +264,9 @@ public final class PollingUtils {
             URI uri = new URI(path);
             if (!uri.isAbsolute()) {
                 if (CoreUtils.isNullOrEmpty(endpoint)) {
-                    throw logger.logThrowableAsWarning(new IllegalArgumentException(
-                        "Relative path requires endpoint to be non-null and non-empty to create an absolute path."));
+                    throw logger.throwableAtWarning()
+                        .log("Relative path requires endpoint to be non-null and non-empty to create an absolute path.",
+                            IllegalArgumentException::new);
                 }
 
                 if (endpoint.endsWith(FORWARD_SLASH) && path.startsWith(FORWARD_SLASH)) {
@@ -276,7 +278,7 @@ public final class PollingUtils {
                 }
             }
         } catch (URISyntaxException ex) {
-            throw logger.logThrowableAsWarning(new IllegalArgumentException("'path' must be a valid URI.", ex));
+            throw logger.throwableAtWarning().log("'path' must be a valid URI.", ex, IllegalArgumentException::new);
         }
         return path;
     }

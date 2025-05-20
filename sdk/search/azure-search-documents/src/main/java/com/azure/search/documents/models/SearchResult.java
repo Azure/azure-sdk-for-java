@@ -71,8 +71,8 @@ public final class SearchResult {
 
             @Override
             public void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
-                List<QueryCaptionResult> captions) {
-                searchResult.setSemanticSearchResult(rerankerScore, captions);
+                List<QueryCaptionResult> captions, Double rerankerBoostedScore) {
+                searchResult.setSemanticSearchResult(rerankerScore, captions, rerankerBoostedScore);
             }
 
             @Override
@@ -184,8 +184,10 @@ public final class SearchResult {
      *
      * @param rerankerScore The reranker score.
      * @param captions The captions.
+     * @param rerankerBoostedScore The boosted reranker score.
      */
-    private void setSemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> captions) {
-        this.semanticSearch = new SemanticSearchResult(rerankerScore, captions);
+    private void setSemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> captions,
+        Double rerankerBoostedScore) {
+        this.semanticSearch = new SemanticSearchResult(rerankerScore, captions, rerankerBoostedScore);
     }
 }

@@ -12,21 +12,22 @@ public final class InMageAzureV2SwitchProviderInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageAzureV2SwitchProviderInput model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageAzureV2\",\"targetVaultID\":\"nimx\",\"targetFabricID\":\"pnerxrzut\",\"targetApplianceID\":\"lcurzaqmnbx\"}")
+            "{\"instanceType\":\"InMageAzureV2\",\"targetVaultID\":\"khjqjpvbaihxjtg\",\"targetFabricID\":\"gtaiywbq\",\"targetApplianceID\":\"roigbsfsgsaenwld\"}")
             .toObject(InMageAzureV2SwitchProviderInput.class);
-        Assertions.assertEquals("nimx", model.targetVaultId());
-        Assertions.assertEquals("pnerxrzut", model.targetFabricId());
-        Assertions.assertEquals("lcurzaqmnbx", model.targetApplianceId());
+        Assertions.assertEquals("khjqjpvbaihxjtg", model.targetVaultId());
+        Assertions.assertEquals("gtaiywbq", model.targetFabricId());
+        Assertions.assertEquals("roigbsfsgsaenwld", model.targetApplianceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAzureV2SwitchProviderInput model = new InMageAzureV2SwitchProviderInput().withTargetVaultId("nimx")
-            .withTargetFabricId("pnerxrzut")
-            .withTargetApplianceId("lcurzaqmnbx");
+        InMageAzureV2SwitchProviderInput model
+            = new InMageAzureV2SwitchProviderInput().withTargetVaultId("khjqjpvbaihxjtg")
+                .withTargetFabricId("gtaiywbq")
+                .withTargetApplianceId("roigbsfsgsaenwld");
         model = BinaryData.fromObject(model).toObject(InMageAzureV2SwitchProviderInput.class);
-        Assertions.assertEquals("nimx", model.targetVaultId());
-        Assertions.assertEquals("pnerxrzut", model.targetFabricId());
-        Assertions.assertEquals("lcurzaqmnbx", model.targetApplianceId());
+        Assertions.assertEquals("khjqjpvbaihxjtg", model.targetVaultId());
+        Assertions.assertEquals("gtaiywbq", model.targetFabricId());
+        Assertions.assertEquals("roigbsfsgsaenwld", model.targetApplianceId());
     }
 }

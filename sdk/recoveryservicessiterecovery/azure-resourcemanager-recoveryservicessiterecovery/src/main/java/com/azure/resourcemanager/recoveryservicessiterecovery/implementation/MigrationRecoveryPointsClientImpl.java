@@ -68,7 +68,7 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MigrationRecoveryPointCollection>> listByReplicationMigrationItems(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("migrationItemName") String migrationItemName, @HeaderParam("Accept") String accept,
@@ -79,9 +79,9 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MigrationRecoveryPointInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("migrationItemName") String migrationItemName,
             @PathParam("migrationRecoveryPointName") String migrationRecoveryPointName,
@@ -99,8 +99,8 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
     /**
      * Gets the recovery points for a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -112,18 +112,18 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MigrationRecoveryPointInner>> listByReplicationMigrationItemsSinglePageAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -143,7 +143,7 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByReplicationMigrationItems(this.client.getEndpoint(),
-                this.client.getApiVersion(), resourceName, resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, resourceName, this.client.getSubscriptionId(),
                 fabricName, protectionContainerName, migrationItemName, accept, context))
             .<PagedResponse<MigrationRecoveryPointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -153,8 +153,8 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
     /**
      * Gets the recovery points for a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -167,18 +167,18 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MigrationRecoveryPointInner>> listByReplicationMigrationItemsSinglePageAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -198,9 +198,9 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByReplicationMigrationItems(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
-                migrationItemName, accept, context)
+            .listByReplicationMigrationItems(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName,
+                accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -208,8 +208,8 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
     /**
      * Gets the recovery points for a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -219,10 +219,10 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
      * @return the recovery points for a migration item as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MigrationRecoveryPointInner> listByReplicationMigrationItemsAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName) {
+    private PagedFlux<MigrationRecoveryPointInner> listByReplicationMigrationItemsAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName) {
         return new PagedFlux<>(
-            () -> listByReplicationMigrationItemsSinglePageAsync(resourceName, resourceGroupName, fabricName,
+            () -> listByReplicationMigrationItemsSinglePageAsync(resourceGroupName, resourceName, fabricName,
                 protectionContainerName, migrationItemName),
             nextLink -> listByReplicationMigrationItemsNextSinglePageAsync(nextLink));
     }
@@ -230,8 +230,8 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
     /**
      * Gets the recovery points for a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -242,11 +242,11 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
      * @return the recovery points for a migration item as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MigrationRecoveryPointInner> listByReplicationMigrationItemsAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private PagedFlux<MigrationRecoveryPointInner> listByReplicationMigrationItemsAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         Context context) {
         return new PagedFlux<>(
-            () -> listByReplicationMigrationItemsSinglePageAsync(resourceName, resourceGroupName, fabricName,
+            () -> listByReplicationMigrationItemsSinglePageAsync(resourceGroupName, resourceName, fabricName,
                 protectionContainerName, migrationItemName, context),
             nextLink -> listByReplicationMigrationItemsNextSinglePageAsync(nextLink, context));
     }
@@ -254,8 +254,8 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
     /**
      * Gets the recovery points for a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -265,17 +265,17 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
      * @return the recovery points for a migration item as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MigrationRecoveryPointInner> listByReplicationMigrationItems(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName) {
-        return new PagedIterable<>(listByReplicationMigrationItemsAsync(resourceName, resourceGroupName, fabricName,
+    public PagedIterable<MigrationRecoveryPointInner> listByReplicationMigrationItems(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName) {
+        return new PagedIterable<>(listByReplicationMigrationItemsAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, migrationItemName));
     }
 
     /**
      * Gets the recovery points for a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -286,18 +286,18 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
      * @return the recovery points for a migration item as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MigrationRecoveryPointInner> listByReplicationMigrationItems(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    public PagedIterable<MigrationRecoveryPointInner> listByReplicationMigrationItems(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         Context context) {
-        return new PagedIterable<>(listByReplicationMigrationItemsAsync(resourceName, resourceGroupName, fabricName,
+        return new PagedIterable<>(listByReplicationMigrationItemsAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, migrationItemName, context));
     }
 
     /**
      * Gets a recovery point for a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -309,19 +309,19 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MigrationRecoveryPointInner>> getWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private Mono<Response<MigrationRecoveryPointInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         String migrationRecoveryPointName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -344,8 +344,8 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 migrationItemName, migrationRecoveryPointName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -353,8 +353,8 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
     /**
      * Gets a recovery point for a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -367,19 +367,19 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MigrationRecoveryPointInner>> getWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private Mono<Response<MigrationRecoveryPointInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         String migrationRecoveryPointName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -402,7 +402,7 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName,
             migrationRecoveryPointName, accept, context);
     }
@@ -410,8 +410,8 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
     /**
      * Gets a recovery point for a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -422,17 +422,17 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
      * @return a recovery point for a migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationRecoveryPointInner> getAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<MigrationRecoveryPointInner> getAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, String migrationRecoveryPointName) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, migrationRecoveryPointName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a recovery point for a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -444,18 +444,18 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
      * @return a recovery point for a migration item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MigrationRecoveryPointInner> getWithResponse(String resourceName, String resourceGroupName,
+    public Response<MigrationRecoveryPointInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, String migrationRecoveryPointName,
         Context context) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, migrationRecoveryPointName, context).block();
     }
 
     /**
      * Gets a recovery point for a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -466,9 +466,9 @@ public final class MigrationRecoveryPointsClientImpl implements MigrationRecover
      * @return a recovery point for a migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationRecoveryPointInner get(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationRecoveryPointInner get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, String migrationRecoveryPointName) {
-        return getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             migrationRecoveryPointName, Context.NONE).getValue();
     }
 

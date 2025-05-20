@@ -13,21 +13,24 @@ public final class InMageRcmDisksDefaultInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmDisksDefaultInput model = BinaryData.fromString(
-            "{\"logStorageAccountId\":\"mwovyztxlnomfpb\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"egvyieztkutnj\"}")
+            "{\"logStorageAccountId\":\"bg\",\"diskType\":\"StandardSSD_ZRS\",\"diskEncryptionSetId\":\"wmjcwtewfhxw\",\"sectorSizeInBytes\":891600902}")
             .toObject(InMageRcmDisksDefaultInput.class);
-        Assertions.assertEquals("mwovyztxlnomfpb", model.logStorageAccountId());
-        Assertions.assertEquals(DiskAccountType.STANDARD_SSD_LRS, model.diskType());
-        Assertions.assertEquals("egvyieztkutnj", model.diskEncryptionSetId());
+        Assertions.assertEquals("bg", model.logStorageAccountId());
+        Assertions.assertEquals(DiskAccountType.STANDARD_SSD_ZRS, model.diskType());
+        Assertions.assertEquals("wmjcwtewfhxw", model.diskEncryptionSetId());
+        Assertions.assertEquals(891600902, model.sectorSizeInBytes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmDisksDefaultInput model = new InMageRcmDisksDefaultInput().withLogStorageAccountId("mwovyztxlnomfpb")
-            .withDiskType(DiskAccountType.STANDARD_SSD_LRS)
-            .withDiskEncryptionSetId("egvyieztkutnj");
+        InMageRcmDisksDefaultInput model = new InMageRcmDisksDefaultInput().withLogStorageAccountId("bg")
+            .withDiskType(DiskAccountType.STANDARD_SSD_ZRS)
+            .withDiskEncryptionSetId("wmjcwtewfhxw")
+            .withSectorSizeInBytes(891600902);
         model = BinaryData.fromObject(model).toObject(InMageRcmDisksDefaultInput.class);
-        Assertions.assertEquals("mwovyztxlnomfpb", model.logStorageAccountId());
-        Assertions.assertEquals(DiskAccountType.STANDARD_SSD_LRS, model.diskType());
-        Assertions.assertEquals("egvyieztkutnj", model.diskEncryptionSetId());
+        Assertions.assertEquals("bg", model.logStorageAccountId());
+        Assertions.assertEquals(DiskAccountType.STANDARD_SSD_ZRS, model.diskType());
+        Assertions.assertEquals("wmjcwtewfhxw", model.diskEncryptionSetId());
+        Assertions.assertEquals(891600902, model.sectorSizeInBytes());
     }
 }

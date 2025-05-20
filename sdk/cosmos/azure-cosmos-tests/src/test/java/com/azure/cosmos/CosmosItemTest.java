@@ -44,6 +44,7 @@ import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import net.bytebuddy.asm.MemberSubstitution;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -312,7 +313,7 @@ public class CosmosItemTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = 100 * TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = 100 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readManyWithTwoSecondariesNotReachable() throws Exception {
         if (client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Fault injection only targeting direct mode");
@@ -1068,7 +1069,7 @@ public class CosmosItemTest extends TestSuiteBase {
             });
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readItemWithEventualConsistency() throws Exception {
 
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
@@ -1078,14 +1079,15 @@ public class CosmosItemTest extends TestSuiteBase {
         ObjectNode properties = getDocumentDefinition(idAndPkValue, idAndPkValue);
         CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
 
-        CosmosItemResponse<ObjectNode> readResponse1 = container.readItem(
+        CosmosItemResponse<ObjectNode> readResponse1 = verifyExists(
+            container,
             idAndPkValue,
             new PartitionKey(idAndPkValue),
             new CosmosItemRequestOptions()
                 // generate an invalid session token large enough to cause an error in Gateway
                 // due to header being too long
                 .setSessionToken(StringUtils.repeat("SomeManualInvalidSessionToken", 2000))
-                .setConsistencyLevel(ConsistencyLevel.EVENTUAL),
+                .setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL),
             ObjectNode.class);
 
         logger.info("REQUEST DIAGNOSTICS: {}", readResponse1.getDiagnostics().toString());

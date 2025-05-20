@@ -89,14 +89,14 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     public Project apply() {
         this.innerObject = serviceManager.serviceClient()
             .getProjects()
-            .update(resourceGroupName, organizationName, projectName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, organizationName, projectName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Project apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getProjects()
-            .update(resourceGroupName, organizationName, projectName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, organizationName, projectName, this.innerModel(), context);
         return this;
     }
 

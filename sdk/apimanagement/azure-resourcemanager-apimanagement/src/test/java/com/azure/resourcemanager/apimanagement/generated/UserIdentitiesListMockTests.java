@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.UserIdentityContract;
@@ -21,19 +21,19 @@ import reactor.core.publisher.Mono;
 public final class UserIdentitiesListMockTests {
     @Test
     public void testList() throws Exception {
-        String responseStr = "{\"value\":[{\"provider\":\"ldziph\",\"id\":\"fefznxcleyamv\"}]}";
+        String responseStr = "{\"value\":[{\"provider\":\"zguvckpdpd\",\"id\":\"rjqsk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<UserIdentityContract> response
-            = manager.userIdentities().list("xvuseimuip", "gta", "xbfhb", com.azure.core.util.Context.NONE);
+        PagedIterable<UserIdentityContract> response = manager.userIdentities()
+            .list("xlylxfp", "oylfclsrguecbth", "uivgbimededqgyrv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ldziph", response.iterator().next().provider());
-        Assertions.assertEquals("fefznxcleyamv", response.iterator().next().id());
+        Assertions.assertEquals("zguvckpdpd", response.iterator().next().provider());
+        Assertions.assertEquals("rjqsk", response.iterator().next().id());
     }
 }

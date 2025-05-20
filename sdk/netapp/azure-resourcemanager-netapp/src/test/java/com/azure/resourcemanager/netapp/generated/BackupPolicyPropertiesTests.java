@@ -17,7 +17,7 @@ public final class BackupPolicyPropertiesTests {
         Assertions.assertEquals(1000390440, model.dailyBackupsToKeep());
         Assertions.assertEquals(753407395, model.weeklyBackupsToKeep());
         Assertions.assertEquals(522033644, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertTrue(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,6 +30,6 @@ public final class BackupPolicyPropertiesTests {
         Assertions.assertEquals(1000390440, model.dailyBackupsToKeep());
         Assertions.assertEquals(753407395, model.weeklyBackupsToKeep());
         Assertions.assertEquals(522033644, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertTrue(model.enabled());
     }
 }

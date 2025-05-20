@@ -67,7 +67,7 @@ public class OkHttpHttpClientDeadlockTests {
 
         String endpoint = server.getHttpUri() + GET_ENDPOINT;
 
-        ForkJoinPool pool = new ForkJoinPool();
+        ForkJoinPool pool = new ForkJoinPool((int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0));
         try {
             List<Future<Response<BinaryData>>> futures = pool.invokeAll(IntStream.range(0, 100)
                 .mapToObj(ignored -> (Callable<Response<BinaryData>>) () -> httpClient

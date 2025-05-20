@@ -12,20 +12,20 @@ public final class SchemaContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaContractProperties model = BinaryData.fromString(
-            "{\"contentType\":\"zlpdwwex\",\"document\":{\"value\":\"zvlazipbhpwvqsgn\",\"definitions\":\"datauuzivensrpmeyyvp\",\"components\":\"dataatlb\"}}")
+            "{\"contentType\":\"gnhgook\",\"document\":{\"value\":\"alvnbwgpb\",\"definitions\":\"dataeluclvdjj\",\"components\":\"datayrdnqod\"},\"provisioningState\":\"hhxhq\"}")
             .toObject(SchemaContractProperties.class);
-        Assertions.assertEquals("zlpdwwex", model.contentType());
-        Assertions.assertEquals("zvlazipbhpwvqsgn", model.value());
+        Assertions.assertEquals("gnhgook", model.contentType());
+        Assertions.assertEquals("alvnbwgpb", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaContractProperties model = new SchemaContractProperties().withContentType("zlpdwwex")
-            .withValue("zvlazipbhpwvqsgn")
-            .withDefinitions("datauuzivensrpmeyyvp")
-            .withComponents("dataatlb");
+        SchemaContractProperties model = new SchemaContractProperties().withContentType("gnhgook")
+            .withValue("alvnbwgpb")
+            .withDefinitions("dataeluclvdjj")
+            .withComponents("datayrdnqod");
         model = BinaryData.fromObject(model).toObject(SchemaContractProperties.class);
-        Assertions.assertEquals("zlpdwwex", model.contentType());
-        Assertions.assertEquals("zvlazipbhpwvqsgn", model.value());
+        Assertions.assertEquals("gnhgook", model.contentType());
+        Assertions.assertEquals("alvnbwgpb", model.value());
     }
 }
