@@ -995,14 +995,12 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersReservation>
         createOrUpdateReservation(CreateOrUpdateReservationOptions reservationOptions) {
-        String reservationId = reservationOptions.getReservationId() != null
-            ? reservationOptions.getReservationId()
-            : UUID.randomUUID().toString();
-
+        Objects.requireNonNull(reservationOptions.getReservationId(), "'reservationId' cannot be null.");
         Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), reservationOptions);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation();
         PhoneNumbersReservationAccessHelper.setPhoneNumbers(reservation, phoneNumbersMap);
-        return client.createOrUpdateReservationAsync(UUID.fromString(reservationId), reservation);
+        return client.createOrUpdateReservationAsync(UUID.fromString(reservationOptions.getReservationId()),
+            reservation);
     }
 
     /**
@@ -1022,14 +1020,12 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumbersReservation>>
         createOrUpdateReservationWithResponse(CreateOrUpdateReservationOptions reservationOptions) {
-        String reservationId = reservationOptions.getReservationId() != null
-            ? reservationOptions.getReservationId()
-            : UUID.randomUUID().toString();
-
+        Objects.requireNonNull(reservationOptions.getReservationId(), "'reservationId' cannot be null.");
         Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), reservationOptions);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation();
         PhoneNumbersReservationAccessHelper.setPhoneNumbers(reservation, phoneNumbersMap);
-        return client.createOrUpdateReservationWithResponseAsync(UUID.fromString(reservationId), reservation);
+        return client.createOrUpdateReservationWithResponseAsync(UUID.fromString(reservationOptions.getReservationId()),
+            reservation);
     }
 
     /**
@@ -1082,18 +1078,12 @@ public final class PhoneNumbersAsyncClient {
         return new PhoneNumberErrorResponseException(exception.getMessage(), exception.getResponse(), error);
     }
 
-    private Map<String, AvailablePhoneNumber> createPhoneNumbersMap(Map<String, AvailablePhoneNumber> phoneNumbersMap,
-        List<AvailablePhoneNumber> phoneNumbers) {
-        for (AvailablePhoneNumber phoneNumber : phoneNumbers) {
-            phoneNumbersMap.put(phoneNumber.getId(), phoneNumber);
-        }
-        return phoneNumbersMap;
-    }
-
     private Map<String, AvailablePhoneNumber> updatePhoneNumbersMap(Map<String, AvailablePhoneNumber> phoneNumbersMap,
         CreateOrUpdateReservationOptions request) {
         if (request.getPhoneNumbersToAdd() != null) {
-            phoneNumbersMap = createPhoneNumbersMap(phoneNumbersMap, request.getPhoneNumbersToAdd());
+            for (AvailablePhoneNumber phoneNumber : request.getPhoneNumbersToAdd()) {
+                phoneNumbersMap.put(phoneNumber.getId(), phoneNumber);
+            }
         }
 
         if (request.getPhoneNumbersToRemove() != null) {

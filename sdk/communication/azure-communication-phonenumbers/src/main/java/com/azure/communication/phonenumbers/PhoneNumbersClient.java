@@ -1114,18 +1114,12 @@ public final class PhoneNumbersClient {
         return client.deleteReservationWithResponse(UUID.fromString(reservationId), context);
     }
 
-    private static Map<String, AvailablePhoneNumber> createPhoneNumbersMap(
-        Map<String, AvailablePhoneNumber> phoneNumbersMap, List<AvailablePhoneNumber> phoneNumbers) {
-        for (AvailablePhoneNumber phoneNumber : phoneNumbers) {
-            phoneNumbersMap.put(phoneNumber.getId(), phoneNumber);
-        }
-        return phoneNumbersMap;
-    }
-
     private static Map<String, AvailablePhoneNumber> updatePhoneNumbersMap(
         Map<String, AvailablePhoneNumber> phoneNumbersMap, CreateOrUpdateReservationOptions request) {
         if (request.getPhoneNumbersToAdd() != null) {
-            phoneNumbersMap = createPhoneNumbersMap(phoneNumbersMap, request.getPhoneNumbersToAdd());
+            for (AvailablePhoneNumber phoneNumber : request.getPhoneNumbersToAdd()) {
+                phoneNumbersMap.put(phoneNumber.getId(), phoneNumber);
+            }
         }
         if (request.getPhoneNumbersToRemove() != null) {
             for (String phoneNumber : request.getPhoneNumbersToRemove()) {
