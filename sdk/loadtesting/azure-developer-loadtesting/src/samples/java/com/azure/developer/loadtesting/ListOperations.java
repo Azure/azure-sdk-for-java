@@ -8,6 +8,8 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.developer.loadtesting.models.TestProfile;
+import com.azure.developer.loadtesting.models.TestProfileRun;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -16,7 +18,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Sample demonstrates how to list tests, test files and test runs for a given resource.
+ * Sample demonstrates how to list tests, test files, test runs, test profiles and test profile runs for a given resource.
  */
 public final class ListOperations {
     /**
@@ -118,5 +120,35 @@ public final class ListOperations {
             }
         });
         // END: java-listOperations-sample-listTestFiles
+    }
+
+    public static void listTestProfiles() {
+        // BEGIN: java-listOperations-sample-listTestProfiles
+        LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint("<endpoint>")
+            .buildClient();
+
+        PagedIterable<TestProfile> testProfiles = client.listTestProfiles();
+
+        testProfiles.forEach((TestProfile testProfile) -> {
+            System.out.println(String.format("%s:\t%s", testProfile.getTestProfileId(), testProfile.getDisplayName()));
+        });
+        // END: java-listOperations-sample-listTestProfiles
+    }
+
+    public static void listTestProfileRuns() {
+        // BEGIN: java-listOperations-sample-listTestProfileRuns
+        LoadTestRunClient client = new LoadTestRunClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint("<endpoint>")
+            .buildClient();
+
+        PagedIterable<TestProfileRun> testProfileRuns = client.listTestProfileRuns();
+
+        testProfileRuns.forEach((TestProfileRun testProfileRun) -> {
+            System.out.println(String.format("%s:\t%s", testProfileRun.getTestProfileRunId(), testProfileRun.getDisplayName()));
+        });
+        // END: java-listOperations-sample-listTestProfileRuns
     }
 }

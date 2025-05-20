@@ -8,6 +8,8 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.developer.loadtesting.models.TestProfile;
+import com.azure.developer.loadtesting.models.TestProfileRun;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -16,7 +18,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Sample demonstrates how to list tests, test files and test runs for a given resource.
+ * Sample demonstrates how to list tests, test files, test runs, test profiles and test profile runs for a given resource.
  */
 public final class ListOperationsAsync {
     /**
@@ -119,5 +121,35 @@ public final class ListOperationsAsync {
             }
         });
         // END: java-listOperationsAsync-sample-listTestFiles
+    }
+
+    public static void listTestProfiles() {
+        // BEGIN: java-listOperationsAsync-sample-listTestProfiles
+        LoadTestAdministrationAsyncClient client = new LoadTestAdministrationClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint("<endpoint>")
+            .buildAsyncClient();
+
+        PagedFlux<TestProfile> testProfiles = client.listTestProfiles();
+
+        testProfiles.subscribe(testProfile -> {
+            System.out.println(String.format("%s\t%s", testProfile.getTestProfileId(), testProfile.getDisplayName()));
+        });
+        // END: java-listOperationsAsync-sample-listTestProfiles
+    }
+
+    public static void listTestProfileRuns() {
+        // BEGIN: java-listOperationsAsync-sample-listTestProfileRuns
+        LoadTestRunAsyncClient client = new LoadTestRunClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint("<endpoint>")
+            .buildAsyncClient();
+
+        PagedFlux<TestProfileRun> testProfileRuns = client.listTestProfileRuns();
+
+        testProfileRuns.subscribe(testProfileRun -> {
+            System.out.println(String.format("%s\t%s", testProfileRun.getTestProfileRunId(), testProfileRun.getDisplayName()));
+        });
+        // END: java-listOperationsAsync-sample-listTestProfileRuns
     }
 }

@@ -49,8 +49,8 @@ public final class HelloWorld {
             .buildClient();
 
         // Constants and parameters
-        final String testId = "6758667a-a57c-47e5-9cef-9b1f1432daca";
-        final String testRunId = "f758667a-c5ac-269a-dce1-5c1f14f2d142";
+        final String testId = "sample-test-id";
+        final String testRunId = "sample-test-run-id";
         final String testFileName = "test-script.jmx";
         final String testFilePath = "C:/path/to/file/sample-script.jmx";
 

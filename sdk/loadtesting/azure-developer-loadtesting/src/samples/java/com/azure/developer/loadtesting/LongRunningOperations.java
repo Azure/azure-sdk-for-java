@@ -19,10 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Sample demonstrates how to upload and validate a test file, and running a test run.
+ * Sample demonstrates how to upload and validate a test file, running a test run and running a test profile run.
  *
- * Authenticates with the load testing resource and shows how to upload and validate a test file, and running a test run
- * in a given resource.
+ * Authenticates with the load testing resource and shows how to upload and validate a test file, run a test run
+ * and run a test profile run in a given resource.
  *
  * @throws ClientAuthenticationException - when the credentials have insufficient permissions for load test resource.
  * @throws ResourceNotFoundException - when test with `testId` does not exist when uploading file.
@@ -143,5 +143,61 @@ public final class LongRunningOperations {
             e.printStackTrace();
         }
         // END: java-longRunningOperations-sample-beginTestRun
+    }
+
+    public void beginTestProfileRun() {
+        // BEGIN: java-longRunningOperations-sample-beginTestProfileRun
+        LoadTestRunClient client = new LoadTestRunClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint("<endpoint>")
+            .buildClient();
+
+        String inputTestProfileRunId = "12345678-1234-1234-1234-123456789abc";
+        String inputTestProfileId = "87654321-1234-1234-1234-123456789abc";
+
+        Map<String, Object> testProfileRunMap = new HashMap<>();
+        testProfileRunMap.put("testProfileId", inputTestProfileId);
+        testProfileRunMap.put("displayName", "Sample Test Profile Run");
+        testProfileRunMap.put("description", "Java SDK Sample Test Profile Run");
+
+        Duration pollInterval = Duration.ofSeconds(30);
+
+        BinaryData inputTestProfileRunBinary = BinaryData.fromObject(testProfileRunMap);
+
+        SyncPoller<BinaryData, BinaryData> poller = client.beginTestProfileRun(inputTestProfileRunId, inputTestProfileRunBinary, null);
+        poller = poller.setPollInterval(pollInterval);
+
+        PollResponse<BinaryData> pollResponse = poller.poll();
+
+        while (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            || pollResponse.getStatus() == LongRunningOperationStatus.NOT_STARTED) {
+
+            BinaryData testProfileRunBinary = pollResponse.getValue();
+
+            System.out.println("Test Profile Run all info: " + testProfileRunBinary.toString());
+
+            try {
+                Thread.sleep(pollInterval.toMillis());
+            } catch (InterruptedException e) {
+                // handle interruption
+            }
+
+            pollResponse = poller.poll();
+        }
+
+        poller.waitForCompletion();
+        BinaryData testProfileRunBinary = poller.getFinalResult();
+
+        try (JsonReader jsonReader = JsonProviders.createReader(testProfileRunBinary.toBytes())) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+            String testProfileId = jsonTree.get("testProfileId").toString();
+            String testProfileRunId = jsonTree.get("testProfileRunId").toString();
+            String status = jsonTree.get("status").toString();
+            System.out.println(String.format("%s\t%s\t%s", testProfileId, testProfileRunId, status));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // END: java-longRunningOperations-sample-beginTestProfileRun
     }
 }
