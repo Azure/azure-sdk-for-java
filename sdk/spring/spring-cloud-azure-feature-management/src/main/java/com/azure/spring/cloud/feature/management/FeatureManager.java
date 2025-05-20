@@ -197,7 +197,7 @@ public class FeatureManager {
         EvaluationEvent event = new EvaluationEvent(featureFlag);
 
         if (featureFlag == null) {
-            LOGGER.warn("Feature flag %s not found", featureName);
+            LOGGER.warn("Feature flag {} not found", featureName);
             return Mono.just(event);
         }
 
