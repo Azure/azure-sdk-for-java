@@ -399,6 +399,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             return "InternalError".equalsIgnoreCase(copySourceErrorCode)
                 || "OperationTimedOut".equalsIgnoreCase(copySourceErrorCode)
                 || "ServerBusy".equalsIgnoreCase(copySourceErrorCode)
+                || "429".equals(copySourceStatusCode)
                 || (!isPrimary && "404".equals(copySourceStatusCode));
         }
 
