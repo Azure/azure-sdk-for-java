@@ -215,8 +215,21 @@ public class NettyAsyncHttpClientBuilder {
         nettyHttpClient = nettyHttpClient.port(port)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
                 (int) getTimeout(connectTimeout, getDefaultConnectTimeout()).toMillis())
-            // TODO (alzimmer): What does validating HTTP response headers get us?
-            .httpResponseDecoder(httpResponseDecoderSpec -> initialSpec.validateHeaders(false))
+            .httpResponseDecoder(httpResponseDecoderSpec -> {
+                int chunkSize = initialSpec.maxChunkSize();
+                if (chunkSize == HttpResponseDecoderSpec.DEFAULT_MAX_CHUNK_SIZE) {
+                    // The HttpResponseDecoderSpec didn't have its maxChunkSize configured externally, set it to a
+                    // larger value than the default to reduce the number of chunks emitted. Doing so, in theory, should
+                    // help improve performance by reducing the number of chunks emitted. Though, it may cause worse
+                    // memory fragmentation.
+                    // Try using 32KB as the max chunk size, a 4x increase over the default. This number is arbitrary
+                    // and maybe should be configurable, but is a good starting point to get performance information.
+                    initialSpec.maxChunkSize(32768);
+                }
+
+                // TODO (alzimmer): What does validating HTTP response headers get us?
+                return initialSpec.validateHeaders(false);
+            })
             .doOnRequest(
                 (request, connection) -> addHandler(request, connection, writeTimeout, responseTimeout, readTimeout))
             .doAfterResponseSuccess((ignored, connection) -> removeHandler(connection));
