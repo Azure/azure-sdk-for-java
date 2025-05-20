@@ -579,7 +579,9 @@ public final class RntbdConstants {
         EndId((short) 0x0060, RntbdTokenType.Bytes, false),
         FanoutOperationState((short) 0x0061, RntbdTokenType.Byte, false),
         StartEpk((short) 0x0062, RntbdTokenType.Bytes, false),
+        StartEpkHash((short)0x00D2, RntbdTokenType.Bytes, false),
         EndEpk((short) 0x0063, RntbdTokenType.Bytes, false),
+        EndEpkHash((short)0x00D3, RntbdTokenType.Bytes, false),
         ReadFeedKeyType((short) 0x0064, RntbdTokenType.Byte, false),
         ContentSerializationFormat((short) 0x0065, RntbdTokenType.Byte, false),
         AllowTentativeWrites((short) 0x0066, RntbdTokenType.Byte, false),
@@ -600,6 +602,8 @@ public final class RntbdConstants {
 
         public static final List<RntbdRequestHeader> thinClientHeadersInOrderList = Arrays.asList(
             EffectivePartitionKey,
+            StartEpkHash,
+            EndEpkHash,
             GlobalDatabaseAccountName,
             DatabaseName,
             CollectionName,

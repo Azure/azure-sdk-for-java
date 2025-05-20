@@ -77,9 +77,19 @@ public class ThinClientE2ETest {
                 .consistencyLevel(ConsistencyLevel.SESSION)
                 .buildAsyncClient();
 
-            CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
             String idName = "id";
             String partitionKeyName = "partitionKey";
+
+            client.createDatabaseIfNotExists("db1").block();
+
+            CosmosContainerProperties containerDef =
+                new CosmosContainerProperties("c2", "/" + partitionKeyName);
+            ThroughputProperties ruCfg = ThroughputProperties.createManualThroughput(35_000);
+
+            client.getDatabase("db1").createContainerIfNotExists(containerDef, ruCfg).block();
+
+            CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
+
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode doc = mapper.createObjectNode();
             String idValue = UUID.randomUUID().toString();

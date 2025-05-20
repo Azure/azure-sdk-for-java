@@ -142,14 +142,16 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         if (partitionKey != null) {
             byte[] epk = partitionKey.getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
             rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey, epk);
+        } else if (request.requestContext.resolvedPartitionKeyRange == null) {
+            throw new IllegalStateException(
+                "Resolved partition key range should not be null at this point. ResourceType: "
+                + request.getResourceType() + ", OperationType: "
+                + request.getOperationType());
+        } else {
+            PartitionKeyRange pkRange = request.requestContext.resolvedPartitionKeyRange;
+            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.StartEpkHash, pkRange.getMinInclusive().getBytes(StandardCharsets.UTF_8));
+            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EndEpkHash, pkRange.getMaxExclusive().getBytes(StandardCharsets.UTF_8));
         }
-
-        PartitionKeyRange pkRange = request.requestContext.resolvedPartitionKeyRange;
-        request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_START_EPK, pkRange.getMinInclusive());
-        request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_END_EPK, pkRange.getMaxExclusive());
-
-        /*rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.StartEpk, pkRange.getMinInclusive().getBytes(StandardCharsets.UTF_8));
-        rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EndEpk, pkRange.getMaxExclusive().getBytes(StandardCharsets.UTF_8));*/
 
         // todo: eventually need to use pooled buffer
         ByteBuf byteBuf = Unpooled.buffer();
