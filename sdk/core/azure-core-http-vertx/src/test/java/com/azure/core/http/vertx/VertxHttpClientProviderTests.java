@@ -7,8 +7,6 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
 import io.vertx.core.Vertx;
-import io.vertx.core.http.impl.HttpClientImpl;
-import io.vertx.core.net.SocketAddress;
 import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
@@ -18,16 +16,11 @@ import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
 
-import static com.azure.core.http.vertx.VertxClientTestHelper.getVertxInternalProxyFilter;
-import static io.vertx.core.net.SocketAddress.inetSocketAddress;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link VertxHttpClientProvider}.
@@ -39,8 +32,7 @@ public class VertxHttpClientProviderTests {
         VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientProvider().createInstance(null);
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
-        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
-        io.vertx.core.net.ProxyOptions proxyOptions = options.getProxyOptions();
+        io.vertx.core.net.ProxyOptions proxyOptions = httpClient.buildOptions.getProxyOptions();
         if (environmentProxy == null) {
             assertNull(proxyOptions);
         } else {
@@ -55,8 +47,7 @@ public class VertxHttpClientProviderTests {
             = (VertxHttpClient) new VertxHttpClientProvider().createInstance(new HttpClientOptions());
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
-        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
-        io.vertx.core.net.ProxyOptions proxyOptions = options.getProxyOptions();
+        io.vertx.core.net.ProxyOptions proxyOptions = httpClient.buildOptions.getProxyOptions();
         if (environmentProxy == null) {
             assertNull(proxyOptions);
         } else {
@@ -74,21 +65,11 @@ public class VertxHttpClientProviderTests {
 
         VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientProvider().createInstance(clientOptions);
 
-        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
-
-        io.vertx.core.net.ProxyOptions vertxProxyOptions = options.getProxyOptions();
+        io.vertx.core.net.ProxyOptions vertxProxyOptions = httpClient.buildOptions.getProxyOptions();
         assertNotNull(vertxProxyOptions);
         assertEquals(proxyOptions.getAddress().getHostName(), vertxProxyOptions.getHost());
         assertEquals(proxyOptions.getAddress().getPort(), vertxProxyOptions.getPort());
         assertEquals(proxyOptions.getType().name(), vertxProxyOptions.getType().name());
-
-        Predicate<SocketAddress> proxyFilter = getVertxInternalProxyFilter((HttpClientImpl) httpClient.client);
-        assertFalse(proxyFilter.test(inetSocketAddress(80, "foo.com")));
-        assertFalse(proxyFilter.test(inetSocketAddress(80, "foo.bar.com")));
-        assertFalse(proxyFilter.test(inetSocketAddress(80, "bar.com")));
-        assertFalse(proxyFilter.test(inetSocketAddress(80, "cheese.com")));
-        assertFalse(proxyFilter.test(inetSocketAddress(80, "wine.org")));
-        assertTrue(proxyFilter.test(inetSocketAddress(80, "allowed.host.com")));
     }
 
     @Test
@@ -101,11 +82,9 @@ public class VertxHttpClientProviderTests {
 
         VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientProvider().createInstance(clientOptions);
 
-        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
-
-        assertEquals(timeout.toMillis(), options.getConnectTimeout());
-        assertEquals(timeout.toMillis(), options.getReadIdleTimeout());
-        assertEquals(timeout.toMillis(), options.getWriteIdleTimeout());
+        assertEquals(timeout.toMillis(), httpClient.buildOptions.getConnectTimeout());
+        assertEquals(timeout.toMillis(), httpClient.buildOptions.getReadIdleTimeout());
+        assertEquals(timeout.toMillis(), httpClient.buildOptions.getWriteIdleTimeout());
     }
 
     @Test
@@ -122,7 +101,7 @@ public class VertxHttpClientProviderTests {
             assertSame(vertx, vertxSelectedByBuilder);
         } finally {
             CountDownLatch latch = new CountDownLatch(1);
-            vertx.close(event -> latch.countDown());
+            vertx.close().andThen(event -> latch.countDown());
             latch.await(5, TimeUnit.SECONDS);
         }
     }
@@ -145,7 +124,7 @@ public class VertxHttpClientProviderTests {
             assertSame(vertx, vertxSelectedByBuilder);
         } finally {
             CountDownLatch latch = new CountDownLatch(1);
-            vertx.close(event -> latch.countDown());
+            vertx.close().andThen(event -> latch.countDown());
             latch.await(5, TimeUnit.SECONDS);
         }
     }
