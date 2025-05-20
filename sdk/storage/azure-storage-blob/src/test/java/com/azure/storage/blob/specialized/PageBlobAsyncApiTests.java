@@ -570,11 +570,13 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(destBlob.createIfNotExists(Constants.KB)
             .then(destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null))).verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-            assertTrue(e.getStatusCode() == 401);
-            assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
-            assertTrue(e.getServiceMessage().contains("Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+                assertTrue(e.getStatusCode() == 401);
+                assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+                assertTrue(e.getServiceMessage()
+                    .contains(
+                        "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
 
-        });
+            });
     }
 
     @Test

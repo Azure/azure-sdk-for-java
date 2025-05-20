@@ -536,7 +536,9 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         assertTrue(e.getStatusCode() == 401);
         assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
-        assertTrue(e.getServiceMessage().contains("Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+        assertTrue(e.getServiceMessage()
+            .contains(
+                "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
 
     }
 
