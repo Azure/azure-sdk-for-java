@@ -299,6 +299,15 @@ public class StorageImplUtils {
      */
     public static String convertStorageExceptionMessage(String message, HttpResponse response) {
         if (response != null) {
+            String errorCode = response.getHeaders().getValue(ERROR_CODE_HEADER_NAME);
+            String headerName = response.getHeaders().getValue("x-ms-error-header"); // Replace with actual header name retrieval logic if different
+
+            if (Constants.HeaderConstants.INVALID_HEADER_VALUE.equals(errorCode)
+                && headerName != null
+                && Constants.HeaderConstants.VERSION.equalsIgnoreCase(headerName)) {
+                return "The value provided for the 'x-ms-version' header is invalid. Please ensure you are using a supported version.";
+            }
+
             if (response.getStatusCode() == 403) {
                 return STORAGE_EXCEPTION_LOG_STRING_TO_SIGN_MESSAGE + message;
             }

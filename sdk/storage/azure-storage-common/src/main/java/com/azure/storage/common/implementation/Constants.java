@@ -98,6 +98,16 @@ public final class Constants {
     }
 
     /**
+     * Defines constants for use Invalid version header Message.
+     *
+     * RESERVED FOR INTERNAL USE.
+     */
+    public static final class Errors {
+        public static final String INVALID_VERSION_HEADER_MESSAGE
+            = "The provided service version is not enabled on this storage account.  Please see https://learn.microsoft.com/rest/api/storageservices/versioning-for-the-azure-storage-services for additional information.\n";
+    }
+
+    /**
      * Defines constants for use with connection strings.
      *
      * RESERVED FOR INTERNAL USE.
@@ -257,6 +267,10 @@ public final class Constants {
         public static final String SMB_PROTOCOL = "SMB";
 
         public static final String NFS_PROTOCOL = "NFS";
+
+        public static final String VERSION = "x-ms-version";
+
+        public static final String INVALID_HEADER_VALUE = "InvalidHeaderValue";
 
         private HeaderConstants() {
             // Private to prevent construction.
