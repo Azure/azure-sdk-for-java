@@ -90,7 +90,7 @@ if (!validationResult.isValid()) {
 }
 
 // [Step 3] Create the experiment metric
-String exampleMetricId = "sample_metric_id_" + (new Random().nextInt(10000) + 10000);
+String exampleMetricId = "sample_metric_id_" + UUID.randomUUID().toString().replace("-", "");
 
 System.out.printf("Creating the experiment metric %s...%n", exampleMetricId);
 
@@ -156,3 +156,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [app_config]: https://learn.microsoft.com/azure/azure-app-configuration/overview
 [azure_monitor]: https://learn.microsoft.com/azure/azure-monitor/overview
 [azure_exp_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/onlineexperimentation/azure-resourcemanager-onlineexperimentation/SAMPLE.md
+[az_exp_workspace]: https://learn.microsoft.com/azure/templates/microsoft.onlineexperimentation/workspaces

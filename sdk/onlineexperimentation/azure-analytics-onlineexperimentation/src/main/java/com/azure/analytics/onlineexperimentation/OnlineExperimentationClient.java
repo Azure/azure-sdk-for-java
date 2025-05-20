@@ -62,7 +62,7 @@ public final class OnlineExperimentationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -115,7 +115,7 @@ public final class OnlineExperimentationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -135,9 +135,9 @@ public final class OnlineExperimentationClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -178,7 +178,7 @@ public final class OnlineExperimentationClient {
     /**
      * Validates an experiment metric definition.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -198,9 +198,9 @@ public final class OnlineExperimentationClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -273,7 +273,7 @@ public final class OnlineExperimentationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -639,6 +639,7 @@ public final class OnlineExperimentationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines experiment metric metadata and computation details.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ExperimentMetric activateMetric(String experimentMetricId, String ifMatch) {
         return updateMetric(experimentMetricId, new ExperimentMetric().setLifecycle(LifecycleStage.ACTIVE), ifMatch);
     }
@@ -655,6 +656,7 @@ public final class OnlineExperimentationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines experiment metric metadata and computation details.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ExperimentMetric activateMetric(String experimentMetricId) {
         return activateMetric(experimentMetricId, ETag.ALL.toString());
     }
@@ -672,6 +674,7 @@ public final class OnlineExperimentationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines experiment metric metadata and computation details.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ExperimentMetric deactivateMetric(String experimentMetricId, String ifMatch) {
         return updateMetric(experimentMetricId, new ExperimentMetric().setLifecycle(LifecycleStage.INACTIVE), ifMatch);
     }
@@ -688,6 +691,7 @@ public final class OnlineExperimentationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines experiment metric metadata and computation details.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ExperimentMetric deactivateMetric(String experimentMetricId) {
         return deactivateMetric(experimentMetricId, ETag.ALL.toString());
     }

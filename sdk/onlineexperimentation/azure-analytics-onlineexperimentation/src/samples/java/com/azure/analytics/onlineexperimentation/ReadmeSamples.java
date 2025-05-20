@@ -4,7 +4,7 @@
 package com.azure.analytics.onlineexperimentation;
 
 import java.util.Arrays;
-import java.util.Random;
+import java.util.UUID;
 
 import com.azure.analytics.onlineexperimentation.models.DesiredDirection;
 import com.azure.analytics.onlineexperimentation.models.DiagnosticDetail;
@@ -61,7 +61,7 @@ public final class ReadmeSamples {
         }
 
         // [Step 3] Create the experiment metric
-        String exampleMetricId = "sample_metric_id_" + (new Random().nextInt(10000) + 10000);
+        String exampleMetricId = "sample_metric_id_" + UUID.randomUUID().toString().replace("-", "");
 
         System.out.printf("Creating the experiment metric %s...%n", exampleMetricId);
 
