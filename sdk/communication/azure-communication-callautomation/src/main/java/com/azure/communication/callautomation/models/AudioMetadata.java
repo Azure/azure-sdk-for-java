@@ -30,12 +30,7 @@ public final class AudioMetadata extends StreamingData {
     /*
      * Specifies the number of audio channels in the audio configuration. Currently, only "mono" (single channel) is supported.
      */
-    private final Channels channels;
-
-    /*
-     * The size of the audio data (base64 byte) being sent, based on the sample rate and duration.
-     */
-    private final Integer length;
+    private final AudioChannelType channels;
 
     static {
         AudioMetadataContructorProxy
@@ -57,7 +52,6 @@ public final class AudioMetadata extends StreamingData {
         this.encoding = internalData.getEncoding();
         this.sampleRate = internalData.getSampleRate();
         this.channels = convertToChannelsEnum(internalData.getChannels());
-        this.length = internalData.getLength();
     }
 
     /**
@@ -68,7 +62,6 @@ public final class AudioMetadata extends StreamingData {
         this.encoding = null;
         this.sampleRate = null;
         this.channels = null;
-        this.length = null;
     }
 
     /**
@@ -107,18 +100,8 @@ public final class AudioMetadata extends StreamingData {
      *
      * @return the channels value.
      */
-    public Channels getChannels() {
+    public AudioChannelType getChannels() {
         return channels;
-    }
-
-    /**
-     * The size of the audio data (base64 byte) being sent, based on the sample rate and duration.
-     * Get the length property.
-     *
-     * @return the length value.
-     */
-    public int getLength() {
-        return length;
     }
 
     /**
@@ -126,9 +109,9 @@ public final class AudioMetadata extends StreamingData {
      * @param channels channels id for the audio
      * @return Channels enum
      */
-    private Channels convertToChannelsEnum(Integer channels) {
+    private AudioChannelType convertToChannelsEnum(Integer channels) {
         if (1 == channels) {
-            return Channels.MONO;
+            return AudioChannelType.MONO;
         } else {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unsupported Channels "));
         }

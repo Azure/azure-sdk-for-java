@@ -3,17 +3,25 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
+
+import com.azure.core.util.ExpandableStringEnum;
 
 /**
  * Specifies the text format of transcription.
  */
-public final class Channels extends ExpandableStringEnum<Channels> {
+public final class AudioChannelType extends ExpandableStringEnum<AudioChannelType> {
     /**
      * Display.
+     * Audio channel type.
      */
-    public static final Channels MONO = fromString("mono");
+    public static final AudioChannelType MONO = fromString("mono");
+
+    /**
+     * Display.
+     * Unknown Audio channel type.
+     */
+    public static final AudioChannelType UNKNOWN = fromString("unknown");
 
     /**
      * Creates a new instance of Channels value.
@@ -21,7 +29,7 @@ public final class Channels extends ExpandableStringEnum<Channels> {
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public Channels() {
+    public AudioChannelType() {
     }
 
     /**
@@ -30,8 +38,8 @@ public final class Channels extends ExpandableStringEnum<Channels> {
      * @param name a name to look for.
      * @return the corresponding Channels.
      */
-    public static Channels fromString(String name) {
-        return fromString(name, Channels.class);
+    public static AudioChannelType fromString(String name) {
+        return fromString(name, AudioChannelType.class);
     }
 
     /**
@@ -39,7 +47,7 @@ public final class Channels extends ExpandableStringEnum<Channels> {
      * 
      * @return known Channels values.
      */
-    public static Collection<Channels> values() {
-        return values(Channels.class);
+    public static Collection<AudioChannelType> values() {
+        return values(AudioChannelType.class);
     }
 }

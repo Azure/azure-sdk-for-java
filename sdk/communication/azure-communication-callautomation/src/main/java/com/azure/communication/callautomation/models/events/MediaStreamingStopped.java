@@ -3,12 +3,12 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import java.io.IOException;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
-import java.io.IOException;
 
 /** The MediaStreamingStopped model. */
 @Fluent
@@ -18,7 +18,7 @@ public final class MediaStreamingStopped extends CallAutomationEventBase {
      * Defines the result for audio streaming update with the current status
      * and the details about the status
      */
-    private MediaStreamingUpdate mediaStreamingUpdateResult;
+    private MediaStreamingUpdateResult mediaStreamingUpdateResult;
 
     /**
     * Creates an instance of MediaStreamingStopped class.
@@ -31,9 +31,9 @@ public final class MediaStreamingStopped extends CallAutomationEventBase {
      * Get the getMediaStreamingUpdateResult property: Defines the result for audio streaming update with the current status and
      * the details about the status.
      *
-     * @return the mediaStreamingUpdate value.
+     * @return the MediaStreamingUpdateResult value.
      */
-    public MediaStreamingUpdate getMediaStreamingUpdateResult() {
+    public MediaStreamingUpdateResult getMediaStreamingUpdateResult() {
         return this.mediaStreamingUpdateResult;
     }
 
@@ -63,7 +63,7 @@ public final class MediaStreamingStopped extends CallAutomationEventBase {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("mediaStreamingUpdate".equals(fieldName)) {
-                    event.mediaStreamingUpdateResult = MediaStreamingUpdate.fromJson(reader);
+                    event.mediaStreamingUpdateResult = MediaStreamingUpdateResult.fromJson(reader);
                 } else {
                     if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
