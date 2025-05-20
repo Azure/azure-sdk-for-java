@@ -3,12 +3,14 @@
 
 package com.azure.communication.callautomation;
 
+import java.util.List;
+
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.HoldOptions;
-import com.azure.communication.callautomation.models.UnholdOptions;
 import com.azure.communication.callautomation.models.PlayOptions;
+import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesResult;
@@ -16,15 +18,14 @@ import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
-import com.azure.communication.callautomation.models.PlaySource;
+import com.azure.communication.callautomation.models.UnholdOptions;
+import com.azure.communication.callautomation.models.UpdateTranscriptionOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.exception.HttpResponseException;
-
-import java.util.List;
 
 /**
  * CallContent.
@@ -331,20 +332,13 @@ public final class CallMedia {
 
     /**
      * Updates transcription language in the call.
-     *
-     * @param locale Defines new locale for transcription.
-     * @param speechRecognitionModelEndpointId Defines custom model endpoint.
+     *@param options Options for the Update Transcription operation.
      * @param context Context
-     * @param operationContext operational context.
      * @return Response for successful update transcription request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateTranscriptionWithResponse(String locale, String speechRecognitionModelEndpointId,
-        String operationContext, Context context) {
-        return callMediaAsync
-            .updateTranscriptionWithResponseInternal(locale, speechRecognitionModelEndpointId, operationContext,
-                context)
-            .block();
+    public Response<Void> updateTranscriptionWithResponse(UpdateTranscriptionOptions options, Context context) {
+        return callMediaAsync.updateTranscriptionWithResponseInternal(options, context).block();
     }
 
     /**

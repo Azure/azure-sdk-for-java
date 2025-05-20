@@ -6,6 +6,7 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionDataContructorProxy;
 import com.azure.communication.callautomation.implementation.converters.TranscriptionDataConverter;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.time.Duration;
 /**
  * The TranscriptionData model.
  */
+@Immutable
 public final class TranscriptionData extends StreamingData {
 
     private static final ClientLogger LOGGER = new ClientLogger(TranscriptionData.class);
@@ -76,7 +78,7 @@ public final class TranscriptionData extends StreamingData {
      *
      * @param internalData transcription internal data
      */
-    TranscriptionData(TranscriptionDataConverter internalData) {
+    protected TranscriptionData(TranscriptionDataConverter internalData) {
         this.text = internalData.getText();
         this.format = convertToTextFormatEnum(internalData.getFormat());
         this.confidence = internalData.getConfidence();
