@@ -249,8 +249,8 @@ public class RxDocumentClientImplTest {
             this.sessionRetryOptionsMock,
             this.containerProactiveInitConfigMock,
             this.defaultItemSerializer,
-            false,
-            false);
+            false
+        );
 
         try {
             ReflectionUtils.setCollectionCache(rxDocumentClient, this.collectionCacheMock);

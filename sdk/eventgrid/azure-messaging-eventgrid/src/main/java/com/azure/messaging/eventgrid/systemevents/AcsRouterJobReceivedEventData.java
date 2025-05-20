@@ -237,12 +237,12 @@ public final class AcsRouterJobReceivedEventData extends AcsRouterJobEventData {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("unavailableForMatching", this.unavailableForMatching);
         jsonWriter.writeStringField("jobStatus", this.jobStatus == null ? null : this.jobStatus.toString());
         jsonWriter.writeStringField("classificationPolicyId", this.classificationPolicyId);
@@ -270,7 +270,13 @@ public final class AcsRouterJobReceivedEventData extends AcsRouterJobEventData {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("jobId".equals(fieldName)) {
+                if ("labels".equals(fieldName)) {
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobReceivedEventData.setLabels(labels);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobReceivedEventData.setTags(tags);
+                } else if ("jobId".equals(fieldName)) {
                     deserializedAcsRouterJobReceivedEventData.setJobId(reader.getString());
                 } else if ("channelReference".equals(fieldName)) {
                     deserializedAcsRouterJobReceivedEventData.setChannelReference(reader.getString());
@@ -278,12 +284,6 @@ public final class AcsRouterJobReceivedEventData extends AcsRouterJobEventData {
                     deserializedAcsRouterJobReceivedEventData.setChannelId(reader.getString());
                 } else if ("queueId".equals(fieldName)) {
                     deserializedAcsRouterJobReceivedEventData.setQueueId(reader.getString());
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobReceivedEventData.setLabels(labels);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobReceivedEventData.setTags(tags);
                 } else if ("unavailableForMatching".equals(fieldName)) {
                     deserializedAcsRouterJobReceivedEventData.unavailableForMatching = reader.getBoolean();
                 } else if ("jobStatus".equals(fieldName)) {

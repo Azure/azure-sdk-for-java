@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.70.0-beta.1 (Unreleased)
+### 4.71.0-beta.2 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,26 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.71.0-beta.1 (2025-05-19)
+
+#### Features Added
+* Added Weighted RRF for Hybrid and Full Text Search queries - [PR 45328](https://github.com/Azure/azure-sdk-for-java/pull/45328)
+
+### 4.70.0 (2025-05-16)
+
+#### Bugs Fixed
+* Fixed an issue where child partition is getting overridden with null continuation token if a split happens during the first request of a parent partition. - See [PR 45363](https://github.com/Azure/azure-sdk-for-java/pull/45363)
+
+#### Other Changes
+* Added a way to opt-in into Per-Partition Automatic Failover using enablement flag from the account metadata. - [PR 45317](https://github.com/Azure/azure-sdk-for-java/pull/45317)
+
+### 4.68.1 (2025-05-16)
+> [!IMPORTANT]
+> We strongly recommend customers with an upgrade-intent to upgrade to version 4.70.0 or later to include this bug fix.
+
+#### Bugs Fixed
+* Fixed an issue where child partition is getting overridden with null continuation token if a split happens during the first request of a parent partition. - See [PR 45363](https://github.com/Azure/azure-sdk-for-java/pull/45363)
 
 ### 4.69.0 (2025-05-14)
 

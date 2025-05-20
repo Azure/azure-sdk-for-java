@@ -33,16 +33,19 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
      * The chat thread id
      */
     @Generated
-    private String threadId;
+    private final String threadId;
 
     /**
      * Creates an instance of AcsChatEventBaseProperties class.
      * 
      * @param recipientCommunicationIdentifier the recipientCommunicationIdentifier value to set.
+     * @param threadId the threadId value to set.
      */
     @Generated
-    protected AcsChatEventBaseProperties(CommunicationIdentifierModel recipientCommunicationIdentifier) {
+    protected AcsChatEventBaseProperties(CommunicationIdentifierModel recipientCommunicationIdentifier,
+        String threadId) {
         this.recipientCommunicationIdentifier = recipientCommunicationIdentifier;
+        this.threadId = threadId;
     }
 
     /**
@@ -88,18 +91,6 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
     }
 
     /**
-     * Set the threadId property: The chat thread id.
-     * 
-     * @param threadId the threadId value to set.
-     * @return the AcsChatEventBaseProperties object itself.
-     */
-    @Generated
-    AcsChatEventBaseProperties setThreadId(String threadId) {
-        this.threadId = threadId;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -107,8 +98,8 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("recipientCommunicationIdentifier", this.recipientCommunicationIdentifier);
-        jsonWriter.writeStringField("transactionId", this.transactionId);
         jsonWriter.writeStringField("threadId", this.threadId);
+        jsonWriter.writeStringField("transactionId", this.transactionId);
         return jsonWriter.writeEndObject();
     }
 
@@ -125,26 +116,25 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
     public static AcsChatEventBaseProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CommunicationIdentifierModel recipientCommunicationIdentifier = null;
-            String transactionId = null;
             String threadId = null;
+            String transactionId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("recipientCommunicationIdentifier".equals(fieldName)) {
                     recipientCommunicationIdentifier = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("transactionId".equals(fieldName)) {
-                    transactionId = reader.getString();
                 } else if ("threadId".equals(fieldName)) {
                     threadId = reader.getString();
+                } else if ("transactionId".equals(fieldName)) {
+                    transactionId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             AcsChatEventBaseProperties deserializedAcsChatEventBaseProperties
-                = new AcsChatEventBaseProperties(recipientCommunicationIdentifier);
+                = new AcsChatEventBaseProperties(recipientCommunicationIdentifier, threadId);
             deserializedAcsChatEventBaseProperties.transactionId = transactionId;
-            deserializedAcsChatEventBaseProperties.threadId = threadId;
 
             return deserializedAcsChatEventBaseProperties;
         });
