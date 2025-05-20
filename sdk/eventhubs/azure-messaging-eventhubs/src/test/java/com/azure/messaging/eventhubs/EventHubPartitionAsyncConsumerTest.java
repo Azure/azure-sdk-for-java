@@ -328,7 +328,7 @@ class EventHubPartitionAsyncConsumerTest {
     private MessageFluxWrapper createLinkProcessor(boolean isV2) {
         if (isV2) {
             final MessageFlux messageFlux = new MessageFlux(createSink(link1, link2), PREFETCH,
-                CreditFlowMode.EmissionDriven, MessageFlux.NULL_RETRY_POLICY);
+                CreditFlowMode.EmissionDriven, MessageFlux.RETRY_ONLY_COMPLETION);
             return new MessageFluxWrapper(messageFlux);
         } else {
             final AmqpReceiveLinkProcessor receiveLinkProcessor
