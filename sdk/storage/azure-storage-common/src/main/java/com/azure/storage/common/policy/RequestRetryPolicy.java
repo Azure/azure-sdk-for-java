@@ -392,7 +392,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             return true;
         }
 
-        if (response != null) {
+        if (response != null && response.getHeaders() != null) {
             String copySourceErrorCode = response.getHeaderValue(X_MS_COPY_SOURCE_ERROR_CODE);
             String copySourceStatusCode = response.getHeaderValue(X_MS_COPY_SOURCE_STATUS_CODE);
 
