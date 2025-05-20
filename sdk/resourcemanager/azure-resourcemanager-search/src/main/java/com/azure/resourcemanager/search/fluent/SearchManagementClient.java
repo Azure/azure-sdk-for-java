@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public interface SearchManagementClient {
     /**
      * Gets The unique identifier for a Microsoft Azure subscription. You can obtain this value from the Azure Resource
-     * Manager API, command line tools, or the portal.
+     * Manager API or the portal.
      * 
      * @return the subscriptionId value.
      */
@@ -109,6 +109,13 @@ public interface SearchManagementClient {
      * @return the UsagesClient object.
      */
     UsagesClient getUsages();
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations();
 
     /**
      * Gets the quota usage for a search SKU in the given subscription.

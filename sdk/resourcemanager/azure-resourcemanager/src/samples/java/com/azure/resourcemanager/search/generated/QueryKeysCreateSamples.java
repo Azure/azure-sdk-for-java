@@ -10,7 +10,7 @@ package com.azure.resourcemanager.search.generated;
 public final class QueryKeysCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateQueryKey.json
+     * specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchCreateQueryKey.json
      */
     /**
      * Sample code: SearchCreateQueryKey.
@@ -22,7 +22,8 @@ public final class QueryKeysCreateSamples {
             .manager()
             .serviceClient()
             .getQueryKeys()
-            .createWithResponse("rg1", "mysearchservice", "Query key for browser-based clients", null,
+            .createWithResponse("rg1", "mysearchservice",
+                "An API key granting read-only access to the documents collection of an index.", null,
                 com.azure.core.util.Context.NONE);
     }
 }

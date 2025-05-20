@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Response containing a list of search services.
+ * Response containing a list of Azure AI Search services.
  */
 @Immutable
 public final class SearchServiceListResult implements JsonSerializable<SearchServiceListResult> {
