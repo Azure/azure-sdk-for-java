@@ -26,7 +26,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
     /*
      * The CopySourceStatusCode property.
      */
-    private Long copySourceStatusCode;
+    private Integer copySourceStatusCode;
 
     /*
      * The CopySourceErrorCode property.
@@ -69,7 +69,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * 
      * @return the copySourceStatusCode value.
      */
-    public Long getCopySourceStatusCode() {
+    public Integer getCopySourceStatusCode() {
         return this.copySourceStatusCode;
     }
 
@@ -79,7 +79,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * @param copySourceStatusCode the copySourceStatusCode value to set.
      * @return the StorageError object itself.
      */
-    public StorageError setCopySourceStatusCode(Long copySourceStatusCode) {
+    public StorageError setCopySourceStatusCode(Integer copySourceStatusCode) {
         this.copySourceStatusCode = copySourceStatusCode;
         return this;
     }
@@ -172,7 +172,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
                 if ("Message".equals(elementName.getLocalPart())) {
                     deserializedStorageError.message = reader.getStringElement();
                 } else if ("CopySourceStatusCode".equals(elementName.getLocalPart())) {
-                    deserializedStorageError.copySourceStatusCode = reader.getNullableElement(Long::parseLong);
+                    deserializedStorageError.copySourceStatusCode = reader.getNullableElement(Integer::parseInt);
                 } else if ("CopySourceErrorCode".equals(elementName.getLocalPart())) {
                     deserializedStorageError.copySourceErrorCode = reader.getStringElement();
                 } else if ("CopySourceErrorMessage".equals(elementName.getLocalPart())) {

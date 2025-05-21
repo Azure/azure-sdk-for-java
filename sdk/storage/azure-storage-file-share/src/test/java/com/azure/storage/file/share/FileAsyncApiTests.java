@@ -772,7 +772,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
     @Test
-    public void startCopySourceErrorAndStatusCodeAsync() {
+    public void startCopySourceErrorAndStatusCode() {
         ShareFileAsyncClient srcFile = shareAsyncClient.getFileClient(generatePathName());
         srcFile.create(Constants.KB);
         ShareFileAsyncClient destFile = shareAsyncClient.getFileClient(generatePathName());
