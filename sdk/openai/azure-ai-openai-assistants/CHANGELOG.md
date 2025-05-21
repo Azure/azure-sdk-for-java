@@ -6,6 +6,11 @@
 
 ### Breaking Changes
 
+#### Assistants
+
+- Operation updates:
+  - Return type of operation `getFileContent` changed to `BinaryData`.
+
 ### Bugs Fixed
 
 ### Other Changes
