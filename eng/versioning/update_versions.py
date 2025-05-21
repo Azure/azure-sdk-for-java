@@ -37,6 +37,7 @@ import re
 import sys
 import time
 import traceback
+from typing import Dict
 from utils import BuildType
 from utils import CodeModule
 from utils import load_version_map_from_file
@@ -53,7 +54,7 @@ import xml.etree.ElementTree as ET
 
 exception_list = []
 
-def update_versions(update_type, version_map, ext_dep_map, target_file, skip_readme, auto_version_increment, library_array):
+def update_versions(update_type, version_map: Dict[str, CodeModule], ext_dep_map, target_file, skip_readme, auto_version_increment, library_array):
 
     newlines = []
     repl_open, repl_thisline, file_changed, is_include = False, False, False, False
@@ -105,8 +106,12 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
                     elif version_type == 'dependency':
                         try:
                             module = version_map[module_name]
-                            new_version = module.dependency
-                            newline = re.sub(version_regex_str_no_anchor, new_version, line)
+                            if module.is_unreleased and module.replace_unreleased_dependency:
+                                to_replace_module = version_map[module.name.len('unreleased_'):]
+                                newline = re.sub(version_regex_str_no_anchor, to_replace_module.dependency, line)
+                                newline = newline.replace(module.name, to_replace_module.name, newline)
+                            else:
+                                newline = re.sub(version_regex_str_no_anchor, module.dependency, line)
                         except (KeyError, AttributeError):
                             # This should never happen unless the version file is malformed
                             raise ValueError('Module: {0} does not have a dependency version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
@@ -207,15 +212,15 @@ def display_version_info(version_map):
     for value in version_map.values():
         print(value)
 
-def update_versions_all(update_type, build_type, target_file, skip_readme, auto_version_increment, library_array, version_overrides, include_perf_tests):
-    version_map = {}
-    ext_dep_map = {}
+def update_versions_all(update_type, build_type, target_file, skip_readme, auto_version_increment: bool, library_array, version_overrides, include_perf_tests):
+    version_map: Dict[str, CodeModule] = {}
+    ext_dep_map: Dict[str, CodeModule] = {}
     # Load the version and/or external dependency file for the given UpdateType
     # into the verion_map. If UpdateType.all is selected then versions for both
     # the libraries and external dependencies are being updated.
     if update_type == UpdateType.library or update_type == UpdateType.all:
         version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
-        load_version_map_from_file(version_file, version_map)
+        load_version_map_from_file(version_file, version_map, auto_version_increment)
 
     if update_type == UpdateType.external_dependency or update_type == UpdateType.all:
         dependency_file = os.path.normpath('eng/versioning/external_dependencies.txt')
