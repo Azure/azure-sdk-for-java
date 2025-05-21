@@ -9,17 +9,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /** Defines values for MediaStreamingContentType. */
-public final class MediaStreamingContent extends ExpandableStringEnum<MediaStreamingContent> {
+public final class MediaStreamingContentType extends ExpandableStringEnum<MediaStreamingContentType> {
     /** Static value audio for MediaStreamingContentType. */
-    public static final MediaStreamingContent AUDIO = fromString("audio");
+    public static final MediaStreamingContentType AUDIO = fromString("audio");
 
     /**
-     * Creates an instance of {@link MediaStreamingContent} with no string value.
+     * Creates an instance of {@link MediaStreamingContentType} with no string value.
      *
-     * @deprecated Please use {@link #fromString(String)} to create an instance of MediaStreamingContent.
+     * @deprecated Please use {@link #fromString(String)} to create an instance of MediaStreamingContentType.
      */
     @Deprecated
-    public MediaStreamingContent() {
+    public MediaStreamingContentType() {
     }
 
     /**
@@ -28,15 +28,15 @@ public final class MediaStreamingContent extends ExpandableStringEnum<MediaStrea
      * @param name a name to look for.
      * @return the corresponding MediaStreamingContentType.
      */
-    public static MediaStreamingContent fromString(String name) {
-        return fromString(name, MediaStreamingContent.class);
+    public static MediaStreamingContentType fromString(String name) {
+        return fromString(name, MediaStreamingContentType.class);
     }
 
     /**
      * Get the collection of MediaStreamingContentType values.
      * @return known MediaStreamingContentType values.
      */
-    public static Collection<MediaStreamingContent> values() {
-        return values(MediaStreamingContent.class);
+    public static Collection<MediaStreamingContentType> values() {
+        return values(MediaStreamingContentType.class);
     }
 }

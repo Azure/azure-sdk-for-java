@@ -102,7 +102,7 @@ public final class AudioMetadata extends StreamingData {
      *
      * @return the channels value.
      */
-    public AudioChannelType getChannels() {
+    public AudioChannelType getChannelType() {
         return channels;
     }
 
