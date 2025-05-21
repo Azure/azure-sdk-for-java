@@ -119,7 +119,7 @@ public class ServiceBusTemplate implements SendOperation {
      * Basic RPC pattern usage. Send a message to the destination and wait for a reply message from the replay channel,
      * which must be specified by the message header {@link MessageHeaders#REPLY_CHANNEL} and the session must be enabled;
      * the message header {@link ServiceBusMessageHeaders#REPLY_TO_SESSION_ID} is used to specify a unique reply session ID,
-     * if not set, a random {@link UUID} will be used.
+     * if not set, a random {@link UUID} will be used. The 'defaultEntityType' will be used if 'entityType' is not specified.
      *
      * @param <U> The type of the message payload.
      * @param destination topic or queue name.
