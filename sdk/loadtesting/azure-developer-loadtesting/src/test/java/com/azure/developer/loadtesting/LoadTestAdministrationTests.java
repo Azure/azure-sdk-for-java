@@ -152,13 +152,13 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void getTestFile() {
         TestFileInfo response = getLoadTestAdministrationClient().getTestFile(newTestId, uploadJmxFileName);
 
-        assertEquals(FileType.TEST_SCRIPT, response.getFileType());
+        assertEquals(FileType.TEST_SCRIPT.toString(), response.getFileType().toString());
         assertEquals(uploadJmxFileName, response.getFileName());
 
         TestFileInfo additionalFileResponse
             = getLoadTestAdministrationClient().getTestFile(newTestId, uploadCsvFileName);
 
-        assertEquals(FileType.ADDITIONAL_ARTIFACTS, additionalFileResponse.getFileType());
+        assertEquals(FileType.ADDITIONAL_ARTIFACTS.toString(), additionalFileResponse.getFileType().toString());
         assertEquals(uploadCsvFileName, additionalFileResponse.getFileName());
     }
 
@@ -180,51 +180,24 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         assertEquals(newTestProfileId, response.getTestProfileId());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     @Order(10)
     public void getAppComponents() {
-        Response<BinaryData> response = getLoadTestAdministrationClient().getAppComponentsWithResponse(newTestId, null);
+        TestAppComponents response = getLoadTestAdministrationClient().getAppComponents(newTestId);
+        assertNotNull(response);
 
-        assertEquals(200, response.getStatusCode());
-
-        try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
-            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-            Map<String, Object> components = (Map<String, Object>) jsonTree.get("components");
-
-            assertTrue(components.containsKey(defaultAppComponentResourceId));
-
-            Map<String, Object> appComponentResource
-                = (Map<String, Object>) components.get(defaultAppComponentResourceId);
-
-            assertTrue(
-                defaultAppComponentResourceId.equalsIgnoreCase(appComponentResource.get("resourceId").toString()));
-        } catch (IOException e) {
-            fail("Encountered exception while reading test data", e);
-        }
+        assertTrue(response.getComponents().containsKey(defaultAppComponentResourceId));
+        assertEquals(defaultAppComponentResourceId,
+            response.getComponents().get(defaultAppComponentResourceId).getResourceId());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     @Order(11)
     public void getServerMetricsConfig() {
-        Response<BinaryData> response
-            = getLoadTestAdministrationClient().getServerMetricsConfigWithResponse(newTestId, null);
+        TestServerMetricsConfiguration response = getLoadTestAdministrationClient().getServerMetricsConfig(newTestId);
 
-        assertEquals(200, response.getStatusCode());
-
-        try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
-            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-            Map<String, Object> components = (Map<String, Object>) jsonTree.get("metrics");
-
-            assertTrue(components.containsKey(defaultServerMetricId));
-
-            Map<String, Object> appComponentResource = (Map<String, Object>) components.get(defaultServerMetricId);
-
-            assertTrue(defaultServerMetricId.equalsIgnoreCase(appComponentResource.get("id").toString()));
-        } catch (IOException e) {
-            fail("Encountered exception while reading test data", e);
-        }
+        assertNotNull(response);
+        assertTrue(response.getMetrics().containsKey(defaultServerMetricId));
     }
 
     // Lists
@@ -232,23 +205,12 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Test
     @Order(12)
     public void listTestFiles() {
-        PagedIterable<BinaryData> response = getLoadTestAdministrationClient().listTestFiles(newTestId, null);
-        boolean found = response.stream().anyMatch((fileBinary) -> {
-            try (JsonReader jsonReader = JsonProviders.createReader(fileBinary.toBytes())) {
-                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
-                assertEquals(uploadJmxFileName, jsonTree.get("fileName"));
-                assertEquals("JMX_FILE", jsonTree.get("fileType"));
-
-                return true;
-            } catch (IOException e) {
-                // no-op
-            }
-
-            return false;
+        PagedIterable<TestFileInfo> response = getLoadTestAdministrationClient().listTestFiles(newTestId);
+        boolean uploadFilesFound = response.stream().anyMatch((fileInfo) -> {
+            return fileInfo.getFileName().equals(uploadJmxFileName) || fileInfo.getFileName().equals(uploadCsvFileName);
         });
 
-        assertTrue(found);
+        assertTrue(uploadFilesFound);
     }
 
     @Test
