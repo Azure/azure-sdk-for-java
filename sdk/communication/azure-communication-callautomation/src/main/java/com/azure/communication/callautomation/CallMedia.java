@@ -319,7 +319,7 @@ public final class CallMedia {
     public void updateTranscription(String locale) {
         callMediaAsync.updateTranscription(locale).block();
     }
-    
+
     /**
      * Updates transcription language in the call.
      *@param options Options for the Update Transcription operation.
