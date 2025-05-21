@@ -24,6 +24,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -202,19 +203,11 @@ public class JsonSerializerTests {
 
     private static Stream<Arguments> binaryDataListSerializationSupplier() {
         return Stream.of(
+            Arguments.of(Arrays.asList(BinaryData.fromString("hello"), BinaryData.fromObject(5)), "[\"hello\",5]"),
             Arguments.of(
-                List.of(BinaryData.fromString("hello"), BinaryData.fromObject(5)),
-                "[\"hello\",5]"
-            ),
-            Arguments.of(
-                List.of(
-                    BinaryData.fromString("hello"),
-                    BinaryData.fromObject(5),
-                    BinaryData.fromObject(new Person().setAge(3).setName("John"))
-                ),
-                "[\"hello\",5,{\"name\":\"John\",\"age\":3}]"
-            )
-        );
+                Arrays.asList(BinaryData.fromString("hello"), BinaryData.fromObject(5),
+                    BinaryData.fromObject(new Person().setAge(3).setName("John"))),
+                "[\"hello\",5,{\"name\":\"John\",\"age\":3}]"));
     }
 
     @Test
@@ -243,12 +236,9 @@ public class JsonSerializerTests {
     }
 
     private static Stream<Arguments> binaryDataSerializationSupplier() {
-        return Stream.of(
-            Arguments.of(BinaryData.fromObject(5), "5"),
-            Arguments.of(BinaryData.fromObject("1"), "\"1\""),
-            Arguments.of(BinaryData.fromString("3"), "\"3\""),
-            Arguments.of(BinaryData.fromObject(new Person().setAge(3).setName("John")), "{\"name\":\"John\",\"age\":3}")
-        );
+        return Stream.of(Arguments.of(BinaryData.fromObject(5), "5"), Arguments.of(BinaryData.fromObject("1"), "\"1\""),
+            Arguments.of(BinaryData.fromString("3"), "\"3\""), Arguments
+                .of(BinaryData.fromObject(new Person().setAge(3).setName("John")), "{\"name\":\"John\",\"age\":3}"));
     }
 
     private static Stream<Arguments> textSerializationSupplier() {

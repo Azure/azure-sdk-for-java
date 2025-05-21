@@ -6,8 +6,6 @@ package io.clientcore.core.serialization.json;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.models.binarydata.SerializableBinaryData;
-import io.clientcore.core.models.binarydata.StringBinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
 
@@ -37,7 +35,6 @@ public class JsonSerializer implements ObjectSerializer {
     private static final ClientLogger LOGGER = new ClientLogger(JsonSerializer.class);
 
     private static final JsonSerializer INSTANCE = new JsonSerializer();
-    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /**
      * Get an instance of the {@link JsonSerializer}
@@ -89,15 +86,17 @@ public class JsonSerializer implements ObjectSerializer {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private <T> T deserializeListOfBinaryData(JsonReader jsonReader) throws IOException {
         JsonToken token = jsonReader.currentToken();
         if (token == null) {
             token = jsonReader.nextToken();
         }
 
-        // Untyped fields cannot begin with END_OBJECT, END_ARRAY, or FIELD_NAME as these would constitute invalid JSON.
         if (token != JsonToken.START_ARRAY) {
-            throw new IllegalStateException("Unexpected token to begin an untyped field: " + token);
+            throw LOGGER.throwableAtError()
+                .addKeyValue("token", token)
+                .log("Unexpected token to begin an array", IllegalStateException::new);
         }
 
         List<BinaryData> list = new ArrayList<>();
@@ -107,7 +106,9 @@ public class JsonSerializer implements ObjectSerializer {
         return (T) list;
     }
 
-    private <T> T deserializeListOfJsonSerializables(JsonReader jsonReader, ParameterizedType parameterizedType) throws IOException {
+    @SuppressWarnings("unchecked")
+    private <T> T deserializeListOfJsonSerializables(JsonReader jsonReader, ParameterizedType parameterizedType)
+        throws IOException {
         List<?> list = jsonReader.readArray(arrayReader -> {
             Type actualTypeArgument = parameterizedType.getActualTypeArguments()[0];
             Class<?> clazz = (Class<?>) actualTypeArgument;
