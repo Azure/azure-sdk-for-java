@@ -8,9 +8,10 @@ import io.clientcore.annotation.processor.test.implementation.HostEdgeCase2Servi
 import io.clientcore.annotation.processor.test.implementation.ParameterizedHostService;
 import io.clientcore.annotation.processor.test.implementation.ParameterizedMultipleHostService;
 import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientImpl;
-import io.clientcore.annotation.processor.test.implementation.models.ErrorException;
+import io.clientcore.annotation.processor.test.implementation.models.ServiceError;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
+import io.clientcore.annotation.processor.test.implementation.models.OperationError;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -126,7 +127,8 @@ public class TestInterfaceServiceClientGenerationTests {
     @Test
     public void testGetFoo() {
         String wireValue
-            = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
+            =
+            "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(request -> new MockHttpResponse(request, 200, BinaryData.fromString(wireValue)))
@@ -1087,32 +1089,47 @@ public class TestInterfaceServiceClientGenerationTests {
         assertEquals("I'm the body!", expectedBody.get("data"));
     }
 
-     @Test
-     @Disabled("Disabled until we can get the test server to return a 400 error")
-    public void unexpectedResponseWithStatusCodeAndExceptionType400ReturnsErrorException() {
+    @Test
+    public void unexpectedResponseWithStatusCodeAndExceptionType400ReturnsError() {
+        String errorJson = "{\"error\":{\"code\":\"BadRequest\",\"message\":\"bad body\"}}";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new MockHttpResponse(request, 400, BinaryData.fromString(errorJson)))
+            .build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
         HttpResponseException e = assertThrows(HttpResponseException.class, () ->
-            createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
-                .unexpectedResponseWithStatusCodeAndExceptionType(getRequestUri(), "bad body")
+            service.unexpectedResponseWithStatusCodeAndExceptionType(getRequestUri(), "bad body")
         );
         assertNotNull(e.getValue());
-        assertInstanceOf(ErrorException.class, e.getValue());
-        // Optionally, check ErrorException fields
-        ErrorException error = (ErrorException) e.getValue();
-        assertEquals("bad body", error.getValue().getError());
+        assertInstanceOf(ServiceError.class, e.getValue());
+        ServiceError serviceError = (ServiceError) e.getValue();
+        assertInstanceOf(OperationError.class, serviceError.getError());
+        OperationError operationError = serviceError.getError();
+        assertEquals("bad body", operationError.getMessage());
+        assertEquals("BadRequest", operationError.getCode());
     }
 
     @Test
-    @Disabled("Disabled until we can get the test server to return a 400 error")
-    public void unexpectedResponseWithStatusCodeAndExceptionType403ReturnsMyRestException() {
+    public void unexpectedResponseWithStatusCodeAndExceptionType403ReturnsOperationError() {
+        // The error JSON should match the OperationError structure
+        String errorJson = "{\"code\":\"Forbidden\",\"message\":\"forbidden body\"}";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new MockHttpResponse(request, 403, BinaryData.fromString(errorJson)))
+            .build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
         HttpResponseException e = assertThrows(HttpResponseException.class, () ->
-            createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
-                .unexpectedResponseWithStatusCodeAndExceptionType(getRequestUri(), "forbidden body")
+            service.unexpectedResponseWithStatusCodeAndExceptionType(getRequestUri(), "forbidden body")
         );
         assertNotNull(e.getValue());
-        assertInstanceOf(MyRestException.class, e.getValue());
-        // Optionally, check MyRestException fields
-        MyRestException error = (MyRestException) e.getValue();
-        assertEquals("forbidden body", error.getValue());
+        assertInstanceOf(OperationError.class, e.getValue());
+        OperationError operationError = (OperationError) e.getValue();
+        assertEquals("forbidden body", operationError.getMessage());
+        assertEquals("Forbidden", operationError.getCode());
     }
 
     @Test
@@ -1129,33 +1146,91 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("Disabled until we can get the test server to return a 400 error")
-    public void putRequestWithUnexpectedResponseAndExceptionType() {
-        MyRestException e = assertThrows(MyRestException.class, () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
-            .putWithUnexpectedResponseAndExceptionType(getRequestUri(), "I'm the body!"));
+    public void putWithUnexpectedResponseNoStatusCodeAndExceptionTypeReturnsObject() {
+        // This should use Error.class for any unexpected status code
+        String errorJson = "{\"error\":{\"code\":\"SomeCode\",\"message\":\"some message\"}}";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new MockHttpResponse(request, 400, BinaryData.fromString(errorJson)))
+            .build();
 
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        HttpResponseException e = assertThrows(HttpResponseException.class, () ->
+            service.putWithUnexpectedResponseAndExceptionType(getRequestUri(), "body")
+        );
         assertNotNull(e.getValue());
-        assertEquals("I'm the body!", e.getValue().data());
+        assertInstanceOf(LinkedHashMap.class, e.getValue());
+        @SuppressWarnings("unchecked")
+        final LinkedHashMap<String, Object> errorMap = (LinkedHashMap<String, Object>) e.getValue();
+        assertTrue(errorMap.containsKey("error"));
+        @SuppressWarnings("unchecked")
+        Map<String, Object> innerError = (Map<String, Object>) errorMap.get("error");
+        assertEquals("SomeCode", innerError.get("code"));
+        assertEquals("some message", innerError.get("message"));
     }
 
     @Test
-    @Disabled("Disabled until we can get the test server to return a 400 error")
-    public void putRequestWithUnexpectedResponseAndDeterminedExceptionType() {
-        MyRestException e = assertThrows(MyRestException.class, () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
-            .putWithUnexpectedResponseAndDeterminedExceptionType(getRequestUri(), "I'm the body!"));
+    public void putWithUnexpectedResponseAndDeterminedExceptionTypeReturnsErrorOn200() {
+        // This should use Error.class for status 200 only
+        String errorJson = "{\"error\":{\"code\":\"OKButError\",\"message\":\"should not happen\"}}";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new MockHttpResponse(request, 200, BinaryData.fromString(errorJson)))
+            .build();
 
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        HttpResponseException e = assertThrows(HttpResponseException.class, () ->
+            service.putWithUnexpectedResponseAndDeterminedExceptionType(getRequestUri(), "body")
+        );
         assertNotNull(e.getValue());
-        assertEquals("I'm the body!", e.getValue().data());
+        assertInstanceOf(ServiceError.class, e.getValue());
+        ServiceError serviceError = (ServiceError) e.getValue();
+        assertInstanceOf(OperationError.class, serviceError.getError());
+        OperationError operationError = serviceError.getError();
+        assertEquals("should not happen", operationError.getMessage());
+        assertEquals("OKButError", operationError.getCode());
     }
 
     @Test
-    @Disabled("Disabled until we can get the test server to return a 400 error")
-    public void putRequestWithUnexpectedResponseAndFallthroughExceptionType() {
-        MyRestException e = assertThrows(MyRestException.class, () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
-            .putWithUnexpectedResponseAndFallthroughExceptionType(getRequestUri(), "I'm the body!"));
+    public void putWithUnexpectedResponseAndFallthroughExceptionTypeReturnsObjectOn400AndErrorOn403() {
+        // 400 should fall back to LinkedHashMap, 403 should use Error.class if mapped
+        String errorJson = "{\"error\":{\"code\":\"Forbidden\",\"message\":\"forbidden body\"}}";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> {
+                int status = request.getUri().toString().contains("403") ? 403 : 400;
+                return new MockHttpResponse(request, status, BinaryData.fromString(errorJson));
+            })
+            .build();
 
-        assertNotNull(e.getValue());
-        assertEquals("I'm the body!", e.getValue().data());
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        // 400: fallback to LinkedHashMap
+        HttpResponseException e400 = assertThrows(HttpResponseException.class, () ->
+            service.putWithUnexpectedResponseAndFallthroughExceptionType(getRequestUri(), "body")
+        );
+        assertNotNull(e400.getValue());
+        assertInstanceOf(LinkedHashMap.class, e400.getValue());
+
+        // 403: mapped to Error.class
+        HttpPipeline pipeline403 = new HttpPipelineBuilder()
+            .httpClient(request -> new MockHttpResponse(request, 403, BinaryData.fromString(errorJson)))
+            .build();
+        TestInterfaceClientImpl.TestInterfaceClientService service403 =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline403);
+
+        HttpResponseException e403 = assertThrows(HttpResponseException.class, () ->
+            service403.putWithUnexpectedResponseAndFallthroughExceptionType(getRequestUri(), "body")
+        );
+        assertNotNull(e403.getValue());
+        assertInstanceOf(ServiceError.class, e403.getValue());
+        ServiceError serviceError = (ServiceError) e403.getValue();
+        assertInstanceOf(OperationError.class, serviceError.getError());
+        OperationError operationError = serviceError.getError();
+        assertEquals("forbidden body", operationError.getMessage());
+        assertEquals("Forbidden", operationError.getCode());
     }
 
     @Test

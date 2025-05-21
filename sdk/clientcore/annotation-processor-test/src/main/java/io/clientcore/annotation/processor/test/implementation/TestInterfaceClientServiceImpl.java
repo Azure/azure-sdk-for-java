@@ -1692,7 +1692,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
             Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
-            ParameterizedType returnType200 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.MyRestException.class);
+            ParameterizedType returnType200 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class);
             statusToExceptionTypeMap.put(200, returnType200);
             // Handle unexpected response
             GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
@@ -1727,7 +1727,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
             statusToExceptionTypeMap.put(400, CoreUtils.createParameterizedType(Object.class));
-            ParameterizedType returnType403 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.MyRestException.class);
+            ParameterizedType returnType403 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class);
             statusToExceptionTypeMap.put(403, returnType403);
             // Handle unexpected response
             GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
@@ -1761,7 +1761,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
             Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
-            ParameterizedType returnType400 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.MyRestException.class);
+            ParameterizedType returnType400 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class);
             statusToExceptionTypeMap.put(400, returnType400);
             // Handle unexpected response
             GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
@@ -1795,9 +1795,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
             Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
-            ParameterizedType returnType400 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ErrorException.class);
+            ParameterizedType returnType400 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class);
             statusToExceptionTypeMap.put(400, returnType400);
-            ParameterizedType returnType403 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.MyRestException.class);
+            ParameterizedType returnType403 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.OperationError.class);
             statusToExceptionTypeMap.put(403, returnType403);
             // Handle unexpected response
             GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);

@@ -104,6 +104,8 @@ public final class ResponseHandler {
         if (!mappings.isEmpty()) {
             body.tryAddImportToParentCompilationUnit(Map.class);
             body.tryAddImportToParentCompilationUnit(HashMap.class);
+            body.tryAddImportToParentCompilationUnit(CoreUtils.class);
+            body.tryAddImportToParentCompilationUnit(ParameterizedType.class);
             errorBlock.addStatement(
                 "Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();");
             for (Map.Entry<Integer, HttpRequestContext.ExceptionBodyTypeInfo> entry : mappings.entrySet()) {
@@ -111,11 +113,9 @@ public final class ResponseHandler {
                     errorBlock.addStatement("statusToExceptionTypeMap.put(" + entry.getKey()
                         + ", CoreUtils.createParameterizedType(Object.class));");
                 } else {
-                    String typeVarName = "returnType" + entry.getKey();
-                    errorBlock.addStatement(AnnotationProcessorUtils
-                        .createParameterizedTypeStatement(entry.getValue().getTypeMirror(), body, typeVarName));
                     errorBlock
-                        .addStatement("statusToExceptionTypeMap.put(" + entry.getKey() + ", " + typeVarName + ");");
+                        .addStatement("statusToExceptionTypeMap.put(" + entry.getKey() + ", " + AnnotationProcessorUtils
+                            .createParameterizedTypeStatement(entry.getValue().getTypeMirror(), body) + ");");
                 }
             }
         } else {
@@ -266,8 +266,8 @@ public final class ResponseHandler {
         body.tryAddImportToParentCompilationUnit(ParameterizedType.class);
 
         if (!returnType.getTypeArguments().isEmpty()) {
-            body.addStatement(
-                AnnotationProcessorUtils.createParameterizedTypeStatement(returnType, body, "returnType"));
+            body.addStatement(StaticJavaParser.parseStatement("ParameterizedType returnType = "
+                + AnnotationProcessorUtils.createParameterizedTypeStatement(returnType, body) + ";"));
         } else {
             body.addStatement(
                 "ParameterizedType returnType = CoreUtils.createParameterizedType(" + typeCast + ".class);");
