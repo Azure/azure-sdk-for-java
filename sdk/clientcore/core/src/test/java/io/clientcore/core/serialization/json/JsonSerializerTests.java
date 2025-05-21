@@ -245,8 +245,8 @@ public class JsonSerializerTests {
     private static Stream<Arguments> binaryDataSerializationSupplier() {
         return Stream.of(
             Arguments.of(BinaryData.fromObject(5), "5"),
-            Arguments.of(BinaryData.fromObject("5"), "\"5\""),
-            Arguments.of(BinaryData.fromString("5"), "5"),
+            Arguments.of(BinaryData.fromObject("1"), "\"1\""),
+            Arguments.of(BinaryData.fromString("3"), "\"3\""),
             Arguments.of(BinaryData.fromObject(new Person().setAge(3).setName("John")), "{\"name\":\"John\",\"age\":3}")
         );
     }

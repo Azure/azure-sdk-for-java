@@ -162,34 +162,6 @@ public class JsonSerializer implements ObjectSerializer {
             return ((JsonSerializable<?>) value).toJsonBytes();
         }
 
-        if (value instanceof BinaryData) {
-            return ((BinaryData) value).toBytes();
-        }
-
-        if (value instanceof List<?>) {
-            List<?> list = (List<?>) value;
-            if (list.isEmpty()) {
-                return EMPTY_BYTE_ARRAY;
-            }
-            try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                 JsonWriter jsonWriter = JsonWriter.toStream(byteArrayOutputStream)) {
-
-                jsonWriter.writeStartArray();
-                for (Object o : list) {
-                    if (o instanceof JsonSerializable<?>) {
-                        jsonWriter.writeJson((JsonSerializable<?>) o);
-                    } else if (o instanceof BinaryData) {
-                        ((BinaryData) o).writeTo(jsonWriter);
-                    } else {
-                        jsonWriter.writeUntyped(o);
-                    }
-                }
-                jsonWriter.writeEndArray();
-                jsonWriter.flush();
-                return byteArrayOutputStream.toByteArray();
-            }
-        }
-
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             JsonWriter jsonWriter = JsonWriter.toStream(byteArrayOutputStream)) {
 
