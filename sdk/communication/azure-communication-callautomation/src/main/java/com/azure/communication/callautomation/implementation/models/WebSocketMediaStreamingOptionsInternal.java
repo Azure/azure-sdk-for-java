@@ -18,7 +18,7 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
     /*
      * Defines the transport type used for streaming. Note that future values may be introduced that are not currently documented.
      */
-    private StreamingTransportType transportType = StreamingTransportType.WEBSOCKET;
+    private StreamingTransportTypeInternal transportType = StreamingTransportTypeInternal.WEBSOCKET;
 
     /*
      * The transport URL for media streaming.
@@ -63,7 +63,7 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
      * @return the transportType value.
      */
     @Override
-    public StreamingTransportType getTransportType() {
+    public StreamingTransportTypeInternal getTransportType() {
         return this.transportType;
     }
 
@@ -241,7 +241,7 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
                         .setAudioChannelType(MediaStreamingAudioChannelTypeInternal.fromString(reader.getString()));
                 } else if ("transportType".equals(fieldName)) {
                     deserializedWebSocketMediaStreamingOptionsInternal.transportType
-                        = StreamingTransportType.fromString(reader.getString());
+                        = StreamingTransportTypeInternal.fromString(reader.getString());
                 } else if ("transportUrl".equals(fieldName)) {
                     deserializedWebSocketMediaStreamingOptionsInternal.transportUrl = reader.getString();
                 } else if ("contentType".equals(fieldName)) {

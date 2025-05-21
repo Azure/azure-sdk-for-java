@@ -18,7 +18,7 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
     /*
      * Defines the transport type used for streaming. Note that future values may be introduced that are not currently documented.
      */
-    private StreamingTransportType transportType = StreamingTransportType.WEBSOCKET;
+    private StreamingTransportTypeInternal transportType = StreamingTransportTypeInternal.WEBSOCKET;
 
     /*
      * The URL used for live transcription transport.
@@ -53,7 +53,7 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
      * @return the transportType value.
      */
     @Override
-    public StreamingTransportType getTransportType() {
+    public StreamingTransportTypeInternal getTransportType() {
         return this.transportType;
     }
 
@@ -186,7 +186,7 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
                     deserializedWebSocketTranscriptionOptionsInternal.setLocale(reader.getString());
                 } else if ("transportType".equals(fieldName)) {
                     deserializedWebSocketTranscriptionOptionsInternal.transportType
-                        = StreamingTransportType.fromString(reader.getString());
+                        = StreamingTransportTypeInternal.fromString(reader.getString());
                 } else if ("transportUrl".equals(fieldName)) {
                     deserializedWebSocketTranscriptionOptionsInternal.transportUrl = reader.getString();
                 } else if ("speechModelEndpointId".equals(fieldName)) {

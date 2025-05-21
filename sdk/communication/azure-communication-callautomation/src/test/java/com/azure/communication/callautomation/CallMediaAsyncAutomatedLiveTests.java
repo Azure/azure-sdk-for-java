@@ -32,7 +32,7 @@ import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
-import com.azure.communication.callautomation.models.TranscriptionTransport;
+import com.azure.communication.callautomation.models.StreamingTransport;
 import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
 import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
 import com.azure.communication.callautomation.models.events.TranscriptionStarted;
@@ -425,8 +425,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // create options
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
             MediaStreamingOptions mediaStreamingOptions
-                = new MediaStreamingOptions(TRANSPORT_URL, MediaStreamingTransport.WEBSOCKET,
-                    MediaStreamingContent.AUDIO, MediaStreamingAudioChannel.MIXED, false);
+                = new MediaStreamingOptions(TRANSPORT_URL, MediaStreamingAudioChannel.MIXED);
             CreateGroupCallOptions createCallOptions
                 = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
 
@@ -541,8 +540,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
-            TranscriptionOptions transcriptionOptions
-                = new TranscriptionOptions(TRANSPORT_URL, TranscriptionTransport.WEBSOCKET, "en-US", false);
+            TranscriptionOptions transcriptionOptions = new TranscriptionOptions(TRANSPORT_URL, "en-US");
             CreateGroupCallOptions createCallOptions
                 = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             createCallOptions.setTranscriptionOptions(transcriptionOptions);

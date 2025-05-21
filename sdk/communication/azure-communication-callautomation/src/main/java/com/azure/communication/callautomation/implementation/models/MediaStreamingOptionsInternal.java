@@ -19,7 +19,7 @@ public class MediaStreamingOptionsInternal implements JsonSerializable<MediaStre
     /*
      * Defines the transport type used for streaming. Note that future values may be introduced that are not currently documented.
      */
-    private StreamingTransportType transportType;
+    private StreamingTransportTypeInternal transportType;
 
     /*
      * The audio channel type to stream, e.g., unmixed audio, mixed audio.
@@ -30,7 +30,7 @@ public class MediaStreamingOptionsInternal implements JsonSerializable<MediaStre
      * Creates an instance of MediaStreamingOptionsInternal class.
      */
     public MediaStreamingOptionsInternal() {
-        this.transportType = StreamingTransportType.fromString("MediaStreamingOptionsInternal");
+        this.transportType = StreamingTransportTypeInternal.fromString("MediaStreamingOptionsInternal");
     }
 
     /**
@@ -39,7 +39,7 @@ public class MediaStreamingOptionsInternal implements JsonSerializable<MediaStre
      * 
      * @return the transportType value.
      */
-    public StreamingTransportType getTransportType() {
+    public StreamingTransportTypeInternal getTransportType() {
         return this.transportType;
     }
 
@@ -122,7 +122,7 @@ public class MediaStreamingOptionsInternal implements JsonSerializable<MediaStre
                         = MediaStreamingAudioChannelTypeInternal.fromString(reader.getString());
                 } else if ("transportType".equals(fieldName)) {
                     deserializedMediaStreamingOptionsInternal.transportType
-                        = StreamingTransportType.fromString(reader.getString());
+                        = StreamingTransportTypeInternal.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

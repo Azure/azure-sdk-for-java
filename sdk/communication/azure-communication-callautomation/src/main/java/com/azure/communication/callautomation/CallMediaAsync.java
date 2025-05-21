@@ -57,6 +57,7 @@ import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.UnholdOptions;
+import com.azure.communication.callautomation.models.UpdateTranscriptionOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -887,54 +888,26 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateTranscription(String locale) {
-        return updateTranscriptionWithResponse(locale, null, null).then();
-    }
-
-    /**
-     * Updates transcription language
-     *
-     * @param locale Defines new locale for transcription.
-     * @param speechRecognitionModelEndpointId Defines custom model endpoint.
-     * @return Response for successful operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateTranscription(String locale, String speechRecognitionModelEndpointId) {
-        return updateTranscriptionWithResponse(locale, speechRecognitionModelEndpointId, null).then();
+        return updateTranscriptionWithResponse(new UpdateTranscriptionOptions().setLocale(locale)).then();
     }
 
     /**
     * Updates transcription language
-    * @param speechRecognitionModelEndpointId Defines custom model endpoint.
-    * @param locale Defines new locale for transcription.
-    * @param operationContext operational context.
+    * @param options Options for the Update Transcription operation.
     * @return Response for successful operation.
     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateTranscriptionWithResponse(String locale, String speechRecognitionModelEndpointId,
-        String operationContext) {
-        return withContext(context -> updateTranscriptionWithResponseInternal(locale, speechRecognitionModelEndpointId,
-            operationContext, context));
+    public Mono<Response<Void>> updateTranscriptionWithResponse(UpdateTranscriptionOptions options) {
+        return withContext(context -> updateTranscriptionWithResponseInternal(options, context));
     }
 
-    Mono<Response<Void>> updateTranscriptionWithResponseInternal(String locale, Context context) {
+    Mono<Response<Void>> updateTranscriptionWithResponseInternal(UpdateTranscriptionOptions options, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             UpdateTranscriptionRequestInternal request = new UpdateTranscriptionRequestInternal();
-            request.setLocale(locale);
-            return contentsInternal.updateTranscriptionWithResponseAsync(callConnectionId, request, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<Void>> updateTranscriptionWithResponseInternal(String locale, String speechRecognitionModelEndpointId,
-        String operationContext, Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
-            UpdateTranscriptionRequestInternal request = new UpdateTranscriptionRequestInternal();
-            request.setLocale(locale);
-            request.setSpeechModelEndpointId(speechRecognitionModelEndpointId);
-            request.setOperationContext(operationContext);
+            request.setLocale(options.getLocale());
+            request.setSpeechModelEndpointId(options.getSpeechRecognitionModelEndpointId());
+            request.setOperationContext(options.getOperationContext());
             return contentsInternal.updateTranscriptionWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

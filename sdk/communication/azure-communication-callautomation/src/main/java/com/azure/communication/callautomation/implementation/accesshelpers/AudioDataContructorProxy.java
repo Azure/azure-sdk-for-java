@@ -5,6 +5,7 @@ package com.azure.communication.callautomation.implementation.accesshelpers;
 
 import com.azure.communication.callautomation.implementation.converters.AudioDataConverter;
 import com.azure.communication.callautomation.models.AudioData;
+import com.azure.core.util.BinaryData;
 
 /**
  * Helper class to access private values of {@link AudioData} across package boundaries.
@@ -35,7 +36,7 @@ public final class AudioDataContructorProxy {
          * @param data The internal response.
          * @return A new instance of {@link AudioData}.
          */
-        AudioData create(byte[] data);
+        AudioData create(BinaryData data);
     }
 
     /**
@@ -72,7 +73,7 @@ public final class AudioDataContructorProxy {
      * @param data The audio data.
      * @return A new instance of {@link AudioData}.
      */
-    public static AudioData create(byte[] data) {
+    public static AudioData create(BinaryData data) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses AudioData which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.

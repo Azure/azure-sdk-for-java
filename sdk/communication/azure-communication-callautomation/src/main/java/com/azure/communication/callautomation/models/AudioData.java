@@ -3,20 +3,20 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+
 import com.azure.communication.callautomation.implementation.accesshelpers.AudioDataContructorProxy;
 import com.azure.communication.callautomation.implementation.converters.AudioDataConverter;
 import com.azure.communication.common.CommunicationIdentifier;
-
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Base64;
+import com.azure.core.util.BinaryData;
 
 /** The MediaStreamingAudio model. */
 public final class AudioData extends StreamingData {
     /*
-     * The audio data, encoded as a base64 byte.
+     * The audio data, encoded as a binary data.
      */
-    private final byte[] data;
+    private final BinaryData data;
 
     /*
      * The timestamp indicating when the media content was received by the bot, or if the bot is sending media, 
@@ -42,7 +42,7 @@ public final class AudioData extends StreamingData {
             }
 
             @Override
-            public AudioData create(byte[] data) {
+            public AudioData create(BinaryData data) {
                 return new AudioData(data);
             }
         });
@@ -54,7 +54,7 @@ public final class AudioData extends StreamingData {
      * @param internalData The audiodataconvertor
      */
     AudioData(AudioDataConverter internalData) {
-        this.data = Base64.getDecoder().decode(internalData.getData());
+        this.data = BinaryData.fromString(internalData.getData());
         this.timestamp = OffsetDateTime.parse(internalData.getTimestamp(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         if (internalData.getParticipantRawID() != null && !internalData.getParticipantRawID().isEmpty()) {
             this.participant = CommunicationIdentifier.fromRawId(internalData.getParticipantRawID());
@@ -79,7 +79,7 @@ public final class AudioData extends StreamingData {
      *
      * @param data The audio data.
      */
-    AudioData(byte[] data) {
+    AudioData(BinaryData data) {
         this.data = data;
         this.timestamp = null;
         this.participant = null;
@@ -87,12 +87,12 @@ public final class AudioData extends StreamingData {
     }
 
     /**
-     * The audio data, encoded as a base64 byte.
+     * The audio data, encoded as a binary data.
      * Get the data property.
      *
      * @return the data value.
      */
-    public byte[] getData() {
+    public BinaryData getData() {
         return data;
     }
 

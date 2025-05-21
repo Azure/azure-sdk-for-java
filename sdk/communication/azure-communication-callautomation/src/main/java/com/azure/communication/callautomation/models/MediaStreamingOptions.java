@@ -16,12 +16,12 @@ public final class MediaStreamingOptions {
     /*
      * The type of transport to be used for media streaming, eg. Websocket
      */
-    private final MediaStreamingTransport transportType;
+    private final StreamingTransport transportType;
 
     /*
      * Content type to stream, eg. audio, audio/video
      */
-    private final MediaStreamingContent contentType;
+    private MediaStreamingContent contentType;
 
     /*
      * Audio channel type to stream, eg. unmixed audio, mixed audio
@@ -31,7 +31,7 @@ public final class MediaStreamingOptions {
     /*
      * The type of transport to be used for media streaming, eg. Websocket
      */
-    private final Boolean startMediaStreaming;
+    private Boolean startMediaStreaming;
 
     /*
      * A value indicating whether bidirectional streaming is enabled.
@@ -43,21 +43,22 @@ public final class MediaStreamingOptions {
      */
     private AudioFormat audioFormat;
 
-    /**
-     * Creates a new instance of MediaStreamingConfiguration
-     * @param transportUrl - The Transport URL
-     * @param transportType - Transport type
-     * @param contentType - Content Type
-     * @param audioChannelType - Audio Channel Type
-     * @param startMediaStreaming - Start media streaming flag
+    /*
+     * A value that indicates whether to stream the DTMF tones.
      */
-    public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType,
-        MediaStreamingContent contentType, MediaStreamingAudioChannel audioChannelType, Boolean startMediaStreaming) {
+    private Boolean enableDtmfTones;
+
+    /**
+     * Creates a new instance of MediaStreamingOptions
+     * @param transportUrl - The Transport URL
+     * @param audioChannelType - Audio Channel Type
+     */
+    public MediaStreamingOptions(String transportUrl, MediaStreamingAudioChannel audioChannelType) {
         this.transportUrl = transportUrl;
-        this.transportType = transportType;
-        this.contentType = contentType;
+        this.transportType = StreamingTransport.WEBSOCKET;
+        this.contentType = MediaStreamingContent.AUDIO;
         this.audioChannelType = audioChannelType;
-        this.startMediaStreaming = startMediaStreaming;
+        this.startMediaStreaming = false;
     }
 
     /**
@@ -74,7 +75,7 @@ public final class MediaStreamingOptions {
      *
      * @return the transportType value.
      */
-    public MediaStreamingTransport getTransportType() {
+    public StreamingTransport getTransportType() {
         return this.transportType;
     }
 
@@ -103,6 +104,59 @@ public final class MediaStreamingOptions {
      */
     public MediaStreamingAudioChannel getAudioChannelType() {
         return this.audioChannelType;
+    }
+
+    /**
+    * Set the contentType property: The contentType property.
+    * 
+    * @param contentType the contentType value to set.
+    * @return the MediaStreamingOptions object itself.
+    */
+    public MediaStreamingOptions setContentType(MediaStreamingContent contentType) {
+        this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Get the startMediaStreaming property: A value indicating whether the media streaming should start immediately
+     * after the call is answered.
+     * 
+     * @return the startMediaStreaming value.
+     */
+    public Boolean isStartMediaStreaming() {
+        return this.startMediaStreaming;
+    }
+
+    /**
+     * Set the startMediaStreaming property: A value indicating whether the media streaming should start immediately
+     * after the call is answered.
+     * 
+     * @param startMediaStreaming the startMediaStreaming value to set.
+     * @return the MediaStreamingOptions object itself.
+     */
+    public MediaStreamingOptions setStartMediaStreaming(Boolean startMediaStreaming) {
+        this.startMediaStreaming = startMediaStreaming;
+        return this;
+    }
+
+    /**
+     * Get the enableDtmfTones property: A value that indicates whether to stream the DTMF tones.
+     * 
+     * @return the enableDtmfTones value.
+     */
+    public Boolean isEnableDtmfTones() {
+        return this.enableDtmfTones;
+    }
+
+    /**
+     * Set the enableDtmfTones property: A value that indicates whether to stream the DTMF tones.
+     * 
+     * @param enableDtmfTones the enableDtmfTones value to set.
+     * @return the MediaStreamingOptions object itself.
+     */
+    public MediaStreamingOptions setEnableDtmfTones(Boolean enableDtmfTones) {
+        this.enableDtmfTones = enableDtmfTones;
+        return this;
     }
 
     /**

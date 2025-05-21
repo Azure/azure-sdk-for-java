@@ -9,6 +9,7 @@ import java.io.Writer;
 import java.util.Base64;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
 
@@ -64,7 +65,7 @@ public class OutStreamingData {
     * @param audioData the audioData to set
     * @return the OutStreamingData object itself.
     */
-    OutStreamingData setAudioData(byte[] audioData) {
+    OutStreamingData setAudioData(BinaryData audioData) {
         this.audioData = new AudioData(audioData);
         return this;
     }
@@ -86,7 +87,7 @@ public class OutStreamingData {
      * @throws IOException when failed to serilize the data
      * 
      */
-    public static String getStreamingDataForOutbound(byte[] audioData) throws IOException {
+    public static String getStreamingDataForOutbound(BinaryData audioData) throws IOException {
         OutStreamingData data = new OutStreamingData(MediaKind.AUDIO_DATA);
         data.setAudioData(audioData);
         return serializeOutStreamingData(data);
@@ -133,7 +134,7 @@ public class OutStreamingData {
         if (this.audioData != null) {
             jsonWriter.writeFieldName("audioData");
             jsonWriter.writeStartObject();
-            jsonWriter.writeRawField("data", Base64.getEncoder().encodeToString(this.audioData.getData()));
+            jsonWriter.writeStringField("data", Base64.getEncoder().encodeToString(this.audioData.getData().toBytes()));
             jsonWriter.writeNullField("timestamp");
             jsonWriter.writeNullField("participant");
             jsonWriter.writeBooleanField("isSilent", this.audioData.isSilent());

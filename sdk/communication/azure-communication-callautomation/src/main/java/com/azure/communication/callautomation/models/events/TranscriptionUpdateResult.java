@@ -3,19 +3,19 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import java.io.IOException;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
-import java.io.IOException;
-
 /**
- * The TranscriptionUpdate model.
+ * The TranscriptionUpdateResult model.
  */
 @Fluent
-public final class TranscriptionUpdate implements JsonSerializable<TranscriptionUpdate> {
+public final class TranscriptionUpdateResult implements JsonSerializable<TranscriptionUpdateResult> {
     /*
      * The transcriptionStatus property.
      */
@@ -27,9 +27,9 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
     private TranscriptionStatusDetails transcriptionStatusDetails;
 
     /**
-     * Creates an instance of TranscriptionUpdate class.
+     * Creates an instance of TranscriptionUpdateResult class.
      */
-    public TranscriptionUpdate() {
+    public TranscriptionUpdateResult() {
     }
 
     /**
@@ -63,9 +63,9 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
         return jsonWriter.writeEndObject();
     }
 
-    static TranscriptionUpdate fromJson(JsonReader jsonReader) throws IOException {
+    static TranscriptionUpdateResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            final TranscriptionUpdate event = new TranscriptionUpdate();
+            final TranscriptionUpdateResult event = new TranscriptionUpdateResult();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
