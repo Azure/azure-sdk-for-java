@@ -36,12 +36,10 @@ import argparse
 from datetime import timedelta
 import os
 import re
-import requests
-import sys
 import time
+import urllib.request
 from utils import BuildType
 from utils import CodeModule
-from utils import UpdateType
 from utils import version_regex_str_with_names_anchored
 from utils import prerelease_data_version_regex
 from utils import prerelease_version_regex_with_name
@@ -344,40 +342,40 @@ def get_beta_version_to_use(group_id: str, artifact_id: str, major_version: int,
     # Pull version information from Maven central to determine which beta version to use.
     # If beta.1 exists then use beta.2, etc. If beta.1 doesn't exist then use beta.1
     url = 'https://repo1.maven.org/maven2/{}/{}/maven-metadata.xml'.format(group_id.replace('.', '/'), artifact_id)
-    response = requests.get(url)
-    if (response.status_code != 200):
-        raise ValueError('Unable to get maven-metadata.xml for groupId {} and artifactId {}. The status code was {}'.format(group_id, artifact_id, response.status_code))
-    
-    # maven-metadata.xml as the following format:
-    # <metadata>
-    #   <groupId>groupId</groupId>
-    #   <artifactId>artifactId</artifactId>
-    #   <versioning>
-    #     <latest>version-latest</latest>
-    #     <release>version-release</release>
-    #     <versions>
-    #       <version>a-version</version>
-    #       ... (more versions)
-    #     </versions>
-    #   </versioning>
-    # </metadata>
-    root = ET.fromstring(response.text)
-    starts_with = '{}.{}.0-beta.'.format(major_version, minor_version)
-    highest_beta_version = 0
-    for version in root.findall('./versioning/versions//version'):
-        version_text = version.text
-        if version_text.startswith(starts_with):
-            # A beta version with the same major and minor version was already released.
-            # Track the beta version number, at the end of this function we'll return the
-            # highest beta version match found + 1.
-            # For example, if the version is 1.2.0-beta.3 exists, return 4.
-            beta_version_str = version_text[len(starts_with):]
-            if beta_version_str != '':
-                beta_version_int = int(beta_version_str)
-                if beta_version_int > highest_beta_version:
-                    highest_beta_version = beta_version_int
-            
-    return highest_beta_version + 1
+    with urllib.request.urlopen(urllib.request.Request(url = url, method='GET')) as f:
+        if (f.status != 200):
+            raise ValueError('Unable to get maven-metadata.xml for groupId {} and artifactId {}. The status code was {}'.format(group_id, artifact_id, f.status))
+        
+        # maven-metadata.xml as the following format:
+        # <metadata>
+        #   <groupId>groupId</groupId>
+        #   <artifactId>artifactId</artifactId>
+        #   <versioning>
+        #     <latest>version-latest</latest>
+        #     <release>version-release</release>
+        #     <versions>
+        #       <version>a-version</version>
+        #       ... (more versions)
+        #     </versions>
+        #   </versioning>
+        # </metadata>
+        root = ET.fromstring(f.read().decode('utf-8'))
+        starts_with = '{}.{}.0-beta.'.format(major_version, minor_version)
+        highest_beta_version = 0
+        for version in root.findall('./versioning/versions//version'):
+            version_text = version.text
+            if version_text.startswith(starts_with):
+                # A beta version with the same major and minor version was already released.
+                # Track the beta version number, at the end of this function we'll return the
+                # highest beta version match found + 1.
+                # For example, if the version is 1.2.0-beta.3 exists, return 4.
+                beta_version_str = version_text[len(starts_with):]
+                if beta_version_str != '':
+                    beta_version_int = int(beta_version_str)
+                    if beta_version_int > highest_beta_version:
+                        highest_beta_version = beta_version_int
+                
+        return highest_beta_version + 1
 
 # Verify that the current version of an artifact matches our versioning scheme. This is meant to be called
 # as part of the release pipeline for a given artifact to verify that we don't accidentally release a version
