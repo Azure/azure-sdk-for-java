@@ -42,9 +42,7 @@ public final class TranscriptionOptions {
     /**
      * Creates a new instance of MediaStreamingConfiguration
      * @param transportUrl - The Transport URL
-     * @param transportType - Transport type
      * @param locale - Locale
-     * @param startTranscription - Start Transcription
      */
     public TranscriptionOptions(String transportUrl, String locale) {
         this.transportUrl = transportUrl;
@@ -92,7 +90,7 @@ public final class TranscriptionOptions {
     /**
      * Get the startTranscription property: Indicates whether the transcription should start immediately after the call
      * is answered.
-     * 
+     *
      * @return the startTranscription value.
      */
     public Boolean isStartTranscription() {
@@ -102,7 +100,7 @@ public final class TranscriptionOptions {
     /**
      * Set the startTranscription property: Indicates whether the transcription should start immediately after the call
      * is answered.
-     * 
+     *
      * @param startTranscription the startTranscription value to set.
      * @return the TranscriptionOptions object itself.
      */
@@ -113,7 +111,7 @@ public final class TranscriptionOptions {
 
     /**
      * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
-     * 
+     *
      * @return the speechRecognitionModelEndpointId value.
      */
     public String getSpeechRecognitionModelEndpointId() {
@@ -122,7 +120,7 @@ public final class TranscriptionOptions {
 
     /**
      * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
-     * 
+     *
      * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
      * @return the TranscriptionOptions object itself.
      */
@@ -133,7 +131,7 @@ public final class TranscriptionOptions {
 
     /**
      * Get the enableIntermediateResults property: Enables intermediate results for the transcribed speech.
-     * 
+     *
      * @return the enableIntermediateResults value.
      */
     public Boolean isIntermediateResultsEnabled() {
@@ -142,7 +140,7 @@ public final class TranscriptionOptions {
 
     /**
      * Set the enableIntermediateResults property: Enables intermediate results for the transcribed speech.
-     * 
+     *
      * @param enableIntermediateResults the enableIntermediateResults value to set.
      * @return the TranscriptionOptions object itself.
      */
