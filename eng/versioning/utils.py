@@ -174,10 +174,13 @@ def run_check_call(
 
 
 def load_version_map_from_file(the_file, version_map: Dict[str, CodeModule], auto_increment_version=False):
+    newlines = []
+    file_changed = False
     with open(the_file) as f:
         for raw_line in f:
             stripped_line = raw_line.strip()
             if not stripped_line or stripped_line.startswith('#'):
+                newlines.append(raw_line)
                 continue
             module = CodeModule(stripped_line)
             # verify no duplicate entries
@@ -210,8 +213,17 @@ def load_version_map_from_file(the_file, version_map: Dict[str, CodeModule], aut
                         raise ValueError('Version file: {0} contains an unreleased dependency: {1} with a dependency version of {2} but the library has never been released so this shouldn\'t exist.'.format(the_file, module.name, module.dependency))
                     if auto_increment_version and module.dependency == version_map[tempName].dependency:
                         module.replace_unreleased_dependency = True
+                        file_changed = True
                     elif module.dependency != version_map[tempName].current:
                         raise ValueError('Version file: {0} contains an unreleased dependency: {1} with a dependency version of {2} which does not match the current version of the library it represents: {3}'.format(the_file, module.name, module.dependency, version_map[tempName].current))
+            
+            if not module.replace_unreleased_dependency:
+                newlines.append(raw_line)
 
             version_map[module.name] = module
+
+    if file_changed:
+        with open(the_file, 'w', encoding='utf-8') as f:
+            for line in newlines:
+                f.write(line)
                 

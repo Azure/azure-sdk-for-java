@@ -295,7 +295,7 @@ def main():
         library_array = args.library_list.split(',')
     print('library_array length: {0}'.format(len(library_array)))
     print(library_array)
-    update_versions_all(UpdateType.library, BuildType.client, args.target_file, True, True, library_array, args.version_override, args.include_perf_tests)
+    update_versions_all(args.update_type, args.build_type, args.target_file, args.skip_readme, args.auto_version_increment, library_array, args.version_override, args.include_perf_tests)
     elapsed_time = time.time() - start_time
     print('elapsed_time={}'.format(elapsed_time))
     print('Total time for replacement: {}'.format(str(timedelta(seconds=elapsed_time))))
