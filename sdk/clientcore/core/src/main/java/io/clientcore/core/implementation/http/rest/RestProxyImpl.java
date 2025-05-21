@@ -152,7 +152,6 @@ public class RestProxyImpl {
         }
     }
 
-
     /**
      * Create an HttpRequest for the provided Swagger method using the provided arguments.
      *

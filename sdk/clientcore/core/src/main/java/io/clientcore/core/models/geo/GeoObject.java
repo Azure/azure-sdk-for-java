@@ -162,7 +162,8 @@ public abstract class GeoObject implements JsonSerializable<GeoObject> {
                 return GeoCollection.fromJson(readerToUse);
             } else {
                 throw LOGGER.throwableAtError()
-                    .addKeyValue("expectedTypes", "one of: 'Point', 'MultiPoint', 'Polygon', 'MultiPolygon', 'LineString', 'MultiLineString', or 'GeometryCollection'")
+                    .addKeyValue("expectedTypes",
+                        "one of: 'Point', 'MultiPoint', 'Polygon', 'MultiPolygon', 'LineString', 'MultiLineString', or 'GeometryCollection'")
                     .addKeyValue("actualType", discriminatorValue)
                     .log("Deserialization failed, unknown 'type' value", IllegalStateException::new);
             }

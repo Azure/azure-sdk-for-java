@@ -156,7 +156,9 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
         if (ctx.channel().isActive()) {
             return request;
         } else {
-            throw LOGGER.throwableAtError().log(exceptionMessage("Channel became inactive before 'newInitialMessage' was sent"), m -> new HttpProxyHandler.HttpProxyConnectException(m, null));
+            throw LOGGER.throwableAtError()
+                .log(exceptionMessage("Channel became inactive before 'newInitialMessage' was sent"),
+                    m -> new HttpProxyHandler.HttpProxyConnectException(m, null));
         }
     }
 
@@ -164,8 +166,7 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
     protected boolean handleResponse(ChannelHandlerContext ctx, Object o) throws ProxyConnectException {
         if (o instanceof HttpResponse) {
             if (status != null) {
-                throw LOGGER.throwableAtWarning()
-                    .log("Received too many responses for a request", CoreException::from);
+                throw LOGGER.throwableAtWarning().log("Received too many responses for a request", CoreException::from);
             }
 
             HttpResponse response = (HttpResponse) o;
@@ -196,7 +197,8 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
         if (responseComplete) {
             if (status == null) {
                 throw LOGGER.throwableAtError()
-                    .log(exceptionMessage("missing response"), m -> new HttpProxyHandler.HttpProxyConnectException(m, innerHeaders));
+                    .log(exceptionMessage("missing response"),
+                        m -> new HttpProxyHandler.HttpProxyConnectException(m, innerHeaders));
             } else if (status.code() != 200) {
                 throw LOGGER.throwableAtError()
                     .addKeyValue("status", status.code())
