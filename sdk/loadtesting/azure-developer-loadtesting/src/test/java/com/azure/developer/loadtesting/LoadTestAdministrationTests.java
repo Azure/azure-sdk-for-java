@@ -5,7 +5,6 @@ package com.azure.developer.loadtesting;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -103,6 +102,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Test
     @Order(4)
     public void createOrUpdateAppComponents() {
+
         TestAppComponents appComponents = getTestAppComponents();
         LoadTestAdministrationClient adminClient = getLoadTestAdministrationClient();
 
@@ -216,16 +216,10 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     @Test
     @Order(13)
     public void listTests() {
-        RequestOptions reqOpts = new RequestOptions().addQueryParam("orderBy", "lastModifiedDateTime desc");
-        PagedIterable<BinaryData> response = getLoadTestAdministrationClient().listTests(reqOpts);
-        boolean found = response.stream().anyMatch((testBinary) -> {
-            try (JsonReader jsonReader = JsonProviders.createReader(testBinary.toBytes())) {
-                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
-                return newTestId.equals(jsonTree.get("testId"));
-            } catch (IOException e) {
-                return false;
-            }
+        PagedIterable<LoadTest> response
+            = getLoadTestAdministrationClient().listTests("lastModifiedDateTime desc", null, null, null);
+        boolean found = response.stream().anyMatch((loadTest) -> {
+            return loadTest.getTestId().equals(newTestId);
         });
 
         assertTrue(found);
