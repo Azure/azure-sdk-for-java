@@ -48,6 +48,7 @@ public final class AudioMetadata extends StreamingData {
      * @param internalData The audiodataconvertor
      */
     AudioMetadata(AudioMetadataConverter internalData) {
+        super(StreamingDataKind.AUDIO_METADATA);
         this.mediaSubscriptionId = internalData.getMediaSubscriptionId();
         this.encoding = internalData.getEncoding();
         this.sampleRate = internalData.getSampleRate();
@@ -58,6 +59,7 @@ public final class AudioMetadata extends StreamingData {
      * Creats the audiometadata instance
      */
     public AudioMetadata() {
+        super(StreamingDataKind.AUDIO_METADATA);
         this.mediaSubscriptionId = null;
         this.encoding = null;
         this.sampleRate = null;

@@ -27,7 +27,8 @@ public abstract class StreamingData {
     /**
      * Creates an instance of {@link StreamingData}.
      */
-    StreamingData() {
+    public StreamingData(StreamingDataKind streamingDataKind) {
+        this.streamingDataKind = streamingDataKind;
     }
 
     /**
@@ -37,15 +38,6 @@ public abstract class StreamingData {
      */
     public StreamingDataKind getStreamingDataKind() {
         return streamingDataKind;
-    }
-
-    /**
-     * Set the streaming data kind.
-     *
-     * @param streamingDataKind the kind of streaming data.
-     */
-    protected void setStreamingDataKind(StreamingDataKind streamingDataKind) {
-        this.streamingDataKind = streamingDataKind;
     }
 
     /**
@@ -89,30 +81,25 @@ public abstract class StreamingData {
                         case "audioData":
                             AudioData audioData
                                 = AudioDataContructorProxy.create(AudioDataConverter.fromJson(jsonReader));
-                            audioData.setStreamingDataKind(StreamingDataKind.AUDIO_DATA);
                             return audioData;
 
                         case "audioMetadata":
                             AudioMetadata audioMetadata
                                 = AudioMetadataContructorProxy.create(AudioMetadataConverter.fromJson(jsonReader));
-                            audioMetadata.setStreamingDataKind(StreamingDataKind.AUDIO_METADATA);
                             return audioMetadata;
 
                         case "dtmfData":
                             DtmfData dtmfData = DtmfDataContructorProxy.create(DtmfDataConverter.fromJson(jsonReader));
-                            dtmfData.setStreamingDataKind(StreamingDataKind.DTMF_DATA);
                             return dtmfData;
 
                         case "transcriptionData":
                             TranscriptionData transcriptionData = TranscriptionDataContructorProxy
                                 .create(TranscriptionDataConverter.fromJson(jsonReader));
-                            transcriptionData.setStreamingDataKind(StreamingDataKind.TRANSCRIPTION_DATA);
                             return transcriptionData;
 
                         case "transcriptionMetadata":
                             TranscriptionMetadata transcriptionMetadata = TranscriptionMetadataContructorProxy
                                 .create(TranscriptionMetadataConverter.fromJson(jsonReader));
-                            transcriptionMetadata.setStreamingDataKind(StreamingDataKind.TRANSCRIPTION_METADATA);
                             return transcriptionMetadata;
 
                         default:

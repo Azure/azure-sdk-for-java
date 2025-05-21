@@ -79,6 +79,7 @@ public final class TranscriptionData extends StreamingData {
      * @param internalData transcription internal data
      */
     protected TranscriptionData(TranscriptionDataConverter internalData) {
+        super(StreamingDataKind.TRANSCRIPTION_DATA);
         this.text = internalData.getText();
         this.format = convertToTextFormatEnum(internalData.getFormat());
         this.confidence = internalData.getConfidence();
@@ -98,6 +99,7 @@ public final class TranscriptionData extends StreamingData {
      * Create instance of transcription data
      */
     public TranscriptionData() {
+        super(StreamingDataKind.TRANSCRIPTION_DATA);
         this.text = null;
         this.format = null;
         this.confidence = null;

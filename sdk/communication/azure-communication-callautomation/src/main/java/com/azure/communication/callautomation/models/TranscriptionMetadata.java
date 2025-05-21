@@ -51,6 +51,7 @@ public final class TranscriptionMetadata extends StreamingData {
      * @param internalData Transcription meta data internal.
      */
     TranscriptionMetadata(TranscriptionMetadataConverter internalData) {
+        super(StreamingDataKind.TRANSCRIPTION_METADATA);
         this.transcriptionSubscriptionId = internalData.getTranscriptionSubscriptionId();
         this.locale = internalData.getLocale();
         this.callConnectionId = internalData.getCallConnectionId();
@@ -62,6 +63,7 @@ public final class TranscriptionMetadata extends StreamingData {
      * Creates an instance of TranscriptionMetadata class.
      */
     public TranscriptionMetadata() {
+        super(StreamingDataKind.TRANSCRIPTION_METADATA);
         this.transcriptionSubscriptionId = null;
         this.locale = null;
         this.callConnectionId = null;

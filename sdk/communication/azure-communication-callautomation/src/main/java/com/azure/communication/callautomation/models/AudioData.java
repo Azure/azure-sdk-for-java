@@ -54,6 +54,7 @@ public final class AudioData extends StreamingData {
      * @param internalData The audiodataconvertor
      */
     AudioData(AudioDataConverter internalData) {
+        super(StreamingDataKind.AUDIO_DATA);
         this.data = BinaryData.fromString(internalData.getData());
         this.timestamp = OffsetDateTime.parse(internalData.getTimestamp(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         if (internalData.getParticipantRawID() != null && !internalData.getParticipantRawID().isEmpty()) {
@@ -68,6 +69,7 @@ public final class AudioData extends StreamingData {
      * The constructor
      */
     public AudioData() {
+        super(StreamingDataKind.AUDIO_DATA);
         this.data = null;
         this.timestamp = null;
         this.participant = null;
@@ -80,6 +82,7 @@ public final class AudioData extends StreamingData {
      * @param data The audio data.
      */
     AudioData(BinaryData data) {
+        super(StreamingDataKind.AUDIO_DATA);
         this.data = data;
         this.timestamp = null;
         this.participant = null;

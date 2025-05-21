@@ -48,6 +48,7 @@ public final class DtmfData extends StreamingData {
      * @param internalData The DtmfDataconvertor
      */
     DtmfData(DtmfDataConverter internalData) {
+        super(StreamingDataKind.DTMF_DATA);
         this.data = internalData.getData();
         this.timestamp = OffsetDateTime.parse(internalData.getTimestamp(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         if (internalData.getParticipantRawID() != null && !internalData.getParticipantRawID().isEmpty()) {
@@ -61,6 +62,7 @@ public final class DtmfData extends StreamingData {
      * The constructor
      */
     public DtmfData() {
+        super(StreamingDataKind.DTMF_DATA);
         this.data = null;
         this.timestamp = null;
         this.participant = null;
@@ -72,6 +74,7 @@ public final class DtmfData extends StreamingData {
      * @param data The dtmf data.
      */
     DtmfData(String data) {
+        super(StreamingDataKind.DTMF_DATA);
         this.data = data;
         this.timestamp = null;
         this.participant = null;
