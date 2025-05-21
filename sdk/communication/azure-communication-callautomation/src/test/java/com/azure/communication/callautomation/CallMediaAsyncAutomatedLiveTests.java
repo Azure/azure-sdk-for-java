@@ -24,7 +24,7 @@ import com.azure.communication.phonenumbers.PhoneNumbersClientBuilder;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
-import com.azure.communication.callautomation.models.MediaStreamingContent;
+import com.azure.communication.callautomation.models.MediaStreamingContentType;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.MediaStreamingTransport;
 import com.azure.communication.callautomation.models.TranscriptionOptions;

@@ -26,6 +26,7 @@ public abstract class StreamingData {
 
     /**
      * Creates an instance of {@link StreamingData}.
+     * @param streamingDataKind The kind of streaming data.
      */
     public StreamingData(StreamingDataKind streamingDataKind) {
         this.streamingDataKind = streamingDataKind;
@@ -44,7 +45,7 @@ public abstract class StreamingData {
      * Parses a base64 encoded string into a StreamingData object,
      * which can be one of the following subtypes: AudioData, AudioMetadata, TranscriptionData, or TranscriptionMetadata.
      * @param data The base64 string represents streaming data that will be converted into the appropriate subtype of StreamingData.
-     * @return StreamingData 
+     * @return StreamingData
      * @throws RuntimeException Throws a RuntimeException if the provided base64 string does not correspond to a supported data type for the specified Kind.
      */
     public static StreamingData parse(String data) {
@@ -55,7 +56,7 @@ public abstract class StreamingData {
      *  Parses a base64 encoded string into a StreamingData object,
      * which can be one of the following subtypes: AudioData, AudioMetadata, TranscriptionData, or TranscriptionMetadata.
      * @param <T> Subtypes of StreamingData ex. AudioData, AudioMetadata, TranscriptionData, TranscriptionMetadata
-     * @param data The base64 string represents streaming data that will be converted into the appropriate subtype of StreamingData. 
+     * @param data The base64 string represents streaming data that will be converted into the appropriate subtype of StreamingData.
      * @param type type of the streamindata ex. AudioData, AudioMetadata, TranscriptionData, TranscriptionMetadata
      * @return Subtypes of StreamingData
      * @throws RuntimeException Throws a NotSupportedException if the provided base64 string does not correspond
@@ -67,8 +68,8 @@ public abstract class StreamingData {
     }
 
     /**
-     * 
-     * @param data the base64 string 
+     *
+     * @param data the base64 string
      * @return the StreamingData
      */
     private static StreamingData parseStreamingData(String data) {

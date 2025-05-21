@@ -34,7 +34,7 @@ public final class MediaStreamingSubscription implements JsonSerializable<MediaS
     /*
      * Gets or Sets the subscribed media streaming content types.
      */
-    private List<MediaStreamingContent> subscribedContentTypes;
+    private List<MediaStreamingContentType> subscribedContentTypes;
 
     static {
         MediaStreamingSubscriptionConstructorProxy.setAccessor(
@@ -69,14 +69,14 @@ public final class MediaStreamingSubscription implements JsonSerializable<MediaS
         this.subscribedContentTypes = mediaStreamingSubscriptionInternal.getSubscribedContentTypes() != null
             ? mediaStreamingSubscriptionInternal.getSubscribedContentTypes()
                 .stream()
-                .map(contentType -> MediaStreamingContent.fromString(contentType.toString()))
+                .map(contentType -> MediaStreamingContentType.fromString(contentType.toString()))
                 .collect(Collectors.toList())
             : null;
     }
 
     /**
      * Get the id property: Gets or Sets subscription Id.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -85,7 +85,7 @@ public final class MediaStreamingSubscription implements JsonSerializable<MediaS
 
     /**
      * Get the state property: Gets or Sets media streaming subscription state.
-     * 
+     *
      * @return the state value.
      */
     public MediaStreamingSubscriptionState getState() {
@@ -94,10 +94,10 @@ public final class MediaStreamingSubscription implements JsonSerializable<MediaS
 
     /**
      * Get the subscribedContentTypes property: Gets or Sets the subscribed media streaming content types.
-     * 
+     *
      * @return the subscribedContentTypes value.
      */
-    public List<MediaStreamingContent> getSubscribedContentTypes() {
+    public List<MediaStreamingContentType> getSubscribedContentTypes() {
         return this.subscribedContentTypes;
     }
 
@@ -113,7 +113,7 @@ public final class MediaStreamingSubscription implements JsonSerializable<MediaS
 
     /**
      * Reads an instance of MediaStreamingSubscriptionInternal from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of MediaStreamingSubscriptionInternal if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
@@ -132,8 +132,8 @@ public final class MediaStreamingSubscription implements JsonSerializable<MediaS
                     deserializedMediaStreamingSubscription.state
                         = MediaStreamingSubscriptionState.fromString(reader.getString());
                 } else if ("subscribedContentTypes".equals(fieldName)) {
-                    List<MediaStreamingContent> subscribedContentTypes
-                        = reader.readArray(reader1 -> MediaStreamingContent.fromString(reader1.getString()));
+                    List<MediaStreamingContentType> subscribedContentTypes
+                        = reader.readArray(reader1 -> MediaStreamingContentType.fromString(reader1.getString()));
                     deserializedMediaStreamingSubscription.subscribedContentTypes = subscribedContentTypes;
                 } else {
                     reader.skipChildren();
