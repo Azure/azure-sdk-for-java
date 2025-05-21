@@ -316,7 +316,7 @@ public final class LoadTestRunClientBuilder
      */
     @Generated
     public LoadTestRunClient buildClient() {
-        return new LoadTestRunClient(new LoadTestRunAsyncClient(buildInnerClient()));
+        return new LoadTestRunClient(buildInnerClient());
     }
 
     @Generated

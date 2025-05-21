@@ -316,7 +316,7 @@ public final class LoadTestAdministrationClientBuilder
      */
     @Generated
     public LoadTestAdministrationClient buildClient() {
-        return new LoadTestAdministrationClient(new LoadTestAdministrationAsyncClient(buildInnerClient()));
+        return new LoadTestAdministrationClient(buildInnerClient());
     }
 
     @Generated

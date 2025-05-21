@@ -18,6 +18,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.loadtesting.implementation.JsonMergePatchHelper;
+import com.azure.developer.loadtesting.implementation.LoadTestAdministrationClientImpl;
 import com.azure.developer.loadtesting.models.LoadTest;
 import com.azure.developer.loadtesting.models.LoadTestingFileType;
 import com.azure.developer.loadtesting.models.TestAppComponents;
@@ -27,6 +28,8 @@ import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the synchronous LoadTestAdministrationClient type.
@@ -104,7 +107,7 @@ public final class LoadTestAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(String testId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.client.createOrUpdateServerMetricsConfigWithResponse(testId, body, requestOptions).block();
+        return this.serviceClient.createOrUpdateServerMetricsConfigWithResponse(testId, body, requestOptions);
     }
 
     /**
@@ -183,7 +186,7 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTestFiles(String testId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listTestFiles(testId, requestOptions));
+        return this.serviceClient.listTestFiles(testId, requestOptions);
     }
 
     /**
@@ -422,7 +425,7 @@ public final class LoadTestAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateTestWithResponse(String testId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.client.createOrUpdateTestWithResponse(testId, body, requestOptions).block();
+        return this.serviceClient.createOrUpdateTestWithResponse(testId, body, requestOptions);
     }
 
     /**
@@ -440,7 +443,7 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestWithResponse(String testId, RequestOptions requestOptions) {
-        return this.client.deleteTestWithResponse(testId, requestOptions).block();
+        return this.serviceClient.deleteTestWithResponse(testId, requestOptions);
     }
 
     /**
@@ -567,7 +570,7 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTestWithResponse(String testId, RequestOptions requestOptions) {
-        return this.client.getTestWithResponse(testId, requestOptions).block();
+        return this.serviceClient.getTestWithResponse(testId, requestOptions);
     }
 
     /**
@@ -712,7 +715,7 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTests(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listTests(requestOptions));
+        return this.serviceClient.listTests(requestOptions);
     }
 
     /**
@@ -779,7 +782,7 @@ public final class LoadTestAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> uploadTestFileWithResponse(String testId, String fileName, BinaryData body,
         RequestOptions requestOptions) {
-        return this.client.uploadTestFileWithResponse(testId, fileName, body, requestOptions).block();
+        return this.serviceClient.uploadTestFileWithResponse(testId, fileName, body, requestOptions);
     }
 
     /**
@@ -812,7 +815,7 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTestFileWithResponse(String testId, String fileName, RequestOptions requestOptions) {
-        return this.client.getTestFileWithResponse(testId, fileName, requestOptions).block();
+        return this.serviceClient.getTestFileWithResponse(testId, fileName, requestOptions);
     }
 
     /**
@@ -831,7 +834,7 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestFileWithResponse(String testId, String fileName, RequestOptions requestOptions) {
-        return this.client.deleteTestFileWithResponse(testId, fileName, requestOptions).block();
+        return this.serviceClient.deleteTestFileWithResponse(testId, fileName, requestOptions);
     }
 
     /**
@@ -902,7 +905,7 @@ public final class LoadTestAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateAppComponentsWithResponse(String testId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.client.createOrUpdateAppComponentsWithResponse(testId, body, requestOptions).block();
+        return this.serviceClient.createOrUpdateAppComponentsWithResponse(testId, body, requestOptions);
     }
 
     /**
@@ -944,7 +947,7 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
-        return this.client.getAppComponentsWithResponse(testId, requestOptions).block();
+        return this.serviceClient.getAppComponentsWithResponse(testId, requestOptions);
     }
 
     /**
@@ -987,20 +990,7 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getServerMetricsConfigWithResponse(String testId, RequestOptions requestOptions) {
-        return this.client.getServerMetricsConfigWithResponse(testId, requestOptions).block();
-    }
-
-    @Generated
-    private final LoadTestAdministrationAsyncClient client;
-
-    /**
-     * Initializes an instance of LoadTestAdministrationClient class.
-     *
-     * @param client the async client.
-     */
-    @Generated
-    LoadTestAdministrationClient(LoadTestAdministrationAsyncClient client) {
-        this.client = client;
+        return this.serviceClient.getServerMetricsConfigWithResponse(testId, requestOptions);
     }
 
     /**
@@ -1063,7 +1053,7 @@ public final class LoadTestAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateTestProfileWithResponse(String testProfileId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.client.createOrUpdateTestProfileWithResponse(testProfileId, body, requestOptions).block();
+        return this.serviceClient.createOrUpdateTestProfileWithResponse(testProfileId, body, requestOptions);
     }
 
     /**
@@ -1083,7 +1073,7 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestProfileWithResponse(String testProfileId, RequestOptions requestOptions) {
-        return this.client.deleteTestProfileWithResponse(testProfileId, requestOptions).block();
+        return this.serviceClient.deleteTestProfileWithResponse(testProfileId, requestOptions);
     }
 
     /**
@@ -1125,7 +1115,7 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTestProfileWithResponse(String testProfileId, RequestOptions requestOptions) {
-        return this.client.getTestProfileWithResponse(testProfileId, requestOptions).block();
+        return this.serviceClient.getTestProfileWithResponse(testProfileId, requestOptions);
     }
 
     /**
@@ -1179,7 +1169,7 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTestProfiles(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listTestProfiles(requestOptions));
+        return this.serviceClient.listTestProfiles(requestOptions);
     }
 
     /**
@@ -1315,7 +1305,9 @@ public final class LoadTestAdministrationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TestFileInfo> listTestFiles(String testId) {
         // Generated convenience method for listTestFiles
-        return new PagedIterable<>(client.listTestFiles(testId));
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listTestFiles(testId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(TestFileInfo.class));
     }
 
     /**
@@ -1345,7 +1337,20 @@ public final class LoadTestAdministrationClient {
     public PagedIterable<LoadTest> listTests(String orderBy, String search, OffsetDateTime lastModifiedStartTime,
         OffsetDateTime lastModifiedEndTime) {
         // Generated convenience method for listTests
-        return new PagedIterable<>(client.listTests(orderBy, search, lastModifiedStartTime, lastModifiedEndTime));
+        RequestOptions requestOptions = new RequestOptions();
+        if (orderBy != null) {
+            requestOptions.addQueryParam("orderby", orderBy, false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (lastModifiedStartTime != null) {
+            requestOptions.addQueryParam("lastModifiedStartTime", String.valueOf(lastModifiedStartTime), false);
+        }
+        if (lastModifiedEndTime != null) {
+            requestOptions.addQueryParam("lastModifiedEndTime", String.valueOf(lastModifiedEndTime), false);
+        }
+        return serviceClient.listTests(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(LoadTest.class));
     }
 
     /**
@@ -1365,7 +1370,8 @@ public final class LoadTestAdministrationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadTest> listTests() {
         // Generated convenience method for listTests
-        return new PagedIterable<>(client.listTests());
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listTests(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(LoadTest.class));
     }
 
     /**
@@ -1528,7 +1534,9 @@ public final class LoadTestAdministrationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TestProfile> listTestProfiles() {
         // Generated convenience method for listTestProfiles
-        return new PagedIterable<>(client.listTestProfiles());
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listTestProfiles(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(TestProfile.class));
     }
 
     /**
@@ -1555,8 +1563,29 @@ public final class LoadTestAdministrationClient {
     public PagedIterable<TestProfile> listTestProfiles(OffsetDateTime lastModifiedStartTime,
         OffsetDateTime lastModifiedEndTime, List<String> testProfileIds, List<String> testIds) {
         // Generated convenience method for listTestProfiles
-        return new PagedIterable<>(
-            client.listTestProfiles(lastModifiedStartTime, lastModifiedEndTime, testProfileIds, testIds));
+        RequestOptions requestOptions = new RequestOptions();
+        if (lastModifiedStartTime != null) {
+            requestOptions.addQueryParam("lastModifiedStartTime", String.valueOf(lastModifiedStartTime), false);
+        }
+        if (lastModifiedEndTime != null) {
+            requestOptions.addQueryParam("lastModifiedEndTime", String.valueOf(lastModifiedEndTime), false);
+        }
+        if (testProfileIds != null) {
+            requestOptions.addQueryParam("testProfileIds",
+                testProfileIds.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (testIds != null) {
+            requestOptions.addQueryParam("testIds",
+                testIds.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return serviceClient.listTestProfiles(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(TestProfile.class));
     }
 
     /**
@@ -1644,5 +1673,18 @@ public final class LoadTestAdministrationClient {
         }
         return uploadTestFileWithResponse(testId, fileName, body, requestOptions).getValue()
             .toObject(TestFileInfo.class);
+    }
+
+    @Generated
+    private final LoadTestAdministrationClientImpl serviceClient;
+
+    /**
+     * Initializes an instance of LoadTestAdministrationClient class.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    @Generated
+    LoadTestAdministrationClient(LoadTestAdministrationClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 }

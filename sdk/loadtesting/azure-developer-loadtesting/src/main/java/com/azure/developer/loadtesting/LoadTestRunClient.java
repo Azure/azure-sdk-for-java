@@ -18,6 +18,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.loadtesting.implementation.JsonMergePatchHelper;
+import com.azure.developer.loadtesting.implementation.LoadTestRunClientImpl;
 import com.azure.developer.loadtesting.models.LoadTestRun;
 import com.azure.developer.loadtesting.models.MetricDefinitions;
 import com.azure.developer.loadtesting.models.MetricNamespaces;
@@ -29,6 +30,8 @@ import com.azure.developer.loadtesting.models.TimeGrain;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the synchronous LoadTestRunClient type.
@@ -104,7 +107,7 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(String testRunId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.client.createOrUpdateServerMetricsConfigWithResponse(testRunId, body, requestOptions).block();
+        return this.serviceClient.createOrUpdateServerMetricsConfigWithResponse(testRunId, body, requestOptions);
     }
 
     /**
@@ -139,7 +142,9 @@ public final class LoadTestRunClient {
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
      * @param testRun Load test run model.
-     * @param oldTestRunId Existing test run identifier that should be rerun, if this is provided, the test will run with the JMX file, configuration and app components from the existing test run. You can override the configuration values for new test run in the request body.
+     * @param oldTestRunId Existing test run identifier that should be rerun, if this is provided, the test will run
+     * with the JMX file, configuration and app components from the existing test run. You can override the
+     * configuration values for new test run in the request body.
      * @throws ResourceNotFoundException when a test with {@code oldTestRunId} doesn't exist.
      * @return A {@link SyncPoller} to poll on and retrieve the test run
      * status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
@@ -220,7 +225,7 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateAppComponentsWithResponse(String testRunId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.client.createOrUpdateAppComponentsWithResponse(testRunId, body, requestOptions).block();
+        return this.serviceClient.createOrUpdateAppComponentsWithResponse(testRunId, body, requestOptions);
     }
 
     /**
@@ -332,8 +337,7 @@ public final class LoadTestRunClient {
         }
         // Content-Type header required even though body can be null
         requestOptions.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
-        return ((PagedIterable<BinaryData>) PagedIterable.of(
-            this.client.listMetrics(testRunId, metricName, metricNamespace, timespan, requestOptions).toIterable()));
+        return this.serviceClient.listMetrics(testRunId, metricName, metricNamespace, timespan, requestOptions);
     }
 
     /**
@@ -377,7 +381,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAppComponentsWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.client.getAppComponentsWithResponse(testRunId, requestOptions).block();
+        return this.serviceClient.getAppComponentsWithResponse(testRunId, requestOptions);
     }
 
     /**
@@ -420,7 +424,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getServerMetricsConfigWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.client.getServerMetricsConfigWithResponse(testRunId, requestOptions).block();
+        return this.serviceClient.getServerMetricsConfigWithResponse(testRunId, requestOptions);
     }
 
     /**
@@ -684,7 +688,7 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> createOrUpdateTestRunWithResponse(String testRunId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.client.createOrUpdateTestRunWithResponse(testRunId, body, requestOptions).block();
+        return this.serviceClient.createOrUpdateTestRunWithResponse(testRunId, body, requestOptions);
     }
 
     /**
@@ -858,7 +862,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.client.getTestRunWithResponse(testRunId, requestOptions).block();
+        return this.serviceClient.getTestRunWithResponse(testRunId, requestOptions);
     }
 
     /**
@@ -878,7 +882,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.client.deleteTestRunWithResponse(testRunId, requestOptions).block();
+        return this.serviceClient.deleteTestRunWithResponse(testRunId, requestOptions);
     }
 
     /**
@@ -912,7 +916,7 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTestRunFileWithResponse(String testRunId, String fileName,
         RequestOptions requestOptions) {
-        return this.client.getTestRunFileWithResponse(testRunId, fileName, requestOptions).block();
+        return this.serviceClient.getTestRunFileWithResponse(testRunId, fileName, requestOptions);
     }
 
     /**
@@ -935,6 +939,8 @@ public final class LoadTestRunClient {
      * execution time filter range.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Comma separated list of test run status.</td></tr>
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
+     * <tr><td>createdByTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of type of entities
+     * that have created the test run. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1104,7 +1110,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTestRuns(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listTestRuns(requestOptions));
+        return this.serviceClient.listTestRuns(requestOptions);
     }
 
     /**
@@ -1278,7 +1284,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> stopTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.client.stopTestRunWithResponse(testRunId, requestOptions).block();
+        return this.serviceClient.stopTestRunWithResponse(testRunId, requestOptions);
     }
 
     /**
@@ -1310,7 +1316,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getMetricNamespacesWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.client.getMetricNamespacesWithResponse(testRunId, requestOptions).block();
+        return this.serviceClient.getMetricNamespacesWithResponse(testRunId, requestOptions);
     }
 
     /**
@@ -1361,20 +1367,7 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getMetricDefinitionsWithResponse(String testRunId, String metricNamespace,
         RequestOptions requestOptions) {
-        return this.client.getMetricDefinitionsWithResponse(testRunId, metricNamespace, requestOptions).block();
-    }
-
-    @Generated
-    private final LoadTestRunAsyncClient client;
-
-    /**
-     * Initializes an instance of LoadTestRunClient class.
-     *
-     * @param client the async client.
-     */
-    @Generated
-    LoadTestRunClient(LoadTestRunAsyncClient client) {
-        this.client = client;
+        return this.serviceClient.getMetricDefinitionsWithResponse(testRunId, metricNamespace, requestOptions);
     }
 
     /**
@@ -1489,7 +1482,7 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> createOrUpdateTestProfileRunWithResponse(String testProfileRunId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.client.createOrUpdateTestProfileRunWithResponse(testProfileRunId, body, requestOptions).block();
+        return this.serviceClient.createOrUpdateTestProfileRunWithResponse(testProfileRunId, body, requestOptions);
     }
 
     /**
@@ -1509,7 +1502,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestProfileRunWithResponse(String testProfileRunId, RequestOptions requestOptions) {
-        return this.client.deleteTestProfileRunWithResponse(testProfileRunId, requestOptions).block();
+        return this.serviceClient.deleteTestProfileRunWithResponse(testProfileRunId, requestOptions);
     }
 
     /**
@@ -1577,7 +1570,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTestProfileRunWithResponse(String testProfileRunId, RequestOptions requestOptions) {
-        return this.client.getTestProfileRunWithResponse(testProfileRunId, requestOptions).block();
+        return this.serviceClient.getTestProfileRunWithResponse(testProfileRunId, requestOptions);
     }
 
     /**
@@ -1667,7 +1660,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTestProfileRuns(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listTestProfileRuns(requestOptions));
+        return this.serviceClient.listTestProfileRuns(requestOptions);
     }
 
     /**
@@ -1733,7 +1726,7 @@ public final class LoadTestRunClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> stopTestProfileRunWithResponse(String testProfileRunId, RequestOptions requestOptions) {
-        return this.client.stopTestProfileRunWithResponse(testProfileRunId, requestOptions).block();
+        return this.serviceClient.stopTestProfileRunWithResponse(testProfileRunId, requestOptions);
     }
 
     /**
@@ -1950,8 +1943,13 @@ public final class LoadTestRunClient {
     public PagedIterable<String> listMetricDimensionValues(String testRunId, String name, String metricname,
         String metricNamespace, String timespan, TimeGrain interval) {
         // Generated convenience method for listMetricDimensionValues
-        return new PagedIterable<>(
-            client.listMetricDimensionValues(testRunId, name, metricname, metricNamespace, timespan, interval));
+        RequestOptions requestOptions = new RequestOptions();
+        if (interval != null) {
+            requestOptions.addQueryParam("interval", interval.toString(), false);
+        }
+        return serviceClient
+            .listMetricDimensionValues(testRunId, name, metricname, metricNamespace, timespan, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(String.class));
     }
 
     /**
@@ -1977,8 +1975,10 @@ public final class LoadTestRunClient {
     public PagedIterable<String> listMetricDimensionValues(String testRunId, String name, String metricname,
         String metricNamespace, String timespan) {
         // Generated convenience method for listMetricDimensionValues
-        return new PagedIterable<>(
-            client.listMetricDimensionValues(testRunId, name, metricname, metricNamespace, timespan));
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient
+            .listMetricDimensionValues(testRunId, name, metricname, metricNamespace, timespan, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(String.class));
     }
 
     /**
@@ -2028,34 +2028,6 @@ public final class LoadTestRunClient {
     /**
      * Get all test runs for the given filters.
      *
-     * @param orderBy Sort on the supported fields in (field asc/desc) format. eg: executedDateTime
-     * asc. Supported fields - executedDateTime.
-     * @param search Prefix based, case sensitive search on searchable fields - description,
-     * executedUser. For example, to search for a test run, with description 500 VUs,
-     * the search parameter can be 500.
-     * @param testId Unique name of an existing load test.
-     * @param executionFrom Start DateTime(RFC 3339 literal format) of test-run execution time filter range.
-     * @param executionTo End DateTime(RFC 3339 literal format) of test-run execution time filter range.
-     * @param status Comma separated list of test run status.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all test runs for the given filters as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LoadTestRun> listTestRuns(String orderBy, String search, String testId,
-        OffsetDateTime executionFrom, OffsetDateTime executionTo, String status) {
-        // Generated convenience method for listTestRuns
-        return new PagedIterable<>(client.listTestRuns(orderBy, search, testId, executionFrom, executionTo, status));
-    }
-
-    /**
-     * Get all test runs for the given filters.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -2067,7 +2039,9 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadTestRun> listTestRuns() {
         // Generated convenience method for listTestRuns
-        return new PagedIterable<>(client.listTestRuns());
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listTestRuns(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(LoadTestRun.class));
     }
 
     /**
@@ -2185,7 +2159,9 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TestProfileRun> listTestProfileRuns() {
         // Generated convenience method for listTestProfileRuns
-        return new PagedIterable<>(client.listTestProfileRuns());
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listTestProfileRuns(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(TestProfileRun.class));
     }
 
     /**
@@ -2248,8 +2224,8 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listMetricDimensionValues(String testRunId, String name, String metricname,
         String metricNamespace, String timespan, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listMetricDimensionValues(testRunId, name, metricname, metricNamespace,
-            timespan, requestOptions));
+        return this.serviceClient.listMetricDimensionValues(testRunId, name, metricname, metricNamespace, timespan,
+            requestOptions);
     }
 
     /**
@@ -2284,8 +2260,48 @@ public final class LoadTestRunClient {
         OffsetDateTime createdDateStartTime, OffsetDateTime createdDateEndTime, List<String> testProfileRunIds,
         List<String> testProfileIds, List<String> statuses) {
         // Generated convenience method for listTestProfileRuns
-        return new PagedIterable<>(client.listTestProfileRuns(minStartDateTime, maxStartDateTime, minEndDateTime,
-            maxEndDateTime, createdDateStartTime, createdDateEndTime, testProfileRunIds, testProfileIds, statuses));
+        RequestOptions requestOptions = new RequestOptions();
+        if (minStartDateTime != null) {
+            requestOptions.addQueryParam("minStartDateTime", String.valueOf(minStartDateTime), false);
+        }
+        if (maxStartDateTime != null) {
+            requestOptions.addQueryParam("maxStartDateTime", String.valueOf(maxStartDateTime), false);
+        }
+        if (minEndDateTime != null) {
+            requestOptions.addQueryParam("minEndDateTime", String.valueOf(minEndDateTime), false);
+        }
+        if (maxEndDateTime != null) {
+            requestOptions.addQueryParam("maxEndDateTime", String.valueOf(maxEndDateTime), false);
+        }
+        if (createdDateStartTime != null) {
+            requestOptions.addQueryParam("createdDateStartTime", String.valueOf(createdDateStartTime), false);
+        }
+        if (createdDateEndTime != null) {
+            requestOptions.addQueryParam("createdDateEndTime", String.valueOf(createdDateEndTime), false);
+        }
+        if (testProfileRunIds != null) {
+            requestOptions.addQueryParam("testProfileRunIds",
+                testProfileRunIds.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (testProfileIds != null) {
+            requestOptions.addQueryParam("testProfileIds",
+                testProfileIds.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (statuses != null) {
+            requestOptions.addQueryParam("statuses",
+                statuses.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return serviceClient.listTestProfileRuns(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(TestProfileRun.class));
     }
 
     /**
@@ -2378,5 +2394,74 @@ public final class LoadTestRunClient {
         JsonMergePatchHelper.getLoadTestRunAccessor().prepareModelForJsonMergePatch(body, false);
         return createOrUpdateTestRunWithResponse(testRunId, bodyInBinaryData, requestOptions).getValue()
             .toObject(LoadTestRun.class);
+    }
+
+    @Generated
+    private final LoadTestRunClientImpl serviceClient;
+
+    /**
+     * Initializes an instance of LoadTestRunClient class.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    @Generated
+    LoadTestRunClient(LoadTestRunClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Get all test runs for the given filters.
+     *
+     * @param orderBy Sort on the supported fields in (field asc/desc) format. eg: executedDateTime
+     * asc. Supported fields - executedDateTime.
+     * @param search Prefix based, case sensitive search on searchable fields - description,
+     * executedUser. For example, to search for a test run, with description 500 VUs,
+     * the search parameter can be 500.
+     * @param testId Unique name of an existing load test.
+     * @param executionFrom Start DateTime(RFC 3339 literal format) of test-run execution time filter range.
+     * @param executionTo End DateTime(RFC 3339 literal format) of test-run execution time filter range.
+     * @param status Comma separated list of test run status.
+     * @param createdByTypes Comma separated list of type of entities that have created the test run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all test runs for the given filters as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LoadTestRun> listTestRuns(String orderBy, String search, String testId,
+        OffsetDateTime executionFrom, OffsetDateTime executionTo, String status, List<String> createdByTypes) {
+        // Generated convenience method for listTestRuns
+        RequestOptions requestOptions = new RequestOptions();
+        if (orderBy != null) {
+            requestOptions.addQueryParam("orderby", orderBy, false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (testId != null) {
+            requestOptions.addQueryParam("testId", testId, false);
+        }
+        if (executionFrom != null) {
+            requestOptions.addQueryParam("executionFrom", String.valueOf(executionFrom), false);
+        }
+        if (executionTo != null) {
+            requestOptions.addQueryParam("executionTo", String.valueOf(executionTo), false);
+        }
+        if (status != null) {
+            requestOptions.addQueryParam("status", status, false);
+        }
+        if (createdByTypes != null) {
+            requestOptions.addQueryParam("createdByTypes",
+                createdByTypes.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return serviceClient.listTestRuns(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(LoadTestRun.class));
     }
 }

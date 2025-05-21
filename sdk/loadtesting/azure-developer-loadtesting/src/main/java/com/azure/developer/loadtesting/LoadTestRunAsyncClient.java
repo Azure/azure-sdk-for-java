@@ -169,10 +169,12 @@ public final class LoadTestRunAsyncClient {
     /**
      * Starts a test profile run and polls the status of the test profile run.
      *
-     * @param testProfileRunId Unique name for the test profile run, must contain only lower-case alphabetic, numeric, underscore
+     * @param testProfileRunId Unique name for the test profile run, must contain only lower-case alphabetic, numeric,
+     * underscore
      * or hyphen characters.
      * @param body Test Profile Run model.
-     * @param testProfileRunRequestOptions The options to configure the file upload HTTP request before HTTP client sends it.
+     * @param testProfileRunRequestOptions The options to configure the file upload HTTP request before HTTP client
+     * sends it.
      * @throws ResourceNotFoundException when a test profile with {@code testProfileId} doesn't exist.
      * @return A {@link PollerFlux} to poll on and retrieve the test run
      * status(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED).
@@ -198,7 +200,8 @@ public final class LoadTestRunAsyncClient {
     /**
      * Starts a test profile run and polls the status of the test profile run.
      *
-     * @param testProfileRunId Unique name for the test profile run, must contain only lower-case alphabetic, numeric, underscore
+     * @param testProfileRunId Unique name for the test profile run, must contain only lower-case alphabetic, numeric,
+     * underscore
      * or hyphen characters.
      * @param body Test Profile Run model.
      * @throws ResourceNotFoundException when a test profile with {@code testProfileId} doesn't exist.
@@ -987,6 +990,8 @@ public final class LoadTestRunAsyncClient {
      * execution time filter range.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Comma separated list of test run status.</td></tr>
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
+     * <tr><td>createdByTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of type of entities
+     * that have created the test run. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2068,65 +2073,6 @@ public final class LoadTestRunAsyncClient {
     /**
      * Get all test runs for the given filters.
      *
-     * @param orderBy Sort on the supported fields in (field asc/desc) format. eg: executedDateTime
-     * asc. Supported fields - executedDateTime.
-     * @param search Prefix based, case sensitive search on searchable fields - description,
-     * executedUser. For example, to search for a test run, with description 500 VUs,
-     * the search parameter can be 500.
-     * @param testId Unique name of an existing load test.
-     * @param executionFrom Start DateTime(RFC 3339 literal format) of test-run execution time filter range.
-     * @param executionTo End DateTime(RFC 3339 literal format) of test-run execution time filter range.
-     * @param status Comma separated list of test run status.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all test runs for the given filters as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LoadTestRun> listTestRuns(String orderBy, String search, String testId,
-        OffsetDateTime executionFrom, OffsetDateTime executionTo, String status) {
-        // Generated convenience method for listTestRuns
-        RequestOptions requestOptions = new RequestOptions();
-        if (orderBy != null) {
-            requestOptions.addQueryParam("orderby", orderBy, false);
-        }
-        if (search != null) {
-            requestOptions.addQueryParam("search", search, false);
-        }
-        if (testId != null) {
-            requestOptions.addQueryParam("testId", testId, false);
-        }
-        if (executionFrom != null) {
-            requestOptions.addQueryParam("executionFrom", String.valueOf(executionFrom), false);
-        }
-        if (executionTo != null) {
-            requestOptions.addQueryParam("executionTo", String.valueOf(executionTo), false);
-        }
-        if (status != null) {
-            requestOptions.addQueryParam("status", status, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listTestRuns(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, LoadTestRun>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(LoadTestRun.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Get all test runs for the given filters.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -2530,5 +2476,72 @@ public final class LoadTestRunAsyncClient {
         JsonMergePatchHelper.getLoadTestRunAccessor().prepareModelForJsonMergePatch(body, false);
         return createOrUpdateTestRunWithResponse(testRunId, bodyInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(LoadTestRun.class));
+    }
+
+    /**
+     * Get all test runs for the given filters.
+     *
+     * @param orderBy Sort on the supported fields in (field asc/desc) format. eg: executedDateTime
+     * asc. Supported fields - executedDateTime.
+     * @param search Prefix based, case sensitive search on searchable fields - description,
+     * executedUser. For example, to search for a test run, with description 500 VUs,
+     * the search parameter can be 500.
+     * @param testId Unique name of an existing load test.
+     * @param executionFrom Start DateTime(RFC 3339 literal format) of test-run execution time filter range.
+     * @param executionTo End DateTime(RFC 3339 literal format) of test-run execution time filter range.
+     * @param status Comma separated list of test run status.
+     * @param createdByTypes Comma separated list of type of entities that have created the test run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all test runs for the given filters as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<LoadTestRun> listTestRuns(String orderBy, String search, String testId,
+        OffsetDateTime executionFrom, OffsetDateTime executionTo, String status, List<String> createdByTypes) {
+        // Generated convenience method for listTestRuns
+        RequestOptions requestOptions = new RequestOptions();
+        if (orderBy != null) {
+            requestOptions.addQueryParam("orderby", orderBy, false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (testId != null) {
+            requestOptions.addQueryParam("testId", testId, false);
+        }
+        if (executionFrom != null) {
+            requestOptions.addQueryParam("executionFrom", String.valueOf(executionFrom), false);
+        }
+        if (executionTo != null) {
+            requestOptions.addQueryParam("executionTo", String.valueOf(executionTo), false);
+        }
+        if (status != null) {
+            requestOptions.addQueryParam("status", status, false);
+        }
+        if (createdByTypes != null) {
+            requestOptions.addQueryParam("createdByTypes",
+                createdByTypes.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listTestRuns(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, LoadTestRun>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(LoadTestRun.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 }
