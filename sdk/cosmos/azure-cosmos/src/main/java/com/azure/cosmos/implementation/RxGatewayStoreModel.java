@@ -139,11 +139,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
 
-        if (clientDefaultConsistencyLevel != null) {
-            defaultHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL,
-                clientDefaultConsistencyLevel.toString());
-        }
-
         return defaultHeaders;
     }
 
