@@ -45,7 +45,7 @@ public class TimeoutTests {
                 .buildClient();
 
         assertEquals(2,
-            containerClient.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(3), Duration.ofSeconds(14))
+            containerClient.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(3), Duration.ofSeconds(6))
                 .streamByPage()
                 .count());
     }
@@ -61,7 +61,7 @@ public class TimeoutTests {
 
         assertEquals(2,
             containerClient
-                .listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(3), Duration.ofSeconds(14))
+                .listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(3), Duration.ofSeconds(6))
                 .streamByPage()
                 .count());
     }
@@ -79,7 +79,7 @@ public class TimeoutTests {
         assertEquals(2,
             containerClient.findBlobsByTags(
                 new FindBlobsOptions(String.format("\"%s\"='%s'", "dummyKey", "dummyValue")).setMaxResultsPerPage(3),
-                Duration.ofSeconds(14), Context.NONE).streamByPage().count());
+                Duration.ofSeconds(6), Context.NONE).streamByPage().count());
     }
 
     @Test
@@ -92,7 +92,7 @@ public class TimeoutTests {
 
         assertEquals(2,
             serviceClient
-                .listBlobContainers(new ListBlobContainersOptions().setMaxResultsPerPage(3), Duration.ofSeconds(14))
+                .listBlobContainers(new ListBlobContainersOptions().setMaxResultsPerPage(3), Duration.ofSeconds(6))
                 .streamByPage()
                 .count());
 
@@ -110,7 +110,7 @@ public class TimeoutTests {
         assertEquals(2,
             serviceClient.findBlobsByTags(
                 new FindBlobsOptions(String.format("\"%s\"='%s'", "dummyKey", "dummyValue")).setMaxResultsPerPage(3),
-                Duration.ofSeconds(14), Context.NONE).streamByPage().count());
+                Duration.ofSeconds(6), Context.NONE).streamByPage().count());
     }
 
     /*
