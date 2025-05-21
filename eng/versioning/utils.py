@@ -200,21 +200,17 @@ def load_version_map_from_file(the_file, version_map: Dict[str, CodeModule], aut
                     raise ValueError('Version file: {0} does not contain a non-beta or non-unreleased entry for beta_/unreleased_ library: {1}'.format(the_file, module.name))
                 
                 # Unreleased dependencies have a few additional checks.
-                # 1. Check if the non-unreleased version tag has the same dependency and current versions.
-                #    If it does, raise an error as an unreleased dependency shouldn't exist if the library has never been released.
-                # 2. If 'auto_increment_version' is true, check if the version matches the dependency version of the library.
+                # 1. If 'auto_increment_version' is true, check if the version matches the dependency version of the library.
                 #    If the unreleased dependency version is the same as the dependency version, flag the unreleased dependency for replacement.
                 #    This flag will indicate to the update script that the 'unreleased_*' tag should be replaced with just '*', ex 'unreleased_core' -> 'core'.
-                # 3. Check to see that the version matches the current version of the library.
+                # 2. Check to see that the version matches the current version of the library.
                 #    If it isn't raise an error as unreleased dependencies should match the current version of the library.
                 if is_unreleased:
                     non_unreleased_module = version_map[tempName]
-                    if non_unreleased_module.dependency == non_unreleased_module.current:
-                        raise ValueError('Version file: {0} contains an unreleased dependency: {1} with a dependency version of {2} but the library has never been released so this shouldn\'t exist.'.format(the_file, module.name, module.dependency))
-                    if auto_increment_version and module.dependency == version_map[tempName].dependency:
+                    if auto_increment_version and module.dependency == non_unreleased_module.dependency:
                         module.replace_unreleased_dependency = True
                         file_changed = True
-                    elif module.dependency != version_map[tempName].current:
+                    elif module.dependency != non_unreleased_module.current:
                         raise ValueError('Version file: {0} contains an unreleased dependency: {1} with a dependency version of {2} which does not match the current version of the library it represents: {3}'.format(the_file, module.name, module.dependency, version_map[tempName].current))
             
             if not module.replace_unreleased_dependency:
