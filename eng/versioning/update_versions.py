@@ -36,7 +36,6 @@ import os
 import re
 import sys
 import time
-import traceback
 from typing import Dict
 from utils import BuildType
 from utils import CodeModule
@@ -58,7 +57,7 @@ def update_versions(update_type, version_map: Dict[str, CodeModule], ext_dep_map
 
     newlines = []
     repl_open, repl_thisline, file_changed, is_include = False, False, False, False
-    print('processing: ' + target_file)
+    print('processing: ' + os.path.normpath(target_file))
     try:
         with open(target_file, encoding='utf-8') as f:
             for line in f:
@@ -107,9 +106,9 @@ def update_versions(update_type, version_map: Dict[str, CodeModule], ext_dep_map
                         try:
                             module = version_map[module_name]
                             if module.is_unreleased and module.replace_unreleased_dependency:
-                                to_replace_module = version_map[module.name.len('unreleased_'):]
+                                to_replace_module = version_map[module.name[len('unreleased_'):]]
                                 newline = re.sub(version_regex_str_no_anchor, to_replace_module.dependency, line)
-                                newline = newline.replace(module.name, to_replace_module.name, newline)
+                                newline = newline.replace(module.name, to_replace_module.name)
                             else:
                                 newline = re.sub(version_regex_str_no_anchor, module.dependency, line)
                         except (KeyError, AttributeError):
@@ -175,7 +174,7 @@ def update_changelog(pom_file, is_increment, library_array):
         xml_groupId = xml_root.find('{http://maven.apache.org/POM/4.0.0}groupId')
         library = xml_groupId.text + ":" + xml_artifactId.text
         if len(library_array) == 0 or library in library_array:
-            script = os.path.join(".", "eng", "common", "scripts", "Update-ChangeLog.ps1")
+            script = os.path.join(os.path.dirname(__file__), '..', "common", "scripts", "Update-ChangeLog.ps1")
             commands = [
                 "pwsh",
                 script,
@@ -219,16 +218,16 @@ def update_versions_all(update_type, build_type, target_file, skip_readme, auto_
     # into the verion_map. If UpdateType.all is selected then versions for both
     # the libraries and external dependencies are being updated.
     if update_type == UpdateType.library or update_type == UpdateType.all:
-        version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
+        version_file = os.path.join(os.path.dirname(__file__), 'version_' + build_type.name + '.txt')
         load_version_map_from_file(version_file, version_map, auto_version_increment)
 
     if update_type == UpdateType.external_dependency or update_type == UpdateType.all:
-        dependency_file = os.path.normpath('eng/versioning/external_dependencies.txt')
+        dependency_file = os.path.join(os.path.dirname(__file__), 'external_dependencies.txt')
         load_version_map_from_file(dependency_file, ext_dep_map)
 
     if version_overrides and not version_overrides.startswith('$'):
         # Azure DevOps passes '$(VersionOverrides)' when the variable value is not set
-        load_version_overrides("eng/versioning/supported_external_dependency_versions.json", ext_dep_map, version_overrides)
+        load_version_overrides(os.path.join(os.path.dirname(__file__), 'supported_external_dependency_versions.json'), ext_dep_map, version_overrides)
 
     # The dependency files are always loaded but reporting their information is based on the update type.
     if update_type == UpdateType.library or update_type == UpdateType.all:
@@ -242,7 +241,7 @@ def update_versions_all(update_type, build_type, target_file, skip_readme, auto_
     if target_file:
         update_versions(update_type, version_map, ext_dep_map, target_file, skip_readme, auto_version_increment, library_array)
     else:
-        for root, _, files in os.walk("."):
+        for root, _, files in os.walk(os.path.join(os.path.dirname(__file__), '..', '..')):
             for file_name in files:
                 file_path = root + os.sep + file_name
                 if (file_name.endswith('.md') and not skip_readme) or (file_name.startswith('pom') and file_name.endswith('.xml')):
@@ -259,7 +258,7 @@ def update_versions_all(update_type, build_type, target_file, skip_readme, auto_
     if not target_file and BuildType.none != build_type:
         # the good thing here is that the java files only contain library versions, not
         # external versions
-        version_java_file = os.path.normpath('eng/versioning/version_' + build_type.name + '_java_files.txt')
+        version_java_file = os.path.join(os.path.dirname(__file__), 'version_' + build_type.name + '_java_files.txt')
 
         if os.path.exists(version_java_file):
             with open(version_java_file) as f:
@@ -296,7 +295,7 @@ def main():
         library_array = args.library_list.split(',')
     print('library_array length: {0}'.format(len(library_array)))
     print(library_array)
-    update_versions_all(args.update_type, args.build_type, args.target_file, args.skip_readme, args.auto_version_increment, library_array, args.version_override, args.include_perf_tests)
+    update_versions_all(UpdateType.library, BuildType.client, args.target_file, True, True, library_array, args.version_override, args.include_perf_tests)
     elapsed_time = time.time() - start_time
     print('elapsed_time={}'.format(elapsed_time))
     print('Total time for replacement: {}'.format(str(timedelta(seconds=elapsed_time))))
