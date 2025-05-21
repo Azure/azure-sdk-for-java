@@ -7,10 +7,12 @@ import java.io.IOException;
 
 import com.azure.communication.callautomation.implementation.accesshelpers.AudioDataContructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.AudioMetadataContructorProxy;
+import com.azure.communication.callautomation.implementation.accesshelpers.DtmfDataContructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionDataContructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionMetadataContructorProxy;
 import com.azure.communication.callautomation.implementation.converters.AudioDataConverter;
 import com.azure.communication.callautomation.implementation.converters.AudioMetadataConverter;
+import com.azure.communication.callautomation.implementation.converters.DtmfDataConverter;
 import com.azure.communication.callautomation.implementation.converters.TranscriptionDataConverter;
 import com.azure.communication.callautomation.implementation.converters.TranscriptionMetadataConverter;
 import com.azure.json.JsonProviders;
@@ -95,6 +97,11 @@ public abstract class StreamingData {
                                 = AudioMetadataContructorProxy.create(AudioMetadataConverter.fromJson(jsonReader));
                             audioMetadata.setStreamingDataKind(StreamingDataKind.AUDIO_METADATA);
                             return audioMetadata;
+
+                        case "dtmfData":
+                            DtmfData dtmfData = DtmfDataContructorProxy.create(DtmfDataConverter.fromJson(jsonReader));
+                            dtmfData.setStreamingDataKind(StreamingDataKind.DTMF_DATA);
+                            return dtmfData;
 
                         case "transcriptionData":
                             TranscriptionData transcriptionData = TranscriptionDataContructorProxy
