@@ -133,7 +133,8 @@ public final class KeyVaultRoleScope implements ExpandableEnum<String>, JsonSeri
     }
 
     /**
-     * Creates or finds a {@link KeyVaultRoleScope} from its string representation.
+     * /**
+     * Creates of finds a {@link KeyVaultRoleScope} from its string representation.
      *
      * @param url A string representing a URL containing the name of the scope to look for.
      * @return The corresponding {@link KeyVaultRoleScope}.
