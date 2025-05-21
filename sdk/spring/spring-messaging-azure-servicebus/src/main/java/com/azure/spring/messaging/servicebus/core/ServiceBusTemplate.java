@@ -157,7 +157,7 @@ public class ServiceBusTemplate implements SendOperation {
             LOGGER.debug("Provided reply-to session id ‘{}’ for entity '{}', it should be unique.", replyToSessionId, destination);
         }
 
-        ServiceBusSenderAsyncClient senderAsyncClient = this.producerFactory.createProducer(destination, defaultEntityType);
+        ServiceBusSenderAsyncClient senderAsyncClient = this.producerFactory.createProducer(destination, currentEntityType);
         senderAsyncClient.sendMessage(serviceBusMessage).block(sendTimeout);
 
         ServiceBusSessionReceiverClient sessionReceiver = consumerFactory.createReceiver(replyDestination, currentEntityType);

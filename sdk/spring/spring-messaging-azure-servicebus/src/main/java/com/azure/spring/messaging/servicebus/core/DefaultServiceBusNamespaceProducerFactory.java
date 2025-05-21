@@ -78,7 +78,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     public ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType entityType) {
         ProducerProperties producerProperties = this.propertiesSupplier.getProperties(name) != null
             ? this.propertiesSupplier.getProperties(name) : new ProducerProperties();
-        if (entityType != null) {
+        if (producerProperties.getEntityType() == null && entityType != null) {
             producerProperties.setEntityType(entityType);
         }
         return doCreateProducer(name, producerProperties);

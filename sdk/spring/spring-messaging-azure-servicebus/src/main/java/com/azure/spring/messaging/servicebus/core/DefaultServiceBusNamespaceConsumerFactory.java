@@ -80,7 +80,7 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
     public ServiceBusSessionReceiverClient createReceiver(String name, ServiceBusEntityType entityType) {
         ConsumerProperties consumerProperties = this.propertiesSupplier.getProperties(new ConsumerIdentifier(name)) != null
             ? this.propertiesSupplier.getProperties(new ConsumerIdentifier(name)) : new ConsumerProperties();
-        if (entityType != null) {
+        if (consumerProperties.getEntityType() == null && entityType != null) {
             consumerProperties.setEntityType(entityType);
         }
         return doCreateReceiver(name, consumerProperties);
