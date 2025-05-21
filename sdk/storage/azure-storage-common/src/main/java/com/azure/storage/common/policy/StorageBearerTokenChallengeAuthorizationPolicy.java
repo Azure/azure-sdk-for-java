@@ -72,25 +72,22 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         String scopeFromChallenge = getScopeFromChallenges(challenges);
         String authorization = getAuthorizationFromChallenges(challenges);
 
-        String[] scopesForThisAttempt = CoreUtils.clone(this.scopes); // 'this.scopes' are the original ones from constructor
+        String[] scopesForThisAttempt = CoreUtils.clone(this.scopes);
 
         if (scopeFromChallenge != null) {
             scopeFromChallenge += DEFAULT_SCOPE;
-            // Use the scope from challenge for this specific attempt, do not assign to this.scopes
             scopesForThisAttempt = new String[] { scopeFromChallenge };
         }
 
         if (authorization != null) {
             String tenantId = extractTenantIdFromUri(authorization);
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopesForThisAttempt).setTenantId(tenantId);
+            TokenRequestContext tokenRequestContext
+                = new TokenRequestContext().addScopes(scopesForThisAttempt).setTenantId(tenantId);
             return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
         }
 
-        // This block is hit if authorization_uri was NOT in challenge,
-        // but resource_id (scopeFromChallenge) MIGHT have been.
-        // We only proceed if scopeFromChallenge was non-null, meaning we have a new scope to try.
-        if (scopeFromChallenge != null) { // Implies 'authorization' was null, but 'scopeFromChallenge' was found
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopesForThisAttempt); // Will use the new scope from challenge
+        if (scopeFromChallenge != null) {
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopesForThisAttempt);
             return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
         }
 
@@ -118,21 +115,22 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         String scopeFromChallenge = getScopeFromChallenges(challenges);
         String authorization = getAuthorizationFromChallenges(challenges);
 
-        String[] scopesForThisAttempt = CoreUtils.clone(this.scopes); // Original scopes
+        String[] scopesForThisAttempt = CoreUtils.clone(this.scopes);
 
         if (scopeFromChallenge != null) {
             scopeFromChallenge += DEFAULT_SCOPE;
-            scopesForThisAttempt = new String[] { scopeFromChallenge }; // Use challenge scope for this attempt
+            scopesForThisAttempt = new String[] { scopeFromChallenge };
         }
 
         if (authorization != null) {
             String tenantId = extractTenantIdFromUri(authorization);
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopesForThisAttempt).setTenantId(tenantId);
+            TokenRequestContext tokenRequestContext
+                = new TokenRequestContext().addScopes(scopesForThisAttempt).setTenantId(tenantId);
             setAuthorizationHeaderSync(context, tokenRequestContext);
             return true;
         }
 
-        if (scopeFromChallenge != null) { // Implies 'authorization' was null
+        if (scopeFromChallenge != null) {
             TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopesForThisAttempt);
             setAuthorizationHeaderSync(context, tokenRequestContext);
             return true;
