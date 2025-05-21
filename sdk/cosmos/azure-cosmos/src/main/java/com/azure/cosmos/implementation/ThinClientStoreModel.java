@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -22,7 +23,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -142,14 +142,16 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         if (partitionKey != null) {
             byte[] epk = partitionKey.getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
             rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey, epk);
+        } else if (request.requestContext.resolvedPartitionKeyRange == null) {
+            throw new IllegalStateException(
+                "Resolved partition key range should not be null at this point. ResourceType: "
+                + request.getResourceType() + ", OperationType: "
+                + request.getOperationType());
+        } else {
+            PartitionKeyRange pkRange = request.requestContext.resolvedPartitionKeyRange;
+            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.StartEpkHash, HexConvert.hexToBytes(pkRange.getMinInclusive()));
+            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EndEpkHash, HexConvert.hexToBytes(pkRange.getMaxExclusive()));
         }
-
-        PartitionKeyRange pkRange = request.requestContext.resolvedPartitionKeyRange;
-        request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_START_EPK, pkRange.getMinInclusive());
-        request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_END_EPK, pkRange.getMaxExclusive());
-
-        /*rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.StartEpk, pkRange.getMinInclusive().getBytes(StandardCharsets.UTF_8));
-        rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EndEpk, pkRange.getMaxExclusive().getBytes(StandardCharsets.UTF_8));*/
 
         // todo: eventually need to use pooled buffer
         ByteBuf byteBuf = Unpooled.buffer();
