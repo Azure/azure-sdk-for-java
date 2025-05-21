@@ -7,19 +7,19 @@ package com.azure.resourcemanager.onlineexperimentation.implementation;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentWorkspaceInner;
+import com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentationWorkspaceInner;
 import com.azure.resourcemanager.onlineexperimentation.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspace;
-import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspacePatch;
-import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspacePatchProperties;
-import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspaceProperties;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspace;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspacePatch;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspacePatchProperties;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspaceProperties;
 import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspaceSku;
 import java.util.Collections;
 import java.util.Map;
 
-public final class OnlineExperimentWorkspaceImpl
-    implements OnlineExperimentWorkspace, OnlineExperimentWorkspace.Definition, OnlineExperimentWorkspace.Update {
-    private OnlineExperimentWorkspaceInner innerObject;
+public final class OnlineExperimentationWorkspaceImpl implements OnlineExperimentationWorkspace,
+    OnlineExperimentationWorkspace.Definition, OnlineExperimentationWorkspace.Update {
+    private OnlineExperimentationWorkspaceInner innerObject;
 
     private final com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager serviceManager;
 
@@ -48,7 +48,7 @@ public final class OnlineExperimentWorkspaceImpl
         }
     }
 
-    public OnlineExperimentWorkspaceProperties properties() {
+    public OnlineExperimentationWorkspaceProperties properties() {
         return this.innerModel().properties();
     }
 
@@ -76,7 +76,7 @@ public final class OnlineExperimentWorkspaceImpl
         return resourceGroupName;
     }
 
-    public OnlineExperimentWorkspaceInner innerModel() {
+    public OnlineExperimentationWorkspaceInner innerModel() {
         return this.innerObject;
     }
 
@@ -88,54 +88,54 @@ public final class OnlineExperimentWorkspaceImpl
 
     private String workspaceName;
 
-    private OnlineExperimentWorkspacePatch updateProperties;
+    private OnlineExperimentationWorkspacePatch updateProperties;
 
-    public OnlineExperimentWorkspaceImpl withExistingResourceGroup(String resourceGroupName) {
+    public OnlineExperimentationWorkspaceImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }
 
-    public OnlineExperimentWorkspace create() {
+    public OnlineExperimentationWorkspace create() {
         this.innerObject = serviceManager.serviceClient()
-            .getOnlineExperimentWorkspaces()
+            .getOnlineExperimentationWorkspaces()
             .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
         return this;
     }
 
-    public OnlineExperimentWorkspace create(Context context) {
+    public OnlineExperimentationWorkspace create(Context context) {
         this.innerObject = serviceManager.serviceClient()
-            .getOnlineExperimentWorkspaces()
+            .getOnlineExperimentationWorkspaces()
             .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), context);
         return this;
     }
 
-    OnlineExperimentWorkspaceImpl(String name,
+    OnlineExperimentationWorkspaceImpl(String name,
         com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager serviceManager) {
-        this.innerObject = new OnlineExperimentWorkspaceInner();
+        this.innerObject = new OnlineExperimentationWorkspaceInner();
         this.serviceManager = serviceManager;
         this.workspaceName = name;
     }
 
-    public OnlineExperimentWorkspaceImpl update() {
-        this.updateProperties = new OnlineExperimentWorkspacePatch();
+    public OnlineExperimentationWorkspaceImpl update() {
+        this.updateProperties = new OnlineExperimentationWorkspacePatch();
         return this;
     }
 
-    public OnlineExperimentWorkspace apply() {
+    public OnlineExperimentationWorkspace apply() {
         this.innerObject = serviceManager.serviceClient()
-            .getOnlineExperimentWorkspaces()
+            .getOnlineExperimentationWorkspaces()
             .update(resourceGroupName, workspaceName, updateProperties, Context.NONE);
         return this;
     }
 
-    public OnlineExperimentWorkspace apply(Context context) {
+    public OnlineExperimentationWorkspace apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
-            .getOnlineExperimentWorkspaces()
+            .getOnlineExperimentationWorkspaces()
             .update(resourceGroupName, workspaceName, updateProperties, context);
         return this;
     }
 
-    OnlineExperimentWorkspaceImpl(OnlineExperimentWorkspaceInner innerObject,
+    OnlineExperimentationWorkspaceImpl(OnlineExperimentationWorkspaceInner innerObject,
         com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -143,33 +143,33 @@ public final class OnlineExperimentWorkspaceImpl
         this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
     }
 
-    public OnlineExperimentWorkspace refresh() {
+    public OnlineExperimentationWorkspace refresh() {
         this.innerObject = serviceManager.serviceClient()
-            .getOnlineExperimentWorkspaces()
+            .getOnlineExperimentationWorkspaces()
             .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
             .getValue();
         return this;
     }
 
-    public OnlineExperimentWorkspace refresh(Context context) {
+    public OnlineExperimentationWorkspace refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
-            .getOnlineExperimentWorkspaces()
+            .getOnlineExperimentationWorkspaces()
             .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context)
             .getValue();
         return this;
     }
 
-    public OnlineExperimentWorkspaceImpl withRegion(Region location) {
+    public OnlineExperimentationWorkspaceImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
     }
 
-    public OnlineExperimentWorkspaceImpl withRegion(String location) {
+    public OnlineExperimentationWorkspaceImpl withRegion(String location) {
         this.innerModel().withLocation(location);
         return this;
     }
 
-    public OnlineExperimentWorkspaceImpl withTags(Map<String, String> tags) {
+    public OnlineExperimentationWorkspaceImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
             return this;
@@ -179,12 +179,12 @@ public final class OnlineExperimentWorkspaceImpl
         }
     }
 
-    public OnlineExperimentWorkspaceImpl withProperties(OnlineExperimentWorkspaceProperties properties) {
+    public OnlineExperimentationWorkspaceImpl withProperties(OnlineExperimentationWorkspaceProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
     }
 
-    public OnlineExperimentWorkspaceImpl withIdentity(ManagedServiceIdentity identity) {
+    public OnlineExperimentationWorkspaceImpl withIdentity(ManagedServiceIdentity identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
             return this;
@@ -194,7 +194,7 @@ public final class OnlineExperimentWorkspaceImpl
         }
     }
 
-    public OnlineExperimentWorkspaceImpl withSku(OnlineExperimentationWorkspaceSku sku) {
+    public OnlineExperimentationWorkspaceImpl withSku(OnlineExperimentationWorkspaceSku sku) {
         if (isInCreateMode()) {
             this.innerModel().withSku(sku);
             return this;
@@ -204,7 +204,7 @@ public final class OnlineExperimentWorkspaceImpl
         }
     }
 
-    public OnlineExperimentWorkspaceImpl withProperties(OnlineExperimentWorkspacePatchProperties properties) {
+    public OnlineExperimentationWorkspaceImpl withProperties(OnlineExperimentationWorkspacePatchProperties properties) {
         this.updateProperties.withProperties(properties);
         return this;
     }

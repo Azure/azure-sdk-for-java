@@ -12,37 +12,37 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The OnlineExperimentWorkspacePatchProperties model.
+ * The OnlineExperimentationWorkspacePatchProperties model.
  */
 @Fluent
-public final class OnlineExperimentWorkspacePatchProperties
-    implements JsonSerializable<OnlineExperimentWorkspacePatchProperties> {
+public final class OnlineExperimentationWorkspacePatchProperties
+    implements JsonSerializable<OnlineExperimentationWorkspacePatchProperties> {
     /*
-     * The resource identifier of the Log Analytics workspace which online experiment workspace uses for generating
+     * The resource identifier of the Log Analytics workspace which online experimentation workspace uses for generating
      * experiment analysis results.
      */
     private String logAnalyticsWorkspaceResourceId;
 
     /*
-     * The resource identifier of storage account where logs are exported from Log Analytics workspace. Online
-     * Experiment workspace uses it generating experiment analysis results.
+     * The resource identifier of storage account where logs are exported from Log Analytics workspace. online
+     * experimentation workspace uses it generating experiment analysis results.
      */
     private String logsExporterStorageAccountResourceId;
 
     /*
-     * The encryption configuration for the online experiment workspace resource.
+     * The encryption configuration for the online experimentation workspace resource.
      */
     private ResourceEncryptionConfiguration encryption;
 
     /**
-     * Creates an instance of OnlineExperimentWorkspacePatchProperties class.
+     * Creates an instance of OnlineExperimentationWorkspacePatchProperties class.
      */
-    public OnlineExperimentWorkspacePatchProperties() {
+    public OnlineExperimentationWorkspacePatchProperties() {
     }
 
     /**
      * Get the logAnalyticsWorkspaceResourceId property: The resource identifier of the Log Analytics workspace which
-     * online experiment workspace uses for generating experiment analysis results.
+     * online experimentation workspace uses for generating experiment analysis results.
      * 
      * @return the logAnalyticsWorkspaceResourceId value.
      */
@@ -52,12 +52,12 @@ public final class OnlineExperimentWorkspacePatchProperties
 
     /**
      * Set the logAnalyticsWorkspaceResourceId property: The resource identifier of the Log Analytics workspace which
-     * online experiment workspace uses for generating experiment analysis results.
+     * online experimentation workspace uses for generating experiment analysis results.
      * 
      * @param logAnalyticsWorkspaceResourceId the logAnalyticsWorkspaceResourceId value to set.
-     * @return the OnlineExperimentWorkspacePatchProperties object itself.
+     * @return the OnlineExperimentationWorkspacePatchProperties object itself.
      */
-    public OnlineExperimentWorkspacePatchProperties
+    public OnlineExperimentationWorkspacePatchProperties
         withLogAnalyticsWorkspaceResourceId(String logAnalyticsWorkspaceResourceId) {
         this.logAnalyticsWorkspaceResourceId = logAnalyticsWorkspaceResourceId;
         return this;
@@ -65,7 +65,7 @@ public final class OnlineExperimentWorkspacePatchProperties
 
     /**
      * Get the logsExporterStorageAccountResourceId property: The resource identifier of storage account where logs are
-     * exported from Log Analytics workspace. Online Experiment workspace uses it generating experiment analysis
+     * exported from Log Analytics workspace. online experimentation workspace uses it generating experiment analysis
      * results.
      * 
      * @return the logsExporterStorageAccountResourceId value.
@@ -76,20 +76,20 @@ public final class OnlineExperimentWorkspacePatchProperties
 
     /**
      * Set the logsExporterStorageAccountResourceId property: The resource identifier of storage account where logs are
-     * exported from Log Analytics workspace. Online Experiment workspace uses it generating experiment analysis
+     * exported from Log Analytics workspace. online experimentation workspace uses it generating experiment analysis
      * results.
      * 
      * @param logsExporterStorageAccountResourceId the logsExporterStorageAccountResourceId value to set.
-     * @return the OnlineExperimentWorkspacePatchProperties object itself.
+     * @return the OnlineExperimentationWorkspacePatchProperties object itself.
      */
-    public OnlineExperimentWorkspacePatchProperties
+    public OnlineExperimentationWorkspacePatchProperties
         withLogsExporterStorageAccountResourceId(String logsExporterStorageAccountResourceId) {
         this.logsExporterStorageAccountResourceId = logsExporterStorageAccountResourceId;
         return this;
     }
 
     /**
-     * Get the encryption property: The encryption configuration for the online experiment workspace resource.
+     * Get the encryption property: The encryption configuration for the online experimentation workspace resource.
      * 
      * @return the encryption value.
      */
@@ -98,12 +98,12 @@ public final class OnlineExperimentWorkspacePatchProperties
     }
 
     /**
-     * Set the encryption property: The encryption configuration for the online experiment workspace resource.
+     * Set the encryption property: The encryption configuration for the online experimentation workspace resource.
      * 
      * @param encryption the encryption value to set.
-     * @return the OnlineExperimentWorkspacePatchProperties object itself.
+     * @return the OnlineExperimentationWorkspacePatchProperties object itself.
      */
-    public OnlineExperimentWorkspacePatchProperties withEncryption(ResourceEncryptionConfiguration encryption) {
+    public OnlineExperimentationWorkspacePatchProperties withEncryption(ResourceEncryptionConfiguration encryption) {
         this.encryption = encryption;
         return this;
     }
@@ -132,36 +132,36 @@ public final class OnlineExperimentWorkspacePatchProperties
     }
 
     /**
-     * Reads an instance of OnlineExperimentWorkspacePatchProperties from the JsonReader.
+     * Reads an instance of OnlineExperimentationWorkspacePatchProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OnlineExperimentWorkspacePatchProperties if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the OnlineExperimentWorkspacePatchProperties.
+     * @return An instance of OnlineExperimentationWorkspacePatchProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OnlineExperimentationWorkspacePatchProperties.
      */
-    public static OnlineExperimentWorkspacePatchProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static OnlineExperimentationWorkspacePatchProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OnlineExperimentWorkspacePatchProperties deserializedOnlineExperimentWorkspacePatchProperties
-                = new OnlineExperimentWorkspacePatchProperties();
+            OnlineExperimentationWorkspacePatchProperties deserializedOnlineExperimentationWorkspacePatchProperties
+                = new OnlineExperimentationWorkspacePatchProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("logAnalyticsWorkspaceResourceId".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspacePatchProperties.logAnalyticsWorkspaceResourceId
+                    deserializedOnlineExperimentationWorkspacePatchProperties.logAnalyticsWorkspaceResourceId
                         = reader.getString();
                 } else if ("logsExporterStorageAccountResourceId".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspacePatchProperties.logsExporterStorageAccountResourceId
+                    deserializedOnlineExperimentationWorkspacePatchProperties.logsExporterStorageAccountResourceId
                         = reader.getString();
                 } else if ("encryption".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspacePatchProperties.encryption
+                    deserializedOnlineExperimentationWorkspacePatchProperties.encryption
                         = ResourceEncryptionConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedOnlineExperimentWorkspacePatchProperties;
+            return deserializedOnlineExperimentationWorkspacePatchProperties;
         });
     }
 }

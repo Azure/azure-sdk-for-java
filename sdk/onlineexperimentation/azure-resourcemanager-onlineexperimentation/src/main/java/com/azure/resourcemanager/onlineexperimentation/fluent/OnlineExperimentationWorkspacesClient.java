@@ -11,170 +11,173 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentWorkspaceInner;
-import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspacePatch;
+import com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentationWorkspaceInner;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspacePatch;
 
 /**
- * An instance of this class provides access to all the operations defined in OnlineExperimentWorkspacesClient.
+ * An instance of this class provides access to all the operations defined in OnlineExperimentationWorkspacesClient.
  */
-public interface OnlineExperimentWorkspacesClient {
+public interface OnlineExperimentationWorkspacesClient {
     /**
-     * Gets an experiment workspace.
+     * Gets an online experimentation workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an experiment workspace along with {@link Response}.
+     * @return an online experimentation workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OnlineExperimentWorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName,
+    Response<OnlineExperimentationWorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String workspaceName, Context context);
 
     /**
-     * Gets an experiment workspace.
+     * Gets an online experimentation workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an experiment workspace.
+     * @return an online experimentation workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineExperimentWorkspaceInner getByResourceGroup(String resourceGroupName, String workspaceName);
+    OnlineExperimentationWorkspaceInner getByResourceGroup(String resourceGroupName, String workspaceName);
 
     /**
-     * Create an experiment workspace, or update an existing workspace.
+     * Create an online experimentation workspace, or update an existing workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an online experiment workspace resource.
+     * @return the {@link SyncPoller} for polling of an online experimentation workspace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OnlineExperimentWorkspaceInner>, OnlineExperimentWorkspaceInner>
-        beginCreateOrUpdate(String resourceGroupName, String workspaceName, OnlineExperimentWorkspaceInner resource);
+    SyncPoller<PollResult<OnlineExperimentationWorkspaceInner>, OnlineExperimentationWorkspaceInner>
+        beginCreateOrUpdate(String resourceGroupName, String workspaceName,
+            OnlineExperimentationWorkspaceInner resource);
 
     /**
-     * Create an experiment workspace, or update an existing workspace.
+     * Create an online experimentation workspace, or update an existing workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an online experiment workspace resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OnlineExperimentWorkspaceInner>, OnlineExperimentWorkspaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, OnlineExperimentWorkspaceInner resource, Context context);
-
-    /**
-     * Create an experiment workspace, or update an existing workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an online experiment workspace resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineExperimentWorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName,
-        OnlineExperimentWorkspaceInner resource);
-
-    /**
-     * Create an experiment workspace, or update an existing workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an online experiment workspace resource.
+     * @return the {@link SyncPoller} for polling of an online experimentation workspace resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineExperimentWorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName,
-        OnlineExperimentWorkspaceInner resource, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OnlineExperimentationWorkspaceInner>, OnlineExperimentationWorkspaceInner>
+        beginCreateOrUpdate(String resourceGroupName, String workspaceName,
+            OnlineExperimentationWorkspaceInner resource, Context context);
 
     /**
-     * Patch an experiment workspace.
+     * Create an online experimentation workspace, or update an existing workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an online experimentation workspace resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OnlineExperimentationWorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName,
+        OnlineExperimentationWorkspaceInner resource);
+
+    /**
+     * Create an online experimentation workspace, or update an existing workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an online experimentation workspace resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OnlineExperimentationWorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName,
+        OnlineExperimentationWorkspaceInner resource, Context context);
+
+    /**
+     * Patch an online experimentation workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an online experiment workspace resource.
+     * @return the {@link SyncPoller} for polling of an online experimentation workspace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OnlineExperimentWorkspaceInner>, OnlineExperimentWorkspaceInner>
-        beginUpdate(String resourceGroupName, String workspaceName, OnlineExperimentWorkspacePatch properties);
+    SyncPoller<PollResult<OnlineExperimentationWorkspaceInner>, OnlineExperimentationWorkspaceInner>
+        beginUpdate(String resourceGroupName, String workspaceName, OnlineExperimentationWorkspacePatch properties);
 
     /**
-     * Patch an experiment workspace.
+     * Patch an online experimentation workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an online experiment workspace resource.
+     * @return the {@link SyncPoller} for polling of an online experimentation workspace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OnlineExperimentWorkspaceInner>, OnlineExperimentWorkspaceInner> beginUpdate(
-        String resourceGroupName, String workspaceName, OnlineExperimentWorkspacePatch properties, Context context);
+    SyncPoller<PollResult<OnlineExperimentationWorkspaceInner>, OnlineExperimentationWorkspaceInner> beginUpdate(
+        String resourceGroupName, String workspaceName, OnlineExperimentationWorkspacePatch properties,
+        Context context);
 
     /**
-     * Patch an experiment workspace.
+     * Patch an online experimentation workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an online experiment workspace resource.
+     * @return an online experimentation workspace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineExperimentWorkspaceInner update(String resourceGroupName, String workspaceName,
-        OnlineExperimentWorkspacePatch properties);
+    OnlineExperimentationWorkspaceInner update(String resourceGroupName, String workspaceName,
+        OnlineExperimentationWorkspacePatch properties);
 
     /**
-     * Patch an experiment workspace.
+     * Patch an online experimentation workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an online experiment workspace resource.
+     * @return an online experimentation workspace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineExperimentWorkspaceInner update(String resourceGroupName, String workspaceName,
-        OnlineExperimentWorkspacePatch properties, Context context);
+    OnlineExperimentationWorkspaceInner update(String resourceGroupName, String workspaceName,
+        OnlineExperimentationWorkspacePatch properties, Context context);
 
     /**
-     * Deletes an experiment workspace.
+     * Deletes an online experimentation workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -184,10 +187,10 @@ public interface OnlineExperimentWorkspacesClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName);
 
     /**
-     * Deletes an experiment workspace.
+     * Deletes an online experimentation workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -198,10 +201,10 @@ public interface OnlineExperimentWorkspacesClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, Context context);
 
     /**
-     * Deletes an experiment workspace.
+     * Deletes an online experimentation workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -210,10 +213,10 @@ public interface OnlineExperimentWorkspacesClient {
     void delete(String resourceGroupName, String workspaceName);
 
     /**
-     * Deletes an experiment workspace.
+     * Deletes an online experimentation workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -223,49 +226,53 @@ public interface OnlineExperimentWorkspacesClient {
     void delete(String resourceGroupName, String workspaceName, Context context);
 
     /**
-     * Gets all experiment workspaces in a resource group.
+     * Gets all online experimentation workspaces in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all experiment workspaces in a resource group as paginated response with {@link PagedIterable}.
+     * @return all online experimentation workspaces in a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OnlineExperimentWorkspaceInner> listByResourceGroup(String resourceGroupName);
+    PagedIterable<OnlineExperimentationWorkspaceInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Gets all experiment workspaces in a resource group.
+     * Gets all online experimentation workspaces in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all experiment workspaces in a resource group as paginated response with {@link PagedIterable}.
+     * @return all online experimentation workspaces in a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OnlineExperimentWorkspaceInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<OnlineExperimentationWorkspaceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Gets all experiment workspaces in the specified subscription.
+     * Gets all online experimentation workspaces in the specified subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all experiment workspaces in the specified subscription as paginated response with {@link PagedIterable}.
+     * @return all online experimentation workspaces in the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OnlineExperimentWorkspaceInner> list();
+    PagedIterable<OnlineExperimentationWorkspaceInner> list();
 
     /**
-     * Gets all experiment workspaces in the specified subscription.
+     * Gets all online experimentation workspaces in the specified subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all experiment workspaces in the specified subscription as paginated response with {@link PagedIterable}.
+     * @return all online experimentation workspaces in the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OnlineExperimentWorkspaceInner> list(Context context);
+    PagedIterable<OnlineExperimentationWorkspaceInner> list(Context context);
 }

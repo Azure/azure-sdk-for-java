@@ -7,13 +7,13 @@ package com.azure.resourcemanager.onlineexperimentation.models;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentWorkspaceInner;
+import com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentationWorkspaceInner;
 import java.util.Map;
 
 /**
- * An immutable client-side representation of OnlineExperimentWorkspace.
+ * An immutable client-side representation of OnlineExperimentationWorkspace.
  */
-public interface OnlineExperimentWorkspace {
+public interface OnlineExperimentationWorkspace {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
      * 
@@ -54,7 +54,7 @@ public interface OnlineExperimentWorkspace {
      * 
      * @return the properties value.
      */
-    OnlineExperimentWorkspaceProperties properties();
+    OnlineExperimentationWorkspaceProperties properties();
 
     /**
      * Gets the identity property: The managed service identities assigned to this resource.
@@ -99,32 +99,32 @@ public interface OnlineExperimentWorkspace {
     String resourceGroupName();
 
     /**
-     * Gets the inner com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentWorkspaceInner
+     * Gets the inner com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentationWorkspaceInner
      * object.
      * 
      * @return the inner object.
      */
-    OnlineExperimentWorkspaceInner innerModel();
+    OnlineExperimentationWorkspaceInner innerModel();
 
     /**
-     * The entirety of the OnlineExperimentWorkspace definition.
+     * The entirety of the OnlineExperimentationWorkspace definition.
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
         DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /**
-     * The OnlineExperimentWorkspace definition stages.
+     * The OnlineExperimentationWorkspace definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of the OnlineExperimentWorkspace definition.
+         * The first stage of the OnlineExperimentationWorkspace definition.
          */
         interface Blank extends WithLocation {
         }
 
         /**
-         * The stage of the OnlineExperimentWorkspace definition allowing to specify location.
+         * The stage of the OnlineExperimentationWorkspace definition allowing to specify location.
          */
         interface WithLocation {
             /**
@@ -145,7 +145,7 @@ public interface OnlineExperimentWorkspace {
         }
 
         /**
-         * The stage of the OnlineExperimentWorkspace definition allowing to specify parent resource.
+         * The stage of the OnlineExperimentationWorkspace definition allowing to specify parent resource.
          */
         interface WithResourceGroup {
             /**
@@ -158,8 +158,8 @@ public interface OnlineExperimentWorkspace {
         }
 
         /**
-         * The stage of the OnlineExperimentWorkspace definition which contains all the minimum required properties for
-         * the resource to be created, but also allows for any other optional properties to be specified.
+         * The stage of the OnlineExperimentationWorkspace definition which contains all the minimum required properties
+         * for the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties,
             DefinitionStages.WithIdentity, DefinitionStages.WithSku {
@@ -168,7 +168,7 @@ public interface OnlineExperimentWorkspace {
              * 
              * @return the created resource.
              */
-            OnlineExperimentWorkspace create();
+            OnlineExperimentationWorkspace create();
 
             /**
              * Executes the create request.
@@ -176,11 +176,11 @@ public interface OnlineExperimentWorkspace {
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
-            OnlineExperimentWorkspace create(Context context);
+            OnlineExperimentationWorkspace create(Context context);
         }
 
         /**
-         * The stage of the OnlineExperimentWorkspace definition allowing to specify tags.
+         * The stage of the OnlineExperimentationWorkspace definition allowing to specify tags.
          */
         interface WithTags {
             /**
@@ -193,7 +193,7 @@ public interface OnlineExperimentWorkspace {
         }
 
         /**
-         * The stage of the OnlineExperimentWorkspace definition allowing to specify properties.
+         * The stage of the OnlineExperimentationWorkspace definition allowing to specify properties.
          */
         interface WithProperties {
             /**
@@ -202,11 +202,11 @@ public interface OnlineExperimentWorkspace {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            WithCreate withProperties(OnlineExperimentWorkspaceProperties properties);
+            WithCreate withProperties(OnlineExperimentationWorkspaceProperties properties);
         }
 
         /**
-         * The stage of the OnlineExperimentWorkspace definition allowing to specify identity.
+         * The stage of the OnlineExperimentationWorkspace definition allowing to specify identity.
          */
         interface WithIdentity {
             /**
@@ -219,7 +219,7 @@ public interface OnlineExperimentWorkspace {
         }
 
         /**
-         * The stage of the OnlineExperimentWorkspace definition allowing to specify sku.
+         * The stage of the OnlineExperimentationWorkspace definition allowing to specify sku.
          */
         interface WithSku {
             /**
@@ -233,14 +233,14 @@ public interface OnlineExperimentWorkspace {
     }
 
     /**
-     * Begins update for the OnlineExperimentWorkspace resource.
+     * Begins update for the OnlineExperimentationWorkspace resource.
      * 
      * @return the stage of resource update.
      */
-    OnlineExperimentWorkspace.Update update();
+    OnlineExperimentationWorkspace.Update update();
 
     /**
-     * The template for OnlineExperimentWorkspace update.
+     * The template for OnlineExperimentationWorkspace update.
      */
     interface Update
         extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithSku, UpdateStages.WithProperties {
@@ -249,7 +249,7 @@ public interface OnlineExperimentWorkspace {
          * 
          * @return the updated resource.
          */
-        OnlineExperimentWorkspace apply();
+        OnlineExperimentationWorkspace apply();
 
         /**
          * Executes the update request.
@@ -257,15 +257,15 @@ public interface OnlineExperimentWorkspace {
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
-        OnlineExperimentWorkspace apply(Context context);
+        OnlineExperimentationWorkspace apply(Context context);
     }
 
     /**
-     * The OnlineExperimentWorkspace update stages.
+     * The OnlineExperimentationWorkspace update stages.
      */
     interface UpdateStages {
         /**
-         * The stage of the OnlineExperimentWorkspace update allowing to specify tags.
+         * The stage of the OnlineExperimentationWorkspace update allowing to specify tags.
          */
         interface WithTags {
             /**
@@ -278,7 +278,7 @@ public interface OnlineExperimentWorkspace {
         }
 
         /**
-         * The stage of the OnlineExperimentWorkspace update allowing to specify identity.
+         * The stage of the OnlineExperimentationWorkspace update allowing to specify identity.
          */
         interface WithIdentity {
             /**
@@ -291,7 +291,7 @@ public interface OnlineExperimentWorkspace {
         }
 
         /**
-         * The stage of the OnlineExperimentWorkspace update allowing to specify sku.
+         * The stage of the OnlineExperimentationWorkspace update allowing to specify sku.
          */
         interface WithSku {
             /**
@@ -304,16 +304,17 @@ public interface OnlineExperimentWorkspace {
         }
 
         /**
-         * The stage of the OnlineExperimentWorkspace update allowing to specify properties.
+         * The stage of the OnlineExperimentationWorkspace update allowing to specify properties.
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: Updatable properties of the online experiment workspace resource..
+             * Specifies the properties property: Updatable properties of the online experimentation workspace
+             * resource..
              * 
-             * @param properties Updatable properties of the online experiment workspace resource.
+             * @param properties Updatable properties of the online experimentation workspace resource.
              * @return the next definition stage.
              */
-            Update withProperties(OnlineExperimentWorkspacePatchProperties properties);
+            Update withProperties(OnlineExperimentationWorkspacePatchProperties properties);
         }
     }
 
@@ -322,7 +323,7 @@ public interface OnlineExperimentWorkspace {
      * 
      * @return the refreshed resource.
      */
-    OnlineExperimentWorkspace refresh();
+    OnlineExperimentationWorkspace refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
@@ -330,5 +331,5 @@ public interface OnlineExperimentWorkspace {
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
-    OnlineExperimentWorkspace refresh(Context context);
+    OnlineExperimentationWorkspace refresh(Context context);
 }

@@ -11,20 +11,20 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.onlineexperimentation.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspaceProperties;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspaceProperties;
 import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspaceSku;
 import java.io.IOException;
 import java.util.Map;
 
 /**
- * An online experiment workspace resource.
+ * An online experimentation workspace resource.
  */
 @Fluent
-public final class OnlineExperimentWorkspaceInner extends Resource {
+public final class OnlineExperimentationWorkspaceInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
-    private OnlineExperimentWorkspaceProperties properties;
+    private OnlineExperimentationWorkspaceProperties properties;
 
     /*
      * The managed service identities assigned to this resource.
@@ -57,9 +57,9 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
     private String id;
 
     /**
-     * Creates an instance of OnlineExperimentWorkspaceInner class.
+     * Creates an instance of OnlineExperimentationWorkspaceInner class.
      */
-    public OnlineExperimentWorkspaceInner() {
+    public OnlineExperimentationWorkspaceInner() {
     }
 
     /**
@@ -67,7 +67,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * 
      * @return the properties value.
      */
-    public OnlineExperimentWorkspaceProperties properties() {
+    public OnlineExperimentationWorkspaceProperties properties() {
         return this.properties;
     }
 
@@ -75,9 +75,9 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * Set the properties property: The resource-specific properties for this resource.
      * 
      * @param properties the properties value to set.
-     * @return the OnlineExperimentWorkspaceInner object itself.
+     * @return the OnlineExperimentationWorkspaceInner object itself.
      */
-    public OnlineExperimentWorkspaceInner withProperties(OnlineExperimentWorkspaceProperties properties) {
+    public OnlineExperimentationWorkspaceInner withProperties(OnlineExperimentationWorkspaceProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -95,9 +95,9 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * Set the identity property: The managed service identities assigned to this resource.
      * 
      * @param identity the identity value to set.
-     * @return the OnlineExperimentWorkspaceInner object itself.
+     * @return the OnlineExperimentationWorkspaceInner object itself.
      */
-    public OnlineExperimentWorkspaceInner withIdentity(ManagedServiceIdentity identity) {
+    public OnlineExperimentationWorkspaceInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -115,9 +115,9 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * Set the sku property: The SKU (Stock Keeping Unit) assigned to this resource.
      * 
      * @param sku the sku value to set.
-     * @return the OnlineExperimentWorkspaceInner object itself.
+     * @return the OnlineExperimentationWorkspaceInner object itself.
      */
-    public OnlineExperimentWorkspaceInner withSku(OnlineExperimentationWorkspaceSku sku) {
+    public OnlineExperimentationWorkspaceInner withSku(OnlineExperimentationWorkspaceSku sku) {
         this.sku = sku;
         return this;
     }
@@ -165,7 +165,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * {@inheritDoc}
      */
     @Override
-    public OnlineExperimentWorkspaceInner withLocation(String location) {
+    public OnlineExperimentationWorkspaceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
@@ -174,7 +174,7 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
      * {@inheritDoc}
      */
     @Override
-    public OnlineExperimentWorkspaceInner withTags(Map<String, String> tags) {
+    public OnlineExperimentationWorkspaceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
@@ -211,48 +211,49 @@ public final class OnlineExperimentWorkspaceInner extends Resource {
     }
 
     /**
-     * Reads an instance of OnlineExperimentWorkspaceInner from the JsonReader.
+     * Reads an instance of OnlineExperimentationWorkspaceInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OnlineExperimentWorkspaceInner if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of OnlineExperimentationWorkspaceInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OnlineExperimentWorkspaceInner.
+     * @throws IOException If an error occurs while reading the OnlineExperimentationWorkspaceInner.
      */
-    public static OnlineExperimentWorkspaceInner fromJson(JsonReader jsonReader) throws IOException {
+    public static OnlineExperimentationWorkspaceInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OnlineExperimentWorkspaceInner deserializedOnlineExperimentWorkspaceInner
-                = new OnlineExperimentWorkspaceInner();
+            OnlineExperimentationWorkspaceInner deserializedOnlineExperimentationWorkspaceInner
+                = new OnlineExperimentationWorkspaceInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceInner.id = reader.getString();
+                    deserializedOnlineExperimentationWorkspaceInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceInner.name = reader.getString();
+                    deserializedOnlineExperimentationWorkspaceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceInner.type = reader.getString();
+                    deserializedOnlineExperimentationWorkspaceInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceInner.withLocation(reader.getString());
+                    deserializedOnlineExperimentationWorkspaceInner.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedOnlineExperimentWorkspaceInner.withTags(tags);
+                    deserializedOnlineExperimentationWorkspaceInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceInner.properties
-                        = OnlineExperimentWorkspaceProperties.fromJson(reader);
+                    deserializedOnlineExperimentationWorkspaceInner.properties
+                        = OnlineExperimentationWorkspaceProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceInner.identity = ManagedServiceIdentity.fromJson(reader);
+                    deserializedOnlineExperimentationWorkspaceInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("sku".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceInner.sku = OnlineExperimentationWorkspaceSku.fromJson(reader);
+                    deserializedOnlineExperimentationWorkspaceInner.sku
+                        = OnlineExperimentationWorkspaceSku.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceInner.systemData = SystemData.fromJson(reader);
+                    deserializedOnlineExperimentationWorkspaceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedOnlineExperimentWorkspaceInner;
+            return deserializedOnlineExperimentationWorkspaceInner;
         });
     }
 }

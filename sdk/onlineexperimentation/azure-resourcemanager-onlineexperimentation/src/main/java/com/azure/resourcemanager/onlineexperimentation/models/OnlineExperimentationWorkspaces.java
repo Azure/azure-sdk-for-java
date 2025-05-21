@@ -9,40 +9,40 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
- * Resource collection API of OnlineExperimentWorkspaces.
+ * Resource collection API of OnlineExperimentationWorkspaces.
  */
-public interface OnlineExperimentWorkspaces {
+public interface OnlineExperimentationWorkspaces {
     /**
-     * Gets an experiment workspace.
+     * Gets an online experimentation workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an experiment workspace along with {@link Response}.
+     * @return an online experimentation workspace along with {@link Response}.
      */
-    Response<OnlineExperimentWorkspace> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
-        Context context);
+    Response<OnlineExperimentationWorkspace> getByResourceGroupWithResponse(String resourceGroupName,
+        String workspaceName, Context context);
 
     /**
-     * Gets an experiment workspace.
+     * Gets an online experimentation workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an experiment workspace.
+     * @return an online experimentation workspace.
      */
-    OnlineExperimentWorkspace getByResourceGroup(String resourceGroupName, String workspaceName);
+    OnlineExperimentationWorkspace getByResourceGroup(String resourceGroupName, String workspaceName);
 
     /**
-     * Deletes an experiment workspace.
+     * Deletes an online experimentation workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -50,10 +50,10 @@ public interface OnlineExperimentWorkspaces {
     void deleteByResourceGroup(String resourceGroupName, String workspaceName);
 
     /**
-     * Deletes an experiment workspace.
+     * Deletes an online experimentation workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentWorkspace.
+     * @param workspaceName The name of the OnlineExperimentationWorkspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,73 +62,77 @@ public interface OnlineExperimentWorkspaces {
     void delete(String resourceGroupName, String workspaceName, Context context);
 
     /**
-     * Gets all experiment workspaces in a resource group.
+     * Gets all online experimentation workspaces in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all experiment workspaces in a resource group as paginated response with {@link PagedIterable}.
+     * @return all online experimentation workspaces in a resource group as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<OnlineExperimentWorkspace> listByResourceGroup(String resourceGroupName);
+    PagedIterable<OnlineExperimentationWorkspace> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Gets all experiment workspaces in a resource group.
+     * Gets all online experimentation workspaces in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all experiment workspaces in a resource group as paginated response with {@link PagedIterable}.
+     * @return all online experimentation workspaces in a resource group as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<OnlineExperimentWorkspace> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<OnlineExperimentationWorkspace> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Gets all experiment workspaces in the specified subscription.
+     * Gets all online experimentation workspaces in the specified subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all experiment workspaces in the specified subscription as paginated response with {@link PagedIterable}.
+     * @return all online experimentation workspaces in the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<OnlineExperimentWorkspace> list();
+    PagedIterable<OnlineExperimentationWorkspace> list();
 
     /**
-     * Gets all experiment workspaces in the specified subscription.
+     * Gets all online experimentation workspaces in the specified subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all experiment workspaces in the specified subscription as paginated response with {@link PagedIterable}.
+     * @return all online experimentation workspaces in the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<OnlineExperimentWorkspace> list(Context context);
+    PagedIterable<OnlineExperimentationWorkspace> list(Context context);
 
     /**
-     * Gets an experiment workspace.
+     * Gets an online experimentation workspace.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an experiment workspace along with {@link Response}.
+     * @return an online experimentation workspace along with {@link Response}.
      */
-    OnlineExperimentWorkspace getById(String id);
+    OnlineExperimentationWorkspace getById(String id);
 
     /**
-     * Gets an experiment workspace.
+     * Gets an online experimentation workspace.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an experiment workspace along with {@link Response}.
+     * @return an online experimentation workspace along with {@link Response}.
      */
-    Response<OnlineExperimentWorkspace> getByIdWithResponse(String id, Context context);
+    Response<OnlineExperimentationWorkspace> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes an experiment workspace.
+     * Deletes an online experimentation workspace.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,7 +142,7 @@ public interface OnlineExperimentWorkspaces {
     void deleteById(String id);
 
     /**
-     * Deletes an experiment workspace.
+     * Deletes an online experimentation workspace.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -149,10 +153,10 @@ public interface OnlineExperimentWorkspaces {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new OnlineExperimentWorkspace resource.
+     * Begins definition for a new OnlineExperimentationWorkspace resource.
      * 
      * @param name resource name.
-     * @return the first stage of the new OnlineExperimentWorkspace definition.
+     * @return the first stage of the new OnlineExperimentationWorkspace definition.
      */
-    OnlineExperimentWorkspace.DefinitionStages.Blank define(String name);
+    OnlineExperimentationWorkspace.DefinitionStages.Blank define(String name);
 }

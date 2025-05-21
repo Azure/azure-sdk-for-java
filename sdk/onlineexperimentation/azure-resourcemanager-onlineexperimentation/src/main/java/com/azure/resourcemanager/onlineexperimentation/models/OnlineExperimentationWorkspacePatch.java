@@ -13,10 +13,11 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Partial update of an online experiment workspace resource.
+ * Partial update of an online experimentation workspace resource.
  */
 @Fluent
-public final class OnlineExperimentWorkspacePatch implements JsonSerializable<OnlineExperimentWorkspacePatch> {
+public final class OnlineExperimentationWorkspacePatch
+    implements JsonSerializable<OnlineExperimentationWorkspacePatch> {
     /*
      * The managed service identities assigned to this resource.
      */
@@ -33,14 +34,14 @@ public final class OnlineExperimentWorkspacePatch implements JsonSerializable<On
     private OnlineExperimentationWorkspaceSku sku;
 
     /*
-     * Updatable properties of the online experiment workspace resource.
+     * Updatable properties of the online experimentation workspace resource.
      */
-    private OnlineExperimentWorkspacePatchProperties properties;
+    private OnlineExperimentationWorkspacePatchProperties properties;
 
     /**
-     * Creates an instance of OnlineExperimentWorkspacePatch class.
+     * Creates an instance of OnlineExperimentationWorkspacePatch class.
      */
-    public OnlineExperimentWorkspacePatch() {
+    public OnlineExperimentationWorkspacePatch() {
     }
 
     /**
@@ -56,9 +57,9 @@ public final class OnlineExperimentWorkspacePatch implements JsonSerializable<On
      * Set the identity property: The managed service identities assigned to this resource.
      * 
      * @param identity the identity value to set.
-     * @return the OnlineExperimentWorkspacePatch object itself.
+     * @return the OnlineExperimentationWorkspacePatch object itself.
      */
-    public OnlineExperimentWorkspacePatch withIdentity(ManagedServiceIdentity identity) {
+    public OnlineExperimentationWorkspacePatch withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -76,9 +77,9 @@ public final class OnlineExperimentWorkspacePatch implements JsonSerializable<On
      * Set the tags property: Resource tags.
      * 
      * @param tags the tags value to set.
-     * @return the OnlineExperimentWorkspacePatch object itself.
+     * @return the OnlineExperimentationWorkspacePatch object itself.
      */
-    public OnlineExperimentWorkspacePatch withTags(Map<String, String> tags) {
+    public OnlineExperimentationWorkspacePatch withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -96,29 +97,30 @@ public final class OnlineExperimentWorkspacePatch implements JsonSerializable<On
      * Set the sku property: The SKU (Stock Keeping Unit) assigned to this resource.
      * 
      * @param sku the sku value to set.
-     * @return the OnlineExperimentWorkspacePatch object itself.
+     * @return the OnlineExperimentationWorkspacePatch object itself.
      */
-    public OnlineExperimentWorkspacePatch withSku(OnlineExperimentationWorkspaceSku sku) {
+    public OnlineExperimentationWorkspacePatch withSku(OnlineExperimentationWorkspaceSku sku) {
         this.sku = sku;
         return this;
     }
 
     /**
-     * Get the properties property: Updatable properties of the online experiment workspace resource.
+     * Get the properties property: Updatable properties of the online experimentation workspace resource.
      * 
      * @return the properties value.
      */
-    public OnlineExperimentWorkspacePatchProperties properties() {
+    public OnlineExperimentationWorkspacePatchProperties properties() {
         return this.properties;
     }
 
     /**
-     * Set the properties property: Updatable properties of the online experiment workspace resource.
+     * Set the properties property: Updatable properties of the online experimentation workspace resource.
      * 
      * @param properties the properties value to set.
-     * @return the OnlineExperimentWorkspacePatch object itself.
+     * @return the OnlineExperimentationWorkspacePatch object itself.
      */
-    public OnlineExperimentWorkspacePatch withProperties(OnlineExperimentWorkspacePatchProperties properties) {
+    public OnlineExperimentationWorkspacePatch
+        withProperties(OnlineExperimentationWorkspacePatchProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -154,37 +156,38 @@ public final class OnlineExperimentWorkspacePatch implements JsonSerializable<On
     }
 
     /**
-     * Reads an instance of OnlineExperimentWorkspacePatch from the JsonReader.
+     * Reads an instance of OnlineExperimentationWorkspacePatch from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OnlineExperimentWorkspacePatch if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the OnlineExperimentWorkspacePatch.
+     * @return An instance of OnlineExperimentationWorkspacePatch if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OnlineExperimentationWorkspacePatch.
      */
-    public static OnlineExperimentWorkspacePatch fromJson(JsonReader jsonReader) throws IOException {
+    public static OnlineExperimentationWorkspacePatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OnlineExperimentWorkspacePatch deserializedOnlineExperimentWorkspacePatch
-                = new OnlineExperimentWorkspacePatch();
+            OnlineExperimentationWorkspacePatch deserializedOnlineExperimentationWorkspacePatch
+                = new OnlineExperimentationWorkspacePatch();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("identity".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspacePatch.identity = ManagedServiceIdentity.fromJson(reader);
+                    deserializedOnlineExperimentationWorkspacePatch.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedOnlineExperimentWorkspacePatch.tags = tags;
+                    deserializedOnlineExperimentationWorkspacePatch.tags = tags;
                 } else if ("sku".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspacePatch.sku = OnlineExperimentationWorkspaceSku.fromJson(reader);
+                    deserializedOnlineExperimentationWorkspacePatch.sku
+                        = OnlineExperimentationWorkspaceSku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspacePatch.properties
-                        = OnlineExperimentWorkspacePatchProperties.fromJson(reader);
+                    deserializedOnlineExperimentationWorkspacePatch.properties
+                        = OnlineExperimentationWorkspacePatchProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedOnlineExperimentWorkspacePatch;
+            return deserializedOnlineExperimentationWorkspacePatch;
         });
     }
 }

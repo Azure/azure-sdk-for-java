@@ -26,8 +26,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.onlineexperimentation.fluent.OnlineExperimentWorkspacesClient;
 import com.azure.resourcemanager.onlineexperimentation.fluent.OnlineExperimentationMgmtClient;
+import com.azure.resourcemanager.onlineexperimentation.fluent.OnlineExperimentationWorkspacesClient;
 import com.azure.resourcemanager.onlineexperimentation.fluent.OperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -142,17 +142,17 @@ public final class OnlineExperimentationMgmtClientImpl implements OnlineExperime
     }
 
     /**
-     * The OnlineExperimentWorkspacesClient object to access its operations.
+     * The OnlineExperimentationWorkspacesClient object to access its operations.
      */
-    private final OnlineExperimentWorkspacesClient onlineExperimentWorkspaces;
+    private final OnlineExperimentationWorkspacesClient onlineExperimentationWorkspaces;
 
     /**
-     * Gets the OnlineExperimentWorkspacesClient object to access its operations.
+     * Gets the OnlineExperimentationWorkspacesClient object to access its operations.
      * 
-     * @return the OnlineExperimentWorkspacesClient object.
+     * @return the OnlineExperimentationWorkspacesClient object.
      */
-    public OnlineExperimentWorkspacesClient getOnlineExperimentWorkspaces() {
-        return this.onlineExperimentWorkspaces;
+    public OnlineExperimentationWorkspacesClient getOnlineExperimentationWorkspaces() {
+        return this.onlineExperimentationWorkspaces;
     }
 
     /**
@@ -174,7 +174,7 @@ public final class OnlineExperimentationMgmtClientImpl implements OnlineExperime
         this.subscriptionId = subscriptionId;
         this.apiVersion = "2025-05-31-preview";
         this.operations = new OperationsClientImpl(this);
-        this.onlineExperimentWorkspaces = new OnlineExperimentWorkspacesClientImpl(this);
+        this.onlineExperimentationWorkspaces = new OnlineExperimentationWorkspacesClientImpl(this);
     }
 
     /**

@@ -10,20 +10,20 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentWorkspaceInner;
+import com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentationWorkspaceInner;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * The response of a OnlineExperimentWorkspace list operation.
+ * The response of a OnlineExperimentationWorkspace list operation.
  */
 @Immutable
-public final class OnlineExperimentWorkspaceListResult
-    implements JsonSerializable<OnlineExperimentWorkspaceListResult> {
+public final class OnlineExperimentationWorkspaceListResult
+    implements JsonSerializable<OnlineExperimentationWorkspaceListResult> {
     /*
-     * The OnlineExperimentWorkspace items on this page
+     * The OnlineExperimentationWorkspace items on this page
      */
-    private List<OnlineExperimentWorkspaceInner> value;
+    private List<OnlineExperimentationWorkspaceInner> value;
 
     /*
      * The link to the next page of items
@@ -31,17 +31,17 @@ public final class OnlineExperimentWorkspaceListResult
     private String nextLink;
 
     /**
-     * Creates an instance of OnlineExperimentWorkspaceListResult class.
+     * Creates an instance of OnlineExperimentationWorkspaceListResult class.
      */
-    private OnlineExperimentWorkspaceListResult() {
+    private OnlineExperimentationWorkspaceListResult() {
     }
 
     /**
-     * Get the value property: The OnlineExperimentWorkspace items on this page.
+     * Get the value property: The OnlineExperimentationWorkspace items on this page.
      * 
      * @return the value value.
      */
-    public List<OnlineExperimentWorkspaceInner> value() {
+    public List<OnlineExperimentationWorkspaceInner> value() {
         return this.value;
     }
 
@@ -63,13 +63,13 @@ public final class OnlineExperimentWorkspaceListResult
         if (value() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
-                    "Missing required property value in model OnlineExperimentWorkspaceListResult"));
+                    "Missing required property value in model OnlineExperimentationWorkspaceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(OnlineExperimentWorkspaceListResult.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OnlineExperimentationWorkspaceListResult.class);
 
     /**
      * {@inheritDoc}
@@ -83,34 +83,34 @@ public final class OnlineExperimentWorkspaceListResult
     }
 
     /**
-     * Reads an instance of OnlineExperimentWorkspaceListResult from the JsonReader.
+     * Reads an instance of OnlineExperimentationWorkspaceListResult from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OnlineExperimentWorkspaceListResult if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
+     * @return An instance of OnlineExperimentationWorkspaceListResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OnlineExperimentWorkspaceListResult.
+     * @throws IOException If an error occurs while reading the OnlineExperimentationWorkspaceListResult.
      */
-    public static OnlineExperimentWorkspaceListResult fromJson(JsonReader jsonReader) throws IOException {
+    public static OnlineExperimentationWorkspaceListResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OnlineExperimentWorkspaceListResult deserializedOnlineExperimentWorkspaceListResult
-                = new OnlineExperimentWorkspaceListResult();
+            OnlineExperimentationWorkspaceListResult deserializedOnlineExperimentationWorkspaceListResult
+                = new OnlineExperimentationWorkspaceListResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<OnlineExperimentWorkspaceInner> value
-                        = reader.readArray(reader1 -> OnlineExperimentWorkspaceInner.fromJson(reader1));
-                    deserializedOnlineExperimentWorkspaceListResult.value = value;
+                    List<OnlineExperimentationWorkspaceInner> value
+                        = reader.readArray(reader1 -> OnlineExperimentationWorkspaceInner.fromJson(reader1));
+                    deserializedOnlineExperimentationWorkspaceListResult.value = value;
                 } else if ("nextLink".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceListResult.nextLink = reader.getString();
+                    deserializedOnlineExperimentationWorkspaceListResult.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedOnlineExperimentWorkspaceListResult;
+            return deserializedOnlineExperimentationWorkspaceListResult;
         });
     }
 }

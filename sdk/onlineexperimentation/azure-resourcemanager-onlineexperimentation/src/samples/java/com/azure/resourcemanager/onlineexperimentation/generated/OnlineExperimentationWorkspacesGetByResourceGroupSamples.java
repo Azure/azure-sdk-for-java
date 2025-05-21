@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.onlineexperimentation.generated;
 
 /**
- * Samples for OnlineExperimentWorkspaces GetByResourceGroup.
+ * Samples for OnlineExperimentationWorkspaces GetByResourceGroup.
  */
-public final class OnlineExperimentWorkspacesGetByResourceGroupSamples {
+public final class OnlineExperimentationWorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentWorkspaces_Get.json
+     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_Get.json
      */
     /**
-     * Sample code: Get a single OnlineExperimentWorkspace.
+     * Sample code: Get a single OnlineExperimentationWorkspace.
      * 
      * @param manager Entry point to OnlineExperimentationManager.
      */
-    public static void getASingleOnlineExperimentWorkspace(
+    public static void getASingleOnlineExperimentationWorkspace(
         com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
-        manager.onlineExperimentWorkspaces()
+        manager.onlineExperimentationWorkspaces()
             .getByResourceGroupWithResponse("res9871", "expworkspace3", com.azure.core.util.Context.NONE);
     }
 }
