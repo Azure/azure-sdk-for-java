@@ -15,41 +15,17 @@ import java.io.IOException;
  * The phone number search purchase request.
  */
 @Fluent
-public final class PhoneNumberPurchaseRequest implements JsonSerializable<PhoneNumberPurchaseRequest> {
-    /*
-     * The search id.
-     */
-    private String searchId;
-
+public final class PhoneNumbersReservationPurchaseRequest
+    implements JsonSerializable<PhoneNumbersReservationPurchaseRequest> {
     /*
      * The agreement to not resell the phone numbers. Defaults to false if not provided.
      */
     private Boolean agreeToNotResell;
 
     /**
-     * Creates an instance of PhoneNumberPurchaseRequest class.
+     * Creates an instance of PhoneNumbersReservationPurchaseRequest class.
      */
-    public PhoneNumberPurchaseRequest() {
-    }
-
-    /**
-     * Get the searchId property: The search id.
-     * 
-     * @return the searchId value.
-     */
-    public String getSearchId() {
-        return this.searchId;
-    }
-
-    /**
-     * Set the searchId property: The search id.
-     * 
-     * @param searchId the searchId value to set.
-     * @return the PhoneNumberPurchaseRequest object itself.
-     */
-    public PhoneNumberPurchaseRequest setSearchId(String searchId) {
-        this.searchId = searchId;
-        return this;
+    public PhoneNumbersReservationPurchaseRequest() {
     }
 
     /**
@@ -67,9 +43,9 @@ public final class PhoneNumberPurchaseRequest implements JsonSerializable<PhoneN
      * provided.
      * 
      * @param agreeToNotResell the agreeToNotResell value to set.
-     * @return the PhoneNumberPurchaseRequest object itself.
+     * @return the PhoneNumbersReservationPurchaseRequest object itself.
      */
-    public PhoneNumberPurchaseRequest setAgreeToNotResell(Boolean agreeToNotResell) {
+    public PhoneNumbersReservationPurchaseRequest setAgreeToNotResell(Boolean agreeToNotResell) {
         this.agreeToNotResell = agreeToNotResell;
         return this;
     }
@@ -80,37 +56,35 @@ public final class PhoneNumberPurchaseRequest implements JsonSerializable<PhoneN
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("searchId", this.searchId);
         jsonWriter.writeBooleanField("agreeToNotResell", this.agreeToNotResell);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of PhoneNumberPurchaseRequest from the JsonReader.
+     * Reads an instance of PhoneNumbersReservationPurchaseRequest from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PhoneNumberPurchaseRequest if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PhoneNumberPurchaseRequest.
+     * @return An instance of PhoneNumbersReservationPurchaseRequest if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PhoneNumbersReservationPurchaseRequest.
      */
-    public static PhoneNumberPurchaseRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static PhoneNumbersReservationPurchaseRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PhoneNumberPurchaseRequest deserializedPhoneNumberPurchaseRequest = new PhoneNumberPurchaseRequest();
+            PhoneNumbersReservationPurchaseRequest deserializedPhoneNumbersReservationPurchaseRequest
+                = new PhoneNumbersReservationPurchaseRequest();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("searchId".equals(fieldName)) {
-                    deserializedPhoneNumberPurchaseRequest.searchId = reader.getString();
-                } else if ("agreeToNotResell".equals(fieldName)) {
-                    deserializedPhoneNumberPurchaseRequest.agreeToNotResell
+                if ("agreeToNotResell".equals(fieldName)) {
+                    deserializedPhoneNumbersReservationPurchaseRequest.agreeToNotResell
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedPhoneNumberPurchaseRequest;
+            return deserializedPhoneNumbersReservationPurchaseRequest;
         });
     }
 }
