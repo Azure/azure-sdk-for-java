@@ -69,23 +69,25 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         Map<String, String> challenges = extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
 
-        String scope = getScopeFromChallenges(challenges);
+        String scopeFromChallenge = getScopeFromChallenges(challenges);
         String authorization = getAuthorizationFromChallenges(challenges);
 
-        if (scope != null) {
-            scope += DEFAULT_SCOPE;
-            scopes = new String[] { scope };
-            scopes = getScopes(context, scopes);
+        String[] scopesForThisAttempt = CoreUtils.clone(this.scopes);
+
+        if (scopeFromChallenge != null) {
+            scopeFromChallenge += DEFAULT_SCOPE;
+            scopesForThisAttempt = new String[] { scopeFromChallenge };
         }
 
         if (authorization != null) {
             String tenantId = extractTenantIdFromUri(authorization);
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes).setTenantId(tenantId);
+            TokenRequestContext tokenRequestContext
+                = new TokenRequestContext().addScopes(scopesForThisAttempt).setTenantId(tenantId);
             return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
         }
 
-        if (scope != null) {
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes);
+        if (scopeFromChallenge != null) {
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopesForThisAttempt);
             return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
         }
 
@@ -110,24 +112,26 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         Map<String, String> challenges = extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
 
-        String scope = getScopeFromChallenges(challenges);
+        String scopeFromChallenge = getScopeFromChallenges(challenges);
         String authorization = getAuthorizationFromChallenges(challenges);
 
-        if (scope != null) {
-            scope += DEFAULT_SCOPE;
-            scopes = new String[] { scope };
-            scopes = getScopes(context, scopes);
+        String[] scopesForThisAttempt = CoreUtils.clone(this.scopes);
+
+        if (scopeFromChallenge != null) {
+            scopeFromChallenge += DEFAULT_SCOPE;
+            scopesForThisAttempt = new String[] { scopeFromChallenge };
         }
 
         if (authorization != null) {
             String tenantId = extractTenantIdFromUri(authorization);
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes).setTenantId(tenantId);
+            TokenRequestContext tokenRequestContext
+                = new TokenRequestContext().addScopes(scopesForThisAttempt).setTenantId(tenantId);
             setAuthorizationHeaderSync(context, tokenRequestContext);
             return true;
         }
 
-        if (scope != null) {
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes);
+        if (scopeFromChallenge != null) {
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopesForThisAttempt);
             setAuthorizationHeaderSync(context, tokenRequestContext);
             return true;
         }
