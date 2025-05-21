@@ -9,41 +9,41 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.onlineexperimentation.fluent.OnlineExperimentWorkspacesClient;
-import com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentWorkspaceInner;
-import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspace;
-import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspaces;
+import com.azure.resourcemanager.onlineexperimentation.fluent.OnlineExperimentationWorkspacesClient;
+import com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentationWorkspaceInner;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspace;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspaces;
 
-public final class OnlineExperimentWorkspacesImpl implements OnlineExperimentWorkspaces {
-    private static final ClientLogger LOGGER = new ClientLogger(OnlineExperimentWorkspacesImpl.class);
+public final class OnlineExperimentationWorkspacesImpl implements OnlineExperimentationWorkspaces {
+    private static final ClientLogger LOGGER = new ClientLogger(OnlineExperimentationWorkspacesImpl.class);
 
-    private final OnlineExperimentWorkspacesClient innerClient;
+    private final OnlineExperimentationWorkspacesClient innerClient;
 
     private final com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager serviceManager;
 
-    public OnlineExperimentWorkspacesImpl(OnlineExperimentWorkspacesClient innerClient,
+    public OnlineExperimentationWorkspacesImpl(OnlineExperimentationWorkspacesClient innerClient,
         com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OnlineExperimentWorkspace> getByResourceGroupWithResponse(String resourceGroupName,
+    public Response<OnlineExperimentationWorkspace> getByResourceGroupWithResponse(String resourceGroupName,
         String workspaceName, Context context) {
-        Response<OnlineExperimentWorkspaceInner> inner
+        Response<OnlineExperimentationWorkspaceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, workspaceName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OnlineExperimentWorkspaceImpl(inner.getValue(), this.manager()));
+                new OnlineExperimentationWorkspaceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public OnlineExperimentWorkspace getByResourceGroup(String resourceGroupName, String workspaceName) {
-        OnlineExperimentWorkspaceInner inner
+    public OnlineExperimentationWorkspace getByResourceGroup(String resourceGroupName, String workspaceName) {
+        OnlineExperimentationWorkspaceInner inner
             = this.serviceClient().getByResourceGroup(resourceGroupName, workspaceName);
         if (inner != null) {
-            return new OnlineExperimentWorkspaceImpl(inner, this.manager());
+            return new OnlineExperimentationWorkspaceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -57,29 +57,34 @@ public final class OnlineExperimentWorkspacesImpl implements OnlineExperimentWor
         this.serviceClient().delete(resourceGroupName, workspaceName, context);
     }
 
-    public PagedIterable<OnlineExperimentWorkspace> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<OnlineExperimentWorkspaceInner> inner
+    public PagedIterable<OnlineExperimentationWorkspace> listByResourceGroup(String resourceGroupName) {
+        PagedIterable<OnlineExperimentationWorkspaceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OnlineExperimentWorkspaceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OnlineExperimentationWorkspaceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OnlineExperimentWorkspace> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<OnlineExperimentWorkspaceInner> inner
+    public PagedIterable<OnlineExperimentationWorkspace> listByResourceGroup(String resourceGroupName,
+        Context context) {
+        PagedIterable<OnlineExperimentationWorkspaceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OnlineExperimentWorkspaceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OnlineExperimentationWorkspaceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OnlineExperimentWorkspace> list() {
-        PagedIterable<OnlineExperimentWorkspaceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OnlineExperimentWorkspaceImpl(inner1, this.manager()));
+    public PagedIterable<OnlineExperimentationWorkspace> list() {
+        PagedIterable<OnlineExperimentationWorkspaceInner> inner = this.serviceClient().list();
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OnlineExperimentationWorkspaceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OnlineExperimentWorkspace> list(Context context) {
-        PagedIterable<OnlineExperimentWorkspaceInner> inner = this.serviceClient().list(context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OnlineExperimentWorkspaceImpl(inner1, this.manager()));
+    public PagedIterable<OnlineExperimentationWorkspace> list(Context context) {
+        PagedIterable<OnlineExperimentationWorkspaceInner> inner = this.serviceClient().list(context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OnlineExperimentationWorkspaceImpl(inner1, this.manager()));
     }
 
-    public OnlineExperimentWorkspace getById(String id) {
+    public OnlineExperimentationWorkspace getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -93,7 +98,7 @@ public final class OnlineExperimentWorkspacesImpl implements OnlineExperimentWor
         return this.getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
     }
 
-    public Response<OnlineExperimentWorkspace> getByIdWithResponse(String id, Context context) {
+    public Response<OnlineExperimentationWorkspace> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -135,7 +140,7 @@ public final class OnlineExperimentWorkspacesImpl implements OnlineExperimentWor
         this.delete(resourceGroupName, workspaceName, context);
     }
 
-    private OnlineExperimentWorkspacesClient serviceClient() {
+    private OnlineExperimentationWorkspacesClient serviceClient() {
         return this.innerClient;
     }
 
@@ -143,7 +148,7 @@ public final class OnlineExperimentWorkspacesImpl implements OnlineExperimentWor
         return this.serviceManager;
     }
 
-    public OnlineExperimentWorkspaceImpl define(String name) {
-        return new OnlineExperimentWorkspaceImpl(name, this.manager());
+    public OnlineExperimentationWorkspaceImpl define(String name) {
+        return new OnlineExperimentationWorkspaceImpl(name, this.manager());
     }
 }

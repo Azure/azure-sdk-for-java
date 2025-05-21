@@ -13,11 +13,11 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The properties of an online experiment workspace.
+ * The properties of an online experimentation workspace.
  */
 @Fluent
-public final class OnlineExperimentWorkspaceProperties
-    implements JsonSerializable<OnlineExperimentWorkspaceProperties> {
+public final class OnlineExperimentationWorkspaceProperties
+    implements JsonSerializable<OnlineExperimentationWorkspaceProperties> {
     /*
      * The Id of the workspace.
      */
@@ -29,37 +29,37 @@ public final class OnlineExperimentWorkspaceProperties
     private ResourceProvisioningState provisioningState;
 
     /*
-     * The resource identifier of the Log Analytics workspace which online experiment workspace uses for generating
+     * The resource identifier of the Log Analytics workspace which online experimentation workspace uses for generating
      * experiment analysis results.
      */
     private String logAnalyticsWorkspaceResourceId;
 
     /*
-     * The resource identifier of storage account where logs are exported from Log Analytics workspace. Online
-     * Experiment workspace uses it generating experiment analysis results.
+     * The resource identifier of storage account where logs are exported from Log Analytics workspace. online
+     * experimentation workspace uses it generating experiment analysis results.
      */
     private String logsExporterStorageAccountResourceId;
 
     /*
-     * The resource identifier of App Configuration with which this online experiment workspace is tied for
-     * experimentation. This is a required field for creating an online experiment workspace.
+     * The resource identifier of App Configuration with which this online experimentation workspace is tied for
+     * experimentation. This is a required field for creating an online experimentation workspace.
      */
     private String appConfigurationResourceId;
 
     /*
-     * The encryption configuration for the online experiment workspace resource.
+     * The encryption configuration for the online experimentation workspace resource.
      */
     private ResourceEncryptionConfiguration encryption;
 
     /*
-     * The data plane endpoint for the online experiment workspace resource.
+     * The data plane endpoint for the online experimentation workspace resource.
      */
     private String endpoint;
 
     /**
-     * Creates an instance of OnlineExperimentWorkspaceProperties class.
+     * Creates an instance of OnlineExperimentationWorkspaceProperties class.
      */
-    public OnlineExperimentWorkspaceProperties() {
+    public OnlineExperimentationWorkspaceProperties() {
     }
 
     /**
@@ -82,7 +82,7 @@ public final class OnlineExperimentWorkspaceProperties
 
     /**
      * Get the logAnalyticsWorkspaceResourceId property: The resource identifier of the Log Analytics workspace which
-     * online experiment workspace uses for generating experiment analysis results.
+     * online experimentation workspace uses for generating experiment analysis results.
      * 
      * @return the logAnalyticsWorkspaceResourceId value.
      */
@@ -92,12 +92,12 @@ public final class OnlineExperimentWorkspaceProperties
 
     /**
      * Set the logAnalyticsWorkspaceResourceId property: The resource identifier of the Log Analytics workspace which
-     * online experiment workspace uses for generating experiment analysis results.
+     * online experimentation workspace uses for generating experiment analysis results.
      * 
      * @param logAnalyticsWorkspaceResourceId the logAnalyticsWorkspaceResourceId value to set.
-     * @return the OnlineExperimentWorkspaceProperties object itself.
+     * @return the OnlineExperimentationWorkspaceProperties object itself.
      */
-    public OnlineExperimentWorkspaceProperties
+    public OnlineExperimentationWorkspaceProperties
         withLogAnalyticsWorkspaceResourceId(String logAnalyticsWorkspaceResourceId) {
         this.logAnalyticsWorkspaceResourceId = logAnalyticsWorkspaceResourceId;
         return this;
@@ -105,7 +105,7 @@ public final class OnlineExperimentWorkspaceProperties
 
     /**
      * Get the logsExporterStorageAccountResourceId property: The resource identifier of storage account where logs are
-     * exported from Log Analytics workspace. Online Experiment workspace uses it generating experiment analysis
+     * exported from Log Analytics workspace. online experimentation workspace uses it generating experiment analysis
      * results.
      * 
      * @return the logsExporterStorageAccountResourceId value.
@@ -116,13 +116,13 @@ public final class OnlineExperimentWorkspaceProperties
 
     /**
      * Set the logsExporterStorageAccountResourceId property: The resource identifier of storage account where logs are
-     * exported from Log Analytics workspace. Online Experiment workspace uses it generating experiment analysis
+     * exported from Log Analytics workspace. online experimentation workspace uses it generating experiment analysis
      * results.
      * 
      * @param logsExporterStorageAccountResourceId the logsExporterStorageAccountResourceId value to set.
-     * @return the OnlineExperimentWorkspaceProperties object itself.
+     * @return the OnlineExperimentationWorkspaceProperties object itself.
      */
-    public OnlineExperimentWorkspaceProperties
+    public OnlineExperimentationWorkspaceProperties
         withLogsExporterStorageAccountResourceId(String logsExporterStorageAccountResourceId) {
         this.logsExporterStorageAccountResourceId = logsExporterStorageAccountResourceId;
         return this;
@@ -130,8 +130,8 @@ public final class OnlineExperimentWorkspaceProperties
 
     /**
      * Get the appConfigurationResourceId property: The resource identifier of App Configuration with which this online
-     * experiment workspace is tied for experimentation. This is a required field for creating an online experiment
-     * workspace.
+     * experimentation workspace is tied for experimentation. This is a required field for creating an online
+     * experimentation workspace.
      * 
      * @return the appConfigurationResourceId value.
      */
@@ -141,19 +141,19 @@ public final class OnlineExperimentWorkspaceProperties
 
     /**
      * Set the appConfigurationResourceId property: The resource identifier of App Configuration with which this online
-     * experiment workspace is tied for experimentation. This is a required field for creating an online experiment
-     * workspace.
+     * experimentation workspace is tied for experimentation. This is a required field for creating an online
+     * experimentation workspace.
      * 
      * @param appConfigurationResourceId the appConfigurationResourceId value to set.
-     * @return the OnlineExperimentWorkspaceProperties object itself.
+     * @return the OnlineExperimentationWorkspaceProperties object itself.
      */
-    public OnlineExperimentWorkspaceProperties withAppConfigurationResourceId(String appConfigurationResourceId) {
+    public OnlineExperimentationWorkspaceProperties withAppConfigurationResourceId(String appConfigurationResourceId) {
         this.appConfigurationResourceId = appConfigurationResourceId;
         return this;
     }
 
     /**
-     * Get the encryption property: The encryption configuration for the online experiment workspace resource.
+     * Get the encryption property: The encryption configuration for the online experimentation workspace resource.
      * 
      * @return the encryption value.
      */
@@ -162,18 +162,18 @@ public final class OnlineExperimentWorkspaceProperties
     }
 
     /**
-     * Set the encryption property: The encryption configuration for the online experiment workspace resource.
+     * Set the encryption property: The encryption configuration for the online experimentation workspace resource.
      * 
      * @param encryption the encryption value to set.
-     * @return the OnlineExperimentWorkspaceProperties object itself.
+     * @return the OnlineExperimentationWorkspaceProperties object itself.
      */
-    public OnlineExperimentWorkspaceProperties withEncryption(ResourceEncryptionConfiguration encryption) {
+    public OnlineExperimentationWorkspaceProperties withEncryption(ResourceEncryptionConfiguration encryption) {
         this.encryption = encryption;
         return this;
     }
 
     /**
-     * Get the endpoint property: The data plane endpoint for the online experiment workspace resource.
+     * Get the endpoint property: The data plane endpoint for the online experimentation workspace resource.
      * 
      * @return the endpoint value.
      */
@@ -190,24 +190,24 @@ public final class OnlineExperimentWorkspaceProperties
         if (logAnalyticsWorkspaceResourceId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
-                    "Missing required property logAnalyticsWorkspaceResourceId in model OnlineExperimentWorkspaceProperties"));
+                    "Missing required property logAnalyticsWorkspaceResourceId in model OnlineExperimentationWorkspaceProperties"));
         }
         if (logsExporterStorageAccountResourceId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
-                    "Missing required property logsExporterStorageAccountResourceId in model OnlineExperimentWorkspaceProperties"));
+                    "Missing required property logsExporterStorageAccountResourceId in model OnlineExperimentationWorkspaceProperties"));
         }
         if (appConfigurationResourceId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
-                    "Missing required property appConfigurationResourceId in model OnlineExperimentWorkspaceProperties"));
+                    "Missing required property appConfigurationResourceId in model OnlineExperimentationWorkspaceProperties"));
         }
         if (encryption() != null) {
             encryption().validate();
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(OnlineExperimentWorkspaceProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OnlineExperimentationWorkspaceProperties.class);
 
     /**
      * {@inheritDoc}
@@ -223,46 +223,47 @@ public final class OnlineExperimentWorkspaceProperties
     }
 
     /**
-     * Reads an instance of OnlineExperimentWorkspaceProperties from the JsonReader.
+     * Reads an instance of OnlineExperimentationWorkspaceProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OnlineExperimentWorkspaceProperties if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
+     * @return An instance of OnlineExperimentationWorkspaceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OnlineExperimentWorkspaceProperties.
+     * @throws IOException If an error occurs while reading the OnlineExperimentationWorkspaceProperties.
      */
-    public static OnlineExperimentWorkspaceProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static OnlineExperimentationWorkspaceProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OnlineExperimentWorkspaceProperties deserializedOnlineExperimentWorkspaceProperties
-                = new OnlineExperimentWorkspaceProperties();
+            OnlineExperimentationWorkspaceProperties deserializedOnlineExperimentationWorkspaceProperties
+                = new OnlineExperimentationWorkspaceProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("logAnalyticsWorkspaceResourceId".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceProperties.logAnalyticsWorkspaceResourceId
+                    deserializedOnlineExperimentationWorkspaceProperties.logAnalyticsWorkspaceResourceId
                         = reader.getString();
                 } else if ("logsExporterStorageAccountResourceId".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceProperties.logsExporterStorageAccountResourceId
+                    deserializedOnlineExperimentationWorkspaceProperties.logsExporterStorageAccountResourceId
                         = reader.getString();
                 } else if ("appConfigurationResourceId".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceProperties.appConfigurationResourceId = reader.getString();
+                    deserializedOnlineExperimentationWorkspaceProperties.appConfigurationResourceId
+                        = reader.getString();
                 } else if ("workspaceId".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceProperties.workspaceId = reader.getString();
+                    deserializedOnlineExperimentationWorkspaceProperties.workspaceId = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceProperties.provisioningState
+                    deserializedOnlineExperimentationWorkspaceProperties.provisioningState
                         = ResourceProvisioningState.fromString(reader.getString());
                 } else if ("encryption".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceProperties.encryption
+                    deserializedOnlineExperimentationWorkspaceProperties.encryption
                         = ResourceEncryptionConfiguration.fromJson(reader);
                 } else if ("endpoint".equals(fieldName)) {
-                    deserializedOnlineExperimentWorkspaceProperties.endpoint = reader.getString();
+                    deserializedOnlineExperimentationWorkspaceProperties.endpoint = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedOnlineExperimentWorkspaceProperties;
+            return deserializedOnlineExperimentationWorkspaceProperties;
         });
     }
 }

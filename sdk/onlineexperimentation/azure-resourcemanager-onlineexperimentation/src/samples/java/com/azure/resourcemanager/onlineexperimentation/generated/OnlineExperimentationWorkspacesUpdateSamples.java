@@ -9,28 +9,28 @@ import com.azure.resourcemanager.onlineexperimentation.models.KeyEncryptionKeyId
 import com.azure.resourcemanager.onlineexperimentation.models.KeyEncryptionKeyIdentityType;
 import com.azure.resourcemanager.onlineexperimentation.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.onlineexperimentation.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspace;
-import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspacePatchProperties;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspace;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspacePatchProperties;
 import com.azure.resourcemanager.onlineexperimentation.models.ResourceEncryptionConfiguration;
 import com.azure.resourcemanager.onlineexperimentation.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for OnlineExperimentWorkspaces Update.
+ * Samples for OnlineExperimentationWorkspaces Update.
  */
-public final class OnlineExperimentWorkspacesUpdateSamples {
+public final class OnlineExperimentationWorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentWorkspaces_Update.json
+     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_Update.json
      */
     /**
-     * Sample code: Update an Online Experiment Workspace.
+     * Sample code: Update an Online Experimentation Workspace.
      * 
      * @param manager Entry point to OnlineExperimentationManager.
      */
-    public static void updateAnOnlineExperimentWorkspace(
+    public static void updateAnOnlineExperimentationWorkspace(
         com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
-        OnlineExperimentWorkspace resource = manager.onlineExperimentWorkspaces()
+        OnlineExperimentationWorkspace resource = manager.onlineExperimentationWorkspaces()
             .getByResourceGroupWithResponse("res9871", "expworkspace3", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
@@ -45,16 +45,16 @@ public final class OnlineExperimentWorkspacesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentWorkspaces_UpdateWithEncryption.json
+     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_UpdateWithEncryption.json
      */
     /**
-     * Sample code: Update an Online Experiment Workspace with customer managed encryption key.
+     * Sample code: Update an Online Experimentation Workspace with customer managed encryption key.
      * 
      * @param manager Entry point to OnlineExperimentationManager.
      */
-    public static void updateAnOnlineExperimentWorkspaceWithCustomerManagedEncryptionKey(
+    public static void updateAnOnlineExperimentationWorkspaceWithCustomerManagedEncryptionKey(
         com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
-        OnlineExperimentWorkspace resource = manager.onlineExperimentWorkspaces()
+        OnlineExperimentationWorkspace resource = manager.onlineExperimentationWorkspaces()
             .getByResourceGroupWithResponse("res9871", "expworkspace3", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
@@ -65,7 +65,7 @@ public final class OnlineExperimentWorkspacesUpdateSamples {
                     new UserAssignedIdentity(),
                     "/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2",
                     new UserAssignedIdentity())))
-            .withProperties(new OnlineExperimentWorkspacePatchProperties().withLogAnalyticsWorkspaceResourceId(
+            .withProperties(new OnlineExperimentationWorkspacePatchProperties().withLogAnalyticsWorkspaceResourceId(
                 "/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OperationalInsights/workspaces/log9871")
                 .withLogsExporterStorageAccountResourceId(
                     "/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto9871")
