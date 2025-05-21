@@ -319,17 +319,7 @@ public final class CallMedia {
     public void updateTranscription(String locale) {
         callMediaAsync.updateTranscription(locale).block();
     }
-
-    /**
-     * Updates transcription language in the call.
-     * @param locale Defines new locale for transcription.
-     * @param speechRecognitionModelEndpointId Defines custom model endpoint.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateTranscription(String locale, String speechRecognitionModelEndpointId) {
-        callMediaAsync.updateTranscription(locale, speechRecognitionModelEndpointId).block();
-    }
-
+    
     /**
      * Updates transcription language in the call.
      *@param options Options for the Update Transcription operation.

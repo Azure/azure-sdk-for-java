@@ -19,7 +19,7 @@ public class TranscriptionOptionsInternal implements JsonSerializable<Transcript
     /*
      * Defines the transport type used for streaming. Note that future values may be introduced that are not currently documented.
      */
-    private StreamingTransportType transportType;
+    private StreamingTransportTypeInternal transportType;
 
     /*
      * Specifies the Locale used for transcription, e.g., en-CA or en-AU.
@@ -30,7 +30,7 @@ public class TranscriptionOptionsInternal implements JsonSerializable<Transcript
      * Creates an instance of TranscriptionOptionsInternal class.
      */
     public TranscriptionOptionsInternal() {
-        this.transportType = StreamingTransportType.fromString("TranscriptionOptionsInternal");
+        this.transportType = StreamingTransportTypeInternal.fromString("TranscriptionOptionsInternal");
     }
 
     /**
@@ -39,7 +39,7 @@ public class TranscriptionOptionsInternal implements JsonSerializable<Transcript
      * 
      * @return the transportType value.
      */
-    public StreamingTransportType getTransportType() {
+    public StreamingTransportTypeInternal getTransportType() {
         return this.transportType;
     }
 
@@ -119,7 +119,7 @@ public class TranscriptionOptionsInternal implements JsonSerializable<Transcript
                     deserializedTranscriptionOptionsInternal.locale = reader.getString();
                 } else if ("transportType".equals(fieldName)) {
                     deserializedTranscriptionOptionsInternal.transportType
-                        = StreamingTransportType.fromString(reader.getString());
+                        = StreamingTransportTypeInternal.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

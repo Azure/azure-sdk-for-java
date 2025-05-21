@@ -892,19 +892,6 @@ public final class CallMediaAsync {
     }
 
     /**
-     * Updates transcription language
-     *
-     * @param locale Defines new locale for transcription.
-     * @param speechRecognitionModelEndpointId Defines custom model endpoint.
-     * @return Response for successful operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateTranscription(String locale, String speechRecognitionModelEndpointId) {
-        return updateTranscriptionWithResponse(new UpdateTranscriptionOptions().setLocale(locale)
-            .setSpeechRecognitionModelEndpointId(speechRecognitionModelEndpointId)).then();
-    }
-
-    /**
     * Updates transcription language
     * @param options Options for the Update Transcription operation.
     * @return Response for successful operation.

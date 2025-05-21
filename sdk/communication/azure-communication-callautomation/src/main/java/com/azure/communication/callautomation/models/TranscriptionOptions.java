@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.callautomation.implementation.models.WebSocketTranscriptionOptionsInternal;
 import com.azure.core.annotation.Fluent;
 
 /** The TranscriptionOptions model. */
@@ -16,7 +17,7 @@ public final class TranscriptionOptions {
     /*
      * The type of transport to be used for live transcription, eg. Websocket
      */
-    private final TranscriptionTransport transportType;
+    private final StreamingTransport transportType;
 
     /*
      * Defines the locale for the data e.g en-CA, en-AU
@@ -26,7 +27,7 @@ public final class TranscriptionOptions {
     /*
      * Determines if the transcription should be started immediately after call is answered or not.
      */
-    private final boolean startTranscription;
+    private boolean startTranscription;
 
     /*
      * Endpoint where the custom model was deployed.
@@ -45,12 +46,11 @@ public final class TranscriptionOptions {
      * @param locale - Locale
      * @param startTranscription - Start Transcription
      */
-    public TranscriptionOptions(String transportUrl, TranscriptionTransport transportType, String locale,
-        boolean startTranscription) {
+    public TranscriptionOptions(String transportUrl, String locale) {
         this.transportUrl = transportUrl;
-        this.transportType = transportType;
+        this.transportType = StreamingTransport.WEBSOCKET;
         this.locale = locale;
-        this.startTranscription = startTranscription;
+        this.startTranscription = false;
     }
 
     /**
@@ -67,7 +67,7 @@ public final class TranscriptionOptions {
      *
      * @return the transportType value.
      */
-    public TranscriptionTransport getTransportType() {
+    public StreamingTransport getTransportType() {
         return this.transportType;
     }
 
@@ -87,6 +87,28 @@ public final class TranscriptionOptions {
      */
     public boolean getStartTranscription() {
         return this.startTranscription;
+    }
+
+    /**
+     * Get the startTranscription property: Indicates whether the transcription should start immediately after the call
+     * is answered.
+     * 
+     * @return the startTranscription value.
+     */
+    public Boolean isStartTranscription() {
+        return this.startTranscription;
+    }
+
+    /**
+     * Set the startTranscription property: Indicates whether the transcription should start immediately after the call
+     * is answered.
+     * 
+     * @param startTranscription the startTranscription value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setStartTranscription(Boolean startTranscription) {
+        this.startTranscription = startTranscription;
+        return this;
     }
 
     /**

@@ -417,24 +417,14 @@ directive:
     $.name = "MediaStreamingContentTypeInternal";
 ```
 
-### Rename MediaStreamingTransportType to MediaStreamingTransportTypeInternal
+### Rename StreamingTransportType to StreamingTransportTypeInternal
 
 ``` yaml
 directive:
 - from: swagger-document
-  where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
+  where: $.definitions.StreamingTransportType["x-ms-enum"]
   transform: >
-    $.name = "MediaStreamingTransportTypeInternal";
-```
-
-### Rename TranscriptionTransportType to TranscriptionTransportTypeInternal
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.TranscriptionTransportType["x-ms-enum"]
-  transform: >
-    $.name = "TranscriptionTransportTypeInternal";
+    $.name = "StreamingTransportTypeInternal";
 ```
 
 ### Rename RecognitionType to RecognitionTypeInternal
