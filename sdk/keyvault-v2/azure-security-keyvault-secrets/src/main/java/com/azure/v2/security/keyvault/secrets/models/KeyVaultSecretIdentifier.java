@@ -10,6 +10,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 /**
  * Information about a {@link KeyVaultSecret} parsed from the secret URL. You can use this information when calling
@@ -42,9 +43,7 @@ public final class KeyVaultSecretIdentifier {
      * @throws NullPointerException If {@code sourceId} is {@code null}.
      */
     public KeyVaultSecretIdentifier(String sourceId) {
-        if (sourceId == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'sourceId' cannot be null."));
-        }
+        Objects.requireNonNull(sourceId, "'sourceId' cannot be null.");
 
         try {
             final URI uri = new URI(sourceId);
@@ -53,8 +52,8 @@ public final class KeyVaultSecretIdentifier {
 
             // More or less segments in the URI than expected.
             if (pathSegments.length != 3 && pathSegments.length != 4) {
-                throw LOGGER.logThrowableAsError(
-                    new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier."));
+                throw LOGGER.throwableAtError()
+                    .log("'sourceId' is not a valid Key Vault identifier.", IllegalArgumentException::new);
             }
 
             this.sourceId = sourceId;
@@ -62,8 +61,8 @@ public final class KeyVaultSecretIdentifier {
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
         } catch (URISyntaxException e) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier.", e));
+            throw LOGGER.throwableAtError()
+                .log("'sourceId' is not a valid Key Vault identifier.", e, IllegalArgumentException::new);
         }
     }
 
