@@ -8,6 +8,8 @@ import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
 
 import static java.util.Arrays.asList;
 
+import com.azure.communication.phonenumbers.siprouting.models.SipDomain;
+
 public class AsyncClientJavaDocCodeSnippets {
 
     /**
@@ -42,6 +44,19 @@ public class AsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Sample code for listing SIP Domains.
+     */
+    public void listDomains() {
+        SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
+
+        // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.listDomains
+        sipRoutingAsyncClient.listDomains()
+            .subscribe(domain ->
+                System.out.println("Domain " + domain.isEnabled()));
+        // END: com.azure.communication.phonenumbers.siprouting.asyncclient.listDomains
+    }
+
+    /**
      * Sample code for listing SIP routing routes.
      */
     public void listRoutes() {
@@ -57,7 +72,7 @@ public class AsyncClientJavaDocCodeSnippets {
         // END: com.azure.communication.phonenumbers.siprouting.asyncclient.listRoutes
     }
 
-    /**
+     /**
      * Sample code for getting a SIP trunk based on its FQDN.
      */
     public void getTrunk() {
@@ -112,6 +127,75 @@ public class AsyncClientJavaDocCodeSnippets {
             System.out.println("Response status " + response.getStatusCode());
         });
         // END: com.azure.communication.phonenumbers.siprouting.asyncclient.setTrunksWithResponse
+    }
+
+     /**
+     * Sample code for getting a SIP Domain based on its domain name.
+     */
+    public void getDomain() {
+        SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
+
+        // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.getDomain
+        sipRoutingAsyncClient.getDomain("<domain name>").subscribe(domain ->
+            System.out.println("Domain " + domain.isEnabled()));
+        // END: com.azure.communication.phonenumbers.siprouting.asyncclient.getDomain
+    }
+
+    /**
+     * Sample code for getting a SIP domain with response based on its domain name.
+     */
+    public void getDomainWithResponse() {
+        SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
+
+        // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.getDomainWithResponse
+        sipRoutingAsyncClient.getDomainWithResponse("<domain domainName>")
+            .subscribe(response -> {
+                SipDomain domain = response.getValue();
+                System.out.println("Domain " + domain.isEnabled());
+            });
+        // END: com.azure.communication.phonenumbers.siprouting.asyncclient.getDomainWithResponse
+    }
+
+    /**
+     * Sample code for setting SIP Domains.
+     */
+    public void setDomains() {
+        SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
+
+        // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.setDomains
+        sipRoutingAsyncClient.setDomains(asList(
+            new SipDomain("<first trunk fqdn>", false),
+            new SipDomain("<first trunk fqdn>", false)
+        )).block();
+        // END: com.azure.communication.phonenumbers.siprouting.asyncclient.setDomains
+    }
+
+    /**
+     * Sample code for setting SIP Domains.
+     */
+    public void setDomain() {
+        SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
+
+        // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.setDomain
+        sipRoutingAsyncClient.setDomain(new SipDomain("<first trunk fqdn>", false)
+        ).block();
+        // END: com.azure.communication.phonenumbers.siprouting.asyncclient.setDomain
+    }
+
+    /**
+     * Sample code for setting SIP Domains with response.
+     */
+    public void setDomainsWithResponse() {
+        SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
+
+        // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.setDomainsWithResponse
+        sipRoutingAsyncClient.setDomainsWithResponse(asList(
+            new SipDomain("<first trunk fqdn>", false),
+            new SipDomain("<first trunk fqdn>", false)
+        )).subscribe(response -> {
+            System.out.println("Response status " + response.getStatusCode());
+        });
+        // END: com.azure.communication.phonenumbers.siprouting.asyncclient.setDomainsWithResponse
     }
 
     /**
@@ -179,4 +263,27 @@ public class AsyncClientJavaDocCodeSnippets {
         // END: com.azure.communication.phonenumbers.siprouting.asyncclient.deleteTrunkWithResponse
     }
 
+     /**
+     * Sample code for deleting a SIP domain.
+     */
+    public void deleteDomain() {
+        SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
+
+        // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.deleteDomains
+        sipRoutingAsyncClient.deleteDomain("<domain name>").block();
+        // END: com.azure.communication.phonenumbers.siprouting.asyncclient.deleteDomains
+    }
+
+    /**
+     * Sample code for deleting a SIP domain with response.
+     */
+    public void deleteDomainWithResponse() {
+        SipRoutingAsyncClient sipRoutingAsyncClient = createSipRoutingAsyncClient();
+
+        // BEGIN: com.azure.communication.phonenumbers.siprouting.asyncclient.deleteDomainWithResponse
+        sipRoutingAsyncClient.deleteDomainWithResponse("<domain name>").subscribe(response -> {
+            System.out.println("Response status " + response.getStatusCode());
+        });
+        // END: com.azure.communication.phonenumbers.siprouting.asyncclient.deleteDomainWithResponse
+    }
 }

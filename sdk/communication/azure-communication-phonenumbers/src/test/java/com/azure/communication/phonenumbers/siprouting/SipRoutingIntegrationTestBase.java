@@ -3,6 +3,9 @@
 package com.azure.communication.phonenumbers.siprouting;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
+import com.azure.communication.phonenumbers.siprouting.models.IpAddressVersion;
+import com.azure.communication.phonenumbers.siprouting.models.PrivacyHeader;
+import com.azure.communication.phonenumbers.siprouting.models.SipDomain;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
 import com.azure.core.http.HttpClient;
@@ -57,24 +60,33 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
     protected static final String NOT_EXISTING_FQDN = "not.existing.fqdn";
 
     protected static final int SET_TRUNK_PORT = 4567;
-    protected static final SipTrunk SET_TRUNK = new SipTrunk(SET_TRUNK_FQDN, SET_TRUNK_PORT);
+    protected static final SipTrunk SET_TRUNK = new SipTrunk(SET_TRUNK_FQDN, SET_TRUNK_PORT, true);
 
     protected static final int SET_TRUNK_UPDATED_PORT = 7651;
-    protected static final SipTrunk SET_UPDATED_TRUNK = new SipTrunk(SET_TRUNK_FQDN, SET_TRUNK_UPDATED_PORT);
+    protected static final SipTrunk SET_UPDATED_TRUNK
+        = new SipTrunk(SET_TRUNK_FQDN, SET_TRUNK_UPDATED_PORT, true).setDirectTransfer(true)
+            .setPrivacyHeader(PrivacyHeader.NONE)
+            .setIpAddressVersion(IpAddressVersion.IPV6);
 
     protected static final String SET_TRUNK_INVALID_FQDN = "_";
     protected static final int SET_TRUNK_INVALID_PORT = -1;
 
     protected static final int DELETE_PORT = 5678;
-    protected static final SipTrunk DELETE_TRUNK = new SipTrunk(DELETE_FQDN, DELETE_PORT);
+    protected static final SipTrunk DELETE_TRUNK = new SipTrunk(DELETE_FQDN, DELETE_PORT, true);
 
-    protected static final List<SipTrunk> EXPECTED_TRUNKS
-        = asList(new SipTrunk(FIRST_FQDN, 1234), new SipTrunk(SECOND_FQDN, 2345), new SipTrunk(THIRD_FQDN, 3456));
-    protected static final List<SipTrunk> UPDATED_TRUNKS = asList(new SipTrunk(FIRST_FQDN, 9876),
-        new SipTrunk(FOURTH_FQDN, 2340), new SipTrunk(FIFTH_FQDN, 3460), new SipTrunk(SIXTH_FQDN, 4461));
+    protected static final List<SipTrunk> EXPECTED_TRUNKS = asList(new SipTrunk(FIRST_FQDN, 1234, true),
+        new SipTrunk(SECOND_FQDN, 2345, true).setDirectTransfer(true)
+            .setPrivacyHeader(PrivacyHeader.ID)
+            .setIpAddressVersion(IpAddressVersion.IPV6),
+        new SipTrunk(THIRD_FQDN, 3456, true).setDirectTransfer(false)
+            .setPrivacyHeader(PrivacyHeader.NONE)
+            .setIpAddressVersion(IpAddressVersion.IPV4));
+    protected static final List<SipTrunk> UPDATED_TRUNKS
+        = asList(new SipTrunk(FIRST_FQDN, 9876, true), new SipTrunk(FOURTH_FQDN, 2340, true),
+            new SipTrunk(FIFTH_FQDN, 3460, true), new SipTrunk(SIXTH_FQDN, 4461, true));
     protected static final List<SipTrunkRoute> EXPECTED_ROUTES
-        = asList(new SipTrunkRoute("route0", "0.*").setDescription("desc0"),
-            new SipTrunkRoute("route1", "1.*").setDescription("desc1"),
+        = asList(new SipTrunkRoute("route0", "0.*").setDescription("desc0").setCallerIdOverride("+123456789"),
+            new SipTrunkRoute("route1", "1.*").setDescription("desc1").setCallerIdOverride(null),
             new SipTrunkRoute("route2", "2.*").setDescription("desc2"));
     protected static final List<SipTrunkRoute> EXPECTED_ROUTES_WITH_REFERENCED_TRUNK
         = asList(new SipTrunkRoute("route0", "0.*").setDescription("desc0"),
@@ -85,6 +97,7 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
             new SipTrunkRoute("route0", "8.*").setDescription("desc91"),
             new SipTrunkRoute("route21", "7.*").setDescription("desc92"),
             new SipTrunkRoute("route24", "4.*").setDescription("desc44"));
+    protected static final List<SipDomain> EXPECTED_DOMAINS = asList(new SipDomain(getTestDomain(), true));
     protected static final String MESSAGE_DUPLICATE_ROUTES
         = "Status code 400, \"{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"DuplicatedRoute\",\"message\":\"There is a duplicated route.\"}}}\"";
     protected static final String MESSAGE_DUPLICATE_TRUNKS
@@ -146,15 +159,11 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
 
     private void addTestProxySanitizers() {
         String domain = AZURE_TEST_DOMAIN;
-        interceptorManager.addSanitizers(Arrays.asList(
-            new TestProxySanitizer(
-                "(-[0-9a-fA-F]{32}"
-                    + ".[0-9a-fA-F]{8}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{12})",
-                ".redacted", TestProxySanitizerType.BODY_REGEX),
-            new TestProxySanitizer(domain.indexOf(".") > 0 ? domain.substring(domain.indexOf(".")) : domain, ".com",
-                TestProxySanitizerType.BODY_REGEX),
-            new TestProxySanitizer("id", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("phoneNumber", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
+        interceptorManager.addSanitizers(
+            Arrays.asList(new TestProxySanitizer("-[0-9a-fA-F]{32}", ".redacted", TestProxySanitizerType.BODY_REGEX),
+                new TestProxySanitizer(domain, "testdomain.com", TestProxySanitizerType.BODY_REGEX),
+                new TestProxySanitizer("id", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("phoneNumber", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
     }
 
     protected SipRoutingClientBuilder addLoggingPolicy(SipRoutingClientBuilder builder, String testName) {
@@ -195,10 +204,18 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
 
     private static String getUniqueFqdn(String order) {
         if (TestingHelpers.getTestMode() == TestMode.PLAYBACK) {
-            return order + ".redacted" + "." + AZURE_TEST_DOMAIN;
+            return order + ".redacted" + "." + getTestDomain();
         }
 
         String unique = CoreUtils.randomUuid().toString().replace("-", "");
-        return order + "-" + unique + "." + AZURE_TEST_DOMAIN;
+        return order + "-" + unique + "." + getTestDomain();
+    }
+
+    private static String getTestDomain() {
+        if (TestingHelpers.getTestMode() == TestMode.PLAYBACK) {
+            return "testdomain.com";
+        }
+
+        return AZURE_TEST_DOMAIN;
     }
 }
