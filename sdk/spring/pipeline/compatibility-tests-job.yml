@@ -25,6 +25,7 @@ jobs:
         parameters:
           Paths:
             - 'sdk/core'
+            - 'sdk/identity'
             - 'sdk/spring'
             - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/boms/spring-cloud-azure-dependencies'

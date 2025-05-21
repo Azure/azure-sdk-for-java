@@ -21,5 +21,11 @@
     <module>../../servicebus/azure-messaging-servicebus-stress/pom.xml</module>
     <module>../../servicebus/azure-messaging-servicebus-track2-perf/pom.xml</module>
     <module>../../servicebus/azure-messaging-servicebus/pom.xml</module>
+    <module>../../core/azure-core/pom.xml</module>
+    <module>../../core/azure-core-amqp/pom.xml</module>
+    <module>../../core/azure-core-http-netty/pom.xml</module>
+    <module>../../core/azure-core-management/pom.xml</module>
+    <module>../../identity/azure-identity/pom.xml</module>
+    <module>../../identity/azure-identity-extensions/pom.xml</module>
   </modules>
 </project>
