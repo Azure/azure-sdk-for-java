@@ -5,9 +5,6 @@ package io.clientcore.annotation.processor.models;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.utils.CoreUtils;
-
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,6 +14,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 
 /**
  * Represents the context of an HTTP request, including its configuration, parameters, headers, and other details.
@@ -67,6 +66,7 @@ public final class HttpRequestContext {
     }
 
     private Body body;
+    private final Map<Integer, ExceptionBodyTypeInfo> exceptionBodyMappings = new HashMap<>();
 
     /**
      * Gets the method name.
@@ -384,6 +384,25 @@ public final class HttpRequestContext {
     }
 
     /**
+     * Adds an exception body mapping.
+     *
+     * @param statusCode the status code.
+     * @param exceptionBodyClassName the exception body class name.
+     */
+    public void addExceptionBodyMapping(int statusCode, ExceptionBodyTypeInfo exceptionBodyClassName) {
+        exceptionBodyMappings.put(statusCode, exceptionBodyClassName);
+    }
+
+    /**
+     * Gets the exception body mappings.
+     *
+     * @return the exception body mappings.
+     */
+    public Map<Integer, ExceptionBodyTypeInfo> getExceptionBodyMappings() {
+        return exceptionBodyMappings;
+    }
+
+    /**
      * Represents a method parameter.
      */
     public static class MethodParameter {
@@ -585,6 +604,47 @@ public final class HttpRequestContext {
          */
         public boolean isStatic() {
             return isStatic;
+        }
+    }
+
+    /**
+     * Represents information about the exception body type used in the HTTP request context.
+     * <p>
+     * This class encapsulates the {@link TypeMirror} of the exception body and a flag indicating
+     * whether the type is the default Object.class.
+     * </p>
+     */
+    public static class ExceptionBodyTypeInfo {
+        private final TypeMirror typeMirror;
+        private final boolean isDefaultObject;
+
+        /**
+         * Constructs a new ExceptionBodyTypeInfo.
+         *
+         * @param typeMirror the type mirror of the exception body.
+         * @param isDefaultObject whether the type is the default object.
+         */
+        public ExceptionBodyTypeInfo(TypeMirror typeMirror, boolean isDefaultObject) {
+            this.typeMirror = typeMirror;
+            this.isDefaultObject = isDefaultObject;
+        }
+
+        /**
+         * Gets the type mirror of the exception body.
+         *
+         * @return the type mirror.
+         */
+        public TypeMirror getTypeMirror() {
+            return typeMirror;
+        }
+
+        /**
+         * Checks if the type is the default object.
+         *
+         * @return true if it is the default object, false otherwise.
+         */
+        public boolean isDefaultObject() {
+            return isDefaultObject;
         }
     }
 }

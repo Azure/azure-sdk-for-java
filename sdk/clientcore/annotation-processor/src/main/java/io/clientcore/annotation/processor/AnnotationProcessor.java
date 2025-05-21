@@ -24,6 +24,8 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -37,6 +39,8 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
 /**
@@ -166,7 +170,33 @@ public class AnnotationProcessor extends AbstractProcessor {
         method.addStaticQueryParams(httpRequestInfo.queryParams());
         templateInput.addImport(requestMethod.getReturnType());
         method.setMethodReturnType(requestMethod.getReturnType());
+        List<UnexpectedResponseExceptionDetail> details = getUnexpectedResponseExceptionDetails(requestMethod);
 
+        // For each detail, map statusCode -> exceptionBodyClass
+        for (UnexpectedResponseExceptionDetail detail : details) {
+            TypeMirror exceptionBodyType = null;
+            boolean isDefaultObject = false;
+            try {
+                // This will throw MirroredTypeException at compile time
+                // The assignment to clazz is only there to trigger the exception and use the TypeMirror from the exception.
+                Class<?> clazz = detail.exceptionBodyClass();
+            } catch (MirroredTypeException mte) {
+                TypeMirror typeMirror = mte.getTypeMirror();
+                String typeStr = typeMirror.toString();
+                if ("void".equals(typeStr) || "java.lang.Void".equals(typeStr)) {
+                    continue; // skip void types
+                } else if ("java.lang.Object".equals(typeStr)) {
+                    isDefaultObject = true;
+                } else {
+                    exceptionBodyType = typeMirror;
+                }
+            }
+            HttpRequestContext.ExceptionBodyTypeInfo info
+                = new HttpRequestContext.ExceptionBodyTypeInfo(exceptionBodyType, isDefaultObject);
+            for (int code : detail.statusCode()) {
+                method.addExceptionBodyMapping(code, info);
+            }
+        }
         // Process parameters
         for (VariableElement param : requestMethod.getParameters()) {
             // Cache annotations for each parameter
@@ -238,5 +268,23 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
         // else: hostPath is empty, use the path as is
         return PathBuilder.buildPath(method.getPath(), method);
+    }
+
+    private List<UnexpectedResponseExceptionDetail>
+        getUnexpectedResponseExceptionDetails(ExecutableElement requestMethod) {
+        List<UnexpectedResponseExceptionDetail> details = new ArrayList<>();
+        // Single annotation
+        UnexpectedResponseExceptionDetail singleDetail
+            = requestMethod.getAnnotation(UnexpectedResponseExceptionDetail.class);
+        if (singleDetail != null) {
+            details.add(singleDetail);
+        }
+        // Repeatable annotation
+        io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetails multiDetail
+            = requestMethod.getAnnotation(io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetails.class);
+        if (multiDetail != null) {
+            Collections.addAll(details, multiDetail.value());
+        }
+        return details;
     }
 }

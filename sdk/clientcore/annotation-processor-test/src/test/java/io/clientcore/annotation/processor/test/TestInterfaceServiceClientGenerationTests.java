@@ -8,6 +8,7 @@ import io.clientcore.annotation.processor.test.implementation.HostEdgeCase2Servi
 import io.clientcore.annotation.processor.test.implementation.ParameterizedHostService;
 import io.clientcore.annotation.processor.test.implementation.ParameterizedMultipleHostService;
 import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientImpl;
+import io.clientcore.annotation.processor.test.implementation.models.ErrorException;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
 import io.clientcore.core.http.client.HttpClient;
@@ -27,7 +28,6 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
@@ -1072,7 +1072,7 @@ public class TestInterfaceServiceClientGenerationTests {
         assertEquals("4", json.getHeaderValue("Content-Length"));
     }
 
-    @Disabled("Confirm behavior")
+    @Test
     public void putRequestWithUnexpectedResponseAndNoFallthroughExceptionType() {
         HttpResponseException e = assertThrows(HttpResponseException.class,
             () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
@@ -1085,6 +1085,77 @@ public class TestInterfaceServiceClientGenerationTests {
         final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
 
         assertEquals("I'm the body!", expectedBody.get("data"));
+    }
+
+     @Test
+     @Disabled("Disabled until we can get the test server to return a 400 error")
+    public void unexpectedResponseWithStatusCodeAndExceptionType400ReturnsErrorException() {
+        HttpResponseException e = assertThrows(HttpResponseException.class, () ->
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+                .unexpectedResponseWithStatusCodeAndExceptionType(getRequestUri(), "bad body")
+        );
+        assertNotNull(e.getValue());
+        assertInstanceOf(ErrorException.class, e.getValue());
+        // Optionally, check ErrorException fields
+        ErrorException error = (ErrorException) e.getValue();
+        assertEquals("bad body", error.getValue().getError());
+    }
+
+    @Test
+    @Disabled("Disabled until we can get the test server to return a 400 error")
+    public void unexpectedResponseWithStatusCodeAndExceptionType403ReturnsMyRestException() {
+        HttpResponseException e = assertThrows(HttpResponseException.class, () ->
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+                .unexpectedResponseWithStatusCodeAndExceptionType(getRequestUri(), "forbidden body")
+        );
+        assertNotNull(e.getValue());
+        assertInstanceOf(MyRestException.class, e.getValue());
+        // Optionally, check MyRestException fields
+        MyRestException error = (MyRestException) e.getValue();
+        assertEquals("forbidden body", error.getValue());
+    }
+
+    @Test
+    public void putRequestWithUnexpectedResponse() {
+        HttpResponseException e = assertThrows(HttpResponseException.class,
+            () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class).putWithUnexpectedResponse(getRequestUri(), "I'm the body!"));
+
+        assertNotNull(e.getValue());
+        assertInstanceOf(LinkedHashMap.class, e.getValue());
+
+        @SuppressWarnings("unchecked")
+        final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
+        assertEquals("I'm the body!", expectedBody.get("data"));
+    }
+
+    @Test
+    @Disabled("Disabled until we can get the test server to return a 400 error")
+    public void putRequestWithUnexpectedResponseAndExceptionType() {
+        MyRestException e = assertThrows(MyRestException.class, () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+            .putWithUnexpectedResponseAndExceptionType(getRequestUri(), "I'm the body!"));
+
+        assertNotNull(e.getValue());
+        assertEquals("I'm the body!", e.getValue().data());
+    }
+
+    @Test
+    @Disabled("Disabled until we can get the test server to return a 400 error")
+    public void putRequestWithUnexpectedResponseAndDeterminedExceptionType() {
+        MyRestException e = assertThrows(MyRestException.class, () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+            .putWithUnexpectedResponseAndDeterminedExceptionType(getRequestUri(), "I'm the body!"));
+
+        assertNotNull(e.getValue());
+        assertEquals("I'm the body!", e.getValue().data());
+    }
+
+    @Test
+    @Disabled("Disabled until we can get the test server to return a 400 error")
+    public void putRequestWithUnexpectedResponseAndFallthroughExceptionType() {
+        MyRestException e = assertThrows(MyRestException.class, () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+            .putWithUnexpectedResponseAndFallthroughExceptionType(getRequestUri(), "I'm the body!"));
+
+        assertNotNull(e.getValue());
+        assertEquals("I'm the body!", e.getValue().data());
     }
 
     @Test
@@ -1198,7 +1269,9 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service18GetStatus300() {
-        createService(TestInterfaceClientImpl.TestInterfaceClientService.class).getStatus300(getRequestUri());
+        assertThrows(HttpResponseException.class,
+            () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+                .getStatus300(getRequestUri()));
     }
 
     @Test

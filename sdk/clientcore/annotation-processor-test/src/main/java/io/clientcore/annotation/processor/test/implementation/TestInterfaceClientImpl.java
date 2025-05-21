@@ -3,9 +3,11 @@
 
 package io.clientcore.annotation.processor.test.implementation;
 
+import io.clientcore.annotation.processor.test.implementation.models.ErrorException;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.annotation.processor.test.implementation.models.FooListResult;
 import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
+import io.clientcore.annotation.processor.test.implementation.models.MyRestException;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
@@ -14,6 +16,7 @@ import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
+import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetails;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
@@ -298,9 +301,40 @@ public final class TestInterfaceClientImpl {
             @HeaderParam("Content-Length") long contentLength);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
-        @UnexpectedResponseExceptionDetail(statusCode = { 400 }, exceptionBodyClass = HttpBinJSON.class)
+        HttpBinJSON putWithUnexpectedResponse(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
+        @UnexpectedResponseExceptionDetail(exceptionBodyClass = MyRestException.class)
+        HttpBinJSON putWithUnexpectedResponseAndExceptionType(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
+        @UnexpectedResponseExceptionDetail(statusCode = { 200 }, exceptionBodyClass = MyRestException.class)
+        HttpBinJSON putWithUnexpectedResponseAndDeterminedExceptionType(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
+        @UnexpectedResponseExceptionDetails({
+            @UnexpectedResponseExceptionDetail(statusCode = { 400 }),
+            @UnexpectedResponseExceptionDetail(statusCode = { 403 }, exceptionBodyClass = MyRestException.class)
+        })HttpBinJSON putWithUnexpectedResponseAndFallthroughExceptionType(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
+        @UnexpectedResponseExceptionDetail(statusCode = { 400 }, exceptionBodyClass = MyRestException.class)
         HttpBinJSON putWithUnexpectedResponseAndNoFallthroughExceptionType(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
+        @UnexpectedResponseExceptionDetails({
+            @UnexpectedResponseExceptionDetail(statusCode = { 400 }, exceptionBodyClass = ErrorException.class),
+            @UnexpectedResponseExceptionDetail(statusCode = { 403 }, exceptionBodyClass = MyRestException.class)
+        })
+        HttpBinJSON unexpectedResponseWithStatusCodeAndExceptionType(
+            @HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody
+        );
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "post", expectedStatusCodes = { 200 })
         HttpBinJSON post(@HostParam("uri") String uri,

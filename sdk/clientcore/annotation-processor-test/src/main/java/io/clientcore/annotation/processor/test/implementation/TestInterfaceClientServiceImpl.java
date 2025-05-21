@@ -25,10 +25,12 @@ import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
-import java.lang.reflect.ParameterizedType;
-import io.clientcore.core.utils.UriBuilder;
 import io.clientcore.core.utils.GeneratedCodeUtils;
+import java.util.Collections;
+import io.clientcore.core.utils.UriBuilder;
+import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Initializes a new instance of the TestInterfaceClientServiceImpl type.
@@ -89,20 +91,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData networkResponseValue = networkResponse.getValue();
-                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                    exceptionMessage.append("(empty body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else {
-                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                    ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, Void.class);
-                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-                }
+                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -131,20 +122,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData networkResponseValue = networkResponse.getValue();
-                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                    exceptionMessage.append("(empty body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else {
-                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                    ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, Void.class);
-                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-                }
+                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -160,20 +140,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData networkResponseValue = networkResponse.getValue();
-                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                    exceptionMessage.append("(empty body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else {
-                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                    ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, Void.class);
-                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-                }
+                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -189,20 +158,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData networkResponseValue = networkResponse.getValue();
-                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                    exceptionMessage.append("(empty body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else {
-                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                    ParameterizedType returnType = CoreUtils.createParameterizedType(java.lang.Void.class);
-                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-                }
+                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
             }
             return null;
         }
@@ -224,23 +182,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, Foo.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         Foo deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, Foo.class);
@@ -267,23 +212,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, FooListResult.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         FooListResult deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, FooListResult.class);
@@ -310,23 +242,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, FooListResult.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         FooListResult deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, FooListResult.class);
@@ -357,23 +276,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, Foo.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         List<Foo> deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, Foo.class);
@@ -400,23 +306,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, Foo.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         List<Foo> deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, Foo.class);
@@ -450,23 +343,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
@@ -499,23 +379,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
@@ -539,20 +406,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData networkResponseValue = networkResponse.getValue();
-                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                    exceptionMessage.append("(empty body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else {
-                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                    ParameterizedType returnType = null;
-                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-                }
+                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;
@@ -569,23 +425,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = null;
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         networkResponse.close();
     }
@@ -600,23 +443,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -641,23 +471,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -682,23 +499,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -723,23 +527,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -768,23 +559,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -813,23 +591,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -858,23 +623,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -901,25 +653,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -946,25 +685,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -991,25 +717,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1037,25 +750,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1083,25 +783,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1131,23 +818,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
@@ -1175,25 +849,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1222,23 +883,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
@@ -1265,25 +913,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1310,25 +945,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1355,25 +977,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1400,25 +1009,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1452,23 +1048,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1497,23 +1080,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1541,23 +1111,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1585,23 +1142,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1630,23 +1174,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1674,23 +1205,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1717,23 +1235,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1760,23 +1265,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -1801,20 +1293,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData networkResponseValue = networkResponse.getValue();
-                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                    exceptionMessage.append("(empty body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else {
-                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                    ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, Void.class);
-                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-                }
+                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -1834,23 +1315,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
@@ -1875,23 +1343,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 400;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, InputStream.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), networkResponse.getValue().toStream());
     }
@@ -1906,20 +1361,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData networkResponseValue = networkResponse.getValue();
-                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                    exceptionMessage.append("(empty body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else {
-                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                    ParameterizedType returnType = null;
-                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-                }
+                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;
@@ -1945,23 +1389,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
@@ -1987,25 +1418,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -2030,23 +1448,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = null;
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         networkResponse.close();
     }
@@ -2061,20 +1466,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData networkResponseValue = networkResponse.getValue();
-                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                    exceptionMessage.append("(empty body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else {
-                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                    ParameterizedType returnType = CoreUtils.createParameterizedType(java.lang.Void.class);
-                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-                }
+                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
             }
             return null;
         }
@@ -2090,20 +1484,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData networkResponseValue = networkResponse.getValue();
-                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                    exceptionMessage.append("(empty body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else {
-                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                    ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, Void.class);
-                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-                }
+                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -2119,20 +1502,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData networkResponseValue = networkResponse.getValue();
-                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                    exceptionMessage.append("(empty body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else {
-                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                    ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, Void.class);
-                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-                }
+                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -2148,20 +1520,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                BinaryData networkResponseValue = networkResponse.getValue();
-                StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-                if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                    exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                    exceptionMessage.append("(empty body)");
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-                } else {
-                    exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                    ParameterizedType returnType = null;
-                    Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                    throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-                }
+                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
             }
             return expectedResponse;
         }
@@ -2177,23 +1538,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = null;
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         networkResponse.close();
     }
@@ -2215,23 +1563,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -2260,23 +1595,143 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
+        }
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        if (jsonSerializer.supportsFormat(serializationFormat)) {
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+        } else {
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
+        }
+        return deserializedResult;
+    }
+
+    @SuppressWarnings("cast")
+    @Override
+    public HttpBinJSON putWithUnexpectedResponse(String uri, String putBody) {
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(uri + "/" + "put");
+        httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
+        if (putBody != null) {
+            httpRequest.setBody(BinaryData.fromString(putBody));
+        }
+        // Send the request through the httpPipeline
+        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
+        int responseCode = networkResponse.getStatusCode();
+        boolean expectedResponse = responseCode == 201;
+        if (!expectedResponse) {
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
+        }
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        if (jsonSerializer.supportsFormat(serializationFormat)) {
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+        } else {
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
+        }
+        return deserializedResult;
+    }
+
+    @SuppressWarnings("cast")
+    @Override
+    public HttpBinJSON putWithUnexpectedResponseAndExceptionType(String uri, String putBody) {
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(uri + "/" + "put");
+        httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
+        if (putBody != null) {
+            httpRequest.setBody(BinaryData.fromString(putBody));
+        }
+        // Send the request through the httpPipeline
+        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
+        int responseCode = networkResponse.getStatusCode();
+        boolean expectedResponse = responseCode == 201;
+        if (!expectedResponse) {
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
+        }
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        if (jsonSerializer.supportsFormat(serializationFormat)) {
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+        } else {
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
+        }
+        return deserializedResult;
+    }
+
+    @SuppressWarnings("cast")
+    @Override
+    public HttpBinJSON putWithUnexpectedResponseAndDeterminedExceptionType(String uri, String putBody) {
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(uri + "/" + "put");
+        httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
+        if (putBody != null) {
+            httpRequest.setBody(BinaryData.fromString(putBody));
+        }
+        // Send the request through the httpPipeline
+        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
+        int responseCode = networkResponse.getStatusCode();
+        boolean expectedResponse = responseCode == 201;
+        if (!expectedResponse) {
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
+            ParameterizedType returnType200 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.MyRestException.class);
+            statusToExceptionTypeMap.put(200, returnType200);
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
+        }
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        if (jsonSerializer.supportsFormat(serializationFormat)) {
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+        } else {
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
+        }
+        return deserializedResult;
+    }
+
+    @SuppressWarnings("cast")
+    @Override
+    public HttpBinJSON putWithUnexpectedResponseAndFallthroughExceptionType(String uri, String putBody) {
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(uri + "/" + "put");
+        httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
+        if (putBody != null) {
+            httpRequest.setBody(BinaryData.fromString(putBody));
+        }
+        // Send the request through the httpPipeline
+        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
+        int responseCode = networkResponse.getStatusCode();
+        boolean expectedResponse = responseCode == 201;
+        if (!expectedResponse) {
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
+            statusToExceptionTypeMap.put(400, CoreUtils.createParameterizedType(Object.class));
+            ParameterizedType returnType403 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.MyRestException.class);
+            statusToExceptionTypeMap.put(403, returnType403);
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -2305,23 +1760,48 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
+            ParameterizedType returnType400 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.MyRestException.class);
+            statusToExceptionTypeMap.put(400, returnType400);
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
+        }
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        if (jsonSerializer.supportsFormat(serializationFormat)) {
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+        } else {
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
+        }
+        return deserializedResult;
+    }
+
+    @SuppressWarnings("cast")
+    @Override
+    public HttpBinJSON unexpectedResponseWithStatusCodeAndExceptionType(String uri, String putBody) {
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(uri + "/" + "put");
+        httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
+        if (putBody != null) {
+            httpRequest.setBody(BinaryData.fromString(putBody));
+        }
+        // Send the request through the httpPipeline
+        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
+        int responseCode = networkResponse.getStatusCode();
+        boolean expectedResponse = responseCode == 201;
+        if (!expectedResponse) {
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
+            ParameterizedType returnType400 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ErrorException.class);
+            statusToExceptionTypeMap.put(400, returnType400);
+            ParameterizedType returnType403 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.MyRestException.class);
+            statusToExceptionTypeMap.put(403, returnType403);
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -2350,23 +1830,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -2398,23 +1865,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -2442,23 +1896,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -2485,23 +1926,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -2530,23 +1958,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -2569,25 +1984,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = null;
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         networkResponse.close();
     }
@@ -2602,23 +2004,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = null;
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         networkResponse.close();
     }
@@ -2631,25 +2020,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = null;
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         networkResponse.close();
     }
@@ -2664,23 +2040,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = null;
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         networkResponse.close();
     }
@@ -2693,25 +2056,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = null;
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         networkResponse.close();
     }
@@ -2726,23 +2076,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 400;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = null;
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         networkResponse.close();
     }
@@ -2755,25 +2092,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode < 400;
+        boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = null;
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         networkResponse.close();
     }
@@ -2788,23 +2112,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 500;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = null;
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         networkResponse.close();
     }
@@ -2827,23 +2138,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, BinaryData.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         return networkResponse;
     }
@@ -2858,23 +2156,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.models.binarydata.BinaryData.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         return networkResponse.getValue();
     }
@@ -2897,23 +2182,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            BinaryData networkResponseValue = networkResponse.getValue();
-            StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
-            if ("application/octet-stream".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                exceptionMessage.append("(").append(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)).append("-byte body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else if (networkResponseValue == null || networkResponseValue.toBytes().length == 0) {
-                exceptionMessage.append("(empty body)");
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);
-            } else {
-                exceptionMessage.append('"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('"');
-                ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, BinaryData.class);
-                Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
-                networkResponse.close();
-                throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);
-            }
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            networkResponse.close();
         }
         return networkResponse;
     }

@@ -12,14 +12,17 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.utils.GeneratedCodeUtils;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
@@ -83,75 +86,51 @@ public final class ResponseHandler {
 
     private static void validateResponseStatus(BlockStmt body, HttpRequestContext method,
         boolean usingTryWithResources) {
+        addStatusCodeCheck(body, method);
+        addExceptionHandling(body, method, usingTryWithResources);
+    }
+
+    private static void addStatusCodeCheck(BlockStmt body, HttpRequestContext method) {
         body.addStatement(StaticJavaParser.parseStatement("int responseCode = networkResponse.getStatusCode();"));
-        String expectedResponseCheck;
-        if (method.getExpectedStatusCodes() == null || method.getExpectedStatusCodes().isEmpty()) {
-            // If expectedStatusCodes is empty, treat <400 as expected
-            expectedResponseCheck = "responseCode < 400";
-        } else if (method.getExpectedStatusCodes().size() == 1) {
-            expectedResponseCheck = "responseCode == " + method.getExpectedStatusCodes().get(0);
-        } else {
-            String statusCodes = method.getExpectedStatusCodes()
-                .stream()
-                .map(code -> "responseCode == " + code)
-                .collect(Collectors.joining(" || "));
-            expectedResponseCheck = "(" + statusCodes + ")";
-        }
+        String expectedResponseCheck
+            = AnnotationProcessorUtils.generateExpectedResponseCheck(method.getExpectedStatusCodes());
         body.addStatement(StaticJavaParser.parseStatement("boolean expectedResponse = " + expectedResponseCheck + ";"));
+    }
 
-        // Take value from networkResponse before closing
+    private static void addExceptionHandling(BlockStmt body, HttpRequestContext method, boolean usingTryWithResources) {
         BlockStmt errorBlock = new BlockStmt();
-        errorBlock.addStatement(
-            StaticJavaParser.parseStatement("BinaryData networkResponseValue = networkResponse.getValue();"));
-        errorBlock.addStatement(StaticJavaParser.parseStatement(
-            "StringBuilder exceptionMessage = new StringBuilder(\"Status code \").append(responseCode).append(\", \");"));
-
-        BlockStmt ifBlock = new BlockStmt();
-        ifBlock.addStatement(StaticJavaParser
-            .parseStatement("exceptionMessage.append(\"(\").append(networkResponse.getHeaders().getValue"
-                + "(HttpHeaderName.CONTENT_LENGTH)).append(\"-byte body)\");"));
-        if (!usingTryWithResources) {
-            closeResponse(ifBlock);
+        body.tryAddImportToParentCompilationUnit(GeneratedCodeUtils.class);
+        Map<Integer, HttpRequestContext.ExceptionBodyTypeInfo> mappings = method.getExceptionBodyMappings();
+        if (!mappings.isEmpty()) {
+            body.tryAddImportToParentCompilationUnit(Map.class);
+            body.tryAddImportToParentCompilationUnit(HashMap.class);
+            errorBlock.addStatement(
+                "Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();");
+            for (Map.Entry<Integer, HttpRequestContext.ExceptionBodyTypeInfo> entry : mappings.entrySet()) {
+                if (entry.getValue().isDefaultObject() || entry.getValue().getTypeMirror() == null) {
+                    errorBlock.addStatement("statusToExceptionTypeMap.put(" + entry.getKey()
+                        + ", CoreUtils.createParameterizedType(Object.class));");
+                } else {
+                    String typeVarName = "returnType" + entry.getKey();
+                    errorBlock.addStatement(AnnotationProcessorUtils
+                        .createParameterizedTypeStatement(entry.getValue().getTypeMirror(), body, typeVarName));
+                    errorBlock
+                        .addStatement("statusToExceptionTypeMap.put(" + entry.getKey() + ", " + typeVarName + ");");
+                }
+            }
+        } else {
+            body.tryAddImportToParentCompilationUnit(Collections.class);
+            body.tryAddImportToParentCompilationUnit(Map.class);
+            errorBlock.addStatement(
+                "Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();");
         }
-        ifBlock.addStatement(StaticJavaParser.parseStatement(
-            "throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);"));
-
-        BlockStmt elseIfBlock = new BlockStmt();
-        elseIfBlock.addStatement(StaticJavaParser.parseStatement("exceptionMessage.append(\"(empty body)\");"));
+        Statement stmt = StaticJavaParser.parseStatement(
+            "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);");
+        stmt.setLineComment(" Handle unexpected response");
+        errorBlock.addStatement(stmt);
         if (!usingTryWithResources) {
-            closeResponse(elseIfBlock);
+            closeResponse(errorBlock);
         }
-        elseIfBlock.addStatement(StaticJavaParser.parseStatement(
-            "throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, null);"));
-
-        BlockStmt elseBlock = new BlockStmt();
-        elseBlock.addStatement(StaticJavaParser.parseStatement(
-            "exceptionMessage.append('\"').append(new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8)).append('\"');"));
-        // Dynamically generate ParameterizedType if a return type is declared
-        TypeMirror returnType = method.getMethodReturnType();
-        elseBlock.addStatement(AnnotationProcessorUtils.createParameterizedTypeStatement(returnType, body));
-        body.tryAddImportToParentCompilationUnit(ParameterizedType.class);
-        body.tryAddImportToParentCompilationUnit(CoreUtils.class);
-        elseBlock.addStatement(StaticJavaParser.parseStatement(
-            "Object decoded = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);"));
-        if (!usingTryWithResources) {
-            closeResponse(elseBlock);
-        }
-        elseBlock.addStatement(StaticJavaParser.parseStatement(
-            "throw CoreUtils.instantiateUnexpectedException(exceptionMessage.toString(), networkResponse, decoded);"));
-
-        IfStmt contentTypeIf = new IfStmt();
-        contentTypeIf.setCondition(StaticJavaParser.parseExpression(
-            "\"application/octet-stream\".equalsIgnoreCase(networkResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))"));
-        contentTypeIf.setThenStmt(ifBlock);
-        contentTypeIf
-            .setElseStmt(new IfStmt(
-                StaticJavaParser
-                    .parseExpression("networkResponseValue == null || networkResponseValue.toBytes().length == 0"),
-                elseIfBlock, elseBlock));
-
-        errorBlock.addStatement(contentTypeIf);
-
         IfStmt ifStmt = new IfStmt()
             .setCondition(new UnaryExpr(new NameExpr("expectedResponse"), UnaryExpr.Operator.LOGICAL_COMPLEMENT))
             .setThenStmt(errorBlock);
@@ -287,7 +266,8 @@ public final class ResponseHandler {
         body.tryAddImportToParentCompilationUnit(ParameterizedType.class);
 
         if (!returnType.getTypeArguments().isEmpty()) {
-            body.addStatement(AnnotationProcessorUtils.createParameterizedTypeStatement(returnType, body));
+            body.addStatement(
+                AnnotationProcessorUtils.createParameterizedTypeStatement(returnType, body, "returnType"));
         } else {
             body.addStatement(
                 "ParameterizedType returnType = CoreUtils.createParameterizedType(" + typeCast + ".class);");

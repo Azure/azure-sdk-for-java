@@ -7,6 +7,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
@@ -20,11 +21,16 @@ public class AnnotationProcessorUtils {
 
     /**
      * Generates a JavaParser Statement for creating a ParameterizedType for the given return type.
-     * @param returnType The {@link TypeMirror} representing the return type to generate a {@code ParameterizedType} for.
+     *
+     * @param returnType The {@link TypeMirror} representing the return type to generate a {@code ParameterizedType}
+     * for.
      * @param body The {@link BlockStmt} to which imports may be added if necessary.
+     * @param varName The name of the variable to be used in the generated statement. If null, defaults to "returnType".
+     *
      * @return A JavaParser {@link Statement} that creates a {@code ParameterizedType} for the given return type.
      */
-    public static Statement createParameterizedTypeStatement(TypeMirror returnType, BlockStmt body) {
+    public static Statement createParameterizedTypeStatement(TypeMirror returnType, BlockStmt body, String varName) {
+        varName = varName == null ? "returnType" : varName;
         if (returnType.getKind() == TypeKind.DECLARED) {
             DeclaredType declaredType = (DeclaredType) returnType;
             TypeElement typeElement = (TypeElement) declaredType.asElement();
@@ -37,8 +43,8 @@ public class AnnotationProcessorUtils {
                     ArrayType arrayType = (ArrayType) firstGenericType;
                     String componentTypeName = arrayType.getComponentType().toString();
                     return StaticJavaParser
-                        .parseStatement("ParameterizedType returnType = CoreUtils.createParameterizedType(" + outerType
-                            + ", " + componentTypeName + "[].class);");
+                        .parseStatement("ParameterizedType " + varName + " = CoreUtils.createParameterizedType("
+                            + outerType + ", " + componentTypeName + "[].class);");
                 } else if (firstGenericType instanceof DeclaredType) {
                     DeclaredType genericDeclaredType = (DeclaredType) firstGenericType;
                     TypeElement genericTypeElement = (TypeElement) genericDeclaredType.asElement();
@@ -56,21 +62,39 @@ public class AnnotationProcessorUtils {
                                 = ((DeclaredType) genericDeclaredType.getTypeArguments().get(0)).asElement()
                                     .getSimpleName()
                                     .toString();
-                            return StaticJavaParser
-                                .parseStatement("ParameterizedType returnType = CoreUtils.createParameterizedType("
-                                    + genericType + ".class, " + innerType + ".class);");
+                            return StaticJavaParser.parseStatement("ParameterizedType " + varName + " = CoreUtils"
+                                + ".createParameterizedType(" + genericType + ".class, " + innerType + ".class);");
                         }
                     } else {
-                        return StaticJavaParser
-                            .parseStatement("ParameterizedType returnType = CoreUtils.createParameterizedType("
-                                + outerType + ", " + genericType + ".class);");
+                        return StaticJavaParser.parseStatement("ParameterizedType " + varName
+                            + " = CoreUtils.createParameterizedType(" + outerType + ", " + genericType + ".class);");
                     }
                 }
             }
-            return StaticJavaParser
-                .parseStatement("ParameterizedType returnType = CoreUtils.createParameterizedType(" + outerType + ");");
+            return StaticJavaParser.parseStatement(
+                "ParameterizedType " + varName + " = CoreUtils.createParameterizedType(" + outerType + ");");
         } else {
-            return StaticJavaParser.parseStatement("ParameterizedType returnType = null;");
+            return StaticJavaParser.parseStatement("ParameterizedType " + varName + " = null;");
+        }
+    }
+
+    /**
+     * Generates a JavaParser Statement for creating response code check for the given expected status codes.
+     *
+     * @param expectedStatusCodes The list of expected status codes to check against.
+    
+     * @return A JavaParser {@link Statement} that creates a response code check for the given expected status codes.
+     */
+    public static String generateExpectedResponseCheck(List<Integer> expectedStatusCodes) {
+        if (expectedStatusCodes == null || expectedStatusCodes.isEmpty()) {
+            // All 2XX codes are considered a success
+            return "responseCode >= 200 && responseCode < 300";
+        } else if (expectedStatusCodes.size() == 1) {
+            return "responseCode == " + expectedStatusCodes.get(0);
+        } else {
+            return expectedStatusCodes.stream()
+                .map(code -> "responseCode == " + code)
+                .collect(Collectors.joining(" || ", "(", ")"));
         }
     }
 }
