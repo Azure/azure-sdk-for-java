@@ -55,4 +55,32 @@ public interface TaskItem {
      * @return a {@link Flux} representing any asynchronous work initiated
      */
     Mono<Void> invokeAfterPostRunAsync(boolean isGroupFaulted);
+
+    /**
+     * The method that gets called to perform the unit of work synchronously.
+     *
+     * @param context the context shared across the the all task items in the group
+     *                this task item belongs to.
+     * @return result of type {@link Indexable}
+     */
+    default Indexable invoke(TaskGroup.InvocationContext context) {
+        //TODO(xiaofei) remove this default implementation
+        // once synchronous operation is supported across the board
+        return invokeAsync(context).block();
+    }
+
+    /**
+     * The method that gets called after invocation of "post run" task items depends on
+     * this TaskItem.
+     * <p>
+     * This method will be invoked only if this TaskItem had "post run" dependents.
+     *
+     * @param isGroupFaulted true if one or more tasks in the group this TaskItem belongs
+     *                       to are in faulted state.
+     */
+    default void invokeAfterPostRun(boolean isGroupFaulted) {
+        //TODO(xiaofei) remove this default implementation
+        // once synchronous operation is supported across the board
+        invokeAfterPostRunAsync(isGroupFaulted).block();
+    }
 }
