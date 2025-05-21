@@ -6,6 +6,8 @@ package io.clientcore.core.serialization.json;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.SerializableBinaryData;
+import io.clientcore.core.models.binarydata.StringBinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
 
@@ -35,6 +37,7 @@ public class JsonSerializer implements ObjectSerializer {
     private static final ClientLogger LOGGER = new ClientLogger(JsonSerializer.class);
 
     private static final JsonSerializer INSTANCE = new JsonSerializer();
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /**
      * Get an instance of the {@link JsonSerializer}
@@ -68,32 +71,9 @@ public class JsonSerializer implements ObjectSerializer {
                 Type listElementType = parameterizedType.getActualTypeArguments()[0];
                 if (listElementType instanceof Class<?>
                     && JsonSerializable.class.isAssignableFrom(TypeUtil.getRawClass(listElementType))) {
-                    List<?> list = jsonReader.readArray(arrayReader -> {
-                        Type actualTypeArgument = parameterizedType.getActualTypeArguments()[0];
-                        Class<?> clazz = (Class<?>) actualTypeArgument;
-                        try {
-                            return clazz.getMethod("fromJson", JsonReader.class).invoke(null, arrayReader);
-                        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-                            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
-                        }
-                    });
-                    return (T) list;
+                    return deserializeListOfJsonSerializables(jsonReader, parameterizedType);
                 } else if (BinaryData.class.isAssignableFrom(TypeUtil.getRawClass(listElementType))) {
-                    JsonToken token = jsonReader.currentToken();
-                    if (token == null) {
-                        token = jsonReader.nextToken();
-                    }
-
-                    // Untyped fields cannot begin with END_OBJECT, END_ARRAY, or FIELD_NAME as these would constitute invalid JSON.
-                    if (token != JsonToken.START_ARRAY) {
-                        throw new IllegalStateException("Unexpected token to begin an untyped field: " + token);
-                    }
-
-                    List<BinaryData> list = new ArrayList<>();
-                    while (jsonReader.nextToken() != JsonToken.END_ARRAY) {
-                        list.add(BinaryData.fromObject(jsonReader.readUntyped()));
-                    }
-                    return (T) list;
+                    return deserializeListOfBinaryData(jsonReader);
                 } else {
                     return (T) jsonReader.readUntyped();
                 }
@@ -107,6 +87,37 @@ public class JsonSerializer implements ObjectSerializer {
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
+    }
+
+    private <T> T deserializeListOfBinaryData(JsonReader jsonReader) throws IOException {
+        JsonToken token = jsonReader.currentToken();
+        if (token == null) {
+            token = jsonReader.nextToken();
+        }
+
+        // Untyped fields cannot begin with END_OBJECT, END_ARRAY, or FIELD_NAME as these would constitute invalid JSON.
+        if (token != JsonToken.START_ARRAY) {
+            throw new IllegalStateException("Unexpected token to begin an untyped field: " + token);
+        }
+
+        List<BinaryData> list = new ArrayList<>();
+        while (jsonReader.nextToken() != JsonToken.END_ARRAY) {
+            list.add(BinaryData.fromObject(jsonReader.readUntyped()));
+        }
+        return (T) list;
+    }
+
+    private <T> T deserializeListOfJsonSerializables(JsonReader jsonReader, ParameterizedType parameterizedType) throws IOException {
+        List<?> list = jsonReader.readArray(arrayReader -> {
+            Type actualTypeArgument = parameterizedType.getActualTypeArguments()[0];
+            Class<?> clazz = (Class<?>) actualTypeArgument;
+            try {
+                return clazz.getMethod("fromJson", JsonReader.class).invoke(null, arrayReader);
+            } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+                throw LOGGER.throwableAtError().log(e, RuntimeException::new);
+            }
+        });
+        return (T) list;
     }
 
     /**
@@ -149,6 +160,34 @@ public class JsonSerializer implements ObjectSerializer {
 
         if (value instanceof JsonSerializable<?>) {
             return ((JsonSerializable<?>) value).toJsonBytes();
+        }
+
+        if (value instanceof BinaryData) {
+            return ((BinaryData) value).toBytes();
+        }
+
+        if (value instanceof List<?>) {
+            List<?> list = (List<?>) value;
+            if (list.isEmpty()) {
+                return EMPTY_BYTE_ARRAY;
+            }
+            try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                 JsonWriter jsonWriter = JsonWriter.toStream(byteArrayOutputStream)) {
+
+                jsonWriter.writeStartArray();
+                for (Object o : list) {
+                    if (o instanceof JsonSerializable<?>) {
+                        jsonWriter.writeJson((JsonSerializable<?>) o);
+                    } else if (o instanceof BinaryData) {
+                        ((BinaryData) o).writeTo(jsonWriter);
+                    } else {
+                        jsonWriter.writeUntyped(o);
+                    }
+                }
+                jsonWriter.writeEndArray();
+                jsonWriter.flush();
+                return byteArrayOutputStream.toByteArray();
+            }
         }
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
