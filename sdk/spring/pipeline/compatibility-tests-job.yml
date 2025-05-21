@@ -24,6 +24,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
+            - 'sdk/core'
             - 'sdk/spring'
             - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/boms/spring-cloud-azure-dependencies'
