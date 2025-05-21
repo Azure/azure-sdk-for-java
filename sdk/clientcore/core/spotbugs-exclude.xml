@@ -24,8 +24,11 @@
       <Class name="io.clientcore.core.http.pipeline.OAuthBearerTokenAuthenticationPolicy" />
       <Class name="io.clientcore.core.implementation.GenericParameterizedType" />
       <Class name="io.clientcore.core.implementation.ReflectionUtilsMethodHandle" />
+      <Class name="io.clientcore.core.implementation.ReflectionSerializable" />
       <Class name="io.clientcore.core.implementation.http.HttpPipelineCallState" />
+      <Class name="io.clientcore.core.implementation.http.rest.LengthValidatingInputStream" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
+      <Class name="io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder" />
       <Class name="io.clientcore.core.implementation.utils.AuthenticateChallengeParser" />
       <Class name="io.clientcore.core.implementation.utils.InternalContext" />
       <Class name="io.clientcore.core.implementation.utils.PercentEscaper" />

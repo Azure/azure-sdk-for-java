@@ -356,8 +356,16 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.JavaDocFormatting"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
-    <module name="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"/>
+    <!-- Don't format exception messages -->
+    <module name="com.azure.tools.checkstyle.checks.StringFormattedExceptionCheck"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Log exceptions at creation time -->
+    <module name="com.azure.tools.checkstyle.checks.LogNewExceptionCheck"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Throw created and logged exceptions -->
+    <module name="com.azure.tools.checkstyle.checks.ThrowCreatedExceptionCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Any class that implements the HttpPipelinePolicy interface should:

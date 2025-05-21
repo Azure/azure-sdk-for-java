@@ -6,6 +6,8 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.ServerSentEventUtils;
@@ -22,7 +24,6 @@ import io.netty.handler.codec.http.LastHttpContent;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
@@ -40,6 +41,7 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppre
  * is able to decode the data of the response.
  */
 public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
+    private static final ClientLogger LOGGER = new ClientLogger(Netty4ResponseHandler.class);
     private final HttpRequest request;
     private final AtomicReference<Response<BinaryData>> responseReference;
     private final AtomicReference<Throwable> errorReference;
@@ -226,7 +228,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
                     try {
                         buf.readBytes(eagerContent, buf.readableBytes());
                     } catch (IOException ex) {
-                        throw new UncheckedIOException(ex);
+                        throw LOGGER.throwableAtError().log(ex, CoreException::from);
                     }
                 }));
                 awaitLatch(latch);

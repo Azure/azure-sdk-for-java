@@ -5,6 +5,7 @@ package io.clientcore.core.models.geo;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -31,6 +32,7 @@ import java.util.Objects;
  */
 @Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class GeoPointCollection extends GeoObject {
+    private static final ClientLogger LOGGER = new ClientLogger(GeoPointCollection.class);
     private final List<GeoPoint> points;
 
     /**
@@ -133,8 +135,10 @@ public final class GeoPointCollection extends GeoObject {
                 if ("type".equals(fieldName)) {
                     String type = reader.getString();
                     if (!GeoObjectType.MULTI_POINT.toString().equals(type)) {
-                        throw new IllegalStateException("'type' was expected to be non-null and equal to 'MultiPoint'. "
-                            + "The found 'type' was '" + type + "'.");
+                        throw LOGGER.throwableAtError()
+                            .addKeyValue("expectedType", "MultiPoint")
+                            .addKeyValue("actualType", type)
+                            .log("Deserialization failed.", IllegalStateException::new);
                     }
                 } else if ("coordinates".equals(fieldName)) {
                     List<GeoPosition> positions = reader.readArray(GeoPosition::fromJson);
