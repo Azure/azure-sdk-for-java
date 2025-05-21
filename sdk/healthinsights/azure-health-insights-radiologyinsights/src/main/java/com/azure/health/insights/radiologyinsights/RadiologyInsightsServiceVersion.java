@@ -16,11 +16,6 @@ public enum RadiologyInsightsServiceVersion implements ServiceVersion {
     V2024_04_01("2024-04-01"),
 
     /**
-     * Enum value 2024-08-01-preview.
-     */
-    V2024_08_01_PREVIEW("2024-08-01-preview"),
-
-    /**
      * Enum value 2024-10-01.
      */
     V2024_10_01("2024-10-01");

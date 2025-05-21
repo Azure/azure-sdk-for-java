@@ -45,7 +45,7 @@ public class RadiologyInsightsQualityMeasureTest extends RadiologyInsightsClient
         setInferenceType(RadiologyInsightsInferenceType.QUALITY_MEASURE);
         setOrderCode("CTCHWO");
         setOrderDescription("CT CHEST WO CONTRAST");
-        setQualityMeasureOptions(new QualityMeasureType[] { QualityMeasureType.MIPS364 });
+        setQualityMeasureOptions(new QualityMeasureType[] { QualityMeasureType.MIPS_364 });
 
         try {
             testRadiologyInsightsWithResponse(request -> {

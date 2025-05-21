@@ -13,144 +13,6 @@ import java.util.Collection;
 public final class QualityMeasureType extends ExpandableStringEnum<QualityMeasureType> {
 
     /**
-     * Mips 76.
-     */
-    @Generated
-    public static final QualityMeasureType MIPS76 = fromString("mips76");
-
-    /**
-     * Mips 147.
-     */
-    @Generated
-    public static final QualityMeasureType MIPS147 = fromString("mips147");
-
-    /**
-     * Mips 195.
-     */
-    @Generated
-    public static final QualityMeasureType MIPS195 = fromString("mips195");
-
-    /**
-     * Mips 360.
-     */
-    @Generated
-    public static final QualityMeasureType MIPS360 = fromString("mips360");
-
-    /**
-     * Mips 364.
-     */
-    @Generated
-    public static final QualityMeasureType MIPS364 = fromString("mips364");
-
-    /**
-     * Mips 405.
-     */
-    @Generated
-    public static final QualityMeasureType MIPS405 = fromString("mips405");
-
-    /**
-     * Mips 406.
-     */
-    @Generated
-    public static final QualityMeasureType MIPS406 = fromString("mips406");
-
-    /**
-     * Mips 436.
-     */
-    @Generated
-    public static final QualityMeasureType MIPS436 = fromString("mips436");
-
-    /**
-     * Mips 145.
-     */
-    @Generated
-    public static final QualityMeasureType MIPS145 = fromString("mips145");
-
-    /**
-     * Acrad 36.
-     */
-    @Generated
-    public static final QualityMeasureType ACRAD36 = fromString("acrad36");
-
-    /**
-     * Acrad 37.
-     */
-    @Generated
-    public static final QualityMeasureType ACRAD37 = fromString("acrad37");
-
-    /**
-     * Acrad 38.
-     */
-    @Generated
-    public static final QualityMeasureType ACRAD38 = fromString("acrad38");
-
-    /**
-     * Acrad 39.
-     */
-    @Generated
-    public static final QualityMeasureType ACRAD39 = fromString("acrad39");
-
-    /**
-     * Acrad 40.
-     */
-    @Generated
-    public static final QualityMeasureType ACRAD40 = fromString("acrad40");
-
-    /**
-     * Acrad 41.
-     */
-    @Generated
-    public static final QualityMeasureType ACRAD41 = fromString("acrad41");
-
-    /**
-     * Acrad 42.
-     */
-    @Generated
-    public static final QualityMeasureType ACRAD42 = fromString("acrad42");
-
-    /**
-     * Mednax55.
-     */
-    @Generated
-    public static final QualityMeasureType MEDNAX55 = fromString("mednax55");
-
-    /**
-     * Msn13.
-     */
-    @Generated
-    public static final QualityMeasureType MSN13 = fromString("msn13");
-
-    /**
-     * Msn15.
-     */
-    @Generated
-    public static final QualityMeasureType MSN15 = fromString("msn15");
-
-    /**
-     * Qmm26.
-     */
-    @Generated
-    public static final QualityMeasureType QMM26 = fromString("qmm26");
-
-    /**
-     * Qmm17.
-     */
-    @Generated
-    public static final QualityMeasureType QMM17 = fromString("qmm17");
-
-    /**
-     * Qmm18.
-     */
-    @Generated
-    public static final QualityMeasureType QMM18 = fromString("qmm18");
-
-    /**
-     * Qmm19.
-     */
-    @Generated
-    public static final QualityMeasureType QMM19 = fromString("qmm19");
-
-    /**
      * Creates a new instance of QualityMeasureType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -180,4 +42,142 @@ public final class QualityMeasureType extends ExpandableStringEnum<QualityMeasur
     public static Collection<QualityMeasureType> values() {
         return values(QualityMeasureType.class);
     }
+
+    /**
+     * Mips 76.
+     */
+    @Generated
+    public static final QualityMeasureType MIPS_76 = fromString("mips76");
+
+    /**
+     * Mips 147.
+     */
+    @Generated
+    public static final QualityMeasureType MIPS_147 = fromString("mips147");
+
+    /**
+     * Mips 195.
+     */
+    @Generated
+    public static final QualityMeasureType MIPS_195 = fromString("mips195");
+
+    /**
+     * Mips 360.
+     */
+    @Generated
+    public static final QualityMeasureType MIPS_360 = fromString("mips360");
+
+    /**
+     * Mips 364.
+     */
+    @Generated
+    public static final QualityMeasureType MIPS_364 = fromString("mips364");
+
+    /**
+     * Mips 405.
+     */
+    @Generated
+    public static final QualityMeasureType MIPS_405 = fromString("mips405");
+
+    /**
+     * Mips 406.
+     */
+    @Generated
+    public static final QualityMeasureType MIPS_406 = fromString("mips406");
+
+    /**
+     * Mips 436.
+     */
+    @Generated
+    public static final QualityMeasureType MIPS_436 = fromString("mips436");
+
+    /**
+     * Mips 145.
+     */
+    @Generated
+    public static final QualityMeasureType MIPS_145 = fromString("mips145");
+
+    /**
+     * Acrad 36.
+     */
+    @Generated
+    public static final QualityMeasureType ACRAD_36 = fromString("acrad36");
+
+    /**
+     * Acrad 37.
+     */
+    @Generated
+    public static final QualityMeasureType ACRAD_37 = fromString("acrad37");
+
+    /**
+     * Acrad 38.
+     */
+    @Generated
+    public static final QualityMeasureType ACRAD_38 = fromString("acrad38");
+
+    /**
+     * Acrad 39.
+     */
+    @Generated
+    public static final QualityMeasureType ACRAD_39 = fromString("acrad39");
+
+    /**
+     * Acrad 40.
+     */
+    @Generated
+    public static final QualityMeasureType ACRAD_40 = fromString("acrad40");
+
+    /**
+     * Acrad 41.
+     */
+    @Generated
+    public static final QualityMeasureType ACRAD_41 = fromString("acrad41");
+
+    /**
+     * Acrad 42.
+     */
+    @Generated
+    public static final QualityMeasureType ACRAD_42 = fromString("acrad42");
+
+    /**
+     * Mednax55.
+     */
+    @Generated
+    public static final QualityMeasureType MEDNAX_55 = fromString("mednax55");
+
+    /**
+     * Msn13.
+     */
+    @Generated
+    public static final QualityMeasureType MSN_13 = fromString("msn13");
+
+    /**
+     * Msn15.
+     */
+    @Generated
+    public static final QualityMeasureType MSN_15 = fromString("msn15");
+
+    /**
+     * Qmm26.
+     */
+    @Generated
+    public static final QualityMeasureType QMM_26 = fromString("qmm26");
+
+    /**
+     * Qmm17.
+     */
+    @Generated
+    public static final QualityMeasureType QMM_17 = fromString("qmm17");
+
+    /**
+     * Qmm18.
+     */
+    @Generated
+    public static final QualityMeasureType QMM_18 = fromString("qmm18");
+
+    /**
+     * Qmm19.
+     */
+    @Generated
+    public static final QualityMeasureType QMM_19 = fromString("qmm19");
 }

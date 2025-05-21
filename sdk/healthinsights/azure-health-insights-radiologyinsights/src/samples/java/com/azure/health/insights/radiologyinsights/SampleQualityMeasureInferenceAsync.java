@@ -265,7 +265,7 @@ public class SampleQualityMeasureInferenceAsync {
         FollowupRecommendationOptions followupOptions = new FollowupRecommendationOptions();
         FindingOptions findingOptions = new FindingOptions();
         GuidanceOptions guidanceOptions = new GuidanceOptions(true);
-        QualityMeasureOptions qualityMeasureOptions = new QualityMeasureOptions(Arrays.asList(QualityMeasureType.MIPS364, QualityMeasureType.MIPS360, QualityMeasureType.MIPS436));
+        QualityMeasureOptions qualityMeasureOptions = new QualityMeasureOptions(Arrays.asList(QualityMeasureType.MIPS_364, QualityMeasureType.MIPS_360, QualityMeasureType.MIPS_436));
         followupOptions.setIncludeRecommendationsWithNoSpecifiedModality(true);
         followupOptions.setIncludeRecommendationsInReferences(true);
         followupOptions.setProvideFocusedSentenceEvidence(true);
