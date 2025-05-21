@@ -29,6 +29,31 @@ public final class AzureOpenAIModelName extends ExpandableStringEnum<AzureOpenAI
     public static final AzureOpenAIModelName TEXT_EMBEDDING_3_SMALL = fromString("text-embedding-3-small");
 
     /**
+     * Static value gpt-4o for AzureOpenAIModelName.
+     */
+    public static final AzureOpenAIModelName GPT4O = fromString("gpt-4o");
+
+    /**
+     * Static value gpt-4o-mini for AzureOpenAIModelName.
+     */
+    public static final AzureOpenAIModelName GPT4OMINI = fromString("gpt-4o-mini");
+
+    /**
+     * Static value gpt-4.1 for AzureOpenAIModelName.
+     */
+    public static final AzureOpenAIModelName GPT41 = fromString("gpt-4.1");
+
+    /**
+     * Static value gpt-4.1-mini for AzureOpenAIModelName.
+     */
+    public static final AzureOpenAIModelName GPT41MINI = fromString("gpt-4.1-mini");
+
+    /**
+     * Static value gpt-4.1-nano for AzureOpenAIModelName.
+     */
+    public static final AzureOpenAIModelName GPT41NANO = fromString("gpt-4.1-nano");
+
+    /**
      * Creates a new instance of AzureOpenAIModelName value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

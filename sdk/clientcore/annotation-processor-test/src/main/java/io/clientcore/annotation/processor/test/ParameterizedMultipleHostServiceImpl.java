@@ -50,9 +50,8 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
     @SuppressWarnings("cast")
     @Override
     public HttpBinJSON get(String scheme, String hostPart1, String hostPart2) {
-        String uri = scheme + "://" + hostPart1 + hostPart2 + "/get";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(scheme + "://" + hostPart1 + hostPart2 + "/get");
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -70,7 +69,7 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
         }
         return deserializedResult;
     }

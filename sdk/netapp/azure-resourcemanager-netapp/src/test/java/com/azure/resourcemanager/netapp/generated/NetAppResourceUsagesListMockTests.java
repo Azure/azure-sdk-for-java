@@ -21,7 +21,7 @@ public final class NetAppResourceUsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"oteyowc\",\"name\":{\"value\":\"ovekqvgqouwi\",\"localizedValue\":\"mpjw\"},\"properties\":{\"currentValue\":1750235907,\"limit\":18074725,\"unit\":\"xcvhrfs\"}}]}";
+            = "{\"value\":[{\"id\":\"sawddjibabxvi\",\"name\":{\"value\":\"v\",\"localizedValue\":\"eexavo\"},\"properties\":{\"currentValue\":1460417179,\"limit\":387653602,\"unit\":\"dmdqb\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class NetAppResourceUsagesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<UsageResult> response
-            = manager.netAppResourceUsages().list("ecactx", com.azure.core.util.Context.NONE);
+            = manager.netAppResourceUsages().list("wprtu", com.azure.core.util.Context.NONE);
 
     }
 }

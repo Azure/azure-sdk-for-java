@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.neonpostgres.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.neonpostgres.fluent.ComputesClient;
@@ -27,40 +25,6 @@ public final class ComputesImpl implements Computes {
         this.serviceManager = serviceManager;
     }
 
-    public Response<Compute> getWithResponse(String resourceGroupName, String organizationName, String projectName,
-        String branchName, String computeName, Context context) {
-        Response<ComputeInner> inner = this.serviceClient()
-            .getWithResponse(resourceGroupName, organizationName, projectName, branchName, computeName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ComputeImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public Compute get(String resourceGroupName, String organizationName, String projectName, String branchName,
-        String computeName) {
-        ComputeInner inner
-            = this.serviceClient().get(resourceGroupName, organizationName, projectName, branchName, computeName);
-        if (inner != null) {
-            return new ComputeImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Void> deleteWithResponse(String resourceGroupName, String organizationName, String projectName,
-        String branchName, String computeName, Context context) {
-        return this.serviceClient()
-            .deleteWithResponse(resourceGroupName, organizationName, projectName, branchName, computeName, context);
-    }
-
-    public void delete(String resourceGroupName, String organizationName, String projectName, String branchName,
-        String computeName) {
-        this.serviceClient().delete(resourceGroupName, organizationName, projectName, branchName, computeName);
-    }
-
     public PagedIterable<Compute> list(String resourceGroupName, String organizationName, String projectName,
         String branchName) {
         PagedIterable<ComputeInner> inner
@@ -75,135 +39,11 @@ public final class ComputesImpl implements Computes {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ComputeImpl(inner1, this.manager()));
     }
 
-    public Compute getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
-        String branchName = ResourceManagerUtils.getValueFromIdByName(id, "branches");
-        if (branchName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'branches'.", id)));
-        }
-        String computeName = ResourceManagerUtils.getValueFromIdByName(id, "computes");
-        if (computeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'computes'.", id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, organizationName, projectName, branchName, computeName, Context.NONE)
-            .getValue();
-    }
-
-    public Response<Compute> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
-        String branchName = ResourceManagerUtils.getValueFromIdByName(id, "branches");
-        if (branchName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'branches'.", id)));
-        }
-        String computeName = ResourceManagerUtils.getValueFromIdByName(id, "computes");
-        if (computeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'computes'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, organizationName, projectName, branchName, computeName, context);
-    }
-
-    public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
-        String branchName = ResourceManagerUtils.getValueFromIdByName(id, "branches");
-        if (branchName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'branches'.", id)));
-        }
-        String computeName = ResourceManagerUtils.getValueFromIdByName(id, "computes");
-        if (computeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'computes'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, organizationName, projectName, branchName, computeName,
-            Context.NONE);
-    }
-
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
-        String branchName = ResourceManagerUtils.getValueFromIdByName(id, "branches");
-        if (branchName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'branches'.", id)));
-        }
-        String computeName = ResourceManagerUtils.getValueFromIdByName(id, "computes");
-        if (computeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'computes'.", id)));
-        }
-        return this.deleteWithResponse(resourceGroupName, organizationName, projectName, branchName, computeName,
-            context);
-    }
-
     private ComputesClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager() {
         return this.serviceManager;
-    }
-
-    public ComputeImpl define(String name) {
-        return new ComputeImpl(name, this.manager());
     }
 }

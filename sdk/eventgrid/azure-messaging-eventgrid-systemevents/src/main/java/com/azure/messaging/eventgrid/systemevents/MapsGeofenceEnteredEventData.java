@@ -17,18 +17,69 @@ import java.util.List;
  */
 @Immutable
 public final class MapsGeofenceEnteredEventData extends MapsGeofenceEventProperties {
+    /*
+     * Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
+     */
+    @Generated
+    private List<String> invalidPeriodGeofenceGeometryId;
+
+    /*
+     * Lists the fence geometries that either fully contain the coordinate position or have an overlap with the
+     * searchBuffer around the fence.
+     */
+    @Generated
+    private List<MapsGeofenceGeometry> geometries;
+
+    /*
+     * Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
+     */
+    @Generated
+    private List<String> expiredGeofenceGeometryId;
+
     /**
      * Creates an instance of MapsGeofenceEnteredEventData class.
      * 
-     * @param expiredGeofenceGeometryId the expiredGeofenceGeometryId value to set.
-     * @param geometries the geometries value to set.
-     * @param invalidPeriodGeofenceGeometryId the invalidPeriodGeofenceGeometryId value to set.
      * @param isEventPublished the isEventPublished value to set.
      */
     @Generated
-    private MapsGeofenceEnteredEventData(List<String> expiredGeofenceGeometryId, List<MapsGeofenceGeometry> geometries,
-        List<String> invalidPeriodGeofenceGeometryId, boolean isEventPublished) {
-        super(expiredGeofenceGeometryId, geometries, invalidPeriodGeofenceGeometryId, isEventPublished);
+    private MapsGeofenceEnteredEventData(boolean isEventPublished) {
+        super(isEventPublished);
+    }
+
+    /**
+     * Get the invalidPeriodGeofenceGeometryId property: Lists of the geometry ID of the geofence which is in invalid
+     * period relative to the user time in the request.
+     * 
+     * @return the invalidPeriodGeofenceGeometryId value.
+     */
+    @Generated
+    @Override
+    public List<String> getInvalidPeriodGeofenceGeometryId() {
+        return this.invalidPeriodGeofenceGeometryId;
+    }
+
+    /**
+     * Get the geometries property: Lists the fence geometries that either fully contain the coordinate position or have
+     * an overlap with the searchBuffer around the fence.
+     * 
+     * @return the geometries value.
+     */
+    @Generated
+    @Override
+    public List<MapsGeofenceGeometry> getGeometries() {
+        return this.geometries;
+    }
+
+    /**
+     * Get the expiredGeofenceGeometryId property: Lists of the geometry ID of the geofence which is expired relative to
+     * the user time in the request.
+     * 
+     * @return the expiredGeofenceGeometryId value.
+     */
+    @Generated
+    @Override
+    public List<String> getExpiredGeofenceGeometryId() {
+        return this.expiredGeofenceGeometryId;
     }
 
     /**
@@ -38,11 +89,6 @@ public final class MapsGeofenceEnteredEventData extends MapsGeofenceEventPropert
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("expiredGeofenceGeometryId", getExpiredGeofenceGeometryId(),
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("geometries", getGeometries(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("invalidPeriodGeofenceGeometryId", getInvalidPeriodGeofenceGeometryId(),
-            (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("isEventPublished", isEventPublished());
         return jsonWriter.writeEndObject();
     }
@@ -79,8 +125,13 @@ public final class MapsGeofenceEnteredEventData extends MapsGeofenceEventPropert
                     reader.skipChildren();
                 }
             }
-            return new MapsGeofenceEnteredEventData(expiredGeofenceGeometryId, geometries,
-                invalidPeriodGeofenceGeometryId, isEventPublished);
+            MapsGeofenceEnteredEventData deserializedMapsGeofenceEnteredEventData
+                = new MapsGeofenceEnteredEventData(isEventPublished);
+            deserializedMapsGeofenceEnteredEventData.expiredGeofenceGeometryId = expiredGeofenceGeometryId;
+            deserializedMapsGeofenceEnteredEventData.geometries = geometries;
+            deserializedMapsGeofenceEnteredEventData.invalidPeriodGeofenceGeometryId = invalidPeriodGeofenceGeometryId;
+
+            return deserializedMapsGeofenceEnteredEventData;
         });
     }
 }

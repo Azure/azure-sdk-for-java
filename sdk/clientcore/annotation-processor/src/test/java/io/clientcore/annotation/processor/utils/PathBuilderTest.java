@@ -108,7 +108,7 @@ public class PathBuilderTest {
     public void buildsPathWithMissingQueryParameter() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", "value1", false, false);
+        context.addQueryParam("key1", "value1", false, false, false);
         assertThrows(MissingSubstitutionException.class,
             () -> PathBuilder.buildPath("https://{endpoint}/keys?key2={value2}", context));
     }
@@ -383,7 +383,7 @@ public class PathBuilderTest {
     public void buildsPathWithNullQueryParameterValue() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", null, false, false);
+        context.addQueryParam("key1", null, false, false, false);
         String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
         assertEquals("\"https://\" + myEndpoint + \"/keys\"", result);
     }

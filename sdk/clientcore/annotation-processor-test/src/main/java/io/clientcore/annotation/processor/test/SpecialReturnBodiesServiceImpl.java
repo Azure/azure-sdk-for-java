@@ -10,11 +10,15 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.models.binarydata.BinaryData;
 import java.io.InputStream;
+import java.util.List;
 import io.clientcore.annotation.processor.test.implementation.SpecialReturnBodiesService;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.http.models.HttpResponseException;
+import io.clientcore.core.utils.CoreUtils;
+import java.lang.reflect.ParameterizedType;
+import io.clientcore.core.serialization.SerializationFormat;
 
 /**
  * Initializes a new instance of the SpecialReturnBodiesServiceImpl type.
@@ -47,9 +51,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
     @SuppressWarnings("cast")
     @Override
     public BinaryData getBinaryData(String url) {
-        String uri = url + "/bytes";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url + "/bytes");
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -65,9 +68,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
     @SuppressWarnings("cast")
     @Override
     public Response<BinaryData> getBinaryDataWithResponse(String url) {
-        String uri = url + "/bytes";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url + "/bytes");
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -83,9 +85,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
     @SuppressWarnings("cast")
     @Override
     public byte[] getByteArray(String url) {
-        String uri = url + "/bytes";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url + "/bytes");
         // Send the request through the httpPipeline
         try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
             int responseCode = networkResponse.getStatusCode();
@@ -102,9 +103,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
     @SuppressWarnings("cast")
     @Override
     public Response<byte[]> getByteArrayWithResponse(String url) {
-        String uri = url + "/bytes";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url + "/bytes");
         // Send the request through the httpPipeline
         try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
             int responseCode = networkResponse.getStatusCode();
@@ -121,9 +121,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
     @SuppressWarnings("cast")
     @Override
     public InputStream getInputStream(String url) {
-        String uri = url + "/bytes";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url + "/bytes");
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -139,9 +138,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
     @SuppressWarnings("cast")
     @Override
     public Response<InputStream> getInputStreamWithResponse(String url) {
-        String uri = url + "/bytes";
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url + "/bytes");
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -152,5 +150,33 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), networkResponse.getValue().toStream());
+    }
+
+    @SuppressWarnings("cast")
+    @Override
+    public Response<List<BinaryData>> getListOfBinaryData(String endpoint) {
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint + "/type/array/unknown");
+        // Send the request through the httpPipeline
+        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
+        int responseCode = networkResponse.getStatusCode();
+        boolean expectedResponse = responseCode == 200;
+        if (!expectedResponse) {
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
+        }
+        List<BinaryData> deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, BinaryData.class);
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        if (jsonSerializer.supportsFormat(serializationFormat)) {
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+        } else {
+            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
+        }
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 }

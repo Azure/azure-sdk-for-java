@@ -110,7 +110,7 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
         Some(CosmosClientCache(
           CosmosClientConfiguration(
             effectiveUserConfig,
-            useEventualConsistency = readConfig.forceEventualConsistency,
+            readConsistencyStrategy = readConfig.readConsistencyStrategy,
             sparkEnvironmentInfo),
           None,
           calledFrom
@@ -144,7 +144,7 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
           CosmosClientCache(
             CosmosClientConfiguration(
               effectiveUserConfig,
-              useEventualConsistency = readConfig.forceEventualConsistency,
+              readConsistencyStrategy = readConfig.readConsistencyStrategy,
               sparkEnvironmentInfo),
             None,
             calledFrom)),

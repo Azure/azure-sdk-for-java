@@ -954,7 +954,7 @@ public class TestInterfaceServiceClientGenerationTests {
         try {
             return UriBuilder.parse(getServerUri(isSecure()) + "/" + requestPath).toUri();
         } catch (URISyntaxException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
     }
 
@@ -1723,7 +1723,8 @@ public class TestInterfaceServiceClientGenerationTests {
 
         assertNotNull(queryParams);
         assertEquals(1, queryParams.size());
-        assertTrue(json.uri().substring(json.uri().indexOf('?'), json.uri().length()).contains("some=value"));
+        assertTrue(json.uri().substring(json.uri().indexOf('?')).contains("some=value"),
+            "Expected URI query to contain 'some=value', but it didn't and was: " + json.uri());
     }
 
     @Test

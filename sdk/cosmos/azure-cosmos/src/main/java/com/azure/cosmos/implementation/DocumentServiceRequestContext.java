@@ -7,6 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelFailoverInfo;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionFailoverInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
@@ -38,6 +39,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile long globalCommittedSelectedLSN;
     public volatile StoreResponse globalStrongWriteResponse;
     public volatile ConsistencyLevel originalRequestConsistencyLevel;
+    public volatile ReadConsistencyStrategy readConsistencyStrategy;
     public volatile PartitionKeyRange resolvedPartitionKeyRange;
     public volatile PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker;
     public volatile PartitionKeyRange resolvedPartitionKeyRangeForPerPartitionAutomaticFailover;
@@ -143,6 +145,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.globalCommittedSelectedLSN = this.globalCommittedSelectedLSN;
         context.globalStrongWriteResponse = this.globalStrongWriteResponse;
         context.originalRequestConsistencyLevel = this.originalRequestConsistencyLevel;
+        context.readConsistencyStrategy = this.readConsistencyStrategy;
         context.resolvedPartitionKeyRange = this.resolvedPartitionKeyRange;
         context.resolvedPartitionKeyRangeForCircuitBreaker = this.resolvedPartitionKeyRangeForCircuitBreaker;
         context.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = this.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover;

@@ -119,8 +119,9 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // Create a relation which already exists - should return status code 409 (Conflict).
             StepVerifier
                 .create(asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId,
-                    ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, String.class,
-                    new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*")))
+                    ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
+                    deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship::fromJson),
+                    BasicRelationship.class, new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*")))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HTTP_PRECON_FAILED));
 
             // Update relationships
@@ -409,8 +410,9 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
 
             StepVerifier
                 .create(asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId,
-                    ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, String.class,
-                    new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*")))
+                    ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
+                    deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship::fromJson),
+                    BasicRelationship.class, new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*")))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HTTP_PRECON_FAILED));
 
             StepVerifier.create(asyncClient.deleteRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID))
@@ -486,8 +488,11 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
                         basicRelationship.getId(), basicRelationship.getSourceId(), basicRelationship.getTargetId()))
                 .verifyComplete();
 
-            StepVerifier.create(asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId,
-                ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, floorTwinContainedInRelationshipPayload, String.class, null)) // don't set ifMatchNone header
+            StepVerifier
+                .create(asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId,
+                    ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
+                    deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship::fromJson),
+                    BasicRelationship.class, null)) // don't set ifMatchNone header
                 .expectNextCount(1) /* don't care as long as it is a success status code */
                 .verifyComplete();
 

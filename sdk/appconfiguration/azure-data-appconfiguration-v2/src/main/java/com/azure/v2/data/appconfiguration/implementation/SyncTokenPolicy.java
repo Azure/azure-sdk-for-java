@@ -61,8 +61,7 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
             final SyncToken syncToken;
             try {
                 syncToken = SyncToken.createSyncToken(syncTokenString);
-            } catch (Exception ex) {
-                logger.logThrowableAsWarning(ex);
+            } catch (RuntimeException ex) {
                 continue;
             }
 

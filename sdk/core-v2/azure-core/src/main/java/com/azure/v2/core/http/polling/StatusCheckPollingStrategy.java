@@ -5,6 +5,7 @@ package com.azure.v2.core.http.polling;
 
 import com.azure.v2.core.implementation.ImplUtils;
 import com.azure.v2.core.implementation.polling.PollingUtils;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
@@ -46,12 +47,12 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
     }
 
     @Override
-    public boolean canPoll(Response<BinaryData> initialResponse) {
+    public boolean canPoll(Response<T> initialResponse) {
         return true;
     }
 
     @Override
-    public PollResponse<T> onInitialResponse(Response<BinaryData> response, PollingContext<T> pollingContext,
+    public PollResponse<T> onInitialResponse(Response<T> response, PollingContext<T> pollingContext,
         Type pollResponseType) {
         if (response.getStatusCode() == 200
             || response.getStatusCode() == 201
@@ -61,15 +62,18 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
             return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType), retryAfter);
         } else {
-            throw LOGGER.logThrowableAsError(
-                new RuntimeException("Operation failed or cancelled: " + response.getStatusCode()));
+            Response<BinaryData> binaryDataResponse = new Response<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), BinaryData.fromObject(response.getValue()));
+            throw LOGGER.throwableAtError()
+                .log("Operation failed or cancelled",
+                    message -> new HttpResponseException(message, binaryDataResponse, null));
         }
     }
 
     @Override
     public PollResponse<T> poll(PollingContext<T> context, Type pollResponseType) {
-        throw LOGGER
-            .logThrowableAsError(new IllegalStateException("StatusCheckPollingStrategy doesn't support polling"));
+        throw LOGGER.throwableAtError()
+            .log("StatusCheckPollingStrategy doesn't support polling", IllegalStateException::new);
     }
 
     @Override

@@ -34,36 +34,7 @@ import java.util.Map;
 public final class ServersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
-     * ServerUpdateWithAadAuthEnabled.json
-     */
-    /**
-     * Sample code: ServerUpdateWithAadAuthEnabled.
-     * 
-     * @param manager Entry point to PostgreSqlManager.
-     */
-    public static void
-        serverUpdateWithAadAuthEnabled(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        Server resource = manager.servers()
-            .getByResourceGroupWithResponse("TestGroup", "pgtestsvc4", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withSku(new Sku().withName("Standard_D8s_v3").withTier(SkuTier.GENERAL_PURPOSE))
-            .withAdministratorLoginPassword("newpassword")
-            .withStorage(new Storage().withStorageSizeGB(1024)
-                .withAutoGrow(StorageAutoGrow.DISABLED)
-                .withTier(AzureManagedDiskPerformanceTiers.P30))
-            .withBackup(new Backup().withBackupRetentionDays(20))
-            .withAuthConfig(new AuthConfig().withActiveDirectoryAuth(ActiveDirectoryAuthEnum.ENABLED)
-                .withPasswordAuth(PasswordAuthEnum.ENABLED)
-                .withTenantId("tttttt-tttt-tttt-tttt-tttttttttttt"))
-            .withCreateMode(CreateModeForUpdate.UPDATE)
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * ServerUpdateWithDataEncryptionEnabled.json
      */
     /**
@@ -98,7 +69,7 @@ public final class ServersUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * PromoteReplicaAsPlannedSwitchover.json
      */
     /**
@@ -121,7 +92,7 @@ public final class ServersUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * PromoteReplicaAsForcedSwitchover.json
      */
     /**
@@ -144,7 +115,8 @@ public final class ServersUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/ServerUpdate.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * ServerUpdate.json
      */
     /**
      * Sample code: ServerUpdate.
@@ -168,7 +140,7 @@ public final class ServersUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * ServerUpdateWithMajorVersionUpgrade.json
      */
     /**
@@ -181,12 +153,12 @@ public final class ServersUpdateSamples {
         Server resource = manager.servers()
             .getByResourceGroupWithResponse("testrg", "pgtestsvc4", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withVersion(ServerVersion.ONE_FOUR).withCreateMode(CreateModeForUpdate.UPDATE).apply();
+        resource.update().withVersion(ServerVersion.ONE_SIX).withCreateMode(CreateModeForUpdate.UPDATE).apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * ServerUpdateWithCustomerMaintenanceWindow.json
      */
     /**
@@ -210,7 +182,36 @@ public final class ServersUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * ServerUpdateWithMicrosoftEntraEnabled.json
+     */
+    /**
+     * Sample code: ServerUpdateWithMicrosoftEntraEnabled.
+     * 
+     * @param manager Entry point to PostgreSqlManager.
+     */
+    public static void serverUpdateWithMicrosoftEntraEnabled(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        Server resource = manager.servers()
+            .getByResourceGroupWithResponse("TestGroup", "pgtestsvc4", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withSku(new Sku().withName("Standard_D8s_v3").withTier(SkuTier.GENERAL_PURPOSE))
+            .withAdministratorLoginPassword("newpassword")
+            .withStorage(new Storage().withStorageSizeGB(1024)
+                .withAutoGrow(StorageAutoGrow.DISABLED)
+                .withTier(AzureManagedDiskPerformanceTiers.P30))
+            .withBackup(new Backup().withBackupRetentionDays(20))
+            .withAuthConfig(new AuthConfig().withActiveDirectoryAuth(ActiveDirectoryAuthEnum.ENABLED)
+                .withPasswordAuth(PasswordAuthEnum.ENABLED)
+                .withTenantId("tttttt-tttt-tttt-tttt-tttttttttttt"))
+            .withCreateMode(CreateModeForUpdate.UPDATE)
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * PromoteReplicaAsForcedStandaloneServer.json
      */
     /**
@@ -233,7 +234,7 @@ public final class ServersUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * PromoteReplicaAsPlannedStandaloneServer.json
      */
     /**

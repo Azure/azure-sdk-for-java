@@ -22,6 +22,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationNameAvailabilityResourceInner;
 import reactor.core.publisher.Mono;
@@ -63,6 +64,18 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MigrationNameAvailabilityResourceInner>> checkMigrationNameAvailability(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("targetDbServerName") String targetDbServerName,
+            @BodyParam("application/json") MigrationNameAvailabilityResourceInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/checkMigrationNameAvailability")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MigrationNameAvailabilityResourceInner> checkMigrationNameAvailabilitySync(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -127,52 +140,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
      * @param parameters The required parameters for checking if a migration name is available.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a migration name's availability along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MigrationNameAvailabilityResourceInner>> checkMigrationNameAvailabilityWithResponseAsync(
-        String subscriptionId, String resourceGroupName, String targetDbServerName,
-        MigrationNameAvailabilityResourceInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (subscriptionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (targetDbServerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter targetDbServerName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.checkMigrationNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
-            subscriptionId, resourceGroupName, targetDbServerName, parameters, accept, context);
-    }
-
-    /**
-     * Check migration name validity and availability
-     * 
-     * This method checks whether a proposed migration name is valid and available.
-     * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param parameters The required parameters for checking if a migration name is available.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -204,8 +171,32 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public Response<MigrationNameAvailabilityResourceInner> checkMigrationNameAvailabilityWithResponse(
         String subscriptionId, String resourceGroupName, String targetDbServerName,
         MigrationNameAvailabilityResourceInner parameters, Context context) {
-        return checkMigrationNameAvailabilityWithResponseAsync(subscriptionId, resourceGroupName, targetDbServerName,
-            parameters, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (subscriptionId == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (targetDbServerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter targetDbServerName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.checkMigrationNameAvailabilitySync(this.client.getEndpoint(), this.client.getApiVersion(),
+            subscriptionId, resourceGroupName, targetDbServerName, parameters, accept, context);
     }
 
     /**
@@ -228,4 +219,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         return checkMigrationNameAvailabilityWithResponse(subscriptionId, resourceGroupName, targetDbServerName,
             parameters, Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersClientImpl.class);
 }
