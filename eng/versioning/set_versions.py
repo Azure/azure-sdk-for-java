@@ -90,7 +90,7 @@ def set_dev_zero_version(build_type, build_qualifier):
                 newlines.append(module.string_for_version_file())
                 continue
 
-            if hasattr(module, 'current'):
+            if module.current != None:
 
                 if 'alpha' in module.current:
                     newlines.append(module.string_for_version_file())
@@ -143,7 +143,7 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                     continue
                 if library_to_update == module.name:
                     artifact_found = True
-                    if hasattr(module, 'current'):
+                    if module.current != None:
                         set_both = False
                         # In the case where the current and dependency are both equal then both
                         # need to be updated. In theory, this should only really happen when a
@@ -223,7 +223,7 @@ def prep_version_file_for_source_testing(build_type, project_list):
                 newlines.append(raw_line)
             else:
                 module = CodeModule(stripped_line)
-                if hasattr(module, 'current') and not module.current == module.dependency:
+                if module.current != None and not module.current == module.dependency:
                     # If the project list is passed in, only prep the versions for from source
                     # build for those modules. This is the case specifically for patch release.
                     if project_list_identifiers is not None:
@@ -279,7 +279,7 @@ def increment_or_set_library_version(build_type, artifact_id, group_id, new_vers
                 # to use based on what has been released to Maven central. If "beta.1"
                 # exists in Maven central then use "beta.2" and so on.
                 # https://github.com/Azure/azure-sdk/blob/main/docs/policies/releases.md#java
-                if module.name == library_to_update and hasattr(module, 'current'):
+                if module.name == library_to_update and module.current != None:
                     artifact_found = True
                     if new_version is None:
                         vmatch = version_regex_named.match(module.current)
@@ -398,7 +398,7 @@ def verify_current_version_of_artifact(build_type, artifact_id, group_id):
                 # of the following:
                 # <major>.<minor>.<patch/hotfix>
                 # <major>.<minor>.<patch/hotfix>-beta.<prerelease>
-                if module.name == library_to_update and hasattr(module, 'current'):
+                if module.name == library_to_update and module.current != None:
                     artifact_found = True
                     vmatch = version_regex_named.match(module.current)
                     temp_ver = '{}.{}.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'))
