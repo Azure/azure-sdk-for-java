@@ -12,17 +12,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The user owned AML workspace for Cognitive Services account.
+ * The user owned AML account for Cognitive Services account.
  */
 @Fluent
 public final class UserOwnedAmlWorkspace implements JsonSerializable<UserOwnedAmlWorkspace> {
     /*
-     * Full resource id of a AML workspace resource.
+     * Full resource id of a AML account resource.
      */
     private String resourceId;
 
     /*
-     * Identity Client id of a AML workspace resource.
+     * Identity Client id of a AML account resource.
      */
     private String identityClientId;
 
@@ -33,7 +33,7 @@ public final class UserOwnedAmlWorkspace implements JsonSerializable<UserOwnedAm
     }
 
     /**
-     * Get the resourceId property: Full resource id of a AML workspace resource.
+     * Get the resourceId property: Full resource id of a AML account resource.
      * 
      * @return the resourceId value.
      */
@@ -42,7 +42,7 @@ public final class UserOwnedAmlWorkspace implements JsonSerializable<UserOwnedAm
     }
 
     /**
-     * Set the resourceId property: Full resource id of a AML workspace resource.
+     * Set the resourceId property: Full resource id of a AML account resource.
      * 
      * @param resourceId the resourceId value to set.
      * @return the UserOwnedAmlWorkspace object itself.
@@ -53,7 +53,7 @@ public final class UserOwnedAmlWorkspace implements JsonSerializable<UserOwnedAm
     }
 
     /**
-     * Get the identityClientId property: Identity Client id of a AML workspace resource.
+     * Get the identityClientId property: Identity Client id of a AML account resource.
      * 
      * @return the identityClientId value.
      */
@@ -62,7 +62,7 @@ public final class UserOwnedAmlWorkspace implements JsonSerializable<UserOwnedAm
     }
 
     /**
-     * Set the identityClientId property: Identity Client id of a AML workspace resource.
+     * Set the identityClientId property: Identity Client id of a AML account resource.
      * 
      * @param identityClientId the identityClientId value to set.
      * @return the UserOwnedAmlWorkspace object itself.

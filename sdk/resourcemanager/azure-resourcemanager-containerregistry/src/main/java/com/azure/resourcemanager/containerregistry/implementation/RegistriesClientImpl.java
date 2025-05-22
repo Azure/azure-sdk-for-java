@@ -296,7 +296,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         return FluxUtil
             .withContext(context -> service.importImage(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, registryName, parameters, context))
@@ -338,7 +338,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         context = this.client.mergeContext(context);
         return service.importImage(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, registryName, parameters, context);
@@ -518,7 +518,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             registryNameCheckRequest.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(), apiVersion,
@@ -555,7 +555,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             registryNameCheckRequest.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.checkNameAvailability(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -630,7 +630,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -660,7 +660,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -745,7 +745,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -781,7 +781,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -880,7 +880,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -918,7 +918,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1008,7 +1008,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             registry.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), apiVersion,
@@ -1052,7 +1052,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             registry.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -1232,7 +1232,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, registryName, context))
@@ -1268,7 +1268,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             registryName, context);
@@ -1440,7 +1440,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             registryUpdateParameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1486,7 +1486,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             registryUpdateParameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -1672,7 +1672,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listUsages(this.client.getEndpoint(), apiVersion,
@@ -1710,7 +1710,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listUsages(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1794,7 +1794,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listPrivateLinkResources(this.client.getEndpoint(), apiVersion,
@@ -1834,7 +1834,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1949,7 +1949,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPrivateLinkResource(this.client.getEndpoint(), apiVersion,
@@ -1991,7 +1991,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getPrivateLinkResource(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2081,7 +2081,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCredentials(this.client.getEndpoint(), apiVersion,
@@ -2119,7 +2119,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listCredentials(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2212,7 +2212,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             regenerateCredentialParameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.regenerateCredential(this.client.getEndpoint(), apiVersion,
@@ -2260,7 +2260,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             regenerateCredentialParameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.regenerateCredential(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2361,7 +2361,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             generateCredentialsParameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.generateCredentials(this.client.getEndpoint(), apiVersion,
@@ -2407,7 +2407,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             generateCredentialsParameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.generateCredentials(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),

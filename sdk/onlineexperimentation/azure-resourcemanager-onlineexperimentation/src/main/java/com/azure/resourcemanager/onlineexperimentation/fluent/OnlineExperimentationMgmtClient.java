@@ -54,9 +54,9 @@ public interface OnlineExperimentationMgmtClient {
     OperationsClient getOperations();
 
     /**
-     * Gets the OnlineExperimentWorkspacesClient object to access its operations.
+     * Gets the OnlineExperimentationWorkspacesClient object to access its operations.
      * 
-     * @return the OnlineExperimentWorkspacesClient object.
+     * @return the OnlineExperimentationWorkspacesClient object.
      */
-    OnlineExperimentWorkspacesClient getOnlineExperimentWorkspaces();
+    OnlineExperimentationWorkspacesClient getOnlineExperimentationWorkspaces();
 }

@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The encryption configuration for the online experiment workspace resource.
+ * The encryption configuration for the online experimentation workspace resource.
  */
 @Fluent
 public final class ResourceEncryptionConfiguration implements JsonSerializable<ResourceEncryptionConfiguration> {

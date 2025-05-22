@@ -2,7 +2,7 @@
 
 Azure Resource Manager Online Experimentation client library for Java.
 
-This package contains Microsoft Azure SDK for Online Experimentation Management SDK. Microsoft.OnlineExperimentation Resource Provider management API. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Online Experimentation Management SDK. Microsoft.OnlineExperimentation Resource Provider management API. Package api-version 2025-05-31-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 

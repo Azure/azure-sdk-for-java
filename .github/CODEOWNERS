@@ -428,10 +428,10 @@
 # ServiceOwners:                                     @nberdy
 
 # ServiceLabel: %Device Update
-/sdk/deviceupdate/                                   @dpokluda
+/sdk/deviceupdate/                                   @xinanqiu
 
 # ServiceLabel: %Device Update
-# ServiceOwners:                                     @dpokluda
+# ServiceOwners:                                     @xinanqiu
 
 # ServiceLabel: %DevOps
 # ServiceOwners:                                     @narula0781 @ashishonce @romil07
