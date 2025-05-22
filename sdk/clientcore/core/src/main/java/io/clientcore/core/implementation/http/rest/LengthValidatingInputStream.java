@@ -112,13 +112,13 @@ final class LengthValidatingInputStream extends InputStream {
             if (position > expectedReadSize) {
                 throw LOGGER.throwableAtError()
                     .addKeyValue("position", position)
-                    .addKeyValue("expectedReadSize", expectedReadSize)
-                    .log("Request body emitted more than the expected stream length.", IllegalStateException::new);
+                    .addKeyValue("expectedSize", expectedReadSize)
+                    .log("Request body is larger than the expected stream length", IllegalStateException::new);
             } else if (position < expectedReadSize) {
                 throw LOGGER.throwableAtError()
                     .addKeyValue("position", position)
-                    .addKeyValue("expectedReadSize", expectedReadSize)
-                    .log("Request body emitted less than the expected stream length.", IllegalStateException::new);
+                    .addKeyValue("expectedSize", expectedReadSize)
+                    .log("Request body is smaller than the expected stream length", IllegalStateException::new);
             }
         } else {
             position += readSize;
