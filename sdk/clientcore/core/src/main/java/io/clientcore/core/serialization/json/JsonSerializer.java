@@ -3,6 +3,8 @@
 
 package io.clientcore.core.serialization.json;
 
+import io.clientcore.core.implementation.ReflectionUtils;
+import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
@@ -14,12 +16,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 
 /**
  * Class providing basic JSON serialization and deserialization methods.
@@ -97,16 +97,18 @@ public class JsonSerializer implements ObjectSerializer {
         throws IOException {
         Type actualTypeArgument = parameterizedType.getActualTypeArguments()[0];
         Class<?> listElementClass = (Class<?>) actualTypeArgument;
-        MethodHandle fromJsonHandle;
+        ReflectiveInvoker methodInvoker;
         try {
-            fromJsonHandle = MethodHandles.publicLookup()
-                .findStatic(listElementClass, "fromJson", MethodType.methodType(listElementClass, JsonReader.class));
-        } catch (NoSuchMethodException | IllegalAccessException e) {
+
+            Method fromJson = listElementClass.getDeclaredMethod("fromJson", JsonReader.class);
+            fromJson.setAccessible(true);
+            methodInvoker = ReflectionUtils.getMethodInvoker(listElementClass, fromJson);
+        } catch (Exception e) {
             throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
         return (T) jsonReader.readArray(arrayReader -> {
             try {
-                return fromJsonHandle.invoke(arrayReader);
+                return methodInvoker.invoke(arrayReader);
             } catch (Throwable e) {
                 if (e instanceof Error) {
                     throw (Error) LOGGER.throwableAtError().log(message -> e);
