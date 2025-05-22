@@ -19,14 +19,21 @@ import com.openai.models.chat.completions.ChatCompletionMessage;
 import com.openai.models.chat.completions.ChatCompletionMessageParam;
 import com.openai.models.chat.completions.ChatCompletionMessageToolCall;
 import com.openai.models.completions.CompletionUsage;
+import com.openai.models.responses.EasyInputMessage;
+import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseInputItem;
+import com.openai.models.responses.ResponseOutputMessage;
+import com.openai.models.responses.ResponseOutputText;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -36,12 +43,14 @@ import static com.azure.ai.openai.stainless.TestUtils.GPT_3_5_TURBO;
 import static com.azure.ai.openai.stainless.TestUtils.OPEN_AI;
 import static com.azure.ai.openai.stainless.TestUtils.PREVIEW;
 import static com.azure.ai.openai.stainless.TestUtils.V1;
+import static com.azure.ai.openai.stainless.TestUtils.extractOutputText;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @LiveOnly
 public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
@@ -444,5 +453,70 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
             .join();
         BadRequestException thrownException = assertInstanceOf(BadRequestException.class, throwable.getCause());
         assertRaiContentFilter(thrownException);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    public void responsesReturnTextSuccessfully(String apiType, String apiVersion, String testModel) {
+        client = createAsyncClient(apiType, apiVersion);
+
+        ResponseCreateParams createParams = ResponseCreateParams.builder()
+            .input("Tell me a story about building the best SDK!")
+            .model(testModel)
+            .build();
+
+        var response = client.responses().create(createParams).join();
+
+        assertNotNull(response, "Response should not be null");
+        assertFalse(response.output().isEmpty(), "Response output should not be empty");
+
+        String text = extractOutputText(response);
+
+        assertNotNull(text, "Text should not be null");
+        assertFalse(text.trim().isEmpty(), "Text should not be empty");
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    public void responsesConversationTest(String apiType, String apiVersion, String testModel) {
+        client = createAsyncClient(apiType, apiVersion);
+
+        List<ResponseInputItem> inputItems = new ArrayList<>();
+        inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+            .role(EasyInputMessage.Role.USER)
+            .content("Tell me a story about building the best SDK!")
+            .build()));
+
+        ResponseCreateParams createParams = ResponseCreateParams.builder()
+            .inputOfResponse(inputItems)
+            .model(testModel)
+            .build();
+
+        for (int i = 0; i < 2; i++) {
+            var response = client.responses().create(createParams).join();
+
+            assertNotNull(response, "Response should not be null");
+            assertFalse(response.output().isEmpty(), "Response output should not be empty");
+
+            List<ResponseOutputMessage> messages = new ArrayList<>();
+            response.output().forEach(output -> output.message().ifPresent(messages::add));
+
+            List<String> texts = messages.stream()
+                .flatMap(message -> message.content().stream())
+                .map(content -> content.outputText().map(ResponseOutputText::text).orElse(null))
+                .filter(Objects::nonNull)
+                .toList();
+
+            assertFalse(texts.isEmpty(), "Text outputs should not be empty");
+
+            messages.forEach(msg -> inputItems.add(ResponseInputItem.ofResponseOutputMessage(msg)));
+
+            inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+                .role(EasyInputMessage.Role.USER)
+                .content("But why?" + "?".repeat(i))
+                .build()));
+
+            createParams = createParams.toBuilder().inputOfResponse(inputItems).build();
+        }
     }
 }

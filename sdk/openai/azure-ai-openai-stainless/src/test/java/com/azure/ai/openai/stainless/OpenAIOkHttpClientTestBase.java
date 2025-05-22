@@ -51,9 +51,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class OpenAIOkHttpClientTestBase {
     static final String ASSISTANT_CONTENT
         = "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous.";
-    static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_GA = AzureOpenAIServiceVersion.getV2024_06_01();
+    static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_GA = AzureOpenAIServiceVersion.getV2025_03_01_PREVIEW();
     static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_PREVIEW
-        = AzureOpenAIServiceVersion.getV2024_08_01_PREVIEW();
+        = AzureOpenAIServiceVersion.getV2025_03_01_PREVIEW();
     static final String USER_CONTENT = "Who won the world series in 2020?";
 
     String getEndpoint() {

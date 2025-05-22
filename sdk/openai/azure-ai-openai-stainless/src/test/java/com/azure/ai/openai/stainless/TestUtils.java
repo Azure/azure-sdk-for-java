@@ -3,8 +3,11 @@
 
 package com.azure.ai.openai.stainless;
 
+import com.openai.models.responses.Response;
+import com.openai.models.responses.ResponseOutputText;
 import org.junit.jupiter.params.provider.Arguments;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public class TestUtils {
@@ -76,5 +79,18 @@ public class TestUtils {
 
     static Stream<Arguments> azureAdTokenOnly() {
         return Stream.of(Arguments.of(AZURE_OPEN_AI, GA, GPT_4O), Arguments.of(AZURE_OPEN_AI, PREVIEW, GPT_4O));
+    }
+
+    static String extractOutputText(Response response) {
+        return response.output().stream()
+            .map(item -> item.message().orElse(null))
+            .filter(Objects::nonNull)
+            .flatMap(message -> message.content().stream())
+            .map(content -> content.outputText()
+                 .map(ResponseOutputText::text)
+                 .orElse(null))
+            .filter(Objects::nonNull)
+            .findFirst()
+            .orElse(null);
     }
 }
