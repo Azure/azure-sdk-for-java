@@ -3,13 +3,16 @@
 
 package com.azure.v2.security.keyvault.keys.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
  * Represents the configurable options to create an RSA key.
  */
-//@Fluent
+@Metadata(properties = { MetadataProperties.FLUENT })
 public class CreateRsaKeyOptions extends CreateKeyOptions {
     /**
      * The RSA key size.

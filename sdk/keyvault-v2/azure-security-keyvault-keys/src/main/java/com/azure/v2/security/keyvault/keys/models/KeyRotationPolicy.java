@@ -7,6 +7,8 @@ import com.azure.v2.security.keyvault.keys.implementation.KeyRotationLifetimeAct
 import com.azure.v2.security.keyvault.keys.implementation.KeyRotationPolicyHelper;
 import com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicyAttributes;
 import com.azure.v2.security.keyvault.keys.implementation.models.LifetimeActions;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.List;
 /**
  * The complete key rotation policy that belongs to a key.
  */
+@Metadata(properties = { MetadataProperties.FLUENT })
 public final class KeyRotationPolicy {
     static {
         KeyRotationPolicyHelper.setAccessor(new KeyRotationPolicyHelper.KeyRotationPolicyAccessor() {

@@ -3,6 +3,9 @@
 
 package com.azure.v2.security.keyvault.keys.cryptography.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 import java.util.Objects;
 
 import static io.clientcore.core.utils.CoreUtils.arrayCopy;
@@ -10,6 +13,7 @@ import static io.clientcore.core.utils.CoreUtils.arrayCopy;
 /**
  * A class containing various configuration parameters that can be applied when performing encryption operations.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class EncryptParameters {
     /**
      * The algorithm to be used for encryption.

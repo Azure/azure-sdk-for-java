@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 /**
  * Represents the configurable options to import a key.
  */
-//@Fluent
+@Metadata(properties = { MetadataProperties.FLUENT })
 public class ImportKeyOptions extends KeyProperties {
     /**
      * The JSON Web Key to import.

@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
- * The encryption algorithm to use to protected the exported key material.
+ * The encryption algorithm to use to protect the exported key material.
  */
 public final class KeyExportEncryptionAlgorithm
     implements ExpandableEnum<String>, JsonSerializable<KeyExportEncryptionAlgorithm> {

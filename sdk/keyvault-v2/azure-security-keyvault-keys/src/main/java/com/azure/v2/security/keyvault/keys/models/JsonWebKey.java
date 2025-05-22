@@ -4,6 +4,8 @@
 package com.azure.v2.security.keyvault.keys.models;
 
 import com.azure.v2.security.keyvault.keys.implementation.KeyVaultKeysUtils;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
@@ -45,6 +47,7 @@ import java.util.Objects;
 /**
  * As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18.
  */
+@Metadata(properties = { MetadataProperties.FLUENT })
 public class JsonWebKey implements JsonSerializable<JsonWebKey> {
     private static final ClientLogger LOGGER = new ClientLogger(JsonWebKey.class);
 

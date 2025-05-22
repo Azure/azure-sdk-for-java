@@ -2,13 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.v2.security.keyvault.keys.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
  * Represents the configurable options to create a symmetric key.
  */
-//@Fluent
+@Metadata(properties = { MetadataProperties.FLUENT })
 public class CreateOctKeyOptions extends CreateKeyOptions {
     /**
      * The key size.
