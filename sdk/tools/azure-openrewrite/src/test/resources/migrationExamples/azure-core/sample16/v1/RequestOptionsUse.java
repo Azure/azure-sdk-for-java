@@ -12,8 +12,7 @@ public class RequestOptionsUse {
         options1.addHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
         options1.setHeader(HttpHeaderName.ACCEPT, "application/json");
 
-        options1
-            .addQueryParam("queryParam1", "value1")
+        options1.addQueryParam("queryParam1", "value1")
             .addQueryParam("queryParam2", "value2")
             .addQueryParam("queryParam3", "value3");
 

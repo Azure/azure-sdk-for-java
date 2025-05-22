@@ -64,6 +64,10 @@ recipeList:
   # RequestOptions
   # --------------------------------------------------------------------
 
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.azure.core.http.rest.RequestOptions setHeader(..)
+      newMethodName: addHeader
+
   - com.azure.openrewrite.core.http.rest.RequestOptionsCustomRecipe
 
   - org.openrewrite.java.ChangeType:

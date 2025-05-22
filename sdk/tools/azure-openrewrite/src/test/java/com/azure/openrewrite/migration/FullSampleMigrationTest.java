@@ -94,7 +94,7 @@ public class FullSampleMigrationTest implements RewriteTest {
             4,
             4,
             4,
-            true,
+            false,
             new TabsAndIndentsStyle.MethodDeclarationParameters(true)
         ));
 
