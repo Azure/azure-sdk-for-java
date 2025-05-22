@@ -350,7 +350,7 @@ public class Configs {
     private static final String HTTP2_MIN_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_HTTP2_MIN_CONNECTION_POOL_SIZE";
 
     // Config to indicate the maximum number of the concurrent streams that can be opened to the remote peer for http2
-    private static final int DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS = 3;
+    private static final int DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS = 30;
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
