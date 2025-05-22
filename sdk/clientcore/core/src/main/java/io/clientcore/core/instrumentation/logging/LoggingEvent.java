@@ -4,6 +4,7 @@ package io.clientcore.core.instrumentation.logging;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.http.models.HttpResponseException;
+import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
 import io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim;
@@ -319,7 +320,10 @@ public final class LoggingEvent {
         }
 
         if (throwable instanceof HttpResponseException) {
-            addKeyValueInternal(HTTP_RESPONSE_STATUS_CODE_KEY, ((HttpResponseException) throwable).getResponse().getStatusCode());
+            Response<?> response = ((HttpResponseException) throwable).getResponse();
+            if (response != null) {
+                addKeyValueInternal(HTTP_RESPONSE_STATUS_CODE_KEY, response.getStatusCode());
+            }
         }
 
         if (logger != null && logger.canLogAtLevel(LogLevel.VERBOSE)) {
