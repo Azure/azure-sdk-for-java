@@ -1,14 +1,14 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2025-05-24)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Upgraded all clients to use new API Version `2024-05-01-preview`
+- Added models for all APIs supported by the service
+- Added methods that work with and return models for all existing methods supported by both `LoadTestAdministration` and `LoadTestRun` clients
+- Added methods to interact with `TestProfile` APIs in `LoadTestAdministrationClient.createOrUpdateTestProfile()`, `LoadTestAdministrationClient.getTestProfile()`, `LoadTestAdministrationClient.deleteTestProfile()` and `LoadTestAdministrationClient.listTestProfiles()` and their equivalent async variants
+- Added methods to interact with `TestProfileRun` APIs in `LoadTestRunClient.beginTestProfileRun()`, `LoadTestRunClient.getTestProfileRun()`, `LoadTestRunClient.deleteTestProfileRun()` and `LoadTestRunClient.listTestProfileRuns()` and their equivalent async variants
 
 ## 1.0.21 (2025-02-25)
 
