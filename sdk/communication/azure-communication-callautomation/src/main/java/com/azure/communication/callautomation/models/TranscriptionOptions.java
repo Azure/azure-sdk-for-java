@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.implementation.models.WebSocketTranscriptionOptionsInternal;
 import com.azure.core.annotation.Fluent;
 
 /** The TranscriptionOptions model. */

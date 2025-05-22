@@ -22,7 +22,7 @@ import com.azure.json.JsonToken;
 /** The abstract class used as parent of Streaming data such as Audio, Transcription, or Captions. */
 public abstract class StreamingData {
 
-    private StreamingDataKind streamingDataKind;
+    private final StreamingDataKind streamingDataKind;
 
     /**
      * Creates an instance of {@link StreamingData}.
