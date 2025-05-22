@@ -21,6 +21,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.developer.loadtesting.models.LoadTestingAppComponent;
 import com.azure.developer.loadtesting.models.ResourceMetric;
 import com.azure.developer.loadtesting.models.TestAppComponents;
+import com.azure.developer.loadtesting.models.TestRunAppComponents;
+import com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration;
 import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.AzureDeveloperCliCredentialBuilder;
@@ -153,6 +155,20 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
         return appComponents;
     }
 
+    protected TestRunAppComponents getTestRunAppComponents() {
+        LoadTestingAppComponent appComponent
+            = new LoadTestingAppComponent().setResourceType("microsoft.insights/components")
+                .setResourceName("contoso-sampleapp")
+                .setDisplayName("Performance_LoadTest_Insights")
+                .setKind("web");
+        Map<String, LoadTestingAppComponent> appCompMap = new HashMap<>();
+        appCompMap.put(defaultAppComponentResourceId, appComponent);
+
+        TestRunAppComponents appComponents = new TestRunAppComponents().setComponents(appCompMap);
+
+        return appComponents;
+    }
+
     protected TestServerMetricsConfiguration getTestServerMetricsConfiguration() {
 
         ResourceMetric metric = new ResourceMetric().setResourceId(defaultServerMetricId)
@@ -165,6 +181,22 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
 
         TestServerMetricsConfiguration serverMetricsConfiguration
             = new TestServerMetricsConfiguration().setMetrics(metricsMap);
+
+        return serverMetricsConfiguration;
+    }
+
+    protected TestRunServerMetricsConfiguration getTestRunServerMetricsConfiguration() {
+
+        ResourceMetric metric = new ResourceMetric().setResourceId(defaultServerMetricId)
+            .setMetricNamespace("microsoft.insights/components")
+            .setName("requests/duration")
+            .setAggregation("Average")
+            .setResourceType("microsoft.insights/components");
+        Map<String, ResourceMetric> metricsMap = new HashMap<>();
+        metricsMap.put(defaultServerMetricId, metric);
+
+        TestRunServerMetricsConfiguration serverMetricsConfiguration
+            = new TestRunServerMetricsConfiguration().setMetrics(metricsMap);
 
         return serverMetricsConfiguration;
     }
