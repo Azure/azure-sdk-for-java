@@ -6,6 +6,8 @@ package com.azure.cosmos.implementation.routing;
 import java.net.URI;
 import java.util.Objects;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 public class RegionalRoutingContext {
 
     // IMPORTANT:
@@ -17,6 +19,7 @@ public class RegionalRoutingContext {
     private String thinclientRegionalEndpointAsString;
 
     public RegionalRoutingContext(URI gatewayRegionalEndpoint) {
+        checkNotNull(gatewayRegionalEndpoint, "Argument 'gatewayRegionalEndpoint' must not be null.");
         this.gatewayRegionalEndpoint = gatewayRegionalEndpoint;
         this.gatewayRegionalEndpointAsString = gatewayRegionalEndpoint.toString();
         this.thinclientRegionalEndpoint = null;
