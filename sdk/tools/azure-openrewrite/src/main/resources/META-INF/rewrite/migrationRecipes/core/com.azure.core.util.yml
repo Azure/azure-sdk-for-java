@@ -249,12 +249,6 @@ recipeList:
   # QueryParameter
   # --------------------------------------------------------------------
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.util.QueryParameter
-      newFullyQualifiedTypeName: io.clientcore.core.implementation.utils.QueryParameter
-
-      # TODO: Migrate Methods and Fields
-
   # --------------------------------------------------------------------
   # ReferenceManager
   # --------------------------------------------------------------------
@@ -432,13 +426,7 @@ recipeList:
   # --------------------------------------------------------------------
   # NoopMeter
   # --------------------------------------------------------------------
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.util.metrics.NoopMeter
-      newFullyQualifiedTypeName: io.clientcore.core.implementation.instrumentation.NoopMeter
-
-      # TODO: Migrate Methods and Fields
-
+  
   # paging
 
   # --------------------------------------------------------------------
