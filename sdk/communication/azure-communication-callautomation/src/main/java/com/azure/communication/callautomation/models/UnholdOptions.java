@@ -26,7 +26,7 @@ public final class UnholdOptions {
      * This setup is per-action. If this is not set, the default callback URL set by CreateCall/AnswerCall will be used.
      */
     private String operationCallbackUrl;
-    
+
     /**
      * Create a new UnholdOptions object.
      * @param targetParticipant Participant to be put on unhold.
@@ -61,13 +61,13 @@ public final class UnholdOptions {
         return this;
     }
 
-     /**
-     * Get the operationCallbackUrl property: Set a callback URI that overrides the default callback URL set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URL set by CreateCall/AnswerCall will be used.
-     * 
-     * @return the operationCallbackUrl value.
-     */
+    /**
+    * Get the operationCallbackUrl property: Set a callback URI that overrides the default callback URL set by
+    * CreateCall/AnswerCall for this operation.
+    * This setup is per-action. If this is not set, the default callback URL set by CreateCall/AnswerCall will be used.
+    * 
+    * @return the operationCallbackUrl value.
+    */
     public String getOperationCallbackUrl() {
         return this.operationCallbackUrl;
     }
