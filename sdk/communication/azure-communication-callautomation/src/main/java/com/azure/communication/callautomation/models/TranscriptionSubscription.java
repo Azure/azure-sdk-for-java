@@ -32,6 +32,11 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
     private TranscriptionSubscriptionState state;
 
     /*
+     * Gets or Sets subscription Id.
+     */
+    private String Locale;
+
+    /*
      * Gets or Sets the subscribed transcription result types.
      */
     private List<TranscriptionResultState> subscribedResultStates;
@@ -53,6 +58,7 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
         id = null;
         state = null;
         subscribedResultStates = null;
+        this.Locale = null;
     }
 
     /**
@@ -70,6 +76,9 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
                 .stream()
                 .map(resultType -> TranscriptionResultState.fromString(resultType.toString()))
                 .collect(Collectors.toList())
+            : null;
+        this.Locale = transcriptionSubscriptionInternal.getLocale() != null
+            ? transcriptionSubscriptionInternal.getLocale().toString()
             : null;
     }
 
@@ -92,6 +101,15 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
     }
 
     /**
+     * Get the state property: Gets or Sets transcription subscription state.
+     * 
+     * @return the state value.
+     */
+    public String getLocale() {
+        return this.Locale;
+    }
+
+    /**
      * Get the subscribedResultStates property: Gets or Sets the subscribed transcription result types.
      * 
      * @return the subscribedResultStates value.
@@ -107,6 +125,7 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeArrayField("subscribedResultStates", this.subscribedResultStates,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("locale", this.Locale);
         return jsonWriter.writeEndObject();
     }
 
@@ -134,6 +153,8 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
                     List<TranscriptionResultState> subscribedResultTypes
                         = reader.readArray(reader1 -> TranscriptionResultState.fromString(reader1.getString()));
                     deserializedTranscriptionSubscription.subscribedResultStates = subscribedResultTypes;
+                } else if ("locale".equals(fieldName)) {
+                    deserializedTranscriptionSubscription.Locale = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

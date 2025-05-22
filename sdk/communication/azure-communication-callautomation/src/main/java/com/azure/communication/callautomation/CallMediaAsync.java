@@ -802,7 +802,8 @@ public final class CallMediaAsync {
             context = context == null ? Context.NONE : context;
             UnholdRequest request = new UnholdRequest()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
-                .setOperationContext(options.getOperationContext());
+                .setOperationContext(options.getOperationContext())
+                .setOperationCallbackUri(options.getOperationCallbackUrl());
 
             return contentsInternal.unholdWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
