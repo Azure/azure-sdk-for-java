@@ -25,7 +25,7 @@ public final class RegistryNameCheckRequest implements JsonSerializable<Registry
     /*
      * The resource type of the container registry. This field must be set to 'Microsoft.ContainerRegistry/registries'.
      */
-    private String type = "Microsoft.ContainerRegistry/registries";
+    private final String type = "Microsoft.ContainerRegistry/registries";
 
     /**
      * Creates an instance of RegistryNameCheckRequest class.
@@ -61,18 +61,6 @@ public final class RegistryNameCheckRequest implements JsonSerializable<Registry
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The resource type of the container registry. This field must be set to
-     * 'Microsoft.ContainerRegistry/registries'.
-     * 
-     * @param type the type value to set.
-     * @return the RegistryNameCheckRequest object itself.
-     */
-    public RegistryNameCheckRequest withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

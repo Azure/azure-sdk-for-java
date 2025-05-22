@@ -330,7 +330,7 @@ com.azure.resourcemanager:azure-resourcemanager-consumption;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-commerce;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-billing;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-signalr;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.1.0;1.2.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.1.0;1.2.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-customerinsights;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-databox;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-datamigration;1.0.0;1.1.0-beta.1
@@ -486,6 +486,7 @@ com.azure.resourcemanager:azure-resourcemanager-dell-storage;1.0.0-beta.1;1.0.0-
 com.azure.resourcemanager:azure-resourcemanager-sitemanager;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mongodbatlas;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-purestorageblock;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-planetarycomputer;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.1;2.0.0-beta.1

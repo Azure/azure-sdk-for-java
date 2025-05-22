@@ -3,8 +3,11 @@
 
 package io.clientcore.core.serialization.json;
 
+import io.clientcore.core.implementation.ReflectionUtils;
+import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
 
@@ -13,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -64,18 +68,12 @@ public class JsonSerializer implements ObjectSerializer {
             if (type instanceof ParameterizedType && List.class.isAssignableFrom(TypeUtil.getRawClass(type))) {
                 ParameterizedType parameterizedType = (ParameterizedType) type;
                 Type listElementType = parameterizedType.getActualTypeArguments()[0];
-                if (listElementType instanceof Class<?>
-                    && JsonSerializable.class.isAssignableFrom(TypeUtil.getRawClass(listElementType))) {
-                    List<?> list = jsonReader.readArray(arrayReader -> {
-                        Type actualTypeArgument = parameterizedType.getActualTypeArguments()[0];
-                        Class<?> clazz = (Class<?>) actualTypeArgument;
-                        try {
-                            return clazz.getMethod("fromJson", JsonReader.class).invoke(null, arrayReader);
-                        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-                            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
-                        }
-                    });
-                    return (T) list;
+                if (JsonSerializable.class.isAssignableFrom(TypeUtil.getRawClass(listElementType))) {
+                    return deserializeListOfJsonSerializables(jsonReader, parameterizedType);
+                } else if (BinaryData.class.isAssignableFrom(TypeUtil.getRawClass(listElementType))) {
+                    return deserializeListOfBinaryData(jsonReader);
+                } else {
+                    return (T) jsonReader.readUntyped();
                 }
             } else if (type instanceof Class<?>
                 && JsonSerializable.class.isAssignableFrom(TypeUtil.getRawClass(type))) {
@@ -87,6 +85,40 @@ public class JsonSerializer implements ObjectSerializer {
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T deserializeListOfBinaryData(JsonReader jsonReader) throws IOException {
+        return (T) jsonReader.readArray(arrayReader -> BinaryData.fromObject(arrayReader.readUntyped()));
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T deserializeListOfJsonSerializables(JsonReader jsonReader, ParameterizedType parameterizedType)
+        throws IOException {
+        Type actualTypeArgument = parameterizedType.getActualTypeArguments()[0];
+        Class<?> listElementClass = (Class<?>) actualTypeArgument;
+        ReflectiveInvoker methodInvoker;
+        try {
+
+            Method fromJson = listElementClass.getDeclaredMethod("fromJson", JsonReader.class);
+            fromJson.setAccessible(true);
+            methodInvoker = ReflectionUtils.getMethodInvoker(listElementClass, fromJson);
+        } catch (Exception e) {
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
+        }
+        return (T) jsonReader.readArray(arrayReader -> {
+            try {
+                return methodInvoker.invoke(arrayReader);
+            } catch (Throwable e) {
+                if (e instanceof Error) {
+                    throw (Error) LOGGER.throwableAtError().log(message -> e);
+                } else if (e instanceof IOException) {
+                    throw (IOException) LOGGER.throwableAtError().log(message -> e);
+                } else {
+                    throw LOGGER.throwableAtError().log(e, RuntimeException::new);
+                }
+            }
+        });
     }
 
     /**
