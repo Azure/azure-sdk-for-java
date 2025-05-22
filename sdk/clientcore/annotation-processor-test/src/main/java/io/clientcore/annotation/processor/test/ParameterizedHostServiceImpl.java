@@ -54,7 +54,7 @@ public class ParameterizedHostServiceImpl implements ParameterizedHostService {
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 String errorMessage = networkResponse.getValue().toString();
-                throw new HttpResponseException(errorMessage, networkResponse, null);
+                throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;

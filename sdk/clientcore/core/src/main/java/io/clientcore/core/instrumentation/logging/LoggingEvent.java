@@ -3,6 +3,7 @@
 package io.clientcore.core.instrumentation.logging;
 
 import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
 import io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim;
@@ -23,6 +24,7 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EV
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_MESSAGE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_STACKTRACE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_TYPE_KEY;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_RESPONSE_STATUS_CODE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SPAN_ID_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.TRACE_ID_KEY;
 
@@ -314,6 +316,10 @@ public final class LoggingEvent {
         addKeyValueInternal(EXCEPTION_TYPE_KEY, throwable.getClass().getCanonicalName());
         if (message != null) {
             addKeyValueInternal(EXCEPTION_MESSAGE_KEY, message);
+        }
+
+        if (throwable instanceof HttpResponseException) {
+            addKeyValueInternal(HTTP_RESPONSE_STATUS_CODE_KEY, ((HttpResponseException) throwable).getResponse().getStatusCode());
         }
 
         if (logger != null && logger.canLogAtLevel(LogLevel.VERBOSE)) {

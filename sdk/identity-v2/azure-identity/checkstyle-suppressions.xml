@@ -21,6 +21,6 @@
   <suppress files="com.azure.v2.identity.implementation.models.PublicClientOptions.java" checks="GoodLoggingCheck" />
 
   <!-- TODO (limolkova): remove, addressing in https://github.com/Azure/azure-sdk-for-java/pull/45296 -->
-  <suppress checks="RawExceptionThrow" files="com.azure.v2.identity.*" />
+  <suppress files="com.azure.v2.identity.*" checks="RawExceptionThrow" />
 
 </suppressions>

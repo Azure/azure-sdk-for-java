@@ -36,7 +36,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Initializes an instance of AzureAppConfigurationClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -46,7 +46,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of keys.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -55,7 +55,6 @@ class AzureAppConfigurationClient {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
@@ -68,10 +67,9 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of keys.
-     * 
+     *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
@@ -83,7 +81,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of keys.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -93,7 +91,6 @@ class AzureAppConfigurationClient {
      * time.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
@@ -106,7 +103,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
@@ -115,7 +112,6 @@ class AzureAppConfigurationClient {
      * time.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -128,7 +124,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
@@ -136,7 +132,6 @@ class AzureAppConfigurationClient {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -147,8 +142,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
+     *
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -159,7 +153,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of key-values.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
@@ -194,7 +188,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of key-values.
-     * 
+     *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -208,7 +202,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of key-values.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
@@ -244,7 +238,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param label A filter used to match labels. Syntax reference:
@@ -279,7 +273,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param label A filter used to match labels. Syntax reference:
@@ -311,7 +305,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -322,7 +316,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a single key-value.
-     * 
+     *
      * @param key The key of the key-value.
      * @param accept The accept parameter.
      * @param label The label of the key-value to retrieve.
@@ -350,7 +344,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a single key-value.
-     * 
+     *
      * @param key The key of the key-value.
      * @param accept The accept parameter.
      * @param label The label of the key-value to retrieve.
@@ -376,7 +370,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a single key-value.
-     * 
+     *
      * @param key The key of the key-value.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -391,7 +385,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Creates a key-value.
-     * 
+     *
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @param label The label of the key-value to create.
@@ -418,7 +412,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Creates a key-value.
-     * 
+     *
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @param label The label of the key-value to create.
@@ -443,7 +437,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Creates a key-value.
-     * 
+     *
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -460,7 +454,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Deletes a key-value.
-     * 
+     *
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
      * @param label The label of the key-value to delete.
@@ -481,7 +475,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Deletes a key-value.
-     * 
+     *
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
      * @param label The label of the key-value to delete.
@@ -500,7 +494,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Deletes a key-value.
-     * 
+     *
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -515,7 +509,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -541,7 +535,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -564,7 +558,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key The key of the key-value to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -577,7 +571,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of key-value snapshots.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -598,7 +592,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of key-value snapshots.
-     * 
+     *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -612,7 +606,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of key-value snapshots.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -635,7 +629,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
@@ -652,7 +646,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
@@ -667,7 +661,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -678,7 +672,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a single key-value snapshot.
-     * 
+     *
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
      * @param select Used to select what fields are present in the returned resource(s).
@@ -703,7 +697,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a single key-value snapshot.
-     * 
+     *
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
      * @param select Used to select what fields are present in the returned resource(s).
@@ -725,7 +719,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a single key-value snapshot.
-     * 
+     *
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -740,7 +734,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Updates the state of a key-value snapshot.
-     * 
+     *
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
@@ -768,7 +762,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Updates the state of a key-value snapshot.
-     * 
+     *
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
@@ -793,7 +787,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Updates the state of a key-value snapshot.
-     * 
+     *
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
@@ -813,7 +807,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name The name of the key-value snapshot to check.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
@@ -834,7 +828,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name The name of the key-value snapshot to check.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
@@ -852,7 +846,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name The name of the key-value snapshot to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -865,7 +859,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of labels.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -887,7 +881,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of labels.
-     * 
+     *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -901,7 +895,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of labels.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -924,7 +918,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -947,7 +941,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -967,7 +961,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -978,7 +972,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Locks a key-value.
-     * 
+     *
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to lock.
@@ -1002,7 +996,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Locks a key-value.
-     * 
+     *
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to lock.
@@ -1024,7 +1018,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Locks a key-value.
-     * 
+     *
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1039,7 +1033,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Unlocks a key-value.
-     * 
+     *
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to unlock.
@@ -1063,7 +1057,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Unlocks a key-value.
-     * 
+     *
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to unlock.
@@ -1085,7 +1079,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Unlocks a key-value.
-     * 
+     *
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1100,7 +1094,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of key-value revisions.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
@@ -1127,7 +1121,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of key-value revisions.
-     * 
+     *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1141,7 +1135,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets a list of key-value revisions.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
@@ -1170,7 +1164,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @param label A filter used to match labels. Syntax reference:
@@ -1198,7 +1192,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @param label A filter used to match labels. Syntax reference:
@@ -1223,8 +1217,8 @@ class AzureAppConfigurationClient {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
-    
+     *
+
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -1235,7 +1229,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets the state of a long running operation.
-     * 
+     *
      * @param snapshot Snapshot identifier for the long running operation.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1250,7 +1244,7 @@ class AzureAppConfigurationClient {
 
     /**
      * Gets the state of a long running operation.
-     * 
+     *
      * @param snapshot Snapshot identifier for the long running operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

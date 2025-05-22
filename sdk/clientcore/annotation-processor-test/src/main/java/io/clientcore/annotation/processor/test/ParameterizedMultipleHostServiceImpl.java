@@ -59,7 +59,7 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         if (!expectedResponse) {
             String errorMessage = networkResponse.getValue().toString();
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+            throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
@@ -69,7 +69,7 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
+            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
         }
         return deserializedResult;
     }
