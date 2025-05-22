@@ -8,10 +8,10 @@ import io.clientcore.annotation.processor.test.implementation.HostEdgeCase2Servi
 import io.clientcore.annotation.processor.test.implementation.ParameterizedHostService;
 import io.clientcore.annotation.processor.test.implementation.ParameterizedMultipleHostService;
 import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientImpl;
-import io.clientcore.annotation.processor.test.implementation.models.ServiceError;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
 import io.clientcore.annotation.processor.test.implementation.models.OperationError;
+import io.clientcore.annotation.processor.test.implementation.models.ServiceError;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -1160,14 +1160,14 @@ public class TestInterfaceServiceClientGenerationTests {
             service.putWithUnexpectedResponseAndExceptionType(getRequestUri(), "body")
         );
         assertNotNull(e.getValue());
-        assertInstanceOf(LinkedHashMap.class, e.getValue());
+        assertInstanceOf(ServiceError.class, e.getValue());
         @SuppressWarnings("unchecked")
-        final LinkedHashMap<String, Object> errorMap = (LinkedHashMap<String, Object>) e.getValue();
-        assertTrue(errorMap.containsKey("error"));
+        final ServiceError error = (ServiceError) e.getValue();
+        assertNotNull(error.getError());
         @SuppressWarnings("unchecked")
-        Map<String, Object> innerError = (Map<String, Object>) errorMap.get("error");
-        assertEquals("SomeCode", innerError.get("code"));
-        assertEquals("some message", innerError.get("message"));
+        OperationError innerError = error.getError();
+        assertEquals("SomeCode", innerError.getCode());
+        assertEquals("some message", innerError.getMessage());
     }
 
     @Test

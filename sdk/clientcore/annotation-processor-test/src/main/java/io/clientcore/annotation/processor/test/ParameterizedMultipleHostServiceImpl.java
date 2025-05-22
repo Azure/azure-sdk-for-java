@@ -15,8 +15,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.utils.GeneratedCodeUtils;
-import java.util.Collections;
-import java.util.Map;
 import io.clientcore.core.utils.CoreUtils;
 import java.lang.reflect.ParameterizedType;
 import io.clientcore.core.serialization.SerializationFormat;
@@ -59,9 +57,8 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;

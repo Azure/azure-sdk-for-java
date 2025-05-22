@@ -54,6 +54,7 @@ public final class HttpRequestContext {
     private final Map<String, Substitution> substitutions;
 
     private int[] expectedStatusCodes;
+    private TypeMirror defaultExceptionBodyType;
 
     /**
      * Constructs a new HttpRequestContext with default values.
@@ -400,6 +401,24 @@ public final class HttpRequestContext {
      */
     public Map<Integer, ExceptionBodyTypeInfo> getExceptionBodyMappings() {
         return exceptionBodyMappings;
+    }
+
+    /**
+     * Sets the default exception body type.
+     *
+     * @param type the default exception body type to set.
+     */
+    public void setDefaultExceptionBodyType(TypeMirror type) {
+        this.defaultExceptionBodyType = type;
+    }
+
+    /**
+     * Gets the default exception body type.
+     *
+     * @return the default exception body type.
+     */
+    public TypeMirror getDefaultExceptionBodyType() {
+        return defaultExceptionBodyType;
     }
 
     /**

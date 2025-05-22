@@ -80,7 +80,7 @@ public class GeneratedCodeUtilsTests {
 
         Map<Integer, ParameterizedType> exceptionTypeMap = new HashMap<>();
         Exception ex = assertThrows(RuntimeException.class,
-            () -> GeneratedCodeUtils.handleUnexpectedResponse(500, response, serializer, exceptionTypeMap));
+            () -> GeneratedCodeUtils.handleUnexpectedResponse(500, response, serializer, null, null, exceptionTypeMap));
         assertTrue(ex.getMessage().contains("(1024-byte body)"));
     }
 
@@ -92,7 +92,7 @@ public class GeneratedCodeUtilsTests {
 
         Map<Integer, ParameterizedType> exceptionTypeMap = new HashMap<>();
         Exception ex = assertThrows(RuntimeException.class,
-            () -> GeneratedCodeUtils.handleUnexpectedResponse(404, response, serializer, exceptionTypeMap));
+            () -> GeneratedCodeUtils.handleUnexpectedResponse(404, response, serializer, null, null, exceptionTypeMap));
         assertTrue(ex.getMessage().contains("(empty body)"));
     }
 
@@ -105,7 +105,7 @@ public class GeneratedCodeUtilsTests {
 
         Map<Integer, ParameterizedType> exceptionTypeMap = new HashMap<>();
         Exception ex = assertThrows(RuntimeException.class,
-            () -> GeneratedCodeUtils.handleUnexpectedResponse(400, response, serializer, exceptionTypeMap));
+            () -> GeneratedCodeUtils.handleUnexpectedResponse(400, response, serializer, null, null, exceptionTypeMap));
         assertTrue(ex.getMessage().contains(json));
         assertTrue(ex.getMessage().contains("\"")); // Should be quoted
     }
@@ -126,7 +126,7 @@ public class GeneratedCodeUtilsTests {
         JsonSerializer serializer = new TestJsonSerializer(capturedType);
 
         Exception ex = assertThrows(RuntimeException.class,
-            () -> GeneratedCodeUtils.handleUnexpectedResponse(403, response, serializer, exceptionTypeMap));
+            () -> GeneratedCodeUtils.handleUnexpectedResponse(403, response, serializer, null, null, exceptionTypeMap));
         assertTrue(ex.getMessage().contains(json));
         assertTrue(
             (capturedType[0] instanceof Class && capturedType[0].equals(String.class))
@@ -135,10 +135,31 @@ public class GeneratedCodeUtilsTests {
             "Should use String.class as the mapped type for status 403");
     }
 
-    public static class TestJsonSerializer extends JsonSerializer {
+    @Test
+    void handleUnexpectedResponseUsesDefaultErrorBodyType() {
+        // Arrange
+        String json = "{\"error\":\"default\"}";
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+        Response<BinaryData> response = new MockHttpResponse(null, 418, headers, BinaryData.fromString(json));
+
+        ParameterizedType defaultType = CoreUtils.createParameterizedType(String.class);
+        final java.lang.reflect.Type[] capturedType = new java.lang.reflect.Type[1];
+        JsonSerializer serializer = new TestJsonSerializer(capturedType);
+
+        Exception ex = assertThrows(RuntimeException.class,
+            () -> GeneratedCodeUtils.handleUnexpectedResponse(418, response, serializer, null, defaultType, null));
+        assertTrue(ex.getMessage().contains(json));
+        assertTrue(
+            (capturedType[0] instanceof Class && capturedType[0].equals(String.class))
+                || (capturedType[0] instanceof ParameterizedType
+                    && ((ParameterizedType) capturedType[0]).getRawType().equals(String.class)),
+            "Should use String.class as the default error body type for unmapped status 418");
+    }
+
+    static class TestJsonSerializer extends JsonSerializer {
         private final java.lang.reflect.Type[] capturedType;
 
-        public TestJsonSerializer(java.lang.reflect.Type[] capturedType) {
+        TestJsonSerializer(java.lang.reflect.Type[] capturedType) {
             this.capturedType = capturedType;
         }
 

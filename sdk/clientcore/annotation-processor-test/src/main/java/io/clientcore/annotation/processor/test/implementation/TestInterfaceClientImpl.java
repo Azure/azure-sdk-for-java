@@ -68,7 +68,11 @@ public final class TestInterfaceClientImpl {
         Void testMethodReturnsVoid(@HostParam("uri") String uri);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "kv/{key}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = ServiceError.class)
+        @UnexpectedResponseExceptionDetails({
+            @UnexpectedResponseExceptionDetail(statusCode = { 400 }),
+            @UnexpectedResponseExceptionDetail(statusCode = { 403 }, exceptionBodyClass = OperationError.class),
+            @UnexpectedResponseExceptionDetail(exceptionBodyClass = ServiceError.class)
+        })
         Response<Foo> getFoo(@PathParam("key") String key, @QueryParam("label") String label,
             @HeaderParam("Sync-Token") String syncToken);
 

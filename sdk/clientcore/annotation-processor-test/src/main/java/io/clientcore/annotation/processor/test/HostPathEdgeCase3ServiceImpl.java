@@ -15,8 +15,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.utils.GeneratedCodeUtils;
-import java.util.Collections;
-import java.util.Map;
 
 /**
  * Initializes a new instance of the HostPathEdgeCase3ServiceImpl type.
@@ -58,9 +56,8 @@ public class HostPathEdgeCase3ServiceImpl implements HostPathEdgeCase3Service {
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 204;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }

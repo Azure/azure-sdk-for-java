@@ -6,7 +6,9 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.serialization.json.JsonSerializer;
+import io.clientcore.core.serialization.xml.XmlSerializer;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,15 +64,31 @@ public final class GeneratedCodeUtils {
     }
 
     /**
-     * Handles unexpected responses from the network.
+     * Handles unexpected HTTP responses by deserializing the response body into the appropriate error type and throwing an exception.
+     * <p>
+     * This method is used by generated client code to process HTTP responses with status codes that are not explicitly handled as success cases.
+     * It attempts to deserialize the response body into a type determined by the following precedence:
+     * <ol>
+     *   <li>If {@code statusToExceptionTypeMap} contains the {@code responseCode}, its mapped type is used.</li>
+     *   <li>Otherwise, if {@code defaultErrorBodyType} is provided, it is used.</li>
+     *   <li>Otherwise, {@code Object.class} is used as a fallback.</li>
+     * </ol>
+     * The method supports both JSON and XML deserialization, depending on the response's content type and the provided serializers.
+     * If deserialization fails, the raw response body is used as the error value.
+     * <p>
+     * The thrown exception includes a message with the status code and a string representation of the response body (or a note if the body is empty or binary).
      *
-     * @param responseCode The network response code.
-     * @param networkResponse The network response object containing the response body.
-     * @param jsonSerializer The JSON serializer used to deserialize the response body.
-     * @param statusToExceptionTypeMap A map of status codes to exception types.
+     * @param responseCode The HTTP status code of the response.
+     * @param networkResponse The network response object containing the response body and headers.
+     * @param jsonSerializer The JSON serializer to use for deserialization.
+     * @param xmlSerializer The XML serializer to use for deserialization.
+     * @param defaultErrorBodyType The default type to use for error body deserialization if no status-specific mapping exists.
+     * @param statusToExceptionTypeMap A map from HTTP status codes to error body types for deserialization.
+     * @throws UnsupportedOperationException if none of the serializers support the format.
      */
     public static void handleUnexpectedResponse(int responseCode, Response<BinaryData> networkResponse,
-        JsonSerializer jsonSerializer, Map<Integer, ParameterizedType> statusToExceptionTypeMap) {
+        JsonSerializer jsonSerializer, XmlSerializer xmlSerializer, ParameterizedType defaultErrorBodyType,
+        Map<Integer, ParameterizedType> statusToExceptionTypeMap) {
         BinaryData networkResponseValue = networkResponse.getValue();
         StringBuilder exceptionMessage = createExceptionMessage(responseCode);
 
@@ -86,14 +104,27 @@ public final class GeneratedCodeUtils {
         } else {
             Object errorValue;
             ParameterizedType returnType;
-            // Use mapping if present
+
+            // Prefer explicit mapping, then default, then Object.class
             if (statusToExceptionTypeMap != null && statusToExceptionTypeMap.containsKey(responseCode)) {
                 returnType = statusToExceptionTypeMap.get(responseCode);
+            } else if (defaultErrorBodyType != null) {
+                returnType = defaultErrorBodyType;
             } else {
                 returnType = CoreUtils.createParameterizedType(Object.class);
             }
+
+            SerializationFormat serializationFormat
+                = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
             try {
-                errorValue = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
+                if (jsonSerializer.supportsFormat(serializationFormat)) {
+                    errorValue = CoreUtils.decodeNetworkResponse(networkResponseValue, jsonSerializer, returnType);
+                } else if (xmlSerializer.supportsFormat(serializationFormat)) {
+                    errorValue = CoreUtils.decodeNetworkResponse(networkResponseValue, xmlSerializer, returnType);
+                } else {
+                    throw new UnsupportedOperationException(
+                        "None of the provided serializers support the format: " + serializationFormat + ".");
+                }
             } catch (Exception ex) {
                 errorValue = new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8);
             }

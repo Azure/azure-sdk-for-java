@@ -14,8 +14,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.utils.GeneratedCodeUtils;
-import java.util.Collections;
-import java.util.Map;
 
 /**
  * Initializes a new instance of the HostEdgeCase1ServiceImpl type.
@@ -55,9 +53,8 @@ public class HostEdgeCase1ServiceImpl implements HostEdgeCase1Service {
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;

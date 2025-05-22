@@ -26,11 +26,10 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.GeneratedCodeUtils;
-import java.util.Collections;
 import io.clientcore.core.utils.UriBuilder;
+import java.util.HashMap;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
-import java.util.HashMap;
 
 /**
  * Initializes a new instance of the TestInterfaceClientServiceImpl type.
@@ -91,9 +90,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -122,9 +120,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -140,9 +137,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -158,9 +154,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return null;
         }
@@ -182,9 +177,11 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
-            // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
+            statusToExceptionTypeMap.put(400, CoreUtils.createParameterizedType(Object.class));
+            statusToExceptionTypeMap.put(403, CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.OperationError.class));
+            java.lang.reflect.ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, statusToExceptionTypeMap);
             networkResponse.close();
         }
         Foo deserializedResult;
@@ -212,9 +209,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         FooListResult deserializedResult;
@@ -242,9 +238,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         FooListResult deserializedResult;
@@ -276,9 +271,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         List<Foo> deserializedResult;
@@ -306,9 +300,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         List<Foo> deserializedResult;
@@ -343,9 +336,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -379,9 +371,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -406,9 +397,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;
@@ -425,9 +415,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -443,9 +432,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -471,9 +459,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -499,9 +486,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -527,9 +513,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -559,9 +544,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -591,9 +575,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -623,9 +606,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -655,9 +637,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -687,9 +668,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -719,9 +699,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -752,9 +731,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -785,9 +763,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -818,9 +795,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -851,9 +827,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -883,9 +858,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -915,9 +889,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -947,9 +920,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -979,9 +951,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1011,9 +982,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1048,9 +1018,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1080,9 +1049,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1111,9 +1079,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1142,9 +1109,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1174,9 +1140,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1205,9 +1170,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1235,9 +1199,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1265,9 +1228,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1293,9 +1255,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -1315,9 +1276,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1343,9 +1303,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 400;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), networkResponse.getValue().toStream());
@@ -1361,9 +1320,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;
@@ -1389,9 +1347,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1420,9 +1377,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1448,9 +1404,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -1466,9 +1421,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return null;
         }
@@ -1484,9 +1438,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -1502,9 +1455,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -1520,9 +1472,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             return expectedResponse;
         }
@@ -1538,9 +1489,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -1563,9 +1513,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1595,9 +1544,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
-            // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            java.lang.reflect.ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1627,9 +1575,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1659,9 +1606,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
-            // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            java.lang.reflect.ParameterizedType defaultErrorBodyType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1692,10 +1638,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
             Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
-            ParameterizedType returnType200 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class);
-            statusToExceptionTypeMap.put(200, returnType200);
-            // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            statusToExceptionTypeMap.put(200, CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class));
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1727,10 +1671,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
             statusToExceptionTypeMap.put(400, CoreUtils.createParameterizedType(Object.class));
-            ParameterizedType returnType403 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class);
-            statusToExceptionTypeMap.put(403, returnType403);
-            // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            statusToExceptionTypeMap.put(403, CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class));
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1761,10 +1703,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
             Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
-            ParameterizedType returnType400 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class);
-            statusToExceptionTypeMap.put(400, returnType400);
-            // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            statusToExceptionTypeMap.put(400, CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class));
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1795,12 +1735,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
             Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();
-            ParameterizedType returnType400 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class);
-            statusToExceptionTypeMap.put(400, returnType400);
-            ParameterizedType returnType403 = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.OperationError.class);
-            statusToExceptionTypeMap.put(403, returnType403);
-            // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            statusToExceptionTypeMap.put(400, CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.ServiceError.class));
+            statusToExceptionTypeMap.put(403, CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.OperationError.class));
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1830,9 +1767,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1865,9 +1801,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1896,9 +1831,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1926,9 +1860,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1958,9 +1891,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;
@@ -1986,9 +1918,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -2004,9 +1935,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -2022,9 +1952,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -2040,9 +1969,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -2058,9 +1986,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -2076,9 +2003,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 400;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -2094,9 +2020,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode >= 200 && responseCode < 300;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -2112,9 +2037,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 500;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -2138,9 +2062,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         return networkResponse;
@@ -2156,9 +2079,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         return networkResponse.getValue();
@@ -2182,9 +2104,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         return networkResponse;

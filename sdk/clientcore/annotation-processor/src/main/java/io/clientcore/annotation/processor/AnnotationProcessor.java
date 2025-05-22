@@ -171,7 +171,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         templateInput.addImport(requestMethod.getReturnType());
         method.setMethodReturnType(requestMethod.getReturnType());
         List<UnexpectedResponseExceptionDetail> details = getUnexpectedResponseExceptionDetails(requestMethod);
-
+        TypeMirror defaultExceptionBodyType = null;
         // For each detail, map statusCode -> exceptionBodyClass
         for (UnexpectedResponseExceptionDetail detail : details) {
             TypeMirror exceptionBodyType = null;
@@ -193,10 +193,18 @@ public class AnnotationProcessor extends AbstractProcessor {
             }
             HttpRequestContext.ExceptionBodyTypeInfo info
                 = new HttpRequestContext.ExceptionBodyTypeInfo(exceptionBodyType, isDefaultObject);
-            for (int code : detail.statusCode()) {
-                method.addExceptionBodyMapping(code, info);
+
+            if (detail.statusCode().length == 0) {
+                // This is the default for all unmapped status codes
+                defaultExceptionBodyType = exceptionBodyType;
+            } else {
+                for (int code : detail.statusCode()) {
+                    method.addExceptionBodyMapping(code, info);
+                }
             }
         }
+        // Store the default type in your context
+        method.setDefaultExceptionBodyType(defaultExceptionBodyType);
         // Process parameters
         for (VariableElement param : requestMethod.getParameters()) {
             // Cache annotations for each parameter

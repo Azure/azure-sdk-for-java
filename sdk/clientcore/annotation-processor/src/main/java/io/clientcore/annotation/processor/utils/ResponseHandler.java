@@ -19,7 +19,6 @@ import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.GeneratedCodeUtils;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,33 +100,34 @@ public final class ResponseHandler {
         BlockStmt errorBlock = new BlockStmt();
         body.tryAddImportToParentCompilationUnit(GeneratedCodeUtils.class);
         Map<Integer, HttpRequestContext.ExceptionBodyTypeInfo> mappings = method.getExceptionBodyMappings();
-        if (!mappings.isEmpty()) {
-            body.tryAddImportToParentCompilationUnit(Map.class);
-            body.tryAddImportToParentCompilationUnit(HashMap.class);
-            body.tryAddImportToParentCompilationUnit(CoreUtils.class);
-            body.tryAddImportToParentCompilationUnit(ParameterizedType.class);
+        if (!mappings.isEmpty() && method.getDefaultExceptionBodyType() != null) {
+            // Both map and default
+            getStatusCodeMapping(body, errorBlock, mappings);
+            errorBlock.addStatement("java.lang.reflect.ParameterizedType defaultErrorBodyType = "
+                + AnnotationProcessorUtils.createParameterizedTypeStatement(method.getDefaultExceptionBodyType(), body)
+                + ";");
             errorBlock.addStatement(
-                "Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();");
-            for (Map.Entry<Integer, HttpRequestContext.ExceptionBodyTypeInfo> entry : mappings.entrySet()) {
-                if (entry.getValue().isDefaultObject() || entry.getValue().getTypeMirror() == null) {
-                    errorBlock.addStatement("statusToExceptionTypeMap.put(" + entry.getKey()
-                        + ", CoreUtils.createParameterizedType(Object.class));");
-                } else {
-                    errorBlock
-                        .addStatement("statusToExceptionTypeMap.put(" + entry.getKey() + ", " + AnnotationProcessorUtils
-                            .createParameterizedTypeStatement(entry.getValue().getTypeMirror(), body) + ");");
-                }
-            }
+                "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, statusToExceptionTypeMap);");
+        } else if (!mappings.isEmpty()) {
+            // Only map
+            getStatusCodeMapping(body, errorBlock, mappings);
+            errorBlock.addStatement(
+                "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap);");
+        } else if (method.getDefaultExceptionBodyType() != null) {
+            // Only default
+            errorBlock.addStatement("java.lang.reflect.ParameterizedType defaultErrorBodyType = "
+                + AnnotationProcessorUtils.createParameterizedTypeStatement(method.getDefaultExceptionBodyType(), body)
+                + ";");
+            errorBlock.addStatement(
+                "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);");
         } else {
-            body.tryAddImportToParentCompilationUnit(Collections.class);
-            body.tryAddImportToParentCompilationUnit(Map.class);
-            errorBlock.addStatement(
-                "Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();");
+            // Neither
+            Statement stmt = StaticJavaParser.parseStatement(
+                "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, "
+                    + "xmlSerializer, null, null);");
+            stmt.setLineComment("\n Handle unexpected response");
+            errorBlock.addStatement(stmt);
         }
-        Statement stmt = StaticJavaParser.parseStatement(
-            "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);");
-        stmt.setLineComment(" Handle unexpected response");
-        errorBlock.addStatement(stmt);
         if (!usingTryWithResources) {
             closeResponse(errorBlock);
         }
@@ -135,6 +135,24 @@ public final class ResponseHandler {
             .setCondition(new UnaryExpr(new NameExpr("expectedResponse"), UnaryExpr.Operator.LOGICAL_COMPLEMENT))
             .setThenStmt(errorBlock);
         body.addStatement(ifStmt);
+    }
+
+    private static void getStatusCodeMapping(BlockStmt body, BlockStmt errorBlock,
+        Map<Integer, HttpRequestContext.ExceptionBodyTypeInfo> mappings) {
+        body.tryAddImportToParentCompilationUnit(HashMap.class);
+        body.tryAddImportToParentCompilationUnit(CoreUtils.class);
+        errorBlock.addStatement(
+            "Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();");
+        for (Map.Entry<Integer, HttpRequestContext.ExceptionBodyTypeInfo> entry : mappings.entrySet()) {
+            if (entry.getValue().isDefaultObject() || entry.getValue().getTypeMirror() == null) {
+                errorBlock.addStatement("statusToExceptionTypeMap.put(" + entry.getKey()
+                    + ", CoreUtils.createParameterizedType(Object.class));");
+            } else {
+                errorBlock.addStatement("statusToExceptionTypeMap.put(" + entry.getKey() + ", "
+                    + AnnotationProcessorUtils.createParameterizedTypeStatement(entry.getValue().getTypeMirror(), body)
+                    + ");");
+            }
+        }
     }
 
     private static void handleRequestReturn(BlockStmt body, TypeMirror returnType, java.lang.reflect.Type entityType,

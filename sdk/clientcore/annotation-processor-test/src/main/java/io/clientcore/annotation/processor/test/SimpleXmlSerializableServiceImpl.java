@@ -17,8 +17,6 @@ import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.GeneratedCodeUtils;
-import java.util.Collections;
-import java.util.Map;
 import io.clientcore.core.http.models.HttpHeader;
 import java.lang.reflect.ParameterizedType;
 
@@ -69,9 +67,8 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -96,9 +93,8 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         networkResponse.close();
@@ -117,9 +113,8 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         SimpleXmlSerializable deserializedResult;
@@ -148,9 +143,8 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         SimpleXmlSerializable deserializedResult;

@@ -16,8 +16,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.utils.GeneratedCodeUtils;
-import java.util.Collections;
-import java.util.Map;
 import io.clientcore.core.utils.CoreUtils;
 import java.lang.reflect.ParameterizedType;
 import io.clientcore.core.serialization.SerializationFormat;
@@ -60,9 +58,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         return networkResponse.getValue();
@@ -78,9 +75,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         return networkResponse;
@@ -96,9 +92,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;
@@ -115,9 +110,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             BinaryData responseBody = networkResponse.getValue();
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), responseBody != null ? responseBody.toBytes() : null);
@@ -134,9 +128,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         return networkResponse.getValue().toStream();
@@ -152,9 +145,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), networkResponse.getValue().toStream());
@@ -170,9 +162,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = Collections.emptyMap();
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, statusToExceptionTypeMap);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
         }
         List<BinaryData> deserializedResult;
