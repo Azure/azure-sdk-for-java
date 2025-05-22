@@ -202,7 +202,7 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
             } else if (status.code() != 200) {
                 throw LOGGER.throwableAtError()
                     .addKeyValue("status", status.code())
-                    .log(exceptionMessage(null), m -> new HttpProxyHandler.HttpProxyConnectException(m, innerHeaders));
+                    .log(exceptionMessage(status.reasonPhrase()), m -> new HttpProxyHandler.HttpProxyConnectException(m, innerHeaders));
             }
         }
 
