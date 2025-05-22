@@ -3,11 +3,11 @@
 
 package com.azure.communication.chat.models;
 
+import com.azure.communication.chat.implementation.models.ChatRetentionPolicy;
+import com.azure.communication.chat.implementation.models.NoneRetentionPolicy;
 import com.azure.core.annotation.Fluent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * The CreateChatThreadOptions model.
@@ -23,6 +23,16 @@ public final class CreateChatThreadOptions {
      * Members to be added to the chat thread.
      */
     private List<ChatParticipant> participants = new ArrayList<>();
+
+    /**
+    * Property bag of chat thread metadata key - value pairs.
+    */
+    private Map<String, String> metadata = new HashMap<>();
+
+    /**
+    * Thread retention policy
+    */
+    private ChatRetentionPolicy retentionPolicy;
 
     private String idempotencyToken;
 
@@ -67,6 +77,46 @@ public final class CreateChatThreadOptions {
     }
 
     /**
+     * Get the metadata property: Property bag of chat thread metadata key-value pairs.
+     *
+     * @return the metadata map.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Property bag of chat thread metadata key-value pairs.
+     *
+     * @param metadata the metadata map to set.
+     * @return the CreateChatThreadOptions object itself.
+     */
+    public CreateChatThreadOptions setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the retentionPolicy property: Thread retention policy.
+     *
+     * @return the retentionPolicy value.
+     */
+    public ChatRetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
+     * Set the retentionPolicy property: Thread retention policy.
+     *
+     * @param retentionPolicy the retention policy to set.
+     * @return the CreateChatThreadOptions object itself.
+     */
+    public CreateChatThreadOptions setRetentionPolicy(ChatRetentionPolicy retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
+        return this;
+    }
+
+    /**
      * Get the idempotencyToken property
      *
      * @return the idempotencyToken.
@@ -92,11 +142,12 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Creates a new instance of CreateChatThreadOptions
+     * Creates a new instance of CreateChatThreadOptions only providing topic parameter.
      * @param topic the topic value to set.
      */
     public CreateChatThreadOptions(String topic) {
         this.topic = topic;
         this.idempotencyToken = UUID.randomUUID().toString();
+        this.retentionPolicy = new NoneRetentionPolicy();
     }
 }

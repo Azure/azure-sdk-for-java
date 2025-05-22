@@ -4,12 +4,14 @@
 
 package com.azure.communication.chat.models;
 
+import com.azure.communication.chat.implementation.models.ChatRetentionPolicy;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Request payload for updating a chat thread.
@@ -20,6 +22,17 @@ public final class UpdateChatThreadOptions implements JsonSerializable<UpdateCha
      * Chat thread topic.
      */
     private String topic;
+
+    /*
+     * Contextual metadata for the thread. The metadata consists of name/value pairs. The total size of all metadata
+     * pairs can be up to 1KB in size.
+     */
+    private Map<String, String> metadata;
+
+    /*
+     * Data retention policy for auto deletion.
+     */
+    private ChatRetentionPolicy retentionPolicy;
 
     /**
      * Creates an instance of UpdateChatThreadOptions class.
@@ -48,12 +61,56 @@ public final class UpdateChatThreadOptions implements JsonSerializable<UpdateCha
     }
 
     /**
+     * Get the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
+     * total size of all metadata pairs can be up to 1KB in size.
+     * 
+     * @return the metadata value.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
+     * total size of all metadata pairs can be up to 1KB in size.
+     * 
+     * @param metadata the metadata value to set.
+     * @return the UpdateChatThreadOptions object itself.
+     */
+    public UpdateChatThreadOptions setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the retentionPolicy property: Data retention policy for auto deletion.
+     * 
+     * @return the retentionPolicy value.
+     */
+    public ChatRetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
+     * Set the retentionPolicy property: Data retention policy for auto deletion.
+     * 
+     * @param retentionPolicy the retentionPolicy value to set.
+     * @return the UpdateChatThreadOptions object itself.
+     */
+    public UpdateChatThreadOptions setRetentionPolicy(ChatRetentionPolicy retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("topic", this.topic);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -74,6 +131,11 @@ public final class UpdateChatThreadOptions implements JsonSerializable<UpdateCha
 
                 if ("topic".equals(fieldName)) {
                     deserializedUpdateChatThreadOptions.topic = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedUpdateChatThreadOptions.metadata = metadata;
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    deserializedUpdateChatThreadOptions.retentionPolicy = ChatRetentionPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
