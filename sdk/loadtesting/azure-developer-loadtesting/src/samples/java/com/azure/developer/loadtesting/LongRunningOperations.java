@@ -8,6 +8,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.developer.loadtesting.models.FileType;
+import com.azure.developer.loadtesting.models.LoadTestRun;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -43,7 +45,7 @@ public final class LongRunningOperations {
         Duration pollInterval = Duration.ofSeconds(1);
 
         RequestOptions reqOpts = new RequestOptions()
-            .addQueryParam("fileType", "JMX_FILE");
+            .addQueryParam("fileType", FileType.TEST_SCRIPT.toString());
 
         SyncPoller<BinaryData, BinaryData> poller = client.beginUploadTestFile(inputTestId, inputFileName, fileData, reqOpts);
         poller = poller.setPollInterval(pollInterval);
@@ -99,26 +101,24 @@ public final class LongRunningOperations {
         String inputTestRunId = "12345678-1234-1234-1234-123456789abc";
         String inputTestId = "87654321-1234-1234-1234-123456789abc";
 
-        Map<String, Object> testRunMap = new HashMap<>();
-        testRunMap.put("testId", inputTestId);
-        testRunMap.put("displayName", "Sample Test Run");
-        testRunMap.put("description", "Java SDK Sample Test Run");
+        LoadTestRun testRun = new LoadTestRun()
+            .setTestId(inputTestId)
+            .setDisplayName("Sample Test Run")
+            .setDescription("Java SDK Sample Test Run");
 
         Duration pollInterval = Duration.ofSeconds(5);
 
-        BinaryData inputTestRunBinary = BinaryData.fromObject(testRunMap);
-
-        SyncPoller<BinaryData, BinaryData> poller = client.beginTestRun(inputTestRunId, inputTestRunBinary, null);
+        SyncPoller<LoadTestRun, LoadTestRun> poller = client.beginTestRun(inputTestRunId, testRun, null);
         poller = poller.setPollInterval(pollInterval);
 
-        PollResponse<BinaryData> pollResponse = poller.poll();
+        PollResponse<LoadTestRun> pollResponse = poller.poll();
 
         while (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
             || pollResponse.getStatus() == LongRunningOperationStatus.NOT_STARTED) {
 
-            BinaryData testRunBinary = pollResponse.getValue();
+            LoadTestRun testRunResponse = pollResponse.getValue();
 
-            System.out.println("Test Run all info: " + testRunBinary.toString());
+            System.out.println("Test Run all info: " + testRunResponse.toString());
 
             try {
                 Thread.sleep(pollInterval.toMillis());
@@ -130,18 +130,13 @@ public final class LongRunningOperations {
         }
 
         poller.waitForCompletion();
-        BinaryData testRunBinary = poller.getFinalResult();
+        LoadTestRun testRunResponse = poller.getFinalResult();
 
-        try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())) {
-            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+        String testId = testRunResponse.getTestId();
+        String testRunId = testRunResponse.getTestRunId();
+        String status = testRunResponse.getStatus().toString();
 
-            String testId = jsonTree.get("testId").toString();
-            String testRunId = jsonTree.get("testRunId").toString();
-            String status = jsonTree.get("status").toString();
-            System.out.println(String.format("%s\t%s\t%s", testId, testRunId, status));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println(String.format("%s\t%s\t%s", testId, testRunId, status));
         // END: java-longRunningOperations-sample-beginTestRun
     }
 

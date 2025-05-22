@@ -7,15 +7,13 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.developer.loadtesting.models.FileType;
+import com.azure.developer.loadtesting.models.LoadTestRun;
+import com.azure.developer.loadtesting.models.TestProfileRun;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Sample demonstrates how to upload and validate a test file, running a test run and running a test profile run.
@@ -42,18 +40,17 @@ public final class LongRunningOperationsAsync {
         Duration pollInterval = Duration.ofSeconds(1);
 
         RequestOptions reqOpts = new RequestOptions()
-            .addQueryParam("fileType", "JMX_FILE");
+            .addQueryParam("fileType", FileType.JMX_FILE.toString());
 
         PollerFlux<BinaryData, BinaryData> poller = client.beginUploadTestFile(inputTestId, inputFileName, fileData, reqOpts);
         poller = poller.setPollInterval(pollInterval);
 
         poller.subscribe(pollResponse -> {
-            try (JsonReader jsonReader = JsonProviders.createReader(pollResponse.getValue().toBytes())) {
-                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
+            try (com.azure.json.JsonReader jsonReader = com.azure.json.JsonProviders.createReader(pollResponse.getValue().toBytes())) {
+                java.util.Map<String, Object> jsonTree = jsonReader.readMap(com.azure.json.JsonReader::readUntyped);
                 String validationStatus = jsonTree.get("validationStatus").toString();
                 System.out.println("Validation Status: " + validationStatus);
-            } catch (IOException e) {
+            } catch (java.io.IOException e) {
                 e.printStackTrace();
             }
         });
@@ -61,15 +58,14 @@ public final class LongRunningOperationsAsync {
         AsyncPollResponse<BinaryData, BinaryData> pollResponse = poller.blockLast();
         BinaryData fileBinary = pollResponse.getFinalResult().block();
 
-        try (JsonReader jsonReader = JsonProviders.createReader(fileBinary.toBytes())) {
-            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
+        try (com.azure.json.JsonReader jsonReader = com.azure.json.JsonProviders.createReader(fileBinary.toBytes())) {
+            java.util.Map<String, Object> jsonTree = jsonReader.readMap(com.azure.json.JsonReader::readUntyped);
             String url = jsonTree.get("url").toString();
             String fileName = jsonTree.get("fileName").toString();
             String fileType = jsonTree.get("fileType").toString();
             String validationStatus = jsonTree.get("validationStatus").toString();
-            System.out.println(String.format("%s\t%s\t%s\t%s", fileName, fileType, url, validationStatus));
-        } catch (IOException e) {
+            System.out.println(String.format("%s\\t%s\\t%s\\t%s", fileName, fileType, url, validationStatus));
+        } catch (java.io.IOException e) {
             e.printStackTrace();
         }
         // END: java-longRunningOperationsAsync-sample-beginUploadTestFile
@@ -85,36 +81,28 @@ public final class LongRunningOperationsAsync {
         String inputTestRunId = "12345678-1234-1234-1234-123456789abc";
         String inputTestId = "87654321-1234-1234-1234-123456789abc";
 
-        Map<String, Object> testRunMap = new HashMap<String, Object>();
-        testRunMap.put("testId", inputTestId);
-        testRunMap.put("displayName", "Sample Test Run");
-        testRunMap.put("description", "Java SDK Sample Test Run");
+        LoadTestRun testRun = new LoadTestRun()
+            .setTestId(inputTestId)
+            .setDisplayName("Sample Test Run")
+            .setDescription("Java SDK Sample Test Run");
 
         Duration pollInterval = Duration.ofSeconds(5);
 
-        BinaryData inputTestRunBinary = BinaryData.fromObject(testRunMap);
-
-        PollerFlux<BinaryData, BinaryData> poller = client.beginTestRun(inputTestRunId, inputTestRunBinary, null);
+        PollerFlux<LoadTestRun, LoadTestRun> poller = client.beginTestRun(inputTestRunId, testRun);
         poller = poller.setPollInterval(pollInterval);
 
         poller.subscribe(pollResponse -> {
-            BinaryData testRunBinary = pollResponse.getValue();
-            System.out.println("Test Run all info: " + testRunBinary.toString());
+            LoadTestRun testRunResponse = pollResponse.getValue();
+            System.out.println("Test Run all info: " + testRunResponse.toString());
         });
 
-        AsyncPollResponse<BinaryData, BinaryData> pollResponse = poller.blockLast();
-        BinaryData testRunBinary = pollResponse.getFinalResult().block();
+        AsyncPollResponse<LoadTestRun, LoadTestRun> finalPollResponse = poller.blockLast();
+        LoadTestRun testRunResponse = finalPollResponse.getFinalResult().block();
 
-        try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())) {
-            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
-            String testId = jsonTree.get("testId").toString();
-            String testRunId = jsonTree.get("testRunId").toString();
-            String status = jsonTree.get("status").toString();
-            System.out.println(String.format("%s\t%s\t%s", testId, testRunId, status));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String testId = testRunResponse.getTestId();
+        String testRunId = testRunResponse.getTestRunId();
+        String status = testRunResponse.getStatus().toString();
+        System.out.println(String.format("%s\\t%s\\t%s", testId, testRunId, status));
         // END: java-longRunningOperationsAsync-sample-beginTestRun
     }
 
@@ -128,36 +116,31 @@ public final class LongRunningOperationsAsync {
         String inputTestProfileId = "12345678-1234-1234-1234-123456789abc";
         String inputTestProfileRunId = "87654321-1234-1234-1234-123456789abc";
 
-        Map<String, Object> testProfileRunMap = new HashMap<String, Object>();
-        testProfileRunMap.put("testProfileId", inputTestProfileId);
-        testProfileRunMap.put("displayName", "Sample Test Profile Run");
-        testProfileRunMap.put("description", "Java SDK Sample Test Profile Run");
+        // Use TestProfileRun model for request
+        TestProfileRun testProfileRun = new TestProfileRun()
+            .setTestProfileId(inputTestProfileId)
+            .setDisplayName("Sample Test Profile Run")
+            .setDescription("Java SDK Sample Test Profile Run");
 
         Duration pollInterval = Duration.ofSeconds(5);
 
-        BinaryData inputTestProfileRunBinary = BinaryData.fromObject(testProfileRunMap);
-
-        PollerFlux<BinaryData, BinaryData> poller = client.beginTestProfileRun(inputTestProfileRunId, inputTestProfileRunBinary, null);
+        // Updated poller type and request parameter to use TestProfileRun model
+        PollerFlux<TestProfileRun, TestProfileRun> poller = client.beginTestProfileRun(inputTestProfileRunId, testProfileRun);
         poller = poller.setPollInterval(pollInterval);
 
         poller.subscribe(pollResponse -> {
-            BinaryData testProfileRunBinary = pollResponse.getValue();
-            System.out.println("Test Profile Run all info: " + testProfileRunBinary.toString());
+            // Use TestProfileRun directly from pollResponse
+            TestProfileRun testProfileRunResponse = pollResponse.getValue();
+            System.out.println("Test Profile Run all info: " + testProfileRunResponse.toString());
         });
 
-        AsyncPollResponse<BinaryData, BinaryData> pollResponse = poller.blockLast();
-        BinaryData testProfileRunBinary = pollResponse.getFinalResult().block();
+        AsyncPollResponse<TestProfileRun, TestProfileRun> finalPollResponse = poller.blockLast();
+        TestProfileRun testProfileRunResponse = finalPollResponse.getFinalResult().block();
 
-        try (JsonReader jsonReader = JsonProviders.createReader(testProfileRunBinary.toBytes())) {
-            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
-            String testProfileId = jsonTree.get("testProfileId").toString();
-            String testProfileRunId = jsonTree.get("testProfileRunId").toString();
-            String status = jsonTree.get("status").toString();
-            System.out.println(String.format("%s\t%s\t%s", testProfileId, testProfileRunId, status));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String testProfileId = testProfileRunResponse.getTestProfileId();
+        String testProfileRunIdFromJson = testProfileRunResponse.getTestProfileRunId();
+        String status = testProfileRunResponse.getStatus().toString();
+        System.out.println(String.format("%s\\t%s\\t%s", testProfileId, testProfileRunIdFromJson, status));
         // END: java-longRunningOperationsAsync-sample-beginTestProfileRun
     }
 }
