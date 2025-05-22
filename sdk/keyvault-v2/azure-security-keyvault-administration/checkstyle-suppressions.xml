@@ -23,4 +23,8 @@
   <suppress checks="ServiceClient" files="com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.java" />
   <suppress checks="ServiceClient" files="com.azure.v2.security.keyvault.administration.KeyVaultBackupClient.java" />
   <suppress checks="ServiceClient" files="com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.java" />
+
+
+  <!-- TODO (limolkova): remove, addressing in https://github.com/Azure/azure-sdk-for-java/pull/45418 -->
+  <suppress checks="RawExceptionThrow" files="com.azure.v2.security.keyvault.*" />
 </suppressions>
