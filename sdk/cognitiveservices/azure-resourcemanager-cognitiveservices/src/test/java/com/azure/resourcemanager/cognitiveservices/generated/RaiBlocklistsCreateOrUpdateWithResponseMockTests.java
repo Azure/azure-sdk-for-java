@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklist;
@@ -24,24 +24,24 @@ public final class RaiBlocklistsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"hctmjtsgh\",\"tags\":{\"mpypefcpczshnuq\":\"bcpzarpzeqacdldt\"},\"properties\":{\"description\":\"izupfkhu\"},\"id\":\"tu\",\"name\":\"zx\",\"type\":\"mtvtvegwqiukvzwy\"}";
+            = "{\"etag\":\"dqaolfylnkk\",\"tags\":{\"mfwo\":\"jvlywl\",\"zgczeu\":\"bjwhlwyjfnqzocr\",\"iekoif\":\"tgxdncaqt\"},\"properties\":{\"description\":\"yttzgixgyrih\"},\"id\":\"gm\",\"name\":\"behlqtxnr\",\"type\":\"lkndrndpgfjodh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklist response = manager.raiBlocklists()
-            .define("cvumepjpbi")
-            .withExistingAccount("rceqnkbrupob", "hdmljz")
-            .withTags(mapOf("czuod", "rccjclykcgxvrpjl"))
-            .withProperties(new RaiBlocklistProperties().withDescription("u"))
+            .define("uwj")
+            .withExistingAccount("esq", "ggvrbnyrukoilaci")
+            .withTags(mapOf("ruzythqkkwhbg", "p", "jdtvmclyymffhmj", "vellvulnxdmnitm", "jqrbrpvnm", "ddnyxfzuvrzmzqm"))
+            .withProperties(new RaiBlocklistProperties().withDescription("oebojtjppg"))
             .create();
 
-        Assertions.assertEquals("bcpzarpzeqacdldt", response.tags().get("mpypefcpczshnuq"));
-        Assertions.assertEquals("izupfkhu", response.properties().description());
+        Assertions.assertEquals("jvlywl", response.tags().get("mfwo"));
+        Assertions.assertEquals("yttzgixgyrih", response.properties().description());
     }
 
     // Use "Map.of" if available
