@@ -451,8 +451,9 @@ def main():
         args["readme"] = readme
         args["spec"] = spec
 
-        update_parameters(args.get("suffix") or get_suffix_from_api_specs(api_specs_file, spec))
-        service = get_and_update_service_from_api_specs(api_specs_file, spec, args["service"])
+        suffix = args.get("suffix") or get_suffix_from_api_specs(api_specs_file, spec)
+        update_parameters(suffix)
+        service = get_and_update_service_from_api_specs(api_specs_file, spec, args["service"], suffix)
         args["service"] = service
         module = ARTIFACT_FORMAT.format(service)
         stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
