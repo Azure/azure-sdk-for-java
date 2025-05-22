@@ -105,8 +105,8 @@ public final class ResponseHandler {
         if (!usingTryWithResources) {
             closeResponse(ifBlock);
         }
-        ifBlock.addStatement(
-            StaticJavaParser.parseStatement("throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));"));
+        ifBlock.addStatement(StaticJavaParser.parseStatement(
+            "throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));"));
         IfStmt ifStmt = new IfStmt()
             .setCondition(new UnaryExpr(new NameExpr("expectedResponse"), UnaryExpr.Operator.LOGICAL_COMPLEMENT))
             .setThenStmt(ifBlock);
@@ -296,7 +296,8 @@ public final class ResponseHandler {
             + "    deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType); "
             + "} else if (xmlSerializer.supportsFormat(serializationFormat)) { "
             + "    deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType); "
-            + "} else { " + "    throw LOGGER.throwableAtError().addKeyValue(\"serializationFormat\", serializationFormat.name())\n"
+            + "} else { "
+            + "    throw LOGGER.throwableAtError().addKeyValue(\"serializationFormat\", serializationFormat.name())\n"
             + "                .log(\"None of the provided serializers support the format.\", UnsupportedOperationException::new);"
             + "}");
     }
