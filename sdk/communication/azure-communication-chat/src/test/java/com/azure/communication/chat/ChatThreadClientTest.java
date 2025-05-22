@@ -4,6 +4,8 @@
 package com.azure.communication.chat;
 
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
+import com.azure.communication.chat.implementation.models.ChatRetentionPolicy;
+import com.azure.communication.chat.implementation.models.ThreadCreationDateRetentionPolicy;
 import com.azure.communication.chat.models.ChatMessage;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
 import com.azure.communication.chat.models.ChatMessageType;
@@ -36,10 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
@@ -87,6 +86,31 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         threadId = chatThreadClient.getChatThreadId();
     }
 
+    private void setupTestWithCreationDateRetentionPolicy(HttpClient httpClient, String testName, int deleteAfterDays) {
+        communicationClient = getCommunicationIdentityClientBuilder(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient).buildClient();
+        firstParticipant = communicationClient.createUser();
+        secondParticipant = communicationClient.createUser();
+        firstAddedParticipant = communicationClient.createUser();
+        secondAddedParticipant = communicationClient.createUser();
+
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        AccessToken response = communicationClient.getToken(firstParticipant, scopes);
+
+        ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);
+        client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildClient();
+
+        CreateChatThreadOptions threadRequest
+            = ChatOptionsProvider.createThreadOptions(firstParticipant.getId(), secondParticipant.getId());
+        threadRequest.setRetentionPolicy(
+            new ThreadCreationDateRetentionPolicy().setDeleteThreadAfterDays(deleteAfterDays));
+
+        CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
+        chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
+
+        threadId = chatThreadClient.getChatThreadId();
+    }
+
     private void setupUnitTest(HttpClient mockHttpClient) {
         String threadId = "19:4b72178530934b7790135dd9359205e0@thread.v2";
         String mockToken
@@ -121,6 +145,28 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
         assertEquals(chatThreadProperties.getTopic(), newTopic);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canUpdateThreadTopicWithThreadCreationDateRetentionPolicy(HttpClient httpClient) {
+        // Arrange
+        setupTestWithCreationDateRetentionPolicy(
+            httpClient, "canUpdateThreadTopicWithThreadCreationDateRetentionPolicy", 50);
+        String newTopic = "Update Test";
+
+        // Action & Assert
+        chatThreadClient.updateTopicWithResponse(newTopic, Context.NONE);
+
+        ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
+        assertEquals(chatThreadProperties.getTopic(), newTopic);
+
+        ChatRetentionPolicy chatRetentionPolicy = chatThreadProperties.getRetentionPolicy();
+        assertNotNull(chatRetentionPolicy);
+        assertEquals("threadCreationDate", chatRetentionPolicy.getKind().getValue());
+        ThreadCreationDateRetentionPolicy datePolicy =
+            (ThreadCreationDateRetentionPolicy) chatRetentionPolicy;
+        assertEquals(50, datePolicy.getDeleteThreadAfterDays());
     }
 
     @ParameterizedTest
@@ -592,6 +638,8 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Action & Assert
         ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
         assertEquals(chatThreadClient.getChatThreadId(), chatThreadProperties.getId());
+        assertNotNull(chatThreadProperties.getRetentionPolicy());
+        assertEquals("none", chatThreadProperties.getRetentionPolicy().getKind().getValue());
     }
 
     @ParameterizedTest

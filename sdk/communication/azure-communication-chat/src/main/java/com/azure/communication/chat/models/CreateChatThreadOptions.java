@@ -148,6 +148,5 @@ public final class CreateChatThreadOptions {
     public CreateChatThreadOptions(String topic) {
         this.topic = topic;
         this.idempotencyToken = UUID.randomUUID().toString();
-        this.retentionPolicy = new NoneRetentionPolicy();
     }
 }
