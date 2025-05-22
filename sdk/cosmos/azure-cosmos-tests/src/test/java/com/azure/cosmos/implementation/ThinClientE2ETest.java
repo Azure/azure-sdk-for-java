@@ -6,34 +6,30 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosPatchOperations;
-import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+// End to end sanity tests for basic thin client functionality.
 public class ThinClientE2ETest {
     @Test(groups = {"thinclient"})
-    public void testThinClientDocumentPointOperations() {
+    public void testThinClientQuery() {
         CosmosAsyncClient client = null;
         try {
+            // it's set in the test profile, but when running locally you need to set them manually
+            // so having it here makes it easier to not forget
             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
-            String thinclientTestEndpoint = System.getProperty("COSMOS.THINCLIENT_ENDPOINT");
-            String thinclientTestKey = System.getProperty("COSMOS.THINCLIENT_KEY");
-
-            client  = new CosmosClientBuilder()
-                .endpoint(thinclientTestEndpoint)
-                .key(thinclientTestKey)
+            client = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
                 .gatewayMode()
                 .consistencyLevel(ConsistencyLevel.SESSION)
                 .buildAsyncClient();
@@ -41,6 +37,65 @@ public class ThinClientE2ETest {
             CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
             String idName = "id";
             String partitionKeyName = "partitionKey";
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode doc = mapper.createObjectNode();
+            String idValue = UUID.randomUUID().toString();
+            doc.put(idName, idValue);
+            doc.put(partitionKeyName, idValue);
+
+            container.createItem(doc, new PartitionKey(idValue), null).block();
+
+            String query = "select * from c WHERE c." + partitionKeyName + "=@id";
+            SqlQuerySpec querySpec = new SqlQuerySpec(query);
+            querySpec.setParameters(Arrays.asList(new SqlParameter("@id", idValue)));
+            CosmosQueryRequestOptions requestOptions =
+                new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(idValue));
+            FeedResponse<ObjectNode> response = container
+                .queryItems(querySpec, requestOptions, ObjectNode.class)
+                .byPage()
+                .blockFirst();
+
+            ObjectNode docFromResponse = response.getResults().get(0);
+            assertThat(docFromResponse.get(partitionKeyName).textValue()).isEqualTo(idValue);
+            assertThat(docFromResponse.get(idName).textValue()).isEqualTo(idValue);
+
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+            System.clearProperty("COSMOS.HTTP2_ENABLED");
+            if (client != null) {
+                client.close();
+            }
+        }
+    }
+
+    @Test(groups = {"thinclient"})
+    public void testThinClientDocumentPointOperations() {
+        CosmosAsyncClient client = null;
+        try {
+            // it's set in the test profile, but when running locally you need to set them manually
+            // so having it here makes it easier to not forget
+            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+            client  = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .gatewayMode()
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .buildAsyncClient();
+
+            String idName = "id";
+            String partitionKeyName = "partitionKey";
+
+            client.createDatabaseIfNotExists("db1").block();
+
+            CosmosContainerProperties containerDef =
+                new CosmosContainerProperties("c2", "/" + partitionKeyName);
+            ThroughputProperties ruCfg = ThroughputProperties.createManualThroughput(35_000);
+
+            client.getDatabase("db1").createContainerIfNotExists(containerDef, ruCfg).block();
+
+            CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
+
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode doc = mapper.createObjectNode();
             String idValue = UUID.randomUUID().toString();
@@ -108,7 +163,9 @@ public class ThinClientE2ETest {
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
             System.clearProperty("COSMOS.HTTP2_ENABLED");
-            client.close();
+            if (client != null) {
+                client.close();
+            }
         }
     }
 }
