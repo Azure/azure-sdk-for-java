@@ -265,9 +265,9 @@ public class AnnotationProcessor extends AbstractProcessor {
             if (path == null || path.isEmpty() || "/".equals(path)) {
                 // Path is "/" or empty, so append "/" to the host
                 method.setPath(hostPath + "/");
-            } else if (path.contains("://")) {
-                // Path is a full URL, use as is
-                method.setPath(path);
+            } else if (path.startsWith("http://") || path.startsWith("https://")) {
+                // Path is a full URL, use as is (optionally trim leading slash)
+                method.setPath(path.startsWith("/") ? path.substring(1) : path);
             } else if (path.startsWith("/")) {
                 method.setPath(hostPath + path);
             } else {
