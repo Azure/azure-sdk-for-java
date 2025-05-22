@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklist;
@@ -24,30 +24,28 @@ public final class RaiBlocklistItemsBatchAddWithResponseMockTests {
     @Test
     public void testBatchAddWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"ogxsvtzarhz\",\"tags\":{\"oslpky\":\"sqktcmbjwz\",\"mqbmfuvqarwz\":\"tglwkzpgajsqjc\"},\"properties\":{\"description\":\"rebluimmbwxsf\"},\"id\":\"td\",\"name\":\"b\",\"type\":\"xekr\"}";
+            = "{\"etag\":\"zwaqxofqo\",\"tags\":{\"ekxbyjg\":\"iqbplvfidusz\"},\"properties\":{\"description\":\"e\"},\"id\":\"x\",\"name\":\"ihpq\",\"type\":\"dagrhrdicxdw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklist response
             = manager.raiBlocklistItems()
-                .batchAddWithResponse("kwwwnckn", "zdajlskzptjxu", "weucyrth", Arrays.asList(
-                    new RaiBlocklistItemBulkRequest().withName("ehmcgcje")
-                        .withProperties(new RaiBlocklistItemProperties().withPattern("ehokamvfej").withIsRegex(false)),
-                    new RaiBlocklistItemBulkRequest().withName("tmbqdabzfivfok")
-                        .withProperties(new RaiBlocklistItemProperties().withPattern("thhzagjfw").withIsRegex(true)),
-                    new RaiBlocklistItemBulkRequest().withName("hgenuzejgvkveb")
-                        .withProperties(new RaiBlocklistItemProperties().withPattern("zllrz").withIsRegex(true)),
-                    new RaiBlocklistItemBulkRequest().withName("dqgmih")
-                        .withProperties(new RaiBlocklistItemProperties().withPattern("mcqrhnxt").withIsRegex(true))),
+                .batchAddWithResponse("syjdeolctae", "fsyrledjc", "stbvtqig",
+                    Arrays.asList(new RaiBlocklistItemBulkRequest().withName("vsgeafgf")
+                        .withProperties(new RaiBlocklistItemProperties().withPattern("hxlzsxez").withIsRegex(false)),
+                        new RaiBlocklistItemBulkRequest().withName("waaeskyfjl")
+                            .withProperties(new RaiBlocklistItemProperties().withPattern("qtoyrpl").withIsRegex(false)),
+                        new RaiBlocklistItemBulkRequest().withName("jmllpquevhamfow")
+                            .withProperties(new RaiBlocklistItemProperties().withPattern("tmk").withIsRegex(false))),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("sqktcmbjwz", response.tags().get("oslpky"));
-        Assertions.assertEquals("rebluimmbwxsf", response.properties().description());
+        Assertions.assertEquals("iqbplvfidusz", response.tags().get("ekxbyjg"));
+        Assertions.assertEquals("e", response.properties().description());
     }
 }
