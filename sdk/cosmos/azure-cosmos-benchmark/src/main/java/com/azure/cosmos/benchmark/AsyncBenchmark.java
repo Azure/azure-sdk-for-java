@@ -30,7 +30,6 @@ import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ScheduledReporter;
-import com.codahale.metrics.Slf4jReporter;
 import com.codahale.metrics.Timer;
 import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
@@ -343,11 +342,10 @@ abstract class AsyncBenchmark<T> {
                 .convertRatesTo(TimeUnit.SECONDS)
                 .build(configuration.getReportingDirectory());
         } else {
-            reporter = Slf4jReporter.forRegistry(metricsRegistry)
-                                    .convertDurationsTo(TimeUnit.MILLISECONDS)
-                                    .convertRatesTo(TimeUnit.SECONDS)
-                                    .withLoggingLevel(Slf4jReporter.LoggingLevel.INFO)
-                                    .build();
+            reporter = ConsoleReporter.forRegistry(metricsRegistry)
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .build();
         }
 
         if (configuration.getResultUploadDatabase() != null && configuration.getResultUploadContainer() != null) {
