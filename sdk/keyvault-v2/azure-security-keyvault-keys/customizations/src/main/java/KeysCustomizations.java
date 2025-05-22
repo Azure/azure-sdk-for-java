@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.microsoft.typespec.http.client.generator.core.customization.Customization;
-import com.microsoft.typespec.http.client.generator.core.customization.Editor;
-import com.microsoft.typespec.http.client.generator.core.customization.LibraryCustomization;
+import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.Editor;
+import com.azure.autorest.customization.LibraryCustomization;
 import org.slf4j.Logger;
 
 /**
@@ -83,6 +83,8 @@ public class KeysCustomizations extends Customization {
             "",
             "    exports com.azure.v2.security.keyvault.keys;",
             "    exports com.azure.v2.security.keyvault.keys.models;",
+            "    exports com.azure.v2.security.keyvault.keys.cryptography;",
+            "    exports com.azure.v2.security.keyvault.keys.cryptography.models;",
             "}"));
     }
 

@@ -4,9 +4,9 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.microsoft.typespec.http.client.generator.core.customization.Customization;
-import com.microsoft.typespec.http.client.generator.core.customization.Editor;
-import com.microsoft.typespec.http.client.generator.core.customization.LibraryCustomization;
+import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.Editor;
+import com.azure.autorest.customization.LibraryCustomization;
 import org.slf4j.Logger;
 
 import java.net.MalformedURLException;
