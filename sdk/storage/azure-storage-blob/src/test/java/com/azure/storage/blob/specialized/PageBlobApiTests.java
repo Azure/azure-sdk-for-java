@@ -531,20 +531,24 @@ public class PageBlobApiTests extends BlobTestBase {
         assertTrue(validateBasicHeaders(response.getHeaders()));
     }
 
-    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void uploadPageFromURLSourceErrorAndStatusCode() {
         PageBlobClient destBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient();
-    
+
         destBlob.createIfNotExists(Constants.KB);
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
-    
-        BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null));
-    
-        assertTrue(e.getStatusCode() == 409);
-        assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
-        assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
-    }*/
+
+        BlobStorageException e = assertThrows(BlobStorageException.class,
+            () -> destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null));
+
+        assertTrue(e.getStatusCode() == 401);
+        assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+        assertTrue(e.getServiceMessage()
+            .contains(
+                "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+
+    }
 
     @Test
     public void uploadPageFromURLRange() {
