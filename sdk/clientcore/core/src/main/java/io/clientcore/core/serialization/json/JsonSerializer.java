@@ -16,8 +16,10 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 
 /**
  * Class providing basic JSON serialization and deserialization methods.
@@ -66,8 +68,7 @@ public class JsonSerializer implements ObjectSerializer {
             if (type instanceof ParameterizedType && List.class.isAssignableFrom(TypeUtil.getRawClass(type))) {
                 ParameterizedType parameterizedType = (ParameterizedType) type;
                 Type listElementType = parameterizedType.getActualTypeArguments()[0];
-                if (listElementType instanceof Class<?>
-                    && JsonSerializable.class.isAssignableFrom(TypeUtil.getRawClass(listElementType))) {
+                if (JsonSerializable.class.isAssignableFrom(TypeUtil.getRawClass(listElementType))) {
                     return deserializeListOfJsonSerializables(jsonReader, parameterizedType);
                 } else if (BinaryData.class.isAssignableFrom(TypeUtil.getRawClass(listElementType))) {
                     return deserializeListOfBinaryData(jsonReader);
@@ -88,37 +89,28 @@ public class JsonSerializer implements ObjectSerializer {
 
     @SuppressWarnings("unchecked")
     private <T> T deserializeListOfBinaryData(JsonReader jsonReader) throws IOException {
-        JsonToken token = jsonReader.currentToken();
-        if (token == null) {
-            token = jsonReader.nextToken();
-        }
-
-        if (token != JsonToken.START_ARRAY) {
-            throw LOGGER.throwableAtError()
-                .addKeyValue("token", token)
-                .log("Unexpected token to begin an array", IllegalStateException::new);
-        }
-
-        List<BinaryData> list = new ArrayList<>();
-        while (jsonReader.nextToken() != JsonToken.END_ARRAY) {
-            list.add(BinaryData.fromObject(jsonReader.readUntyped()));
-        }
-        return (T) list;
+        return (T) jsonReader.readArray(arrayReader -> BinaryData.fromObject(arrayReader.readUntyped()));
     }
 
     @SuppressWarnings("unchecked")
     private <T> T deserializeListOfJsonSerializables(JsonReader jsonReader, ParameterizedType parameterizedType)
         throws IOException {
-        List<?> list = jsonReader.readArray(arrayReader -> {
-            Type actualTypeArgument = parameterizedType.getActualTypeArguments()[0];
-            Class<?> clazz = (Class<?>) actualTypeArgument;
+        Type actualTypeArgument = parameterizedType.getActualTypeArguments()[0];
+        Class<?> listElementClass = (Class<?>) actualTypeArgument;
+        MethodHandle fromJsonHandle;
+        try {
+            fromJsonHandle = MethodHandles.publicLookup()
+                .findStatic(listElementClass, "fromJson", MethodType.methodType(listElementClass, JsonReader.class));
+        } catch (NoSuchMethodException | IllegalAccessException e) {
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
+        }
+        return (T) jsonReader.readArray(arrayReader -> {
             try {
-                return clazz.getMethod("fromJson", JsonReader.class).invoke(null, arrayReader);
-            } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+                return fromJsonHandle.invoke(arrayReader);
+            } catch (Throwable e) {
                 throw LOGGER.throwableAtError().log(e, RuntimeException::new);
             }
         });
-        return (T) list;
     }
 
     /**
