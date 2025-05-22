@@ -12,7 +12,6 @@ import com.azure.v2.security.keyvault.administration.implementation.models.RoleD
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -27,6 +26,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -49,7 +49,8 @@ public final class RoleDefinitionsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     RoleDefinitionsImpl(KeyVaultAdministrationClientImpl client) {
-        this.service = RestProxy.create(RoleDefinitionsService.class, client.getHttpPipeline());
+        this.service = com.azure.v2.security.keyvault.administration.implementation.RoleDefinitionsServiceImpl
+            .getNewInstance(this.httpPipeline);
         this.client = client;
     }
 
@@ -288,8 +289,25 @@ public final class RoleDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleDefinition> list(String scope, String filter) {
-        return new PagedIterable<>((pagingOptions) -> listSinglePage(scope, filter),
-            (pagingOptions, nextLink) -> listNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'offset' in PagingOptions is not supported in API 'list'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageSize' in PagingOptions is not supported in API 'list'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageIndex' in PagingOptions is not supported in API 'list'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'list'."));
+            }
+            return listSinglePage(scope, filter);
+        }, (pagingOptions, nextLink) -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -304,8 +322,25 @@ public final class RoleDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleDefinition> list(String scope) {
         final String filter = null;
-        return new PagedIterable<>((pagingOptions) -> listSinglePage(scope, filter),
-            (pagingOptions, nextLink) -> listNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'offset' in PagingOptions is not supported in API 'list'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageSize' in PagingOptions is not supported in API 'list'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageIndex' in PagingOptions is not supported in API 'list'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'list'."));
+            }
+            return listSinglePage(scope, filter);
+        }, (pagingOptions, nextLink) -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -323,8 +358,25 @@ public final class RoleDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleDefinition> list(String scope, String filter, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> listSinglePage(scope, filter, requestContext),
-            (pagingOptions, nextLink) -> listNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'offset' in PagingOptions is not supported in API 'list'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageSize' in PagingOptions is not supported in API 'list'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageIndex' in PagingOptions is not supported in API 'list'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'list'."));
+            }
+            return listSinglePage(scope, filter, requestContext);
+        }, (pagingOptions, nextLink) -> listNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -363,4 +415,6 @@ public final class RoleDefinitionsImpl {
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoleDefinitionsImpl.class);
 }

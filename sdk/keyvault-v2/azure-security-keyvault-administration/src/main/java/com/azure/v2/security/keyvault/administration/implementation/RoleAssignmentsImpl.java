@@ -12,7 +12,6 @@ import com.azure.v2.security.keyvault.administration.implementation.models.RoleA
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -27,6 +26,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -49,7 +49,8 @@ public final class RoleAssignmentsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     RoleAssignmentsImpl(KeyVaultAdministrationClientImpl client) {
-        this.service = RestProxy.create(RoleAssignmentsService.class, client.getHttpPipeline());
+        this.service = com.azure.v2.security.keyvault.administration.implementation.RoleAssignmentsServiceImpl
+            .getNewInstance(this.httpPipeline);
         this.client = client;
     }
 
@@ -292,8 +293,25 @@ public final class RoleAssignmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignment> listForScope(String scope, String filter) {
-        return new PagedIterable<>((pagingOptions) -> listForScopeSinglePage(scope, filter),
-            (pagingOptions, nextLink) -> listForScopeNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'offset' in PagingOptions is not supported in API 'listForScope'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'listForScope'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'listForScope'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'listForScope'."));
+            }
+            return listForScopeSinglePage(scope, filter);
+        }, (pagingOptions, nextLink) -> listForScopeNextSinglePage(nextLink));
     }
 
     /**
@@ -308,8 +326,25 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignment> listForScope(String scope) {
         final String filter = null;
-        return new PagedIterable<>((pagingOptions) -> listForScopeSinglePage(scope, filter),
-            (pagingOptions, nextLink) -> listForScopeNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'offset' in PagingOptions is not supported in API 'listForScope'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'listForScope'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'listForScope'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'listForScope'."));
+            }
+            return listForScopeSinglePage(scope, filter);
+        }, (pagingOptions, nextLink) -> listForScopeNextSinglePage(nextLink));
     }
 
     /**
@@ -328,8 +363,25 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignment> listForScope(String scope, String filter, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> listForScopeSinglePage(scope, filter, requestContext),
-            (pagingOptions, nextLink) -> listForScopeNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'offset' in PagingOptions is not supported in API 'listForScope'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'listForScope'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'listForScope'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'listForScope'."));
+            }
+            return listForScopeSinglePage(scope, filter, requestContext);
+        }, (pagingOptions, nextLink) -> listForScopeNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -368,4 +420,6 @@ public final class RoleAssignmentsImpl {
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoleAssignmentsImpl.class);
 }

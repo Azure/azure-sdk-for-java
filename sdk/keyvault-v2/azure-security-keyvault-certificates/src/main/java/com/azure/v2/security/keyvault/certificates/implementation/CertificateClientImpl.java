@@ -30,7 +30,6 @@ import com.azure.v2.security.keyvault.certificates.implementation.models.KeyVaul
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -45,6 +44,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -109,7 +109,8 @@ public final class CertificateClientImpl {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.service = RestProxy.create(CertificateClientService.class, this.httpPipeline);
+        this.service = com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl
+            .getNewInstance(this.httpPipeline);
     }
 
     /**
@@ -465,8 +466,25 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateItem> getCertificates(Integer maxresults, Boolean includePending) {
-        return new PagedIterable<>((pagingOptions) -> getCertificatesSinglePage(maxresults, includePending),
-            (pagingOptions, nextLink) -> getCertificatesNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getCertificates'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getCertificates'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getCertificates'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getCertificates'."));
+            }
+            return getCertificatesSinglePage(maxresults, includePending);
+        }, (pagingOptions, nextLink) -> getCertificatesNextSinglePage(nextLink));
     }
 
     /**
@@ -483,8 +501,25 @@ public final class CertificateClientImpl {
     public PagedIterable<CertificateItem> getCertificates() {
         final Integer maxresults = null;
         final Boolean includePending = null;
-        return new PagedIterable<>((pagingOptions) -> getCertificatesSinglePage(maxresults, includePending),
-            (pagingOptions, nextLink) -> getCertificatesNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getCertificates'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getCertificates'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getCertificates'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getCertificates'."));
+            }
+            return getCertificatesSinglePage(maxresults, includePending);
+        }, (pagingOptions, nextLink) -> getCertificatesNextSinglePage(nextLink));
     }
 
     /**
@@ -506,9 +541,25 @@ public final class CertificateClientImpl {
     public PagedIterable<CertificateItem> getCertificates(Integer maxresults, Boolean includePending,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>(
-            (pagingOptions) -> getCertificatesSinglePage(maxresults, includePending, requestContext),
-            (pagingOptions, nextLink) -> getCertificatesNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getCertificates'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getCertificates'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getCertificates'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getCertificates'."));
+            }
+            return getCertificatesSinglePage(maxresults, includePending, requestContext);
+        }, (pagingOptions, nextLink) -> getCertificatesNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -720,8 +771,25 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateIssuerItem> getCertificateIssuers(Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getCertificateIssuersSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getCertificateIssuersNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getCertificateIssuers'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getCertificateIssuers'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getCertificateIssuers'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getCertificateIssuers'."));
+            }
+            return getCertificateIssuersSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getCertificateIssuersNextSinglePage(nextLink));
     }
 
     /**
@@ -737,8 +805,25 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateIssuerItem> getCertificateIssuers() {
         final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getCertificateIssuersSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getCertificateIssuersNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getCertificateIssuers'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getCertificateIssuers'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getCertificateIssuers'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getCertificateIssuers'."));
+            }
+            return getCertificateIssuersSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getCertificateIssuersNextSinglePage(nextLink));
     }
 
     /**
@@ -759,8 +844,25 @@ public final class CertificateClientImpl {
     public PagedIterable<CertificateIssuerItem> getCertificateIssuers(Integer maxresults,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> getCertificateIssuersSinglePage(maxresults, requestContext),
-            (pagingOptions, nextLink) -> getCertificateIssuersNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getCertificateIssuers'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getCertificateIssuers'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getCertificateIssuers'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getCertificateIssuers'."));
+            }
+            return getCertificateIssuersSinglePage(maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getCertificateIssuersNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -1076,8 +1178,25 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateItem> getCertificateVersions(String certificateName, Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getCertificateVersionsSinglePage(certificateName, maxresults),
-            (pagingOptions, nextLink) -> getCertificateVersionsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getCertificateVersions'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getCertificateVersions'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getCertificateVersions'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getCertificateVersions'."));
+            }
+            return getCertificateVersionsSinglePage(certificateName, maxresults);
+        }, (pagingOptions, nextLink) -> getCertificateVersionsNextSinglePage(nextLink));
     }
 
     /**
@@ -1095,8 +1214,25 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateItem> getCertificateVersions(String certificateName) {
         final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getCertificateVersionsSinglePage(certificateName, maxresults),
-            (pagingOptions, nextLink) -> getCertificateVersionsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getCertificateVersions'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getCertificateVersions'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getCertificateVersions'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getCertificateVersions'."));
+            }
+            return getCertificateVersionsSinglePage(certificateName, maxresults);
+        }, (pagingOptions, nextLink) -> getCertificateVersionsNextSinglePage(nextLink));
     }
 
     /**
@@ -1118,9 +1254,25 @@ public final class CertificateClientImpl {
     public PagedIterable<CertificateItem> getCertificateVersions(String certificateName, Integer maxresults,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>(
-            (pagingOptions) -> getCertificateVersionsSinglePage(certificateName, maxresults, requestContext),
-            (pagingOptions, nextLink) -> getCertificateVersionsNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getCertificateVersions'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getCertificateVersions'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getCertificateVersions'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getCertificateVersions'."));
+            }
+            return getCertificateVersionsSinglePage(certificateName, maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getCertificateVersionsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -1601,8 +1753,25 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedCertificateItem> getDeletedCertificates(Integer maxresults, Boolean includePending) {
-        return new PagedIterable<>((pagingOptions) -> getDeletedCertificatesSinglePage(maxresults, includePending),
-            (pagingOptions, nextLink) -> getDeletedCertificatesNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getDeletedCertificates'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getDeletedCertificates'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getDeletedCertificates'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getDeletedCertificates'."));
+            }
+            return getDeletedCertificatesSinglePage(maxresults, includePending);
+        }, (pagingOptions, nextLink) -> getDeletedCertificatesNextSinglePage(nextLink));
     }
 
     /**
@@ -1620,8 +1789,25 @@ public final class CertificateClientImpl {
     public PagedIterable<DeletedCertificateItem> getDeletedCertificates() {
         final Integer maxresults = null;
         final Boolean includePending = null;
-        return new PagedIterable<>((pagingOptions) -> getDeletedCertificatesSinglePage(maxresults, includePending),
-            (pagingOptions, nextLink) -> getDeletedCertificatesNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getDeletedCertificates'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getDeletedCertificates'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getDeletedCertificates'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getDeletedCertificates'."));
+            }
+            return getDeletedCertificatesSinglePage(maxresults, includePending);
+        }, (pagingOptions, nextLink) -> getDeletedCertificatesNextSinglePage(nextLink));
     }
 
     /**
@@ -1644,9 +1830,25 @@ public final class CertificateClientImpl {
     public PagedIterable<DeletedCertificateItem> getDeletedCertificates(Integer maxresults, Boolean includePending,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>(
-            (pagingOptions) -> getDeletedCertificatesSinglePage(maxresults, includePending, requestContext),
-            (pagingOptions, nextLink) -> getDeletedCertificatesNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getDeletedCertificates'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getDeletedCertificates'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getDeletedCertificates'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getDeletedCertificates'."));
+            }
+            return getDeletedCertificatesSinglePage(maxresults, includePending, requestContext);
+        }, (pagingOptions, nextLink) -> getDeletedCertificatesNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -1936,4 +2138,6 @@ public final class CertificateClientImpl {
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateClientImpl.class);
 }
