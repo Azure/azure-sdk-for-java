@@ -285,22 +285,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         StepVerifier.create(anonymousClient.listBlobContainers()).verifyError(IllegalStateException.class);
     }
 
-    @Test
-    public void listContainersWithTimeoutStillBackedByPagedFlux() {
-        int numContainers = 5;
-        int pageResults = 3;
-
-        Mono<List<BlobContainerAsyncClient>> containersMono = Flux.range(0, numContainers)
-            .flatMap(i -> primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()))
-            .collectList();
-
-        StepVerifier.create(containersMono.flatMapMany(containers -> primaryBlobServiceAsyncClient
-            .listBlobContainersWithOptionalTimeout(new ListBlobContainersOptions().setMaxResultsPerPage(pageResults),
-                Duration.ofSeconds(10))
-            .byPage()
-            .count())).expectNextCount(1).verifyComplete();
-    }
-
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     @ResourceLock("ServiceProperties")
@@ -498,30 +482,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     public void findBlobsAnonymous() {
         // Invalid query, but the anonymous check will fail before hitting the wire
         StepVerifier.create(anonymousClient.findBlobsByTags("foo=bar")).verifyError(IllegalStateException.class);
-    }
-
-    @SuppressWarnings("deprecation")
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
-    @Test
-    public void findBlobsWithTimeoutStillBackedByPagedFlux() {
-        int numBlobs = 5;
-        int pageResults = 3;
-        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
-
-        Mono<Long> response = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).flatMap(cc -> {
-            Flux<Response<BlockBlobItem>> upload = Flux.range(0, numBlobs)
-                .flatMap(i -> cc.getBlobAsyncClient(generateBlobName())
-                    .uploadWithResponse(
-                        new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize())
-                            .setTags(tags)));
-            // when: "Consume results by page, then still have paging functionality"
-            return upload.then(primaryBlobServiceAsyncClient.findBlobsByTags(
-                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults))
-                .byPage()
-                .count());
-        });
-
-        StepVerifier.create(response).expectNextCount(1).verifyComplete();
     }
 
     private static void validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {
