@@ -37,3 +37,6 @@ extends:
       - name: azure-resourcemanager-kubernetesconfiguration
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerkubernetesconfiguration
+      - name: azure-resourcemanager-kubernetesconfiguration-extensions
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerkubernetesconfigurationextensions
