@@ -173,7 +173,6 @@ public class LocationCache {
      * @param databaseAccount READ DatabaseAccount
      */
     public void onDatabaseAccountRead(DatabaseAccount databaseAccount) {
-        logger.info("onDatabaseAccountRead: {}", databaseAccount);
         this.updateLocationCache(
                 databaseAccount.getWritableLocations(),
                 databaseAccount.getReadableLocations(),
@@ -788,7 +787,6 @@ public class LocationCache {
     }
 
     private void updateLocationCache(){
-        logger.error("Resetting LocationCache - all NULL values");
         updateLocationCache(null, null, null, null, null, null);
     }
 
