@@ -225,7 +225,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
          * 2. create a call from source to one ACS target.
          * 3. get updated call properties and check for the connected state.
          * 4. start recording with callConnectionId and the call without channel affinity
-         * 5. stop recording the call
+         * 5. stop recording the cal
          * 6. hang up the call.
          * 7. once call is hung up, verify disconnected event
          */
