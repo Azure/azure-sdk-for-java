@@ -1,17 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.utils.serializers;
+package io.clientcore.core.serialization.json;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.TypeUtil;
+import io.clientcore.core.models.Person;
 import io.clientcore.core.models.SimpleClass;
-import io.clientcore.core.serialization.json.JsonReader;
-import io.clientcore.core.serialization.json.JsonSerializable;
-import io.clientcore.core.serialization.json.JsonSerializer;
-import io.clientcore.core.serialization.json.JsonToken;
-import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -27,6 +24,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -194,6 +192,55 @@ public class JsonSerializerTests {
         } else {
             assertEquals(expected, outputStream.toString(StandardCharsets.UTF_8));
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource("binaryDataListSerializationSupplier")
+    public void testBinaryDataListSerialization(List<BinaryData> list, String expected) throws IOException {
+        byte[] bytes = SERIALIZER.serializeToBytes(list);
+        assertEquals(expected, new String(bytes, StandardCharsets.UTF_8));
+    }
+
+    private static Stream<Arguments> binaryDataListSerializationSupplier() {
+        return Stream.of(
+            Arguments.of(Arrays.asList(BinaryData.fromString("hello"), BinaryData.fromObject(5)), "[\"hello\",5]"),
+            Arguments.of(
+                Arrays.asList(BinaryData.fromString("hello"), BinaryData.fromObject(5),
+                    BinaryData.fromObject(new Person().setAge(3).setName("John"))),
+                "[\"hello\",5,{\"name\":\"John\",\"age\":3}]"));
+    }
+
+    @Test
+    public void testBinaryDataListDeserialization() throws IOException {
+        byte[] bytes = "[\"hello\", 5, {\"name\":\"John\",\"age\":3}]".getBytes(StandardCharsets.UTF_8);
+
+        ParameterizedType type = TypeUtil.createParameterizedType(List.class, BinaryData.class);
+
+        List<BinaryData> binaryDataList = SERIALIZER.deserializeFromBytes(bytes, type);
+        assertNotNull(binaryDataList);
+        assertEquals(3, binaryDataList.size());
+        assertTrue(binaryDataList.get(0) instanceof BinaryData);
+        assertTrue(binaryDataList.get(1) instanceof BinaryData);
+        assertTrue(binaryDataList.get(2) instanceof BinaryData);
+
+        assertEquals("hello", binaryDataList.get(0).toObject(String.class));
+        assertEquals(5, (int) binaryDataList.get(1).toObject(Integer.class));
+
+        Person person = binaryDataList.get(2).toObject(Person.class);
+        assertEquals("John", person.getName());
+        assertEquals(3, person.getAge());
+    }
+
+    @ParameterizedTest
+    @MethodSource("binaryDataSerializationSupplier")
+    public void testBinaryDataSerialization(BinaryData binaryData, String expected) throws IOException {
+        assertEquals(expected, new String(SERIALIZER.serializeToBytes(binaryData)));
+    }
+
+    private static Stream<Arguments> binaryDataSerializationSupplier() {
+        return Stream.of(Arguments.of(BinaryData.fromObject(5), "5"), Arguments.of(BinaryData.fromObject("1"), "\"1\""),
+            Arguments.of(BinaryData.fromString("3"), "\"3\""), Arguments
+                .of(BinaryData.fromObject(new Person().setAge(3).setName("John")), "{\"name\":\"John\",\"age\":3}"));
     }
 
     private static Stream<Arguments> textSerializationSupplier() {
