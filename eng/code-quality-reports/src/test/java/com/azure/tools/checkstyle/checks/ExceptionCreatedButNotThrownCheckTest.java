@@ -9,12 +9,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class StringFormattedExceptionCheckTest extends AbstractModuleTestSupport {
+public class ExceptionCreatedButNotThrownCheckTest extends AbstractModuleTestSupport {
     private Checker checker;
 
     @BeforeEach
     public void prepare() throws Exception {
-        checker = createChecker(createModuleConfig(StringFormattedExceptionCheck.class));
+        checker = createChecker(createModuleConfig(ExceptionCreatedButNotThrownCheck.class));
     }
 
     @AfterEach
@@ -28,11 +28,11 @@ public class StringFormattedExceptionCheckTest extends AbstractModuleTestSupport
     }
 
     @Test
-    public void stringFormatExceptionMessageTestData() throws Exception {
+    public void throwCreatedException() throws Exception {
         String[] expected = {
-            expectedErrorMessage(9, 31, StringFormattedExceptionCheck.ERROR_MESSAGE)
+            expectedErrorMessage(8, 32, ExceptionCreatedButNotThrownCheck.ERROR_MESSAGE),
         };
-        verify(checker, getPath("StringFormattedExceptionCheckTestData.java"), expected);
+        verify(checker, getPath("ThrowCreatedExceptionCheckTestData.java"), expected);
     }
 
     private String expectedErrorMessage(int line, int column, String message) {

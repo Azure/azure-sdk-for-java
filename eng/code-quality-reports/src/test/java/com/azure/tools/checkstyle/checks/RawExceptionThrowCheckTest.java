@@ -9,12 +9,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class LogNewExceptionCheckTest extends AbstractModuleTestSupport {
+public class RawExceptionThrowCheckTest extends AbstractModuleTestSupport {
     private Checker checker;
 
     @BeforeEach
     public void prepare() throws Exception {
-        checker = createChecker(createModuleConfig(LogNewExceptionCheck.class));
+        checker = createChecker(createModuleConfig(RawExceptionThrowCheck.class));
     }
 
     @AfterEach
@@ -30,8 +30,8 @@ public class LogNewExceptionCheckTest extends AbstractModuleTestSupport {
     @Test
     public void logNewExceptionTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(8, 15, LogNewExceptionCheck.ERROR_MESSAGE),
-            expectedErrorMessage(13, 33, LogNewExceptionCheck.ERROR_MESSAGE),
+            expectedErrorMessage(8, 15, RawExceptionThrowCheck.ERROR_MESSAGE),
+            expectedErrorMessage(13, 33, RawExceptionThrowCheck.ERROR_MESSAGE),
         };
         verify(checker, getPath("LogNewExceptionCheckTestData.java"), expected);
     }

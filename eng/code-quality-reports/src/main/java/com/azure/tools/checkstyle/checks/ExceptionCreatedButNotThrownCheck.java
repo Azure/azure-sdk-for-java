@@ -15,8 +15,9 @@ import java.util.Set;
 /**
  * Checks that the exception is created and logged is also thrown.
  */
-public class ThrowCreatedExceptionCheck extends AbstractCheck {
-    static final String ERROR_MESSAGE = "Exception is created and logged, but is not thrown. Make sure to throw exception or avoid creating it.";
+public class ExceptionCreatedButNotThrownCheck extends AbstractCheck {
+    static final String ERROR_MESSAGE = "An exception is created and logged, but not thrown. Ensure the exception is either thrown or not created at all. "
+        + "See https://github.com/Azure/azure-sdk-for-java/wiki/Client-core:-logging-exceptions-best-practices for more details.";;
     private static final Set<String> THROWABLE_AT_LOGGING_METHODS = new HashSet<>(Arrays.asList(
         ".throwableAtError",
         ".throwableAtWarning"));

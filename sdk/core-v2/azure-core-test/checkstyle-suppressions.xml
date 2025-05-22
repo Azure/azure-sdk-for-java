@@ -19,11 +19,4 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLogging" files="com.azure.v2.core.test.ThreadDumper.java" />
 
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilder" files="com.azure.core.test.http.AssertingHttpClientBuilder.java" />
-
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.test.http.AssertingClient.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.v2.core.test.http.TestProxyPlaybackClient.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.v2.core.test.InterceptorManager.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.v2.core.test.policy.TestProxyRecordPolicy.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.v2.core.test.utils.HttpUrlConnectionHttpClient.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.v2.core.test.http.MockHttpClient.java" />
 </suppressions>

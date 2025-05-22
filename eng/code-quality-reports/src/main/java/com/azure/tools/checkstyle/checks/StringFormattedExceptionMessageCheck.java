@@ -15,8 +15,10 @@ import java.util.Set;
 /**
  * Checks that the message provided to "logger.throwableAt*().log" is static (not created using String.format).
  */
-public class StringFormattedExceptionCheck extends AbstractCheck {
-    static final String ERROR_MESSAGE = "Short message provided to \"logger.throwableAt*().log\" message should be static. Provide dynamic components via \"addKeyValue(key, value)\" method instead.";
+public class StringFormattedExceptionMessageCheck extends AbstractCheck {
+    static final String ERROR_MESSAGE = "Short message passed to \"logger.throwableAt*().log\" should be static. "
+        + "Provide dynamic components using the \"addKeyValue(key, value)\" method instead. "
+        + "See https://github.com/Azure/azure-sdk-for-java/wiki/Client-core:-logging-exceptions-best-practices for more details.";
     private static final Set<String> THROWABLE_AT_LOGGING_METHODS = new HashSet<>(Arrays.asList(
         ".throwableAtError",
         ".throwableAtWarning"));

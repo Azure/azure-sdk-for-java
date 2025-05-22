@@ -20,9 +20,10 @@ import static com.puppycrawl.tools.checkstyle.utils.TokenUtil.findFirstTokenByPr
  * - the exception is created in a generated method or service interface
  * - the exception is a NullPointerException, IllegalArgumentException or UnsupportedOperationException that are used for immediate input validation
  */
-public class LogNewExceptionCheck extends AbstractCheck {
-    static final String ERROR_MESSAGE = "Directly throwing a new exception is disallowed. Must throw through \"io.clientcore.core.instrumentation.logging.ClientLogger\" API "
-        + "such as \"logger.throwableAtError\" or \"logger.throwableAtWarning\".";
+public class RawExceptionThrowCheck extends AbstractCheck {
+    static final String ERROR_MESSAGE = "Directly throwing a new exception is disallowed. Use the \"io.clientcore.core.instrumentation.logging.ClientLogger\" API instead, "
+        + "such as \"logger.throwableAtError()\" or \"logger.throwableAtWarning()\"."
+        + "See https://github.com/Azure/azure-sdk-for-java/wiki/Client-core:-logging-exceptions-best-practices for more details.";
 
     private static final Set<String> IGNORED_EXCEPTIONS = new HashSet<>(Arrays.asList("NullPointerException",
         "IllegalArgumentException",

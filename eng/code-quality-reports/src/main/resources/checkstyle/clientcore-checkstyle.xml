@@ -357,15 +357,15 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     <!-- CUSTOM CHECKS -->
     <!-- Don't format exception messages -->
-    <module name="com.azure.tools.checkstyle.checks.StringFormattedExceptionCheck"/>
+    <module name="com.azure.tools.checkstyle.checks.StringFormattedExceptionMessageCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Log exceptions at creation time -->
-    <module name="com.azure.tools.checkstyle.checks.LogNewExceptionCheck"/>
+    <module name="com.azure.tools.checkstyle.checks.RawExceptionThrowCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Throw created and logged exceptions -->
-    <module name="com.azure.tools.checkstyle.checks.ThrowCreatedExceptionCheck"/>
+    <module name="com.azure.tools.checkstyle.checks.ExceptionCreatedButNotThrownCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Any class that implements the HttpPipelinePolicy interface should:
