@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * Adapts an HttpPipeline to an instance of IHttpClient in the MSAL4j pipeline.
  */
 class HttpPipelineAdapter implements IHttpClient {
-    private static final ClientLogger CLIENT_LOGGER = new ClientLogger(HttpPipelineAdapter.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineAdapter.class);
     private static final String ACCOUNT_IDENTIFIER_LOG_MESSAGE
         = "[Authenticated account] Client ID: {0}, Tenant ID: {1}"
             + ", User Principal Name: {2}, Object ID (user): {3})";
@@ -103,7 +103,7 @@ class HttpPipelineAdapter implements IHttpClient {
                         ? jsonMap.get(USER_PRINCIPAL_NAME_JSON_KEY)
                         : null;
 
-                    CLIENT_LOGGER.atLevel(LogLevel.INFORMATIONAL)
+                    LOGGER.atLevel(LogLevel.INFORMATIONAL)
                         .log(MessageFormat.format(ACCOUNT_IDENTIFIER_LOG_MESSAGE,
                             getAccountIdentifierMessage(APPLICATION_IDENTIFIER, appId),
                             getAccountIdentifierMessage(TENANT_ID, tenantId),
@@ -112,7 +112,7 @@ class HttpPipelineAdapter implements IHttpClient {
                 }
             }
         } catch (IOException e) {
-            CLIENT_LOGGER.logThrowableAsWarning(e);
+            LOGGER.logThrowableAsWarning(e);
         }
     }
 
