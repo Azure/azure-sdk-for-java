@@ -108,7 +108,13 @@ public class JsonSerializer implements ObjectSerializer {
             try {
                 return fromJsonHandle.invoke(arrayReader);
             } catch (Throwable e) {
-                throw LOGGER.throwableAtError().log(e, RuntimeException::new);
+                if (e instanceof Error) {
+                    throw (Error) LOGGER.throwableAtError().log(message -> e);
+                } else if (e instanceof IOException) {
+                    throw (IOException) LOGGER.throwableAtError().log(message -> e);
+                } else {
+                    throw LOGGER.throwableAtError().log(e, RuntimeException::new);
+                }
             }
         });
     }
