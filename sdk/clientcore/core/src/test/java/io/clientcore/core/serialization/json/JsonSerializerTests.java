@@ -225,8 +225,10 @@ public class JsonSerializerTests {
 
         assertEquals("hello", binaryDataList.get(0).toObject(String.class));
         assertEquals(5, (int) binaryDataList.get(1).toObject(Integer.class));
-        assertEquals("John", ((Person) binaryDataList.get(2).toObject(Person.class)).getName());
-        assertEquals(3, ((Person) binaryDataList.get(2).toObject(Person.class)).getAge());
+
+        Person person = binaryDataList.get(2).toObject(Person.class);
+        assertEquals("John", person.getName());
+        assertEquals(3, person.getAge());
     }
 
     @ParameterizedTest
