@@ -284,6 +284,7 @@ def get_and_update_service_from_api_specs(
     api_specs_file: str,
     spec: str,
     service: str = None,
+    suffix: str = None,
     truncate_service: bool = False,
 ):
     special_spec = {"resources"}
@@ -314,6 +315,9 @@ def get_and_update_service_from_api_specs(
     if service != spec:
         api_specs[spec] = dict() if not api_spec else api_spec
         api_specs[spec]["service"] = service
+
+    if suffix:
+        api_specs[spec]["suffix"] = suffix
 
     write_api_specs(api_specs_file, comment, api_specs)
 
