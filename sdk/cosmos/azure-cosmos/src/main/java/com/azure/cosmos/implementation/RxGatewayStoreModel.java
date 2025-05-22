@@ -327,8 +327,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             if (request.getIsMedia()) {
                 // For media read request, always use the write endpoint.
                 rootUri = this.globalEndpointManager.getWriteEndpoints().get(0).getGatewayRegionalEndpoint();
+                checkNotNull(rootUri, "Write endpoint should not be null");
             } else {
                 rootUri = getRootUri(request);
+                checkNotNull(rootUri, "getRootUri(request) should not be null");
             }
         }
 
