@@ -139,6 +139,7 @@ public final class ResponseHandler {
 
     private static void getStatusCodeMapping(BlockStmt body, BlockStmt errorBlock,
         Map<Integer, HttpRequestContext.ExceptionBodyTypeInfo> mappings) {
+        body.tryAddImportToParentCompilationUnit(Map.class);
         body.tryAddImportToParentCompilationUnit(HashMap.class);
         body.tryAddImportToParentCompilationUnit(CoreUtils.class);
         errorBlock.addStatement(

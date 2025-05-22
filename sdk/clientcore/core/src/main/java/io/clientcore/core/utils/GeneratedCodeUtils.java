@@ -85,6 +85,7 @@ public final class GeneratedCodeUtils {
      * @param defaultErrorBodyType The default type to use for error body deserialization if no status-specific mapping exists.
      * @param statusToExceptionTypeMap A map from HTTP status codes to error body types for deserialization.
      * @throws UnsupportedOperationException if none of the serializers support the format.
+     * @throws RuntimeException if deserialization fails or if the response body is empty.
      */
     public static void handleUnexpectedResponse(int responseCode, Response<BinaryData> networkResponse,
         JsonSerializer jsonSerializer, XmlSerializer xmlSerializer, ParameterizedType defaultErrorBodyType,
@@ -125,7 +126,7 @@ public final class GeneratedCodeUtils {
                     throw new UnsupportedOperationException(
                         "None of the provided serializers support the format: " + serializationFormat + ".");
                 }
-            } catch (Exception ex) {
+            } catch (RuntimeException ex) {
                 errorValue = new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8);
             }
             exceptionMessage.append("\"")
