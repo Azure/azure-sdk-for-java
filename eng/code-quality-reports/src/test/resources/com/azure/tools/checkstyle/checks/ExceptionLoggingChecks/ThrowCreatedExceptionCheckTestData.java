@@ -11,14 +11,14 @@ public class ThrowCreatedExceptionCheckTestData {
     // correct
     public void throwException() {
         throw logger.throwableAtError()
-            .addKeyValuePair("foo", "bar")
+            .addKeyValue("foo", "bar")
             .log("This is a test exception", RuntimeException::new);
     }
 
     // correct
     public void throwException7() {
         throw (RuntimeException)logger.throwableAtError()
-            .addKeyValuePair("foo", "bar")
+            .addKeyValue("foo", "bar")
             .log("This is a test exception", IllegalArgumentException::new);
     }
 
@@ -26,7 +26,7 @@ public class ThrowCreatedExceptionCheckTestData {
     public void logException() {
         Throwable ex = new RuntimeException("This is a test exception");
         logger.atError()
-            .addKeyValuePair("foo", "bar")
+            .addKeyValue("foo", "bar")
             .setThrowable(ex)
             .log();
     }

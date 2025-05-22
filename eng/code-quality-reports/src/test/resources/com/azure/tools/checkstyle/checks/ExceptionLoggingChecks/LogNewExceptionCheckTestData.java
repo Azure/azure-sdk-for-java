@@ -34,14 +34,14 @@ public class LogNewExceptionCheckTestData {
     // correct
     public void throwException5() {
         throw logger.throwableAtError()
-            .addKeyValuePair("foo", "bar")
+            .addKeyValue("foo", "bar")
             .log("This is a test exception", RuntimeException::new);
     }
 
     // correct
     public void throwException6() {
         throw (RuntimeException)logger.throwableAtError()
-            .addKeyValuePair("foo", "bar")
+            .addKeyValue("foo", "bar")
             .log("This is a test exception", IllegalArgumentException::new);
     }
 

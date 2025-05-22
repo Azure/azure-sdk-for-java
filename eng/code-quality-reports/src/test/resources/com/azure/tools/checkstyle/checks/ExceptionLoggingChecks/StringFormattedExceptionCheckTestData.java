@@ -12,7 +12,7 @@ public class StringFormattedExceptionCheckTestData {
     // correct
     public void throwException2() {
         throw logger.throwableAtError()
-            .addKeyValuePair("foo", "bar")
+            .addKeyValue("foo", "bar")
             .log("This is a test exception", RuntimeException::new);
     }
 }

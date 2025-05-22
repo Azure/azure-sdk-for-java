@@ -193,7 +193,8 @@ public class RestProxyImplTests {
 
             IllegalStateException thrown = assertThrows(IllegalStateException.class,
                 () -> validateAndCollectRequest(httpRequest), "Expected validateLength() to throw, but it didn't");
-            assertEquals("Request body is larger than the expected stream length; {\"position\":6,\"expectedSize\":5}", thrown.getMessage());
+            assertEquals("Request body is larger than the expected stream length; {\"position\":6,\"expectedSize\":5}",
+                thrown.getMessage());
         }
     }
 
@@ -208,7 +209,8 @@ public class RestProxyImplTests {
             IllegalStateException thrown = assertThrows(IllegalStateException.class,
                 () -> validateAndCollectRequest(httpRequest), "Expected validateLength() to throw, but it didn't");
 
-            assertEquals("Request body is smaller than the expected stream length; {\"position\":6,\"expectedSize\":7}", thrown.getMessage());
+            assertEquals("Request body is smaller than the expected stream length; {\"position\":6,\"expectedSize\":7}",
+                thrown.getMessage());
         }
     }
 

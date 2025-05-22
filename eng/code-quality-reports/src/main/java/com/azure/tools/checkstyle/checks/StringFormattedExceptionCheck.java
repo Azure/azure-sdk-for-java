@@ -16,7 +16,7 @@ import java.util.Set;
  * Checks that the message provided to "logger.throwableAt*().log" is static (not created using String.format).
  */
 public class StringFormattedExceptionCheck extends AbstractCheck {
-    static final String ERROR_MESSAGE = "Short message provided to \"logger.throwableAt*().log\" message should be static. Provide dynamic components via \"addKeyValuePair(key, value)\" method instead.";
+    static final String ERROR_MESSAGE = "Short message provided to \"logger.throwableAt*().log\" message should be static. Provide dynamic components via \"addKeyValue(key, value)\" method instead.";
     private static final Set<String> THROWABLE_AT_LOGGING_METHODS = new HashSet<>(Arrays.asList(
         ".throwableAtError",
         ".throwableAtWarning"));
