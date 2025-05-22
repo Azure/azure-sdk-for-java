@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.test;
+package com.azure.v2.core.test;
 
-import com.azure.v2.core.test.TestBase;
 import com.azure.v2.core.test.models.CustomMatcher;
 import com.azure.v2.core.test.models.TestProxySanitizer;
 import com.azure.v2.core.test.models.TestProxySanitizerType;

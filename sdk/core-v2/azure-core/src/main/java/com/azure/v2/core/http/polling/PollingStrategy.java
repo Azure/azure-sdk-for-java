@@ -97,6 +97,6 @@ public interface PollingStrategy<T, U> {
      * @throws IllegalStateException If cancellation isn't supported.
      */
     default T cancel(PollingContext<T> pollingContext, PollResponse<T> initialResponse) {
-        throw new IllegalStateException("Cancellation is not supported.");
+        throw new UnsupportedOperationException("Cancellation is not supported.");
     }
 }
