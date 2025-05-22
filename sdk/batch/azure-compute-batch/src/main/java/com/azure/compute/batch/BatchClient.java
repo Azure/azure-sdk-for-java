@@ -4,6 +4,7 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
+import com.azure.compute.batch.implementation.lro.JobScheduleDeletePoller;
 import com.azure.compute.batch.implementation.task.SyncTaskSubmitter;
 import com.azure.compute.batch.implementation.task.TaskManager;
 import com.azure.compute.batch.implementation.task.TaskSubmitter;
@@ -142,6 +143,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.polling.SyncPoller;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -11833,6 +11835,29 @@ public final class BatchClient {
         // Generated convenience method for deleteJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a Job Schedule from the specified Account.
+     *
+     * When you delete a Job Schedule, this also deletes all Jobs and Tasks under that
+     * schedule. When Tasks are deleted, all the files in their working directories on
+     * the Compute Nodes are also deleted (the retention period is ignored). The Job
+     * Schedule statistics are no longer accessible once the Job Schedule is deleted,
+     * though they are still counted towards Account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public SyncPoller<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId) {
+        JobScheduleDeletePoller poller = new JobScheduleDeletePoller(this, jobScheduleId, new RequestOptions());
+        return SyncPoller.createPoller(Duration.ofSeconds(5), poller.getActivationOperation(),
+            poller.getPollOperation(), poller.getCancelOperation(), poller.getFetchResultOperation());
     }
 
     /**

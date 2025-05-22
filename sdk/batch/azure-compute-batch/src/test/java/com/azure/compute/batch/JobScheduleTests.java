@@ -16,6 +16,9 @@ import com.azure.compute.batch.models.BatchJobSchedulesListOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import org.junit.jupiter.api.Assertions;
@@ -117,15 +120,24 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertEquals("key1", jobSchedule.getMetadata().get(0).getName());
             Assertions.assertEquals((Integer) 100, jobSchedule.getJobSpecification().getPriority());
 
-            // DELETE
-            batchClient.deleteJobSchedule(jobScheduleId);
+            // DELETE using LRO
+            SyncPoller<BatchJobSchedule, Void> poller = batchClient.beginDeleteJobSchedule(jobScheduleId);
+
+            PollResponse<BatchJobSchedule> initialResponse = poller.poll();
+            if (initialResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+                BatchJobSchedule jobScheduleDuringPoll = initialResponse.getValue();
+                Assertions.assertNotNull(jobScheduleDuringPoll, "Expected job schedule data during polling");
+                Assertions.assertEquals(jobScheduleId, jobScheduleDuringPoll.getId());
+                Assertions.assertEquals(BatchJobScheduleState.DELETING, jobScheduleDuringPoll.getState());
+            }
+
+            poller.waitForCompletion();
+
             try {
                 jobSchedule = batchClient.getJobSchedule(jobScheduleId);
-                Assertions.assertTrue(true, "Shouldn't be here, the jobschedule should be deleted");
+                Assertions.fail("Expected job schedule to be deleted, but it was found.");
             } catch (HttpResponseException err) {
-                if (err.getResponse().getStatusCode() != 404) {
-                    throw err;
-                }
+                Assertions.assertEquals(404, err.getResponse().getStatusCode());
             }
 
             sleepIfRunningAgainstService(1 * 1000);
