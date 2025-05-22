@@ -55,6 +55,7 @@ public final class HttpRequestContext {
     private final Map<String, Substitution> substitutions;
 
     private int[] expectedStatusCodes;
+    private boolean isNextLinkUri;
 
     /**
      * Constructs a new HttpRequestContext with default values.
@@ -381,6 +382,24 @@ public final class HttpRequestContext {
             String value = parts.length > 1 ? parts[1].trim() : null;
             addQueryParam(key, value, true, false, true);
         }
+    }
+
+    /**
+     * Sets whether the URI is a {nextlink}.
+     *
+     * @param isNextLinkUri true if it is a {nextlink}, false otherwise.
+     */
+    public void setUriIsNextLink(boolean isNextLinkUri) {
+        this.isNextLinkUri = isNextLinkUri;
+    }
+
+    /**
+     * Checks if the URI is a {nextlink}.
+     *
+     * @return true if it is a {nextlink}, false otherwise.
+     */
+    public boolean isUriNextLink() {
+        return isNextLinkUri;
     }
 
     /**
