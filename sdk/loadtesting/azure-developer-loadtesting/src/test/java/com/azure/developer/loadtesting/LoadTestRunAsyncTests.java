@@ -19,6 +19,7 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,26 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
 
     @Test
     @Order(2)
+    public void beginTestProfileRun() {
+
+        TestProfileRun testProfileRun = new TestProfileRun().setTestProfileId(existingTestProfileIdAsync)
+            .setDisplayName("Java SDK Sample Test Profile Run")
+            .setDescription("Sample Test Profile Run");
+        PollerFlux<TestProfileRun, TestProfileRun> poller
+            = getLoadTestRunAsyncClient().beginTestProfileRun(newTestProfileRunIdAsync, testProfileRun);
+
+        poller = setPlaybackPollerFluxPollInterval(poller);
+        StepVerifier.create(poller.takeUntil(pollResponse -> pollResponse.getStatus().isComplete())
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult)).assertNext(testProfileRunResponse -> {
+                assertNotNull(testProfileRunResponse);
+                assertEquals(newTestProfileRunIdAsync, testProfileRunResponse.getTestProfileRunId());
+                assertEquals(TestProfileRunStatus.DONE.toString(), testProfileRunResponse.getStatus().toString());
+            }).verifyComplete();
+    }
+
+    @Test
+    @Order(3)
     public void createOrUpdateAppComponents() {
         TestRunAppComponents appComponents = getTestRunAppComponents();
         Mono<TestRunAppComponents> monoResponse
@@ -67,7 +88,7 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     public void createOrUpdateServerMetricsConfig() {
         TestRunServerMetricsConfiguration metricsConfig = getTestRunServerMetricsConfiguration();
         Mono<TestRunServerMetricsConfiguration> monoResponse
@@ -84,7 +105,7 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     // Gets
 
     @Test
-    @Order(4)
+    @Order(5)
     public void getTestRunFile() {
         Mono<TestRunFileInfo> monoResponse
             = getLoadTestRunAsyncClient().getTestRunFile(newTestRunIdAsync, uploadJmxFileName);
@@ -97,7 +118,7 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void getTestRun() {
         Mono<LoadTestRun> monoResponse = getLoadTestRunAsyncClient().getTestRun(newTestRunIdAsync);
 
@@ -108,7 +129,19 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
+    public void getTestProfileRun() {
+        Mono<TestProfileRun> monoResponse = getLoadTestRunAsyncClient().getTestProfileRun(newTestProfileRunIdAsync);
+
+        StepVerifier.create(monoResponse).assertNext(testProfileRun -> {
+            assertNotNull(testProfileRun);
+            assertEquals(newTestProfileRunIdAsync, testProfileRun.getTestProfileRunId());
+            assertTrue(testProfileRun.getRecommendations().size() > 0);
+        }).verifyComplete();
+    }
+
+    @Test
+    @Order(8)
     public void getAppComponents() {
         Mono<TestRunAppComponents> monoResponse = getLoadTestRunAsyncClient().getAppComponents(newTestRunIdAsync);
 
@@ -122,7 +155,7 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     }
 
     @Test
-    @Order(7)
+    @Order(9)
     public void getServerMetricsConfig() {
         Mono<TestRunServerMetricsConfiguration> monoResponse
             = getLoadTestRunAsyncClient().getServerMetricsConfig(newTestRunIdAsync);
@@ -136,7 +169,7 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     }
 
     @Test
-    @Order(8)
+    @Order(10)
     public void listMetricNamespaces() {
         Mono<MetricNamespaces> monoResponse = getLoadTestRunAsyncClient().getMetricNamespaces(newTestRunIdAsync);
 
@@ -150,7 +183,7 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     }
 
     @Test
-    @Order(9)
+    @Order(11)
     public void listMetricDefinitions() {
         Mono<MetricDefinitions> monoResponse
             = getLoadTestRunAsyncClient().getMetricDefinitions(newTestRunIdAsync, "LoadTestRunMetrics");
@@ -169,7 +202,7 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
 
     @SuppressWarnings("unchecked")
     @Test
-    @Order(10)
+    @Order(12)
     public void listMetrics() {
         Mono<Boolean> foundMetricsMono = getLoadTestRunAsyncClient().getTestRun(newTestRunIdAsync).flatMap(testRun -> {
             assertNotNull(testRun);
@@ -205,7 +238,7 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     // Lists
 
     @Test
-    @Order(11)
+    @Order(13)
     public void listTestRuns() {
         PagedFlux<LoadTestRun> pagedFlux = getLoadTestRunAsyncClient().listTestRuns("executedDateTime desc", // orderBy
             null, // search
@@ -221,12 +254,35 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
             .verifyComplete();
     }
 
+    @Test
+    @Order(14)
+    public void listTestProfileRuns() {
+
+        ArrayList<String> testProfileIds = new ArrayList<>();
+        testProfileIds.add(existingTestProfileIdAsync);
+        PagedFlux<TestProfileRun> pagedFlux = getLoadTestRunAsyncClient().listTestProfileRuns(null, null, null, null,
+            null, null, null, testProfileIds, null);
+
+        StepVerifier
+            .create(
+                pagedFlux.any(testProfileRun -> newTestProfileRunIdAsync.equals(testProfileRun.getTestProfileRunId())))
+            .expectNext(true)
+            .verifyComplete();
+    }
+
     // Deletes
 
     @Test
-    @Order(12)
+    @Order(15)
     public void deleteTestRun() {
         Mono<Void> monoVoid = getLoadTestRunAsyncClient().deleteTestRun(newTestRunIdAsync);
+        StepVerifier.create(monoVoid).verifyComplete();
+    }
+
+    @Test
+    @Order(16)
+    public void deleteTestProfileRun() {
+        Mono<Void> monoVoid = getLoadTestRunAsyncClient().deleteTestProfileRun(newTestProfileRunIdAsync);
         StepVerifier.create(monoVoid).verifyComplete();
     }
 }

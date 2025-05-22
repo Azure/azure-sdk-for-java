@@ -4,7 +4,6 @@
 package com.azure.developer.loadtesting;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
@@ -14,6 +13,8 @@ import com.azure.developer.loadtesting.models.MetricDefinition;
 import com.azure.developer.loadtesting.models.MetricDefinitions;
 import com.azure.developer.loadtesting.models.MetricNamespace;
 import com.azure.developer.loadtesting.models.MetricNamespaces;
+import com.azure.developer.loadtesting.models.TestProfileRun;
+import com.azure.developer.loadtesting.models.TestProfileRunStatus;
 import com.azure.developer.loadtesting.models.TestRunAppComponents;
 import com.azure.developer.loadtesting.models.TestRunFileInfo;
 import com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration;
@@ -27,6 +28,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.IOException;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,7 +37,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 @SuppressWarnings("unchecked")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -64,6 +65,27 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
 
     @Test
     @Order(2)
+    public void beginTestProfileRun() {
+
+        TestProfileRun testProfileRun = new TestProfileRun().setTestProfileId(existingTestProfileId)
+            .setDisplayName("Java SDK Sample Test Profile Run")
+            .setDescription("Sample Test Profile Run");
+        SyncPoller<TestProfileRun, TestProfileRun> poller
+            = getLoadTestRunClient().beginTestProfileRun(newTestProfileRunId, testProfileRun);
+
+        poller = setPlaybackSyncPollerPollInterval(poller);
+        PollResponse<TestProfileRun> response = poller.waitForCompletion();
+        TestProfileRun testProfileRunResponse = poller.getFinalResult();
+
+        assertNotNull(testProfileRunResponse);
+        assertNotNull(response.getValue());
+        assertEquals(newTestProfileRunId, testProfileRunResponse.getTestProfileRunId());
+        assertEquals(TestProfileRunStatus.DONE.toString(), testProfileRunResponse.getStatus().toString());
+        assertEquals(existingTestProfileId, testProfileRunResponse.getTestProfileId());
+    }
+
+    @Test
+    @Order(3)
     public void createOrUpdateAppComponents() {
 
         TestRunAppComponents appComponents = getTestRunAppComponents();
@@ -73,7 +95,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     public void createOrUpdateServerMetricsConfig() {
 
         TestRunServerMetricsConfiguration metricsConfig = getTestRunServerMetricsConfiguration();
@@ -86,7 +108,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     // Gets
 
     @Test
-    @Order(4)
+    @Order(5)
     public void getTestRunFile() {
 
         TestRunFileInfo fileInfo = getLoadTestRunClient().getTestRunFile(newTestRunId, uploadJmxFileName);
@@ -97,7 +119,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void getTestRun() {
 
         LoadTestRun testRun = getLoadTestRunClient().getTestRun(newTestRunId);
@@ -106,7 +128,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     public void getAppComponents() {
 
         TestRunAppComponents appComponents = getLoadTestRunClient().getAppComponents(newTestRunId);
@@ -118,7 +140,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     public void getServerMetricsConfig() {
 
         TestRunServerMetricsConfiguration metricsConfig = getLoadTestRunClient().getServerMetricsConfig(newTestRunId);
@@ -129,7 +151,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     }
 
     @Test
-    @Order(8)
+    @Order(9)
     public void listMetricNamespaces() {
 
         MetricNamespaces metricNamespaces = getLoadTestRunClient().getMetricNamespaces(newTestRunId);
@@ -142,7 +164,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     }
 
     @Test
-    @Order(9)
+    @Order(10)
     public void listMetricDefinitions() {
 
         MetricDefinitions metricDefinitions
@@ -158,7 +180,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     }
 
     @Test
-    @Order(10)
+    @Order(11)
     public void listMetrics() {
         LoadTestRunClient loadTestRunClient = getLoadTestRunClient();
         LoadTestRun testRun = loadTestRunClient.getTestRun(newTestRunId);
@@ -199,10 +221,21 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
         assertTrue(valid);
     }
 
+    @Test
+    @Order(12)
+    public void getTestProfileRun() {
+
+        TestProfileRun testProfileRun = getLoadTestRunClient().getTestProfileRun(newTestProfileRunId);
+        assertNotNull(testProfileRun);
+        assertEquals(newTestProfileRunId, testProfileRun.getTestProfileRunId());
+        assertEquals(existingTestProfileId, testProfileRun.getTestProfileId());
+        assertTrue(testProfileRun.getRecommendations().size() > 0);
+    }
+
     // Lists
 
     @Test
-    @Order(11)
+    @Order(13)
     public void listTestRuns() {
 
         PagedIterable<LoadTestRun> loadTestRuns = getLoadTestRunClient().listTestRuns("executedDateTime desc", null,
@@ -214,13 +247,36 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
         assertTrue(found);
     }
 
+    @Test
+    @Order(14)
+    public void listTestProfileRuns() {
+
+        ArrayList<String> testProfileIds = new ArrayList<>();
+        testProfileIds.add(existingTestProfileId);
+        PagedIterable<TestProfileRun> testProfileRuns = getLoadTestRunClient().listTestProfileRuns(null, null, null,
+            null, null, null, null, testProfileIds, null);
+        boolean found = testProfileRuns.stream().anyMatch(testProfileRun -> {
+            return testProfileRun.getTestProfileRunId().equals(newTestProfileRunId);
+
+        });
+        assertTrue(found);
+    }
+
     // Deletes
 
     @Test
-    @Order(12)
+    @Order(15)
     public void deleteTestRun() {
         assertDoesNotThrow(() -> {
             getLoadTestRunClient().deleteTestRunWithResponse(newTestRunId, null);
+        });
+    }
+
+    @Test
+    @Order(16)
+    public void deleteTestProfileRun() {
+        assertDoesNotThrow(() -> {
+            getLoadTestRunClient().deleteTestProfileRunWithResponse(newTestProfileRunId, null);
         });
     }
 }
