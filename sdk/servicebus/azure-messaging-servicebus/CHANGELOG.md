@@ -3,6 +3,7 @@
 ## 7.18.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added async settle methods in `ServiceBusReceivedMessageContext` to support non-blocking message settlement. 
 
 ### Breaking Changes
 
