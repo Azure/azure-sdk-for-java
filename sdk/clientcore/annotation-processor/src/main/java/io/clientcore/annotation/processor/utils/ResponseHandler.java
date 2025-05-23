@@ -16,6 +16,7 @@ import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
+import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.CoreUtils;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
@@ -135,11 +136,27 @@ public final class ResponseHandler {
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // Return is a byte[]. Convert the network response body into a byte[].
             body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = networkResponse.getValue();"));
+            // If the wire type is Base64Uri, decode it accordingly.
+            boolean isBase64Uri = false;
+            TypeMirror wireType = method.getReturnValueWireType();
+            if (wireType != null && wireType.getKind() == TypeKind.DECLARED) {
+                DeclaredType declaredWireType = (DeclaredType) wireType;
+                TypeElement wireTypeElement = (TypeElement) declaredWireType.asElement();
+                isBase64Uri
+                    = "io.clientcore.core.utils.Base64Uri".equals(wireTypeElement.getQualifiedName().toString());
+            }
+            String returnExpr;
+            if (isBase64Uri) {
+                body.tryAddImportToParentCompilationUnit(Base64Uri.class);
+                returnExpr = "responseBody != null ? new Base64Uri(responseBody.toBytes()).decodedBytes() : null";
+            } else {
+                returnExpr = "responseBody != null ? responseBody.toBytes() : null";
+            }
 
             // Return responseBody.toBytes(), or null if it was null, as-is which will have the behavior of
             // null -> null, empty -> empty, and data -> data, which offers three unique states for knowing information
             // about the network response shape, as nullness != emptiness.
-            addReturnStatement(body, returnIsResponse, "responseBody != null ? responseBody.toBytes() : null");
+            addReturnStatement(body, returnIsResponse, returnExpr);
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
             // Return type is an InputStream. Return the network response body as an InputStream.
             // DO NOT close the network response for this return as it will result in the InputStream either being
