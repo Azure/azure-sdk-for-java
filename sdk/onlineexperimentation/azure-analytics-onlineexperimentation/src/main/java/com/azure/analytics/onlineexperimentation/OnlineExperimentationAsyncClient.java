@@ -23,6 +23,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.ETag;
@@ -68,7 +69,7 @@ public final class OnlineExperimentationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -122,7 +123,7 @@ public final class OnlineExperimentationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -142,9 +143,9 @@ public final class OnlineExperimentationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -186,7 +187,7 @@ public final class OnlineExperimentationAsyncClient {
     /**
      * Validates an experiment metric definition.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -206,9 +207,9 @@ public final class OnlineExperimentationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -282,7 +283,7 @@ public final class OnlineExperimentationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -609,6 +610,36 @@ public final class OnlineExperimentationAsyncClient {
     }
 
     /**
+     * Creates or updates an experiment metric with response.
+     *
+     * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
+     * only lowercase letters, numbers, and underscores.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines experiment metric metadata and computation details along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ExperimentMetric>> createOrUpdateMetricWithResponse(String experimentMetricId,
+        ExperimentMetric resource, RequestOptions requestOptions) {
+
+        JsonMergePatchHelper.getExperimentMetricAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        resourceInBinaryData.getLength(); // Force serialization
+        JsonMergePatchHelper.getExperimentMetricAccessor().prepareModelForJsonMergePatch(resource, false);
+
+        return createOrUpdateMetricWithResponse(experimentMetricId, resourceInBinaryData, requestOptions)
+            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().toObject(ExperimentMetric.class)));
+    }
+
+    /**
      * Creates or updates an experiment metric.
      *
      * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
@@ -624,6 +655,28 @@ public final class OnlineExperimentationAsyncClient {
     public Mono<ExperimentMetric> createMetric(String experimentMetricId, ExperimentMetric resource) {
         return createOrUpdateMetric(experimentMetricId, resource,
             new RequestConditions().setIfNoneMatch(ETag.ALL.toString()));
+    }
+
+    /**
+     * Creates an experiment metric with a response.
+     *
+     * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
+     * only lowercase letters, numbers, and underscores.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines experiment metric metadata and computation details along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ExperimentMetric>> createMetricWithResponse(String experimentMetricId,
+        ExperimentMetric resource) {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ETag.ALL.toString());
+
+        return createOrUpdateMetricWithResponse(experimentMetricId, resource, requestOptions);
     }
 
     /**
@@ -646,6 +699,30 @@ public final class OnlineExperimentationAsyncClient {
     }
 
     /**
+     * Updates an experiment metric with a response.
+     *
+     * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
+     * only lowercase letters, numbers, and underscores.
+     * @param resource The resource instance.
+     * @param ifMatch The ETag value to match for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines experiment metric metadata and computation details along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ExperimentMetric>> updateMetricWithResponse(String experimentMetricId,
+        ExperimentMetric resource, String ifMatch) {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+
+        return createOrUpdateMetricWithResponse(experimentMetricId, resource, requestOptions);
+    }
+
+    /**
      * Creates or updates an experiment metric.
      *
      * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
@@ -661,6 +738,26 @@ public final class OnlineExperimentationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExperimentMetric> updateMetric(String experimentMetricId, ExperimentMetric resource) {
         return updateMetric(experimentMetricId, resource, ETag.ALL.toString());
+    }
+
+    /**
+     * Updates an experiment metric with a response.
+     *
+     * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
+     * only lowercase letters, numbers, and underscores.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines experiment metric metadata and computation details along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ExperimentMetric>> updateMetricWithResponse(String experimentMetricId,
+        ExperimentMetric resource) {
+        return updateMetricWithResponse(experimentMetricId, resource, ETag.ALL.toString());
     }
 
     /**
@@ -682,6 +779,26 @@ public final class OnlineExperimentationAsyncClient {
     }
 
     /**
+     * Activates an experiment metric with a response.
+     *
+     * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
+     * only lowercase letters, numbers, and underscores.
+     * @param ifMatch The ETag value to match for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines experiment metric metadata and computation details along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ExperimentMetric>> activateMetricWithResponse(String experimentMetricId, String ifMatch) {
+        ExperimentMetric resource = new ExperimentMetric().setLifecycle(LifecycleStage.ACTIVE);
+        return updateMetricWithResponse(experimentMetricId, resource, ifMatch);
+    }
+
+    /**
      * Updates the experiment metric lifecycle to {@link LifecycleStage#ACTIVE}.
      *
      * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
@@ -696,6 +813,24 @@ public final class OnlineExperimentationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExperimentMetric> activateMetric(String experimentMetricId) {
         return activateMetric(experimentMetricId, ETag.ALL.toString());
+    }
+
+    /**
+     * Activates an experiment metric with a response.
+     *
+     * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
+     * only lowercase letters, numbers, and underscores.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines experiment metric metadata and computation details along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ExperimentMetric>> activateMetricWithResponse(String experimentMetricId) {
+        return activateMetricWithResponse(experimentMetricId, ETag.ALL.toString());
     }
 
     /**
@@ -717,6 +852,26 @@ public final class OnlineExperimentationAsyncClient {
     }
 
     /**
+     * Deactivates an experiment metric with a response.
+     *
+     * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
+     * only lowercase letters, numbers, and underscores.
+     * @param ifMatch The ETag value to match for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines experiment metric metadata and computation details along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ExperimentMetric>> deactivateMetricWithResponse(String experimentMetricId, String ifMatch) {
+        ExperimentMetric resource = new ExperimentMetric().setLifecycle(LifecycleStage.INACTIVE);
+        return updateMetricWithResponse(experimentMetricId, resource, ifMatch);
+    }
+
+    /**
      * Updates the experiment metric lifecycle to {@link LifecycleStage#INACTIVE}.
      *
      * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
@@ -731,5 +886,23 @@ public final class OnlineExperimentationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExperimentMetric> deactivateMetric(String experimentMetricId) {
         return deactivateMetric(experimentMetricId, ETag.ALL.toString());
+    }
+
+    /**
+     * Deactivates an experiment metric with a response.
+     *
+     * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
+     * only lowercase letters, numbers, and underscores.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines experiment metric metadata and computation details along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ExperimentMetric>> deactivateMetricWithResponse(String experimentMetricId) {
+        return deactivateMetricWithResponse(experimentMetricId, ETag.ALL.toString());
     }
 }
