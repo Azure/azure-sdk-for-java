@@ -99,11 +99,11 @@ public final class ManagedIdentityCredential implements TokenCredential {
             ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
             if (ManagedIdentitySourceType.CLOUD_SHELL.equals(managedIdentitySourceType)
                 || ManagedIdentitySourceType.AZURE_ARC.equals(managedIdentitySourceType)) {
-                LOGGER.atError()
+                throw LOGGER.throwableAtError()
                     .log("ManagedIdentityCredential authentication unavailable. "
                         + "User-assigned managed identity is not supported in " + managedIdentitySourceType
                         + ". To use system-assigned managed identity, remove the configured client ID on "
-                        + "the ManagedIdentityCredentialBuilder.");
+                        + "the ManagedIdentityCredentialBuilder.", CredentialUnavailableException::new);
             }
         }
 

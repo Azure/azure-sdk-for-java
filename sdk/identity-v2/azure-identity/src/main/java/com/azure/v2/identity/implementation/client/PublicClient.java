@@ -3,6 +3,7 @@
 
 package com.azure.v2.identity.implementation.client;
 
+import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.azure.v2.identity.models.TokenCachePersistenceOptions;
 import com.azure.v2.identity.models.BrowserCustomizationOptions;
 import com.azure.v2.identity.models.DeviceCodeInfo;
@@ -382,10 +383,10 @@ public class PublicClient extends ClientBase {
             }
         }
 
-        LOGGER.atError()
+        throw LOGGER.throwableAtError()
             .log(
-                "Azure Toolkit authentication not available. Please login with the Azure Toolkit for IntelliJ/Eclipse.");
-        return null;
+                "Azure Toolkit authentication not available. Please login with the Azure Toolkit for IntelliJ/Eclipse.",
+                CredentialUnavailableException::new);
     }
 
     /**

@@ -4,6 +4,7 @@
 package com.azure.v2.identity;
 
 import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
+import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.azure.v2.identity.implementation.client.MsalAuthenticationAccountCache;
 import com.azure.v2.identity.implementation.client.PublicClient;
 import com.azure.v2.identity.implementation.models.MsalAuthenticationAccount;
@@ -152,7 +153,9 @@ public class DeviceCodeCredential implements TokenCredential {
     public AuthenticationRecord authenticate() {
         String defaultScope = AzureAuthorityHosts.getDefaultScope(publicClientOptions.getAuthorityHost());
         if (defaultScope == null) {
-            LOGGER.atError().log("Authenticating in this environment requires specifying a TokenRequestContext.");
+            throw LOGGER.throwableAtError()
+                .log("Authenticating in this environment requires specifying a TokenRequestContext.",
+                    CredentialUnavailableException::new);
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }
