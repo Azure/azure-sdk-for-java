@@ -13,7 +13,6 @@ import com.openai.core.JsonValue;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.errors.BadRequestException;
 import com.openai.models.ResponseFormatJsonObject;
-import com.openai.models.audio.transcriptions.Transcription;
 import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
 import com.openai.models.audio.transcriptions.TranscriptionCreateResponse;
 import com.openai.models.chat.completions.ChatCompletion;
@@ -23,6 +22,7 @@ import com.openai.models.chat.completions.ChatCompletionMessageParam;
 import com.openai.models.chat.completions.ChatCompletionMessageToolCall;
 import com.openai.models.completions.CompletionUsage;
 import com.openai.models.responses.EasyInputMessage;
+import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseOutputMessage;
@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.openai.stainless.TestUtils.AZURE_OPEN_AI;
 import static com.azure.ai.openai.stainless.TestUtils.GA;
@@ -468,7 +469,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
             .model(testModel)
             .build();
 
-        var response = client.responses().create(createParams).join();
+        Response response = client.responses().create(createParams).join();
 
         assertNotNull(response, "Response should not be null");
         assertFalse(response.output().isEmpty(), "Response output should not be empty");
@@ -490,13 +491,11 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
             .content("Tell me a story about building the best SDK!")
             .build()));
 
-        ResponseCreateParams createParams = ResponseCreateParams.builder()
-            .inputOfResponse(inputItems)
-            .model(testModel)
-            .build();
+        ResponseCreateParams createParams
+            = ResponseCreateParams.builder().inputOfResponse(inputItems).model(testModel).build();
 
         for (int i = 0; i < 2; i++) {
-            var response = client.responses().create(createParams).join();
+            Response response = client.responses().create(createParams).join();
 
             assertNotNull(response, "Response should not be null");
             assertFalse(response.output().isEmpty(), "Response output should not be empty");
@@ -508,7 +507,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
                 .flatMap(message -> message.content().stream())
                 .map(content -> content.outputText().map(ResponseOutputText::text).orElse(null))
                 .filter(Objects::nonNull)
-                .toList();
+                .collect(Collectors.toList());
 
             assertFalse(texts.isEmpty(), "Text outputs should not be empty");
 
@@ -516,7 +515,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
 
             inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
                 .role(EasyInputMessage.Role.USER)
-                .content("But why?" + "?".repeat(i))
+                .content("But why?" + new String(new char[i]).replace("\0", "?"))
                 .build()));
 
             createParams = createParams.toBuilder().inputOfResponse(inputItems).build();
@@ -528,7 +527,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
     public void testAudioTranscription(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         TranscriptionCreateParams params = createTranscriptionCreateParams(testModel);
-        TranscriptionCreateResponse response=  client.audio().transcriptions().create(params).join();
+        TranscriptionCreateResponse response = client.audio().transcriptions().create(params).join();
         assertAudioTranscription(response.asTranscription());
     }
 }

@@ -25,7 +25,6 @@ public class TestUtils {
     private static final String GPT_4O = "gpt-4o";
     private static final String WHISPER = "whisper";
 
-
     static boolean isAzureConfigMissing() {
         return isAzureEndpointMissing() || isAzureApiKeyMissing();
     }
@@ -88,13 +87,12 @@ public class TestUtils {
     }
 
     static String extractOutputText(Response response) {
-        return response.output().stream()
+        return response.output()
+            .stream()
             .map(item -> item.message().orElse(null))
             .filter(Objects::nonNull)
             .flatMap(message -> message.content().stream())
-            .map(content -> content.outputText()
-                 .map(ResponseOutputText::text)
-                 .orElse(null))
+            .map(content -> content.outputText().map(ResponseOutputText::text).orElse(null))
             .filter(Objects::nonNull)
             .findFirst()
             .orElse(null);
