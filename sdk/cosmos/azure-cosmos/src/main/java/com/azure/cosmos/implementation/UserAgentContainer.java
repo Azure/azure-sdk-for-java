@@ -20,6 +20,10 @@ public class UserAgentContainer {
     private String userAgent;
     public final static String AZSDK_USERAGENT_PREFIX = "azsdk-java-";
 
+    public final static String BASE_USER_AGENT_STRING = Utils.getUserAgent(
+        HttpConstants.Versions.SDK_NAME,
+        HttpConstants.Versions.getSdkVersion());
+
     private UserAgentContainer(String sdkName, String sdkVersion) {
         this.baseUserAgent = Utils.getUserAgent(sdkName, sdkVersion);
         this.suffix = "";

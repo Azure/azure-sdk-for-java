@@ -120,7 +120,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         checkNotNull(userAgentContainer, "Argument 'userAGentContainer' must not be null.");
 
-        Map<String, String> defaultHeaders = new HashMap<>();
+        Map<String, String> defaultHeaders = new HashMap<>(6);
         defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
             "no-cache");
         defaultHeaders.put(HttpConstants.HttpHeaders.VERSION,
@@ -133,11 +133,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             defaultHeaders.put(HttpConstants.HttpHeaders.API_TYPE, apiType.toString());
         }
 
-        if (userAgentContainer == null) {
-            userAgentContainer = new UserAgentContainer();
-        }
+        String userAgent = userAgentContainer == null
+            ? UserAgentContainer.BASE_USER_AGENT_STRING
+            : userAgentContainer.getUserAgent();
 
-        defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
+        defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgent);
 
         if (clientDefaultConsistencyLevel != null) {
             defaultHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL,
