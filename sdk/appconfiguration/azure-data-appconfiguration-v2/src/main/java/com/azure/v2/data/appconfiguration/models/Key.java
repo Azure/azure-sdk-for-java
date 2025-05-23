@@ -32,7 +32,7 @@ class Key implements JsonSerializable<Key> {
 
     /**
      * Get the name property: The name of the key.
-     * 
+     *
      * @return the name value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -52,7 +52,7 @@ class Key implements JsonSerializable<Key> {
 
     /**
      * Reads an instance of Key from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of Key if the JsonReader was pointing to an instance of it, or null if it was pointing to
      * JSON null.

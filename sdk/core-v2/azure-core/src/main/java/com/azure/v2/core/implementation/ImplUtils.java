@@ -3,8 +3,10 @@
 
 package com.azure.v2.core.implementation;
 
+import com.azure.v2.core.http.polling.Poller;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.DateTimeRfc1123;
 
@@ -28,6 +30,7 @@ import java.util.function.Supplier;
  * Utility class containing implementation specific methods.
  */
 public final class ImplUtils {
+    private static final ClientLogger POLLER_LOGGER = new ClientLogger(Poller.class);
 
     /**
      * Attempts to extract a retry after duration from a given set of {@link HttpHeaders}.
@@ -157,6 +160,10 @@ public final class ImplUtils {
                 throw e;
             }
         }
+    }
+
+    public static ClientLogger getPollerLogger() {
+        return POLLER_LOGGER;
     }
 
     private ImplUtils() {

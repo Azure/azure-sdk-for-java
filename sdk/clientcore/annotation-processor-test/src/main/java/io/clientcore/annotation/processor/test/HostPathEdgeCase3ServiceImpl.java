@@ -57,7 +57,7 @@ public class HostPathEdgeCase3ServiceImpl implements HostPathEdgeCase3Service {
             boolean expectedResponse = responseCode == 204;
             if (!expectedResponse) {
                 String errorMessage = networkResponse.getValue().toString();
-                throw new HttpResponseException(errorMessage, networkResponse, null);
+                throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }

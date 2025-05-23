@@ -60,7 +60,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         if (!expectedResponse) {
             String errorMessage = networkResponse.getValue().toString();
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+            throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));
         }
         return networkResponse.getValue();
     }
@@ -77,7 +77,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         if (!expectedResponse) {
             String errorMessage = networkResponse.getValue().toString();
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+            throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));
         }
         return networkResponse;
     }
@@ -93,7 +93,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 String errorMessage = networkResponse.getValue().toString();
-                throw new HttpResponseException(errorMessage, networkResponse, null);
+                throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;
@@ -111,7 +111,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 String errorMessage = networkResponse.getValue().toString();
-                throw new HttpResponseException(errorMessage, networkResponse, null);
+                throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));
             }
             BinaryData responseBody = networkResponse.getValue();
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), responseBody != null ? responseBody.toBytes() : null);
@@ -130,7 +130,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         if (!expectedResponse) {
             String errorMessage = networkResponse.getValue().toString();
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+            throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));
         }
         return networkResponse.getValue().toStream();
     }
@@ -147,7 +147,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         if (!expectedResponse) {
             String errorMessage = networkResponse.getValue().toString();
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+            throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), networkResponse.getValue().toStream());
     }
@@ -164,7 +164,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         if (!expectedResponse) {
             String errorMessage = networkResponse.getValue().toString();
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+            throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));
         }
         List<BinaryData> deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, BinaryData.class);
@@ -174,7 +174,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
+            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
         }
         networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);

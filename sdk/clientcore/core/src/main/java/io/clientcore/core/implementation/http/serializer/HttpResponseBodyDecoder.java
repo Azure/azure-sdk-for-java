@@ -94,9 +94,11 @@ public final class HttpResponseBodyDecoder {
                     extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
                     RestProxyImpl.serializationFormatFromContentType(response.getHeaders()), serializer);
             } catch (MalformedValueException e) {
-                throw new HttpResponseException("HTTP response has a malformed body.", response, e);
+                throw LOGGER.throwableAtError()
+                    .log("HTTP response has a malformed body.", e, (m, c) -> new HttpResponseException(m, response, c));
             } catch (IOException e) {
-                throw new HttpResponseException("Deserialization failed.", response, e);
+                throw LOGGER.throwableAtError()
+                    .log("Deserialization failed.", e, (m, c) -> new HttpResponseException(m, response, c));
             }
         }
     }

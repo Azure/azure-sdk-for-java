@@ -69,7 +69,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         if (!expectedResponse) {
             String errorMessage = networkResponse.getValue().toString();
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+            throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));
         }
         networkResponse.close();
     }
@@ -95,7 +95,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         if (!expectedResponse) {
             String errorMessage = networkResponse.getValue().toString();
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+            throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));
         }
         networkResponse.close();
     }
@@ -115,7 +115,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         if (!expectedResponse) {
             String errorMessage = networkResponse.getValue().toString();
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+            throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));
         }
         SimpleXmlSerializable deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(SimpleXmlSerializable.class);
@@ -125,7 +125,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
+            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
         }
         return deserializedResult;
     }
@@ -145,7 +145,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         if (!expectedResponse) {
             String errorMessage = networkResponse.getValue().toString();
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+            throw LOGGER.throwableAtError().log(errorMessage, null, (m, c) -> new HttpResponseException(m, networkResponse, c));
         }
         SimpleXmlSerializable deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(SimpleXmlSerializable.class);
@@ -155,7 +155,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
+            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
         }
         return deserializedResult;
     }

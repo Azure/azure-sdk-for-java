@@ -4,6 +4,7 @@ package io.clientcore.http.netty4.implementation;
 
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.netty.handler.codec.DateFormatter;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaders;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
  * more usage of {@code HTTP/2} would be having a similar wrapper for the {@code HTTP/2} headers.
  */
 public final class WrappedHttpHeaders extends HttpHeaders {
+    private static final ClientLogger LOGGER = new ClientLogger(WrappedHttpHeaders.class);
     private io.clientcore.core.http.models.HttpHeaders coreHeaders;
 
     /**
@@ -112,7 +114,9 @@ public final class WrappedHttpHeaders extends HttpHeaders {
     private static Long convertToTimeMillis(String value) {
         Date date = DateFormatter.parseHttpDate(value);
         if (date == null) {
-            throw new IllegalStateException("header can't be parsed into a Date: " + value);
+            throw LOGGER.throwableAtError()
+                .addKeyValue("headerValue", value)
+                .log("header can't be parsed into a Date.", IllegalStateException::new);
         } else {
             return date.getTime();
         }

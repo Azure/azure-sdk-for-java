@@ -77,9 +77,9 @@ public class ServiceClientCheck extends AbstractCheck {
         "''%s'' service client with ''%s'', should always use return type ''%s'' if method name ends with ''%s'' or "
             + "should always named method name ends with ''%s'' if the return type is ''%s''.";
     private static final String ASYNC_CONTEXT_ERROR =
-        "Asynchronous method with annotation @ServiceMethod must not has ''%s'' as a method parameter.";
+        "Asynchronous method with annotation @ServiceMethod must not have ''%s'' as a method parameter.";
     private static final String SYNC_CONTEXT_ERROR =
-        "Synchronous method with annotation @ServiceMethod must has ''%s'' or ''%s'' as a method parameter.";
+        "Synchronous method with annotation @ServiceMethod must have ''%s'' or ''%s'' as a method parameter.";
 
     // Add all imported classes into a map, key is the name of class and value is the full package path of class.
     private final Map<String, String> simpleClassNameToQualifiedNameMap = new HashMap<>();

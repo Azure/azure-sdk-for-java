@@ -138,20 +138,18 @@ public class RestProxyImpl {
 
     private static void validateLengthInternal(long length, long expectedLength) {
         if (length > expectedLength) {
-            throw new IllegalStateException(bodyTooLarge(length, expectedLength));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("actualLength", length)
+                .addKeyValue("expectedLength", expectedLength)
+                .log("Request body emitted more than the expected stream length.", IllegalStateException::new);
         }
 
         if (length < expectedLength) {
-            throw new IllegalStateException(bodyTooSmall(length, expectedLength));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("actualLength", length)
+                .addKeyValue("expectedLength", expectedLength)
+                .log("Request body emitted less than the expected stream length.", IllegalStateException::new);
         }
-    }
-
-    static String bodyTooLarge(long length, long expectedLength) {
-        return "Request body emitted " + length + " bytes, more than the expected " + expectedLength + " bytes.";
-    }
-
-    static String bodyTooSmall(long length, long expectedLength) {
-        return "Request body emitted " + length + " bytes, less than the expected " + expectedLength + " bytes.";
     }
 
     /**

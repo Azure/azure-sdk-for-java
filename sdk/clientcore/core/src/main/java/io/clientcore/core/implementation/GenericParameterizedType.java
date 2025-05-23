@@ -38,7 +38,8 @@ public final class GenericParameterizedType implements ParameterizedType {
         for (int i = 0; i < args.length; i++) {
             if (args[i] == null) {
                 throw LOGGER.throwableAtError()
-                    .log("args cannot contain null: null value in index " + i, IllegalArgumentException::new);
+                    .addKeyValue("index", i)
+                    .log("args cannot contain null", IllegalArgumentException::new);
             }
             argsCopy[i] = args[i];
         }
