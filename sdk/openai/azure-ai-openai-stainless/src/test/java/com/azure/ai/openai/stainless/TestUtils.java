@@ -23,6 +23,8 @@ public class TestUtils {
     private static final String GPT_4_VISION_PREVIEW = "gpt-4-vision-preview";
     private static final String GPT_35_TURBO_1106 = "gpt-35-turbo-1106";
     private static final String GPT_4O = "gpt-4o";
+    private static final String WHISPER = "whisper";
+
 
     static boolean isAzureConfigMissing() {
         return isAzureEndpointMissing() || isAzureApiKeyMissing();
@@ -54,6 +56,10 @@ public class TestUtils {
 
     static Stream<Arguments> azureOnlyClient() {
         return Stream.of(Arguments.of(AZURE_OPEN_AI, GA, GPT_4O), Arguments.of(AZURE_OPEN_AI, PREVIEW, GPT_4O));
+    }
+
+    static Stream<Arguments> audioOnlyClient() {
+        return Stream.of(Arguments.of(AZURE_OPEN_AI, GA, WHISPER), Arguments.of(AZURE_OPEN_AI, PREVIEW, WHISPER));
     }
 
     static Stream<Arguments> azureByodOnlyClient() {
