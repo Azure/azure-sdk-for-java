@@ -488,10 +488,6 @@ public class Utils {
         return Utils.RFC_1123_DATE_TIME.format(now);
     }
 
-    public static UUID randomUUID() {
-        return TIME_BASED_GENERATOR.generate();
-    }
-
     public static String instantAsUTCRFC1123(Instant instant){
         return Utils.RFC_1123_DATE_TIME.format(instant.atZone(GMT_ZONE_ID));
     }
