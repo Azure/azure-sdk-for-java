@@ -15,7 +15,7 @@ import io.clientcore.annotation.processor.test.implementation.SpecialReturnBodie
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
-import io.clientcore.core.http.models.HttpResponseException;
+import io.clientcore.core.utils.GeneratedCodeUtils;
 import io.clientcore.core.utils.CoreUtils;
 import java.lang.reflect.ParameterizedType;
 import io.clientcore.core.serialization.SerializationFormat;
@@ -58,9 +58,9 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         return networkResponse.getValue();
     }
@@ -75,9 +75,9 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         return networkResponse;
     }
@@ -92,8 +92,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                String errorMessage = networkResponse.getValue().toString();
-                throw new HttpResponseException(errorMessage, networkResponse, null);
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;
@@ -110,8 +110,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                String errorMessage = networkResponse.getValue().toString();
-                throw new HttpResponseException(errorMessage, networkResponse, null);
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             BinaryData responseBody = networkResponse.getValue();
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), responseBody != null ? responseBody.toBytes() : null);
@@ -128,9 +128,9 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         return networkResponse.getValue().toStream();
     }
@@ -145,9 +145,9 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), networkResponse.getValue().toStream());
     }
@@ -162,9 +162,9 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         List<BinaryData> deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, BinaryData.class);
