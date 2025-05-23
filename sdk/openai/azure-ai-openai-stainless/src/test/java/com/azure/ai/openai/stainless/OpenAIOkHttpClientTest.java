@@ -14,6 +14,9 @@ import com.openai.core.http.StreamResponse;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.errors.BadRequestException;
 import com.openai.models.ResponseFormatJsonObject;
+import com.openai.models.audio.AudioModel;
+import com.openai.models.audio.transcriptions.Transcription;
+import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
 import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionChunk;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
@@ -26,6 +29,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -475,5 +480,15 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
 
         assertNotNull(text, "Text should not be null");
         assertFalse(text.trim().isEmpty(), "Text should not be empty");
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#audioOnlyClient")
+    public void testAudioTranscription(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+        TranscriptionCreateParams params = createTranscriptionCreateParams(testModel);
+        Transcription transcription =
+            client.audio().transcriptions().create(params).asTranscription();
+        assertAudioTranscription(transcription);
     }
 }

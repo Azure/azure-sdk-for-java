@@ -13,6 +13,9 @@ import com.openai.core.JsonValue;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.errors.BadRequestException;
 import com.openai.models.ResponseFormatJsonObject;
+import com.openai.models.audio.transcriptions.Transcription;
+import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
+import com.openai.models.audio.transcriptions.TranscriptionCreateResponse;
 import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.chat.completions.ChatCompletionMessage;
@@ -518,5 +521,14 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
 
             createParams = createParams.toBuilder().inputOfResponse(inputItems).build();
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#audioOnlyClient")
+    public void testAudioTranscription(String apiType, String apiVersion, String testModel) {
+        client = createAsyncClient(apiType, apiVersion);
+        TranscriptionCreateParams params = createTranscriptionCreateParams(testModel);
+        TranscriptionCreateResponse response=  client.audio().transcriptions().create(params).join();
+        assertAudioTranscription(response.asTranscription());
     }
 }
