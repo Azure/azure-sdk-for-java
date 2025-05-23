@@ -57,6 +57,7 @@ com.azure:azure-ai-translation-text;1.1.2;1.2.0-beta.1
 com.azure:azure-ai-translation-document;1.0.1;1.1.0-beta.1
 com.azure:azure-analytics-defender-easm;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-analytics-purview-datamap;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-analytics-onlineexperimentation;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-analytics-purview-scanning;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-analytics-purview-sharing;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-analytics-purview-administration;1.0.0-beta.1;1.0.0-beta.2
