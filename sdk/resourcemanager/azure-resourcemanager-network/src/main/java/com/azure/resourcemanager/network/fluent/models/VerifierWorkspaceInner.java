@@ -26,6 +26,11 @@ public final class VerifierWorkspaceInner extends CommonTrackedResource {
     private VerifierWorkspaceProperties properties;
 
     /*
+     * String representing unique etag for the resource document.
+     */
+    private String etag;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
@@ -69,6 +74,15 @@ public final class VerifierWorkspaceInner extends CommonTrackedResource {
     public VerifierWorkspaceInner withProperties(VerifierWorkspaceProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the etag property: String representing unique etag for the resource document.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -191,6 +205,8 @@ public final class VerifierWorkspaceInner extends CommonTrackedResource {
                     deserializedVerifierWorkspaceInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedVerifierWorkspaceInner.properties = VerifierWorkspaceProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVerifierWorkspaceInner.etag = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
