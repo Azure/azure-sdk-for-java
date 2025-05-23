@@ -110,13 +110,8 @@ public class ReactorNettyClient implements HttpClient {
      * This enables fast warm up of HttpClient
      */
     private static void attemptToWarmupHttpClient(ReactorNettyClient reactorNettyClient) {
-        // Warmup wasn't found, so don't attempt it.
-        if (HTTP_CLIENT_WARMUP == null) {
-            return;
-        }
-
         try {
-            ((Mono<?>) HTTP_CLIENT_WARMUP.invoke(reactorNettyClient.httpClient)).block();
+            reactorNettyClient.httpClient.warmup().block();
         } catch (ClassCastException | WrongMethodTypeException throwable) {
             // Invocation failed.
             logger.debug("Invoking HttpClient.warmup failed.", throwable);
@@ -166,7 +161,8 @@ public class ReactorNettyClient implements HttpClient {
                             httpClientConfig.isServerCertValidationDisabled(),
                             true
                         )))
-                .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
+                .protocol(HttpProtocol.H2)
+                .metrics(true, tag -> tag)
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:
                     // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
