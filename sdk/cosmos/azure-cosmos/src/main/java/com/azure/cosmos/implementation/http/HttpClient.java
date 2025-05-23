@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import reactor.core.publisher.Mono;
@@ -57,13 +58,15 @@ public interface HttpClient {
             ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
         if (http2CfgAccessor.isEffectivelyEnabled(http2Cfg)) {
-            fixedConnectionProviderBuilder.allocationStrategy(
-                Http2AllocationStrategy.builder()
-                    .minConnections(http2CfgAccessor.getEffectiveMinConnectionPoolSize(http2Cfg))
-                    .maxConnections(http2CfgAccessor.getEffectiveMaxConnectionPoolSize(http2Cfg))
-                    .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))
-                    .build()
-            );
+            fixedConnectionProviderBuilder
+                .metrics(true)
+                .allocationStrategy(
+                    Http2AllocationStrategy.builder()
+                        .minConnections(http2CfgAccessor.getEffectiveMinConnectionPoolSize(http2Cfg))
+                        .maxConnections(http2CfgAccessor.getEffectiveMaxConnectionPoolSize(http2Cfg))
+                        .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))
+                        .build()
+                );
         }
 
         return ReactorNettyClient.createWithConnectionProvider(fixedConnectionProviderBuilder.build(),

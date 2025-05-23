@@ -147,7 +147,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     }
 
     private HttpHeaders getHttpHeaders() {
-        HttpHeaders httpHeaders = new HttpHeaders();
+        HttpHeaders httpHeaders = new HttpHeaders(32);
 
         for (Map.Entry<String, String> header : this.getDefaultHeaders().entrySet()) {
             httpHeaders.set(header.getKey(), header.getValue());
