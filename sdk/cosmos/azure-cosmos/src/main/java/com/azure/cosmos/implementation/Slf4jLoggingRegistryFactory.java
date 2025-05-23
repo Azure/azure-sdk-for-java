@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+    import com.codahale.metrics.Metric;
+    import com.codahale.metrics.MetricFilter;
     import com.codahale.metrics.Slf4jReporter;
     import com.codahale.metrics.MetricRegistry;
     import io.micrometer.core.instrument.Clock;
@@ -24,6 +26,12 @@ public class Slf4jLoggingRegistryFactory {
             .convertRatesTo(TimeUnit.SECONDS)
             .convertDurationsTo(TimeUnit.MILLISECONDS)
             .withLoggingLevel(Slf4jReporter.LoggingLevel.valueOf(loggingLevel))
+            .filter(new MetricFilter() {
+                @Override
+                public boolean matches(String name, Metric metric) {
+                    return name.endsWith(":10457");
+                }
+            })
             .build();
 
         slf4jReporter.start(step, TimeUnit.SECONDS);
