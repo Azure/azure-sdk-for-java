@@ -9,9 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
-/**
- * Async test for DeviceNetworkAsyncClient to retrieve network information.
- */
 public final class NetworkRetrievalAsyncTest extends ProgrammableConnectivityClientTestBase {
 
     @Override
@@ -21,7 +18,6 @@ public final class NetworkRetrievalAsyncTest extends ProgrammableConnectivityCli
     }
 
     /**
-     * Test retrieving network information based on an IPv4 address asynchronously.
      * This test verifies that the API correctly returns network details for the IP address.
      */
     @Test

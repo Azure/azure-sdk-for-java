@@ -21,7 +21,6 @@ public final class NetworkRetrievalBadIdentifierAsyncTest extends ProgrammableCo
     }
 
     /**
-     * Test retrieving network information with an invalid network identifier type (IPv5) asynchronously.
      * This test verifies that the API correctly returns a 400 Bad Request error.
      */
     @Test
@@ -55,9 +54,8 @@ public final class NetworkRetrievalBadIdentifierAsyncTest extends ProgrammableCo
             String errorMessage = ex.getMessage();
             System.out.println("Error message: " + errorMessage);
 
-            Assertions.assertTrue(errorMessage.contains("IPv5")
-                || errorMessage.contains("identifier")
-                || errorMessage.contains("validation"), "Error message should mention the invalid identifier type");
+            Assertions.assertTrue(errorMessage.contains("IPv5") && errorMessage.contains("Identifier"),
+                "Error message should mention the invalid identifier type");
         }).verify();
 
         if (getTestMode() == TestMode.RECORD) {

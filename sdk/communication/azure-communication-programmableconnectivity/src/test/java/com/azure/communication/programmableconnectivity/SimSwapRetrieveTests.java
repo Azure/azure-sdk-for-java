@@ -29,7 +29,6 @@ public final class SimSwapRetrieveTests extends ProgrammableConnectivityClientTe
     }
 
     /**
-     * Test retrieving SIM swap information with standard parameters.
      * This test verifies that the API returns a valid date for a SIM swap.
      */
     @Test
@@ -64,7 +63,6 @@ public final class SimSwapRetrieveTests extends ProgrammableConnectivityClientTe
         }
 
         if (getTestMode() == TestMode.RECORD) {
-            // Try both possible locations for the recording file
             String[] possiblePaths = {
                 "src/test/resources/session-records/" + this.getClass().getSimpleName() + "."
                     + Thread.currentThread().getStackTrace()[1].getMethodName() + ".json",
@@ -72,7 +70,6 @@ public final class SimSwapRetrieveTests extends ProgrammableConnectivityClientTe
                     + this.getClass().getSimpleName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName()
                     + ".json" };
 
-            // Try each path
             boolean sanitized = false;
             for (String path : possiblePaths) {
                 if (TestRecordingSanitizer.sanitizeRecording(path)) {

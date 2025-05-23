@@ -11,9 +11,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
-/**
- * Async test for DeviceLocationAsyncClient to verify a device's location.
- */
 public final class LocationVerifyAsyncTest extends ProgrammableConnectivityClientTestBase {
 
     @Override
@@ -22,7 +19,6 @@ public final class LocationVerifyAsyncTest extends ProgrammableConnectivityClien
     }
 
     /**
-     * Test verifying a device's location asynchronously.
      * This test verifies that the API correctly processes the location verification request.
      */
     @Test

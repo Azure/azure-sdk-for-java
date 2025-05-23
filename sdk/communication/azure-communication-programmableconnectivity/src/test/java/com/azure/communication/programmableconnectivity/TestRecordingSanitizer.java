@@ -14,24 +14,16 @@ import java.nio.file.Paths;
  * Utility class to directly sanitize sensitive information in test recordings.
  */
 public class TestRecordingSanitizer {
-    /**
-     * Sanitizes a test recording file by directly replacing sensitive patterns.
-     * 
-     * @param recordingFilePath Path to the recording file.
-     * @return true if the file was found and sanitized, false otherwise.
-     */
+
     public static boolean sanitizeRecording(String recordingFilePath) {
-        // Try the provided path first
         Path path = Paths.get(recordingFilePath);
 
         // If not found, try relative paths based on project structure
         if (!Files.exists(path)) {
             System.out.println("Recording file not found at: " + recordingFilePath);
 
-            // Get the current working directory (usually the module directory)
             Path currentDir = Paths.get(System.getProperty("user.dir"));
 
-            // Try path in the .assets directory (three levels up from the module directory)
             Path assetsPath = currentDir.resolve(
                 "../../../.assets/tcGqIyvsbC/java/sdk/communication/azure-communication-programmableconnectivity/src/test/resources/session-records")
                 .normalize();
@@ -55,17 +47,14 @@ public class TestRecordingSanitizer {
             if (startIndex != -1) {
                 System.out.println("Found apc-gateway-id in content");
 
-                // Find the start of the value (after the colon and quotes)
                 int valueStart = content.indexOf(':', startIndex) + 1;
                 while (valueStart < content.length()
                     && (content.charAt(valueStart) == ' ' || content.charAt(valueStart) == '"')) {
                     valueStart++;
                 }
 
-                // Find the end of the value (before the closing quotes)
                 int valueEnd = content.indexOf('"', valueStart);
                 if (valueEnd != -1) {
-                    // Extract and print the current gateway ID
                     String gatewayId = content.substring(valueStart, valueEnd);
                     System.out.println("Current gateway ID: " + gatewayId);
 

@@ -8,6 +8,7 @@ This package contains Microsoft Azure ProgrammableConnectivity client library.
 
 Various documentation is available to help you get started
 
+- [Source code](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-programmableconnectivity/src) 
 - Package (NuGet): `https://www.nuget.org/packages/Azure.Communication.ProgrammableConnectivity` 
 - [API reference documentation](https://azure.github.io/azure-sdk-for-java) 
 - [APC Product documentation](https://learn.microsoft.com/en-us/azure/programmable-connectivity/)

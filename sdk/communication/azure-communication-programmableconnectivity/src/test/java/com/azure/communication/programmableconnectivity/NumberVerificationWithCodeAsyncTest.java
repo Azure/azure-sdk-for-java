@@ -25,7 +25,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Async tests for the full number verification flow.
  * This represents a complete verification workflow:
  * 1. Initial request without code (redirects to operator auth) - Using SDK async API
  * 2. User authentication at operator endpoint (simulated)
@@ -39,13 +38,6 @@ public final class NumberVerificationWithCodeAsyncTest extends ProgrammableConne
         super.beforeTest();
     }
 
-    /**
-     * Tests the complete number verification flow asynchronously, including:
-     * 1. Initial request (verifyWithoutCode) - Using SDK async API
-     * 2. Processing the redirect to operator auth
-     * 3. Handling the auth callback with operator code - Using direct HTTP call
-     * 4. Final verification with APC code (verifyWithCode) - Using SDK async API
-     */
     @Test
     public void testFullNumberVerificationFlowAsync() throws IOException {
         System.out.println("Starting Full Number Verification Flow Async test...");
@@ -109,7 +101,6 @@ public final class NumberVerificationWithCodeAsyncTest extends ProgrammableConne
         String baseEndpoint = extractBaseEndpoint(numberVerificationClient);
         String authCallbackUrl = baseEndpoint + "/authcallback";
 
-        // Make direct HTTP request to the authcallback endpoint
         String apcCode = null;
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -165,15 +156,9 @@ public final class NumberVerificationWithCodeAsyncTest extends ProgrammableConne
 
     /**
      * Makes a direct HTTP call to the auth callback endpoint.
-     * 
-     * @param authCallbackUrl The URL of the auth callback endpoint
-     * @param operatorCode The operator code to include in the request
-     * @param state The state parameter from the initial redirect
-     * @return The response from the auth callback endpoint
      * @throws IOException If an I/O error occurs
      */
     private String callAuthCallback(String authCallbackUrl, String operatorCode, String state) throws IOException {
-        // Construct the full URL with query parameters
         String encodedCode = URLEncoder.encode(operatorCode, StandardCharsets.UTF_8.toString());
         String encodedState = URLEncoder.encode(state, StandardCharsets.UTF_8.toString());
         String fullUrl = authCallbackUrl + "?code=" + encodedCode + "&state=" + encodedState;
@@ -197,10 +182,6 @@ public final class NumberVerificationWithCodeAsyncTest extends ProgrammableConne
 
     /**
      * Extracts a parameter value from a URL.
-     * 
-     * @param url The URL containing the parameter
-     * @param parameterName The name of the parameter to extract
-     * @return The value of the parameter, or null if not found
      */
     private String extractParameterFromUrl(String url, String parameterName) {
         Pattern pattern = Pattern.compile(parameterName + "=([^&]+)");
@@ -213,13 +194,10 @@ public final class NumberVerificationWithCodeAsyncTest extends ProgrammableConne
 
     /**
      * Extracts the base endpoint from a client for constructing the auth callback URL.
-     * 
-     * @param client The client to extract the endpoint from
-     * @return The base endpoint URL
      */
     private String extractBaseEndpoint(Object client) {
         // In a real implementation, you would extract this from the client's configuration
-        // For this test, we'll use a hardcoded value that matches your environment
+        // For this test, we'll use a hardcoded value
         return "https://uksouth.test.apcgatewayapi.azure.com";
     }
 }

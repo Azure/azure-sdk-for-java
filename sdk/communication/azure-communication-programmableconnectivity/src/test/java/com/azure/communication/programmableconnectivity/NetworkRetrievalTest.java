@@ -21,7 +21,6 @@ public final class NetworkRetrievalTest extends ProgrammableConnectivityClientTe
     }
 
     /**
-     * Test retrieving network information based on an IPv4 address.
      * This test verifies that the API correctly returns network details for the IP address.
      */
     @Test

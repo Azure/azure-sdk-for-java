@@ -21,10 +21,6 @@ public final class SimSwapVerifyAsyncTests extends ProgrammableConnectivityClien
         super.beforeTest();
     }
 
-    /**
-     * Test verifying SIM swap asynchronously with standard parameters.
-     * This test verifies that the API correctly processes the verification request.
-     */
     @Test
     public void testSimSwapVerifyAsync() {
         System.out.println("Starting SimSwap async verification test...");
@@ -54,9 +50,6 @@ public final class SimSwapVerifyAsyncTests extends ProgrammableConnectivityClien
         System.out.println("Async test completed successfully.");
     }
 
-    /**
-     * Test verifying that the response contains the expected x-ms-response-id header (async version).
-     */
     @Test
     public void testSimSwapVerifyHeaderRetrievalAsync() {
         System.out.println("Starting SIM swap async header retrieval test...");

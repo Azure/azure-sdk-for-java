@@ -24,8 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Tests the full number verification flow.
- * This represents a complete verification workflow:
+ * This represents a complete number verification workflow:
  * 1. Initial request without code (redirects to operator auth) - Using SDK
  * 2. User authentication at operator endpoint (simulated)
  * 3. Auth callback with operator code (redirects to developer backend) - Using direct HTTP call
@@ -39,13 +38,6 @@ public final class NumberVerificationWithCodeTest extends ProgrammableConnectivi
 
     }
 
-    /**
-     * Tests the complete number verification flow, including:
-     * 1. Initial request (verifyWithoutCode) - Using SDK
-     * 2. Processing the redirect to operator auth
-     * 3. Handling the auth callback with operator code - Using direct HTTP call
-     * 4. Final verification with APC code (verifyWithCode) - Using SDK
-     */
     @Test
     public void testFullNumberVerificationFlow() throws IOException {
         System.out.println("Starting Full Number Verification Flow test...");
@@ -104,26 +96,22 @@ public final class NumberVerificationWithCodeTest extends ProgrammableConnectivi
         String baseEndpoint = extractBaseEndpoint(numberVerificationClient);
         String authCallbackUrl = baseEndpoint + "/authcallback";
 
-        // Make direct HTTP request to the authcallback endpoint
         String apcCode = null;
 
         if (getTestMode() == TestMode.PLAYBACK) {
             apcCode = "apc_1166237efb124d8483aa542f06537f4a";
             System.out.println("In playback mode, using predefined APC code: " + apcCode);
         } else {
-            // In RECORD or LIVE mode, make an actual HTTP request to the authcallback endpoint
             try {
                 String callbackResponse = callAuthCallback(authCallbackUrl, operatorCode, state);
                 System.out.println("Auth callback response: " + callbackResponse);
 
-                // Extract the APC code from the callback response 
                 if (callbackResponse != null) {
                     // The callback should redirect to the developer backend with the APC code in the query string
                     // Example: https://contoso.invalid/?apcCode=abc123&correlationId=xyz
                     apcCode = extractParameterFromUrl(callbackResponse, "apcCode");
                     System.out.println("Extracted APC code from callback response: " + apcCode);
 
-                    // If we couldn't extract a valid code, fail the test
                     if (apcCode == null || apcCode.isEmpty()) {
                         throw new IllegalStateException(
                             "Failed to extract valid APC code from callback response: " + callbackResponse);
@@ -139,14 +127,12 @@ public final class NumberVerificationWithCodeTest extends ProgrammableConnectivi
 
         System.out.println("Using APC code: " + apcCode);
 
-        // STEP 4: Final verification with the APC code - Using SDK
+        // STEP 4: Final verification with the APC code
         System.out.println("\nSTEP 4: Making final verification request with APC code (verifyWithCode)");
 
-        // Create verification content with the APC code
         NumberVerificationWithCodeContent finalContent = new NumberVerificationWithCodeContent(apcCode);
 
         try {
-            // Execute the final API call with the APC code
             NumberVerificationResult result = numberVerificationClient.verifyWithCode(gatewayId, finalContent);
 
             System.out.println("Final verification result: " + result.isVerificationResult());
@@ -172,15 +158,9 @@ public final class NumberVerificationWithCodeTest extends ProgrammableConnectivi
 
     /**
      * Makes a direct HTTP call to the auth callback endpoint.
-     * 
-     * @param authCallbackUrl The URL of the auth callback endpoint
-     * @param operatorCode The operator code to include in the request
-     * @param state The state parameter from the initial redirect
-     * @return The response from the auth callback endpoint
      * @throws IOException If an I/O error occurs
      */
     private String callAuthCallback(String authCallbackUrl, String operatorCode, String state) throws IOException {
-        // Construct the full URL with query parameters
         String encodedCode = URLEncoder.encode(operatorCode, StandardCharsets.UTF_8.toString());
         String encodedState = URLEncoder.encode(state, StandardCharsets.UTF_8.toString());
         String fullUrl = authCallbackUrl + "?code=" + encodedCode + "&state=" + encodedState;
@@ -188,31 +168,22 @@ public final class NumberVerificationWithCodeTest extends ProgrammableConnectivi
         URL url = new URL(fullUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-        // Configure connection to not follow redirects
         connection.setInstanceFollowRedirects(false);
         connection.setRequestMethod("GET");
 
-        // Get the response code
         int responseCode = connection.getResponseCode();
         System.out.println("Auth callback response code: " + responseCode);
 
-        // Get the redirect location if available
         String location = connection.getHeaderField("Location");
         System.out.println("Auth callback redirect location: " + location);
 
-        // Close the connection
         connection.disconnect();
 
-        // Return the location header which should contain the redirect to the developer backend with the APC code
         return location;
     }
 
     /**
      * Extracts a parameter value from a URL.
-     * 
-     * @param url The URL containing the parameter
-     * @param parameterName The name of the parameter to extract
-     * @return The value of the parameter, or null if not found
      */
     private String extractParameterFromUrl(String url, String parameterName) {
         Pattern pattern = Pattern.compile(parameterName + "=([^&]+)");
@@ -225,13 +196,10 @@ public final class NumberVerificationWithCodeTest extends ProgrammableConnectivi
 
     /**
      * Extracts the base endpoint from a client for constructing the auth callback URL.
-     * 
-     * @param client The client to extract the endpoint from
-     * @return The base endpoint URL
      */
     private String extractBaseEndpoint(Object client) {
         // In a real implementation, you would extract this from the client's configuration
-        // For this test, we'll use a hardcoded value that matches your environment
+        // For this test, we'll use a hardcoded value 
         return "https://uksouth.test.apcgatewayapi.azure.com";
     }
 }

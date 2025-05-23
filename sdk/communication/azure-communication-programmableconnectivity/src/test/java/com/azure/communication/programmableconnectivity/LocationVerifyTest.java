@@ -10,9 +10,6 @@ import com.azure.communication.programmableconnectivity.models.NetworkIdentifier
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-/**
- * Test for DeviceLocationClient to verify a device's location.
- */
 public final class LocationVerifyTest extends ProgrammableConnectivityClientTestBase {
 
     @Override
@@ -21,7 +18,6 @@ public final class LocationVerifyTest extends ProgrammableConnectivityClientTest
     }
 
     /**
-     * Test verifying a device's location.
      * This test verifies that the API correctly processes the location verification request.
      */
     @Test
@@ -48,7 +44,6 @@ public final class LocationVerifyTest extends ProgrammableConnectivityClientTest
         System.out.println("- Latitude: 80.0, Longitude: 85.0, Accuracy: 50 meters");
         System.out.println("- Phone Number: " + device.getPhoneNumber());
 
-        // Execute the API call
         DeviceLocationVerificationResult result = deviceLocationClient.verify(gatewayId, content);
 
         System.out.println("Verification result: " + result.isVerificationResult());

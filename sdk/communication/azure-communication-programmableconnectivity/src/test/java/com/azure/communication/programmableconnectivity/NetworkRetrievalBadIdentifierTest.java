@@ -16,13 +16,11 @@ public final class NetworkRetrievalBadIdentifierTest extends ProgrammableConnect
 
     @Override
     protected void beforeTest() {
-        // Call the parent method to set up the client
         super.beforeTest();
 
     }
 
     /**
-     * Test retrieving network information with an invalid network identifier type (IPv5).
      * This test verifies that the API correctly returns a 400 Bad Request error.
      */
     @Test
@@ -58,9 +56,8 @@ public final class NetworkRetrievalBadIdentifierTest extends ProgrammableConnect
             String errorMessage = ex.getMessage();
             System.out.println("Error message: " + errorMessage);
 
-            Assertions.assertTrue(errorMessage.contains("IPv5")
-                || errorMessage.contains("identifier")
-                || errorMessage.contains("validation"), "Error message should mention the invalid identifier type");
+            Assertions.assertTrue(errorMessage.contains("IPv5") && errorMessage.contains("Identifier"),
+                "Error message should mention the invalid identifier type");
         }
 
         System.out.println("Test completed successfully.");

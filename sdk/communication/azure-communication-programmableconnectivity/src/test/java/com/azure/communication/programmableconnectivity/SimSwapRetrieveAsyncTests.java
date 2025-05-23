@@ -15,9 +15,6 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
-/**
- * Async test for SimSwapClient to retrieve SIM swap information.
- */
 public final class SimSwapRetrieveAsyncTests extends ProgrammableConnectivityClientTestBase {
 
     @Override
@@ -31,7 +28,6 @@ public final class SimSwapRetrieveAsyncTests extends ProgrammableConnectivityCli
     }
 
     /**
-     * Test retrieving SIM swap information asynchronously with standard parameters.
      * This test verifies that the API returns a valid date for a SIM swap.
      */
     @Test
