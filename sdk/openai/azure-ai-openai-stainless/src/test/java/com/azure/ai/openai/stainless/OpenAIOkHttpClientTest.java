@@ -14,7 +14,6 @@ import com.openai.core.http.StreamResponse;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.errors.BadRequestException;
 import com.openai.models.ResponseFormatJsonObject;
-import com.openai.models.audio.AudioModel;
 import com.openai.models.audio.transcriptions.Transcription;
 import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
 import com.openai.models.chat.completions.ChatCompletion;
@@ -24,13 +23,12 @@ import com.openai.models.chat.completions.ChatCompletionMessage;
 import com.openai.models.chat.completions.ChatCompletionMessageParam;
 import com.openai.models.chat.completions.ChatCompletionMessageToolCall;
 import com.openai.models.completions.CompletionUsage;
+import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -471,7 +469,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
             .model(testModel)
             .build();
 
-        var response = client.responses().create(createParams);
+        Response response = client.responses().create(createParams);
 
         assertNotNull(response, "Response should not be null");
         assertFalse(response.output().isEmpty(), "Response output should not be empty");
@@ -487,8 +485,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     public void testAudioTranscription(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
         TranscriptionCreateParams params = createTranscriptionCreateParams(testModel);
-        Transcription transcription =
-            client.audio().transcriptions().create(params).asTranscription();
+        Transcription transcription = client.audio().transcriptions().create(params).asTranscription();
         assertAudioTranscription(transcription);
     }
 }
