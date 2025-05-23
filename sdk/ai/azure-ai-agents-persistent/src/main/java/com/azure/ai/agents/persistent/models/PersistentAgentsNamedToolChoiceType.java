@@ -38,12 +38,6 @@ public final class PersistentAgentsNamedToolChoiceType
     public static final PersistentAgentsNamedToolChoiceType AZURE_AISEARCH = fromString("azure_ai_search");
 
     /**
-     * Tool type `bing_custom_search`.
-     */
-    @Generated
-    public static final PersistentAgentsNamedToolChoiceType BING_CUSTOM_SEARCH = fromString("bing_custom_search");
-
-    /**
      * Tool type `connected_agent`.
      */
     @Generated
@@ -79,4 +73,10 @@ public final class PersistentAgentsNamedToolChoiceType
     public static Collection<PersistentAgentsNamedToolChoiceType> values() {
         return values(PersistentAgentsNamedToolChoiceType.class);
     }
+
+    /**
+     * Tool type `bing_grounding`.
+     */
+    @Generated
+    public static final PersistentAgentsNamedToolChoiceType BING_GROUNDING = fromString("bing_grounding");
 }

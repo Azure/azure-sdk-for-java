@@ -154,7 +154,8 @@ public final class VectorStoreFileBatchesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listVectorStoreFileBatchFiles(@HostParam("endpoint") String endpoint,
             @PathParam("vectorStoreId") String vectorStoreId, @PathParam("batchId") String batchId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/vector_stores/{vectorStoreId}/file_batches/{batchId}/files")
         @ExpectedResponses({ 200 })
@@ -164,7 +165,8 @@ public final class VectorStoreFileBatchesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listVectorStoreFileBatchFilesSync(@HostParam("endpoint") String endpoint,
             @PathParam("vectorStoreId") String vectorStoreId, @PathParam("batchId") String batchId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -517,7 +519,7 @@ public final class VectorStoreFileBatchesImpl {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listVectorStoreFileBatchFiles(this.client.getEndpoint(), vectorStoreId,
-                batchId, accept, requestOptions, context))
+                batchId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -638,7 +640,7 @@ public final class VectorStoreFileBatchesImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res = service.listVectorStoreFileBatchFilesSync(this.client.getEndpoint(), vectorStoreId,
-            batchId, accept, requestOptions, Context.NONE);
+            batchId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }

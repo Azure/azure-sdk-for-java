@@ -86,12 +86,6 @@ public final class AvsClusterUpdatedEventData extends AvsClusterEventData {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operationId", getOperationId());
-        jsonWriter.writeArrayField("addedHostNames", getAddedHostNames(),
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("removedHostNames", getRemovedHostNames(),
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("inMaintenanceHostNames", getInMaintenanceHostNames(),
-            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 

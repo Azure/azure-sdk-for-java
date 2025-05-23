@@ -3,7 +3,7 @@
 package com.azure.ai.agents.persistent;
 
 import com.azure.ai.agents.persistent.models.BingGroundingSearchConfiguration;
-import com.azure.ai.agents.persistent.models.BingGroundingSearchConfigurationList;
+import com.azure.ai.agents.persistent.models.BingGroundingSearchToolParameters;
 import com.azure.ai.agents.persistent.models.BingGroundingToolDefinition;
 import com.azure.ai.agents.persistent.models.CreateAgentOptions;
 import com.azure.ai.agents.persistent.models.CreateRunOptions;
@@ -32,10 +32,10 @@ public class AgentBingGroundingAsyncSample {
         String bingConnectionId = Configuration.getGlobalConfiguration().get("BING_CONNECTION_ID", "");
 
         BingGroundingSearchConfiguration searchConfiguration = new BingGroundingSearchConfiguration(bingConnectionId);
-        BingGroundingSearchConfigurationList searchConfigurationList = new BingGroundingSearchConfigurationList(
-            Arrays.asList(searchConfiguration));
+        BingGroundingSearchToolParameters searchToolParameters
+            = new BingGroundingSearchToolParameters(Arrays.asList(searchConfiguration));
 
-        BingGroundingToolDefinition bingGroundingTool = new BingGroundingToolDefinition(searchConfigurationList);
+        BingGroundingToolDefinition bingGroundingTool = new BingGroundingToolDefinition(searchToolParameters);
 
         String agentName = "bing_grounding_example_async";
         CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-35-turbo")

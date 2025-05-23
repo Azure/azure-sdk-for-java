@@ -336,17 +336,33 @@ public final class RunsImpl {
      *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
      *         }
      *         file_search (Optional): {
      *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
      *         }
      *         azure_ai_search (Optional): {
      *             indexes (Optional): [
      *                  (Optional){
-     *                     index_connection_id: String (Required)
-     *                     index_name: String (Required)
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
      *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
      *                     top_k: Integer (Optional)
      *                     filter: String (Optional)
@@ -502,17 +518,33 @@ public final class RunsImpl {
      *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
      *         }
      *         file_search (Optional): {
      *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
      *         }
      *         azure_ai_search (Optional): {
      *             indexes (Optional): [
      *                  (Optional){
-     *                     index_connection_id: String (Required)
-     *                     index_name: String (Required)
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
      *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
      *                     top_k: Integer (Optional)
      *                     filter: String (Optional)
@@ -619,17 +651,33 @@ public final class RunsImpl {
      *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
      *         }
      *         file_search (Optional): {
      *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
      *         }
      *         azure_ai_search (Optional): {
      *             indexes (Optional): [
      *                  (Optional){
-     *                     index_connection_id: String (Required)
-     *                     index_name: String (Required)
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
      *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
      *                     top_k: Integer (Optional)
      *                     filter: String (Optional)
@@ -737,17 +785,33 @@ public final class RunsImpl {
      *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
      *         }
      *         file_search (Optional): {
      *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
      *         }
      *         azure_ai_search (Optional): {
      *             indexes (Optional): [
      *                  (Optional){
-     *                     index_connection_id: String (Required)
-     *                     index_name: String (Required)
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
      *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
      *                     top_k: Integer (Optional)
      *                     filter: String (Optional)
@@ -849,17 +913,33 @@ public final class RunsImpl {
      *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
      *         }
      *         file_search (Optional): {
      *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
      *         }
      *         azure_ai_search (Optional): {
      *             indexes (Optional): [
      *                  (Optional){
-     *                     index_connection_id: String (Required)
-     *                     index_name: String (Required)
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
      *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
      *                     top_k: Integer (Optional)
      *                     filter: String (Optional)
@@ -965,17 +1045,33 @@ public final class RunsImpl {
      *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
      *         }
      *         file_search (Optional): {
      *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
      *         }
      *         azure_ai_search (Optional): {
      *             indexes (Optional): [
      *                  (Optional){
-     *                     index_connection_id: String (Required)
-     *                     index_name: String (Required)
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
      *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
      *                     top_k: Integer (Optional)
      *                     filter: String (Optional)
@@ -1060,17 +1156,33 @@ public final class RunsImpl {
      *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
      *         }
      *         file_search (Optional): {
      *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
      *         }
      *         azure_ai_search (Optional): {
      *             indexes (Optional): [
      *                  (Optional){
-     *                     index_connection_id: String (Required)
-     *                     index_name: String (Required)
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
      *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
      *                     top_k: Integer (Optional)
      *                     filter: String (Optional)
@@ -1160,17 +1272,33 @@ public final class RunsImpl {
      *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
      *         }
      *         file_search (Optional): {
      *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
      *         }
      *         azure_ai_search (Optional): {
      *             indexes (Optional): [
      *                  (Optional){
-     *                     index_connection_id: String (Required)
-     *                     index_name: String (Required)
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
      *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
      *                     top_k: Integer (Optional)
      *                     filter: String (Optional)
@@ -1270,17 +1398,33 @@ public final class RunsImpl {
      *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
      *         }
      *         file_search (Optional): {
      *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
      *         }
      *         azure_ai_search (Optional): {
      *             indexes (Optional): [
      *                  (Optional){
-     *                     index_connection_id: String (Required)
-     *                     index_name: String (Required)
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
      *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
      *                     top_k: Integer (Optional)
      *                     filter: String (Optional)
@@ -1385,17 +1529,33 @@ public final class RunsImpl {
      *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
      *         }
      *         file_search (Optional): {
      *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
      *         }
      *         azure_ai_search (Optional): {
      *             indexes (Optional): [
      *                  (Optional){
-     *                     index_connection_id: String (Required)
-     *                     index_name: String (Required)
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
      *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
      *                     top_k: Integer (Optional)
      *                     filter: String (Optional)
@@ -1502,17 +1662,33 @@ public final class RunsImpl {
      *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
      *         }
      *         file_search (Optional): {
      *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
      *         }
      *         azure_ai_search (Optional): {
      *             indexes (Optional): [
      *                  (Optional){
-     *                     index_connection_id: String (Required)
-     *                     index_name: String (Required)
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
      *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
      *                     top_k: Integer (Optional)
      *                     filter: String (Optional)
@@ -1621,17 +1797,33 @@ public final class RunsImpl {
      *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
      *         }
      *         file_search (Optional): {
      *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
      *         }
      *         azure_ai_search (Optional): {
      *             indexes (Optional): [
      *                  (Optional){
-     *                     index_connection_id: String (Required)
-     *                     index_name: String (Required)
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
      *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
      *                     top_k: Integer (Optional)
      *                     filter: String (Optional)
@@ -1723,17 +1915,33 @@ public final class RunsImpl {
      *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
      *         }
      *         file_search (Optional): {
      *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
      *         }
      *         azure_ai_search (Optional): {
      *             indexes (Optional): [
      *                  (Optional){
-     *                     index_connection_id: String (Required)
-     *                     index_name: String (Required)
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
      *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
      *                     top_k: Integer (Optional)
      *                     filter: String (Optional)
@@ -1823,17 +2031,33 @@ public final class RunsImpl {
      *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             data_sources (Optional): [
+     *                  (Optional){
+     *                     uri: String (Required)
+     *                     type: String(uri_asset/id_asset) (Required)
+     *                 }
+     *             ]
      *         }
      *         file_search (Optional): {
      *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
+     *             vector_stores (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     configuration (Required): {
+     *                         data_sources (Required): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 }
+     *             ]
      *         }
      *         azure_ai_search (Optional): {
      *             indexes (Optional): [
      *                  (Optional){
-     *                     index_connection_id: String (Required)
-     *                     index_name: String (Required)
+     *                     index_connection_id: String (Optional)
+     *                     index_name: String (Optional)
      *                     query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
      *                     top_k: Integer (Optional)
      *                     filter: String (Optional)

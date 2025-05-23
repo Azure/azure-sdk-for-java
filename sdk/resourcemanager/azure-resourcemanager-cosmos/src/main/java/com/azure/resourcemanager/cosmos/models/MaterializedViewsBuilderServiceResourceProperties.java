@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,16 +28,6 @@ public final class MaterializedViewsBuilderServiceResourceProperties extends Ser
      * An array that contains all of the locations for the service.
      */
     private List<MaterializedViewsBuilderRegionalServiceResource> locations;
-
-    /*
-     * Describes the status of a service.
-     */
-    private ServiceStatus status;
-
-    /*
-     * Time of the last state change (ISO-8601 format).
-     */
-    private OffsetDateTime creationTime;
 
     /**
      * Creates an instance of MaterializedViewsBuilderServiceResourceProperties class.
@@ -63,26 +52,6 @@ public final class MaterializedViewsBuilderServiceResourceProperties extends Ser
      */
     public List<MaterializedViewsBuilderRegionalServiceResource> locations() {
         return this.locations;
-    }
-
-    /**
-     * Get the status property: Describes the status of a service.
-     * 
-     * @return the status value.
-     */
-    @Override
-    public ServiceStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Get the creationTime property: Time of the last state change (ISO-8601 format).
-     * 
-     * @return the creationTime value.
-     */
-    @Override
-    public OffsetDateTime creationTime() {
-        return this.creationTime;
     }
 
     /**
@@ -150,8 +119,8 @@ public final class MaterializedViewsBuilderServiceResourceProperties extends Ser
                 reader.nextToken();
 
                 if ("creationTime".equals(fieldName)) {
-                    deserializedMaterializedViewsBuilderServiceResourceProperties.creationTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedMaterializedViewsBuilderServiceResourceProperties.withCreationTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("instanceSize".equals(fieldName)) {
                     deserializedMaterializedViewsBuilderServiceResourceProperties
                         .withInstanceSize(ServiceSize.fromString(reader.getString()));
@@ -159,8 +128,8 @@ public final class MaterializedViewsBuilderServiceResourceProperties extends Ser
                     deserializedMaterializedViewsBuilderServiceResourceProperties
                         .withInstanceCount(reader.getNullable(JsonReader::getInt));
                 } else if ("status".equals(fieldName)) {
-                    deserializedMaterializedViewsBuilderServiceResourceProperties.status
-                        = ServiceStatus.fromString(reader.getString());
+                    deserializedMaterializedViewsBuilderServiceResourceProperties
+                        .withStatus(ServiceStatus.fromString(reader.getString()));
                 } else if ("serviceType".equals(fieldName)) {
                     deserializedMaterializedViewsBuilderServiceResourceProperties.serviceType
                         = ServiceType.fromString(reader.getString());

@@ -25,19 +25,19 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      * Router Job Waiting For Activation Priority
      */
     @Generated
-    private Integer priority;
+    private final int priority;
 
     /*
      * Router Job Waiting For Activation Worker Selector Expired
      */
     @Generated
-    private final List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors;
+    private List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors;
 
     /*
      * Router Job Waiting For Activation Requested Worker Selector Expired
      */
     @Generated
-    private final List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors;
+    private List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors;
 
     /*
      * Router Job Waiting For Activation Scheduled Time in UTC
@@ -69,30 +69,21 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     @Generated
     private String channelReference;
 
-    /*
-     * Router Event Job ID
-     */
-    @Generated
-    private String jobId;
-
     /**
      * Creates an instance of AcsRouterJobWaitingForActivationEventData class.
      * 
+     * @param jobId the jobId value to set.
      * @param labels the labels value to set.
      * @param tags the tags value to set.
-     * @param expiredAttachedWorkerSelectors the expiredAttachedWorkerSelectors value to set.
-     * @param expiredRequestedWorkerSelectors the expiredRequestedWorkerSelectors value to set.
+     * @param priority the priority value to set.
      * @param scheduledOn the scheduledOn value to set.
      * @param unavailableForMatching the unavailableForMatching value to set.
      */
     @Generated
-    private AcsRouterJobWaitingForActivationEventData(Map<String, String> labels, Map<String, String> tags,
-        List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors,
-        List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors, OffsetDateTime scheduledOn,
-        boolean unavailableForMatching) {
-        super(labels, tags);
-        this.expiredAttachedWorkerSelectors = expiredAttachedWorkerSelectors;
-        this.expiredRequestedWorkerSelectors = expiredRequestedWorkerSelectors;
+    private AcsRouterJobWaitingForActivationEventData(String jobId, Map<String, String> labels,
+        Map<String, String> tags, int priority, OffsetDateTime scheduledOn, boolean unavailableForMatching) {
+        super(jobId, labels, tags);
+        this.priority = priority;
         this.scheduledOn = scheduledOn;
         this.unavailableForMatching = unavailableForMatching;
     }
@@ -103,7 +94,7 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      * @return the priority value.
      */
     @Generated
-    public Integer getPriority() {
+    public int getPriority() {
         return this.priority;
     }
 
@@ -182,37 +173,22 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     }
 
     /**
-     * Get the jobId property: Router Event Job ID.
-     * 
-     * @return the jobId value.
-     */
-    @Generated
-    @Override
-    public String getJobId() {
-        return this.jobId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
-        jsonWriter.writeArrayField("expiredAttachedWorkerSelectors", this.expiredAttachedWorkerSelectors,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("expiredRequestedWorkerSelectors", this.expiredRequestedWorkerSelectors,
-            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeIntField("priority", this.priority);
         jsonWriter.writeStringField("scheduledOn",
             this.scheduledOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduledOn));
         jsonWriter.writeBooleanField("unavailableForMatching", this.unavailableForMatching);
-        jsonWriter.writeNumberField("priority", this.priority);
         return jsonWriter.writeEndObject();
     }
 
@@ -228,33 +204,35 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     @Generated
     public static AcsRouterJobWaitingForActivationEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String jobId = null;
             Map<String, String> labels = null;
             Map<String, String> tags = null;
-            String jobId = null;
             String channelReference = null;
             String channelId = null;
             String queueId = null;
+            int priority = 0;
             List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors = null;
             List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors = null;
             OffsetDateTime scheduledOn = null;
             boolean unavailableForMatching = false;
-            Integer priority = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("labels".equals(fieldName)) {
+                if ("jobId".equals(fieldName)) {
+                    jobId = reader.getString();
+                } else if ("labels".equals(fieldName)) {
                     labels = reader.readMap(reader1 -> reader1.getString());
                 } else if ("tags".equals(fieldName)) {
                     tags = reader.readMap(reader1 -> reader1.getString());
-                } else if ("jobId".equals(fieldName)) {
-                    jobId = reader.getString();
                 } else if ("channelReference".equals(fieldName)) {
                     channelReference = reader.getString();
                 } else if ("channelId".equals(fieldName)) {
                     channelId = reader.getString();
                 } else if ("queueId".equals(fieldName)) {
                     queueId = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    priority = reader.getInt();
                 } else if ("expiredAttachedWorkerSelectors".equals(fieldName)) {
                     expiredAttachedWorkerSelectors
                         = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
@@ -266,20 +244,20 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("unavailableForMatching".equals(fieldName)) {
                     unavailableForMatching = reader.getBoolean();
-                } else if ("priority".equals(fieldName)) {
-                    priority = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
             AcsRouterJobWaitingForActivationEventData deserializedAcsRouterJobWaitingForActivationEventData
-                = new AcsRouterJobWaitingForActivationEventData(labels, tags, expiredAttachedWorkerSelectors,
-                    expiredRequestedWorkerSelectors, scheduledOn, unavailableForMatching);
-            deserializedAcsRouterJobWaitingForActivationEventData.jobId = jobId;
+                = new AcsRouterJobWaitingForActivationEventData(jobId, labels, tags, priority, scheduledOn,
+                    unavailableForMatching);
             deserializedAcsRouterJobWaitingForActivationEventData.channelReference = channelReference;
             deserializedAcsRouterJobWaitingForActivationEventData.channelId = channelId;
             deserializedAcsRouterJobWaitingForActivationEventData.queueId = queueId;
-            deserializedAcsRouterJobWaitingForActivationEventData.priority = priority;
+            deserializedAcsRouterJobWaitingForActivationEventData.expiredAttachedWorkerSelectors
+                = expiredAttachedWorkerSelectors;
+            deserializedAcsRouterJobWaitingForActivationEventData.expiredRequestedWorkerSelectors
+                = expiredRequestedWorkerSelectors;
 
             return deserializedAcsRouterJobWaitingForActivationEventData;
         });

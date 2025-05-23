@@ -228,12 +228,12 @@ class CosmosDBAccountImpl
 
     @Override
     public boolean multipleWriteLocationsEnabled() {
-        return this.innerModel().enableMultipleWriteLocations();
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableMultipleWriteLocations());
     }
 
     @Override
     public boolean cassandraConnectorEnabled() {
-        return this.innerModel().enableCassandraConnector();
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableCassandraConnector());
     }
 
     @Override
@@ -243,7 +243,7 @@ class CosmosDBAccountImpl
 
     @Override
     public boolean keyBasedMetadataWriteAccessDisabled() {
-        return this.innerModel().disableKeyBasedMetadataWriteAccess();
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().disableKeyBasedMetadataWriteAccess());
     }
 
     @Override
@@ -315,6 +315,11 @@ class CosmosDBAccountImpl
             .getDatabaseAccounts()
             .regenerateKeyAsync(this.resourceGroupName(), this.name(),
                 new DatabaseAccountRegenerateKeyParameters().withKeyKind(keyKind));
+    }
+
+    @Override
+    public boolean localAuthDisabled() {
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().disableLocalAuth());
     }
 
     @Override
@@ -508,7 +513,7 @@ class CosmosDBAccountImpl
             this.virtualNetworkRulesMap = null;
         }
         createUpdateParametersInner.withPublicNetworkAccess(inner.publicNetworkAccess());
-
+        createUpdateParametersInner.withDisableLocalAuth(inner.disableLocalAuth());
         return createUpdateParametersInner;
     }
 
@@ -787,6 +792,12 @@ class CosmosDBAccountImpl
     @Override
     public CosmosDBAccountImpl disablePublicNetworkAccess() {
         this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        return this;
+    }
+
+    @Override
+    public CosmosDBAccountImpl disableLocalAuth() {
+        this.innerModel().withDisableLocalAuth(true);
         return this;
     }
 

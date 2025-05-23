@@ -282,6 +282,27 @@ public final class DatabaseAccount extends Resource {
         this.set(Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS, value);
     }
 
+    /**
+     * Returns true if the account supports per partition failover behavior,
+     * false if enablePerPartitionFailoverBehavior evaluates to null or false.
+     * <p>
+     * If enablePerPartitionFailoverBehavior property does not exist in account metadata JSON payload, null is returned.
+     *
+     * @return true if the account supports per partition failover behavior, false otherwise.
+     */
+    public Boolean isPerPartitionFailoverBehaviorEnabled() {
+
+        if (super.has(Constants.Properties.ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR)) {
+            return ObjectUtils.defaultIfNull(super.getBoolean(Constants.Properties.ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR), false);
+        }
+
+        return null;
+    }
+
+    public void setIsPerPartitionFailoverBehaviorEnabled(boolean value) {
+        this.set(Constants.Properties.ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR, value);
+    }
+
     public void populatePropertyBag() {
         super.populatePropertyBag();
         if (this.consistencyPolicy != null) {

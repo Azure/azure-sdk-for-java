@@ -36,14 +36,14 @@ import argparse
 from datetime import timedelta
 import os
 import re
-import sys
 import time
+import urllib.request
 from utils import BuildType
 from utils import CodeModule
-from utils import UpdateType
 from utils import version_regex_str_with_names_anchored
 from utils import prerelease_data_version_regex
 from utils import prerelease_version_regex_with_name
+import xml.etree.ElementTree as ET
 
 # some things that should not be updated for devops builds, in the case where everything is being updated in one call
 items_we_should_not_update = ['com.azure:azure-sdk-all', 'com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent', 'com.azure:azure-data-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure:azure-code-customization-parent', 'io.clientcore:clientcore-parent']
@@ -90,7 +90,7 @@ def set_dev_zero_version(build_type, build_qualifier):
                 newlines.append(module.string_for_version_file())
                 continue
 
-            if hasattr(module, 'current'):
+            if module.current != None:
 
                 if 'alpha' in module.current:
                     newlines.append(module.string_for_version_file())
@@ -143,7 +143,7 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                     continue
                 if library_to_update == module.name:
                     artifact_found = True
-                    if hasattr(module, 'current'):
+                    if module.current != None:
                         set_both = False
                         # In the case where the current and dependency are both equal then both
                         # need to be updated. In theory, this should only really happen when a
@@ -223,7 +223,7 @@ def prep_version_file_for_source_testing(build_type, project_list):
                 newlines.append(raw_line)
             else:
                 module = CodeModule(stripped_line)
-                if hasattr(module, 'current') and not module.current == module.dependency:
+                if module.current != None and not module.current == module.dependency:
                     # If the project list is passed in, only prep the versions for from source
                     # build for those modules. This is the case specifically for patch release.
                     if project_list_identifiers is not None:
@@ -275,9 +275,11 @@ def increment_or_set_library_version(build_type, artifact_id, group_id, new_vers
                 module = CodeModule(stripped_line)
                 # Tick up the version here. If the version is already a pre-release
                 # version then just increment the revision. Otherwise increment the
-                # minor version, zero the patch and add "-beta.1" to the end
+                # minor version, zero the patch and determine which "-beta.x" version
+                # to use based on what has been released to Maven central. If "beta.1"
+                # exists in Maven central then use "beta.2" and so on.
                 # https://github.com/Azure/azure-sdk/blob/main/docs/policies/releases.md#java
-                if module.name == library_to_update and hasattr(module, 'current'):
+                if module.name == library_to_update and module.current != None:
                     artifact_found = True
                     if new_version is None:
                         vmatch = version_regex_named.match(module.current)
@@ -302,9 +304,10 @@ def increment_or_set_library_version(build_type, artifact_id, group_id, new_vers
                                 rev += 1
                                 new_version = '{}.{}.{}-beta.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'), str(rev))
                         else:
+                            major = int(vmatch.group('major'))
                             minor = int(vmatch.group('minor'))
                             minor += 1
-                            new_version = '{}.{}.{}-beta.1'.format(vmatch.group('major'), minor, 0)
+                            new_version = '{}.{}.0-beta.{}'.format(major, minor, get_beta_version_to_use(group_id, artifact_id, major, minor))
                         # The dependency version only needs to be updated it if is different from the current version.
                         # This would be the case where a library hasn't been released yet and has been released (either GA or preview)
                         if (module.dependency != module.current):
@@ -334,6 +337,46 @@ def increment_or_set_library_version(build_type, artifact_id, group_id, new_vers
         for line in newlines:
             f.write(line)
 
+# Determines which beta version to use when incrementing the version of a library without a version specified.
+def get_beta_version_to_use(group_id: str, artifact_id: str, major_version: int, minor_version: int):
+    # Pull version information from Maven central to determine which beta version to use.
+    # If beta.1 exists then use beta.2, etc. If beta.1 doesn't exist then use beta.1
+    url = 'https://repo1.maven.org/maven2/{}/{}/maven-metadata.xml'.format(group_id.replace('.', '/'), artifact_id)
+    with urllib.request.urlopen(urllib.request.Request(url = url, method='GET')) as f:
+        if (f.status != 200):
+            raise ValueError('Unable to get maven-metadata.xml for groupId {} and artifactId {}. The status code was {}'.format(group_id, artifact_id, f.status))
+        
+        # maven-metadata.xml as the following format:
+        # <metadata>
+        #   <groupId>groupId</groupId>
+        #   <artifactId>artifactId</artifactId>
+        #   <versioning>
+        #     <latest>version-latest</latest>
+        #     <release>version-release</release>
+        #     <versions>
+        #       <version>a-version</version>
+        #       ... (more versions)
+        #     </versions>
+        #   </versioning>
+        # </metadata>
+        root = ET.fromstring(f.read().decode('utf-8'))
+        starts_with = '{}.{}.0-beta.'.format(major_version, minor_version)
+        highest_beta_version = 0
+        for version in root.findall('./versioning/versions//version'):
+            version_text = version.text
+            if version_text.startswith(starts_with):
+                # A beta version with the same major and minor version was already released.
+                # Track the beta version number, at the end of this function we'll return the
+                # highest beta version match found + 1.
+                # For example, if the version is 1.2.0-beta.3 exists, return 4.
+                beta_version_str = version_text[len(starts_with):]
+                if beta_version_str != '':
+                    beta_version_int = int(beta_version_str)
+                    if beta_version_int > highest_beta_version:
+                        highest_beta_version = beta_version_int
+                
+        return highest_beta_version + 1
+
 # Verify that the current version of an artifact matches our versioning scheme. This is meant to be called
 # as part of the release pipeline for a given artifact to verify that we don't accidentally release a version
 # that doesn't match our versioning scheme
@@ -355,7 +398,7 @@ def verify_current_version_of_artifact(build_type, artifact_id, group_id):
                 # of the following:
                 # <major>.<minor>.<patch/hotfix>
                 # <major>.<minor>.<patch/hotfix>-beta.<prerelease>
-                if module.name == library_to_update and hasattr(module, 'current'):
+                if module.name == library_to_update and module.current != None:
                     artifact_found = True
                     vmatch = version_regex_named.match(module.current)
                     temp_ver = '{}.{}.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'))
