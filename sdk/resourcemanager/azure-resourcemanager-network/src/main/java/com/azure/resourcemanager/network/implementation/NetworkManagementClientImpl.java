@@ -256,20 +256,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * server parameter.
-     */
-    private final String endpoint;
-
-    /**
-     * Gets server parameter.
-     * 
-     * @return the endpoint value.
-     */
-    public String getEndpoint() {
-        return this.endpoint;
-    }
-
-    /**
      * The HTTP pipeline to send requests through.
      */
     private final HttpPipeline httpPipeline;
@@ -2478,17 +2464,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * @param subscriptionId The subscription credentials which uniquely identify the Microsoft Azure subscription. The
      * subscription ID forms part of the URI for every service call.
      * @param endpoint server parameter.
-     * @param endpoint server parameter.
      */
     NetworkManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint,
-        String endpoint) {
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
-        this.endpoint = endpoint;
         this.endpoint = endpoint;
         this.applicationGateways = new ApplicationGatewaysClientImpl(this);
         this.applicationGatewayPrivateLinkResources = new ApplicationGatewayPrivateLinkResourcesClientImpl(this);

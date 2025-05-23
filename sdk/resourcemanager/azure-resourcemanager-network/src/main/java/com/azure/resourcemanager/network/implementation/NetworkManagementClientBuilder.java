@@ -54,22 +54,6 @@ public final class NetworkManagementClientBuilder {
     }
 
     /*
-     * server parameter
-     */
-    private String endpoint;
-
-    /**
-     * Sets server parameter.
-     * 
-     * @param endpoint the endpoint value.
-     * @return the NetworkManagementClientBuilder.
-     */
-    public NetworkManagementClientBuilder endpoint(String endpoint) {
-        this.endpoint = endpoint;
-        return this;
-    }
-
-    /*
      * The environment to connect to
      */
     private AzureEnvironment environment;
@@ -140,7 +124,6 @@ public final class NetworkManagementClientBuilder {
      */
     public NetworkManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
-        String localEndpoint = (endpoint != null) ? endpoint : "";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
             ? pipeline
@@ -151,7 +134,7 @@ public final class NetworkManagementClientBuilder {
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         NetworkManagementClientImpl client = new NetworkManagementClientImpl(localPipeline, localSerializerAdapter,
-            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint, localEndpoint);
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }
