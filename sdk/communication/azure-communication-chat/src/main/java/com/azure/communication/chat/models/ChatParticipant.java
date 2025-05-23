@@ -180,8 +180,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
                 } else if ("metadata".equals(fieldName)) {
                     Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
                     participant.metadata = metadata;
-                }
-                else {
+                } else {
                     reader.skipChildren();
                 }
             }

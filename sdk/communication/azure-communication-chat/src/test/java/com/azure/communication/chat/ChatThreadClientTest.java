@@ -102,8 +102,8 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         CreateChatThreadOptions threadRequest
             = ChatOptionsProvider.createThreadOptions(firstParticipant.getId(), secondParticipant.getId());
-        threadRequest.setRetentionPolicy(
-            new ThreadCreationDateRetentionPolicy().setDeleteThreadAfterDays(deleteAfterDays));
+        threadRequest
+            .setRetentionPolicy(new ThreadCreationDateRetentionPolicy().setDeleteThreadAfterDays(deleteAfterDays));
 
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
         chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
@@ -151,8 +151,8 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canUpdateThreadTopicWithThreadCreationDateRetentionPolicy(HttpClient httpClient) {
         // Arrange
-        setupTestWithCreationDateRetentionPolicy(
-            httpClient, "canUpdateThreadTopicWithThreadCreationDateRetentionPolicy", 50);
+        setupTestWithCreationDateRetentionPolicy(httpClient,
+            "canUpdateThreadTopicWithThreadCreationDateRetentionPolicy", 50);
         String newTopic = "Update Test";
 
         // Action & Assert
@@ -164,8 +164,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         ChatRetentionPolicy chatRetentionPolicy = chatThreadProperties.getRetentionPolicy();
         assertNotNull(chatRetentionPolicy);
         assertEquals("threadCreationDate", chatRetentionPolicy.getKind().getValue());
-        ThreadCreationDateRetentionPolicy datePolicy =
-            (ThreadCreationDateRetentionPolicy) chatRetentionPolicy;
+        ThreadCreationDateRetentionPolicy datePolicy = (ThreadCreationDateRetentionPolicy) chatRetentionPolicy;
         assertEquals(50, datePolicy.getDeleteThreadAfterDays());
     }
 

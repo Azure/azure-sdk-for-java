@@ -86,8 +86,8 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         metadata.put("key1", "val1");
         metadata.put("key2", "val2");
 
-        CreateChatThreadOptions threadRequest
-            = ChatOptionsProvider.createThreadOptionsWithMemberMetadata(firstThreadMember.getId(), secondThreadMember.getId(), metadata);
+        CreateChatThreadOptions threadRequest = ChatOptionsProvider
+            .createThreadOptionsWithMemberMetadata(firstThreadMember.getId(), secondThreadMember.getId(), metadata);
 
         // Act & Assert
         StepVerifier.create(client.createChatThread(threadRequest)).assertNext(result -> {
@@ -100,8 +100,8 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             assertEquals("none", result.getChatThread().getRetentionPolicy().getKind().getValue());
 
             // Verify the participants and their metadata
-            PagedIterable<ChatParticipant> participants =
-                new PagedIterable<>(client.getChatThreadClient(threadId).listParticipants());
+            PagedIterable<ChatParticipant> participants
+                = new PagedIterable<>(client.getChatThreadClient(threadId).listParticipants());
 
             // Expect exactly two participants, each with metadata
             List<ChatParticipant> list = new ArrayList<>();
@@ -202,8 +202,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             ChatRetentionPolicy chatRetentionPolicy = result.getChatThread().getRetentionPolicy();
             assertNotNull(chatRetentionPolicy);
             assertEquals("threadCreationDate", chatRetentionPolicy.getKind().getValue());
-            ThreadCreationDateRetentionPolicy datePolicy =
-                (ThreadCreationDateRetentionPolicy) chatRetentionPolicy;
+            ThreadCreationDateRetentionPolicy datePolicy = (ThreadCreationDateRetentionPolicy) chatRetentionPolicy;
             assertEquals(45, datePolicy.getDeleteThreadAfterDays());
         }).verifyComplete();
     }

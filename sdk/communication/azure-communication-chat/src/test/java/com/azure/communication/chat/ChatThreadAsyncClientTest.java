@@ -326,25 +326,19 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         metadata.put("key1", "val1");
         metadata.put("key2", "val2");
 
-        ChatParticipant newParticipant = new ChatParticipant()
-            .setCommunicationIdentifier(participant)
-            .setMetadata(metadata);
+        ChatParticipant newParticipant
+            = new ChatParticipant().setCommunicationIdentifier(participant).setMetadata(metadata);
 
         // Action
-        StepVerifier.create(chatThreadClient.addParticipant(newParticipant))
-            .verifyComplete();
+        StepVerifier.create(chatThreadClient.addParticipant(newParticipant)).verifyComplete();
 
-        PagedIterable<ChatParticipant> participantsResponse =
-            new PagedIterable<>(chatThreadClient.listParticipants());
+        PagedIterable<ChatParticipant> participantsResponse = new PagedIterable<>(chatThreadClient.listParticipants());
 
-        ChatParticipant added = participantsResponse.stream()
-            .filter(p -> {
-                CommunicationIdentifier id = p.getCommunicationIdentifier();
-                return id instanceof CommunicationUserIdentifier
-                    && ((CommunicationUserIdentifier) id).getId().equals(participant.getId());
-            })
-            .findFirst()
-            .orElseThrow(() -> new AssertionError("Participant not found"));
+        ChatParticipant added = participantsResponse.stream().filter(p -> {
+            CommunicationIdentifier id = p.getCommunicationIdentifier();
+            return id instanceof CommunicationUserIdentifier
+                && ((CommunicationUserIdentifier) id).getId().equals(participant.getId());
+        }).findFirst().orElseThrow(() -> new AssertionError("Participant not found"));
 
         // Verify metadata is present and correct
         Map<String, String> resMetadata = added.getMetadata();
@@ -353,7 +347,6 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         assertEquals("val1", resMetadata.get("key1"), "key1 should round-trip correctly");
         assertEquals("val2", resMetadata.get("key2"), "key2 should round-trip correctly");
     }
-
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")

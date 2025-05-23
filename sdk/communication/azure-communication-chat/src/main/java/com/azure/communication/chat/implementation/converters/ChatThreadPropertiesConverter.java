@@ -37,9 +37,7 @@ public final class ChatThreadPropertiesConverter {
         // Map retention policy.
         com.azure.communication.chat.implementation.models.ChatRetentionPolicy implPolicy = obj.getRetentionPolicy();
         if (implPolicy != null) {
-            chatThreadProperties.setRetentionPolicy(
-                ChatRetentionPolicyConverter.convertFromImpl(implPolicy)
-            );
+            chatThreadProperties.setRetentionPolicy(ChatRetentionPolicyConverter.convertFromImpl(implPolicy));
         }
 
         return chatThreadProperties;

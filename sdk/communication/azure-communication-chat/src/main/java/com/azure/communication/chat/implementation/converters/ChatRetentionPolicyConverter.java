@@ -22,9 +22,10 @@ public final class ChatRetentionPolicyConverter {
 
         ChatRetentionPolicy chatRetentionPolicy;
         if (obj instanceof com.azure.communication.chat.implementation.models.ThreadCreationDateRetentionPolicy) {
-            com.azure.communication.chat.implementation.models.ThreadCreationDateRetentionPolicy basedOnThreadCreationDateRetentionPolicy =
-                (com.azure.communication.chat.implementation.models.ThreadCreationDateRetentionPolicy) obj;
-            chatRetentionPolicy = new ThreadCreationDateRetentionPolicy().setDeleteThreadAfterDays(basedOnThreadCreationDateRetentionPolicy.getDeleteThreadAfterDays());
+            com.azure.communication.chat.implementation.models.ThreadCreationDateRetentionPolicy basedOnThreadCreationDateRetentionPolicy
+                = (com.azure.communication.chat.implementation.models.ThreadCreationDateRetentionPolicy) obj;
+            chatRetentionPolicy = new ThreadCreationDateRetentionPolicy()
+                .setDeleteThreadAfterDays(basedOnThreadCreationDateRetentionPolicy.getDeleteThreadAfterDays());
         } else {
             chatRetentionPolicy = new NoneRetentionPolicy();
         }
@@ -45,8 +46,10 @@ public final class ChatRetentionPolicyConverter {
 
         com.azure.communication.chat.implementation.models.ChatRetentionPolicy chatRetentionPolicy;
         if (obj instanceof ThreadCreationDateRetentionPolicy) {
-            ThreadCreationDateRetentionPolicy basedOnThreadCreationDateRetentionPolicy = (ThreadCreationDateRetentionPolicy) obj;
-            chatRetentionPolicy = new ThreadCreationDateRetentionPolicy().setDeleteThreadAfterDays(basedOnThreadCreationDateRetentionPolicy.getDeleteThreadAfterDays());
+            ThreadCreationDateRetentionPolicy basedOnThreadCreationDateRetentionPolicy
+                = (ThreadCreationDateRetentionPolicy) obj;
+            chatRetentionPolicy = new ThreadCreationDateRetentionPolicy()
+                .setDeleteThreadAfterDays(basedOnThreadCreationDateRetentionPolicy.getDeleteThreadAfterDays());
         } else {
             chatRetentionPolicy = new NoneRetentionPolicy();
         }
