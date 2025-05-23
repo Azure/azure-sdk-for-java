@@ -6,6 +6,7 @@ package com.azure.cosmos.kafka.connect;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
@@ -158,7 +159,7 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
 
     private void readRandomItemFromContainer(CosmosAsyncContainer container) {
         if (container != null) {
-            container.readItem(UUID.randomUUID().toString(), new PartitionKey(UUID.randomUUID().toString()), JsonNode.class)
+            container.readItem(UUIDs.nonBlockingRandomUUID().toString(), new PartitionKey(UUIDs.nonBlockingRandomUUID().toString()), JsonNode.class)
                 .onErrorResume(throwable -> {
                     if (!KafkaCosmosExceptionsHelper.isNotFoundException(throwable)) {
                         LOGGER.warn("Failed to read item from container {}", container.getId(), throwable);
