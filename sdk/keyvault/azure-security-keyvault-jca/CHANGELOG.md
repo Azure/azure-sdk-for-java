@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Included the `org.brotli:dec` library in the list of shaded dependencies to avoid issues when generating and publishing docs to MSLearn.
 
 ## 2.10.1 (2025-05-12)
 
