@@ -55,6 +55,7 @@ public final class HttpRequestContext {
     private final Map<String, Substitution> substitutions;
 
     private int[] expectedStatusCodes;
+    private TypeMirror returnValueWireType;
 
     /**
      * Constructs a new HttpRequestContext with default values.
@@ -381,6 +382,24 @@ public final class HttpRequestContext {
             String value = parts.length > 1 ? parts[1].trim() : null;
             addQueryParam(key, value, true, false, true);
         }
+    }
+
+    /**
+     * Sets the return value wire type.
+     *
+     * @param returnValueWireType the return value wire type to set.
+     */
+    public void setReturnValueWireType(TypeMirror returnValueWireType) {
+        this.returnValueWireType = returnValueWireType;
+    }
+
+    /**
+     * Gets the return value wire type.
+     *
+     * @return the return value wire type.
+     */
+    public TypeMirror getReturnValueWireType() {
+        return returnValueWireType;
     }
 
     /**
