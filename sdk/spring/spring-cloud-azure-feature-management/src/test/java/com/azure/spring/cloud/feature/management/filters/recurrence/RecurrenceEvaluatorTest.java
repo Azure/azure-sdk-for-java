@@ -3,18 +3,19 @@
 
 package com.azure.spring.cloud.feature.management.filters.recurrence;
 
-import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceEvaluator;
-import com.azure.spring.cloud.feature.management.implementation.models.Recurrence;
-import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePattern;
-import com.azure.spring.cloud.feature.management.implementation.models.RecurrenceRange;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import com.azure.spring.cloud.feature.management.implementation.models.Recurrence;
+import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePattern;
+import com.azure.spring.cloud.feature.management.implementation.models.RecurrenceRange;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceEvaluator;
 
 public class RecurrenceEvaluatorTest {
 

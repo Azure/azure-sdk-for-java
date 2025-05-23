@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-  <version>5.23.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
+  <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
   <name>Spring Cloud Azure App Configuration Config</name>
   <description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
   <properties>
@@ -31,11 +31,6 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-bootstrap</artifactId>
-      <version>4.2.1</version> <!-- {x-version-update;springboot3_org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-context</artifactId>
       <version>4.2.1</version> <!-- {x-version-update;springboot3_org.springframework.cloud:spring-cloud-context;external_dependency} -->
     </dependency>
@@ -45,6 +40,11 @@
       <version>3.4.4</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-actuator;external_dependency} -->
       <scope>compile</scope>
     </dependency>
+    <dependency>
+	    <groupId>jakarta.annotation</groupId>
+	    <artifactId>jakarta.annotation-api</artifactId>
+	    <version>3.0.0</version> <!-- {x-version-update;springboot3_jakarta.annotation:jakarta.annotation-api;external_dependency} -->
+	</dependency>
     <!--Azure Java SDK -->
     <dependency>
       <groupId>com.azure</groupId>
@@ -177,6 +177,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>jakarta.annotation:jakarta.annotation-api:[3.0.0]</include> <!-- {x-include-update;springboot3_jakarta.annotation:jakarta.annotation-api;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.18.3]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.18.3]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator:[3.4.4]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator;external_dependency} -->

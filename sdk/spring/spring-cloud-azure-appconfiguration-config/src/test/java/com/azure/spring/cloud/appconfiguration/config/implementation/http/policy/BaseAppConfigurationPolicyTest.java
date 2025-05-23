@@ -2,14 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.http.policy;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.CORRELATION_CONTEXT;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEV_ENV_TRACING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.USER_AGENT_TYPE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 
@@ -24,11 +23,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.Configuration;
+import com.azure.spring.cloud.appconfiguration.config.implementation.RequestTracingConstants;
 
 // This test class needs to be isolated and ran sequential as it uses BaseAppConfigurationPolicy.setWatchRequests
 // which mutates a global static and can result in race condition failures.
@@ -55,27 +56,28 @@ public class BaseAppConfigurationPolicyTest {
         MockitoAnnotations.openMocks(this).close();
     }
 
-    @SuppressWarnings("deprecation")
     @Test
-    public void startupThenWatchUpdateTest() throws MalformedURLException {
-        URL url = new URL("https://www.test.url/kv");
+    public void startupThenWatchUpdateTest() throws MalformedURLException, URISyntaxException {
+        URL url = new URI("https://www.test.url/kv").toURL();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
+        request.setHeader(HttpHeaderName.USER_AGENT, "PreExistingUserAgent");
         BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(
-            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+            new TracingInfo(false, 0, Configuration.getGlobalConfiguration()));
 
         when(contextMock.getHttpRequest()).thenReturn(request);
 
         policy.process(contextMock, nextMock);
 
-        String userAgent = contextMock.getHttpRequest().getHeaders().get(USER_AGENT_TYPE).getValue();
+        String userAgent = contextMock.getHttpRequest().getHeaders().get(HttpHeaderName.USER_AGENT).getValue();
         assertEquals("null/null " + PRE_USER_AGENT, userAgent);
 
         assertEquals("RequestType=Startup",
-            contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
+            contextMock.getHttpRequest().getHeaders()
+                .get(HttpHeaderName.fromString(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString()))
+                .getValue());
 
         request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
+        request.setHeader(HttpHeaderName.USER_AGENT, "PreExistingUserAgent");
 
         when(contextMock.getHttpRequest()).thenReturn(request);
         when(contextMock.getData("refresh")).thenReturn(Optional.of(true));
@@ -85,10 +87,12 @@ public class BaseAppConfigurationPolicyTest {
         assertEquals("null/null " + PRE_USER_AGENT, userAgent);
 
         assertEquals("RequestType=Watch",
-            contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
+            contextMock.getHttpRequest().getHeaders()
+                .get(HttpHeaderName.fromString(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString()))
+                .getValue());
 
         request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
+        request.setHeader(HttpHeaderName.USER_AGENT, "PreExistingUserAgent");
 
         when(contextMock.getHttpRequest()).thenReturn(request);
 
@@ -96,55 +100,26 @@ public class BaseAppConfigurationPolicyTest {
         assertEquals("null/null " + PRE_USER_AGENT, userAgent);
 
         assertEquals("RequestType=Watch",
-            contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
+            contextMock.getHttpRequest().getHeaders()
+                .get(HttpHeaderName.fromString(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString()))
+                .getValue());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
-    public void devIsConfigured() throws MalformedURLException {
+    public void keyVaultIsConfigured() throws MalformedURLException, URISyntaxException {
         BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(
-            new TracingInfo(true, false, 0, Configuration.getGlobalConfiguration()));
+            new TracingInfo(true, 0, Configuration.getGlobalConfiguration()));
 
-        URL url = new URL("https://www.test.url/kv");
+        URL url = new URI("https://www.test.url/kv").toURL();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
-        when(contextMock.getHttpRequest()).thenReturn(request);
-
-        policy.process(contextMock, nextMock);
-        assertEquals("RequestType=Startup,Env=" + DEV_ENV_TRACING,
-            contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
-    }
-
-    @SuppressWarnings("deprecation")
-    @Test
-    public void keyVaultIsConfigured() throws MalformedURLException {
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(
-            new TracingInfo(false, true, 0, Configuration.getGlobalConfiguration()));
-
-        URL url = new URL("https://www.test.url/kv");
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
+        request.setHeader(HttpHeaderName.USER_AGENT, "PreExistingUserAgent");
         when(contextMock.getHttpRequest()).thenReturn(request);
 
         policy.process(contextMock, nextMock);
         assertEquals("RequestType=Startup," + KEY_VAULT_CONFIGURED_TRACING,
-            contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
-    }
-
-    @SuppressWarnings("deprecation")
-    @Test
-    public void devAndKeyVaultAreConfigured() throws MalformedURLException {
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(
-            new TracingInfo(true, true, 0, Configuration.getGlobalConfiguration()));
-
-        URL url = new URL("https://www.test.url/kv");
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
-        when(contextMock.getHttpRequest()).thenReturn(request);
-
-        policy.process(contextMock, nextMock);
-        assertEquals("RequestType=Startup,Env=" + DEV_ENV_TRACING + "," + KEY_VAULT_CONFIGURED_TRACING,
-            contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
+            contextMock.getHttpRequest().getHeaders()
+                .get(HttpHeaderName.fromString(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString()))
+                .getValue());
     }
 
 }
