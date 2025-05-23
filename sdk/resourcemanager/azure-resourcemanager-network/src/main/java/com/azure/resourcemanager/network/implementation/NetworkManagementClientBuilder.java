@@ -28,7 +28,7 @@ public final class NetworkManagementClientBuilder {
     /**
      * Sets The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID
      * forms part of the URI for every service call.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the NetworkManagementClientBuilder.
      */
@@ -44,7 +44,23 @@ public final class NetworkManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
+     * @param endpoint the endpoint value.
+     * @return the NetworkManagementClientBuilder.
+     */
+    public NetworkManagementClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
+        return this;
+    }
+
+    /*
+     * server parameter
+     */
+    private String endpoint;
+
+    /**
+     * Sets server parameter.
+     * 
      * @param endpoint the endpoint value.
      * @return the NetworkManagementClientBuilder.
      */
@@ -60,7 +76,7 @@ public final class NetworkManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the NetworkManagementClientBuilder.
      */
@@ -76,7 +92,7 @@ public final class NetworkManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the NetworkManagementClientBuilder.
      */
@@ -92,7 +108,7 @@ public final class NetworkManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the NetworkManagementClientBuilder.
      */
@@ -108,7 +124,7 @@ public final class NetworkManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the NetworkManagementClientBuilder.
      */
@@ -119,11 +135,12 @@ public final class NetworkManagementClientBuilder {
 
     /**
      * Builds an instance of NetworkManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of NetworkManagementClientImpl.
      */
     public NetworkManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
+        String localEndpoint = (endpoint != null) ? endpoint : "";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
             ? pipeline
@@ -134,7 +151,7 @@ public final class NetworkManagementClientBuilder {
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         NetworkManagementClientImpl client = new NetworkManagementClientImpl(localPipeline, localSerializerAdapter,
-            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint, localEndpoint);
         return client;
     }
 }
