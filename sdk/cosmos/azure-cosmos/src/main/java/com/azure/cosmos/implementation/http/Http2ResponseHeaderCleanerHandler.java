@@ -9,6 +9,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http2.Http2Headers;
 import io.netty.handler.codec.http2.Http2HeadersFrame;
+import io.netty.handler.codec.http2.Http2SettingsAckFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +43,11 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
         }
 
         // Pass the message to the next handler in the pipeline
-        super.channelRead(ctx, msg);
+        if (msg instanceof Http2SettingsAckFrame) {
+            logger.info("Ignore " + ((Http2SettingsAckFrame) msg).name() + " frame");
+            // we ignore SETTINGS(ACK)
+        } else {
+            super.channelRead(ctx, msg);
+        }
     }
 }
