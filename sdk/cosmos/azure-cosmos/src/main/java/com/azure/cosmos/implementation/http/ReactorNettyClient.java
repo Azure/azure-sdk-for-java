@@ -85,7 +85,7 @@ public class ReactorNettyClient implements HttpClient {
             .observe(getConnectionObserver())
             .resolver(DefaultAddressResolverGroup.INSTANCE);
         reactorNettyClient.configureChannelPipelineHandlers();
-        attemptToWarmupHttpClient(reactorNettyClient);
+        //attemptToWarmupHttpClient(reactorNettyClient);
         return reactorNettyClient;
     }
 
