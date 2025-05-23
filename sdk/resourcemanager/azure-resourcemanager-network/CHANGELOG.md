@@ -2,6 +2,10 @@
 
 ## 2.51.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- The details that query used to fetch are now ingested directly in Customer's log Analytics workspace and hence query operation is no more valid on connection Monitor resource now.
+
 ### Other Changes
 
 #### Dependency Updates
