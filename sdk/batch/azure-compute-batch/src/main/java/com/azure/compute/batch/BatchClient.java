@@ -11853,7 +11853,10 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the deletion of the Job Schedule. The poller provides
+     * {@link BatchJobSchedule} instances during polling and returns {@code null} upon successful deletion.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId) {
         JobScheduleDeletePoller poller = new JobScheduleDeletePoller(this, jobScheduleId, new RequestOptions());
         return SyncPoller.createPoller(Duration.ofSeconds(5), poller.getActivationOperation(),
