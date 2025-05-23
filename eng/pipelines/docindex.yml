@@ -28,8 +28,8 @@ jobs:
   - job: UpdateDocsMsBuildConfig
     pool:
       name: $(LINUXPOOL)
-      image: $(LINUXNEXTVMIMAGE)
-      os: linux
+      demands: $(LinuxImageDemand)
+
     timeoutInMinutes: 180
     variables:
       DocRepoLocation: $(Pipeline.Workspace)/docs
