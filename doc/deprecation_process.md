@@ -5,7 +5,7 @@ This page can be linked using: [aka.ms/azsdk/java/deprecation-process](https://a
 This page describes how to mark a package deprecated on Maven. You likely need to read this if you are a package owner
 and need to explain to your customers they shouldn't use the package you used to release anymore.
 
-The over idea is that Maven does not support an official deprecation logic. We concluded that the best way was:
+The overall idea is that Maven does not support an official deprecation logic. We concluded that the best way was:
 
 - Add a disclaimer on the main README file and the POM description and guide to the migration guide to the new package
   as necessary.
