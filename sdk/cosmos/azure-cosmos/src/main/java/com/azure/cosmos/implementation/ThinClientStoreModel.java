@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdFramer;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequest;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -31,8 +32,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Used internally to provide functionality to communicate and process response from THINCLIENT in the Azure Cosmos DB database service.
  */
 public class ThinClientStoreModel extends RxGatewayStoreModel {
-
     private String globalDatabaseAccountName = null;
+    private final Map<String, String> defaultHeaders;
 
     public ThinClientStoreModel(
         DiagnosticsClientContext clientContext,
@@ -50,6 +51,15 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             globalEndpointManager,
             httpClient,
             ApiType.SQL);
+
+        String userAgent = userAgentContainer != null
+            ? userAgentContainer.getUserAgent()
+            : UserAgentContainer.BASE_USER_AGENT_STRING;
+
+        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(1);
+        this.defaultHeaders = builder
+            .put(HttpConstants.HttpHeaders.USER_AGENT, userAgent)
+            .build();
     }
 
     @Override
@@ -63,18 +73,13 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         UserAgentContainer userAgentContainer,
         ConsistencyLevel clientDefaultConsistencyLevel) {
 
-        checkNotNull(userAgentContainer, "Argument 'userAGentContainer' must not be null.");
-
-        Map<String, String> defaultHeaders = new HashMap<>();
         // For ThinClient http/2 used for framing only
         // All operation-level headers are only added to the rntbd-encoded message
         // the thin client proxy will parse the rntbd headers (not the content!) and substitute any
         // missing headers for routing (like partitionId or replicaId)
         // Since the Thin client proxy also needs to set the user-agent header to a different value
         // it is not added to the rntbd headers - just http-headers in the SDK
-        defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
-
-        return defaultHeaders;
+        return this.defaultHeaders;
     }
 
     @Override
@@ -120,10 +125,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             request.getResourceId());
 
         byte[] epk = request.getPartitionKeyInternal().getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
-        if (request.properties == null) {
-            request.properties = new HashMap<>();
-        }
-
         RntbdRequestArgs rntbdRequestArgs = new RntbdRequestArgs(request);
 
         HttpHeaders headers = this.getHttpHeaders();
