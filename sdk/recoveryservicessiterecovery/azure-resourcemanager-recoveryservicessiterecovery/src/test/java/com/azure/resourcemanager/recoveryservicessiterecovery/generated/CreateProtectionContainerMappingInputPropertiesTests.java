@@ -13,20 +13,20 @@ public final class CreateProtectionContainerMappingInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CreateProtectionContainerMappingInputProperties model = BinaryData.fromString(
-            "{\"targetProtectionContainerId\":\"qbmfpjbabwidf\",\"policyId\":\"sspuunnoxyhkx\",\"providerSpecificInput\":{\"instanceType\":\"ReplicationProviderSpecificContainerMappingInput\"}}")
+            "{\"targetProtectionContainerId\":\"thwwn\",\"policyId\":\"hlf\",\"providerSpecificInput\":{\"instanceType\":\"ReplicationProviderSpecificContainerMappingInput\"}}")
             .toObject(CreateProtectionContainerMappingInputProperties.class);
-        Assertions.assertEquals("qbmfpjbabwidf", model.targetProtectionContainerId());
-        Assertions.assertEquals("sspuunnoxyhkx", model.policyId());
+        Assertions.assertEquals("thwwn", model.targetProtectionContainerId());
+        Assertions.assertEquals("hlf", model.policyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CreateProtectionContainerMappingInputProperties model
-            = new CreateProtectionContainerMappingInputProperties().withTargetProtectionContainerId("qbmfpjbabwidf")
-                .withPolicyId("sspuunnoxyhkx")
+            = new CreateProtectionContainerMappingInputProperties().withTargetProtectionContainerId("thwwn")
+                .withPolicyId("hlf")
                 .withProviderSpecificInput(new ReplicationProviderSpecificContainerMappingInput());
         model = BinaryData.fromObject(model).toObject(CreateProtectionContainerMappingInputProperties.class);
-        Assertions.assertEquals("qbmfpjbabwidf", model.targetProtectionContainerId());
-        Assertions.assertEquals("sspuunnoxyhkx", model.policyId());
+        Assertions.assertEquals("thwwn", model.targetProtectionContainerId());
+        Assertions.assertEquals("hlf", model.policyId());
     }
 }

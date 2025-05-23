@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -35,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -64,7 +66,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private final Map<String, String> defaultHeaders;
     private final HttpClient httpClient;
     private final QueryCompatibilityMode queryCompatibilityMode;
-    private final GlobalEndpointManager globalEndpointManager;
+    protected final GlobalEndpointManager globalEndpointManager;
     private ConsistencyLevel defaultConsistencyLevel;
     private ISessionContainer sessionContainer;
     private ThroughputControlStore throughputControlStore;
@@ -315,6 +317,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         return httpHeaders;
     }
 
+    public URI getRootUri(RxDocumentServiceRequest request) {
+        return this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayRegionalEndpoint();
+    }
+
     private URI getUri(RxDocumentServiceRequest request) throws URISyntaxException {
         URI rootUri = request.getEndpointOverride();
         if (rootUri == null) {
@@ -322,7 +328,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 // For media read request, always use the write endpoint.
                 rootUri = this.globalEndpointManager.getWriteEndpoints().get(0).getGatewayRegionalEndpoint();
             } else {
-                rootUri = this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayRegionalEndpoint();
+                rootUri = getRootUri(request);
             }
         }
 
@@ -493,6 +499,23 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             }
 
             return Mono.error(dce);
+        }).doFinally(signalType -> {
+
+            if (signalType != SignalType.CANCEL) {
+                return;
+            }
+
+            if (httpRequest.reactorNettyRequestRecord() != null) {
+
+                ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+
+                RequestTimeline requestTimeline = reactorNettyRequestRecord.takeTimelineSnapshot();
+                long transportRequestId = reactorNettyRequestRecord.getTransportRequestId();
+
+                GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
+
+                request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
+            }
         });
     }
 
@@ -710,8 +733,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             return Mono.empty();
         }
 
-        boolean sessionConsistency = RequestHelper.getConsistencyLevelToUse(this.gatewayServiceConfigurationReader,
-            request) == ConsistencyLevel.SESSION;
+        boolean sessionConsistency = (RequestHelper.getReadConsistencyStrategyToUse(this.gatewayServiceConfigurationReader,
+            request) == ReadConsistencyStrategy.SESSION);
 
         if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
             if (!sessionConsistency ||

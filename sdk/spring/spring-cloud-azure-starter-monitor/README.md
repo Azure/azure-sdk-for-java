@@ -91,7 +91,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [otel_spring_starter]: https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/
 [otel_spring_starter_instrumentation]: https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/#additional-instrumentations
 [spring_boot_native]: https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html
-[azure_native]: https://learn.microsoft.com/azure/developer/java/spring-framework/developer-guide-overview#configuring-spring-boot-3
+[azure_native]: https://learn.microsoft.com/azure/developer/java/spring-framework/native-applications
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-monitor/src
 [package_mvn]: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-monitor
 [api_reference_doc]: https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/

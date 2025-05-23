@@ -113,20 +113,6 @@ public final class KeyVaultAdministrationClientImpl {
     }
 
     /**
-     * The RoleAssignmentsImpl object to access its operations.
-     */
-    private final RoleAssignmentsImpl roleAssignments;
-
-    /**
-     * Gets the RoleAssignmentsImpl object to access its operations.
-     * 
-     * @return the RoleAssignmentsImpl object.
-     */
-    public RoleAssignmentsImpl getRoleAssignments() {
-        return this.roleAssignments;
-    }
-
-    /**
      * The RoleDefinitionsImpl object to access its operations.
      */
     private final RoleDefinitionsImpl roleDefinitions;
@@ -138,6 +124,20 @@ public final class KeyVaultAdministrationClientImpl {
      */
     public RoleDefinitionsImpl getRoleDefinitions() {
         return this.roleDefinitions;
+    }
+
+    /**
+     * The RoleAssignmentsImpl object to access its operations.
+     */
+    private final RoleAssignmentsImpl roleAssignments;
+
+    /**
+     * Gets the RoleAssignmentsImpl object to access its operations.
+     * 
+     * @return the RoleAssignmentsImpl object.
+     */
+    public RoleAssignmentsImpl getRoleAssignments() {
+        return this.roleAssignments;
     }
 
     /**
@@ -177,8 +177,8 @@ public final class KeyVaultAdministrationClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.roleAssignments = new RoleAssignmentsImpl(this);
         this.roleDefinitions = new RoleDefinitionsImpl(this);
+        this.roleAssignments = new RoleAssignmentsImpl(this);
         this.service = RestProxy.create(KeyVaultAdministrationClientService.class, this.httpPipeline,
             this.getSerializerAdapter());
     }
@@ -278,6 +278,28 @@ public final class KeyVaultAdministrationClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
+        @Put("/restore")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> fullRestoreOperation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData restoreBlobDetails,
+            RequestOptions requestOptions, Context context);
+
+        @Put("/restore")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> fullRestoreOperationSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData restoreBlobDetails,
+            RequestOptions requestOptions, Context context);
+
         @Put("/prerestore")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -301,28 +323,6 @@ public final class KeyVaultAdministrationClientImpl {
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData preRestoreOperationParameters, RequestOptions requestOptions,
             Context context);
-
-        @Put("/restore")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> fullRestoreOperation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData restoreBlobDetails,
-            RequestOptions requestOptions, Context context);
-
-        @Put("/restore")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> fullRestoreOperationSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData restoreBlobDetails,
-            RequestOptions requestOptions, Context context);
 
         @Get("/restore/{jobId}/pending")
         @ExpectedResponses({ 200 })
@@ -657,122 +657,6 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of full backup operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginFullBackupAsync(BinaryData azureStorageBlobContainerUri,
-        RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.fullBackupWithResponseAsync(azureStorageBlobContainerUri, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     storageResourceUri: String (Required)
-     *     token: String (Optional)
-     *     useManagedIdentity: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     *     jobId: String (Optional)
-     *     azureStorageBlobContainerUri: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
-     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
-     * time of making this call.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of full backup operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginFullBackup(BinaryData azureStorageBlobContainerUri,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.fullBackupWithResponse(azureStorageBlobContainerUri, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     storageResourceUri: String (Required)
-     *     token: String (Optional)
-     *     useManagedIdentity: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     *     jobId: String (Optional)
-     *     azureStorageBlobContainerUri: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
-     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
-     * time of making this call.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of full backup operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FullBackupOperation, FullBackupOperation>
         beginFullBackupWithModelAsync(BinaryData azureStorageBlobContainerUri, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
@@ -844,6 +728,122 @@ public final class KeyVaultAdministrationClientImpl {
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(FullBackupOperation.class),
             TypeReference.createInstance(FullBackupOperation.class));
+    }
+
+    /**
+     * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     storageResourceUri: String (Required)
+     *     token: String (Optional)
+     *     useManagedIdentity: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     jobId: String (Optional)
+     *     azureStorageBlobContainerUri: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
+     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
+     * time of making this call.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of full backup operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginFullBackupAsync(BinaryData azureStorageBlobContainerUri,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.fullBackupWithResponseAsync(azureStorageBlobContainerUri, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     storageResourceUri: String (Required)
+     *     token: String (Optional)
+     *     useManagedIdentity: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     jobId: String (Optional)
+     *     azureStorageBlobContainerUri: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
+     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
+     * time of making this call.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of full backup operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginFullBackup(BinaryData azureStorageBlobContainerUri,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.fullBackupWithResponse(azureStorageBlobContainerUri, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -992,118 +992,6 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of full backup operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginPreFullBackupAsync(BinaryData preBackupOperationParameters,
-        RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.preFullBackupWithResponseAsync(preBackupOperationParameters, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Pre-backup operation for checking whether the customer can perform a full backup operation.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     storageResourceUri: String (Optional)
-     *     token: String (Optional)
-     *     useManagedIdentity: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     *     jobId: String (Optional)
-     *     azureStorageBlobContainerUri: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param preBackupOperationParameters Optional parameters to validate prior to performing a full backup operation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of full backup operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginPreFullBackup(BinaryData preBackupOperationParameters,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.preFullBackupWithResponse(preBackupOperationParameters, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Pre-backup operation for checking whether the customer can perform a full backup operation.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     storageResourceUri: String (Optional)
-     *     token: String (Optional)
-     *     useManagedIdentity: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     *     jobId: String (Optional)
-     *     azureStorageBlobContainerUri: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param preBackupOperationParameters Optional parameters to validate prior to performing a full backup operation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of full backup operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FullBackupOperation, FullBackupOperation>
         beginPreFullBackupWithModelAsync(BinaryData preBackupOperationParameters, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
@@ -1176,6 +1064,118 @@ public final class KeyVaultAdministrationClientImpl {
     }
 
     /**
+     * Pre-backup operation for checking whether the customer can perform a full backup operation.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     storageResourceUri: String (Optional)
+     *     token: String (Optional)
+     *     useManagedIdentity: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     jobId: String (Optional)
+     *     azureStorageBlobContainerUri: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param preBackupOperationParameters Optional parameters to validate prior to performing a full backup operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of full backup operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginPreFullBackupAsync(BinaryData preBackupOperationParameters,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.preFullBackupWithResponseAsync(preBackupOperationParameters, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Pre-backup operation for checking whether the customer can perform a full backup operation.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     storageResourceUri: String (Optional)
+     *     token: String (Optional)
+     *     useManagedIdentity: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     *     jobId: String (Optional)
+     *     azureStorageBlobContainerUri: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param preBackupOperationParameters Optional parameters to validate prior to performing a full backup operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of full backup operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginPreFullBackup(BinaryData preBackupOperationParameters,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.preFullBackupWithResponse(preBackupOperationParameters, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
      * Returns the status of restore operation.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1245,6 +1245,350 @@ public final class KeyVaultAdministrationClientImpl {
         final String accept = "application/json";
         return service.restoreStatusSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), jobId, accept,
             requestOptions, Context.NONE);
+    }
+
+    /**
+     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sasTokenParameters (Required): {
+     *         storageResourceUri: String (Required)
+     *         token: String (Optional)
+     *         useManagedIdentity: Boolean (Optional)
+     *     }
+     *     folderToRestore: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     jobId: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return restore operation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> fullRestoreOperationWithResponseAsync(BinaryData restoreBlobDetails,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.fullRestoreOperation(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), contentType, accept, restoreBlobDetails, requestOptions, context));
+    }
+
+    /**
+     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sasTokenParameters (Required): {
+     *         storageResourceUri: String (Required)
+     *         token: String (Optional)
+     *         useManagedIdentity: Boolean (Optional)
+     *     }
+     *     folderToRestore: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     jobId: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return restore operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> fullRestoreOperationWithResponse(BinaryData restoreBlobDetails,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.fullRestoreOperationSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            contentType, accept, restoreBlobDetails, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sasTokenParameters (Required): {
+     *         storageResourceUri: String (Required)
+     *         token: String (Optional)
+     *         useManagedIdentity: Boolean (Optional)
+     *     }
+     *     folderToRestore: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     jobId: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of restore operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<RestoreOperation, RestoreOperation>
+        beginFullRestoreOperationWithModelAsync(BinaryData restoreBlobDetails, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.fullRestoreOperationWithResponseAsync(restoreBlobDetails, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(RestoreOperation.class), TypeReference.createInstance(RestoreOperation.class));
+    }
+
+    /**
+     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sasTokenParameters (Required): {
+     *         storageResourceUri: String (Required)
+     *         token: String (Optional)
+     *         useManagedIdentity: Boolean (Optional)
+     *     }
+     *     folderToRestore: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     jobId: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of restore operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<RestoreOperation, RestoreOperation>
+        beginFullRestoreOperationWithModel(BinaryData restoreBlobDetails, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.fullRestoreOperationWithResponse(restoreBlobDetails, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(RestoreOperation.class), TypeReference.createInstance(RestoreOperation.class));
+    }
+
+    /**
+     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sasTokenParameters (Required): {
+     *         storageResourceUri: String (Required)
+     *         token: String (Optional)
+     *         useManagedIdentity: Boolean (Optional)
+     *     }
+     *     folderToRestore: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     jobId: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of restore operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginFullRestoreOperationAsync(BinaryData restoreBlobDetails,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.fullRestoreOperationWithResponseAsync(restoreBlobDetails, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sasTokenParameters (Required): {
+     *         storageResourceUri: String (Required)
+     *         token: String (Optional)
+     *         useManagedIdentity: Boolean (Optional)
+     *     }
+     *     folderToRestore: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     jobId: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of restore operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginFullRestoreOperation(BinaryData restoreBlobDetails,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.fullRestoreOperationWithResponse(restoreBlobDetails, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1402,124 +1746,6 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of restore operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData>
-        beginPreFullRestoreOperationAsync(BinaryData preRestoreOperationParameters, RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.preFullRestoreOperationWithResponseAsync(preRestoreOperationParameters, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Pre-restore operation for checking whether the customer can perform a full restore operation.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     sasTokenParameters (Optional): {
-     *         storageResourceUri: String (Required)
-     *         token: String (Optional)
-     *         useManagedIdentity: Boolean (Optional)
-     *     }
-     *     folderToRestore: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     jobId: String (Optional)
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param preRestoreOperationParameters Optional pre restore parameters to validate prior to performing a full
-     * restore operation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of restore operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginPreFullRestoreOperation(BinaryData preRestoreOperationParameters,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.preFullRestoreOperationWithResponse(preRestoreOperationParameters, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Pre-restore operation for checking whether the customer can perform a full restore operation.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     sasTokenParameters (Optional): {
-     *         storageResourceUri: String (Required)
-     *         token: String (Optional)
-     *         useManagedIdentity: Boolean (Optional)
-     *     }
-     *     folderToRestore: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     jobId: String (Optional)
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param preRestoreOperationParameters Optional pre restore parameters to validate prior to performing a full
-     * restore operation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of restore operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<RestoreOperation, RestoreOperation> beginPreFullRestoreOperationWithModelAsync(
         BinaryData preRestoreOperationParameters, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
@@ -1593,18 +1819,18 @@ public final class KeyVaultAdministrationClientImpl {
     }
 
     /**
-     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
+     * Pre-restore operation for checking whether the customer can perform a full restore operation.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     sasTokenParameters (Required): {
+     *     sasTokenParameters (Optional): {
      *         storageResourceUri: String (Required)
      *         token: String (Optional)
      *         useManagedIdentity: Boolean (Optional)
      *     }
-     *     folderToRestore: String (Required)
+     *     folderToRestore: String (Optional)
      * }
      * }
      * </pre>
@@ -1628,116 +1854,8 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * </pre>
      * 
-     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
-     * was stored.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return restore operation along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> fullRestoreOperationWithResponseAsync(BinaryData restoreBlobDetails,
-        RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.fullRestoreOperation(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), contentType, accept, restoreBlobDetails, requestOptions, context));
-    }
-
-    /**
-     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     sasTokenParameters (Required): {
-     *         storageResourceUri: String (Required)
-     *         token: String (Optional)
-     *         useManagedIdentity: Boolean (Optional)
-     *     }
-     *     folderToRestore: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     jobId: String (Optional)
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
-     * was stored.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return restore operation along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> fullRestoreOperationWithResponse(BinaryData restoreBlobDetails,
-        RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.fullRestoreOperationSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            contentType, accept, restoreBlobDetails, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     sasTokenParameters (Required): {
-     *         storageResourceUri: String (Required)
-     *         token: String (Optional)
-     *         useManagedIdentity: Boolean (Optional)
-     *     }
-     *     folderToRestore: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     jobId: String (Optional)
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
-     * was stored.
+     * @param preRestoreOperationParameters Optional pre restore parameters to validate prior to performing a full
+     * restore operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1746,10 +1864,10 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of restore operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginFullRestoreOperationAsync(BinaryData restoreBlobDetails,
-        RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData>
+        beginPreFullRestoreOperationAsync(BinaryData preRestoreOperationParameters, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.fullRestoreOperationWithResponseAsync(restoreBlobDetails, requestOptions),
+            () -> this.preFullRestoreOperationWithResponseAsync(preRestoreOperationParameters, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1760,18 +1878,18 @@ public final class KeyVaultAdministrationClientImpl {
     }
 
     /**
-     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
+     * Pre-restore operation for checking whether the customer can perform a full restore operation.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     sasTokenParameters (Required): {
+     *     sasTokenParameters (Optional): {
      *         storageResourceUri: String (Required)
      *         token: String (Optional)
      *         useManagedIdentity: Boolean (Optional)
      *     }
-     *     folderToRestore: String (Required)
+     *     folderToRestore: String (Optional)
      * }
      * }
      * </pre>
@@ -1795,8 +1913,8 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * </pre>
      * 
-     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
-     * was stored.
+     * @param preRestoreOperationParameters Optional pre restore parameters to validate prior to performing a full
+     * restore operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1805,10 +1923,10 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of restore operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginFullRestoreOperation(BinaryData restoreBlobDetails,
+    public SyncPoller<BinaryData, BinaryData> beginPreFullRestoreOperation(BinaryData preRestoreOperationParameters,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.fullRestoreOperationWithResponse(restoreBlobDetails, requestOptions),
+            () -> this.preFullRestoreOperationWithResponse(preRestoreOperationParameters, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1816,124 +1934,6 @@ public final class KeyVaultAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     sasTokenParameters (Required): {
-     *         storageResourceUri: String (Required)
-     *         token: String (Optional)
-     *         useManagedIdentity: Boolean (Optional)
-     *     }
-     *     folderToRestore: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     jobId: String (Optional)
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
-     * was stored.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of restore operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RestoreOperation, RestoreOperation>
-        beginFullRestoreOperationWithModelAsync(BinaryData restoreBlobDetails, RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.fullRestoreOperationWithResponseAsync(restoreBlobDetails, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(RestoreOperation.class), TypeReference.createInstance(RestoreOperation.class));
-    }
-
-    /**
-     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     sasTokenParameters (Required): {
-     *         storageResourceUri: String (Required)
-     *         token: String (Optional)
-     *         useManagedIdentity: Boolean (Optional)
-     *     }
-     *     folderToRestore: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     jobId: String (Optional)
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
-     * was stored.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of restore operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RestoreOperation, RestoreOperation>
-        beginFullRestoreOperationWithModel(BinaryData restoreBlobDetails, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.fullRestoreOperationWithResponse(restoreBlobDetails, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(RestoreOperation.class), TypeReference.createInstance(RestoreOperation.class));
     }
 
     /**
@@ -2170,128 +2170,6 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of selective Key Restore operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginSelectiveKeyRestoreOperationAsync(String keyName,
-        BinaryData restoreBlobDetails, RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.selectiveKeyRestoreOperationWithResponseAsync(keyName, restoreBlobDetails, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
-     * storage backup folder.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     sasTokenParameters (Required): {
-     *         storageResourceUri: String (Required)
-     *         token: String (Optional)
-     *         useManagedIdentity: Boolean (Optional)
-     *     }
-     *     folder: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     jobId: String (Optional)
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param keyName The name of the key to be restored from the user supplied backup.
-     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
-     * was stored.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of selective Key Restore operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginSelectiveKeyRestoreOperation(String keyName,
-        BinaryData restoreBlobDetails, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.selectiveKeyRestoreOperationWithResponse(keyName, restoreBlobDetails, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
-     * storage backup folder.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     sasTokenParameters (Required): {
-     *         storageResourceUri: String (Required)
-     *         token: String (Optional)
-     *         useManagedIdentity: Boolean (Optional)
-     *     }
-     *     folder: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     jobId: String (Optional)
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param keyName The name of the key to be restored from the user supplied backup.
-     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
-     * was stored.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of selective Key Restore operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<SelectiveKeyRestoreOperation, SelectiveKeyRestoreOperation>
         beginSelectiveKeyRestoreOperationWithModelAsync(String keyName, BinaryData restoreBlobDetails,
             RequestOptions requestOptions) {
@@ -2368,6 +2246,128 @@ public final class KeyVaultAdministrationClientImpl {
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(SelectiveKeyRestoreOperation.class),
             TypeReference.createInstance(SelectiveKeyRestoreOperation.class));
+    }
+
+    /**
+     * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
+     * storage backup folder.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sasTokenParameters (Required): {
+     *         storageResourceUri: String (Required)
+     *         token: String (Optional)
+     *         useManagedIdentity: Boolean (Optional)
+     *     }
+     *     folder: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     jobId: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param keyName The name of the key to be restored from the user supplied backup.
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of selective Key Restore operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginSelectiveKeyRestoreOperationAsync(String keyName,
+        BinaryData restoreBlobDetails, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.selectiveKeyRestoreOperationWithResponseAsync(keyName, restoreBlobDetails, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
+     * storage backup folder.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sasTokenParameters (Required): {
+     *         storageResourceUri: String (Required)
+     *         token: String (Optional)
+     *         useManagedIdentity: Boolean (Optional)
+     *     }
+     *     folder: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     jobId: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param keyName The name of the key to be restored from the user supplied backup.
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of selective Key Restore operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginSelectiveKeyRestoreOperation(String keyName,
+        BinaryData restoreBlobDetails, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.selectiveKeyRestoreOperationWithResponse(keyName, restoreBlobDetails, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**

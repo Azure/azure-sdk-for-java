@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.ChoiceResult;
+import com.azure.communication.callautomation.models.CustomCallingContext;
 import com.azure.communication.callautomation.models.DtmfResult;
 import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.RecordingState;
@@ -53,11 +54,14 @@ import com.azure.communication.callautomation.models.events.TranscriptionStatus;
 import com.azure.communication.callautomation.models.events.TranscriptionStatusDetails;
 import com.azure.communication.callautomation.models.events.TranscriptionStopped;
 import com.azure.communication.callautomation.models.events.TranscriptionUpdated;
+import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
 import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
 import com.azure.communication.callautomation.models.events.MediaStreamingFailed;
 import com.azure.communication.callautomation.models.events.MediaStreamingStatus;
 import com.azure.communication.callautomation.models.events.MediaStreamingStatusDetails;
+import com.azure.communication.callautomation.models.events.IncomingCall;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -1340,4 +1344,99 @@ public class CallAutomationEventParserAndProcessorUnitTests {
         assertEquals("serverCallId", holdAudioResumed.getServerCallId());
         assertEquals(200, holdAudioResumed.getResultInformation().getCode());
     }
+
+    @Test
+    public void incomingCallEventParsedXMSHeaderTest() {
+        String serverCallId = "serverCallId";
+        String correlationId = "correlationId";
+        CommunicationIdentifier to = new PhoneNumberIdentifier("+11234567890");
+        CommunicationIdentifier from = new PhoneNumberIdentifier("+1098754321");
+        String callerDisplayName = "callerDisplayName";
+        String incomingCallContext = "incomingCallContext";
+        CommunicationIdentifier onBehalfofCallee = from;
+
+        CustomCallingContext customCallingContext = new CustomCallingContext();
+        customCallingContext.addSipX("Test-SIP-Header", "TestSIPValue", CustomCallingContext.SipHeaderPrefix.XMSCustom);
+        customCallingContext.addVoip("Test-VoIP-Header", "TestVoIPValue");
+        System.out.println("Added sip and voip headers successfully.");
+        String receivedEvent = "[{\n" + "  \"id\": \"91cdb8e2-c4c2-4888-bc60-3003f09245b3\",\n"
+            + "  \"source\": \"calling/callConnections/callConnectionId/IncomingCall\",\n"
+            + "  \"type\": \"Microsoft.Communication.IncomingCall\",\n" + "  \"data\": {\n"
+            + "    \"to\": { \"rawId\": \"" + to.getRawId() + "\" },\n" + "    \"from\": { \"rawId\": \""
+            + from.getRawId() + "\" },\n" + "    \"callerDisplayName\": \"" + callerDisplayName + "\",\n"
+            + "    \"serverCallId\": \"" + serverCallId + "\",\n" + "    \"customContext\": {\n"
+            + "      \"sipHeaders\": {\n" + "        \""
+            + customCallingContext.getSipHeaders().keySet().iterator().next() + "\": \""
+            + customCallingContext.getSipHeaders().values().iterator().next() + "\"\n" + "      },\n"
+            + "      \"voipHeaders\": {\n" + "        \""
+            + customCallingContext.getVoipHeaders().keySet().iterator().next() + "\": \""
+            + customCallingContext.getVoipHeaders().values().iterator().next() + "\"\n" + "      }\n" + "    },\n"
+            + "    \"incomingCallContext\": \"" + incomingCallContext + "\",\n"
+            + "    \"onBehalfOfCallee\": { \"rawId\": \"" + onBehalfofCallee.getRawId() + "\" },\n"
+            + "    \"correlationId\": \"" + correlationId + "\"\n" + "  }\n" + "}]";
+
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+        IncomingCall incomingCall = (IncomingCall) event;
+        assertNotNull(incomingCall);
+        assertEquals("serverCallId", incomingCall.getServerCallId());
+        assertEquals("correlationId", incomingCall.getCorrelationId());
+        assertEquals(to.getRawId(), incomingCall.getTo().getRawId());
+        assertEquals(from.getRawId(), incomingCall.getFrom().getRawId());
+        assertEquals(callerDisplayName, incomingCall.getCallerDisplayName());
+        assertEquals(incomingCallContext, incomingCall.getIncomingCallContext());
+        assertEquals(onBehalfofCallee.getRawId(), incomingCall.getOnBehalfOfCallee().getRawId());
+        assertEquals(customCallingContext.getSipHeaders().keySet().iterator().next(),
+            incomingCall.getCustomContext().getSipHeaders().keySet().iterator().next());
+        assertEquals(customCallingContext.getVoipHeaders().values().iterator().next(),
+            incomingCall.getCustomContext().getVoipHeaders().values().iterator().next());
+
+    }
+
+    @Test
+    public void incomingCallEventParsedXHeaderTest() {
+        String serverCallId = "serverCallId";
+        String correlationId = "correlationId";
+        CommunicationIdentifier to = new PhoneNumberIdentifier("+11234567890");
+        CommunicationIdentifier from = new PhoneNumberIdentifier("+1098754321");
+        String callerDisplayName = "callerDisplayName";
+        String incomingCallContext = "incomingCallContext";
+        CommunicationIdentifier onBehalfofCallee = from;
+        CustomCallingContext customCallingContext = new CustomCallingContext();
+        customCallingContext.addSipX("Test-SIP-Header", "TestSIPValue", CustomCallingContext.SipHeaderPrefix.X);
+        customCallingContext.addVoip("Test-VoIP-Header", "TestVoIPValue");
+        System.out.println("Added sip and voip headers successfully.");
+        String receivedEvent = "[{\n" + "  \"id\": \"91cdb8e2-c4c2-4888-bc60-3003f09245b3\",\n"
+            + "  \"source\": \"calling/callConnections/callConnectionId/IncomingCall\",\n"
+            + "  \"type\": \"Microsoft.Communication.IncomingCall\",\n" + "  \"data\": {\n"
+            + "    \"to\": { \"rawId\": \"" + to.getRawId() + "\" },\n" + "    \"from\": { \"rawId\": \""
+            + from.getRawId() + "\" },\n" + "    \"callerDisplayName\": \"" + callerDisplayName + "\",\n"
+            + "    \"serverCallId\": \"" + serverCallId + "\",\n" + "    \"customContext\": {\n"
+            + "      \"sipHeaders\": {\n" + "        \""
+            + customCallingContext.getSipHeaders().keySet().iterator().next() + "\": \""
+            + customCallingContext.getSipHeaders().values().iterator().next() + "\"\n" + "      },\n"
+            + "      \"voipHeaders\": {\n" + "        \""
+            + customCallingContext.getVoipHeaders().keySet().iterator().next() + "\": \""
+            + customCallingContext.getVoipHeaders().values().iterator().next() + "\"\n" + "      }\n" + "    },\n"
+            + "    \"incomingCallContext\": \"" + incomingCallContext + "\",\n"
+            + "    \"onBehalfOfCallee\": { \"rawId\": \"" + onBehalfofCallee.getRawId() + "\" },\n"
+            + "    \"correlationId\": \"" + correlationId + "\"\n" + "  }\n" + "}]";
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+        IncomingCall incomingCall = (IncomingCall) event;
+        assertNotNull(incomingCall);
+        assertEquals("serverCallId", incomingCall.getServerCallId());
+        assertEquals("correlationId", incomingCall.getCorrelationId());
+        assertEquals(to.getRawId(), incomingCall.getTo().getRawId());
+        assertEquals(from.getRawId(), incomingCall.getFrom().getRawId());
+        assertEquals(callerDisplayName, incomingCall.getCallerDisplayName());
+        assertEquals(incomingCallContext, incomingCall.getIncomingCallContext());
+        assertEquals(onBehalfofCallee.getRawId(), incomingCall.getOnBehalfOfCallee().getRawId());
+        assertEquals(customCallingContext.getSipHeaders().keySet().iterator().next(),
+            incomingCall.getCustomContext().getSipHeaders().keySet().iterator().next());
+        assertEquals(customCallingContext.getVoipHeaders().values().iterator().next(),
+            incomingCall.getCustomContext().getVoipHeaders().values().iterator().next());
+
+    }
+
 }

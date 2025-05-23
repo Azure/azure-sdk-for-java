@@ -23,7 +23,7 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      * The SMS content
      */
     @Generated
-    private String message;
+    private final String message;
 
     /*
      * The time at which the SMS was received
@@ -37,32 +37,21 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     @Generated
     private final int segmentCount;
 
-    /*
-     * The identity of SMS message receiver
-     */
-    @Generated
-    private String to;
-
-    /*
-     * The identity of SMS message sender
-     */
-    @Generated
-    private String from;
-
-    /*
-     * The identity of the SMS message
-     */
-    @Generated
-    private String messageId;
-
     /**
      * Creates an instance of AcsSmsReceivedEventData class.
      * 
+     * @param messageId the messageId value to set.
+     * @param from the from value to set.
+     * @param to the to value to set.
+     * @param message the message value to set.
      * @param receivedTimestamp the receivedTimestamp value to set.
      * @param segmentCount the segmentCount value to set.
      */
     @Generated
-    private AcsSmsReceivedEventData(OffsetDateTime receivedTimestamp, int segmentCount) {
+    private AcsSmsReceivedEventData(String messageId, String from, String to, String message,
+        OffsetDateTime receivedTimestamp, int segmentCount) {
+        super(messageId, from, to);
+        this.message = message;
         this.receivedTimestamp = receivedTimestamp;
         this.segmentCount = segmentCount;
     }
@@ -98,39 +87,6 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     }
 
     /**
-     * Get the to property: The identity of SMS message receiver.
-     * 
-     * @return the to value.
-     */
-    @Generated
-    @Override
-    public String getTo() {
-        return this.to;
-    }
-
-    /**
-     * Get the from property: The identity of SMS message sender.
-     * 
-     * @return the from value.
-     */
-    @Generated
-    @Override
-    public String getFrom() {
-        return this.from;
-    }
-
-    /**
-     * Get the messageId property: The identity of the SMS message.
-     * 
-     * @return the messageId value.
-     */
-    @Generated
-    @Override
-    public String getMessageId() {
-        return this.messageId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -140,12 +96,12 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
         jsonWriter.writeStringField("messageId", getMessageId());
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
+        jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeStringField("receivedTimestamp",
             this.receivedTimestamp == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
         jsonWriter.writeIntField("segmentCount", this.segmentCount);
-        jsonWriter.writeStringField("message", this.message);
         return jsonWriter.writeEndObject();
     }
 
@@ -164,9 +120,9 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
             String messageId = null;
             String from = null;
             String to = null;
+            String message = null;
             OffsetDateTime receivedTimestamp = null;
             int segmentCount = 0;
-            String message = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -177,25 +133,18 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
                     from = reader.getString();
                 } else if ("to".equals(fieldName)) {
                     to = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    message = reader.getString();
                 } else if ("receivedTimestamp".equals(fieldName)) {
                     receivedTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("segmentCount".equals(fieldName)) {
                     segmentCount = reader.getInt();
-                } else if ("message".equals(fieldName)) {
-                    message = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            AcsSmsReceivedEventData deserializedAcsSmsReceivedEventData
-                = new AcsSmsReceivedEventData(receivedTimestamp, segmentCount);
-            deserializedAcsSmsReceivedEventData.messageId = messageId;
-            deserializedAcsSmsReceivedEventData.from = from;
-            deserializedAcsSmsReceivedEventData.to = to;
-            deserializedAcsSmsReceivedEventData.message = message;
-
-            return deserializedAcsSmsReceivedEventData;
+            return new AcsSmsReceivedEventData(messageId, from, to, message, receivedTimestamp, segmentCount);
         });
     }
 }

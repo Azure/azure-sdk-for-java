@@ -52,7 +52,7 @@ public final class DatabricksSparkJarActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private DatabricksSparkJarActivityTypeProperties innerTypeProperties() {
+    DatabricksSparkJarActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

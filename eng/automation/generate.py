@@ -108,6 +108,8 @@ def parse_args() -> (argparse.ArgumentParser, argparse.Namespace):
 
 
 def sdk_automation(input_file: str, output_file: str):
+    # this function is for SDK automation from CI in specs or "spec-gen-sdk - java" pipeline
+
     with open(input_file, "r") as fin:
         config = json.load(fin)
 
@@ -118,8 +120,15 @@ def sdk_automation(input_file: str, output_file: str):
         # autorest
         if not packages:
             packages = sdk_automation_autorest(config)
+    except ValueError:
+        logging.error("[VALIDATION] Parameter validation failed.", exc_info=True)
+        sys.exit(1)
     except Exception:
         logging.error("[GENERATE] Code generation failed. Unknown exception", exc_info=True)
+        if packages and len(packages) == 1:
+            packages[0]["result"] = "failed"
+        else:
+            sys.exit(1)
 
     with open(output_file, "w", encoding="utf-8") as fout:
         output = {
@@ -151,7 +160,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
         else:
             spec = match.group(1)
             spec = update_spec(spec, match.group(2))
-            service = get_and_update_service_from_api_specs(api_specs_file, spec)
+            service = get_and_update_service_from_api_specs(api_specs_file, spec, truncate_service=True)
 
             pre_suffix = SUFFIX
             suffix = get_suffix_from_api_specs(api_specs_file, spec)
@@ -186,8 +195,8 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                 tag=tag,
             )
             if succeeded:
-                compile_succeeded = compile_arm_package(sdk_root, module)
-                if compile_succeeded:
+                succeeded = compile_arm_package(sdk_root, module)
+                if succeeded:
                     stable_version = get_latest_ga_version(GROUP_ID, module, stable_version)
                     breaking, changelog, breaking_change_items = compare_with_maven_package(
                         sdk_root, GROUP_ID, service, stable_version, current_version, module
@@ -204,8 +213,12 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                         "pom.xml",
                     ],
                     "readmeMd": [readme],
-                    "artifacts": ["{0}/pom.xml".format(output_folder)]
-                    + [jar for jar in glob.glob("{0}/target/*.jar".format(output_folder))] if succeeded else [],
+                    "artifacts": (
+                        ["{0}/pom.xml".format(output_folder)]
+                        + [jar for jar in glob.glob("{0}/target/*.jar".format(output_folder))]
+                        if succeeded
+                        else []
+                    ),
                     "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(output_folder))), None),
                     "language": "Java",
                     "result": "succeeded" if succeeded else "failed",
@@ -246,6 +259,19 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
     return packages
 
 
+def verify_self_serve_parameters(api_version, sdk_release_type):
+    if sdk_release_type and sdk_release_type not in ["stable", "beta"]:
+        raise ValueError(f"Invalid SDK release type [{sdk_release_type}], only support 'stable' or 'beta'.")
+    if api_version and sdk_release_type:
+        if api_version.endswith("-preview") and sdk_release_type == "stable":
+            raise ValueError(f"SDK release type is [stable], but API version [{api_version}] is preview.")
+        logging.info(f"[SelfServe] Generate with apiVersion: {api_version} and sdkReleaseType: {sdk_release_type}")
+    elif api_version or sdk_release_type:
+        raise ValueError(
+            "Both [API version] and [SDK release type] parameters are required for self-serve SDK generation."
+        )
+
+
 def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
 
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
@@ -253,12 +279,27 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     spec_root = os.path.abspath(config["specFolder"])
     head_sha: str = config["headSha"]
     repo_url: str = config["repoHttpsUrl"]
+    sdk_release_type: str = config["sdkReleaseType"] if "sdkReleaseType" in config else None
+    api_version = config["apiVersion"] if "apiVersion" in config else None
+    release_beta_sdk: bool = not sdk_release_type or sdk_release_type == "beta"
     breaking: bool = False
     changelog = ""
     breaking_change_items = []
+    run_mode: str = config["runMode"] if "runMode" in config else None
+
+    if run_mode == "release" or run_mode == "local":
+        verify_self_serve_parameters(api_version, sdk_release_type)
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
-        tsp_project, sdk_root, spec_root, head_sha, repo_url, remove_before_regen=True, group_id=GROUP_ID
+        tsp_project,
+        sdk_root,
+        spec_root,
+        head_sha,
+        repo_url,
+        remove_before_regen=True,
+        group_id=GROUP_ID,
+        api_version=api_version,
+        generate_beta_sdk=release_beta_sdk,
     )
 
     if succeeded:
@@ -267,7 +308,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
 
-        stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module)
+        stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, preview=release_beta_sdk)
         update_parameters(None)
         output_folder = OUTPUT_FOLDER_FORMAT.format(service)
         update_version(sdk_root, output_folder)
@@ -282,7 +323,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 service,
                 get_latest_ga_version(GROUP_ID, module, stable_version),
                 current_version,
-                module
+                module,
             )
             logging.info("[Changelog] Complete breaking change detection for SDK automation.")
             logging.info("[Changelog] Start generating changelog.")
@@ -292,7 +333,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 service,
                 get_latest_release_version(stable_version, current_version),
                 current_version,
-                module
+                module,
             )
             update_changelog_version(sdk_root, output_folder, current_version)
             logging.info("[Changelog] Complete generating changelog.")
@@ -396,7 +437,7 @@ def main():
 
         readme = args["readme"]
         match = re.match(
-            "specification/([^/]+)/resource-manager(/.*)*/readme.md",
+            r"specification/([^/]+)/resource-manager(/.*)*/readme.md",
             readme,
             re.IGNORECASE,
         )
@@ -410,8 +451,9 @@ def main():
         args["readme"] = readme
         args["spec"] = spec
 
-        update_parameters(args.get("suffix") or get_suffix_from_api_specs(api_specs_file, spec))
-        service = get_and_update_service_from_api_specs(api_specs_file, spec, args["service"])
+        suffix = args.get("suffix") or get_suffix_from_api_specs(api_specs_file, spec)
+        update_parameters(suffix)
+        service = get_and_update_service_from_api_specs(api_specs_file, spec, args["service"], suffix)
         args["service"] = service
         module = ARTIFACT_FORMAT.format(service)
         stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)

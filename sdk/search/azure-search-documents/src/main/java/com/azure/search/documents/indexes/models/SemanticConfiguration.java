@@ -6,7 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Defines a specific configuration to be used in the context of semantic capabilities.
  */
-@Immutable
+@Fluent
 public final class SemanticConfiguration implements JsonSerializable<SemanticConfiguration> {
     /*
      * The name of the semantic configuration.
@@ -31,6 +31,16 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * prioritizedContentFields) need to be set.
      */
     private final SemanticPrioritizedFields prioritizedFields;
+
+    /*
+     * Specifies the score type to be used for the sort order of the search results.
+     */
+    private RankingOrder rankingOrder;
+
+    /*
+     * Determines which semantic or query rewrite models to use during model flighting/upgrades.
+     */
+    private Boolean flightingOptIn;
 
     /**
      * Creates an instance of SemanticConfiguration class.
@@ -64,6 +74,48 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
     }
 
     /**
+     * Get the rankingOrder property: Specifies the score type to be used for the sort order of the search results.
+     * 
+     * @return the rankingOrder value.
+     */
+    public RankingOrder getRankingOrder() {
+        return this.rankingOrder;
+    }
+
+    /**
+     * Set the rankingOrder property: Specifies the score type to be used for the sort order of the search results.
+     * 
+     * @param rankingOrder the rankingOrder value to set.
+     * @return the SemanticConfiguration object itself.
+     */
+    public SemanticConfiguration setRankingOrder(RankingOrder rankingOrder) {
+        this.rankingOrder = rankingOrder;
+        return this;
+    }
+
+    /**
+     * Get the flightingOptIn property: Determines which semantic or query rewrite models to use during model
+     * flighting/upgrades.
+     * 
+     * @return the flightingOptIn value.
+     */
+    public Boolean isFlightingOptIn() {
+        return this.flightingOptIn;
+    }
+
+    /**
+     * Set the flightingOptIn property: Determines which semantic or query rewrite models to use during model
+     * flighting/upgrades.
+     * 
+     * @param flightingOptIn the flightingOptIn value to set.
+     * @return the SemanticConfiguration object itself.
+     */
+    public SemanticConfiguration setFlightingOptIn(Boolean flightingOptIn) {
+        this.flightingOptIn = flightingOptIn;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -71,6 +123,8 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("prioritizedFields", this.prioritizedFields);
+        jsonWriter.writeStringField("rankingOrder", this.rankingOrder == null ? null : this.rankingOrder.toString());
+        jsonWriter.writeBooleanField("flightingOptIn", this.flightingOptIn);
         return jsonWriter.writeEndObject();
     }
 
@@ -89,6 +143,8 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
             String name = null;
             boolean prioritizedFieldsFound = false;
             SemanticPrioritizedFields prioritizedFields = null;
+            RankingOrder rankingOrder = null;
+            Boolean flightingOptIn = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -99,12 +155,21 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
                 } else if ("prioritizedFields".equals(fieldName)) {
                     prioritizedFields = SemanticPrioritizedFields.fromJson(reader);
                     prioritizedFieldsFound = true;
+                } else if ("rankingOrder".equals(fieldName)) {
+                    rankingOrder = RankingOrder.fromString(reader.getString());
+                } else if ("flightingOptIn".equals(fieldName)) {
+                    flightingOptIn = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
             if (nameFound && prioritizedFieldsFound) {
-                return new SemanticConfiguration(name, prioritizedFields);
+                SemanticConfiguration deserializedSemanticConfiguration
+                    = new SemanticConfiguration(name, prioritizedFields);
+                deserializedSemanticConfiguration.rankingOrder = rankingOrder;
+                deserializedSemanticConfiguration.flightingOptIn = flightingOptIn;
+
+                return deserializedSemanticConfiguration;
             }
             List<String> missingProperties = new ArrayList<>();
             if (!nameFound) {

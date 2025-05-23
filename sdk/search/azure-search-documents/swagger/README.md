@@ -87,7 +87,7 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/14531a7cf6101c1dd57e7c1c83103a047bb8f5bb/specification/search/data-plane/Azure.Search/preview/2024-11-01-preview/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1755004c92eefdc7a66b4cd90df27d0af4cb0456/specification/search/data-plane/Azure.Search/preview/2025-05-01-preview/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,Speller
@@ -105,7 +105,7 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/14531a7cf6101c1dd57e7c1c83103a047bb8f5bb/specification/search/data-plane/Azure.Search/preview/2024-11-01-preview/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1755004c92eefdc7a66b4cd90df27d0af4cb0456/specification/search/data-plane/Azure.Search/preview/2025-05-01-preview/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
@@ -153,6 +153,19 @@ directive:
     - rename-model:
         from: SearchIndexerDataSource
         to: SearchIndexerDataSourceConnection
+```
+
+### Tag: knowledgeagent
+
+These settings apply only when `--tag=knowledgeagent` is specified on the commandSearchServiceCounters line.
+
+``` yaml $(tag) == 'knowledgeagent'
+namespace: com.azure.search.documents.agents
+input-file: 
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1755004c92eefdc7a66b4cd90df27d0af4cb0456/specification/search/data-plane/Azure.Search/preview/2025-05-01-preview/knowledgeagent.json
+models-subpackage: models
+custom-types-subpackage: implementation.models
+custom-types: ErrorResponse,ErrorDetail,ErrorAdditionalInfo,ErrorResponseException,RequestOptions
 ```
 
 ---
@@ -476,12 +489,42 @@ directive:
       delete $["@search.documentDebugInfo"].items;
 ```
 
-### `SearchDocumentsResult["@search.debugInfo"]` -> `SearchDocumentsResult["@search.debug"]`
-``` yaml $(tag) == 'searchindex'
+### Rename `AI Studio` to `AI Foundry`
+```yaml
 directive:
   - from: swagger-document
-    where: $.definitions.SearchDocumentsResult.properties
+    where: $.definitions.AIStudioModelCatalogName
+    transform: $["x-ms-enum"].name = "AIFoundryModelCatalogName";
+```
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.AMLVectorizer
+    transform: $.description = $.description.replace("Azure AI Studio", "Azure AI Foundry");
+```
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.AMLParameters.properties.modelName
+    transform: $.description = $.description.replace("Azure AI Studio", "Azure AI Foundry");
+```
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.AIStudioModelCatalogName
+    transform: $.description = $.description.replace("Azure AI Studio", "Azure AI Foundry");
+```
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.VectorSearchVectorizerKind
     transform: >
-      $["@search.debug"] = $["@search.debugInfo"];
-      delete $["@search.debugInfo"];
+      $["x-ms-enum"].values = $["x-ms-enum"].values.map((v) => ({
+        ...v,
+        description: v.description.replace("Azure AI Studio", "Azure AI Foundry"),
+      }));
 ```

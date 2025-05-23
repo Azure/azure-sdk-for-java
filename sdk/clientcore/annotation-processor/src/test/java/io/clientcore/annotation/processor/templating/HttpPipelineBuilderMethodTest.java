@@ -5,7 +5,6 @@ package io.clientcore.annotation.processor.templating;
 
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.FieldDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
 import io.clientcore.annotation.processor.mocks.MockFiler;
 import io.clientcore.annotation.processor.mocks.MockJavaFileObject;
 import io.clientcore.annotation.processor.mocks.MockProcessingEnvironment;
@@ -50,22 +49,13 @@ public class HttpPipelineBuilderMethodTest {
     public void testProcess() {
         JavaFileObject filerSourceFile = new MockJavaFileObject();
         Filer filer = new MockFiler(filerSourceFile);
-        MockProcessingEnvironment processingEnv = new MockProcessingEnvironment(filer);
+        MockProcessingEnvironment processingEnv = new MockProcessingEnvironment(filer, null, null);
 
         processor.process(templateInput, processingEnv);
 
         // Verify that the JavaFile.writeTo was called
         assertEquals(1, processingEnv.getGetFilerCount(),
             "Expected getFiler to be called once, but was called " + processingEnv.getGetFilerCount() + " times");
-    }
-
-    @Test
-    public void testGetPipelineMethod() {
-        MethodDeclaration method = new MethodDeclaration();
-        processor.configurePipelineMethod(method);
-        assertEquals("getPipeline", method.getNameAsString());
-        assertEquals(Modifier.privateModifier(), method.getModifiers().iterator().next());
-        assertEquals("HttpPipeline", method.getTypeAsString());
     }
 
     @Test

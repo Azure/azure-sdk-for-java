@@ -15,9 +15,9 @@ public class GetAnalyzeDocumentResultPDF {
             = new DocumentIntelligenceClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.getanalyzeresultpdf.getanalyzedocumentresultpdf
+        // BEGIN:com.azure.ai.documentintelligence.generated.get-analyze-result-pdf.get-analyze-document-result-pdf
         BinaryData response = documentIntelligenceClient.getAnalyzeResultPdf("prebuilt-invoice",
             "3b31320d-8bab-4f88-b19c-2322a7f11034");
-        // END:com.azure.ai.documentintelligence.generated.getanalyzeresultpdf.getanalyzedocumentresultpdf
+        // END:com.azure.ai.documentintelligence.generated.get-analyze-result-pdf.get-analyze-document-result-pdf
     }
 }

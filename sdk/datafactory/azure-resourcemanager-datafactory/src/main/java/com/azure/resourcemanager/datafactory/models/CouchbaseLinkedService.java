@@ -51,7 +51,7 @@ public final class CouchbaseLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private CouchbaseLinkedServiceTypeProperties innerTypeProperties() {
+    CouchbaseLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

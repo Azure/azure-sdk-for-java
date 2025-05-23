@@ -8,7 +8,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.json.models.JsonObject;
-import com.azure.json.models.JsonString;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -18,13 +17,13 @@ public final class UserTests extends ConfidentialLedgerClientTestBase {
         String userAad = ConfidentialLedgerEnvironment.getConfidentialLedgerAdminOid();
         RequestOptions requestOptions = new RequestOptions();
 
-        Response<BinaryData> response = confidentialLedgerClient.getUserWithResponse(userAad, requestOptions);
+        Response<BinaryData> response = confidentialLedgerClient.getLedgerUserWithResponse(userAad, requestOptions);
 
         BinaryData parsedResponse = response.getValue();
 
         Assertions.assertEquals(200, response.getStatusCode());
 
         JsonObject jsonObject = parsedResponse.toObject(JsonObject.class);
-        Assertions.assertEquals("Administrator", ((JsonString) jsonObject.getProperty("assignedRole")).getValue());
+        Assertions.assertNotNull(jsonObject.getProperty("assignedRoles"));
     }
 }

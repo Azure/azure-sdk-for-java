@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.confidentialledger.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
+import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -18,26 +18,16 @@ import java.util.Map;
  * Confidential Ledger. Contains the properties of Confidential Ledger Resource.
  */
 @Fluent
-public final class ConfidentialLedgerInner extends ProxyResource {
+public final class ConfidentialLedgerInner extends Resource {
     /*
      * Properties of Confidential Ledger Resource.
      */
     private LedgerProperties properties;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
-
-    /*
-     * The Azure location where the Confidential Ledger is running.
-     */
-    private String location;
-
-    /*
-     * Additional tags for Confidential Ledger
-     */
-    private Map<String, String> tags;
 
     /*
      * The type of the resource.
@@ -81,52 +71,12 @@ public final class ConfidentialLedgerInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
-    }
-
-    /**
-     * Get the location property: The Azure location where the Confidential Ledger is running.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The Azure location where the Confidential Ledger is running.
-     * 
-     * @param location the location value to set.
-     * @return the ConfidentialLedgerInner object itself.
-     */
-    public ConfidentialLedgerInner withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the tags property: Additional tags for Confidential Ledger.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Additional tags for Confidential Ledger.
-     * 
-     * @param tags the tags value to set.
-     * @return the ConfidentialLedgerInner object itself.
-     */
-    public ConfidentialLedgerInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
     }
 
     /**
@@ -160,6 +110,24 @@ public final class ConfidentialLedgerInner extends ProxyResource {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ConfidentialLedgerInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ConfidentialLedgerInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -176,9 +144,9 @@ public final class ConfidentialLedgerInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeStringField("location", this.location);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -204,15 +172,15 @@ public final class ConfidentialLedgerInner extends ProxyResource {
                     deserializedConfidentialLedgerInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedConfidentialLedgerInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedConfidentialLedgerInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedConfidentialLedgerInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedConfidentialLedgerInner.properties = LedgerProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedConfidentialLedgerInner.systemData = SystemData.fromJson(reader);
-                } else if ("location".equals(fieldName)) {
-                    deserializedConfidentialLedgerInner.location = reader.getString();
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedConfidentialLedgerInner.tags = tags;
                 } else {
                     reader.skipChildren();
                 }

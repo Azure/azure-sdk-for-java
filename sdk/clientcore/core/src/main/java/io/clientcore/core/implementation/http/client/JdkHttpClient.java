@@ -9,7 +9,6 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.Set;
@@ -38,11 +37,11 @@ public final class JdkHttpClient implements HttpClient {
      */
     public JdkHttpClient(Object httpClient, Set<String> restrictedHeaders, Duration writeTimeout,
         Duration responseTimeout, Duration readTimeout) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 
     @Override
-    public Response<BinaryData> send(HttpRequest request) throws IOException {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
+    public Response<BinaryData> send(HttpRequest request) {
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
     }
 }

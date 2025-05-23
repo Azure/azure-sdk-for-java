@@ -3,7 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.tracing.Span;
@@ -24,7 +24,7 @@ import io.clientcore.core.instrumentation.tracing.Span;
  * You can also receive logs describing generated spans by enabling {library-name}.tracing
  * logger at INFO level.
  * <p>
- * You can pass custom correlation IDs (following W3C Trace Context format) in {@link RequestOptions}.
+ * You can pass custom correlation IDs (following W3C Trace Context format) in {@link RequestContext}.
  */
 public class TelemetryJavaDocCodeSnippets {
 
@@ -98,11 +98,12 @@ public class TelemetryJavaDocCodeSnippets {
 
         SampleClient client = new SampleClientBuilder().build();
 
-        RequestOptions options = new RequestOptions()
-            .setInstrumentationContext(new MyInstrumentationContext("e4eaaaf2d48f4bf3b299a8a2a2a77ad7", "5e0c63257de34c56"));
+        RequestContext context = RequestContext.builder()
+            .setInstrumentationContext(new MyInstrumentationContext("e4eaaaf2d48f4bf3b299a8a2a2a77ad7", "5e0c63257de34c56"))
+            .build();
 
         // run on another thread
-        client.downloadContent(options);
+        client.downloadContent(context);
 
         // END: io.clientcore.core.telemetry.fallback.correlationwithexplicitcontext
     }

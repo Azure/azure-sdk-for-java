@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ProductContract;
@@ -22,34 +22,34 @@ public final class ProductsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"ktdmewwlkryzmpgq\",\"description\":\"htctxxregyk\",\"terms\":\"pa\",\"subscriptionRequired\":true,\"approvalRequired\":true,\"subscriptionsLimit\":1995288947,\"state\":\"notPublished\"},\"id\":\"zhdxit\",\"name\":\"dljgrpqu\",\"type\":\"fxg\"}";
+            = "{\"properties\":{\"displayName\":\"qjcphofyoqfvm\",\"description\":\"plxmuzltnne\",\"terms\":\"ghgtejtyxlsycck\",\"subscriptionRequired\":true,\"approvalRequired\":true,\"subscriptionsLimit\":1282487413,\"state\":\"notPublished\"},\"id\":\"ocjuuxqnk\",\"name\":\"c\",\"type\":\"mrwc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProductContract response = manager.products()
-            .define("yutexnzhdmcgvj")
-            .withExistingService("fvkiw", "qnwmytcctir")
-            .withDisplayName("ybfarkhkoqcudn")
-            .withDescription("oyh")
-            .withTerms("jjhq")
-            .withSubscriptionRequired(true)
-            .withApprovalRequired(true)
-            .withSubscriptionsLimit(1048361350)
-            .withState(ProductState.NOT_PUBLISHED)
-            .withIfMatch("lkwqisnlpaymket")
+            .define("eohoygowdzizzu")
+            .withExistingService("sqiwlm", "gjto")
+            .withDisplayName("orcppqvovsir")
+            .withDescription("sepiplpexhh")
+            .withTerms("atlepzbiroxamn")
+            .withSubscriptionRequired(false)
+            .withApprovalRequired(false)
+            .withSubscriptionsLimit(1510812606)
+            .withState(ProductState.PUBLISHED)
+            .withIfMatch("xdmppib")
             .create();
 
-        Assertions.assertEquals("ktdmewwlkryzmpgq", response.displayName());
-        Assertions.assertEquals("htctxxregyk", response.description());
-        Assertions.assertEquals("pa", response.terms());
-        Assertions.assertEquals(true, response.subscriptionRequired());
-        Assertions.assertEquals(true, response.approvalRequired());
-        Assertions.assertEquals(1995288947, response.subscriptionsLimit());
+        Assertions.assertEquals("qjcphofyoqfvm", response.displayName());
+        Assertions.assertEquals("plxmuzltnne", response.description());
+        Assertions.assertEquals("ghgtejtyxlsycck", response.terms());
+        Assertions.assertTrue(response.subscriptionRequired());
+        Assertions.assertTrue(response.approvalRequired());
+        Assertions.assertEquals(1282487413, response.subscriptionsLimit());
         Assertions.assertEquals(ProductState.NOT_PUBLISHED, response.state());
     }
 }

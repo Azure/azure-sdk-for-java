@@ -13,16 +13,16 @@ public final class UpdateSapVirtualInstancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateSapVirtualInstanceProperties model
-            = BinaryData.fromString("{\"managedResourcesNetworkAccessType\":\"Private\"}")
+            = BinaryData.fromString("{\"managedResourcesNetworkAccessType\":\"Public\"}")
                 .toObject(UpdateSapVirtualInstanceProperties.class);
-        Assertions.assertEquals(ManagedResourcesNetworkAccessType.PRIVATE, model.managedResourcesNetworkAccessType());
+        Assertions.assertEquals(ManagedResourcesNetworkAccessType.PUBLIC, model.managedResourcesNetworkAccessType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateSapVirtualInstanceProperties model = new UpdateSapVirtualInstanceProperties()
-            .withManagedResourcesNetworkAccessType(ManagedResourcesNetworkAccessType.PRIVATE);
+            .withManagedResourcesNetworkAccessType(ManagedResourcesNetworkAccessType.PUBLIC);
         model = BinaryData.fromObject(model).toObject(UpdateSapVirtualInstanceProperties.class);
-        Assertions.assertEquals(ManagedResourcesNetworkAccessType.PRIVATE, model.managedResourcesNetworkAccessType());
+        Assertions.assertEquals(ManagedResourcesNetworkAccessType.PUBLIC, model.managedResourcesNetworkAccessType());
     }
 }

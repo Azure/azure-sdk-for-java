@@ -15,7 +15,7 @@ import java.util.Collection;
 public final class DocumentIntelligenceLayoutSkillOutputMode
     extends ExpandableStringEnum<DocumentIntelligenceLayoutSkillOutputMode> {
     /**
-     * Specify the deepest markdown header section to parse.
+     * Specify that the output should be parsed as 'oneToMany'.
      */
     public static final DocumentIntelligenceLayoutSkillOutputMode ONE_TO_MANY = fromString("oneToMany");
 

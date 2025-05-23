@@ -74,6 +74,16 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
     private SqlServerLicenseType sqlServerLicenseType;
 
     /*
+     * The license type for Linux VM's.
+     */
+    private LinuxLicenseType linuxLicenseType;
+
+    /*
+     * The OS name selected by user.
+     */
+    private String userSelectedOSName;
+
+    /*
      * The list of disk update properties.
      */
     private List<UpdateDiskInput> vmDisks;
@@ -304,6 +314,47 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
     }
 
     /**
+     * Get the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @return the linuxLicenseType value.
+     */
+    public LinuxLicenseType linuxLicenseType() {
+        return this.linuxLicenseType;
+    }
+
+    /**
+     * Set the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @param linuxLicenseType the linuxLicenseType value to set.
+     * @return the HyperVReplicaAzureUpdateReplicationProtectedItemInput object itself.
+     */
+    public HyperVReplicaAzureUpdateReplicationProtectedItemInput
+        withLinuxLicenseType(LinuxLicenseType linuxLicenseType) {
+        this.linuxLicenseType = linuxLicenseType;
+        return this;
+    }
+
+    /**
+     * Get the userSelectedOSName property: The OS name selected by user.
+     * 
+     * @return the userSelectedOSName value.
+     */
+    public String userSelectedOSName() {
+        return this.userSelectedOSName;
+    }
+
+    /**
+     * Set the userSelectedOSName property: The OS name selected by user.
+     * 
+     * @param userSelectedOSName the userSelectedOSName value to set.
+     * @return the HyperVReplicaAzureUpdateReplicationProtectedItemInput object itself.
+     */
+    public HyperVReplicaAzureUpdateReplicationProtectedItemInput withUserSelectedOSName(String userSelectedOSName) {
+        this.userSelectedOSName = userSelectedOSName;
+        return this;
+    }
+
+    /**
      * Get the vmDisks property: The list of disk update properties.
      * 
      * @return the vmDisks value.
@@ -355,6 +406,9 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
         jsonWriter.writeMapField("targetNicTags", this.targetNicTags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("sqlServerLicenseType",
             this.sqlServerLicenseType == null ? null : this.sqlServerLicenseType.toString());
+        jsonWriter.writeStringField("linuxLicenseType",
+            this.linuxLicenseType == null ? null : this.linuxLicenseType.toString());
+        jsonWriter.writeStringField("userSelectedOSName", this.userSelectedOSName);
         jsonWriter.writeArrayField("vmDisks", this.vmDisks, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -410,6 +464,12 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
                 } else if ("sqlServerLicenseType".equals(fieldName)) {
                     deserializedHyperVReplicaAzureUpdateReplicationProtectedItemInput.sqlServerLicenseType
                         = SqlServerLicenseType.fromString(reader.getString());
+                } else if ("linuxLicenseType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureUpdateReplicationProtectedItemInput.linuxLicenseType
+                        = LinuxLicenseType.fromString(reader.getString());
+                } else if ("userSelectedOSName".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureUpdateReplicationProtectedItemInput.userSelectedOSName
+                        = reader.getString();
                 } else if ("vmDisks".equals(fieldName)) {
                     List<UpdateDiskInput> vmDisks = reader.readArray(reader1 -> UpdateDiskInput.fromJson(reader1));
                     deserializedHyperVReplicaAzureUpdateReplicationProtectedItemInput.vmDisks = vmDisks;

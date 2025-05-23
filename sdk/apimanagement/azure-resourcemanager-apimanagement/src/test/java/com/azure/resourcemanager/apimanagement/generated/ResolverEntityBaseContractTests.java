@@ -12,21 +12,21 @@ public final class ResolverEntityBaseContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResolverEntityBaseContract model = BinaryData
-            .fromString("{\"displayName\":\"xihspnxwq\",\"path\":\"nepzwakls\",\"description\":\"bqqqagwwrxa\"}")
+            .fromString("{\"displayName\":\"xltbsjuscvsf\",\"path\":\"gctmgxuupbezq\",\"description\":\"ydrtc\"}")
             .toObject(ResolverEntityBaseContract.class);
-        Assertions.assertEquals("xihspnxwq", model.displayName());
-        Assertions.assertEquals("nepzwakls", model.path());
-        Assertions.assertEquals("bqqqagwwrxa", model.description());
+        Assertions.assertEquals("xltbsjuscvsf", model.displayName());
+        Assertions.assertEquals("gctmgxuupbezq", model.path());
+        Assertions.assertEquals("ydrtc", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResolverEntityBaseContract model = new ResolverEntityBaseContract().withDisplayName("xihspnxwq")
-            .withPath("nepzwakls")
-            .withDescription("bqqqagwwrxa");
+        ResolverEntityBaseContract model = new ResolverEntityBaseContract().withDisplayName("xltbsjuscvsf")
+            .withPath("gctmgxuupbezq")
+            .withDescription("ydrtc");
         model = BinaryData.fromObject(model).toObject(ResolverEntityBaseContract.class);
-        Assertions.assertEquals("xihspnxwq", model.displayName());
-        Assertions.assertEquals("nepzwakls", model.path());
-        Assertions.assertEquals("bqqqagwwrxa", model.description());
+        Assertions.assertEquals("xltbsjuscvsf", model.displayName());
+        Assertions.assertEquals("gctmgxuupbezq", model.path());
+        Assertions.assertEquals("ydrtc", model.description());
     }
 }

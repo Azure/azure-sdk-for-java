@@ -153,6 +153,7 @@ public final class Constants {
         public static final String DISTANCE_FUNCTION = "distanceFunction";
         public static final String VECTOR_QUANTIZATION_SIZE_IN_BYTES = "quantizationByteSize";
         public static final String VECTOR_INDEXING_SEARCH_LIST_SIZE =  "indexingSearchListSize";
+        public static final String VECTOR_INDEX_SHARD_KEYS = "vectorIndexShardKeys";
 
         // Unique index.
         public static final String UNIQUE_KEY_POLICY = "uniqueKeyPolicy";
@@ -199,7 +200,10 @@ public final class Constants {
         public static final String Name = "name";
         public static final String WRITABLE_LOCATIONS = "writableLocations";
         public static final String READABLE_LOCATIONS = "readableLocations";
+        public static final String THINCLIENT_WRITABLE_LOCATIONS = "thinClientWritableLocations";
+        public static final String THINCLIENT_READABLE_LOCATIONS = "thinClientReadableLocations";
         public static final String DATABASE_ACCOUNT_ENDPOINT = "databaseAccountEndpoint";
+        public static final String ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR = "enablePerPartitionFailoverBehavior";
 
       //Authorization
         public static final String MASTER_TOKEN = "master";

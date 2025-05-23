@@ -64,7 +64,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>2.11.0-beta.1</version>
+    <version>2.10.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -172,8 +172,8 @@ String result = null;
 
 try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
     HttpGet httpGet = new HttpGet("https://localhost:8765");
-    ResponseHandler<String> responseHandler = (HttpResponse response) -> {
-        int status = response.getStatusLine().getStatusCode();
+    HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
+        int status = response.getCode();
         String result1 = "Not success";
         if (status == 200) {
             result1 = EntityUtils.toString(response.getEntity());
@@ -276,8 +276,8 @@ String result = null;
 
 try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
     HttpGet httpGet = new HttpGet("https://localhost:8765");
-    ResponseHandler<String> responseHandler = (HttpResponse response) -> {
-        int status = response.getStatusLine().getStatusCode();
+    HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
+        int status = response.getCode();
         String result1 = "Not success";
         if (status == 200) {
             result1 = EntityUtils.toString(response.getEntity());

@@ -159,8 +159,8 @@ public final class DatabasesImpl implements Databases {
             .forceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters, context);
     }
 
-    public void flush(String resourceGroupName, String clusterName, String databaseName, FlushParameters parameters) {
-        this.serviceClient().flush(resourceGroupName, clusterName, databaseName, parameters);
+    public void flush(String resourceGroupName, String clusterName, String databaseName) {
+        this.serviceClient().flush(resourceGroupName, clusterName, databaseName);
     }
 
     public void flush(String resourceGroupName, String clusterName, String databaseName, FlushParameters parameters,

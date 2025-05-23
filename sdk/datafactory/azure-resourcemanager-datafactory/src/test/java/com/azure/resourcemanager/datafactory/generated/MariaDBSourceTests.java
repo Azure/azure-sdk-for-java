@@ -11,19 +11,19 @@ public final class MariaDBSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MariaDBSource model = BinaryData.fromString(
-            "{\"type\":\"MariaDBSource\",\"query\":\"datawevlohuahl\",\"queryTimeout\":\"datacboxgpmmz\",\"additionalColumns\":\"dataoyllxc\",\"sourceRetryCount\":\"datahzylspz\",\"sourceRetryWait\":\"datarhynlbtr\",\"maxConcurrentConnections\":\"dataecvag\",\"disableMetricsCollection\":\"datarhadg\",\"\":{\"hiafbhzdjv\":\"datarasxeomjqqhbkxi\",\"ggbpdpzgvq\":\"datayrzi\",\"lvxilaytj\":\"dataznxzaliicrutyhm\",\"ghqdlj\":\"datawfqzwn\"}}")
+            "{\"type\":\"MariaDBSource\",\"query\":\"datarhc\",\"queryTimeout\":\"datasvmp\",\"additionalColumns\":\"datarzilvcncdazw\",\"sourceRetryCount\":\"datagoravovqpn\",\"sourceRetryWait\":\"dataufvggv\",\"maxConcurrentConnections\":\"datamezfyelf\",\"disableMetricsCollection\":\"databkbhjdkqfj\",\"\":{\"ynkihbfix\":\"datazjtmakhga\"}}")
             .toObject(MariaDBSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MariaDBSource model = new MariaDBSource().withSourceRetryCount("datahzylspz")
-            .withSourceRetryWait("datarhynlbtr")
-            .withMaxConcurrentConnections("dataecvag")
-            .withDisableMetricsCollection("datarhadg")
-            .withQueryTimeout("datacboxgpmmz")
-            .withAdditionalColumns("dataoyllxc")
-            .withQuery("datawevlohuahl");
+        MariaDBSource model = new MariaDBSource().withSourceRetryCount("datagoravovqpn")
+            .withSourceRetryWait("dataufvggv")
+            .withMaxConcurrentConnections("datamezfyelf")
+            .withDisableMetricsCollection("databkbhjdkqfj")
+            .withQueryTimeout("datasvmp")
+            .withAdditionalColumns("datarzilvcncdazw")
+            .withQuery("datarhc");
         model = BinaryData.fromObject(model).toObject(MariaDBSource.class);
     }
 }

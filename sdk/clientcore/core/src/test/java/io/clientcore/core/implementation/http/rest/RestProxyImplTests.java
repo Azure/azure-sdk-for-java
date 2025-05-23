@@ -13,18 +13,12 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.serialization.json.JsonSerializer;
-import io.clientcore.core.utils.Context;
 import io.clientcore.core.models.binarydata.BinaryData;
-import org.junit.jupiter.api.Named;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
+import io.clientcore.core.serialization.json.JsonSerializer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +26,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Named;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static io.clientcore.core.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,10 +51,10 @@ public class RestProxyImplTests {
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength,
-            Context context);
+            RequestContext context);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-        void testVoidMethod(Context context);
+        void testVoidMethod(RequestContext context);
     }
 
     @Test
@@ -64,7 +63,7 @@ public class RestProxyImplTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
-        testInterface.testVoidMethod(Context.none());
+        testInterface.testVoidMethod(RequestContext.none());
 
         assertTrue(client.lastResponseClosed);
     }
@@ -77,7 +76,7 @@ public class RestProxyImplTests {
         byte[] bytes = "hello".getBytes();
         Response<Void> response
             = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length),
-                "application/json", (long) bytes.length, Context.none());
+                "application/json", (long) bytes.length, RequestContext.none());
 
         assertEquals(200, response.getStatusCode());
     }
@@ -97,7 +96,7 @@ public class RestProxyImplTests {
 
             return new Response<BinaryData>(request, success ? 200 : 400, new HttpHeaders(), BinaryData.empty()) {
                 @Override
-                public void close() throws IOException {
+                public void close() {
                     lastResponseClosed = true;
 
                     super.close();

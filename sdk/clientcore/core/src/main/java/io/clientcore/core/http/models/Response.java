@@ -3,6 +3,9 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
+
 import java.io.Closeable;
 import java.io.IOException;
 
@@ -12,6 +15,7 @@ import java.io.IOException;
  * @param <T> The deserialized type of the response content, available from {@link #getValue()}.
  */
 public class Response<T> implements Closeable {
+    private static final ClientLogger LOGGER = new ClientLogger(Response.class);
     private final HttpHeaders headers;
     private final HttpRequest request;
     private final int statusCode;
@@ -71,12 +75,16 @@ public class Response<T> implements Closeable {
     /**
      * If {@link #getValue()} is a {@link Closeable} type, this method will close it.
      *
-     * @throws IOException If an error occurs while closing the response.
+     * @throws CoreException If an error occurs while closing the response.
      */
     @Override
-    public void close() throws IOException {
+    public void close() {
         if (value instanceof Closeable) {
-            ((Closeable) value).close();
+            try {
+                ((Closeable) value).close();
+            } catch (IOException e) {
+                throw LOGGER.throwableAtError().log(e, (msg, cause) -> CoreException.from(msg, cause, false));
+            }
         }
     }
 }

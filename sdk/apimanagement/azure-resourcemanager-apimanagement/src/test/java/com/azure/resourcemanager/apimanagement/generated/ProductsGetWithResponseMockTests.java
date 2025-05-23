@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ProductContract;
@@ -22,25 +22,25 @@ public final class ProductsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"tp\",\"description\":\"ofkwhgyzwfy\",\"terms\":\"bvooelmi\",\"subscriptionRequired\":false,\"approvalRequired\":true,\"subscriptionsLimit\":1011648765,\"state\":\"notPublished\"},\"id\":\"jsmvsiyqmlmwjwsm\",\"name\":\"wbmacvemmriyz\",\"type\":\"vque\"}";
+            = "{\"properties\":{\"displayName\":\"krzvd\",\"description\":\"cevbkk\",\"terms\":\"fjwgp\",\"subscriptionRequired\":true,\"approvalRequired\":false,\"subscriptionsLimit\":423056256,\"state\":\"notPublished\"},\"id\":\"fqzwysmsqqmdajsq\",\"name\":\"pxftyifadsliif\",\"type\":\"rbsrpjspbi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProductContract response = manager.products()
-            .getWithResponse("l", "oepeqlhbtysy", "zeq", com.azure.core.util.Context.NONE)
+            .getWithResponse("nazpgvfcubxlmq", "edbqrlbyhzyf", "u", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tp", response.displayName());
-        Assertions.assertEquals("ofkwhgyzwfy", response.description());
-        Assertions.assertEquals("bvooelmi", response.terms());
-        Assertions.assertEquals(false, response.subscriptionRequired());
-        Assertions.assertEquals(true, response.approvalRequired());
-        Assertions.assertEquals(1011648765, response.subscriptionsLimit());
+        Assertions.assertEquals("krzvd", response.displayName());
+        Assertions.assertEquals("cevbkk", response.description());
+        Assertions.assertEquals("fjwgp", response.terms());
+        Assertions.assertTrue(response.subscriptionRequired());
+        Assertions.assertFalse(response.approvalRequired());
+        Assertions.assertEquals(423056256, response.subscriptionsLimit());
         Assertions.assertEquals(ProductState.NOT_PUBLISHED, response.state());
     }
 }

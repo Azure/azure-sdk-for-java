@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.3 (Unreleased)
+## 2.1.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,65 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.1.0-beta.3 (2025-05-06)
+
+- Azure Resource Manager RedisEnterprise client library for Java. This package contains Microsoft Azure SDK for RedisEnterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package tag package-preview-2025-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ForceLinkParameters` was modified
+
+* `linkedDatabases()` was removed
+* `groupNickname()` was removed
+* `withGroupNickname(java.lang.String)` was removed
+* `withLinkedDatabases(java.util.List)` was removed
+
+#### `models.Database` was modified
+
+* `flush(models.FlushParameters)` was removed
+
+#### `models.Databases` was modified
+
+* `flush(java.lang.String,java.lang.String,java.lang.String,models.FlushParameters)` was removed
+
+### Features Added
+
+* `models.Kind` was added
+
+* `models.ForceLinkParametersGeoReplication` was added
+
+* `models.SkuDetailsList` was added
+
+* `models.SkuDetails` was added
+
+#### `models.RedisEnterprises` was modified
+
+* `listSkusForScalingWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listSkusForScaling(java.lang.String,java.lang.String)` was added
+
+#### `models.Database$Update` was modified
+
+* `withClusteringPolicy(models.ClusteringPolicy)` was added
+
+#### `models.ForceLinkParameters` was modified
+
+* `geoReplication()` was added
+* `withGeoReplication(models.ForceLinkParametersGeoReplication)` was added
+
+#### `models.Database` was modified
+
+* `flush()` was added
+
+#### `models.Cluster` was modified
+
+* `listSkusForScalingWithResponse(com.azure.core.util.Context)` was added
+* `listSkusForScaling()` was added
+* `kind()` was added
+
+#### `models.Databases` was modified
+
+* `flush(java.lang.String,java.lang.String,java.lang.String)` was added
 
 ## 2.1.0-beta.2 (2024-10-21)
 

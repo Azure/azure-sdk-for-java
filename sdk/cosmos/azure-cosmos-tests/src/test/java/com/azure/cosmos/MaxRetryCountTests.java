@@ -66,7 +66,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.fail;
 @SuppressWarnings("SameParameterValue")
 public class MaxRetryCountTests extends TestSuiteBase {
     private static final int PHYSICAL_PARTITION_COUNT = 3;
-    private final static Logger logger = LoggerFactory.getLogger(FaultInjectionWithAvailabilityStrategyTests.class);
+    private final static Logger logger = LoggerFactory.getLogger(MaxRetryCountTests.class);
 
     private final static String sameDocumentIdJustCreated = null;
 
@@ -120,9 +120,9 @@ public class MaxRetryCountTests extends TestSuiteBase {
             assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
         };
 
-    private final static BiConsumer<Integer, Integer> validateStatusCodeIsServerTimeoutGenerated410ForWrite =
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsRequestTimeoutAndSubStatusCodeIsServerGenerated408ForWrite =
         (statusCode, subStatusCode) -> {
-            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.GONE);
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
             assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_408);
         };
 
@@ -1055,7 +1055,10 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
                 sameDocumentIdJustCreated,
                 injectServerTimeoutErrorIntoAllRegions,
-                validateStatusCodeIsServerTimeoutGenerated410ForWrite, // when idempotent write is disabled, SDK will not retry for write operation, 410 will be bubbled up
+                // when idempotent write is disabled, SDK will not retry for write operation,
+                // 408 will wrap 410 so 408 will be bubbled up (408s are not ordinarily retriable for writes so retry behavior is preserved)
+                // In PPAF scenarios, 408 can be used as signal to mark partition as unavailable for writes
+                validateStatusCodeIsRequestTimeoutAndSubStatusCodeIsServerGenerated408ForWrite,
                 (TriConsumer<Integer, ConsistencyLevel, OperationType>)(requestCount, consistencyLevel, operationType) ->
                     assertThat(requestCount).isLessThanOrEqualTo(
                         expectedMaxNumberOfRetriesForTransientTimeout(

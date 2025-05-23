@@ -56,7 +56,7 @@ public final class WebhookActivity extends ControlActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private WebhookActivityTypeProperties innerTypeProperties() {
+    WebhookActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

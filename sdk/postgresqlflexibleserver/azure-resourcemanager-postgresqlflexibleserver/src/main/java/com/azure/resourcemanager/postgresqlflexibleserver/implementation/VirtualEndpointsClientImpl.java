@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualEndpointsClient;
@@ -84,10 +86,32 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/virtualendpoints/{virtualEndpointName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("virtualEndpointName") String virtualEndpointName,
+            @BodyParam("application/json") VirtualEndpointResourceInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/virtualendpoints/{virtualEndpointName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("virtualEndpointName") String virtualEndpointName,
+            @BodyParam("application/json") VirtualEndpointResourceForPatch parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/virtualendpoints/{virtualEndpointName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("virtualEndpointName") String virtualEndpointName,
@@ -105,10 +129,30 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/virtualendpoints/{virtualEndpointName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("virtualEndpointName") String virtualEndpointName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/virtualendpoints/{virtualEndpointName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualEndpointResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("virtualEndpointName") String virtualEndpointName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/virtualendpoints/{virtualEndpointName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<VirtualEndpointResourceInner> getSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("virtualEndpointName") String virtualEndpointName, @HeaderParam("Accept") String accept,
@@ -124,10 +168,27 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/virtualendpoints")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<VirtualEndpointsListResult> listByServerSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualEndpointsListResult>> listByServerNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<VirtualEndpointsListResult> listByServerNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -187,44 +248,96 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
      * @param parameters The required parameters for creating or updating virtual endpoints.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a virtual endpoint for a server along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return represents a virtual endpoint for a server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
-        String virtualEndpointName, VirtualEndpointResourceInner parameters, Context context) {
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String serverName,
+        String virtualEndpointName, VirtualEndpointResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (virtualEndpointName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualEndpointName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter virtualEndpointName is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, serverName, virtualEndpointName, parameters, accept, context);
+        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, virtualEndpointName, parameters, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Creates a new virtual endpoint for PostgreSQL flexible server.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param parameters The required parameters for creating or updating virtual endpoints.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a virtual endpoint for a server along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String serverName,
+        String virtualEndpointName, VirtualEndpointResourceInner parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (virtualEndpointName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter virtualEndpointName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, virtualEndpointName, parameters, accept,
+            context);
     }
 
     /**
@@ -257,31 +370,6 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
      * @param parameters The required parameters for creating or updating virtual endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a virtual endpoint for a server.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginCreateAsync(
-        String resourceGroupName, String serverName, String virtualEndpointName,
-        VirtualEndpointResourceInner parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceGroupName, serverName, virtualEndpointName, parameters, context);
-        return this.client.<VirtualEndpointResourceInner, VirtualEndpointResourceInner>getLroResult(mono,
-            this.client.getHttpPipeline(), VirtualEndpointResourceInner.class, VirtualEndpointResourceInner.class,
-            context);
-    }
-
-    /**
-     * Creates a new virtual endpoint for PostgreSQL flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for creating or updating virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -291,7 +379,10 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     public SyncPoller<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginCreate(
         String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceInner parameters) {
-        return this.beginCreateAsync(resourceGroupName, serverName, virtualEndpointName, parameters).getSyncPoller();
+        Response<BinaryData> response
+            = createWithResponse(resourceGroupName, serverName, virtualEndpointName, parameters);
+        return this.client.<VirtualEndpointResourceInner, VirtualEndpointResourceInner>getLroResult(response,
+            VirtualEndpointResourceInner.class, VirtualEndpointResourceInner.class, Context.NONE);
     }
 
     /**
@@ -311,8 +402,10 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     public SyncPoller<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginCreate(
         String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceInner parameters, Context context) {
-        return this.beginCreateAsync(resourceGroupName, serverName, virtualEndpointName, parameters, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createWithResponse(resourceGroupName, serverName, virtualEndpointName, parameters, context);
+        return this.client.<VirtualEndpointResourceInner, VirtualEndpointResourceInner>getLroResult(response,
+            VirtualEndpointResourceInner.class, VirtualEndpointResourceInner.class, context);
     }
 
     /**
@@ -341,26 +434,6 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
      * @param parameters The required parameters for creating or updating virtual endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a virtual endpoint for a server on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualEndpointResourceInner> createAsync(String resourceGroupName, String serverName,
-        String virtualEndpointName, VirtualEndpointResourceInner parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, serverName, virtualEndpointName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates a new virtual endpoint for PostgreSQL flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for creating or updating virtual endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -369,7 +442,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualEndpointResourceInner create(String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceInner parameters) {
-        return createAsync(resourceGroupName, serverName, virtualEndpointName, parameters).block();
+        return beginCreate(resourceGroupName, serverName, virtualEndpointName, parameters).getFinalResult();
     }
 
     /**
@@ -388,7 +461,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualEndpointResourceInner create(String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceInner parameters, Context context) {
-        return createAsync(resourceGroupName, serverName, virtualEndpointName, parameters, context).block();
+        return beginCreate(resourceGroupName, serverName, virtualEndpointName, parameters, context).getFinalResult();
     }
 
     /**
@@ -448,44 +521,97 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
      * @param parameters The required parameters for updating a server.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a virtual endpoint for a server along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return represents a virtual endpoint for a server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
-        String virtualEndpointName, VirtualEndpointResourceForPatch parameters, Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String serverName,
+        String virtualEndpointName, VirtualEndpointResourceForPatch parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (virtualEndpointName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualEndpointName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter virtualEndpointName is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, serverName, virtualEndpointName, parameters, accept, context);
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, virtualEndpointName, parameters, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
+     * normal virtual endpoint definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param virtualEndpointName The name of the virtual endpoint.
+     * @param parameters The required parameters for updating a server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a virtual endpoint for a server along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String serverName,
+        String virtualEndpointName, VirtualEndpointResourceForPatch parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (virtualEndpointName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter virtualEndpointName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, virtualEndpointName, parameters, accept,
+            context);
     }
 
     /**
@@ -520,32 +646,6 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
      * @param parameters The required parameters for updating a server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a virtual endpoint for a server.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginUpdateAsync(
-        String resourceGroupName, String serverName, String virtualEndpointName,
-        VirtualEndpointResourceForPatch parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, serverName, virtualEndpointName, parameters, context);
-        return this.client.<VirtualEndpointResourceInner, VirtualEndpointResourceInner>getLroResult(mono,
-            this.client.getHttpPipeline(), VirtualEndpointResourceInner.class, VirtualEndpointResourceInner.class,
-            context);
-    }
-
-    /**
-     * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
-     * normal virtual endpoint definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -555,7 +655,10 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     public SyncPoller<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginUpdate(
         String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceForPatch parameters) {
-        return this.beginUpdateAsync(resourceGroupName, serverName, virtualEndpointName, parameters).getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, serverName, virtualEndpointName, parameters);
+        return this.client.<VirtualEndpointResourceInner, VirtualEndpointResourceInner>getLroResult(response,
+            VirtualEndpointResourceInner.class, VirtualEndpointResourceInner.class, Context.NONE);
     }
 
     /**
@@ -576,8 +679,10 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     public SyncPoller<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginUpdate(
         String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceForPatch parameters, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, serverName, virtualEndpointName, parameters, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, serverName, virtualEndpointName, parameters, context);
+        return this.client.<VirtualEndpointResourceInner, VirtualEndpointResourceInner>getLroResult(response,
+            VirtualEndpointResourceInner.class, VirtualEndpointResourceInner.class, context);
     }
 
     /**
@@ -608,27 +713,6 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
      * @param parameters The required parameters for updating a server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a virtual endpoint for a server on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualEndpointResourceInner> updateAsync(String resourceGroupName, String serverName,
-        String virtualEndpointName, VirtualEndpointResourceForPatch parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, virtualEndpointName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
-     * normal virtual endpoint definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
-     * @param parameters The required parameters for updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -637,7 +721,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualEndpointResourceInner update(String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceForPatch parameters) {
-        return updateAsync(resourceGroupName, serverName, virtualEndpointName, parameters).block();
+        return beginUpdate(resourceGroupName, serverName, virtualEndpointName, parameters).getFinalResult();
     }
 
     /**
@@ -657,7 +741,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualEndpointResourceInner update(String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceForPatch parameters, Context context) {
-        return updateAsync(resourceGroupName, serverName, virtualEndpointName, parameters, context).block();
+        return beginUpdate(resourceGroupName, serverName, virtualEndpointName, parameters, context).getFinalResult();
     }
 
     /**
@@ -706,38 +790,81 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String serverName,
+        String virtualEndpointName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (virtualEndpointName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter virtualEndpointName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, virtualEndpointName, accept, Context.NONE);
+    }
+
+    /**
+     * Deletes a virtual endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param virtualEndpointName The name of the virtual endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String serverName,
         String virtualEndpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (virtualEndpointName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualEndpointName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter virtualEndpointName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, serverName, virtualEndpointName, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, virtualEndpointName, accept, context);
     }
 
     /**
@@ -766,28 +893,6 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
-        String virtualEndpointName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, serverName, virtualEndpointName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes a virtual endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -796,7 +901,8 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String virtualEndpointName) {
-        return this.beginDeleteAsync(resourceGroupName, serverName, virtualEndpointName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, serverName, virtualEndpointName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -814,7 +920,8 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String virtualEndpointName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, serverName, virtualEndpointName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, serverName, virtualEndpointName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -840,32 +947,13 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String serverName, String virtualEndpointName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, virtualEndpointName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a virtual endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String virtualEndpointName) {
-        deleteAsync(resourceGroupName, serverName, virtualEndpointName).block();
+        beginDelete(resourceGroupName, serverName, virtualEndpointName).getFinalResult();
     }
 
     /**
@@ -881,7 +969,7 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String virtualEndpointName, Context context) {
-        deleteAsync(resourceGroupName, serverName, virtualEndpointName, context).block();
+        beginDelete(resourceGroupName, serverName, virtualEndpointName, context).getFinalResult();
     }
 
     /**
@@ -931,47 +1019,6 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a virtual endpoint along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualEndpointResourceInner>> getWithResponseAsync(String resourceGroupName,
-        String serverName, String virtualEndpointName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (virtualEndpointName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualEndpointName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, serverName, virtualEndpointName, accept, context);
-    }
-
-    /**
-     * Gets information about a virtual endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualEndpointName The name of the virtual endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -999,7 +1046,31 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualEndpointResourceInner> getWithResponse(String resourceGroupName, String serverName,
         String virtualEndpointName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, virtualEndpointName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (virtualEndpointName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter virtualEndpointName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serverName, virtualEndpointName, accept, context);
     }
 
     /**
@@ -1060,44 +1131,6 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual endpoints along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualEndpointResourceInner>> listByServerSinglePageAsync(String resourceGroupName,
-        String serverName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByServer(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, serverName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List all the servers in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1114,17 +1147,78 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual endpoints along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<VirtualEndpointResourceInner> listByServerSinglePage(String resourceGroupName,
+        String serverName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<VirtualEndpointsListResult> res
+            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List all the servers in a given resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual endpoints as paginated response with {@link PagedFlux}.
+     * @return a list of virtual endpoints along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualEndpointResourceInner> listByServerAsync(String resourceGroupName, String serverName,
-        Context context) {
-        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
-            nextLink -> listByServerNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<VirtualEndpointResourceInner> listByServerSinglePage(String resourceGroupName,
+        String serverName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<VirtualEndpointsListResult> res
+            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1139,7 +1233,8 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualEndpointResourceInner> listByServer(String resourceGroupName, String serverName) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
+        return new PagedIterable<>(() -> listByServerSinglePage(resourceGroupName, serverName),
+            nextLink -> listByServerNextSinglePage(nextLink));
     }
 
     /**
@@ -1156,7 +1251,8 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualEndpointResourceInner> listByServer(String resourceGroupName, String serverName,
         Context context) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
+        return new PagedIterable<>(() -> listByServerSinglePage(resourceGroupName, serverName, context),
+            nextLink -> listByServerNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1189,26 +1285,56 @@ public final class VirtualEndpointsClientImpl implements VirtualEndpointsClient 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual endpoints along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<VirtualEndpointResourceInner> listByServerNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<VirtualEndpointsListResult> res
+            = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual endpoints along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of virtual endpoints along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualEndpointResourceInner>> listByServerNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<VirtualEndpointResourceInner> listByServerNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<VirtualEndpointsListResult> res
+            = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualEndpointsClientImpl.class);
 }

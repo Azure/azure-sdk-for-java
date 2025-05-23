@@ -26,12 +26,12 @@ public final class StorageTaskInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageTaskInner model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"41508ce2-c4d1-4dc2-823b-d050dc7baf7e\",\"tenantId\":\"21625193-87cd-4d14-b165-a4f739f50c56\",\"type\":\"None\",\"userAssignedIdentities\":{\"qhabifpikxwcz\":{\"principalId\":\"733bc799-807e-4678-bec2-d909647fb274\",\"clientId\":\"09b627db-3a70-4045-8b0d-dd94866b0b71\"}}},\"properties\":{\"taskVersion\":3372129920897146496,\"enabled\":false,\"description\":\"pqxu\",\"action\":{\"if\":{\"condition\":\"ivyqniwbybrkxvd\",\"operations\":[{\"name\":\"SetBlobTags\",\"parameters\":{\"snhsjcnyejhkryh\":\"tfwvukxgaudc\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]},\"else\":{\"operations\":[{\"name\":\"SetBlobImmutabilityPolicy\",\"parameters\":{\"kkvnipjox\":\"jye\",\"podmailzydehojwy\":\"jnchgej\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"},{\"name\":\"SetBlobImmutabilityPolicy\",\"parameters\":{\"sprozvcput\":\"qnjaqwix\",\"fdatsc\":\"gjvw\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]}},\"provisioningState\":\"Deleting\",\"creationTimeInUtc\":\"2021-02-16T21:00:55Z\"},\"location\":\"uvm\",\"tags\":{\"iodjp\":\"zkrwfn\",\"ryo\":\"lwejdpv\",\"hbcryffdfdosyge\":\"psoacctazakljl\",\"rzevdphlxaol\":\"paojakhmsbzjh\"},\"id\":\"hqtrgqjbpf\",\"name\":\"fsinzgvfcjrwzoxx\",\"type\":\"tfell\"}")
+            "{\"identity\":{\"principalId\":\"36049dc6-25d9-415c-9eb6-712887b3a6a2\",\"tenantId\":\"a3e87f71-d138-4c74-bf14-455e1d90e281\",\"type\":\"None\",\"userAssignedIdentities\":{\"qhabifpikxwcz\":{\"principalId\":\"e34752b1-aa5a-4b86-9664-def16807e4f6\",\"clientId\":\"87a51fe6-d3fe-4165-97a7-1f5865a7c37a\"}}},\"properties\":{\"taskVersion\":3372129920897146496,\"enabled\":false,\"description\":\"pqxu\",\"action\":{\"if\":{\"condition\":\"ivyqniwbybrkxvd\",\"operations\":[{\"name\":\"SetBlobTags\",\"parameters\":{\"snhsjcnyejhkryh\":\"tfwvukxgaudc\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]},\"else\":{\"operations\":[{\"name\":\"SetBlobImmutabilityPolicy\",\"parameters\":{\"kkvnipjox\":\"jye\",\"podmailzydehojwy\":\"jnchgej\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"},{\"name\":\"SetBlobImmutabilityPolicy\",\"parameters\":{\"sprozvcput\":\"qnjaqwix\",\"fdatsc\":\"gjvw\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]}},\"provisioningState\":\"ValidateSubscriptionQuotaBegin\",\"creationTimeInUtc\":\"2021-02-16T21:00:55Z\"},\"location\":\"uvm\",\"tags\":{\"iodjp\":\"zkrwfn\",\"ryo\":\"lwejdpv\",\"hbcryffdfdosyge\":\"psoacctazakljl\",\"rzevdphlxaol\":\"paojakhmsbzjh\"},\"id\":\"hqtrgqjbpf\",\"name\":\"fsinzgvfcjrwzoxx\",\"type\":\"tfell\"}")
             .toObject(StorageTaskInner.class);
         Assertions.assertEquals("uvm", model.location());
         Assertions.assertEquals("zkrwfn", model.tags().get("iodjp"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals(false, model.properties().enabled());
+        Assertions.assertFalse(model.properties().enabled());
         Assertions.assertEquals("pqxu", model.properties().description());
         Assertions.assertEquals("ivyqniwbybrkxvd", model.properties().action().ifProperty().condition());
         Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TAGS,
@@ -89,7 +89,7 @@ public final class StorageTaskInnerTests {
         Assertions.assertEquals("uvm", model.location());
         Assertions.assertEquals("zkrwfn", model.tags().get("iodjp"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals(false, model.properties().enabled());
+        Assertions.assertFalse(model.properties().enabled());
         Assertions.assertEquals("pqxu", model.properties().description());
         Assertions.assertEquals("ivyqniwbybrkxvd", model.properties().action().ifProperty().condition());
         Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TAGS,

@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.3.0-beta.1 (Unreleased)
+### 2.4.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,19 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 2.3.1 (2025-05-14)
+
+#### Bugs Fixed
+* Fixed hang issue in `CosmosPagedIterable#handle` by preventing race conditions in underlying subscription of `Flux<FeedResponse>`. - [PR 45290](https://github.com/Azure/azure-sdk-for-java/pull/45290)
+
+### 2.3.0 (2025-04-23)
+
+#### Bugs Fixed
+* Prevented the usage of different schemas in the `cosmos.metadata.topic` topic helps when a customer selects output Kafka record value format as JSON_SR, AVRO or PROTOBUF (ie any SR format). With this change there is a unified schema used for the metadata topic instead. - See [PR 45018](https://github.com/Azure/azure-sdk-for-java/pull/45018)
+
+#### Other Changes
+* Added `authEndpointOverride` option for all AAD authentication types - See [PR 45016](https://github.com/Azure/azure-sdk-for-java/pull/45016)
 
 ### 2.2.0 (2025-02-20)
 

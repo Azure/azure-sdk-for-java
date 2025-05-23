@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class StartRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StartRequest model = BinaryData.fromString("{\"startVm\":false}").toObject(StartRequest.class);
-        Assertions.assertEquals(false, model.startVm());
+        StartRequest model = BinaryData.fromString("{\"startVm\":true}").toObject(StartRequest.class);
+        Assertions.assertTrue(model.startVm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StartRequest model = new StartRequest().withStartVm(false);
+        StartRequest model = new StartRequest().withStartVm(true);
         model = BinaryData.fromObject(model).toObject(StartRequest.class);
-        Assertions.assertEquals(false, model.startVm());
+        Assertions.assertTrue(model.startVm());
     }
 }

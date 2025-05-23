@@ -70,7 +70,7 @@ public final class Providers<TProvider, TInstance> {
                         .log("Additional provider found on the classpath");
                 }
             } catch (LinkageError | ServiceConfigurationError error) {
-                LOGGER.atWarning().log("Failed to load a provider instance.", error);
+                LOGGER.atWarning().setThrowable(error).log("Failed to load a provider instance.");
             }
         }
 
@@ -116,7 +116,7 @@ public final class Providers<TProvider, TInstance> {
                 TInstance instance = fallbackSupplier == null ? null : fallbackSupplier.get();
 
                 if (instance == null) {
-                    throw LOGGER.logThrowableAsError(new IllegalStateException(noProviderMessage));
+                    throw LOGGER.throwableAtError().log(noProviderMessage, IllegalStateException::new);
                 }
 
                 return instance;
@@ -128,16 +128,16 @@ public final class Providers<TProvider, TInstance> {
 
             if (provider == null) {
                 // No fallback here - user requested specific implementation, and it was not found.
-                throw LOGGER.logThrowableAsError(
-                    new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName)));
+                throw LOGGER.throwableAtError()
+                    .log(formatNoSpecificProviderErrorMessage(implementationName), IllegalStateException::new);
             }
         }
 
         try {
             return createInstance.apply(provider);
         } catch (ClassCastException ex) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName), ex));
+            throw LOGGER.throwableAtError()
+                .log(formatNoSpecificProviderErrorMessage(implementationName), ex, IllegalStateException::new);
         }
     }
 }

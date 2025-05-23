@@ -25,11 +25,23 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.neonpostgres.fluent.NeonPostgresManagementClient;
+import com.azure.resourcemanager.neonpostgres.implementation.BranchesImpl;
+import com.azure.resourcemanager.neonpostgres.implementation.ComputesImpl;
+import com.azure.resourcemanager.neonpostgres.implementation.EndpointsImpl;
+import com.azure.resourcemanager.neonpostgres.implementation.NeonDatabasesImpl;
 import com.azure.resourcemanager.neonpostgres.implementation.NeonPostgresManagementClientBuilder;
+import com.azure.resourcemanager.neonpostgres.implementation.NeonRolesImpl;
 import com.azure.resourcemanager.neonpostgres.implementation.OperationsImpl;
 import com.azure.resourcemanager.neonpostgres.implementation.OrganizationsImpl;
+import com.azure.resourcemanager.neonpostgres.implementation.ProjectsImpl;
+import com.azure.resourcemanager.neonpostgres.models.Branches;
+import com.azure.resourcemanager.neonpostgres.models.Computes;
+import com.azure.resourcemanager.neonpostgres.models.Endpoints;
+import com.azure.resourcemanager.neonpostgres.models.NeonDatabases;
+import com.azure.resourcemanager.neonpostgres.models.NeonRoles;
 import com.azure.resourcemanager.neonpostgres.models.Operations;
 import com.azure.resourcemanager.neonpostgres.models.Organizations;
+import com.azure.resourcemanager.neonpostgres.models.Projects;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -45,6 +57,18 @@ public final class NeonPostgresManager {
     private Operations operations;
 
     private Organizations organizations;
+
+    private Projects projects;
+
+    private Branches branches;
+
+    private Computes computes;
+
+    private NeonDatabases neonDatabases;
+
+    private NeonRoles neonRoles;
+
+    private Endpoints endpoints;
 
     private final NeonPostgresManagementClient clientObject;
 
@@ -283,6 +307,78 @@ public final class NeonPostgresManager {
             this.organizations = new OrganizationsImpl(clientObject.getOrganizations(), this);
         }
         return organizations;
+    }
+
+    /**
+     * Gets the resource collection API of Projects. It manages Project.
+     * 
+     * @return Resource collection API of Projects.
+     */
+    public Projects projects() {
+        if (this.projects == null) {
+            this.projects = new ProjectsImpl(clientObject.getProjects(), this);
+        }
+        return projects;
+    }
+
+    /**
+     * Gets the resource collection API of Branches. It manages Branch.
+     * 
+     * @return Resource collection API of Branches.
+     */
+    public Branches branches() {
+        if (this.branches == null) {
+            this.branches = new BranchesImpl(clientObject.getBranches(), this);
+        }
+        return branches;
+    }
+
+    /**
+     * Gets the resource collection API of Computes.
+     * 
+     * @return Resource collection API of Computes.
+     */
+    public Computes computes() {
+        if (this.computes == null) {
+            this.computes = new ComputesImpl(clientObject.getComputes(), this);
+        }
+        return computes;
+    }
+
+    /**
+     * Gets the resource collection API of NeonDatabases.
+     * 
+     * @return Resource collection API of NeonDatabases.
+     */
+    public NeonDatabases neonDatabases() {
+        if (this.neonDatabases == null) {
+            this.neonDatabases = new NeonDatabasesImpl(clientObject.getNeonDatabases(), this);
+        }
+        return neonDatabases;
+    }
+
+    /**
+     * Gets the resource collection API of NeonRoles.
+     * 
+     * @return Resource collection API of NeonRoles.
+     */
+    public NeonRoles neonRoles() {
+        if (this.neonRoles == null) {
+            this.neonRoles = new NeonRolesImpl(clientObject.getNeonRoles(), this);
+        }
+        return neonRoles;
+    }
+
+    /**
+     * Gets the resource collection API of Endpoints.
+     * 
+     * @return Resource collection API of Endpoints.
+     */
+    public Endpoints endpoints() {
+        if (this.endpoints == null) {
+            this.endpoints = new EndpointsImpl(clientObject.getEndpoints(), this);
+        }
+        return endpoints;
     }
 
     /**

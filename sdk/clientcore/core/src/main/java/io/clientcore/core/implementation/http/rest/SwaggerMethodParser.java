@@ -16,7 +16,7 @@ import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
@@ -24,7 +24,9 @@ import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
+import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.ExpandableEnum;
@@ -276,9 +278,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         for (int i = 0; i < parameterTypes.length; i++) {
             Class<?> parameterType = parameterTypes[i];
 
-            // Check for the RequestOptions position.
+            // Check for the RequestContext position.
             // To retain previous behavior, only track the first instance found.
-            if (parameterType == RequestOptions.class && requestOptionsPosition == -1) {
+            if (parameterType == RequestContext.class && requestOptionsPosition == -1) {
                 requestOptionsPosition = i;
             } else if (parameterType == ServerSentEventListener.class) {
                 serverSentEventListenerPosition = i;
@@ -459,14 +461,14 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the {@link RequestOptions} passed into the proxy method.
+     * Get the {@link RequestContext} passed into the proxy method.
      *
      * @param swaggerMethodArguments The arguments passed to the proxy method.
      *
      * @return The request options.
      */
-    public RequestOptions setRequestOptions(Object[] swaggerMethodArguments) {
-        return requestOptionsPosition < 0 ? null : (RequestOptions) swaggerMethodArguments[requestOptionsPosition];
+    public RequestContext setRequestContext(Object[] swaggerMethodArguments) {
+        return requestOptionsPosition < 0 ? null : (RequestContext) swaggerMethodArguments[requestOptionsPosition];
     }
 
     /**
@@ -632,7 +634,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
                 return outputStream.toString(StandardCharsets.UTF_8);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw CoreException.from(e);
             }
         }
     }

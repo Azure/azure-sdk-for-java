@@ -96,6 +96,8 @@ public class FileShareTestBase extends TestProxyTestBase {
                     new TestProxySanitizer("x-ms-copy-source-authorization", ".*", "REDACTED",
                         TestProxySanitizerType.HEADER),
                     new TestProxySanitizer("x-ms-file-rename-source-authorization", ".*", "REDACTED",
+                        TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-link-text", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED",
                         TestProxySanitizerType.HEADER)));
         }
 
@@ -357,6 +359,28 @@ public class FileShareTestBase extends TestProxyTestBase {
         instrument(builder);
 
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
+    }
+
+    protected ShareServiceClient getOAuthPremiumServiceClient(ShareServiceClientBuilder builder) {
+        if (builder == null) {
+            builder = new ShareServiceClientBuilder();
+        }
+        builder.endpoint(ENVIRONMENT.getPremiumFileAccount().getFileEndpoint());
+
+        instrument(builder);
+
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
+    }
+
+    protected ShareServiceAsyncClient getOAuthPremiumServiceAsyncClient(ShareServiceClientBuilder builder) {
+        if (builder == null) {
+            builder = new ShareServiceClientBuilder();
+        }
+        builder.endpoint(ENVIRONMENT.getPremiumFileAccount().getFileEndpoint());
+
+        instrument(builder);
+
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
     }
 
     protected ShareServiceClient getOAuthServiceClientSharedKey(ShareServiceClientBuilder builder) {

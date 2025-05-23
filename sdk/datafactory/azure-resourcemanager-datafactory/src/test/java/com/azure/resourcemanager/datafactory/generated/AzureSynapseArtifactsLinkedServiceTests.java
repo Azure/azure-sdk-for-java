@@ -18,32 +18,32 @@ public final class AzureSynapseArtifactsLinkedServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSynapseArtifactsLinkedService model = BinaryData.fromString(
-            "{\"type\":\"AzureSynapseArtifacts\",\"typeProperties\":{\"endpoint\":\"datav\",\"authentication\":\"dataujzofyldxk\",\"workspaceResourceId\":\"datavfojcvnhpebuiy\"},\"version\":\"ysgq\",\"connectVia\":{\"referenceName\":\"beauvldb\",\"parameters\":{\"uugdarfumitjai\":\"dataguifqjtoxzxbljpz\",\"y\":\"datasmokfdyb\",\"rwrylcttvxk\":\"databgmjrvrsqrjco\"}},\"description\":\"ffpvvqwvvnxoqaaq\",\"parameters\":{\"cwtszt\":{\"type\":\"Object\",\"defaultValue\":\"datawwtevfeu\"}},\"annotations\":[\"datawvfrymq\",\"datafksqfcxdleo\",\"dataysdgkbax\"],\"\":{\"jjqztrpjmeip\":\"datavtkrqiyuqd\",\"qaavjkrepqasviy\":\"dataotaaqyxkloabco\"}}")
+            "{\"type\":\"AzureSynapseArtifacts\",\"typeProperties\":{\"endpoint\":\"datalpcixpxxnyhivhyu\",\"authentication\":\"dataxyfbka\",\"workspaceResourceId\":\"datalaya\"},\"version\":\"dnovuduwwjohgcn\",\"connectVia\":{\"referenceName\":\"mcivhwwhyej\",\"parameters\":{\"fsqbcfqaqoveqowq\":\"datadfcfyzwkmr\"}},\"description\":\"ispasxwiic\",\"parameters\":{\"wsaxpbieehpvq\":{\"type\":\"Float\",\"defaultValue\":\"datahadndowkxq\"}},\"annotations\":[\"datarrjprygjgyovc\",\"datagqiismaggkt\"],\"\":{\"mjkronxmtrhw\":\"datakrbkkcx\",\"utyszhzlvkmirn\":\"datadfnc\"}}")
             .toObject(AzureSynapseArtifactsLinkedService.class);
-        Assertions.assertEquals("ysgq", model.version());
-        Assertions.assertEquals("beauvldb", model.connectVia().referenceName());
-        Assertions.assertEquals("ffpvvqwvvnxoqaaq", model.description());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("cwtszt").type());
+        Assertions.assertEquals("dnovuduwwjohgcn", model.version());
+        Assertions.assertEquals("mcivhwwhyej", model.connectVia().referenceName());
+        Assertions.assertEquals("ispasxwiic", model.description());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("wsaxpbieehpvq").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSynapseArtifactsLinkedService model = new AzureSynapseArtifactsLinkedService().withVersion("ysgq")
-            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("beauvldb")
-                .withParameters(mapOf("uugdarfumitjai", "dataguifqjtoxzxbljpz", "y", "datasmokfdyb", "rwrylcttvxk",
-                    "databgmjrvrsqrjco")))
-            .withDescription("ffpvvqwvvnxoqaaq")
-            .withParameters(mapOf("cwtszt",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datawwtevfeu")))
-            .withAnnotations(Arrays.asList("datawvfrymq", "datafksqfcxdleo", "dataysdgkbax"))
-            .withEndpoint("datav")
-            .withAuthentication("dataujzofyldxk")
-            .withWorkspaceResourceId("datavfojcvnhpebuiy");
+        AzureSynapseArtifactsLinkedService model
+            = new AzureSynapseArtifactsLinkedService().withVersion("dnovuduwwjohgcn")
+                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("mcivhwwhyej")
+                    .withParameters(mapOf("fsqbcfqaqoveqowq", "datadfcfyzwkmr")))
+                .withDescription("ispasxwiic")
+                .withParameters(mapOf("wsaxpbieehpvq",
+                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datahadndowkxq")))
+                .withAnnotations(Arrays.asList("datarrjprygjgyovc", "datagqiismaggkt"))
+                .withEndpoint("datalpcixpxxnyhivhyu")
+                .withAuthentication("dataxyfbka")
+                .withWorkspaceResourceId("datalaya");
         model = BinaryData.fromObject(model).toObject(AzureSynapseArtifactsLinkedService.class);
-        Assertions.assertEquals("ysgq", model.version());
-        Assertions.assertEquals("beauvldb", model.connectVia().referenceName());
-        Assertions.assertEquals("ffpvvqwvvnxoqaaq", model.description());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("cwtszt").type());
+        Assertions.assertEquals("dnovuduwwjohgcn", model.version());
+        Assertions.assertEquals("mcivhwwhyej", model.connectVia().referenceName());
+        Assertions.assertEquals("ispasxwiic", model.description());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("wsaxpbieehpvq").type());
     }
 
     // Use "Map.of" if available

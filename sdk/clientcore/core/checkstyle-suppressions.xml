@@ -4,6 +4,7 @@
 
 <suppressions>
   <suppress files="io.clientcore.core.implementation.utils.InternalContext.java" checks="JavadocMethodCheck" />
+  <suppress files="io.clientcore.core.http.models.RequestContext.java" checks="MethodNameCheck" />
   <suppress files="io.clientcore.core.implementation.http.rest.RequestDataConfiguration.java" checks="MissingJavadocMethodCheck" />
   <suppress files="io.clientcore.core.implementation.http.rest.SwaggerMethodParser.java" checks="MissingJavadocMethodCheck" />
   <suppress files="io.clientcore.core.implementation.instrumentation.DefaultLogger.java" checks="MissingJavadocMethodCheck" />
@@ -21,6 +22,7 @@
   <suppress files="io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="io.clientcore.core.http.client.JdkHttpClientBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
   <suppress files="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="io.clientcore.core.http.pipeline.HttpRetryPolicy.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.implementation.MethodHandleReflectiveInvoker.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.implementation.http.rest.LengthValidatingInputStream.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentation.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />

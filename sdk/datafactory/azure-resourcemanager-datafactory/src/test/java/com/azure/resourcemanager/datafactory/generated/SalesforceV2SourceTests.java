@@ -11,22 +11,22 @@ public final class SalesforceV2SourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceV2Source model = BinaryData.fromString(
-            "{\"type\":\"SalesforceV2Source\",\"SOQLQuery\":\"datahzfjmnaby\",\"query\":\"datachhkwlmittpbi\",\"includeDeletedObjects\":\"datakdxhnvyb\",\"pageSize\":\"datalbdazsjbgvdzz\",\"queryTimeout\":\"datahlwvvhovkad\",\"additionalColumns\":\"datahgbtnle\",\"sourceRetryCount\":\"datadah\",\"sourceRetryWait\":\"dataijvikpgzkfjqob\",\"maxConcurrentConnections\":\"datajlrvxryjxjdlg\",\"disableMetricsCollection\":\"datanjalccix\",\"\":{\"jznzgmfufszvsji\":\"datazgbuhcrwqrf\",\"lcqaafuwxeho\":\"datajve\",\"q\":\"dataazbgcbd\"}}")
+            "{\"type\":\"SalesforceV2Source\",\"SOQLQuery\":\"databz\",\"query\":\"datahvsmt\",\"includeDeletedObjects\":\"databrhi\",\"pageSize\":\"datamldtk\",\"queryTimeout\":\"dataajpxtkrafhziquir\",\"additionalColumns\":\"dataqusdznnhhjdfy\",\"sourceRetryCount\":\"dataiupdmbhaumpw\",\"sourceRetryWait\":\"dataero\",\"maxConcurrentConnections\":\"datanvjouzjkjxbraqz\",\"disableMetricsCollection\":\"datavogfmpdlm\",\"\":{\"nklbwyqoypodrq\":\"datal\",\"jerokbdkwvjond\":\"datajxmgxsp\",\"cloyvr\":\"dataaiydjgkdjmylhcjx\",\"bkigzvugwbc\":\"datazepnlwuhtfabafk\"}}")
             .toObject(SalesforceV2Source.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceV2Source model = new SalesforceV2Source().withSourceRetryCount("datadah")
-            .withSourceRetryWait("dataijvikpgzkfjqob")
-            .withMaxConcurrentConnections("datajlrvxryjxjdlg")
-            .withDisableMetricsCollection("datanjalccix")
-            .withQueryTimeout("datahlwvvhovkad")
-            .withAdditionalColumns("datahgbtnle")
-            .withSoqlQuery("datahzfjmnaby")
-            .withQuery("datachhkwlmittpbi")
-            .withIncludeDeletedObjects("datakdxhnvyb")
-            .withPageSize("datalbdazsjbgvdzz");
+        SalesforceV2Source model = new SalesforceV2Source().withSourceRetryCount("dataiupdmbhaumpw")
+            .withSourceRetryWait("dataero")
+            .withMaxConcurrentConnections("datanvjouzjkjxbraqz")
+            .withDisableMetricsCollection("datavogfmpdlm")
+            .withQueryTimeout("dataajpxtkrafhziquir")
+            .withAdditionalColumns("dataqusdznnhhjdfy")
+            .withSoqlQuery("databz")
+            .withQuery("datahvsmt")
+            .withIncludeDeletedObjects("databrhi")
+            .withPageSize("datamldtk");
         model = BinaryData.fromObject(model).toObject(SalesforceV2Source.class);
     }
 }

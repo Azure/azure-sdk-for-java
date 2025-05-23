@@ -10,17 +10,17 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
+import io.clientcore.core.implementation.http.RetryUtils;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.configuration.Configuration;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.net.HttpURLConnection;
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -57,11 +57,6 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
     private static final Duration DEFAULT_BASE_DELAY = Duration.ofMillis(800);
     private static final Duration DEFAULT_MAX_DELAY = Duration.ofSeconds(8);
     private static final double JITTER_FACTOR = 0.05;
-
-    /**
-     * HTTP response status code for {@code Too Many Requests}.
-     */
-    private static final int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
 
     static {
         String envDefaultMaxRetries = Configuration.getGlobalConfiguration().get(MAX_RETRY_ATTEMPTS);
@@ -163,9 +158,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         // It can be used by the policies during the process call.
         HttpRequestAccessHelper.setTryCount(httpRequest, tryCount);
 
-        final InstrumentationContext instrumentationContext = httpRequest.getRequestOptions() == null
-            ? null
-            : httpRequest.getRequestOptions().getInstrumentationContext();
+        final InstrumentationContext instrumentationContext = httpRequest.getContext().getInstrumentationContext();
 
         Response<BinaryData> response;
         ClientLogger logger = getLogger(httpRequest);
@@ -187,11 +180,14 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
                     } catch (InterruptedException ie) {
                         interrupted = true;
                         err.addSuppressed(ie);
+                        logger.atWarning().setThrowable(ie).log();
                     }
                 }
 
                 if (interrupted) {
-                    throw logger.logThrowableAsError(err);
+                    // not logging err here since the err should have been logged in HTTP
+                    // instrumentation policy. We'll log it again if it's a terminal one
+                    throw err;
                 }
 
                 List<Exception> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
@@ -200,13 +196,15 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
 
                 return attempt(httpRequest, next, tryCount + 1, suppressedLocal);
             } else {
-                logRetry(logger.atWarning(), tryCount, null, err, true, instrumentationContext);
-
                 if (suppressed != null) {
                     suppressed.forEach(err::addSuppressed);
                 }
 
-                throw logger.logThrowableAsError(err);
+                logRetry(logger.atWarning(), tryCount, null, err, true, instrumentationContext);
+
+                // we already logged the exception in the instrumentation policy
+                // and also logged retry information above.
+                throw err;
             }
         }
 
@@ -215,18 +213,14 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
 
             logRetry(logger.atVerbose(), tryCount, delayDuration, null, false, instrumentationContext);
 
-            try {
-                response.close();
-            } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            }
+            response.close();
 
             long millis = delayDuration.toMillis();
             if (millis > 0) {
                 try {
                     Thread.sleep(millis);
                 } catch (InterruptedException ie) {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(ie));
+                    throw logger.throwableAtError().log(ie, (m, c) -> CoreException.from(m, c, false));
                 }
             }
 
@@ -234,7 +228,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         } else {
             if (tryCount >= maxRetries) {
                 // TODO (limolkova): do we have better heuristic to determine if we're retrying because of error
-                // or because we got successful response?
+                // or because we got an unsuccessful response?
                 logRetry(logger.atWarning(), tryCount, null, null, true, instrumentationContext);
             }
             return response;
@@ -298,24 +292,21 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         return false;
     }
 
-    private void logRetry(LoggingEvent log, int tryCount, Duration delayDuration, Throwable throwable, boolean lastTry,
-        InstrumentationContext context) {
+    private void logRetry(LoggingEvent log, int tryCount, Duration delayDuration, RuntimeException throwable,
+        boolean lastTry, InstrumentationContext context) {
         if (log.isEnabled()) {
             log.addKeyValue(HTTP_REQUEST_RESEND_COUNT_KEY, tryCount)
                 .addKeyValue(RETRY_MAX_ATTEMPT_COUNT_KEY, maxRetries)
                 .addKeyValue(RETRY_WAS_LAST_ATTEMPT_KEY, lastTry)
                 .setEventName(HTTP_RETRY_EVENT_NAME)
-                .setInstrumentationContext(context);
+                .setInstrumentationContext(context)
+                .setThrowable(throwable);
 
             if (delayDuration != null) {
                 log.addKeyValue(RETRY_DELAY_KEY, delayDuration.toMillis());
             }
 
-            if (throwable != null) {
-                log.log(null, throwable);
-            } else {
-                log.log();
-            }
+            log.log();
         }
     }
 
@@ -336,22 +327,17 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
 
     private boolean defaultShouldRetryCondition(HttpRetryCondition requestRetryCondition) {
         if (requestRetryCondition.getResponse() != null) {
-            int code = requestRetryCondition.getResponse().getStatusCode();
-            return (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
-                || code == HTTP_STATUS_TOO_MANY_REQUESTS
-                || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
-                    && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
-                    && code != HttpURLConnection.HTTP_VERSION));
-        } else {
-            return requestRetryCondition.getException() != null;
+            return RetryUtils.isRetryable(requestRetryCondition.getResponse().getStatusCode());
         }
+
+        return RetryUtils.isRetryable(requestRetryCondition.getException());
     }
 
     private ClientLogger getLogger(HttpRequest httpRequest) {
         ClientLogger logger = null;
 
-        if (httpRequest.getRequestOptions() != null && httpRequest.getRequestOptions().getLogger() != null) {
-            logger = httpRequest.getRequestOptions().getLogger();
+        if (httpRequest.getContext() != null && httpRequest.getContext().getLogger() != null) {
+            logger = httpRequest.getContext().getLogger();
         }
 
         return logger == null ? LOGGER : logger;

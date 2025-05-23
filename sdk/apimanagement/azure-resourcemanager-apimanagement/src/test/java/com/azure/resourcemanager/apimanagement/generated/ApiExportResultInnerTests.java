@@ -13,22 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiExportResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiExportResultInner model = BinaryData
-            .fromString("{\"id\":\"bc\",\"format\":\"swagger-link-json\",\"value\":{\"link\":\"xxqcwgaxf\"}}")
-            .toObject(ApiExportResultInner.class);
-        Assertions.assertEquals("bc", model.id());
-        Assertions.assertEquals(ExportResultFormat.SWAGGER_LINK_JSON, model.exportResultFormat());
-        Assertions.assertEquals("xxqcwgaxf", model.value().link());
+        ApiExportResultInner model
+            = BinaryData.fromString("{\"id\":\"qqa\",\"format\":\"openapi-link\",\"value\":{\"link\":\"wxdcvjwcyz\"}}")
+                .toObject(ApiExportResultInner.class);
+        Assertions.assertEquals("qqa", model.id());
+        Assertions.assertEquals(ExportResultFormat.OPENAPI_LINK, model.exportResultFormat());
+        Assertions.assertEquals("wxdcvjwcyz", model.value().link());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiExportResultInner model = new ApiExportResultInner().withId("bc")
-            .withExportResultFormat(ExportResultFormat.SWAGGER_LINK_JSON)
-            .withValue(new ApiExportResultValue().withLink("xxqcwgaxf"));
+        ApiExportResultInner model = new ApiExportResultInner().withId("qqa")
+            .withExportResultFormat(ExportResultFormat.OPENAPI_LINK)
+            .withValue(new ApiExportResultValue().withLink("wxdcvjwcyz"));
         model = BinaryData.fromObject(model).toObject(ApiExportResultInner.class);
-        Assertions.assertEquals("bc", model.id());
-        Assertions.assertEquals(ExportResultFormat.SWAGGER_LINK_JSON, model.exportResultFormat());
-        Assertions.assertEquals("xxqcwgaxf", model.value().link());
+        Assertions.assertEquals("qqa", model.id());
+        Assertions.assertEquals(ExportResultFormat.OPENAPI_LINK, model.exportResultFormat());
+        Assertions.assertEquals("wxdcvjwcyz", model.value().link());
     }
 }

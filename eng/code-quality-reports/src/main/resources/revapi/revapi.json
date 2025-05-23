@@ -204,7 +204,7 @@
         },
         {
           "code": "java.method.addedToInterface",
-          "new" : "method long com.azure.spring.data.cosmos.core.CosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
+          "new": "method long com.azure.spring.data.cosmos.core.CosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
@@ -229,7 +229,7 @@
         },
         {
           "code": "java.method.addedToInterface",
-          "new" : "method reactor.core.publisher.Mono<java.lang.Long> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
+          "new": "method reactor.core.publisher.Mono<java.lang.Long> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
@@ -716,14 +716,14 @@
         },
         {
           "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters::withDatabaseAccountOfferType(java.lang.String)",
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters::withDatabaseAccountOfferType(java.lang.String)",
           "justification": "The property is a constant, which should not be changed."
         },
         {
           "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters::withType(java.lang.String)",
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters::withType(java.lang.String)",
           "justification": "The property is a constant, which should not be changed."
         },
         {
@@ -731,6 +731,79 @@
           "code": "java.field.addedStaticField",
           "new": "field com.azure.messaging.webpubsub.models.WebPubSubClientProtocol.SOCKETIO",
           "justification": "Additional protocols are supported by Web PubSub."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters::withType(java.lang.String)",
+          "justification": "The property is a constant, which should not be changed."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
+          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
+          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.search.documents.indexes.models.SearchResourceEncryptionKey::<init>(java.lang.String, java.lang.String, java.lang.String)",
+          "new": "method void com.azure.search.documents.indexes.models.SearchResourceEncryptionKey::<init>(java.lang.String, java.lang.String)",
+          "justification": "Breaking change in Search 03-01-2025 preview."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method <T> reactor.core.publisher.Mono<com.azure.core.http.rest.Response<T>> com.azure.search.documents.SearchAsyncClient::getDocumentWithResponse(java.lang.String, java.lang.Class<T>, java.util.List<java.lang.String>, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method reactor.core.publisher.Mono<com.azure.search.documents.util.SearchPagedResponse> com.azure.search.documents.SearchAsyncClient::search(com.azure.search.documents.implementation.models.SearchRequest, java.lang.String, com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method com.azure.search.documents.util.SearchPagedFlux com.azure.search.documents.SearchAsyncClient::search(java.lang.String, com.azure.search.documents.models.SearchOptions, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method com.azure.search.documents.util.SearchPagedResponse com.azure.search.documents.SearchClient::search(com.azure.search.documents.implementation.models.SearchRequest, java.lang.String, com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method com.azure.search.documents.util.SearchPagedFlux com.azure.search.documents.SearchAsyncClient::search(com.azure.search.documents.implementation.models.SearchRequest, java.lang.String, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "regex": true,
+          "code": "java.field.enumConstantOrderChanged",
+          "old": "field com\\.azure\\.resourcemanager\\.storage\\.models\\.ProvisioningState\\.(CANCELED|DELETING|FAILED)",
+          "new": "field com\\.azure\\.resourcemanager\\.storage\\.models\\.ProvisioningState\\.(CANCELED|DELETING|FAILED)",
+          "justification": "Add Accepted to ProvisioningState."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.varargOverloadsOnlyDifferInVarargParameter",
+          "old": "method com\\.azure\\.communication\\.email\\.models\\.EmailMessage com\\.azure\\.communication\\.email\\.models\\.EmailMessage::set(Cc|Bcc|To)Recipients.*"
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest::withType(java.lang.String)",
+          "justification" : "The property is a constant, which should not be changed."
         }
       ]
     }

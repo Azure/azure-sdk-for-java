@@ -62,7 +62,7 @@ class ServiceBusJmsConnectionFactoryConfiguration {
             BindResult<Boolean> cacheEnabledResult = Binder.get(environment).bind("spring.jms.cache.enabled", Boolean.class);
 
             if (isPoolConnectionFactoryClassPresent()
-                && ((!cacheEnabledResult.isBound() && !poolEnabledResult.isBound())) || poolEnabledResult.orElseGet(() -> false)) {
+                && ((!cacheEnabledResult.isBound() && !poolEnabledResult.isBound()) || poolEnabledResult.orElseGet(() -> false))) {
                 registerJmsPoolConnectionFactory(registry);
                 return;
             }

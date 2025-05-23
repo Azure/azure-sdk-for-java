@@ -51,7 +51,7 @@ public final class DynamicsEntityDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private DynamicsEntityDatasetTypeProperties innerTypeProperties() {
+    DynamicsEntityDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

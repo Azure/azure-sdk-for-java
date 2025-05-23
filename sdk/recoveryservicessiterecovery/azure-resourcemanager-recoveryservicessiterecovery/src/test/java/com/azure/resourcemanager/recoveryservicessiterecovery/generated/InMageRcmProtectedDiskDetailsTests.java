@@ -14,18 +14,24 @@ public final class InMageRcmProtectedDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmProtectedDiskDetails model = BinaryData.fromString(
-            "{\"diskId\":\"tpdyzoutxfptof\",\"diskName\":\"nuywe\",\"isOSDisk\":\"gvad\",\"capacityInBytes\":9185978745071534533,\"logStorageAccountId\":\"vkgjpytpmpvd\",\"diskEncryptionSetId\":\"gehlufbortbnu\",\"seedManagedDiskId\":\"faxzsvbxxyjissk\",\"seedBlobUri\":\"qocl\",\"targetManagedDiskId\":\"ioewyhxes\",\"diskType\":\"StandardSSD_LRS\",\"dataPendingInLogDataStoreInMB\":56.49629137496913,\"dataPendingAtSourceAgentInMB\":18.951668101900808,\"isInitialReplicationComplete\":\"qfbdxmdses\",\"irDetails\":{\"progressHealth\":\"NoProgress\",\"transferredBytes\":3596991969048751162,\"last15MinutesTransferredBytes\":4059127042163303518,\"lastDataTransferTimeUtc\":\"lpdib\",\"processedBytes\":1471676215734551835,\"startTime\":\"eatnejrnminzq\",\"lastRefreshTime\":\"gtkihonikzsr\",\"progressPercentage\":785240806},\"resyncDetails\":{\"progressHealth\":\"Queued\",\"transferredBytes\":778176165721909518,\"last15MinutesTransferredBytes\":3766908090253531975,\"lastDataTransferTimeUtc\":\"ogkensckhbmcar\",\"processedBytes\":5626892338199425573,\"startTime\":\"xkwyk\",\"lastRefreshTime\":\"dndx\",\"progressPercentage\":470451433}}")
+            "{\"diskId\":\"ffaspsdzkucsz\",\"diskName\":\"doaqipmnxclfrsb\",\"isOSDisk\":\"nm\",\"capacityInBytes\":4468503074907344384,\"diskState\":\"InitialReplicationPending\",\"logStorageAccountId\":\"fddtbfmekjcng\",\"diskEncryptionSetId\":\"xdvmaoyqxf\",\"seedManagedDiskId\":\"yxzmx\",\"seedBlobUri\":\"ofxlttxo\",\"targetManagedDiskId\":\"tdnzujsjirkrpskc\",\"diskType\":\"UltraSSD_LRS\",\"dataPendingInLogDataStoreInMB\":10.50563829361404,\"dataPendingAtSourceAgentInMB\":55.467026185379694,\"isInitialReplicationComplete\":\"dqtkykpaxnlsfg\",\"irDetails\":{\"progressHealth\":\"NoProgress\",\"transferredBytes\":8661900466884262725,\"last15MinutesTransferredBytes\":9038152032850376351,\"lastDataTransferTimeUtc\":\"et\",\"processedBytes\":1020544244503279253,\"startTime\":\"iceecvjwy\",\"lastRefreshTime\":\"eoxmpzzw\",\"progressPercentage\":1601710879},\"resyncDetails\":{\"progressHealth\":\"Queued\",\"transferredBytes\":7911690425491207252,\"last15MinutesTransferredBytes\":1224144407163777136,\"lastDataTransferTimeUtc\":\"ivz\",\"processedBytes\":6943744685080647175,\"startTime\":\"rygmw\",\"lastRefreshTime\":\"iosiqsy\",\"progressPercentage\":19178153},\"customTargetDiskName\":\"qwdr\",\"sectorSizeInBytes\":819593082}")
             .toObject(InMageRcmProtectedDiskDetails.class);
-        Assertions.assertEquals(DiskAccountType.STANDARD_SSD_LRS, model.diskType());
+        Assertions.assertEquals(DiskAccountType.ULTRA_SSD_LRS, model.diskType());
+        Assertions.assertEquals("qwdr", model.customTargetDiskName());
+        Assertions.assertEquals(819593082, model.sectorSizeInBytes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageRcmProtectedDiskDetails model
-            = new InMageRcmProtectedDiskDetails().withDiskType(DiskAccountType.STANDARD_SSD_LRS)
+            = new InMageRcmProtectedDiskDetails().withDiskType(DiskAccountType.ULTRA_SSD_LRS)
                 .withIrDetails(new InMageRcmSyncDetails())
-                .withResyncDetails(new InMageRcmSyncDetails());
+                .withResyncDetails(new InMageRcmSyncDetails())
+                .withCustomTargetDiskName("qwdr")
+                .withSectorSizeInBytes(819593082);
         model = BinaryData.fromObject(model).toObject(InMageRcmProtectedDiskDetails.class);
-        Assertions.assertEquals(DiskAccountType.STANDARD_SSD_LRS, model.diskType());
+        Assertions.assertEquals(DiskAccountType.ULTRA_SSD_LRS, model.diskType());
+        Assertions.assertEquals("qwdr", model.customTargetDiskName());
+        Assertions.assertEquals(819593082, model.sectorSizeInBytes());
     }
 }

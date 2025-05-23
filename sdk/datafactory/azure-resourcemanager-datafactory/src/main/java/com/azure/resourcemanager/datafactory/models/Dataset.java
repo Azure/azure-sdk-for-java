@@ -525,7 +525,7 @@ public class Dataset implements JsonSerializable<Dataset> {
                     return SharePointOnlineListResourceDataset.fromJson(readerToUse.reset());
                 } else if ("AzureDatabricksDeltaLakeDataset".equals(discriminatorValue)) {
                     return AzureDatabricksDeltaLakeDataset.fromJson(readerToUse.reset());
-                } else if ("LakeHouseTable".equals(discriminatorValue)) {
+                } else if ("LakehouseTable".equals(discriminatorValue)) {
                     return LakeHouseTableDataset.fromJson(readerToUse.reset());
                 } else if ("SalesforceV2Object".equals(discriminatorValue)) {
                     return SalesforceV2ObjectDataset.fromJson(readerToUse.reset());

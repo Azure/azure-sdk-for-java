@@ -51,7 +51,7 @@ public final class AzureBlobDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureBlobDatasetTypeProperties innerTypeProperties() {
+    AzureBlobDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

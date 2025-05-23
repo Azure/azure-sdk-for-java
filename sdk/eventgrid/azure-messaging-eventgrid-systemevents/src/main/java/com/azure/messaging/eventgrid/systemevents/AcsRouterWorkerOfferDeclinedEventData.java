@@ -46,17 +46,14 @@ public final class AcsRouterWorkerOfferDeclinedEventData extends AcsRouterWorker
     @Generated
     private String channelReference;
 
-    /*
-     * Router Event Job ID
-     */
-    @Generated
-    private String jobId;
-
     /**
      * Creates an instance of AcsRouterWorkerOfferDeclinedEventData class.
+     * 
+     * @param jobId the jobId value to set.
      */
     @Generated
-    private AcsRouterWorkerOfferDeclinedEventData() {
+    private AcsRouterWorkerOfferDeclinedEventData(String jobId) {
+        super(jobId);
     }
 
     /**
@@ -113,17 +110,6 @@ public final class AcsRouterWorkerOfferDeclinedEventData extends AcsRouterWorker
     }
 
     /**
-     * Get the jobId property: Router Event Job ID.
-     * 
-     * @return the jobId value.
-     */
-    @Generated
-    @Override
-    public String getJobId() {
-        return this.jobId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -145,33 +131,45 @@ public final class AcsRouterWorkerOfferDeclinedEventData extends AcsRouterWorker
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsRouterWorkerOfferDeclinedEventData if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterWorkerOfferDeclinedEventData.
      */
     @Generated
     public static AcsRouterWorkerOfferDeclinedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsRouterWorkerOfferDeclinedEventData deserializedAcsRouterWorkerOfferDeclinedEventData
-                = new AcsRouterWorkerOfferDeclinedEventData();
+            String jobId = null;
+            String channelReference = null;
+            String channelId = null;
+            String workerId = null;
+            String queueId = null;
+            String offerId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("jobId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferDeclinedEventData.jobId = reader.getString();
+                    jobId = reader.getString();
                 } else if ("channelReference".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferDeclinedEventData.channelReference = reader.getString();
+                    channelReference = reader.getString();
                 } else if ("channelId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferDeclinedEventData.channelId = reader.getString();
+                    channelId = reader.getString();
                 } else if ("workerId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferDeclinedEventData.workerId = reader.getString();
+                    workerId = reader.getString();
                 } else if ("queueId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferDeclinedEventData.queueId = reader.getString();
+                    queueId = reader.getString();
                 } else if ("offerId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferDeclinedEventData.offerId = reader.getString();
+                    offerId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsRouterWorkerOfferDeclinedEventData deserializedAcsRouterWorkerOfferDeclinedEventData
+                = new AcsRouterWorkerOfferDeclinedEventData(jobId);
+            deserializedAcsRouterWorkerOfferDeclinedEventData.channelReference = channelReference;
+            deserializedAcsRouterWorkerOfferDeclinedEventData.channelId = channelId;
+            deserializedAcsRouterWorkerOfferDeclinedEventData.workerId = workerId;
+            deserializedAcsRouterWorkerOfferDeclinedEventData.queueId = queueId;
+            deserializedAcsRouterWorkerOfferDeclinedEventData.offerId = offerId;
 
             return deserializedAcsRouterWorkerOfferDeclinedEventData;
         });

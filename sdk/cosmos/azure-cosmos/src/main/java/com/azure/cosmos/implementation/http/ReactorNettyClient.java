@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -149,13 +151,16 @@ public class ReactorNettyClient implements HttpClient {
                         .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
                         .validateHeaders(true));
 
-        if (httpClientConfig.getHttp2Config().isEnabled()) {
+        ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor =
+            ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
+        Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
+        if (http2CfgAccessor.isEffectivelyEnabled(http2Cfg)) {
             this.httpClient = this.httpClient
                 .secure(sslContextSpec ->
                     sslContextSpec.sslContext(
                         configs.getSslContext(
                             httpClientConfig.isServerCertValidationDisabled(),
-                            httpClientConfig.getHttp2Config().isEnabled()
+                            true
                         )))
                 .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
                 .doOnConnected((connection -> {

@@ -14,29 +14,43 @@ public final class CacheCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CacheCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"ztx\",\"connectionString\":\"brfgdrwji\",\"useFromLocation\":\"ewhfjsrwqrxetf\",\"resourceId\":\"wvrrmdqn\"},\"id\":\"ycnawthvmaxgnuy\",\"name\":\"a\",\"type\":\"cmh\"}],\"count\":7145608410541121603,\"nextLink\":\"cehokw\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"ltngvmreupt\",\"connectionString\":\"klzmijajw\",\"useFromLocation\":\"l\",\"resourceId\":\"s\"},\"id\":\"aghm\",\"name\":\"ynwlslrcigtzjcv\",\"type\":\"xqlaps\"},{\"properties\":{\"description\":\"ovyxpavidnie\",\"connectionString\":\"wffcvvye\",\"useFromLocation\":\"slpuxgcbdsva\",\"resourceId\":\"nptw\"},\"id\":\"rkxgpazwugxyqvnj\",\"name\":\"bfe\",\"type\":\"hldiuhzzgqlm\"},{\"properties\":{\"description\":\"wz\",\"connectionString\":\"iudjp\",\"useFromLocation\":\"pqht\",\"resourceId\":\"hnmhkrezsdsux\"},\"id\":\"eqdgcruxsp\",\"name\":\"nymmqgwokmikpa\",\"type\":\"fbmjxuvji\"},{\"properties\":{\"description\":\"vhax\",\"connectionString\":\"vwzaehp\",\"useFromLocation\":\"hthdklmvetatlakf\",\"resourceId\":\"ixwgiksbbvtooxrp\"},\"id\":\"gwphchgjtnht\",\"name\":\"kfac\",\"type\":\"hmbfntumeezbxv\"}],\"count\":7030874116360138386,\"nextLink\":\"vwcga\"}")
             .toObject(CacheCollection.class);
-        Assertions.assertEquals("ztx", model.value().get(0).description());
-        Assertions.assertEquals("brfgdrwji", model.value().get(0).connectionString());
-        Assertions.assertEquals("ewhfjsrwqrxetf", model.value().get(0).useFromLocation());
-        Assertions.assertEquals("wvrrmdqn", model.value().get(0).resourceId());
-        Assertions.assertEquals(7145608410541121603L, model.count());
-        Assertions.assertEquals("cehokw", model.nextLink());
+        Assertions.assertEquals("ltngvmreupt", model.value().get(0).description());
+        Assertions.assertEquals("klzmijajw", model.value().get(0).connectionString());
+        Assertions.assertEquals("l", model.value().get(0).useFromLocation());
+        Assertions.assertEquals("s", model.value().get(0).resourceId());
+        Assertions.assertEquals(7030874116360138386L, model.count());
+        Assertions.assertEquals("vwcga", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheCollection model
-            = new CacheCollection().withValue(Arrays.asList(new CacheContractInner().withDescription("ztx")
-                .withConnectionString("brfgdrwji")
-                .withUseFromLocation("ewhfjsrwqrxetf")
-                .withResourceId("wvrrmdqn"))).withCount(7145608410541121603L).withNextLink("cehokw");
+        CacheCollection model = new CacheCollection().withValue(Arrays.asList(
+            new CacheContractInner().withDescription("ltngvmreupt")
+                .withConnectionString("klzmijajw")
+                .withUseFromLocation("l")
+                .withResourceId("s"),
+            new CacheContractInner().withDescription("ovyxpavidnie")
+                .withConnectionString("wffcvvye")
+                .withUseFromLocation("slpuxgcbdsva")
+                .withResourceId("nptw"),
+            new CacheContractInner().withDescription("wz")
+                .withConnectionString("iudjp")
+                .withUseFromLocation("pqht")
+                .withResourceId("hnmhkrezsdsux"),
+            new CacheContractInner().withDescription("vhax")
+                .withConnectionString("vwzaehp")
+                .withUseFromLocation("hthdklmvetatlakf")
+                .withResourceId("ixwgiksbbvtooxrp")))
+            .withCount(7030874116360138386L)
+            .withNextLink("vwcga");
         model = BinaryData.fromObject(model).toObject(CacheCollection.class);
-        Assertions.assertEquals("ztx", model.value().get(0).description());
-        Assertions.assertEquals("brfgdrwji", model.value().get(0).connectionString());
-        Assertions.assertEquals("ewhfjsrwqrxetf", model.value().get(0).useFromLocation());
-        Assertions.assertEquals("wvrrmdqn", model.value().get(0).resourceId());
-        Assertions.assertEquals(7145608410541121603L, model.count());
-        Assertions.assertEquals("cehokw", model.nextLink());
+        Assertions.assertEquals("ltngvmreupt", model.value().get(0).description());
+        Assertions.assertEquals("klzmijajw", model.value().get(0).connectionString());
+        Assertions.assertEquals("l", model.value().get(0).useFromLocation());
+        Assertions.assertEquals("s", model.value().get(0).resourceId());
+        Assertions.assertEquals(7030874116360138386L, model.count());
+        Assertions.assertEquals("vwcga", model.nextLink());
     }
 }

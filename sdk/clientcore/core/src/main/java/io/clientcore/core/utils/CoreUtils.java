@@ -2,8 +2,14 @@
 // Licensed under the MIT License.
 package io.clientcore.core.utils;
 
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-
+import io.clientcore.core.models.CoreException;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.SerializationFormat;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
@@ -161,7 +167,7 @@ public final class CoreUtils {
                     .collect(Collectors.toMap(entry -> (String) entry.getKey(), entry -> (String) entry.getValue())));
             }
         } catch (IOException ex) {
-            LOGGER.atWarning().log("Failed to get properties from " + propertiesFileName, ex);
+            LOGGER.atWarning().setThrowable(ex).log("Failed to get properties from " + propertiesFileName);
         }
 
         return Collections.emptyMap();
@@ -233,8 +239,10 @@ public final class CoreUtils {
 
         if (index == -1) {
             // No size segment.
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("The Content-Range header wasn't properly "
-                + "formatted and didn't contain a '/size' segment. The 'contentRange' was: " + contentRange));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("Content-Range", contentRange)
+                .log("The Content-Range header wasn't properly formatted and didn't contain a '/size' segment",
+                    IllegalArgumentException::new);
         }
 
         String sizeString = contentRange.substring(index + 1).trim();
@@ -370,6 +378,123 @@ public final class CoreUtils {
 
             default:
                 return String.join(delimiter, values);
+        }
+    }
+
+    /**
+     * Determines the serializer encoding to use based on the Content-Type header.
+     *
+     * @param headers the headers to get the Content-Type to check the encoding for.
+     * @return the serializer encoding to use for the body. {@link SerializationFormat#JSON} if there is no Content-Type
+     * header or an unrecognized Content-Type encoding is given.
+     */
+    public static SerializationFormat serializationFormatFromContentType(HttpHeaders headers) {
+        if (headers == null) {
+            return SerializationFormat.JSON;
+        }
+
+        String contentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
+        if (CoreUtils.isNullOrEmpty(contentType)) {
+            // When in doubt, JSON!
+            return SerializationFormat.JSON;
+        }
+
+        int contentTypeEnd = contentType.indexOf(';');
+        contentType = (contentTypeEnd == -1) ? contentType : contentType.substring(0, contentTypeEnd);
+        SerializationFormat encoding = checkForKnownEncoding(contentType);
+        if (encoding != null) {
+            return encoding;
+        }
+
+        int contentTypeTypeSplit = contentType.indexOf('/');
+        if (contentTypeTypeSplit == -1) {
+            return SerializationFormat.JSON;
+        }
+
+        // Check the suffix if it does not match the full types.
+        // Suffixes are defined by the Structured Syntax Suffix Registry
+        // https://www.rfc-editor.org/rfc/rfc6839
+        final String subtype = contentType.substring(contentTypeTypeSplit + 1);
+        final int lastIndex = subtype.lastIndexOf('+');
+        if (lastIndex == -1) {
+            return SerializationFormat.JSON;
+        }
+
+        // Only XML and JSON are supported suffixes, there is no suffix for TEXT.
+        final String mimeTypeSuffix = subtype.substring(lastIndex + 1);
+        if ("xml".equalsIgnoreCase(mimeTypeSuffix)) {
+            return SerializationFormat.XML;
+        } else if ("json".equalsIgnoreCase(mimeTypeSuffix)) {
+            return SerializationFormat.JSON;
+        }
+
+        return SerializationFormat.JSON;
+    }
+
+    /*
+     * There is a limited set of serialization encodings that are known ahead of time. Instead of using a TreeMap with
+     * a case-insensitive comparator, use an optimized search specifically for the known encodings.
+     */
+    private static SerializationFormat checkForKnownEncoding(String contentType) {
+        int length = contentType.length();
+
+        // Check the length of the content type first as it is a quick check.
+        if (length != 8 && length != 9 && length != 10 && length != 15 && length != 16) {
+            return null;
+        }
+
+        if ("text/".regionMatches(true, 0, contentType, 0, 5)) {
+            if (length == 8) {
+                if ("xml".regionMatches(true, 0, contentType, 5, 3)) {
+                    return SerializationFormat.XML;
+                } else if ("csv".regionMatches(true, 0, contentType, 5, 3)) {
+                    return SerializationFormat.TEXT;
+                } else if ("css".regionMatches(true, 0, contentType, 5, 3)) {
+                    return SerializationFormat.TEXT;
+                }
+            } else if (length == 9 && "html".regionMatches(true, 0, contentType, 5, 4)) {
+                return SerializationFormat.TEXT;
+            } else if (length == 10 && "plain".regionMatches(true, 0, contentType, 5, 5)) {
+                return SerializationFormat.TEXT;
+            } else if (length == 15 && "javascript".regionMatches(true, 0, contentType, 5, 10)) {
+                return SerializationFormat.TEXT;
+            }
+        } else if ("application/".regionMatches(true, 0, contentType, 0, 12)) {
+            if (length == 16 && "json".regionMatches(true, 0, contentType, 12, 4)) {
+                return SerializationFormat.JSON;
+            } else if (length == 15 && "xml".regionMatches(true, 0, contentType, 12, 3)) {
+                return SerializationFormat.XML;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Decodes the body of an {@link Response} into the type returned by the called API.
+     * @param data The BinaryData to decode.
+     * @param serializer The serializer to use.
+     * @param returnType The type of the ParameterizedType return value.
+     * @param <T> The decoded value type.
+     * @return The decoded value.
+     * @throws CoreException If the deserialization fails.
+     */
+    public static <T> T decodeNetworkResponse(BinaryData data, ObjectSerializer serializer,
+        ParameterizedType returnType) {
+        if (data == null) {
+            return null;
+        }
+        try {
+            if (List.class.isAssignableFrom((Class<?>) returnType.getRawType())) {
+                return serializer.deserializeFromBytes(data.toBytes(), returnType);
+            }
+            Type token = returnType.getRawType();
+            if (Response.class.isAssignableFrom((Class<?>) token)) {
+                token = returnType.getActualTypeArguments()[0];
+            }
+            return serializer.deserializeFromBytes(data.toBytes(), token);
+        } catch (IOException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 

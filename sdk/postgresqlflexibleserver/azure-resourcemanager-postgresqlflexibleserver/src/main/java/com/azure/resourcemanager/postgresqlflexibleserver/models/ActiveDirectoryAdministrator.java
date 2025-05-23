@@ -41,28 +41,28 @@ public interface ActiveDirectoryAdministrator {
     SystemData systemData();
 
     /**
-     * Gets the principalType property: The principal type used to represent the type of Active Directory Administrator.
+     * Gets the principalType property: The principal type used to represent the type of Microsoft Entra Administrator.
      * 
      * @return the principalType value.
      */
     PrincipalType principalType();
 
     /**
-     * Gets the principalName property: Active Directory administrator principal name.
+     * Gets the principalName property: Microsoft Entra Administrator principal name.
      * 
      * @return the principalName value.
      */
     String principalName();
 
     /**
-     * Gets the objectId property: The objectId of the Active Directory administrator.
+     * Gets the objectId property: The objectId of the Microsoft Entra Administrator.
      * 
      * @return the objectId value.
      */
     String objectId();
 
     /**
-     * Gets the tenantId property: The tenantId of the Active Directory administrator.
+     * Gets the tenantId property: The tenantId of the Microsoft Entra Administrator.
      * 
      * @return the tenantId value.
      */
@@ -134,10 +134,10 @@ public interface ActiveDirectoryAdministrator {
          */
         interface WithPrincipalType {
             /**
-             * Specifies the principalType property: The principal type used to represent the type of Active Directory
+             * Specifies the principalType property: The principal type used to represent the type of Microsoft Entra
              * Administrator..
              * 
-             * @param principalType The principal type used to represent the type of Active Directory Administrator.
+             * @param principalType The principal type used to represent the type of Microsoft Entra Administrator.
              * @return the next definition stage.
              */
             WithCreate withPrincipalType(PrincipalType principalType);
@@ -148,9 +148,9 @@ public interface ActiveDirectoryAdministrator {
          */
         interface WithPrincipalName {
             /**
-             * Specifies the principalName property: Active Directory administrator principal name..
+             * Specifies the principalName property: Microsoft Entra Administrator principal name..
              * 
-             * @param principalName Active Directory administrator principal name.
+             * @param principalName Microsoft Entra Administrator principal name.
              * @return the next definition stage.
              */
             WithCreate withPrincipalName(String principalName);
@@ -161,9 +161,9 @@ public interface ActiveDirectoryAdministrator {
          */
         interface WithTenantId {
             /**
-             * Specifies the tenantId property: The tenantId of the Active Directory administrator..
+             * Specifies the tenantId property: The tenantId of the Microsoft Entra Administrator..
              * 
-             * @param tenantId The tenantId of the Active Directory administrator.
+             * @param tenantId The tenantId of the Microsoft Entra Administrator.
              * @return the next definition stage.
              */
             WithCreate withTenantId(String tenantId);

@@ -258,10 +258,6 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (resourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property resourceId in model WhatIfChange"));
-        }
         if (changeType() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property changeType in model WhatIfChange"));
@@ -279,14 +275,20 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("resourceId", this.resourceId);
         jsonWriter.writeStringField("changeType", this.changeType == null ? null : this.changeType.toString());
+        jsonWriter.writeStringField("resourceId", this.resourceId);
         jsonWriter.writeStringField("deploymentId", this.deploymentId);
         jsonWriter.writeStringField("symbolicName", this.symbolicName);
-        jsonWriter.writeUntypedField("identifiers", this.identifiers);
+        if (this.identifiers != null) {
+            jsonWriter.writeUntypedField("identifiers", this.identifiers);
+        }
         jsonWriter.writeStringField("unsupportedReason", this.unsupportedReason);
-        jsonWriter.writeUntypedField("before", this.before);
-        jsonWriter.writeUntypedField("after", this.after);
+        if (this.before != null) {
+            jsonWriter.writeUntypedField("before", this.before);
+        }
+        if (this.after != null) {
+            jsonWriter.writeUntypedField("after", this.after);
+        }
         jsonWriter.writeArrayField("delta", this.delta, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -307,10 +309,10 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("resourceId".equals(fieldName)) {
-                    deserializedWhatIfChange.resourceId = reader.getString();
-                } else if ("changeType".equals(fieldName)) {
+                if ("changeType".equals(fieldName)) {
                     deserializedWhatIfChange.changeType = ChangeType.fromString(reader.getString());
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedWhatIfChange.resourceId = reader.getString();
                 } else if ("deploymentId".equals(fieldName)) {
                     deserializedWhatIfChange.deploymentId = reader.getString();
                 } else if ("symbolicName".equals(fieldName)) {

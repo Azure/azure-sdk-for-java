@@ -1,5 +1,22 @@
 # Release History
 
+## 12.24.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.24.0-beta.1 (2025-05-06)
+
+### Features Added
+- Added a new API `getSystemProperties` to `DataLakePathClient` to support the `getStatus` action for the
+ `Path Get Properties` operation.
+- Added support for service version 2025-07-05.
+
 ## 12.23.0 (2025-03-11)
 
 ### Features Added

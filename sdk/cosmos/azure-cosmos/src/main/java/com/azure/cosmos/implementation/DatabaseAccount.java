@@ -252,6 +252,24 @@ public final class DatabaseAccount extends Resource {
     }
 
     /**
+     * Gets the list of thin client readable locations for this database account.
+     *
+     * @return the list of thin client readable locations.
+     */
+    public Iterable<DatabaseAccountLocation> getThinClientReadableLocations() {
+        return super.getCollection(Constants.Properties.THINCLIENT_READABLE_LOCATIONS, DatabaseAccountLocation.class);
+    }
+
+    /**
+     * Gets the list of thin client writable locations for this database account.
+     *
+     * @return the list of thin client writable locations.
+     */
+    public Iterable<DatabaseAccountLocation> getThinClientWritableLocations() {
+        return super.getCollection(Constants.Properties.THINCLIENT_WRITABLE_LOCATIONS, DatabaseAccountLocation.class);
+    }
+
+    /**
      * Gets if enable multiple write locations is set.
      *
      * @return the true if multiple write locations are set
@@ -262,6 +280,27 @@ public final class DatabaseAccount extends Resource {
 
     public void setEnableMultipleWriteLocations(boolean value) {
         this.set(Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS, value);
+    }
+
+    /**
+     * Returns true if the account supports per partition failover behavior,
+     * false if enablePerPartitionFailoverBehavior evaluates to null or false.
+     * <p>
+     * If enablePerPartitionFailoverBehavior property does not exist in account metadata JSON payload, null is returned.
+     *
+     * @return true if the account supports per partition failover behavior, false otherwise.
+     */
+    public Boolean isPerPartitionFailoverBehaviorEnabled() {
+
+        if (super.has(Constants.Properties.ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR)) {
+            return ObjectUtils.defaultIfNull(super.getBoolean(Constants.Properties.ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR), false);
+        }
+
+        return null;
+    }
+
+    public void setIsPerPartitionFailoverBehaviorEnabled(boolean value) {
+        this.set(Constants.Properties.ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR, value);
     }
 
     public void populatePropertyBag() {

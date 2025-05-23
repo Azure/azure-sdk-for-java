@@ -23,13 +23,13 @@ extends:
   parameters:
     stages:
       - stage: Build
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
         jobs:
         - job: 'Build'
 
           variables:
-            - template: /eng/pipelines/templates/variables/globals.yml
-            - name: ArtifactName
-              value: 'packages'
             - name: ArtifactsJson
               value: '${{ convertToJson(parameters.Artifacts) }}'
             - name: ArtifactsJsonEscaped
@@ -38,8 +38,8 @@ extends:
               value: '${{ convertToJson(parameters.AdditionalModules) }}'
 
           pool:
-            name: azsdk-pool-mms-ubuntu-2004-general
-            image: azsdk-pool-mms-ubuntu-2004-1espt
+            name: $(LINUXPOOL)
+            image: $(LINUXVMIMAGE)
             os: linux
 
           steps:
@@ -166,7 +166,7 @@ extends:
             - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
               parameters:
                 ArtifactPath: $(Build.ArtifactStagingDirectory)
-                ArtifactName: '$(ArtifactName)'
+                ArtifactName: 'packages'
 
             - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
               parameters:
@@ -179,15 +179,14 @@ extends:
           condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
           variables:
-            - template: /eng/pipelines/templates/variables/globals.yml
             - name: ArtifactsJson
               value: '${{ convertToJson(parameters.Artifacts) }}'
             - name: AdditionalModulesJson
               value: '${{ convertToJson(parameters.AdditionalModules) }}'
 
           pool:
-            name: azsdk-pool-mms-ubuntu-2004-general
-            image: azsdk-pool-mms-ubuntu-2004-1espt
+            name: $(LINUXPOOL)
+            image: $(LINUXVMIMAGE)
             os: linux
 
           steps:
@@ -282,12 +281,6 @@ extends:
                 }
               displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
 
-            - template: /eng/common/pipelines/templates/steps/verify-readme.yml
-              parameters:
-                # For the moment, ServiceDirectories is JSON which may change to a comma delimited list instead of what's
-                # going on below
-                ScanPaths: $(ServiceDirectoriesFullPath)
-
             - template: /eng/common/pipelines/templates/steps/verify-samples.yml
               parameters:
                 ServiceDirectories: $(ServiceDirectories)
@@ -324,4 +317,3 @@ extends:
             SDKType: ${{ parameters.SDKType }}
             Artifacts: ${{ parameters.Artifacts }}
             TestPipeline: ${{ parameters.TestPipeline }}
-            ArtifactName: packages

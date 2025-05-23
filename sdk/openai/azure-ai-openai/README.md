@@ -1,5 +1,10 @@
 # Azure OpenAI client library for Java
 
+> [!IMPORTANT]
+> This client library won't receive updates in its current form.
+> To use newer OpenAI features, please use the official [OpenAI Java library][openai_java]
+> For Azure specific functionality, we are providing migration guides in azure-ai-openai-stainless.
+
 Azure OpenAI is a managed service that allows developers to deploy, tune, and generate content from OpenAI models on 
 Azure resources.
 
@@ -47,7 +52,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.15</version>
+    <version>1.0.0-beta.16</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -165,6 +170,45 @@ The following sections provide several code snippets covering some of the most c
 * [Batch operations sample](#batch-operations "Batch Operations")
 * [Structured Outputs](#structured-outputs "Structured Outputs")
 * [Upload large files in multiple parts](#upload-large-files-in-multiple-parts "Upload large files in multiple parts")
+
+### Responses
+
+The Responses API is OpenAI's newest form of supporting agentic applications with a surface that should feel familiar to Chat Completions users. For more details on the similarities and additional features please visit [OpenAI's documentation site.](https://platform.openai.com/docs/guides/responses-vs-chat-completions)
+
+To use Responses, there is a separate client that is needed which can be initialized to work for both OpenAI and Azure OpenAI services.
+
+```java readme-sample-createAzureResponsesClient
+TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+ResponsesClient client = new ResponsesClientBuilder()
+    .credential(defaultCredential)
+    .endpoint("{endpoint}")
+    .buildClient(); // or .buildAsyncClient() for the ResponsesAsyncClient
+```
+
+Or for (non-Azure) OpenAI service setup:
+
+```java readme-sample-createNonAzureResponsesClient
+ResponsesClient client = new ResponsesClientBuilder()
+    .credential(new KeyCredential("{openai-secret-key}"))
+    .buildClient(); // or .buildAsyncClient() for the ResponsesAsyncClient
+```
+
+For a very minimal demonstration, to get the equivalent of a Chat Completions request with Responses, the request looks like this:
+
+```java readme-sample-sendResponsesUserMessage
+CreateResponsesRequest request = new CreateResponsesRequest(
+        CreateResponsesRequestModel.GPT_4O_MINI, "Hello, world!"
+);
+
+ResponsesResponse response = responsesClient.createResponse(request);
+
+// Print the response
+ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
+System.out.println(outputContent.getText());
+```
+
+The full extent of the features supported in the new Responses API surface can be found on [Responses API documentation page.](https://platform.openai.com/docs/api-reference/responses)
 
 ### Legacy completions
 
@@ -551,6 +595,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [microsoft_docs_whisper_model]: https://learn.microsoft.com/azure/ai-services/openai/whisper-quickstart?tabs=command-line
 [microsoft_docs_text_to_speech]: https://learn.microsoft.com/azure/ai-services/openai/text-to-speech-quickstart?tabs=command-line
 [non_azure_openai_authentication]: https://platform.openai.com/docs/api-reference/authentication
+[openai_java]: https://github.com/openai/openai-java
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://azure.microsoft.com/services/
 [quickstart]: https://learn.microsoft.com/azure/cognitive-services/openai/quickstart

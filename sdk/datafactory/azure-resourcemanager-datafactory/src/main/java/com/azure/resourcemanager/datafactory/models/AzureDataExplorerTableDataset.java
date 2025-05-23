@@ -51,7 +51,7 @@ public final class AzureDataExplorerTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureDataExplorerDatasetTypeProperties innerTypeProperties() {
+    AzureDataExplorerDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

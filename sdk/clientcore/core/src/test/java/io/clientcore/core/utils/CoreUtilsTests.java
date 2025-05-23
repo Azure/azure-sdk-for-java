@@ -2,11 +2,22 @@
 // Licensed under the MIT License.
 package io.clientcore.core.utils;
 
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.models.CoreException;
+import io.clientcore.core.models.Person;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.SerializationFormat;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.OffsetDateTime;
@@ -25,6 +36,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
+import static io.clientcore.core.utils.CoreUtils.serializationFormatFromContentType;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -39,6 +51,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class CoreUtilsTests {
     private static final SecureRandom RANDOM = new SecureRandom();
+    private static final JsonSerializer SERIALIZER = new JsonSerializer();
+    private static final ParameterizedType PLAIN_OBJECT = CoreUtils.createParameterizedType(Person.class);
+    private static final ParameterizedType PLAIN_LIST_OBJECT
+        = CoreUtils.createParameterizedType(List.class, Person.class);
 
     @ParameterizedTest
     @MethodSource("arrayIsNullOrEmptySupplier")
@@ -258,6 +274,64 @@ public class CoreUtilsTests {
     @MethodSource("stringJoinSupplier")
     public void stringJoin(String delimiter, List<String> strings, String expected) {
         assertEquals(expected, CoreUtils.stringJoin(delimiter, strings));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "null, JSON",
+        "application/json, JSON",
+        "application/xml, XML",
+        "text/plain, TEXT",
+        "text/html, TEXT",
+        "application/json; charset=utf-8, JSON",
+        "application/unknown, JSON",
+        "application/vnd.example+xml, XML",
+        "application/vnd.example+json, JSON" })
+    public void testSerializationFormatFromContentType(String contentType, SerializationFormat expected) {
+        HttpHeaders headers
+            = (contentType == null) ? null : new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType);
+        assertEquals(expected, serializationFormatFromContentType(headers));
+    }
+
+    @Test
+    void decodeNetworkResponseReturnsNullIfDataIsNull() {
+        assertNull(CoreUtils.decodeNetworkResponse(null, SERIALIZER, PLAIN_OBJECT));
+    }
+
+    @Test
+    void decodeNetworkResponseListType() {
+        String json = "[{\"name\":\"A\",\"age\":0},{\"name\":\"B\",\"age\":0}]";
+        BinaryData data = BinaryData.fromString(json);
+        Object result = CoreUtils.decodeNetworkResponse(data, SERIALIZER, PLAIN_LIST_OBJECT);
+        assertEquals(Arrays.asList(new Person().setName("A"), new Person().setName("B")), result);
+    }
+
+    @Test
+    void decodeNetworkResponsePlainType() {
+        String json = "{\"name\":\"A\",\"age\":0}";
+        BinaryData data = BinaryData.fromString(json);
+        Object result = CoreUtils.decodeNetworkResponse(data, SERIALIZER, PLAIN_OBJECT);
+        assertEquals(new Person().setName("A"), result);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void decodeNetworkResponseThrowsCoreException() {
+        // Custom serializer that always throws IOException
+        JsonSerializer serializer = new ThrowingJsonSerializer();
+        BinaryData data = BinaryData.fromBytes(new byte[] { 99 }); // Data is irrelevant here
+        CoreException ex
+            = assertThrows(CoreException.class, () -> CoreUtils.decodeNetworkResponse(data, serializer, PLAIN_OBJECT));
+        assertTrue(ex.getCause() instanceof IOException);
+        assertEquals("Unknown data", ex.getCause().getMessage());
+    }
+
+    private static class ThrowingJsonSerializer extends JsonSerializer {
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> T deserializeFromBytes(byte[] data, Type type) throws IOException {
+            throw new IOException("Unknown data");
+        }
     }
 
     private static Stream<Arguments> stringJoinSupplier() {

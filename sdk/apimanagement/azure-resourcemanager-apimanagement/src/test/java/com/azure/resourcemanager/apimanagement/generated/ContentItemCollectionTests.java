@@ -11,7 +11,7 @@ public final class ContentItemCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContentItemCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"rthcfjzh\":\"datatojrulfucte\",\"tzzbeq\":\"datalyubqjrostvrjeq\",\"alx\":\"dataztr\",\"absr\":\"datad\"},\"id\":\"rsnrhp\",\"name\":\"a\",\"type\":\"iwkkvya\"},{\"properties\":{\"qmmlivrjjxnwx\":\"datavvcsemsvuvdjkqxe\",\"jxlehzlx\":\"datachp\",\"w\":\"datagfquwz\",\"pjxljtxb\":\"dataibelwcerwkw\"},\"id\":\"sqtbxxniu\",\"name\":\"sdzhgbdgzpagsec\",\"type\":\"adbuwqrgxfllmqiy\"},{\"properties\":{\"mxpymdjf\":\"dataoellnkkiiwvmt\",\"nlduwzorxsbm\":\"dataaxroqvqpilrgunc\",\"x\":\"dataaqklxy\",\"tuubwyvpjb\":\"dataqvfqepdxc\"},\"id\":\"wcpjqduqgi\",\"name\":\"exkydfb\",\"type\":\"lj\"}],\"nextLink\":\"huerkjddvrglie\"}")
+            "{\"value\":[{\"properties\":{\"sergdtpe\":\"dataqoqpepiaeap\",\"qq\":\"datanacyheqwb\",\"upyvqyvliq\":\"datacjubkhjozfymcwm\",\"eswhd\":\"dataipsejbsvsia\"},\"id\":\"zydisnuep\",\"name\":\"wyj\",\"type\":\"nldpxottd\"},{\"properties\":{\"ihweeb\":\"dataocqibz\",\"yv\":\"dataph\",\"w\":\"datajw\"},\"id\":\"qsratjhd\",\"name\":\"zybspijhfrzgdkk\",\"type\":\"gv\"},{\"properties\":{\"mzhwilzzhni\":\"datahsusmmor\",\"neyttl\":\"datamriprlk\",\"bkut\":\"datacxiv\"},\"id\":\"umltwjflu\",\"name\":\"ynbpvzlqywauy\",\"type\":\"njc\"},{\"properties\":{\"gouarhwvixqq\":\"dataocgjs\",\"clrvtzqnrbctbh\":\"datagljkybsj\"},\"id\":\"jhxpcvrd\",\"name\":\"y\",\"type\":\"it\"}],\"nextLink\":\"eq\"}")
             .toObject(ContentItemCollection.class);
     }
 

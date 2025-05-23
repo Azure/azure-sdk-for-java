@@ -14,26 +14,26 @@ public final class BackupsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"backupId\":\"dvoqyt\",\"creationDate\":\"2021-11-02T20:40:47Z\",\"provisioningState\":\"wb\",\"size\":5557233869903086465,\"label\":\"vutpthjoxo\",\"backupType\":\"Manual\",\"failureReason\":\"ksbpimlqoljx\",\"volumeResourceId\":\"cgxxlxs\",\"useExistingSnapshot\":true,\"snapshotName\":\"vizqzdwl\",\"backupPolicyResourceId\":\"lyoupfgfbkju\"},\"id\":\"yhgk\",\"name\":\"minsgowzf\",\"type\":\"tsttktlahbq\"}],\"nextLink\":\"tx\"}")
+            "{\"value\":[{\"properties\":{\"backupId\":\"o\",\"creationDate\":\"2021-10-02T15:37:14Z\",\"snapshotCreationDate\":\"2021-01-27T20:06:14Z\",\"completionDate\":\"2021-10-08T11:59:32Z\",\"provisioningState\":\"ioknssxmoj\",\"size\":6363406348902694054,\"label\":\"jpr\",\"backupType\":\"Scheduled\",\"failureReason\":\"fz\",\"volumeResourceId\":\"ljyxgtczhe\",\"useExistingSnapshot\":true,\"snapshotName\":\"dshmkxmaehvbbx\",\"backupPolicyResourceId\":\"iplt\",\"isLargeVolume\":false},\"id\":\"baxk\",\"name\":\"xywr\",\"type\":\"kpyklyhp\"}],\"nextLink\":\"odpvruudlgzib\"}")
             .toObject(BackupsList.class);
-        Assertions.assertEquals("vutpthjoxo", model.value().get(0).label());
-        Assertions.assertEquals("cgxxlxs", model.value().get(0).volumeResourceId());
-        Assertions.assertEquals(true, model.value().get(0).useExistingSnapshot());
-        Assertions.assertEquals("vizqzdwl", model.value().get(0).snapshotName());
-        Assertions.assertEquals("tx", model.nextLink());
+        Assertions.assertEquals("jpr", model.value().get(0).label());
+        Assertions.assertEquals("ljyxgtczhe", model.value().get(0).volumeResourceId());
+        Assertions.assertTrue(model.value().get(0).useExistingSnapshot());
+        Assertions.assertEquals("dshmkxmaehvbbx", model.value().get(0).snapshotName());
+        Assertions.assertEquals("odpvruudlgzib", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupsList model = new BackupsList().withValue(Arrays.asList(new BackupInner().withLabel("vutpthjoxo")
-            .withVolumeResourceId("cgxxlxs")
+        BackupsList model = new BackupsList().withValue(Arrays.asList(new BackupInner().withLabel("jpr")
+            .withVolumeResourceId("ljyxgtczhe")
             .withUseExistingSnapshot(true)
-            .withSnapshotName("vizqzdwl"))).withNextLink("tx");
+            .withSnapshotName("dshmkxmaehvbbx"))).withNextLink("odpvruudlgzib");
         model = BinaryData.fromObject(model).toObject(BackupsList.class);
-        Assertions.assertEquals("vutpthjoxo", model.value().get(0).label());
-        Assertions.assertEquals("cgxxlxs", model.value().get(0).volumeResourceId());
-        Assertions.assertEquals(true, model.value().get(0).useExistingSnapshot());
-        Assertions.assertEquals("vizqzdwl", model.value().get(0).snapshotName());
-        Assertions.assertEquals("tx", model.nextLink());
+        Assertions.assertEquals("jpr", model.value().get(0).label());
+        Assertions.assertEquals("ljyxgtczhe", model.value().get(0).volumeResourceId());
+        Assertions.assertTrue(model.value().get(0).useExistingSnapshot());
+        Assertions.assertEquals("dshmkxmaehvbbx", model.value().get(0).snapshotName());
+        Assertions.assertEquals("odpvruudlgzib", model.nextLink());
     }
 }

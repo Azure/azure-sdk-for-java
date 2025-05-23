@@ -51,7 +51,7 @@ public final class HDInsightSparkActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private HDInsightSparkActivityTypeProperties innerTypeProperties() {
+    HDInsightSparkActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

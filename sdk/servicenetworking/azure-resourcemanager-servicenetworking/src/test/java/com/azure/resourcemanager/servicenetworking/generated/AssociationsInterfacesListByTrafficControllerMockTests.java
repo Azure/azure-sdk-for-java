@@ -7,8 +7,8 @@ package com.azure.resourcemanager.servicenetworking.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Association;
@@ -23,21 +23,21 @@ public final class AssociationsInterfacesListByTrafficControllerMockTests {
     @Test
     public void testListByTrafficController() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"shxmzsbbzoggigrx\"},\"provisioningState\":\"Updating\"},\"location\":\"vjxxjnsp\",\"tags\":{\"nkoukn\":\"tko\",\"ngkpocipazy\":\"udwtiukbl\",\"gukgjnpiucgygevq\":\"o\"},\"id\":\"ntypmrbpizcdrqj\",\"name\":\"dpydn\",\"type\":\"yhxdeoejzicwi\"}]}";
+            = "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"wflzlfbxzpuzy\"},\"provisioningState\":\"Canceled\"},\"location\":\"nqzahmgkbrpyyd\",\"tags\":{\"agnb\":\"nuqqkpikadrgvt\",\"fsiarbutr\":\"ynhijggme\",\"jrunmpxtt\":\"vpnazzm\"},\"id\":\"bh\",\"name\":\"bnlankxmyskpb\",\"type\":\"enbtkcxywny\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         TrafficControllerManager manager = TrafficControllerManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Association> response
-            = manager.associationsInterfaces().listByTrafficController("hl", "m", com.azure.core.util.Context.NONE);
+        PagedIterable<Association> response = manager.associationsInterfaces()
+            .listByTrafficController("ec", "godebfqkkrbmpu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vjxxjnsp", response.iterator().next().location());
-        Assertions.assertEquals("tko", response.iterator().next().tags().get("nkoukn"));
+        Assertions.assertEquals("nqzahmgkbrpyyd", response.iterator().next().location());
+        Assertions.assertEquals("nuqqkpikadrgvt", response.iterator().next().tags().get("agnb"));
         Assertions.assertEquals(AssociationType.SUBNETS, response.iterator().next().properties().associationType());
-        Assertions.assertEquals("shxmzsbbzoggigrx", response.iterator().next().properties().subnet().id());
+        Assertions.assertEquals("wflzlfbxzpuzy", response.iterator().next().properties().subnet().id());
     }
 }

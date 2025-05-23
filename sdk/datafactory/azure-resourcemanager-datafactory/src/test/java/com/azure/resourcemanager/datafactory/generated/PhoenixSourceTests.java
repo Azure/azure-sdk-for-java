@@ -11,19 +11,19 @@ public final class PhoenixSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PhoenixSource model = BinaryData.fromString(
-            "{\"type\":\"PhoenixSource\",\"query\":\"datav\",\"queryTimeout\":\"datapdv\",\"additionalColumns\":\"datayelrteunkwypu\",\"sourceRetryCount\":\"datafmsygt\",\"sourceRetryWait\":\"dataqlfdml\",\"maxConcurrentConnections\":\"datazdbrw\",\"disableMetricsCollection\":\"datawft\",\"\":{\"jsfgkwrcbgxypr\":\"dataxwi\",\"izabjb\":\"databpywecz\"}}")
+            "{\"type\":\"PhoenixSource\",\"query\":\"datag\",\"queryTimeout\":\"datalfyxaiaf\",\"additionalColumns\":\"datamxekfvycvhwduo\",\"sourceRetryCount\":\"dataapzzcxk\",\"sourceRetryWait\":\"datasbahcassqeybd\",\"maxConcurrentConnections\":\"dataeyakg\",\"disableMetricsCollection\":\"dataohfq\",\"\":{\"awctaarboxal\":\"datakicxtumqi\",\"xwevl\":\"dataoadmcvvkjnpe\",\"bo\":\"datahuahlqm\",\"xoyllx\":\"datagpmmz\"}}")
             .toObject(PhoenixSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PhoenixSource model = new PhoenixSource().withSourceRetryCount("datafmsygt")
-            .withSourceRetryWait("dataqlfdml")
-            .withMaxConcurrentConnections("datazdbrw")
-            .withDisableMetricsCollection("datawft")
-            .withQueryTimeout("datapdv")
-            .withAdditionalColumns("datayelrteunkwypu")
-            .withQuery("datav");
+        PhoenixSource model = new PhoenixSource().withSourceRetryCount("dataapzzcxk")
+            .withSourceRetryWait("datasbahcassqeybd")
+            .withMaxConcurrentConnections("dataeyakg")
+            .withDisableMetricsCollection("dataohfq")
+            .withQueryTimeout("datalfyxaiaf")
+            .withAdditionalColumns("datamxekfvycvhwduo")
+            .withQuery("datag");
         model = BinaryData.fromObject(model).toObject(PhoenixSource.class);
     }
 }

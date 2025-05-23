@@ -51,7 +51,7 @@ public final class WebTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private WebTableDatasetTypeProperties innerTypeProperties() {
+    WebTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

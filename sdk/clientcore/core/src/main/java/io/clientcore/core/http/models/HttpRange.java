@@ -52,12 +52,12 @@ public final class HttpRange {
      */
     public HttpRange(long offset, Long length) {
         if (offset < 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'offset' cannot be less than 0."));
+            throw LOGGER.throwableAtError().log("'offset' cannot be less than 0.", IllegalArgumentException::new);
         }
 
         if (length != null && length <= 0) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'length' cannot be equal to or less than 0."));
+            throw LOGGER.throwableAtError()
+                .log("'length' cannot be equal to or less than 0.", IllegalArgumentException::new);
         }
 
         this.offset = offset;

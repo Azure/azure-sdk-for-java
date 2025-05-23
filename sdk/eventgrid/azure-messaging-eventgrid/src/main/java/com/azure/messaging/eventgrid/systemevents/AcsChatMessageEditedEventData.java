@@ -189,15 +189,15 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("messageId", getMessageId());
+        jsonWriter.writeJsonField("senderCommunicationIdentifier", getSenderCommunicationIdentifier());
+        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeJsonField("recipientCommunicationIdentifier", getRecipientCommunicationIdentifier());
         jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeStringField("threadId", getThreadId());
-        jsonWriter.writeStringField("messageId", getMessageId());
-        jsonWriter.writeJsonField("senderCommunicationIdentifier", getSenderCommunicationIdentifier());
         jsonWriter.writeStringField("senderDisplayName", getSenderDisplayName());
         jsonWriter.writeStringField("composeTime",
             getComposeTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getComposeTime()));
-        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeNumberField("version", getVersion());
         jsonWriter.writeStringField("messageBody", this.messageBody);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
@@ -212,6 +212,7 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatMessageEditedEventData if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatMessageEditedEventData.
      */
     public static AcsChatMessageEditedEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -222,25 +223,25 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("recipientCommunicationIdentifier".equals(fieldName)) {
+                if ("messageId".equals(fieldName)) {
+                    deserializedAcsChatMessageEditedEventData.setMessageId(reader.getString());
+                } else if ("senderCommunicationIdentifier".equals(fieldName)) {
+                    deserializedAcsChatMessageEditedEventData
+                        .setSenderCommunicationIdentifier(CommunicationIdentifierModel.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAcsChatMessageEditedEventData.setType(reader.getString());
+                } else if ("recipientCommunicationIdentifier".equals(fieldName)) {
                     deserializedAcsChatMessageEditedEventData
                         .setRecipientCommunicationIdentifier(CommunicationIdentifierModel.fromJson(reader));
                 } else if ("transactionId".equals(fieldName)) {
                     deserializedAcsChatMessageEditedEventData.setTransactionId(reader.getString());
                 } else if ("threadId".equals(fieldName)) {
                     deserializedAcsChatMessageEditedEventData.setThreadId(reader.getString());
-                } else if ("messageId".equals(fieldName)) {
-                    deserializedAcsChatMessageEditedEventData.setMessageId(reader.getString());
-                } else if ("senderCommunicationIdentifier".equals(fieldName)) {
-                    deserializedAcsChatMessageEditedEventData
-                        .setSenderCommunicationIdentifier(CommunicationIdentifierModel.fromJson(reader));
                 } else if ("senderDisplayName".equals(fieldName)) {
                     deserializedAcsChatMessageEditedEventData.setSenderDisplayName(reader.getString());
                 } else if ("composeTime".equals(fieldName)) {
                     deserializedAcsChatMessageEditedEventData.setComposeTime(reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
-                } else if ("type".equals(fieldName)) {
-                    deserializedAcsChatMessageEditedEventData.setType(reader.getString());
                 } else if ("version".equals(fieldName)) {
                     deserializedAcsChatMessageEditedEventData.setVersion(reader.getNullable(JsonReader::getLong));
                 } else if ("messageBody".equals(fieldName)) {

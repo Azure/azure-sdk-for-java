@@ -193,6 +193,63 @@ public final class NetAppAccountPatch extends Resource {
     }
 
     /**
+     * Get the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
+     * 
+     * @return the nfsV4IdDomain value.
+     */
+    public String nfsV4IdDomain() {
+        return this.innerProperties() == null ? null : this.innerProperties().nfsV4IdDomain();
+    }
+
+    /**
+     * Set the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
+     * 
+     * @param nfsV4IdDomain the nfsV4IdDomain value to set.
+     * @return the NetAppAccountPatch object itself.
+     */
+    public NetAppAccountPatch withNfsV4IdDomain(String nfsV4IdDomain) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountProperties();
+        }
+        this.innerProperties().withNfsV4IdDomain(nfsV4IdDomain);
+        return this;
+    }
+
+    /**
+     * Get the multiAdStatus property: MultiAD Status for the account.
+     * 
+     * @return the multiAdStatus value.
+     */
+    public MultiAdStatus multiAdStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().multiAdStatus();
+    }
+
+    /**
+     * Get the ldapConfiguration property: LDAP Configuration for the account.
+     * 
+     * @return the ldapConfiguration value.
+     */
+    public LdapConfiguration ldapConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().ldapConfiguration();
+    }
+
+    /**
+     * Set the ldapConfiguration property: LDAP Configuration for the account.
+     * 
+     * @param ldapConfiguration the ldapConfiguration value to set.
+     * @return the NetAppAccountPatch object itself.
+     */
+    public NetAppAccountPatch withLdapConfiguration(LdapConfiguration ldapConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountProperties();
+        }
+        this.innerProperties().withLdapConfiguration(ldapConfiguration);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

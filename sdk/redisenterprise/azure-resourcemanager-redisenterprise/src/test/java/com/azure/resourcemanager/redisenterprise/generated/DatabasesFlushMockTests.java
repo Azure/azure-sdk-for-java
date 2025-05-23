@@ -6,8 +6,8 @@ package com.azure.resourcemanager.redisenterprise.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.models.FlushParameters;
@@ -27,11 +27,11 @@ public final class DatabasesFlushMockTests {
         RedisEnterpriseManager manager = RedisEnterpriseManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.databases()
-            .flush("isgwbnbbeldawkz", "ali", "urqhaka",
-                new FlushParameters().withIds(Arrays.asList("shsfwxosowzxcu", "i", "jooxdjebw")),
+            .flush("sbkyvpycanuzbp", "kafkuwbcrnwbm", "hhseyv",
+                new FlushParameters().withIds(Arrays.asList("rts", "hspkdeemao", "mx", "gkvtmelmqkrhah")),
                 com.azure.core.util.Context.NONE);
 
     }

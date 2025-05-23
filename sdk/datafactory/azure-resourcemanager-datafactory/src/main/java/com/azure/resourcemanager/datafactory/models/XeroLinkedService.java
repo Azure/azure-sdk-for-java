@@ -51,7 +51,7 @@ public final class XeroLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private XeroLinkedServiceTypeProperties innerTypeProperties() {
+    XeroLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

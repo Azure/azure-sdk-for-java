@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationNameAvailabilityResourceInner;
@@ -22,22 +22,22 @@ public final class ResourceProvidersCheckMigrationNameAvailabilityWithRMockTests
     @Test
     public void testCheckMigrationNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"tqyryuzcbmqqv\",\"type\":\"mv\",\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"xo\"}";
+            = "{\"name\":\"idwcwvmzegjon\",\"type\":\"hj\",\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"qzbrf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MigrationNameAvailabilityResource response = manager.resourceProviders()
-            .checkMigrationNameAvailabilityWithResponse("qscazuawxtz", "puamwabzxr", "xcushs",
-                new MigrationNameAvailabilityResourceInner().withName("haivm").withType("yasflvgsgzwy"),
+            .checkMigrationNameAvailabilityWithResponse("pjhmqrhvthl", "iwdcxsmlzzhzd", "xetlgydlhqv",
+                new MigrationNameAvailabilityResourceInner().withName("n").withType("pxy"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tqyryuzcbmqqv", response.name());
-        Assertions.assertEquals("mv", response.type());
+        Assertions.assertEquals("idwcwvmzegjon", response.name());
+        Assertions.assertEquals("hj", response.type());
     }
 }
