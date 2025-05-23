@@ -3,10 +3,11 @@
 package com.azure.core.validation.http;
 
 import com.azure.core.http.ContentType;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.validation.http.models.HttpBinFormDataJson;
 import com.azure.core.validation.http.models.HttpBinJson;
 import com.azure.core.validation.http.models.PizzaSize;
-import com.azure.core.util.DateTimeRfc1123;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.util.Callback;
@@ -34,17 +35,18 @@ import static com.azure.core.validation.http.HttpValidatonUtils.md5;
  */
 @Execution(ExecutionMode.SAME_THREAD)
 public final class HttpClientTestsServer {
-    private static final String PLAIN_RESPONSE = "/plainBytesNoHeader";
-    private static final String HEADER_RESPONSE = "/plainBytesWithHeader";
-    private static final String INVALID_HEADER_RESPONSE = "/plainBytesInvalidHeader";
-    private static final String UTF_8_BOM_RESPONSE = "/utf8BomBytes";
-    private static final String UTF_16BE_BOM_RESPONSE = "/utf16BeBomBytes";
-    private static final String UTF_16LE_BOM_RESPONSE = "/utf16LeBomBytes";
-    private static final String UTF_32BE_BOM_RESPONSE = "/utf32BeBomBytes";
-    private static final String UTF_32LE_BOM_RESPONSE = "/utf32LeBomBytes";
-    private static final String BOM_WITH_SAME_HEADER = "/bomBytesWithSameHeader";
-    private static final String BOM_WITH_DIFFERENT_HEADER = "/bomBytesWithDifferentHeader";
-    private static final String ECHO_RESPONSE = "/echo";
+    static final String PLAIN_RESPONSE = "plainBytesNoHeader";
+    static final String HEADER_RESPONSE = "plainBytesWithHeader";
+    static final String INVALID_HEADER_RESPONSE = "plainBytesInvalidHeader";
+    static final String UTF_8_BOM_RESPONSE = "utf8BomBytes";
+    static final String UTF_16BE_BOM_RESPONSE = "utf16BeBomBytes";
+    static final String UTF_16LE_BOM_RESPONSE = "utf16LeBomBytes";
+    static final String UTF_32BE_BOM_RESPONSE = "utf32BeBomBytes";
+    static final String UTF_32LE_BOM_RESPONSE = "utf32LeBomBytes";
+    static final String BOM_WITH_SAME_HEADER = "bomBytesWithSameHeader";
+    static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
+    public static final String ECHO_RESPONSE = "echo";
+    static final String HUGE_HEADER_RESPONSE = "hugeHeader";
 
     private static final byte[] UTF_8_BOM = { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF };
     private static final byte[] UTF_16BE_BOM = { (byte) 0xFE, (byte) 0xFF };
@@ -52,7 +54,19 @@ public final class HttpClientTestsServer {
     private static final byte[] UTF_32BE_BOM = { (byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF };
     private static final byte[] UTF_32LE_BOM = { (byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00 };
 
-    private static final byte[] RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
+    private static final String HELLO_WORLD = "Hello World!";
+    static final byte[] RETURN_BYTES = HELLO_WORLD.getBytes(StandardCharsets.UTF_8);
+    static final HttpHeaderName HUGE_HEADER_NAME = HttpHeaderName.fromString("x-huge-header");
+    static final String HUGE_HEADER_VALUE;
+
+    static {
+        // Create the huge header value, which is 1024 HELLO_WORLDs (about 12 KB).
+        StringBuilder sb = new StringBuilder(HELLO_WORLD.length() * 1024);
+        for (int i = 0; i < 1024; i++) {
+            sb.append(HELLO_WORLD);
+        }
+        HUGE_HEADER_VALUE = sb.toString();
+    }
 
     /**
      * Gets the {@link LocalTestServer}.
@@ -103,32 +117,55 @@ public final class HttpClientTestsServer {
                 resp.getHttpOutput().write("void exception body thrown".getBytes(StandardCharsets.UTF_8));
                 resp.getHttpOutput().flush();
                 resp.getHttpOutput().complete(Callback.NOOP);
-            } else if (get && PLAIN_RESPONSE.equals(path)) {
+            } else if (get && pathMatches(path, PLAIN_RESPONSE)) {
                 handleRequest(resp, "application/octet-stream", RETURN_BYTES);
-            } else if (get && HEADER_RESPONSE.equals(path)) {
+            } else if (get && pathMatches(path, HEADER_RESPONSE)) {
                 handleRequest(resp, "charset=UTF-16BE", RETURN_BYTES);
-            } else if (get && INVALID_HEADER_RESPONSE.equals(path)) {
+            } else if (get && pathMatches(path, INVALID_HEADER_RESPONSE)) {
                 handleRequest(resp, "charset=invalid", RETURN_BYTES);
-            } else if (get && UTF_8_BOM_RESPONSE.equals(path)) {
+            } else if (get && pathMatches(path, UTF_8_BOM_RESPONSE)) {
                 handleRequest(resp, "application/octet-stream", addBom(UTF_8_BOM));
-            } else if (get && UTF_16BE_BOM_RESPONSE.equals(path)) {
+            } else if (get && pathMatches(path, UTF_16BE_BOM_RESPONSE)) {
                 handleRequest(resp, "application/octet-stream", addBom(UTF_16BE_BOM));
-            } else if (get && UTF_16LE_BOM_RESPONSE.equals(path)) {
+            } else if (get && pathMatches(path, UTF_16LE_BOM_RESPONSE)) {
                 handleRequest(resp, "application/octet-stream", addBom(UTF_16LE_BOM));
-            } else if (get && UTF_32BE_BOM_RESPONSE.equals(path)) {
+            } else if (get && pathMatches(path, UTF_32BE_BOM_RESPONSE)) {
                 handleRequest(resp, "application/octet-stream", addBom(UTF_32BE_BOM));
-            } else if (get && UTF_32LE_BOM_RESPONSE.equals(path)) {
+            } else if (get && pathMatches(path, UTF_32LE_BOM_RESPONSE)) {
                 handleRequest(resp, "application/octet-stream", addBom(UTF_32LE_BOM));
-            } else if (get && BOM_WITH_SAME_HEADER.equals(path)) {
+            } else if (get && pathMatches(path, BOM_WITH_SAME_HEADER)) {
                 handleRequest(resp, "charset=UTF-8", addBom(UTF_8_BOM));
-            } else if (get && BOM_WITH_DIFFERENT_HEADER.equals(path)) {
+            } else if (get && pathMatches(path, BOM_WITH_DIFFERENT_HEADER)) {
                 handleRequest(resp, "charset=UTF-16", addBom(UTF_8_BOM));
-            } else if (put && ECHO_RESPONSE.equals(path)) {
+            } else if (put && pathMatches(path, ECHO_RESPONSE)) {
                 handleRequest(resp, "application/octet-stream", requestBody);
+            } else if (get && pathMatches(path, HUGE_HEADER_RESPONSE)) {
+                resp.addHeader(HUGE_HEADER_NAME.getCaseSensitiveName(), HUGE_HEADER_VALUE);
+                resp.setStatus(200);
+                resp.flushBuffer();
             } else {
                 throw new ServletException("Unexpected method: " + req.getMethod());
             }
         }, 100);
+    }
+
+    /**
+     * Helper method to check if the path matches the test path.
+     * <p>
+     * All path constants in this class don't contain a leading slash to allow them to be used in
+     * {@link HttpClientTests}. This method checks that the path matches the test path by inferring the leading slash
+     * on the test path.
+     *
+     * @param path The path used in the request.
+     * @param testPathWithoutLeadingSlash The test path without leading slash.
+     * @return Whether the path matches the test path.
+     */
+    private static boolean pathMatches(String path, String testPathWithoutLeadingSlash) {
+        // Check that the path starts with a leading slash, that the length of the path is equal to the test path
+        // length + 1 (for the leading slash), and that the test path matches the path starting from index 1.
+        return path.charAt(0) == '/'
+            && path.length() == testPathWithoutLeadingSlash.length() + 1
+            && testPathWithoutLeadingSlash.regionMatches(0, path, 1, testPathWithoutLeadingSlash.length());
     }
 
     private static byte[] addBom(byte[] arr1) {
