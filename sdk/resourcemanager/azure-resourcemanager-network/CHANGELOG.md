@@ -4,8 +4,8 @@
 
 ### Breaking Changes
 
-- The details that query used to fetch are now ingested directly in Customer's log Analytics workspace and hence query operation is no more valid on connection Monitor resource now.
-- Start is deprecated now  - the put call for ConnectionMonitor starts as well. There is no explicit start.
+- Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service.
+- Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start. Once `stop`ed, one could do a `createOrUpdate` with same creation parameters for a restart.
 
 ### Other Changes
 
