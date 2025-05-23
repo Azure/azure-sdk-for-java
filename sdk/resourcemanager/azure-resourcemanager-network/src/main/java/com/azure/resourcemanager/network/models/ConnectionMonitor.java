@@ -89,30 +89,6 @@ public interface ConnectionMonitor extends HasInnerModel<ConnectionMonitorResult
      */
     Mono<Void> stopAsync();
 
-    /** Starts a specified connection monitor. */
-    void start();
-
-    /**
-     * Starts a specified connection monitor asynchronously.
-     *
-     * @return the handle to the REST call
-     */
-    Mono<Void> startAsync();
-
-    /**
-     * Query a snapshot of the most recent connection state of a connection monitor.
-     *
-     * @return snapshot of the most recent connection state
-     */
-    ConnectionMonitorQueryResult query();
-
-    /**
-     * Query a snapshot of the most recent connection state of a connection monitor asynchronously.
-     *
-     * @return snapshot of the most recent connection state
-     */
-    Mono<ConnectionMonitorQueryResult> queryAsync();
-
     /** The entirety of the connection monitor definition. */
     interface Definition extends DefinitionStages.WithSource, DefinitionStages.WithDestination,
         DefinitionStages.WithDestinationPort, DefinitionStages.WithCreate {
