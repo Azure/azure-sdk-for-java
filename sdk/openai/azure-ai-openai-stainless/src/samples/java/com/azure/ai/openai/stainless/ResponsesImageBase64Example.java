@@ -15,10 +15,13 @@ import com.openai.models.responses.ResponseInputImage;
 import com.openai.models.responses.ResponseInputItem;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Collections;
 
-public final class ResponsesImageUrlExample {
-    private ResponsesImageUrlExample() {}
+public final class ResponsesImageBase64Example {
+    private ResponsesImageBase64Example() {}
 
     public static void main(String[] args) throws IOException {
         // Configures using one of:
@@ -33,11 +36,20 @@ public final class ResponsesImageUrlExample {
                 new DefaultAzureCredentialBuilder().build(), "https://cognitiveservices.azure.com/.default")))
             .build();
 
-        String logoUrl = "https://th.bing.com/th/id/R.565799473e5e4ffb1d36bb3b5fc0400c?rik=HWolfL7xZmcc3g&pid=ImgRaw&r=0";
+        String base64Image = null;
+        try {
+            String fileName = "logo.png";
+            byte[] imageBytes = Files.readAllBytes(Paths.get("src/samples/java/com/azure/ai/openai/stainless/resources/" + fileName));
+            base64Image = Base64.getEncoder().encodeToString(imageBytes);
+        } catch (IOException e) {
+            return;
+        }
+
+        String logoBase64Url = "data:image/jpeg;base64," + base64Image;
 
         ResponseInputImage logoInputImage = ResponseInputImage.builder()
                 .detail(ResponseInputImage.Detail.AUTO)
-                .imageUrl(logoUrl)
+                .imageUrl(logoBase64Url)
                 .build();
         ResponseInputItem messageInputItem = ResponseInputItem.ofMessage(ResponseInputItem.Message.builder()
                 .role(ResponseInputItem.Message.Role.USER)
