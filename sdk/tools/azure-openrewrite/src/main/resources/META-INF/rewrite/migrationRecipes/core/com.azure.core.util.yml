@@ -64,16 +64,6 @@ recipeList:
   # TODO: API Removed. Triage replacement
 
   # --------------------------------------------------------------------
-  # ClientOptions
-  # --------------------------------------------------------------------
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.util.ClientOptions
-      newFullyQualifiedTypeName: io.clientcore.core.utils.ClientOptions
-
-      # TODO: Migrate Methods and Fields
-
-  # --------------------------------------------------------------------
   # Configuration
   # --------------------------------------------------------------------
 
@@ -190,16 +180,6 @@ recipeList:
   # --------------------------------------------------------------------
 
   # TODO: API Removed. Triage replacement
-
-  # --------------------------------------------------------------------
-  # HttpClientOptions
-  # --------------------------------------------------------------------
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.util.HttpClientOptions
-      newFullyQualifiedTypeName: io.clientcore.core.utils.HttpClientOptions
-
-      # TODO: Migrate Methods and Fields
 
   # --------------------------------------------------------------------
   # IterableStream

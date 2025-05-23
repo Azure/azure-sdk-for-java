@@ -93,16 +93,6 @@ recipeList:
   # TODO: API Removed. Triage replacement
 
   # --------------------------------------------------------------------
-  # RestProxy
-  # --------------------------------------------------------------------
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.rest.RestProxy
-      newFullyQualifiedTypeName: io.clientcore.core.http.RestProxy
-
-  # TODO: Migrate Methods and Fields
-
-  # --------------------------------------------------------------------
   # SimpleResponse
   # --------------------------------------------------------------------
 
