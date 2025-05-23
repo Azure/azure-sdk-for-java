@@ -161,7 +161,7 @@ public class ReactorNettyClient implements HttpClient {
                             httpClientConfig.isServerCertValidationDisabled(),
                             true
                         )))
-                .protocol(HttpProtocol.H2)
+                .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
                 .metrics(true, tag -> tag)
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:
