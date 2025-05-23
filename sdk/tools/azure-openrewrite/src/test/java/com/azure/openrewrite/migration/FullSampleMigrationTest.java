@@ -94,7 +94,7 @@ public class FullSampleMigrationTest implements RewriteTest {
             4,
             4,
             4,
-            false,
+            true,
             new TabsAndIndentsStyle.MethodDeclarationParameters(true)
         ));
 
@@ -164,7 +164,7 @@ public class FullSampleMigrationTest implements RewriteTest {
         try  {
             rewriteRun(
                 spec -> spec
-                    .parser(JavaParser.fromJavaVersion().classpath("azure-core", "core").styles(getStyles()))
+                    .parser(JavaParser.fromJavaVersion().classpath(JavaParser.runtimeClasspath()).styles(getStyles()))
                     .recipeFromResources(RECIPE_NAME),
                 sourceSpecs.toArray(new SourceSpecs[sourceSpecs.size()])
             );

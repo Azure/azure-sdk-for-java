@@ -58,71 +58,52 @@ public class HttpResponseCustomRecipe extends Recipe {
 
             @Override
             public J.MethodInvocation visitMethodInvocation(J.MethodInvocation method, ExecutionContext executionContext) {
-                method = (J.MethodInvocation) super.visitMethodInvocation(method, executionContext);
+                J.MethodInvocation visitedMethod = super.visitMethodInvocation(method, executionContext);
                 MethodMatcher methodMatcher;
                 JavaTemplate replacementTemplate;
 
-                // Migrate azure-core HttpResponse method calls to clientcore Response method calls
-
-                // Before: int getStatusCode()
-                // After: int getStatusCode()
-
-                // no change needed
-
-                // Before: String getHeaderValue(java.lang.String)
-                // After: String getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpResponse getHeaderValue(java.lang.String)");
-                if (methodMatcher.matches(method, false)) {
-                    replacementTemplate = templateBuilder.getJavaTemplateBuilder(String.format("%s.getHeaders().getValue(HttpHeaderName.fromString(#{any(java.lang.String)}))", method.getSelect().toString()))
+                if (methodMatcher.matches(visitedMethod, true)) {
+                    replacementTemplate = templateBuilder.getJavaTemplateBuilder(String.format("%s.getHeaders().getValue(HttpHeaderName.fromString(#{any(java.lang.String)}))", visitedMethod.getSelect().toString()))
                             .imports("io.clientcore.core.http.models.HttpHeaderName")
                             .build();
-                    return replacementTemplate.apply(updateCursor(method), method.getCoordinates().replace(), method.getArguments().get(0));
+                    return replacementTemplate.apply(updateCursor(visitedMethod), visitedMethod.getCoordinates().replace(), visitedMethod.getArguments().get(0));
 
                 }
 
-                // Before: java.lang.String getHeaderValue(com.azure.core.http.HttpHeaderName)
-                // After: String getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpResponse getHeaderValue(io.clientcore.core.http.models.HttpHeaderName)");
-                if (methodMatcher.matches(method, false)) {
-                    replacementTemplate = templateBuilder.getJavaTemplateBuilder(String.format("%s.getHeaders().getValue(#{any(io.clientcore.core.http.models.HttpHeaderName)})", method.getSelect().toString()))
+                if (methodMatcher.matches(visitedMethod, true)) {
+                    replacementTemplate = templateBuilder.getJavaTemplateBuilder(String.format("%s.getHeaders().getValue(#{any(io.clientcore.core.http.models.HttpHeaderName)})", visitedMethod.getSelect().toString()))
                             .imports("io.clientcore.core.http.models.HttpHeaderName")
                             .build();
-                    return replacementTemplate.apply(updateCursor(method), method.getCoordinates().replace(), method.getArguments().toArray());
+                    return replacementTemplate.apply(updateCursor(visitedMethod), visitedMethod.getCoordinates().replace(), visitedMethod.getArguments().toArray());
                 }
 
-
-                // Before: String getHeaderValue(java.lang.String)
-                // After: String getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpResponse getHeaderValue(java.lang.String)");
-                if (methodMatcher.matches(method, false)) {
+                if (methodMatcher.matches(visitedMethod, true)) {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder("getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName.fromString(#{any(java.lang.String)}))")
                             .imports("io.clientcore.core.http.models.HttpHeaderName")
                             .build();
-                    return replacementTemplate.apply(updateCursor(method), method.getCoordinates().replaceMethod(), method.getArguments().toArray());
+                    return replacementTemplate.apply(updateCursor(visitedMethod), visitedMethod.getCoordinates().replaceMethod(), visitedMethod.getArguments().toArray());
                 }
 
-                // Before: java.lang.String getHeaderValue(com.azure.core.http.HttpHeaderName)
-                // After: String getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpResponse getHeaderValue(com.azure.core.http.HttpHeaderName)");
-                if (methodMatcher.matches(method, false)) {
+                if (methodMatcher.matches(visitedMethod, true)) {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder("getHeaders().getValue(#{any(com.azure.core.http.HttpHeaderName)})")
                             .imports("io.clientcore.core.http.models.HttpHeaderName")
                             .build();
-                    return replacementTemplate.apply(updateCursor(method), method.getCoordinates().replaceMethod(), method.getArguments().toArray());
+                    return replacementTemplate.apply(updateCursor(visitedMethod), visitedMethod.getCoordinates().replaceMethod(), visitedMethod.getArguments().toArray());
                 }
 
-                // Before: BinaryData getBodyAsBinaryData()
-                // After: BinaryData BinaryData.fromObject(getValue())
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpResponse getBodyAsBinaryData()");
-                if (methodMatcher.matches(method, false)) {
-                    replacementTemplate = templateBuilder.getJavaTemplateBuilder(String.format("BinaryData.fromObject(%s.getValue())", method.getSelect().toString()))
+                if (methodMatcher.matches(visitedMethod, true)) {
+                    replacementTemplate = templateBuilder.getJavaTemplateBuilder(String.format("BinaryData.fromObject(%s.getValue())", visitedMethod.getSelect().toString()))
                             .imports("io.clientcore.core.http.models.HttpHeaderName")
                             .build();
-                    return replacementTemplate.apply(updateCursor(method), method.getCoordinates().replace());
+                    return replacementTemplate.apply(updateCursor(visitedMethod), visitedMethod.getCoordinates().replace());
                 }
 
-
-                return method;
+                return visitedMethod;
             }
         };
     }

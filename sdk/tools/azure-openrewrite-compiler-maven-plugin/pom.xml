@@ -13,19 +13,19 @@
   <description>A custom Maven plugin for compiling golden images.</description>
 
   <properties>
-    <maven-plugin-tools.version>3.15.1</maven-plugin-tools.version>
+    <maven-plugin-tools.version>3.15.1</maven-plugin-tools.version> <!-- {x-version-update;org.apache.maven.plugin-tools:maven-plugin-annotations;external_dependency} -->
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <version>3.9.9</version>
+      <version>3.9.9</version> <!-- {x-version-update;org.apache.maven:maven-plugin-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
-      <version>3.9.8</version>
+      <version>3.9.8</version> <!-- {x-version-update;org.apache.maven:maven-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>

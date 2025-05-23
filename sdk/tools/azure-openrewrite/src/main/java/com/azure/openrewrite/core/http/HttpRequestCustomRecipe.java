@@ -59,116 +59,95 @@ public class HttpRequestCustomRecipe extends Recipe {
 
             @Override
             public J visitNewClass(J.NewClass newClass, ExecutionContext ctx) {
-
-                // Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.lang.String)
-                // After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.lang.String)
-                J n = super.visitNewClass(newClass, ctx);
+                J visited = super.visitNewClass(newClass, ctx);
+                Recipe formatter = new org.openrewrite.java.format.TabsAndIndents();
+                doAfterVisit(formatter.getVisitor());
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.lang.String)");
-                if (methodMatcher.matches((J.NewClass) n)) {
+                if (methodMatcher.matches((J.NewClass) visited)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("new HttpRequest()\n.setMethod(#{any(io.clientcore.core.http.models.HttpMethod)})\n.setUri(#{any(java.lang.String)})")
                         .imports("io.clientcore.core.http.models.HttpMethod")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), newClass.getCoordinates().replace(), newClass.getArguments().toArray());
+                    visited = replacementTemplate.apply(updateCursor(visited), newClass.getCoordinates().replace(), newClass.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpMethod");
-                    Recipe formatter = new org.openrewrite.java.format.TabsAndIndents();
-                    doAfterVisit(formatter.getVisitor());
-                    return n;
+
+                    return visited;
                 }
 
-                // Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.httpHttpMethod, java.net.URL)
-                // After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(HttpMethod).setUri(java.net.URL.toUri())
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URL)");
-                if (methodMatcher.matches((J.NewClass) n)) {
+                if (methodMatcher.matches((J.NewClass) visited)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("new HttpRequest()\n.setMethod(#{any(io.clientcore.core.http.models.HttpMethod)})\n.setUri(#{any(java.net.URL)}.toURI())")
                         .imports("io.clientcore.core.http.models.HttpMethod")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), newClass.getCoordinates().replace(), newClass.getArguments().toArray());
+                    visited = replacementTemplate.apply(updateCursor(visited), newClass.getCoordinates().replace(), newClass.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpMethod");
-                    Recipe formatter = new org.openrewrite.java.format.TabsAndIndents();
-                    doAfterVisit(formatter.getVisitor());
-                    return n;
+                    return visited;
                 }
 
-                // Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URI, io.clientcore.core.http.models.HttpHeaders)
-                // After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.net.URI).setHeaders(io.clientcore.core.http.models.HttpHeaders)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URL, com.azure.core.http.HttpHeaders)");
-                if (methodMatcher.matches((J.NewClass) n)) {
+                if (methodMatcher.matches((J.NewClass) visited)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("new HttpRequest()\n.setMethod(#{any(io.clientcore.core.http.models.HttpMethod)})\n.setUri(#{any(java.net.URL)}.toURI())\n.setHeaders(#{any(io.clientcore.core.http.models.HttpHeaders)})")
                         .imports("io.clientcore.core.http.models.HttpMethod")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), newClass.getCoordinates().replace(), newClass.getArguments().toArray());
+                    visited = replacementTemplate.apply(updateCursor(visited), newClass.getCoordinates().replace(), newClass.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpMethod");
-                    Recipe formatter = new org.openrewrite.java.format.TabsAndIndents();
-                    doAfterVisit(formatter.getVisitor());
-                    return n;
+                    return visited;
                 }
 
-                // Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URI, com.azure.core.http.HttpHeaders, com.azure.core.util.BinaryData)
-                // After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.net.URI).setHeaders(io.clientcore.core.http.models.HttpHeaders).setBody(io.clientcore.core.models.binarydata.BinaryData)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URL, com.azure.core.http.HttpHeaders, com.azure.core.util.BinaryData)");
-                if (methodMatcher.matches((J.NewClass) n)) {
+                if (methodMatcher.matches((J.NewClass) visited)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("new HttpRequest()\n.setMethod(#{any(io.clientcore.core.http.models.HttpMethod)})\n.setUri(#{any(java.net.URL)}.toURI())\n.setHeaders(#{any(io.clientcore.core.http.models.HttpHeaders)})\n.setBody(#{any(io.clientcore.core.models.binarydata.BinaryData)})")
                         .imports("io.clientcore.core.http.models.HttpMethod", "io.clientcore.core.models.binarydata.BinaryData")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), newClass.getCoordinates().replace(), newClass.getArguments().toArray());
+                    visited = replacementTemplate.apply(updateCursor(visited), newClass.getCoordinates().replace(), newClass.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpMethod");
                     maybeAddImport("io.clientcore.core.models.binarydata.BinaryData");
-                    Recipe formatter = new org.openrewrite.java.format.TabsAndIndents();
-                    doAfterVisit(formatter.getVisitor());
-                    return n;
+                    return visited;
                 }
 
 
-                return n;
+                return visited;
             }
 
             @Override
             public J visitMethodInvocation(J.MethodInvocation methodInvocation, ExecutionContext ctx) {
                 MethodMatcher methodMatcher;
                 JavaTemplate replacementTemplate;
-                J n = super.visitMethodInvocation(methodInvocation, ctx);
-                // Before: com.azure.core.http.HttpRequest setBody(java.lang.String)
-                // After: io.clientcore.core.http.models.HttpRequest setBody(io.clientcore.core.models.binarydata.BinaryData)
+                J visited = super.visitMethodInvocation(methodInvocation, ctx);
+
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest setBody(java.lang.String)");
-                if (methodMatcher.matches((J.MethodInvocation) n)) {
+                if (methodMatcher.matches((J.MethodInvocation) visited)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("setBody(BinaryData.fromString(#{any(java.lang.String)}))")
                         .imports("io.clientcore.core.models.binarydata.BinaryData")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), methodInvocation.getCoordinates().replaceMethod(), methodInvocation.getArguments().toArray());
+                    visited = replacementTemplate.apply(updateCursor(visited), methodInvocation.getCoordinates().replaceMethod(), methodInvocation.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.models.binarydata.BinaryData");
-                    return n;
+                    return visited;
                 }
 
-                // Before: com.azure.core.http.HttpRequest setUrl
-                // After: io.clientcore.core.http.models.HttpRequest setUri(java.net.URL.toURI())
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest setUrl(java.net.URL)");
-                if (methodMatcher.matches((J.MethodInvocation) n, false)) {
+                if (methodMatcher.matches((J.MethodInvocation) visited, true)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("setUri(#{any(java.net.URL)}.toURI())")
                         .imports("java.net.URI")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), methodInvocation.getCoordinates().replaceMethod(), methodInvocation.getArguments().toArray());
+                    visited = replacementTemplate.apply(updateCursor(visited), methodInvocation.getCoordinates().replaceMethod(), methodInvocation.getArguments().toArray());
                     maybeAddImport("java.net.URI");
-                    return n;
+                    return visited;
                 }
 
-                // Before: com.azure.core.http.HttpRequest getUrl
-                // After: io.clientcore.core.http.models.HttpRequest getUri().toURL()
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest getUrl()");
-                if (methodMatcher.matches((J.MethodInvocation) n, false)) {
-                    replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder(String.format("%s.getUri().toURL()", ((J.MethodInvocation) n).getSelect().toString()))
+                if (methodMatcher.matches((J.MethodInvocation) visited, true)) {
+                    replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder(String.format("%s.getUri().toURL()", ((J.MethodInvocation) visited).getSelect().toString()))
                         .imports("java.net.URL")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), ((J.MethodInvocation) n).getCoordinates().replace());
+                    visited = replacementTemplate.apply(updateCursor(visited), ((J.MethodInvocation) visited).getCoordinates().replace());
                     maybeAddImport("java.net.URL");
-                    return n;
+                    return visited;
                 }
 
-                // Before: com.azure.core.http.HttpRequest setHeader(java.lang.String, java.lang.String)
-                // After: io.clientcore.core.http.models.HttpRequest  setHeaders(getHeaders().set(io.clientcore.core.http.models.HttpHeaderName, java.lang.String))
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest setHeader(..)");
-                if (methodMatcher.matches((J.MethodInvocation) n, false)) {
-                    J variableIdentifier = ((J.MethodInvocation) n).getSelect();
+                if (methodMatcher.matches((J.MethodInvocation) visited, true)) {
+                    J variableIdentifier = ((J.MethodInvocation) visited).getSelect();
                     while ((variableIdentifier instanceof J.MethodInvocation)) {
 
                         variableIdentifier = ((J.MethodInvocation) variableIdentifier).getSelect();
@@ -177,41 +156,35 @@ public class HttpRequestCustomRecipe extends Recipe {
                         .contextSensitive()
                         .imports("io.clientcore.core.http.models.HttpHeaderName", "io.clientcore.core.http.models.HttpHeaders")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), ((J.MethodInvocation) n).getCoordinates().replaceMethod(), ((J.MethodInvocation) n).getArguments().toArray());
+                    visited = replacementTemplate.apply(updateCursor(visited), ((J.MethodInvocation) visited).getCoordinates().replaceMethod(), ((J.MethodInvocation) visited).getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpHeaderName");
                     maybeAddImport("io.clientcore.core.http.models.HttpHeaders");
                     Recipe formatter = new org.openrewrite.java.format.TabsAndIndents();
                     doAfterVisit(formatter.getVisitor());
-                    return n;
+                    return visited;
                 }
 
-                // Before: com.azure.core.http.HttpRequest getBodyAsBinaryData()
-                // After: io.clientcore.core.http.models.HttpRequest getBody()
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest getBodyAsBinaryData()");
-                if (methodMatcher.matches((J.MethodInvocation) n, false)) {
+                if (methodMatcher.matches((J.MethodInvocation) visited, true)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("getBody()")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), ((J.MethodInvocation) n).getCoordinates().replaceMethod());
-                    return n;
+                    visited = replacementTemplate.apply(updateCursor(visited), ((J.MethodInvocation) visited).getCoordinates().replaceMethod());
+                    return visited;
                 }
 
-                // Before: com.azure.core.http.HttpRequest setBody(byte[])
-                // After: io.clientcore.core.http.models.HttpRequest setBody(io.clientcore.core.models.binarydata.BinaryData)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest setBody(byte[])");
-                if (methodMatcher.matches((J.MethodInvocation) n, false)) {
+                if (methodMatcher.matches((J.MethodInvocation) visited, true)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("setBody(BinaryData.fromBytes(#{anyArray(byte)})")
                         .imports("io.clientcore.core.models.binarydata.BinaryData")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), ((J.MethodInvocation) n).getCoordinates().replaceMethod(), ((J.MethodInvocation) n).getArguments().toArray());
+                    visited = replacementTemplate.apply(updateCursor(visited), ((J.MethodInvocation) visited).getCoordinates().replaceMethod(), ((J.MethodInvocation) visited).getArguments().toArray());
                     maybeAddImport("io.clientcore.core.models.binarydata.BinaryData");
-                    return n;
+                    return visited;
                 }
 
-                // Before: com.azure.core.http.HttpRequest copy()
-                // After: io.clientcore.core.http.models.HttpRequest setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.net.URL.toURI()).setHeaders(io.clientcore.core.http.models.HttpHeaders).setBody(io.clientcore.core.models.binarydata.BinaryData)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest copy()");
-                if (methodMatcher.matches((J.MethodInvocation) n, false)) {
-                    J variableIdentifier = ((J.MethodInvocation) n).getSelect();
+                if (methodMatcher.matches((J.MethodInvocation) visited, true)) {
+                    J variableIdentifier = ((J.MethodInvocation) visited).getSelect();
                     while ((variableIdentifier instanceof J.MethodInvocation)) {
 
                         variableIdentifier = ((J.MethodInvocation) variableIdentifier).getSelect();
@@ -219,15 +192,15 @@ public class HttpRequestCustomRecipe extends Recipe {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder(String.format("new HttpRequest()\n.setMethod(%1$s.getHttpMethod())\n.setUri(%1$s.getUri())\n.setHeaders(new HttpHeaders(%1$s.getHeaders()))\n.setBody(%1$s.getBody())", variableIdentifier))
                         .imports("io.clientcore.core.http.models.HttpMethod", "io.clientcore.core.http.models.HttpHeaders")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), ((J.MethodInvocation) n).getCoordinates().replace());
+                    visited = replacementTemplate.apply(updateCursor(visited), ((J.MethodInvocation) visited).getCoordinates().replace());
                     maybeAddImport("io.clientcore.core.http.models.HttpMethod");
                     maybeAddImport("io.clientcore.core.http.models.HttpHeaders");
                     Recipe formatter = new org.openrewrite.java.format.TabsAndIndents();
                     doAfterVisit(formatter.getVisitor());
-                    return n;
+                    return visited;
                 }
 
-                return n;
+                return visited;
             }
 
         };
