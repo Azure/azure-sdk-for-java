@@ -30,7 +30,8 @@ public class StringFormattedExceptionMessageCheckTest extends AbstractModuleTest
     @Test
     public void stringFormatExceptionMessageTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(9, 31, StringFormattedExceptionMessageCheck.ERROR_MESSAGE)
+            expectedErrorMessage(9, 31, StringFormattedExceptionMessageCheck.ERROR_MESSAGE),
+            expectedErrorMessage(16, 53, StringFormattedExceptionMessageCheck.ERROR_MESSAGE)
         };
         verify(checker, getPath("StringFormattedExceptionCheckTestData.java"), expected);
     }

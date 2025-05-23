@@ -1218,7 +1218,7 @@ class AzureAppConfigurationClient {
     /**
      * Requests the headers and status of the given resource.
      *
-
+    
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })

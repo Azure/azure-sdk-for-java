@@ -60,14 +60,26 @@ public class StringFormattedExceptionMessageCheck extends AbstractCheck {
                         return;
                     }
 
+                    // first param of `log()` method
                     DetailAST logExpr = elist.findFirstToken(TokenTypes.EXPR);
                     if (logExpr == null) {
                         return;
                     }
 
-                    String logFirstArgMethod = FullIdent.createFullIdent(logExpr.getFirstChild().getFirstChild()).getText();
-                    if (logFirstArgMethod.endsWith(STRING_FORMAT_METHOD_NAME)) {
-                        log(logExpr, ERROR_MESSAGE);
+                    DetailAST firstParam = logExpr.getFirstChild();
+                    // flag String.format
+                    if (firstParam.getType() == TokenTypes.METHOD_CALL) {
+                        String logFirstArgMethod = FullIdent.createFullIdentBelow(logExpr.getFirstChild()).getText();
+                        if (logFirstArgMethod.endsWith(STRING_FORMAT_METHOD_NAME)) {
+                            log(logExpr, ERROR_MESSAGE);
+                        }
+                    } else if (firstParam.getType() == TokenTypes.PLUS) {
+                        // flag if dynamic, i.e. a combination of string literal and ident
+                        DetailAST firstIdent = logExpr.getFirstChild().findFirstToken(TokenTypes.IDENT);
+                        DetailAST firstLiteral = logExpr.getFirstChild().findFirstToken(TokenTypes.STRING_LITERAL);
+                        if (firstIdent != null && firstLiteral != null) {
+                            log(firstParam, ERROR_MESSAGE);
+                        }
                     }
                 }
             }

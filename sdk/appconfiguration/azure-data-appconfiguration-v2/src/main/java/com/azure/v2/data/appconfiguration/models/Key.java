@@ -16,7 +16,7 @@ import java.io.IOException;
  * Keys serve as identifiers for key-values and are used to store and retrieve corresponding values.
  */
 @Metadata(properties = { MetadataProperties.IMMUTABLE })
-final class Key implements JsonSerializable<Key> {
+class Key implements JsonSerializable<Key> {
     /*
      * The name of the key.
      */
