@@ -13,6 +13,8 @@ import com.openai.core.JsonValue;
 import com.openai.core.http.StreamResponse;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.errors.BadRequestException;
+import com.openai.errors.NotFoundException;
+import com.openai.models.ChatModel;
 import com.openai.models.ResponseFormatJsonObject;
 import com.openai.models.audio.transcriptions.Transcription;
 import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
@@ -25,14 +27,23 @@ import com.openai.models.chat.completions.ChatCompletionMessageToolCall;
 import com.openai.models.completions.CompletionUsage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseRetrieveParams;
+import com.openai.models.responses.ResponseDeleteParams;
+import com.openai.models.responses.ResponseInputItem;
+import com.openai.models.responses.ResponseInputImage;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Base64;
+import java.util.Collections;
 
 import static com.azure.ai.openai.stainless.TestUtils.AZURE_OPEN_AI;
 import static com.azure.ai.openai.stainless.TestUtils.GA;
@@ -487,5 +498,135 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         TranscriptionCreateParams params = createTranscriptionCreateParams(testModel);
         Transcription transcription = client.audio().transcriptions().create(params).asTranscription();
         assertAudioTranscription(transcription);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    public void responsesGetPreviousResponseSuccessfully(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+
+        ResponseCreateParams createParams = ResponseCreateParams.builder()
+            .input("Tell me a story about building the best SDK!")
+            .model(testModel)
+            .build();
+
+        Response response = client.responses().create(createParams);
+        String text = extractOutputText(response);
+
+        ResponseRetrieveParams retrieveParams = ResponseRetrieveParams.builder().responseId(response.id()).build();
+
+        Response responseRetrieved = client.responses().retrieve(retrieveParams);
+
+        assertNotNull(responseRetrieved, "Response should not be null");
+        assertFalse(responseRetrieved.output().isEmpty(), "Response output should not be empty");
+        assertEquals(response.id(), responseRetrieved.id());
+
+        String textRetrieved = extractOutputText(responseRetrieved);
+
+        assertNotNull(textRetrieved, "Text should not be null");
+        assertFalse(textRetrieved.trim().isEmpty(), "Text should not be empty");
+        assertEquals(text, textRetrieved);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    public void responsesDeleteResponseSuccessfully(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+
+        ResponseCreateParams createParams = ResponseCreateParams.builder()
+            .input("Tell me a story about building the best SDK!")
+            .model(testModel)
+            .build();
+
+        Response response = client.responses().create(createParams);
+
+        ResponseDeleteParams deleteResponse = ResponseDeleteParams.builder().responseId(response.id()).build();
+
+        client.responses().delete(deleteResponse);
+
+        String exMessage = null;
+        ResponseRetrieveParams retrieveParams = ResponseRetrieveParams.builder().responseId(response.id()).build();
+
+        try {
+            client.responses().retrieve(retrieveParams);
+        } catch (NotFoundException ex) {
+            exMessage = ex.getMessage();
+        }
+
+        assertTrue(exMessage.contains("404"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    public void responsesImagesBase64Successfully(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+
+        String base64Image = null;
+        try {
+            String fileName = "logo.png";
+            byte[] imageBytes
+                = Files.readAllBytes(Paths.get("src/samples/java/com/azure/ai/openai/stainless/resources/" + fileName));
+            base64Image = Base64.getEncoder().encodeToString(imageBytes);
+        } catch (IOException e) {
+            return;
+        }
+
+        String logoBase64Url = "data:image/jpeg;base64," + base64Image;
+
+        ResponseInputImage logoInputImage
+            = ResponseInputImage.builder().detail(ResponseInputImage.Detail.AUTO).imageUrl(logoBase64Url).build();
+        ResponseInputItem messageInputItem = ResponseInputItem.ofMessage(ResponseInputItem.Message.builder()
+            .role(ResponseInputItem.Message.Role.USER)
+            .addInputTextContent("Describe this image.")
+            .addContent(logoInputImage)
+            .build());
+        ResponseCreateParams createParams = ResponseCreateParams.builder()
+            .inputOfResponse(Collections.singletonList(messageInputItem))
+            .model(ChatModel.GPT_4O_MINI)
+            .build();
+
+        Response response = client.responses().create(createParams);
+
+        assertNotNull(response, "Response should not be null");
+        assertFalse(response.output().isEmpty(), "Response output should not be empty");
+
+        String text = extractOutputText(response);
+
+        assertNotNull(text, "Text should not be null");
+        assertFalse(text.trim().isEmpty(), "Text should not be empty");
+        assertTrue(
+            text.contains("orange") && text.contains("green") && text.contains("blue") && text.contains("yellow"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    public void responsesImagesUrlSuccessfully(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+
+        String logoUrl
+            = "https://th.bing.com/th/id/R.565799473e5e4ffb1d36bb3b5fc0400c?rik=HWolfL7xZmcc3g&pid=ImgRaw&r=0";
+
+        ResponseInputImage logoInputImage
+            = ResponseInputImage.builder().detail(ResponseInputImage.Detail.AUTO).imageUrl(logoUrl).build();
+        ResponseInputItem messageInputItem = ResponseInputItem.ofMessage(ResponseInputItem.Message.builder()
+            .role(ResponseInputItem.Message.Role.USER)
+            .addInputTextContent("Describe this image.")
+            .addContent(logoInputImage)
+            .build());
+        ResponseCreateParams createParams = ResponseCreateParams.builder()
+            .inputOfResponse(Collections.singletonList(messageInputItem))
+            .model(ChatModel.GPT_4O_MINI)
+            .build();
+
+        Response response = client.responses().create(createParams);
+
+        assertNotNull(response, "Response should not be null");
+        assertFalse(response.output().isEmpty(), "Response output should not be empty");
+
+        String text = extractOutputText(response);
+
+        assertNotNull(text, "Text should not be null");
+        assertFalse(text.trim().isEmpty(), "Text should not be empty");
+        assertTrue(text.contains("blue") && text.contains("logo"));
     }
 }
