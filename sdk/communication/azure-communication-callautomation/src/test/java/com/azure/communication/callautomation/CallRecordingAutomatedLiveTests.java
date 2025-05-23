@@ -24,7 +24,6 @@ import com.azure.communication.callautomation.models.FileSource;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.core.http.HttpClient;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -219,7 +218,6 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
         }
     }
 
-    @Disabled("This test is failing in the pipeline, needs to be fixed.")
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createACSCallAndStartRecordingWithCallConnectionIdTest(HttpClient httpClient) {
