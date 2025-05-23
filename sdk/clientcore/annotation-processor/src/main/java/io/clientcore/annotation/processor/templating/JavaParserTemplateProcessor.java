@@ -352,10 +352,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 .filter(param -> param.getVariableElement().getAnnotation(HostParam.class) != null)
                 .map(HttpRequestContext.MethodParameter::getName)
                 .collect(Collectors.joining(" + "));
-            if (method.isUriNextLink()) {
-                // Use the nextLink variable directly
-                urlStatement = "nextLink";
-            } else if (CoreUtils.isNullOrEmpty(concatenatedHostParams)) {
+            if (method.isUriNextLink() || CoreUtils.isNullOrEmpty(concatenatedHostParams)) {
                 urlStatement = method.getHost();
             } else {
                 urlStatement = concatenatedHostParams + " + \"/\" + " + method.getHost();
