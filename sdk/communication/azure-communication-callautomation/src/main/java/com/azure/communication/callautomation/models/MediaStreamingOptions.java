@@ -11,7 +11,7 @@ public final class MediaStreamingOptions {
     /*
      * Transport URL for media streaming
      */
-    private final String transportUrl;
+    private String transportUrl;
 
     /*
      * The type of transport to be used for media streaming, eg. Websocket
@@ -53,12 +53,20 @@ public final class MediaStreamingOptions {
      * @param transportUrl - The Transport URL
      * @param audioChannelType - Audio Channel Type
      */
-    public MediaStreamingOptions(String transportUrl, MediaStreamingAudioChannel audioChannelType) {
-        this.transportUrl = transportUrl;
+    public MediaStreamingOptions(MediaStreamingAudioChannel audioChannelType, StreamingTransport transportType) {
         this.transportType = StreamingTransport.WEBSOCKET;
         this.contentType = MediaStreamingContentType.AUDIO;
         this.audioChannelType = audioChannelType;
         this.startMediaStreaming = false;
+    }
+
+    /**
+     * Creates a new instance of TranscriptionOptions with default transportType as WEBSOCKET.
+     * @param transportUrl - The Transport URL
+     * @param locale - Locale
+     */
+    public MediaStreamingOptions(MediaStreamingAudioChannel audioChannelType) {
+        this(audioChannelType, StreamingTransport.WEBSOCKET);
     }
 
     /**
@@ -68,6 +76,17 @@ public final class MediaStreamingOptions {
      */
     public String getTransportUrl() {
         return this.transportUrl;
+    }
+
+    /**
+     * Set the transportUrl property: Transport URL for media streaming.
+     *
+     * @param transportUrl the transportUrl value to set.
+     * @return the MediaStreamingOptions object itself.
+     */
+    public MediaStreamingOptions setTransportUrl(String transportUrl) {
+        this.transportUrl = transportUrl;
+        return this;
     }
 
     /**

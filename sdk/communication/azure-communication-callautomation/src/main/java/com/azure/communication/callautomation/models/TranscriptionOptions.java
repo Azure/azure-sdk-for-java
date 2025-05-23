@@ -9,11 +9,6 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class TranscriptionOptions {
     /*
-     * Transport URL for live transcription
-     */
-    private final String transportUrl;
-
-    /*
      * The type of transport to be used for live transcription, eg. Websocket
      */
     private final StreamingTransport transportType;
@@ -38,16 +33,29 @@ public final class TranscriptionOptions {
      */
     private Boolean enableIntermediateResults;
 
+    /*
+     * Transport URL for live transcription
+     */
+    private String transportUrl;
+
     /**
-     * Creates a new instance of MediaStreamingConfiguration
+     * Creates a new instance of TranscriptionOptions
+     * @param locale - Locale
+     * @param transportType - The type of transport to be used for live transcription
+     */
+    public TranscriptionOptions(String locale, StreamingTransport transportType) {
+        this.transportType = transportType;
+        this.locale = locale;
+        this.startTranscription = false;
+    }
+
+    /**
+     * Creates a new instance of TranscriptionOptions with default transportType as WEBSOCKET.
      * @param transportUrl - The Transport URL
      * @param locale - Locale
      */
-    public TranscriptionOptions(String transportUrl, String locale) {
-        this.transportUrl = transportUrl;
-        this.transportType = StreamingTransport.WEBSOCKET;
-        this.locale = locale;
-        this.startTranscription = false;
+    public TranscriptionOptions(String locale) {
+        this(locale, StreamingTransport.WEBSOCKET);
     }
 
     /**
@@ -57,6 +65,17 @@ public final class TranscriptionOptions {
      */
     public String getTransportUrl() {
         return this.transportUrl;
+    }
+
+    /**
+     * Set the transportUrl property: Transport URL for live transcription.
+     *
+     * @param transportUrl the transportUrl value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setTransportUrl(String transportUrl) {
+        this.transportUrl = transportUrl;
+        return this;
     }
 
     /**

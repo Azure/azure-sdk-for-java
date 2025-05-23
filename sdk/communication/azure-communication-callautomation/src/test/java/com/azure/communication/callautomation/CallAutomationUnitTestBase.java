@@ -60,11 +60,11 @@ public class CallAutomationUnitTestBase {
     static final String BOT_APP_ID = "botAppId";
 
     static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION
-        = new MediaStreamingOptions("https://websocket.url.com", MediaStreamingAudioChannel.MIXED)
+        = new MediaStreamingOptions(MediaStreamingAudioChannel.MIXED).setTransportUrl("https://websocket.url.com")
             .setStartMediaStreaming(true);
 
     static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION
-        = new TranscriptionOptions("https://websocket.url.com", "en-US").setStartTranscription(true);
+        = new TranscriptionOptions("en-US").setTransportUrl("https://websocket.url.com").setStartTranscription(true);
 
     public static String generateDownloadResult(String content) {
         return content;

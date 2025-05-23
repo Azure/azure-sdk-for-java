@@ -292,7 +292,8 @@ public final class CallAutomationAsyncClient {
             .setEnableBidirectional(mediaStreamingOptions.isEnableBidirectional())
             .setAudioFormat(AudioFormatInternal.fromString(mediaStreamingOptions.getAudioFormat() != null
                 ? mediaStreamingOptions.getAudioFormat().toString()
-                : null));
+                : null))
+            .setEnableDtmfTones(mediaStreamingOptions.isEnableDtmfTones());
     }
 
     private TranscriptionOptionsInternal getTranscriptionOptionsInternal(TranscriptionOptions transcriptionOptions) {
