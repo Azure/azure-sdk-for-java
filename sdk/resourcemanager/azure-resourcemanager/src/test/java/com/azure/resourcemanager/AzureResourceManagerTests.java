@@ -799,7 +799,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
             Assertions.assertEquals(35, connectionMonitor.monitoringIntervalInSeconds());
             Assertions.assertEquals("NotStarted", connectionMonitor.monitoringStatus());
             Assertions.assertEquals("NewConnectionMonitor", connectionMonitor.name());
-            
+
             Topology topology = nw.topology().withTargetResourceGroup(virtualMachines[0].resourceGroupName()).execute();
             Assertions.assertEquals(11, topology.resources().size());
             Assertions.assertTrue(topology.resources()

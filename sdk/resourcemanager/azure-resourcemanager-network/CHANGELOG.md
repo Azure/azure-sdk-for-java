@@ -5,6 +5,7 @@
 ### Breaking Changes
 
 - The details that query used to fetch are now ingested directly in Customer's log Analytics workspace and hence query operation is no more valid on connection Monitor resource now.
+- Start is deprecated now  - the put call for ConnectionMonitor starts as well. There is no explicit start.
 
 ### Other Changes
 
