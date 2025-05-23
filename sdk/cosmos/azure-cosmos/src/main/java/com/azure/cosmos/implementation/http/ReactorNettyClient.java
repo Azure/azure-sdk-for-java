@@ -5,6 +5,9 @@ package com.azure.cosmos.implementation.http;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.Slf4jLoggingRegistryFactory;
+import com.azure.cosmos.implementation.UUIDs;
+import io.micrometer.core.instrument.Metrics;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -35,6 +38,7 @@ import java.lang.invoke.WrongMethodTypeException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
@@ -249,6 +253,23 @@ public class ReactorNettyClient implements HttpClient {
     public void shutdown() {
         if (this.connectionProvider != null) {
             this.connectionProvider.dispose();
+        }
+    }
+
+    private static final String lockObject = UUIDs.nonBlockingRandomUUID().toString();
+    private static boolean loggingIsEnabled = false;
+
+    public static void ensureLogsEnabled() {
+        if (loggingIsEnabled) {
+            return;
+        }
+        synchronized (lockObject) {
+            if (loggingIsEnabled) {
+                return;
+            }
+
+            Metrics.addRegistry(Slf4jLoggingRegistryFactory.create(10, "INFO"));
+            loggingIsEnabled = true;
         }
     }
 
