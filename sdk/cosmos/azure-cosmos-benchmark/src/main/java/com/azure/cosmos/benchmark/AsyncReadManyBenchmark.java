@@ -14,6 +14,7 @@ import reactor.core.scheduler.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
 class AsyncReadManyBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
 
@@ -53,7 +54,7 @@ class AsyncReadManyBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> 
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i) throws Exception {
+    protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i, Semaphore concurrencyThreshold) throws Exception {
         int tupleSize = configuration.getTupleSize();
         int randomIdx = r.nextInt(configuration.getNumberOfPreCreatedDocuments());
         List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
@@ -69,7 +70,7 @@ class AsyncReadManyBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> 
 
         Mono<FeedResponse<PojoizedJson>> obs = cosmosAsyncContainer.readMany(cosmosItemIdentities, PojoizedJson.class);
 
-        concurrencyControlSemaphore.acquire();
+        concurrencyThreshold.acquire();
 
         switch (configuration.getOperationType()) {
             case ReadManyLatency:

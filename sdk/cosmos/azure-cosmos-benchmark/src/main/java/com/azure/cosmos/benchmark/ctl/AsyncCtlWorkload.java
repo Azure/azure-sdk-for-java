@@ -65,7 +65,8 @@ public class AsyncCtlWorkload {
     private final Configuration configuration;
     private final Map<String, List<PojoizedJson>> docsToRead = new HashMap<>();
     private final Map<String, List<CosmosItemIdentity>> itemIdentityMap = new HashMap<>();
-    private final Semaphore concurrencyControlSemaphore;
+    final Semaphore concurrencyControlSemaphore;
+    final Semaphore concurrencyControlWarmupSemaphore;
     private final Random random;
 
     private Timer readLatency;
@@ -127,6 +128,7 @@ public class AsyncCtlWorkload {
         partitionKey = containers.get(0).read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
 
+        concurrencyControlWarmupSemaphore = new Semaphore(Math.max(1, cfg.getConcurrency() / 10));
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
 
         logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
@@ -170,7 +172,7 @@ public class AsyncCtlWorkload {
         cosmosClient.close();
     }
 
-    private void performWorkload(BaseSubscriber<Object> documentSubscriber, OperationType type, long i, boolean isReadMany) throws Exception {
+    private void performWorkload(BaseSubscriber<Object> documentSubscriber, OperationType type, long i, boolean isReadMany, Semaphore concurrencyThreshold) throws Exception {
         Flux<? extends Object> obs;
         CosmosAsyncContainer container = containers.get((int) i % containers.size());
         if (type.equals(OperationType.Create)) {
@@ -198,9 +200,13 @@ public class AsyncCtlWorkload {
                 PojoizedJson.class).flux();
         }
 
-        concurrencyControlSemaphore.acquire();
+        concurrencyThreshold.acquire();
 
         obs.subscribeOn(Schedulers.parallel()).subscribe(documentSubscriber);
+    }
+
+    protected boolean isStillInWarmup(AtomicLong count) {
+        return count.get() >= configuration.getSkipWarmUpOperations();
     }
 
     public void run() throws Exception {
@@ -225,40 +231,44 @@ public class AsyncCtlWorkload {
         int writeRange = readPct + writePct;
         int queryRange = readPct + writePct + queryPct;
         for (i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
+            final Semaphore concurrencySemaphoreSnapshot = this.isStillInWarmup(count)
+                ? this.concurrencyControlSemaphore
+                : this.concurrencyControlWarmupSemaphore;
+
             int index = (int) i % 100;
             if (index < readPct) {
                 BenchmarkRequestSubscriber<Object> readSubscriber = new BenchmarkRequestSubscriber<>(readSuccessMeter,
                     readFailureMeter,
-                    concurrencyControlSemaphore,
+                    concurrencySemaphoreSnapshot,
                     count,
                     configuration.getDiagnosticsThresholdDuration());
                 readSubscriber.context = readLatency.time();
-                performWorkload(readSubscriber, OperationType.Read, i, false);
+                performWorkload(readSubscriber, OperationType.Read, i, false, concurrencySemaphoreSnapshot);
             } else if (index < writeRange) {
                 BenchmarkRequestSubscriber<Object> writeSubscriber = new BenchmarkRequestSubscriber<>(writeSuccessMeter,
                     writeFailureMeter,
-                    concurrencyControlSemaphore,
+                    concurrencySemaphoreSnapshot,
                     count,
                     configuration.getDiagnosticsThresholdDuration());
                 writeSubscriber.context = writeLatency.time();
-                performWorkload(writeSubscriber, OperationType.Create, i, false);
+                performWorkload(writeSubscriber, OperationType.Create, i, false, concurrencySemaphoreSnapshot);
 
             } else if (index < queryRange){
                 BenchmarkRequestSubscriber<Object> querySubscriber = new BenchmarkRequestSubscriber<>(querySuccessMeter,
                     queryFailureMeter,
-                    concurrencyControlSemaphore,
+                    concurrencySemaphoreSnapshot,
                     count,
                     configuration.getDiagnosticsThresholdDuration());
                 querySubscriber.context = queryLatency.time();
-                performWorkload(querySubscriber, OperationType.Query, i, false);
+                performWorkload(querySubscriber, OperationType.Query, i, false, concurrencySemaphoreSnapshot);
             } else {
                 BenchmarkRequestSubscriber<Object> readManySubscriber = new BenchmarkRequestSubscriber<>(readManySuccessMeter,
                     readManyFailureMeter,
-                    concurrencyControlSemaphore,
+                    concurrencySemaphoreSnapshot,
                     count,
                     configuration.getDiagnosticsThresholdDuration());
                 readManySubscriber.context = readManyLatency.time();
-                performWorkload(readManySubscriber, OperationType.Query, i, true);
+                performWorkload(readManySubscriber, OperationType.Query, i, true, concurrencySemaphoreSnapshot);
             }
         }
 

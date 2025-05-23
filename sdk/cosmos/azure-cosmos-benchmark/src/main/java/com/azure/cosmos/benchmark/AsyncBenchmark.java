@@ -84,6 +84,7 @@ abstract class AsyncBenchmark<T> {
     final Configuration configuration;
     final List<PojoizedJson> docsToRead;
     final Semaphore concurrencyControlSemaphore;
+    final Semaphore concurrencyControlWarmupSemaphore;
     Timer latency;
 
     private static final List<String> CONFIGURED_HIGH_AVAILABILITY_SYSTEM_PROPERTIES = Arrays.asList(
@@ -258,6 +259,7 @@ abstract class AsyncBenchmark<T> {
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
 
+        concurrencyControlWarmupSemaphore = new Semaphore(Math.max(1, cfg.getConcurrency() / 10));
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
 
         ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
@@ -485,6 +487,10 @@ abstract class AsyncBenchmark<T> {
     protected void onSuccess() {
     }
 
+    protected boolean isStillInWarmup(AtomicLong count) {
+        return count.get() >= configuration.getSkipWarmUpOperations();
+    }
+
     protected void initializeMetersIfSkippedEnoughOperations(AtomicLong count) {
         if (configuration.getSkipWarmUpOperations() > 0) {
             if (count.get() >= configuration.getSkipWarmUpOperations()) {
@@ -498,6 +504,7 @@ abstract class AsyncBenchmark<T> {
                             if (resultReporter != null) {
                                 resultReporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
                             }
+
                             warmupMode.set(false);
                         }
                     }
@@ -509,7 +516,7 @@ abstract class AsyncBenchmark<T> {
     protected void onError(Throwable throwable) {
     }
 
-    protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i) throws Exception;
+    protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i, Semaphore concurrencyThreshold) throws Exception;
 
     private void resetMeters() {
         metricsRegistry.remove(Configuration.SUCCESS_COUNTER_METER_NAME);
@@ -568,6 +575,10 @@ abstract class AsyncBenchmark<T> {
 
         for ( i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
 
+            final Semaphore concurrencySemaphoreSnapshot = this.isStillInWarmup(count)
+                ? this.concurrencyControlSemaphore
+                : this.concurrencyControlWarmupSemaphore;
+
             BaseSubscriber<T> baseSubscriber = new BaseSubscriber<T>() {
                 @Override
                 protected void hookOnSubscribe(Subscription subscription) {
@@ -588,7 +599,7 @@ abstract class AsyncBenchmark<T> {
                 protected void hookOnComplete() {
                     initializeMetersIfSkippedEnoughOperations(count);
                     successMeter.mark();
-                    concurrencyControlSemaphore.release();
+                    concurrencySemaphoreSnapshot.release();
                     AsyncBenchmark.this.onSuccess();
 
                     synchronized (count) {
@@ -604,7 +615,7 @@ abstract class AsyncBenchmark<T> {
 
                     logger.error("Encountered failure {} on thread {}" ,
                         throwable.getMessage(), Thread.currentThread().getName(), throwable);
-                    concurrencyControlSemaphore.release();
+                    concurrencySemaphoreSnapshot.release();
                     AsyncBenchmark.this.onError(throwable);
 
                     synchronized (count) {
@@ -614,7 +625,8 @@ abstract class AsyncBenchmark<T> {
                 }
             };
 
-            performWorkload(baseSubscriber, i);
+
+            performWorkload(baseSubscriber, i, concurrencySemaphoreSnapshot);
         }
 
         synchronized (count) {
