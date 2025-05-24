@@ -27,15 +27,12 @@ import io.clientcore.core.annotations.ServiceMethod;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.implementation.http.RetryUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 import static com.azure.v2.security.keyvault.keys.cryptography.implementation.CryptographyUtils.createLocalClient;
-import static com.azure.v2.security.keyvault.keys.cryptography.implementation.CryptographyUtils.isThrowableRetryable;
 import static com.azure.v2.security.keyvault.keys.cryptography.implementation.CryptographyUtils.retrieveJwkAndCreateLocalClient;
 
 /**
@@ -163,27 +160,25 @@ public class CryptographyClient {
      * operations or key type properties is not configured.
      */
     CryptographyClient(JsonWebKey jsonWebKey) {
-        try {
-            Objects.requireNonNull(jsonWebKey, "The JSON Web Key is required.");
+        Objects.requireNonNull(jsonWebKey, "The JSON Web Key is required.");
 
-            if (!jsonWebKey.isValid()) {
-                throw new IllegalArgumentException("The JSON Web Key is not valid.");
-            }
-
-            if (jsonWebKey.getKeyOps() == null) {
-                throw new IllegalArgumentException("The JSON Web Key's key operations property is not configured.");
-            }
-
-            if (jsonWebKey.getKeyType() == null) {
-                throw new IllegalArgumentException("The JSON Web Key's key type property is not configured.");
-            }
-
-            this.clientImpl = null;
-            this.keyId = jsonWebKey.getId();
-            this.localKeyCryptographyClient = createLocalClient(jsonWebKey, null);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
+        if (!jsonWebKey.isValid()) {
+            throw LOGGER.throwableAtError().log("The JSON Web Key is not valid.", IllegalArgumentException::new);
         }
+
+        if (jsonWebKey.getKeyOps() == null) {
+            throw LOGGER.throwableAtError()
+                .log("The JSON Web Key's key operations property is not configured.", IllegalArgumentException::new);
+        }
+
+        if (jsonWebKey.getKeyType() == null) {
+            throw LOGGER.throwableAtError()
+                .log("The JSON Web Key's key type property is not configured.", IllegalArgumentException::new);
+        }
+
+        this.clientImpl = null;
+        this.keyId = jsonWebKey.getId();
+        this.localKeyCryptographyClient = createLocalClient(jsonWebKey, null, LOGGER);
     }
 
     /**
@@ -241,14 +236,10 @@ public class CryptographyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> getKeyWithResponse(RequestContext requestContext) {
         if (clientImpl != null) {
-            try {
-                return clientImpl.getKeyWithResponse(requestContext);
-            } catch (RuntimeException e) {
-                throw LOGGER.logThrowableAsError(e);
-            }
+            return clientImpl.getKeyWithResponse(requestContext);
         } else {
-            throw LOGGER.logThrowableAsError(
-                new UnsupportedOperationException("Operation not supported when operating in local-only mode."));
+            throw LOGGER.throwableAtError()
+                .log("Operation not supported when operating in local-only mode.", UnsupportedOperationException::new);
         }
     }
 
@@ -308,16 +299,10 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
-        try {
-            if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.encrypt(algorithm, plaintext, RequestContext.none());
-            } else {
-                return clientImpl.encrypt(algorithm, plaintext);
-            }
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        if (isLocalClientAvailable()) {
+            return localKeyCryptographyClient.encrypt(algorithm, plaintext, RequestContext.none());
+        } else {
+            return clientImpl.encrypt(algorithm, plaintext);
         }
     }
 
@@ -387,16 +372,10 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptParameters encryptParameters, RequestContext requestContext) {
-        try {
-            if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.encrypt(encryptParameters, requestContext);
-            } else {
-                return clientImpl.encrypt(encryptParameters, requestContext);
-            }
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        if (isLocalClientAvailable()) {
+            return localKeyCryptographyClient.encrypt(encryptParameters, requestContext);
+        } else {
+            return clientImpl.encrypt(encryptParameters, requestContext);
         }
     }
 
@@ -457,16 +436,10 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
-        try {
-            if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.decrypt(algorithm, ciphertext, RequestContext.none());
-            } else {
-                return clientImpl.decrypt(algorithm, ciphertext, RequestContext.none());
-            }
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        if (isLocalClientAvailable()) {
+            return localKeyCryptographyClient.decrypt(algorithm, ciphertext, RequestContext.none());
+        } else {
+            return clientImpl.decrypt(algorithm, ciphertext, RequestContext.none());
         }
     }
 
@@ -537,16 +510,10 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(DecryptParameters decryptParameters, RequestContext requestContext) {
-        try {
-            if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.decrypt(decryptParameters, requestContext);
-            } else {
-                return clientImpl.decrypt(decryptParameters, requestContext);
-            }
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        if (isLocalClientAvailable()) {
+            return localKeyCryptographyClient.decrypt(decryptParameters, requestContext);
+        } else {
+            return clientImpl.decrypt(decryptParameters, requestContext);
         }
     }
 
@@ -598,16 +565,10 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest) {
-        try {
-            if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.sign(algorithm, digest, RequestContext.none());
-            } else {
-                return clientImpl.sign(algorithm, digest, RequestContext.none());
-            }
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        if (isLocalClientAvailable()) {
+            return localKeyCryptographyClient.sign(algorithm, digest, RequestContext.none());
+        } else {
+            return clientImpl.sign(algorithm, digest, RequestContext.none());
         }
     }
 
@@ -665,16 +626,10 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, RequestContext requestContext) {
-        try {
-            if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.sign(algorithm, digest, requestContext);
-            } else {
-                return clientImpl.sign(algorithm, digest, requestContext);
-            }
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        if (isLocalClientAvailable()) {
+            return localKeyCryptographyClient.sign(algorithm, digest, requestContext);
+        } else {
+            return clientImpl.sign(algorithm, digest, requestContext);
         }
     }
 
@@ -786,16 +741,10 @@ public class CryptographyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
         RequestContext requestContext) {
-        try {
-            if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.verify(algorithm, digest, signature, requestContext);
-            } else {
-                return clientImpl.verify(algorithm, digest, signature, requestContext);
-            }
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        if (isLocalClientAvailable()) {
+            return localKeyCryptographyClient.verify(algorithm, digest, signature, requestContext);
+        } else {
+            return clientImpl.verify(algorithm, digest, signature, requestContext);
         }
     }
 
@@ -899,16 +848,10 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, RequestContext requestContext) {
-        try {
-            if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.wrapKey(algorithm, key, requestContext);
-            } else {
-                return clientImpl.wrapKey(algorithm, key, requestContext);
-            }
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        if (isLocalClientAvailable()) {
+            return localKeyCryptographyClient.wrapKey(algorithm, key, requestContext);
+        } else {
+            return clientImpl.wrapKey(algorithm, key, requestContext);
         }
     }
 
@@ -1015,16 +958,10 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, RequestContext requestContext) {
-        try {
-            if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.unwrapKey(algorithm, encryptedKey, requestContext);
-            } else {
-                return clientImpl.unwrapKey(algorithm, encryptedKey, requestContext);
-            }
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        if (isLocalClientAvailable()) {
+            return localKeyCryptographyClient.unwrapKey(algorithm, encryptedKey, requestContext);
+        } else {
+            return clientImpl.unwrapKey(algorithm, encryptedKey, requestContext);
         }
     }
 
@@ -1126,18 +1063,10 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult signData(SignatureAlgorithm algorithm, byte[] data, RequestContext requestContext) {
-        try {
-            if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.signData(algorithm, data, requestContext);
-            } else {
-                return clientImpl.signData(algorithm, data, requestContext);
-            }
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        } catch (NoSuchAlgorithmException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+        if (isLocalClientAvailable()) {
+            return localKeyCryptographyClient.signData(algorithm, data, requestContext);
+        } else {
+            return clientImpl.signData(algorithm, data, requestContext);
         }
     }
 
@@ -1241,27 +1170,19 @@ public class CryptographyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
         RequestContext requestContext) {
-        try {
-            if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.verifyData(algorithm, data, signature, requestContext);
-            } else {
-                return clientImpl.verifyData(algorithm, data, signature, requestContext);
-            }
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        } catch (NoSuchAlgorithmException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+        if (isLocalClientAvailable()) {
+            return localKeyCryptographyClient.verifyData(algorithm, data, signature, requestContext);
+        } else {
+            return clientImpl.verifyData(algorithm, data, signature, requestContext);
         }
     }
 
     private boolean isLocalClientAvailable() {
         if (!skipLocalClientCreation && localKeyCryptographyClient == null) {
             try {
-                localKeyCryptographyClient = retrieveJwkAndCreateLocalClient(clientImpl);
-            } catch (Throwable t) {
-                if (isThrowableRetryable(t)) {
+                localKeyCryptographyClient = retrieveJwkAndCreateLocalClient(clientImpl, LOGGER);
+            } catch (RuntimeException t) {
+                if (RetryUtils.isRetryable(t)) {
                     LOGGER.atVerbose()
                         .setThrowable(t)
                         .log("Could not set up local cryptography for this operation. Defaulting to service-side "

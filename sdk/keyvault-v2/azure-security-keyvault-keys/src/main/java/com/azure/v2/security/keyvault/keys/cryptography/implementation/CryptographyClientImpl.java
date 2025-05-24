@@ -32,8 +32,8 @@ import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -106,15 +106,14 @@ public final class CryptographyClientImpl {
         return secretClient.setSecretWithResponse("", secretSetParameters, requestContext);
     }
 
-    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) throws IOException {
+    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
         Objects.requireNonNull(plaintext, "Plaintext cannot be null.");
 
         return encrypt(algorithm, plaintext, null, null, RequestContext.none());
     }
 
-    public EncryptResult encrypt(EncryptParameters encryptParameters, RequestContext requestContext)
-        throws IOException {
+    public EncryptResult encrypt(EncryptParameters encryptParameters, RequestContext requestContext) {
 
         Objects.requireNonNull(encryptParameters, "Encrypt parameters cannot be null.");
 
@@ -123,7 +122,7 @@ public final class CryptographyClientImpl {
     }
 
     EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plainText, byte[] iv,
-        byte[] additionalAuthenticatedData, RequestContext requestContext) throws IOException {
+        byte[] additionalAuthenticatedData, RequestContext requestContext) {
 
         KeyOperationsParameters keyOperationsParameters
             = new KeyOperationsParameters(mapKeyEncryptionAlgorithm(algorithm), plainText).setIv(iv)
@@ -139,8 +138,7 @@ public final class CryptographyClientImpl {
         }
     }
 
-    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, RequestContext requestContext)
-        throws IOException {
+    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, RequestContext requestContext) {
 
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
         Objects.requireNonNull(ciphertext, "Ciphertext cannot be null.");
@@ -148,8 +146,7 @@ public final class CryptographyClientImpl {
         return decrypt(algorithm, ciphertext, null, null, null, requestContext);
     }
 
-    public DecryptResult decrypt(DecryptParameters decryptParameters, RequestContext requestContext)
-        throws IOException {
+    public DecryptResult decrypt(DecryptParameters decryptParameters, RequestContext requestContext) {
 
         Objects.requireNonNull(decryptParameters, "Decrypt parameters cannot be null.");
 
@@ -159,8 +156,7 @@ public final class CryptographyClientImpl {
     }
 
     DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv,
-        byte[] additionalAuthenticatedData, byte[] authenticationTag, RequestContext requestContext)
-        throws IOException {
+        byte[] additionalAuthenticatedData, byte[] authenticationTag, RequestContext requestContext) {
 
         KeyOperationsParameters keyOperationsParameters
             = new KeyOperationsParameters(mapKeyEncryptionAlgorithm(algorithm), ciphertext).setIv(iv)
@@ -174,8 +170,7 @@ public final class CryptographyClientImpl {
         }
     }
 
-    public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, RequestContext requestContext)
-        throws IOException {
+    public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, RequestContext requestContext) {
 
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content cannot be null.");
@@ -190,7 +185,7 @@ public final class CryptographyClientImpl {
     }
 
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
-        RequestContext requestContext) throws IOException {
+        RequestContext requestContext) {
 
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content cannot be null.");
@@ -206,8 +201,7 @@ public final class CryptographyClientImpl {
         }
     }
 
-    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, RequestContext requestContext)
-        throws IOException {
+    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, RequestContext requestContext) {
 
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
@@ -221,9 +215,7 @@ public final class CryptographyClientImpl {
         }
     }
 
-    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, RequestContext requestContext)
-        throws IOException {
-
+    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, RequestContext requestContext) {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
@@ -237,14 +229,12 @@ public final class CryptographyClientImpl {
         }
     }
 
-    public SignResult signData(SignatureAlgorithm algorithm, byte[] data, RequestContext requestContext)
-        throws IOException, NoSuchAlgorithmException {
-
+    public SignResult signData(SignatureAlgorithm algorithm, byte[] data, RequestContext requestContext) {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(data, "Data to be signed cannot be null.");
 
         HashAlgorithm hashAlgorithm = SignatureHashResolver.DEFAULT.get(algorithm);
-        MessageDigest md = MessageDigest.getInstance(hashAlgorithm.toString());
+        MessageDigest md = getMessageDigest(hashAlgorithm);
 
         md.update(data);
 
@@ -254,19 +244,28 @@ public final class CryptographyClientImpl {
     }
 
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
-        RequestContext requestContext) throws IOException, NoSuchAlgorithmException {
-
+        RequestContext requestContext) {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(data, "Data to verify cannot be null.");
         Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
 
         HashAlgorithm hashAlgorithm = SignatureHashResolver.DEFAULT.get(algorithm);
-        MessageDigest md = MessageDigest.getInstance(hashAlgorithm.toString());
 
+        MessageDigest md = getMessageDigest(hashAlgorithm);
         md.update(data);
 
         byte[] digest = md.digest();
 
         return verify(algorithm, digest, signature, requestContext);
+    }
+
+    private MessageDigest getMessageDigest(HashAlgorithm hashAlgorithm) {
+        try {
+            return MessageDigest.getInstance(hashAlgorithm.toString());
+        } catch (NoSuchAlgorithmException e) {
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", hashAlgorithm.toString())
+                .log(e, CoreException::from);
+        }
     }
 }

@@ -50,21 +50,17 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * Internal utility class for KeyVault Administration clients.
  */
 class KeyVaultAdministrationUtil {
-    static final String CANNOT_BE_NULL = "%s cannot be null.";
-    static final String CANNOT_BE_NULL_OR_EMPTY = "%s cannot be null or empty.";
-
     /**
      * Synchronously deserializes a given {@link Response HTTP response} including headers to a given class.
      *
      * @param statusCode The status code which will trigger exception swallowing.
      * @param httpResponseException The {@link HttpResponseException} to be swallowed.
-     * @param logger {@link ClientLogger} that will be used to record the exception.
      * @param <E> The class of the exception to swallow.
      *
      * @return the deserialized response.
      */
     static <E extends HttpResponseException> Response<Void> swallowExceptionForStatusCode(int statusCode,
-        E httpResponseException, ClientLogger logger) {
+        E httpResponseException) {
 
         Response<BinaryData> httpResponse = httpResponseException.getResponse();
 
@@ -73,31 +69,31 @@ class KeyVaultAdministrationUtil {
                 null);
         }
 
-        throw logger.logThrowableAsError(httpResponseException);
+        throw httpResponseException;
     }
 
     static RoleAssignmentCreateParameters validateAndGetRoleAssignmentCreateParameters(KeyVaultRoleScope roleScope,
-        String roleDefinitionId, String principalId, String roleAssignmentName) {
+        String roleDefinitionId, String principalId, String roleAssignmentName, ClientLogger logger) {
 
-        validateRoleAssignmentParameters(roleScope, roleAssignmentName);
+        validateRoleAssignmentParameters(roleScope, roleAssignmentName, logger);
 
-        Objects.requireNonNull(principalId, String.format(CANNOT_BE_NULL, "'principalId'"));
-        Objects.requireNonNull(roleDefinitionId, String.format(CANNOT_BE_NULL, "'roleDefinitionId'"));
+        Objects.requireNonNull(principalId, "'principalId' cannot be null.");
+        Objects.requireNonNull(roleDefinitionId, "'roleDefinitionId' cannot be null.");
 
         RoleAssignmentProperties roleAssignmentProperties = new RoleAssignmentProperties(roleDefinitionId, principalId);
 
         return new RoleAssignmentCreateParameters(roleAssignmentProperties);
     }
 
-    static RoleDefinitionCreateParameters
-        validateAndGetRoleDefinitionCreateParameters(SetRoleDefinitionOptions options) {
+    static RoleDefinitionCreateParameters validateAndGetRoleDefinitionCreateParameters(SetRoleDefinitionOptions options,
+        ClientLogger logger) {
 
-        Objects.requireNonNull(options, String.format(CANNOT_BE_NULL, "'options'"));
-        Objects.requireNonNull(options.getRoleScope(), String.format(CANNOT_BE_NULL, "'options.getRoleScope()'"));
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        Objects.requireNonNull(options.getRoleScope(), "'options.getRoleScope()' cannot be null.");
 
         if (isNullOrEmpty(options.getRoleDefinitionName())) {
-            throw new IllegalArgumentException(
-                String.format(CANNOT_BE_NULL_OR_EMPTY, "'options.getRoleDefinitionName()'"));
+            throw logger.throwableAtError()
+                .log("'options.getRoleDefinitionName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
         List<Permission> permissions = null;
@@ -121,19 +117,23 @@ class KeyVaultAdministrationUtil {
         return new RoleDefinitionCreateParameters(roleDefinitionProperties);
     }
 
-    static void validateRoleAssignmentParameters(KeyVaultRoleScope roleScope, String roleAssignmentName) {
-        Objects.requireNonNull(roleScope, String.format(CANNOT_BE_NULL, "'roleScope'"));
+    static void validateRoleAssignmentParameters(KeyVaultRoleScope roleScope, String roleAssignmentName,
+        ClientLogger logger) {
+        Objects.requireNonNull(roleScope, "'roleScope' cannot be null.");
 
         if (isNullOrEmpty(roleAssignmentName)) {
-            throw new IllegalArgumentException(String.format(CANNOT_BE_NULL_OR_EMPTY, "'roleDefinitionName'"));
+            throw logger.throwableAtError()
+                .log("'roleDefinitionName' cannot be null or empty.", IllegalArgumentException::new);
         }
     }
 
-    static void validateRoleDefinitionParameters(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        Objects.requireNonNull(roleScope, String.format(CANNOT_BE_NULL, "'roleScope'"));
+    static void validateRoleDefinitionParameters(KeyVaultRoleScope roleScope, String roleDefinitionName,
+        ClientLogger logger) {
+        Objects.requireNonNull(roleScope, "'roleScope' cannot be null.");
 
         if (isNullOrEmpty(roleDefinitionName)) {
-            throw new IllegalArgumentException(String.format(CANNOT_BE_NULL_OR_EMPTY, "'roleDefinitionName'"));
+            throw logger.throwableAtError()
+                .log("'roleDefinitionName' cannot be null or empty.", IllegalArgumentException::new);
         }
     }
 
@@ -189,7 +189,7 @@ class KeyVaultAdministrationUtil {
         }
     }
 
-    static <O> KeyVaultLongRunningOperation transformToLongRunningOperation(O operation) {
+    static <O> KeyVaultLongRunningOperation transformToLongRunningOperation(O operation, ClientLogger logger) {
         if (operation instanceof RestoreOperation) {
             RestoreOperation restoreOperation = (RestoreOperation) operation;
 
@@ -212,7 +212,9 @@ class KeyVaultAdministrationUtil {
                 fullBackupOperation.getJobId(), fullBackupOperation.getStartTime(), fullBackupOperation.getEndTime(),
                 fullBackupOperation.getAzureStorageBlobContainerUri());
         } else {
-            throw new UnsupportedOperationException();
+            throw logger.throwableAtError()
+                .addKeyValue("operationType", operation == null ? null : operation.getClass().getCanonicalName())
+                .log(UnsupportedOperationException::new);
         }
     }
 
