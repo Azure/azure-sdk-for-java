@@ -50,7 +50,7 @@ public final class RoleDefinitionsImpl {
      */
     RoleDefinitionsImpl(KeyVaultAdministrationClientImpl client) {
         this.service = com.azure.v2.security.keyvault.administration.implementation.RoleDefinitionsServiceImpl
-            .getNewInstance(this.httpPipeline);
+            .getNewInstance(client.getHttpPipeline());
         this.client = client;
     }
 
