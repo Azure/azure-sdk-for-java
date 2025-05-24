@@ -92,7 +92,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             userAgentContainer = new UserAgentContainer();
         }
 
-        this.defaultHeaders = this.getDefaultHeaders(apiType, userAgentContainer, defaultConsistencyLevel);
+        this.defaultHeaders = this.getDefaultHeaders(apiType, userAgentContainer);
 
         this.defaultConsistencyLevel = defaultConsistencyLevel;
         this.globalEndpointManager = globalEndpointManager;
@@ -115,8 +115,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     protected Map<String, String> getDefaultHeaders(
         ApiType apiType,
-        UserAgentContainer userAgentContainer,
-        ConsistencyLevel clientDefaultConsistencyLevel) {
+        UserAgentContainer userAgentContainer) {
 
         checkNotNull(userAgentContainer, "Argument 'userAGentContainer' must not be null.");
 
@@ -138,11 +137,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         }
 
         defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
-
-        if (clientDefaultConsistencyLevel != null) {
-            defaultHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL,
-                clientDefaultConsistencyLevel.toString());
-        }
 
         return defaultHeaders;
     }

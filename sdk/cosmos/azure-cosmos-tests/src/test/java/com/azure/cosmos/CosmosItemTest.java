@@ -639,7 +639,9 @@ public class CosmosItemTest extends TestSuiteBase {
             }
 
         } finally {
-            readManyContainer.delete();
+            if (readManyContainer != null) {
+                readManyContainer.delete();
+            }
         }
     }
 
@@ -1090,8 +1092,14 @@ public class CosmosItemTest extends TestSuiteBase {
                 .setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL),
             ObjectNode.class);
 
+        assertThat(readResponse1.getDiagnostics()).isNotNull();
+        assertThat(readResponse1.getDiagnostics().getDiagnosticsContext()).isNotNull();
+
         logger.info("REQUEST DIAGNOSTICS: {}", readResponse1.getDiagnostics().toString());
         validateIdOfItemResponse(idAndPkValue, readResponse1);
+
+        assertThat(readResponse1.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
+            .isEqualTo(ReadConsistencyStrategy.EVENTUAL);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)

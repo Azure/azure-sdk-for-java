@@ -55,6 +55,7 @@ public final class CosmosDiagnosticsContext {
     private final OperationType operationType;
     private final String operationTypeString;
     private final ConsistencyLevel consistencyLevel;
+    private final ReadConsistencyStrategy readConsistencyStrategy;
     private final ConcurrentLinkedDeque<CosmosDiagnostics> diagnostics;
     private final Integer maxItemCount;
     private final CosmosDiagnosticsThresholds thresholds;
@@ -105,6 +106,7 @@ public final class CosmosDiagnosticsContext {
         OperationType operationType,
         String operationId,
         ConsistencyLevel consistencyLevel,
+        ReadConsistencyStrategy readConsistencyStrategy,
         Integer maxItemCount,
         CosmosDiagnosticsThresholds thresholds,
         String trackingId,
@@ -120,6 +122,7 @@ public final class CosmosDiagnosticsContext {
         checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
         checkNotNull(operationType, "Argument 'operationType' must not be null.");
         checkNotNull(consistencyLevel, "Argument 'consistencyLevel' must not be null.");
+        checkNotNull(readConsistencyStrategy, "Argument 'readConsistencyStrategy' must not be null.");
         checkNotNull(thresholds, "Argument 'thresholds' must not be null.");
         checkNotNull(connectionMode, "Argument 'connectionMode' must not be null.");
         checkNotNull(userAgent, "Argument 'userAgent' must not be null.");
@@ -136,6 +139,7 @@ public final class CosmosDiagnosticsContext {
         this.operationId = operationId != null ? operationId : "";
         this.diagnostics = new ConcurrentLinkedDeque<>();
         this.consistencyLevel = consistencyLevel;
+        this.readConsistencyStrategy = readConsistencyStrategy;
         this.maxItemCount = maxItemCount;
         this.thresholds = thresholds;
         this.trackingId = trackingId;
@@ -240,6 +244,14 @@ public final class CosmosDiagnosticsContext {
      */
     public ConsistencyLevel getEffectiveConsistencyLevel() {
         return this.consistencyLevel;
+    }
+
+    /**
+     * The effective read consistency strategy used for the operation
+     * @return the effective read consistency strategy used for the operation
+     */
+    public ReadConsistencyStrategy getEffectiveReadConsistencyStrategy() {
+        return this.readConsistencyStrategy;
     }
 
     /**
@@ -629,6 +641,7 @@ public final class CosmosDiagnosticsContext {
             ctxNode.put("sequenceNumber", this.sequenceNumber);
         }
         ctxNode.put("consistency", this.consistencyLevel.toString());
+        ctxNode.put("readConsistencyStrategy", this.readConsistencyStrategy.toString());
         ctxNode.put("status", this.statusCode);
         if (this.subStatusCode != 0) {
             ctxNode.put("subStatus", this.subStatusCode);
@@ -971,7 +984,9 @@ public final class CosmosDiagnosticsContext {
                                                            String databaseId,String containerId,
                                                            ResourceType resourceType, OperationType operationType,
                                                            String operationId,
-                                                           ConsistencyLevel consistencyLevel, Integer maxItemCount,
+                                                           ConsistencyLevel consistencyLevel,
+                                                           ReadConsistencyStrategy readConsistencyStrategy,
+                                                           Integer maxItemCount,
                                                            CosmosDiagnosticsThresholds thresholds, String trackingId,
                                                            String connectionMode, String userAgent,
                                                            Integer sequenceNumber,
@@ -988,6 +1003,7 @@ public final class CosmosDiagnosticsContext {
                             operationType,
                             operationId,
                             consistencyLevel,
+                            readConsistencyStrategy,
                             maxItemCount,
                             thresholds,
                             trackingId,
