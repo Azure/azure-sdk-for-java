@@ -9,6 +9,7 @@ import com.azure.compute.batch.models.BatchJobSchedule;
 import com.azure.compute.batch.models.BatchJobScheduleState;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.http.rest.RequestOptions;
 
@@ -20,12 +21,16 @@ import java.util.function.BiFunction;
  * A helper class used by {@code beginDeleteJobSchedule} to implement polling logic for deleting a {@link BatchJobSchedule}.
  * This class tracks the initial creation time of the resource to detect if a new job schedule was created under the same ID
  * during polling. It returns {@link BatchJobSchedule} values during polling and {@code null} upon successful deletion.
+ *
+ * This poller supports both basic and advanced delete operations by accepting {@link RequestOptions}, and ensures that the
+ * context from the original request is propagated during polling operations.
  */
 public final class JobScheduleDeletePoller {
 
     private final BatchClient batchClient;
     private final String jobScheduleId;
     private final RequestOptions options;
+    private final Context requestContext;
     private OffsetDateTime initialCreationTime;
 
     /**
@@ -33,12 +38,13 @@ public final class JobScheduleDeletePoller {
      *
      * @param batchClient The {@link BatchClient} used to interact with the Batch service.
      * @param jobScheduleId The ID of the Job Schedule being deleted.
-     * @param options Optional request options for service calls.
+     * @param options Optional request options for service calls. The context within this object will be propagated during polling.
      */
     public JobScheduleDeletePoller(BatchClient batchClient, String jobScheduleId, RequestOptions options) {
         this.batchClient = batchClient;
         this.jobScheduleId = jobScheduleId;
         this.options = options;
+        this.requestContext = options == null ? Context.NONE : options.getContext();
     }
 
     /**
@@ -62,7 +68,8 @@ public final class JobScheduleDeletePoller {
     public Function<PollingContext<BatchJobSchedule>, PollResponse<BatchJobSchedule>> getPollOperation() {
         return context -> {
             try {
-                Response<BinaryData> response = batchClient.getJobScheduleWithResponse(jobScheduleId, options);
+                RequestOptions pollOptions = new RequestOptions().setContext(this.requestContext);
+                Response<BinaryData> response = batchClient.getJobScheduleWithResponse(jobScheduleId, pollOptions);
                 BatchJobSchedule jobSchedule = response.getValue().toObject(BatchJobSchedule.class);
 
                 if (initialCreationTime == null) {
