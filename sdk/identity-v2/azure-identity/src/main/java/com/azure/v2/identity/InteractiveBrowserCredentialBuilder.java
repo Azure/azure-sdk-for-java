@@ -113,7 +113,7 @@ public class InteractiveBrowserCredentialBuilder
         try {
             this.publicClientOptions.setRedirectUri(new URI(redirectUrl));
         } catch (URISyntaxException e) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(e));
+            throw LOGGER.throwableAtError().log(e, IllegalArgumentException::new);
         }
         return this;
     }

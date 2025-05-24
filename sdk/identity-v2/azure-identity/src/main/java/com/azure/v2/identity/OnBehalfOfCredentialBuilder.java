@@ -180,16 +180,18 @@ public class OnBehalfOfCredentialBuilder extends EntraIdCredentialBuilderBase<On
             || (clientSecret != null && clientCertificatePath != null)
             || (clientSecret != null && clientAssertionSupplier != null)
             || (clientCertificatePath != null && clientAssertionSupplier != null)) {
-            throw LOGGER.logThrowableAsWarning(new IllegalArgumentException("Exactly one of client secret, "
-                + "client certificate path, or client assertion supplier must be provided "
-                + "in OnBehalfOfCredentialBuilder."));
+            throw LOGGER.throwableAtWarning()
+                .log("Exactly one of client secret, "
+                    + "client certificate path, or client assertion supplier must be provided "
+                    + "in OnBehalfOfCredentialBuilder.", IllegalArgumentException::new);
         }
 
         if (confidentialClientOptions.getCertificateBytes() != null
             && confidentialClientOptions.getCertificatePath() != null) {
-            throw LOGGER.logThrowableAsWarning(new IllegalArgumentException("Both certificate input stream and "
-                + "certificate path/bytes are provided in ClientCertificateCredentialBuilder. Only one of them should "
-                + "be provided."));
+            throw LOGGER.throwableAtWarning()
+                .log("Both certificate input stream and "
+                    + "certificate path/bytes are provided in ClientCertificateCredentialBuilder. Only one of them should "
+                    + "be provided.", IllegalArgumentException::new);
         }
 
         return new OnBehalfOfCredential(confidentialClientOptions);
