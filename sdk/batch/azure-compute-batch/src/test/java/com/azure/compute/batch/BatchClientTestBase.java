@@ -6,13 +6,13 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.AllocationState;
 import com.azure.compute.batch.models.BatchPool;
-import com.azure.compute.batch.models.BatchPoolCreateContent;
+import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskState;
 import com.azure.compute.batch.models.ElevationLevel;
-import com.azure.compute.batch.models.ImageReference;
 import com.azure.compute.batch.models.LinuxUserConfiguration;
-import com.azure.compute.batch.models.ListBatchTasksOptions;
+import com.azure.compute.batch.models.BatchTasksListOptions;
+import com.azure.compute.batch.models.BatchVmImageReference;
 import com.azure.compute.batch.models.NetworkConfiguration;
 import com.azure.compute.batch.models.UserAccount;
 import com.azure.compute.batch.models.VirtualMachineConfiguration;
@@ -155,7 +155,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         // Check if pool exists
         if (!poolExists(batchClient, poolId)) {
             // Use IaaS VM with Ubuntu
-            ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+            BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
                 .setOffer("UbuntuServer")
                 .setSku("18.04-LTS")
                 .setVersion("latest");
@@ -171,7 +171,7 @@ class BatchClientTestBase extends TestProxyTestBase {
             // Need VNet to allow security to inject NSGs
             NetworkConfiguration networkConfiguration = createNetworkConfiguration();
 
-            BatchPoolCreateContent poolToCreate = new BatchPoolCreateContent(poolId, poolVmSize);
+            BatchPoolCreateParameters poolToCreate = new BatchPoolCreateParameters(poolId, poolVmSize);
             poolToCreate.setTargetDedicatedNodes(poolVmCount)
                 .setVirtualMachineConfiguration(configuration)
                 .setUserAccounts(userList)
@@ -315,7 +315,7 @@ class BatchClientTestBase extends TestProxyTestBase {
 
         while (elapsedTime < expiryTimeInSeconds * 1000L) {
 
-            ListBatchTasksOptions options = new ListBatchTasksOptions();
+            BatchTasksListOptions options = new BatchTasksListOptions();
             options.setSelect(Arrays.asList("id", "state"));
             PagedIterable<BatchTask> taskIterator = batchClient.listTasks(jobId, options);
 

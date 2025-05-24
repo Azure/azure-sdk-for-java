@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -52,7 +53,7 @@ public class PoolTests extends BatchClientTestBase {
         // Will be enabled back soon.
         //        Assertions.assertNotNull(pool.stats());
 
-        ListBatchPoolsOptions selectOptions = new ListBatchPoolsOptions();
+        BatchPoolsListOptions selectOptions = new BatchPoolsListOptions();
         selectOptions.setSelect(Arrays.asList("id", "state"));
         PagedIterable<BatchPool> pools = batchClient.listPools(selectOptions);
         Assertions.assertNotNull(pools);
@@ -71,7 +72,7 @@ public class PoolTests extends BatchClientTestBase {
 
         // When tests are being ran in parallel, there may be a previous pool delete still in progress
 
-        ListBatchPoolsOptions filterOptions = new ListBatchPoolsOptions();
+        BatchPoolsListOptions filterOptions = new BatchPoolsListOptions();
         filterOptions.setFilter("state eq 'deleting'");
         pools = batchClient.listPools(filterOptions);
         Assertions.assertNotNull(pools);
@@ -92,7 +93,7 @@ public class PoolTests extends BatchClientTestBase {
         List<DataDisk> dataDisks = new ArrayList<DataDisk>();
         dataDisks.add(new DataDisk(lun, diskSizeGB));
 
-        ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+        BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
             .setOffer("UbuntuServer")
             .setSku("18.04-LTS")
             .setVersion("latest");
@@ -100,7 +101,7 @@ public class PoolTests extends BatchClientTestBase {
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
         configuration.setDataDisks(dataDisks);
 
-        BatchPoolCreateContent poolToCreate = new BatchPoolCreateContent(poolId, poolVmSize);
+        BatchPoolCreateParameters poolToCreate = new BatchPoolCreateParameters(poolId, poolVmSize);
         poolToCreate.setNetworkConfiguration(networkConfiguration)
             .setTargetDedicatedNodes(poolVmCount)
             .setVirtualMachineConfiguration(configuration);
@@ -139,7 +140,7 @@ public class PoolTests extends BatchClientTestBase {
 
         // Check if pool exists
         if (!poolExists(batchClient, poolId)) {
-            ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+            BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
                 .setOffer("UbuntuServer")
                 .setSku("18.04-LTS")
                 .setVersion("latest");
@@ -148,14 +149,14 @@ public class PoolTests extends BatchClientTestBase {
                 = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
 
             NetworkConfiguration netConfig = createNetworkConfiguration();
-            List<InboundNatPool> inbounds = new ArrayList<>();
-            inbounds.add(new InboundNatPool("testinbound", InboundEndpointProtocol.TCP, 5000, 60000, 60040));
-            inbounds.add(new InboundNatPool("SSHRule", InboundEndpointProtocol.TCP, 22, 60100, 60140));
+            List<BatchInboundNatPool> inbounds = new ArrayList<>();
+            inbounds.add(new BatchInboundNatPool("testinbound", InboundEndpointProtocol.TCP, 5000, 60000, 60040));
+            inbounds.add(new BatchInboundNatPool("SSHRule", InboundEndpointProtocol.TCP, 22, 60100, 60140));
 
             BatchPoolEndpointConfiguration endpointConfig = new BatchPoolEndpointConfiguration(inbounds);
             netConfig.setEndpointConfiguration(endpointConfig);
 
-            BatchPoolCreateContent poolToCreate = new BatchPoolCreateContent(poolId, poolVmSize);
+            BatchPoolCreateParameters poolToCreate = new BatchPoolCreateParameters(poolId, poolVmSize);
             poolToCreate.setTargetDedicatedNodes(poolVmCount)
                 .setTargetLowPriorityNodes(poolLowPriVmCount)
                 .setVirtualMachineConfiguration(configuration)
@@ -216,13 +217,13 @@ public class PoolTests extends BatchClientTestBase {
 
             // Update NodeCommunicationMode to Simplified
 
-            BatchPoolUpdateContent poolUpdateContent = new BatchPoolUpdateContent();
-            poolUpdateContent.setApplicationPackageReferences(new LinkedList<BatchApplicationPackageReference>())
-                .setMetadata(new LinkedList<MetadataItem>());
+            BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters();
+            poolUpdateParameters.setApplicationPackageReferences(new LinkedList<BatchApplicationPackageReference>())
+                .setMetadata(new LinkedList<BatchMetadataItem>());
 
-            poolUpdateContent.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
+            poolUpdateParameters.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
 
-            batchClient.updatePool(poolId, poolUpdateContent);
+            batchClient.updatePool(poolId, poolUpdateParameters);
 
             pool = batchClient.getPool(poolId);
             Assertions.assertNotNull(pool.getCurrentNodeCommunicationMode(),
@@ -231,9 +232,9 @@ public class PoolTests extends BatchClientTestBase {
 
             // Patch NodeCommunicationMode to Classic
 
-            BatchPoolUpdateContent poolUpdateContent2 = new BatchPoolUpdateContent();
-            poolUpdateContent2.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.CLASSIC);
-            batchClient.updatePool(poolId, poolUpdateContent2);
+            BatchPoolUpdateParameters poolUpdateParameters2 = new BatchPoolUpdateParameters();
+            poolUpdateParameters2.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.CLASSIC);
+            batchClient.updatePool(poolId, poolUpdateParameters2);
 
             pool = batchClient.getPool(poolId);
             Assertions.assertNotNull(pool.getCurrentNodeCommunicationMode(),
@@ -242,7 +243,7 @@ public class PoolTests extends BatchClientTestBase {
 
             // RESIZE
             batchClient.resizePool(poolId,
-                new BatchPoolResizeContent().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1));
+                new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1));
 
             pool = batchClient.getPool(poolId);
             Assertions.assertEquals(1, (long) pool.getTargetDedicatedNodes());
@@ -303,8 +304,8 @@ public class PoolTests extends BatchClientTestBase {
             Assertions.assertEquals(3.0, stats.getPeakMemoryGiB());
             Assertions.assertEquals(1.5, stats.getAvgDiskGiB());
             Assertions.assertEquals(2.0, stats.getPeakDiskGiB());
-            Assertions.assertEquals(1000, stats.getDiskReadIOps());
-            Assertions.assertEquals(500, stats.getDiskWriteIOps());
+            Assertions.assertEquals(1000, stats.getDiskReadIops());
+            Assertions.assertEquals(500, stats.getDiskWriteIops());
             Assertions.assertEquals(0.5, stats.getDiskReadGiB());
             Assertions.assertEquals(0.25, stats.getDiskWriteGiB());
             Assertions.assertEquals(1.0, stats.getNetworkReadGiB());
@@ -320,22 +321,22 @@ public class PoolTests extends BatchClientTestBase {
 
         if (!poolExists(batchClient, poolId)) {
             // Define the image reference
-            ImageReference imageReference = new ImageReference().setPublisher("microsoftwindowsserver")
+            BatchVmImageReference imageReference = new BatchVmImageReference().setPublisher("microsoftwindowsserver")
                 .setOffer("windowsserver")
                 .setSku("2022-datacenter-smalldisk-g2");
 
             // Set the security profile for the Confidential VM
             SecurityProfile securityProfile = new SecurityProfile(true, SecurityTypes.CONFIDENTIAL_VM,
-                new UefiSettings().setSecureBootEnabled(true).setVTpmEnabled(true));
+                new BatchUefiSettings().setSecureBootEnabled(true).setVTpmEnabled(true));
 
             // Set the VM disk security profile
-            VMDiskSecurityProfile diskSecurityProfile
-                = new VMDiskSecurityProfile().setSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY);
+            VmDiskSecurityProfile diskSecurityProfile
+                = new VmDiskSecurityProfile().setSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY);
 
             ManagedDisk managedDisk = new ManagedDisk().setSecurityProfile(diskSecurityProfile);
 
             // Set the OS disk configuration
-            OSDisk osDisk = new OSDisk().setManagedDisk(managedDisk);
+            BatchOsDisk osDisk = new BatchOsDisk().setManagedDisk(managedDisk);
 
             // Define the virtual machine configuration
             VirtualMachineConfiguration vmConfiguration
@@ -344,11 +345,11 @@ public class PoolTests extends BatchClientTestBase {
                     .setOsDisk(osDisk);
 
             // Create the pool
-            BatchPoolCreateContent poolCreateContent
-                = new BatchPoolCreateContent(poolId, "STANDARD_D2S_V3").setVirtualMachineConfiguration(vmConfiguration)
-                    .setTargetDedicatedNodes(0);
+            BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, "STANDARD_D2S_V3")
+                .setVirtualMachineConfiguration(vmConfiguration)
+                .setTargetDedicatedNodes(0);
 
-            batchClient.createPool(poolCreateContent);
+            batchClient.createPool(poolCreateParameters);
         }
 
         try {
@@ -362,7 +363,7 @@ public class PoolTests extends BatchClientTestBase {
             Assertions.assertTrue(sp.getUefiSettings().isSecureBootEnabled());
             Assertions.assertTrue(sp.getUefiSettings().isVTpmEnabled());
 
-            OSDisk disk = pool.getVirtualMachineConfiguration().getOsDisk();
+            BatchOsDisk disk = pool.getVirtualMachineConfiguration().getOsDisk();
             Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY,
                 disk.getManagedDisk().getSecurityProfile().getSecurityEncryptionType());
         } finally {
@@ -387,7 +388,7 @@ public class PoolTests extends BatchClientTestBase {
 
         // Check if the pool exists, if not, create it
         if (!poolExists(batchClient, poolId)) {
-            ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+            BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
                 .setOffer("UbuntuServer")
                 .setSku("18.04-LTS")
                 .setVersion("latest");
@@ -395,11 +396,11 @@ public class PoolTests extends BatchClientTestBase {
             VirtualMachineConfiguration vmConfiguration
                 = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
 
-            BatchPoolCreateContent poolCreateContent
-                = new BatchPoolCreateContent(poolId, poolVmSize).setTargetDedicatedNodes(poolVmCount)
+            BatchPoolCreateParameters poolCreateParameters
+                = new BatchPoolCreateParameters(poolId, poolVmSize).setTargetDedicatedNodes(poolVmCount)
                     .setVirtualMachineConfiguration(vmConfiguration);
 
-            batchClient.createPool(poolCreateContent);
+            batchClient.createPool(poolCreateParameters);
         }
 
         try {
@@ -421,11 +422,11 @@ public class PoolTests extends BatchClientTestBase {
             BatchNode computeNode = batchClient.getNode(poolId, nodeId);
 
             // Deallocate the node using the compute node operations
-            BatchNodeDeallocateContent deallocateContent
-                = new BatchNodeDeallocateContent().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
-            DeallocateBatchNodeOptions options = new DeallocateBatchNodeOptions();
-            options.setTimeOutInSeconds(30);
-            options.setParameters(deallocateContent);
+            BatchNodeDeallocateParameters deallocateParameters
+                = new BatchNodeDeallocateParameters().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
+            BatchNodeDeallocateOptions options = new BatchNodeDeallocateOptions();
+            options.setTimeOutInSeconds(Duration.ofSeconds(30));
+            options.setParameters(deallocateParameters);
             batchClient.deallocateNode(poolId, nodeId, options);
 
             // Wait for the node to be deallocated

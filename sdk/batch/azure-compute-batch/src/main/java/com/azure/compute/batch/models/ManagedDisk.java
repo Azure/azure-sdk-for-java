@@ -27,7 +27,7 @@ public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
      * Specifies the security profile settings for the managed disk.
      */
     @Generated
-    private VMDiskSecurityProfile securityProfile;
+    private VmDiskSecurityProfile securityProfile;
 
     /**
      * Creates an instance of ManagedDisk class.
@@ -64,20 +64,8 @@ public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
      * @return the securityProfile value.
      */
     @Generated
-    public VMDiskSecurityProfile getSecurityProfile() {
+    public VmDiskSecurityProfile getSecurityProfile() {
         return this.securityProfile;
-    }
-
-    /**
-     * Set the securityProfile property: Specifies the security profile settings for the managed disk.
-     *
-     * @param securityProfile the securityProfile value to set.
-     * @return the ManagedDisk object itself.
-     */
-    @Generated
-    public ManagedDisk setSecurityProfile(VMDiskSecurityProfile securityProfile) {
-        this.securityProfile = securityProfile;
-        return this;
     }
 
     /**
@@ -111,12 +99,24 @@ public final class ManagedDisk implements JsonSerializable<ManagedDisk> {
                 if ("storageAccountType".equals(fieldName)) {
                     deserializedManagedDisk.storageAccountType = StorageAccountType.fromString(reader.getString());
                 } else if ("securityProfile".equals(fieldName)) {
-                    deserializedManagedDisk.securityProfile = VMDiskSecurityProfile.fromJson(reader);
+                    deserializedManagedDisk.securityProfile = VmDiskSecurityProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedManagedDisk;
         });
+    }
+
+    /**
+     * Set the securityProfile property: Specifies the security profile settings for the managed disk.
+     *
+     * @param securityProfile the securityProfile value to set.
+     * @return the ManagedDisk object itself.
+     */
+    @Generated
+    public ManagedDisk setSecurityProfile(VmDiskSecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
     }
 }
