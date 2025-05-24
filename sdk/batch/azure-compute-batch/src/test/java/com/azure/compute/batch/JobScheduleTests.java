@@ -121,7 +121,8 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertEquals((Integer) 100, jobSchedule.getJobSpecification().getPriority());
 
             // DELETE using LRO
-            SyncPoller<BatchJobSchedule, Void> poller = batchClient.beginDeleteJobSchedule(jobScheduleId);
+            SyncPoller<BatchJobSchedule, Void> poller
+                = setPlaybackSyncPollerPollInterval(batchClient.beginDeleteJobSchedule(jobScheduleId));
 
             PollResponse<BatchJobSchedule> initialResponse = poller.poll();
             if (initialResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
