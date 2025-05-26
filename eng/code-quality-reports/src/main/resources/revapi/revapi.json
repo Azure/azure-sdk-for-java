@@ -809,55 +809,55 @@
           "ignore": true,
           "code" : "java.method.removed",
           "old" : "method com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult com.azure.resourcemanager.network.models.ConnectionMonitor::query()",
-          "name" : "Removed `query` from `ConnectionMonitor`."
+          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service.."
         },
         {
           "ignore": true,
           "code" : "java.method.removed",
           "old" : "method reactor.core.publisher.Mono<com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult> com.azure.resourcemanager.network.models.ConnectionMonitor::queryAsync()",
-          "name" : "Removed `query` from `ConnectionMonitor`."
+          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
         },
         {
           "ignore": true,
           "code" : "java.method.removed",
           "old" : "method void com.azure.resourcemanager.network.models.ConnectionMonitor::start()",
-          "name" : "Removed `start` from `ConnectionMonitor`"
+          "justification" : "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
         },
         {
           "ignore": true,
           "code" : "java.method.removed",
           "old" : "method reactor.core.publisher.Mono<java.lang.Void> com.azure.resourcemanager.network.models.ConnectionMonitor::startAsync()",
-          "name" : "Removed `start` from `ConnectionMonitor`"
+          "justification" : "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
         },
         {
           "ignore": true,
           "code" : "java.class.removed",
           "old" : "interface com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult",
-          "name" : "Removed `query` from `ConnectionMonitor`."
+          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
         },
         {
           "ignore": true,
           "code" : "java.class.removed",
           "old" : "class com.azure.resourcemanager.network.models.ConnectionMonitorSourceStatus",
-          "name" : "Removed `query` from `ConnectionMonitor`."
+          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
         },
         {
           "ignore": true,
           "code" : "java.class.removed",
           "old" : "class com.azure.resourcemanager.network.models.ConnectionState",
-          "name" : "Removed `start` from `ConnectionMonitor`"
+          "justification" :  "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
         },
         {
           "ignore": true,
           "code" : "java.class.removed",
           "old" : "class com.azure.resourcemanager.network.models.ConnectionStateSnapshot",
-          "name" : "Removed `query` from `ConnectionMonitor`."
+          "justification" : "Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service."
         },
         {
           "ignore": true,
           "code" : "java.class.removed",
           "old" : "class com.azure.resourcemanager.network.models.EvaluationState",
-          "name" : "Removed `start` from `ConnectionMonitor`"
+          "justification" :  "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
         }
       ]
     }
