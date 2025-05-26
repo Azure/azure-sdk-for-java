@@ -487,7 +487,7 @@ com.azure.resourcemanager:azure-resourcemanager-sitemanager;1.0.0-beta.1;1.0.0-b
 com.azure.resourcemanager:azure-resourcemanager-mongodbatlas;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-purestorageblock;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-planetarycomputer;1.0.0-beta.1;1.0.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensions;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensions;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.1;2.0.0-beta.1
@@ -520,8 +520,6 @@ unreleased_com.azure:azure-core-amqp;2.10.0-beta.1
 
 unreleased_io.clientcore:core;1.0.0-beta.10
 unreleased_io.clientcore:annotation-processor;1.0.0-beta.3
-unreleased_com.azure.v2:azure-core;2.0.0-beta.1
-unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
