@@ -97,6 +97,8 @@ public interface IpamPoolsClient {
      * @param networkManagerName The name of the network manager.
      * @param poolName IP Address Manager Pool resource name.
      * @param body Pool resource object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -104,7 +106,25 @@ public interface IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkManagerName,
-        String poolName, IpamPoolInner body);
+        String poolName, IpamPoolInner body, String ifMatch);
+
+    /**
+     * Creates/Updates the Pool resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param poolName IP Address Manager Pool resource name.
+     * @param body Pool resource object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of instance of Pool resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<IpamPoolInner>, IpamPoolInner> beginCreateAsync(String resourceGroupName,
+        String networkManagerName, String poolName, IpamPoolInner body, String ifMatch);
 
     /**
      * Creates/Updates the Pool resource.
@@ -145,6 +165,8 @@ public interface IpamPoolsClient {
      * @param networkManagerName The name of the network manager.
      * @param poolName IP Address Manager Pool resource name.
      * @param body Pool resource object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -153,7 +175,25 @@ public interface IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IpamPoolInner>, IpamPoolInner> beginCreate(String resourceGroupName,
-        String networkManagerName, String poolName, IpamPoolInner body, Context context);
+        String networkManagerName, String poolName, IpamPoolInner body, String ifMatch, Context context);
+
+    /**
+     * Creates/Updates the Pool resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param poolName IP Address Manager Pool resource name.
+     * @param body Pool resource object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return instance of Pool resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<IpamPoolInner> createAsync(String resourceGroupName, String networkManagerName, String poolName,
+        IpamPoolInner body, String ifMatch);
 
     /**
      * Creates/Updates the Pool resource.
@@ -193,6 +233,8 @@ public interface IpamPoolsClient {
      * @param networkManagerName The name of the network manager.
      * @param poolName IP Address Manager Pool resource name.
      * @param body Pool resource object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -201,7 +243,7 @@ public interface IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     IpamPoolInner create(String resourceGroupName, String networkManagerName, String poolName, IpamPoolInner body,
-        Context context);
+        String ifMatch, Context context);
 
     /**
      * Updates the specific Pool resource.
@@ -209,6 +251,8 @@ public interface IpamPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param poolName IP Address Manager Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param body Pool resource object to update partially.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -217,7 +261,7 @@ public interface IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<IpamPoolInner>> updateWithResponseAsync(String resourceGroupName, String networkManagerName,
-        String poolName, IpamPoolUpdate body);
+        String poolName, String ifMatch, IpamPoolUpdate body);
 
     /**
      * Updates the specific Pool resource.
@@ -239,6 +283,8 @@ public interface IpamPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param poolName IP Address Manager Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param body Pool resource object to update partially.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -248,7 +294,7 @@ public interface IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IpamPoolInner> updateWithResponse(String resourceGroupName, String networkManagerName, String poolName,
-        IpamPoolUpdate body, Context context);
+        String ifMatch, IpamPoolUpdate body, Context context);
 
     /**
      * Updates the specific Pool resource.
@@ -329,6 +375,8 @@ public interface IpamPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param poolName Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -336,7 +384,24 @@ public interface IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
-        String poolName);
+        String poolName, String ifMatch);
+
+    /**
+     * Delete the Pool resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param poolName Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
+        String poolName, String ifMatch);
 
     /**
      * Delete the Pool resource.
@@ -374,6 +439,8 @@ public interface IpamPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param poolName Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -382,7 +449,23 @@ public interface IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName, String poolName,
-        Context context);
+        String ifMatch, Context context);
+
+    /**
+     * Delete the Pool resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param poolName Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String poolName, String ifMatch);
 
     /**
      * Delete the Pool resource.
@@ -417,13 +500,15 @@ public interface IpamPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param poolName Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String networkManagerName, String poolName, Context context);
+    void delete(String resourceGroupName, String networkManagerName, String poolName, String ifMatch, Context context);
 
     /**
      * Get the Pool Usage.
