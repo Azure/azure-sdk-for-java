@@ -1,16 +1,10 @@
 # Release History
 
-## 2.51.0-beta.1 (Unreleased)
+## 2.51.0 (2025-05-26)
 
 ### Features Added
 
 - Added `ACR_PULL` to `BuiltInRole`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 2.50.0 (2025-04-24)
 
