@@ -475,6 +475,16 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
+     * Get the defaultPublicNatGateway property: A reference to the default public nat gateway being used by this
+     * virtual network resource.
+     * 
+     * @return the defaultPublicNatGateway value.
+     */
+    public SubResource defaultPublicNatGateway() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultPublicNatGateway();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

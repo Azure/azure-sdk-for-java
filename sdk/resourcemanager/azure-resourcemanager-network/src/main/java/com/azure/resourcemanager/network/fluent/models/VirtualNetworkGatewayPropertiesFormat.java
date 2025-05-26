@@ -16,6 +16,7 @@ import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ResiliencyModel;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayAutoScaleConfiguration;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayMigrationStatus;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayPolicyGroup;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
@@ -67,9 +68,19 @@ public final class VirtualNetworkGatewayPropertiesFormat
     private Boolean enablePrivateIpAddress;
 
     /*
+     * The reference to the VirtualNetworkGatewayMigrationStatus which represents the status of migration.
+     */
+    private VirtualNetworkGatewayMigrationStatus virtualNetworkGatewayMigrationStatus;
+
+    /*
      * ActiveActive flag.
      */
     private Boolean active;
+
+    /*
+     * To enable Advanced Connectivity feature for VPN gateway
+     */
+    private Boolean enableHighBandwidthVpnGateway;
 
     /*
      * disableIPSecReplayProtection flag.
@@ -320,6 +331,29 @@ public final class VirtualNetworkGatewayPropertiesFormat
     }
 
     /**
+     * Get the virtualNetworkGatewayMigrationStatus property: The reference to the VirtualNetworkGatewayMigrationStatus
+     * which represents the status of migration.
+     * 
+     * @return the virtualNetworkGatewayMigrationStatus value.
+     */
+    public VirtualNetworkGatewayMigrationStatus virtualNetworkGatewayMigrationStatus() {
+        return this.virtualNetworkGatewayMigrationStatus;
+    }
+
+    /**
+     * Set the virtualNetworkGatewayMigrationStatus property: The reference to the VirtualNetworkGatewayMigrationStatus
+     * which represents the status of migration.
+     * 
+     * @param virtualNetworkGatewayMigrationStatus the virtualNetworkGatewayMigrationStatus value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withVirtualNetworkGatewayMigrationStatus(
+        VirtualNetworkGatewayMigrationStatus virtualNetworkGatewayMigrationStatus) {
+        this.virtualNetworkGatewayMigrationStatus = virtualNetworkGatewayMigrationStatus;
+        return this;
+    }
+
+    /**
      * Get the active property: ActiveActive flag.
      * 
      * @return the active value.
@@ -336,6 +370,27 @@ public final class VirtualNetworkGatewayPropertiesFormat
      */
     public VirtualNetworkGatewayPropertiesFormat withActive(Boolean active) {
         this.active = active;
+        return this;
+    }
+
+    /**
+     * Get the enableHighBandwidthVpnGateway property: To enable Advanced Connectivity feature for VPN gateway.
+     * 
+     * @return the enableHighBandwidthVpnGateway value.
+     */
+    public Boolean enableHighBandwidthVpnGateway() {
+        return this.enableHighBandwidthVpnGateway;
+    }
+
+    /**
+     * Set the enableHighBandwidthVpnGateway property: To enable Advanced Connectivity feature for VPN gateway.
+     * 
+     * @param enableHighBandwidthVpnGateway the enableHighBandwidthVpnGateway value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat
+        withEnableHighBandwidthVpnGateway(Boolean enableHighBandwidthVpnGateway) {
+        this.enableHighBandwidthVpnGateway = enableHighBandwidthVpnGateway;
         return this;
     }
 
@@ -704,6 +759,9 @@ public final class VirtualNetworkGatewayPropertiesFormat
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
         }
+        if (virtualNetworkGatewayMigrationStatus() != null) {
+            virtualNetworkGatewayMigrationStatus().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }
@@ -739,7 +797,9 @@ public final class VirtualNetworkGatewayPropertiesFormat
             this.vpnGatewayGeneration == null ? null : this.vpnGatewayGeneration.toString());
         jsonWriter.writeBooleanField("enableBgp", this.enableBgp);
         jsonWriter.writeBooleanField("enablePrivateIpAddress", this.enablePrivateIpAddress);
+        jsonWriter.writeJsonField("virtualNetworkGatewayMigrationStatus", this.virtualNetworkGatewayMigrationStatus);
         jsonWriter.writeBooleanField("activeActive", this.active);
+        jsonWriter.writeBooleanField("enableHighBandwidthVpnGateway", this.enableHighBandwidthVpnGateway);
         jsonWriter.writeBooleanField("disableIPSecReplayProtection", this.disableIpSecReplayProtection);
         jsonWriter.writeJsonField("gatewayDefaultSite", this.gatewayDefaultSite);
         jsonWriter.writeJsonField("sku", this.sku);
@@ -797,8 +857,14 @@ public final class VirtualNetworkGatewayPropertiesFormat
                 } else if ("enablePrivateIpAddress".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayPropertiesFormat.enablePrivateIpAddress
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("virtualNetworkGatewayMigrationStatus".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayPropertiesFormat.virtualNetworkGatewayMigrationStatus
+                        = VirtualNetworkGatewayMigrationStatus.fromJson(reader);
                 } else if ("activeActive".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayPropertiesFormat.active
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableHighBandwidthVpnGateway".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayPropertiesFormat.enableHighBandwidthVpnGateway
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("disableIPSecReplayProtection".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayPropertiesFormat.disableIpSecReplayProtection
