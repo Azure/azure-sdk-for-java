@@ -12,5 +12,6 @@
   <modules>
     <module>azure-resourcemanager-kubernetesconfiguration</module>
     <module>azure-resourcemanager-kubernetesconfiguration-extensions</module>
+    <module>azure-resourcemanager-kubernetesconfiguration-fluxconfigurations</module>
   </modules>
 </project>
