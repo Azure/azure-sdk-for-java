@@ -8,12 +8,6 @@
 - Class `GuidanceInference` added
 - Class `ScoringAndAssessmentInference` added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.0.0 (2024-10-09)
 
 - GA release
