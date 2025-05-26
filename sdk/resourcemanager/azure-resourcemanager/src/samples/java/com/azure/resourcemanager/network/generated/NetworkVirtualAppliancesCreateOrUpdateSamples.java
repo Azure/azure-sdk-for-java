@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/
      * NetworkVirtualApplianceSaaSPut.json
      */
     /**
@@ -52,7 +52,7 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkVirtualAppliancePut.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkVirtualAppliancePut.
      * json
      */
     /**

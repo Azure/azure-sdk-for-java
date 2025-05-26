@@ -7,7 +7,6 @@ import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorInner;
 import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorResultInner;
 import com.azure.resourcemanager.network.models.ConnectionMonitor;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
-import com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult;
 import com.azure.resourcemanager.network.models.ConnectionMonitorSource;
 import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
@@ -102,29 +101,6 @@ public class ConnectionMonitorImpl
         return this.client.stopAsync(parent.resourceGroupName(), parent.name(), name())
             .flatMap(aVoid -> refreshAsync())
             .then();
-    }
-
-    @Override
-    public void start() {
-        startAsync().block();
-    }
-
-    @Override
-    public Mono<Void> startAsync() {
-        return this.client.startAsync(parent.resourceGroupName(), parent.name(), name())
-            .flatMap(aVoid -> refreshAsync())
-            .then();
-    }
-
-    @Override
-    public ConnectionMonitorQueryResult query() {
-        return queryAsync().block();
-    }
-
-    @Override
-    public Mono<ConnectionMonitorQueryResult> queryAsync() {
-        return this.client.queryAsync(parent.resourceGroupName(), parent.name(), name())
-            .map(inner -> new ConnectionMonitorQueryResultImpl(inner));
     }
 
     @Override
