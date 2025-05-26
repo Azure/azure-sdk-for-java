@@ -97,17 +97,23 @@ public class DevToolsClient extends ClientBase {
             }
         }
 
-        CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
-        for (int z = exceptions.size() - 2; z >= 0; z--) {
-            CredentialUnavailableException current = exceptions.get(z);
-            LOGGER.atError()
-                .addKeyValue("pwshError", current.getMessage())
-                .addKeyValue("powershellError", last.getMessage())
+        if (exceptions.size() > 1) {
+            CredentialUnavailableException pwshException = exceptions.get(0);
+            CredentialUnavailableException powershellException = exceptions.get(1);
+            throw LOGGER.throwableAtError()
+                .addKeyValue("pwshError", pwshException.getMessage())
+                .addKeyValue("powershellError", powershellException.getMessage())
                 .log(
-                    "Azure PowerShell authentication failed using default powershell(pwsh) and powershell-core(powershell)");
+                    "Azure PowerShell authentication failed using default powershell(pwsh) and powershell-core(powershell)",
+                    pwshException.getCause(), (m, c) -> {
+                        CredentialUnavailableException exception = new CredentialUnavailableException(m, c);
+                        exception.addSuppressed(pwshException);
+                        exception.addSuppressed(powershellException);
+                        return exception;
+                    });
         }
 
-        return null;
+        throw exceptions.get(exceptions.size() - 1);
     }
 
     private AccessToken getAccessTokenFromPowerShell(TokenRequestContext request, PowershellManager powershellManager) {
@@ -130,13 +136,17 @@ public class DevToolsClient extends ClientBase {
 
         String output = powershellManager.runCommand(command);
         if (output.contains("VersionTooOld")) {
-            LOGGER.atError()
-                .log("Az.Account module with version >= 2.2.0 is not installed. "
-                    + "It needs to be installed to use Azure PowerShell Credential.");
+            throw LOGGER.throwableAtError()
+                .log(
+                    "Az.Account module with version >= 2.2.0 is not installed. "
+                        + "It needs to be installed to use Azure PowerShell Credential.",
+                    CredentialUnavailableException::new);
         }
 
         if (output.contains("Run Connect-AzAccount to login")) {
-            LOGGER.atError().log("Run Connect-AzAccount to login to Azure account in PowerShell.");
+            throw LOGGER.throwableAtError()
+                .log("Run Connect-AzAccount to login to Azure account in PowerShell.",
+                    CredentialUnavailableException::new);
         }
 
         try (JsonReader reader = JsonReader.fromString(output)) {
@@ -147,11 +157,10 @@ public class DevToolsClient extends ClientBase {
             OffsetDateTime expiresOn = OffsetDateTime.parse(time).withOffsetSameInstant(ZoneOffset.UTC);
             return new AccessToken(accessToken, expiresOn);
         } catch (IOException e) {
-            LOGGER.atError()
-                .setThrowable(e)
-                .log("Encountered error when deserializing response from Azure Power Shell.");
+            throw LOGGER.throwableAtError()
+                .log("Encountered error when deserializing response from Azure Power Shell.", e,
+                    CredentialUnavailableException::new);
         }
-        return null;
     }
 
     /**
