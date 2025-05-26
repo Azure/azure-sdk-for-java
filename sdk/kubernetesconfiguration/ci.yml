@@ -29,6 +29,16 @@ pr:
       - sdk/kubernetesconfiguration/pom.xml
       - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration/pom.xml
 
+parameters:
+- name: release_azureresourcemanagerkubernetesconfiguration
+  displayName: 'azure-resourcemanager-kubernetesconfiguration'
+  type: boolean
+  default: false
+- name: release_azureresourcemanagerkubernetesconfigurationextensions
+  displayName: 'azure-resourcemanager-kubernetesconfiguration-extensions'
+  type: boolean
+  default: false
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
@@ -37,6 +47,8 @@ extends:
       - name: azure-resourcemanager-kubernetesconfiguration
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerkubernetesconfiguration
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerkubernetesconfiguration }}
       - name: azure-resourcemanager-kubernetesconfiguration-extensions
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerkubernetesconfigurationextensions
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerkubernetesconfigurationextensions }}
