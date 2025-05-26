@@ -31,6 +31,9 @@ import com.openai.models.responses.ResponseRetrieveParams;
 import com.openai.models.responses.ResponseDeleteParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseInputImage;
+import com.openai.models.responses.EasyInputMessage;
+import com.openai.models.responses.ResponseOutputMessage;
+import com.openai.models.responses.ResponseOutputText;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -44,6 +47,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.openai.stainless.TestUtils.AZURE_OPEN_AI;
 import static com.azure.ai.openai.stainless.TestUtils.GA;
@@ -489,6 +495,48 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
 
         assertNotNull(text, "Text should not be null");
         assertFalse(text.trim().isEmpty(), "Text should not be empty");
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    public void responsesConversationTest(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+
+        List<ResponseInputItem> inputItems = new ArrayList<>();
+        inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+            .role(EasyInputMessage.Role.USER)
+            .content("Tell me a story about building the best SDK!")
+            .build()));
+
+        ResponseCreateParams createParams
+            = ResponseCreateParams.builder().inputOfResponse(inputItems).model(testModel).build();
+
+        for (int i = 0; i < 2; i++) {
+            Response response = client.responses().create(createParams);
+
+            assertNotNull(response, "Response should not be null");
+            assertFalse(response.output().isEmpty(), "Response output should not be empty");
+
+            List<ResponseOutputMessage> messages = new ArrayList<>();
+            response.output().forEach(output -> output.message().ifPresent(messages::add));
+
+            List<String> texts = messages.stream()
+                .flatMap(message -> message.content().stream())
+                .map(content -> content.outputText().map(ResponseOutputText::text).orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+            assertFalse(texts.isEmpty(), "Text outputs should not be empty");
+
+            messages.forEach(msg -> inputItems.add(ResponseInputItem.ofResponseOutputMessage(msg)));
+
+            inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+                .role(EasyInputMessage.Role.USER)
+                .content("But why?" + new String(new char[i]).replace("\0", "?"))
+                .build()));
+
+            createParams = createParams.toBuilder().inputOfResponse(inputItems).build();
+        }
     }
 
     @ParameterizedTest
