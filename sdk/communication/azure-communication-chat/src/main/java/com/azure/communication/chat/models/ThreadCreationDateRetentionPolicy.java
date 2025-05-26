@@ -3,8 +3,6 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.chat.models.ChatRetentionPolicy;
-import com.azure.communication.chat.models.RetentionPolicyKind;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -20,7 +18,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
     /*
      * Retention Policy Type
      */
-    private com.azure.communication.chat.models.RetentionPolicyKind kind
+    private final com.azure.communication.chat.models.RetentionPolicyKind kind
         = com.azure.communication.chat.models.RetentionPolicyKind.THREAD_CREATION_DATE;
 
     /*
@@ -98,9 +96,6 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
 
                 if ("deleteThreadAfterDays".equals(fieldName)) {
                     deserializedThreadCreationDateRetentionPolicy.deleteThreadAfterDays = reader.getInt();
-                } else if ("kind".equals(fieldName)) {
-                    deserializedThreadCreationDateRetentionPolicy.kind
-                        = RetentionPolicyKind.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

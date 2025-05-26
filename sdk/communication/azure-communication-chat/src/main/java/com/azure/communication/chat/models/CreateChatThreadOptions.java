@@ -3,7 +3,6 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.chat.models.ChatRetentionPolicy;
 import com.azure.core.annotation.Fluent;
 
 import java.util.ArrayList;

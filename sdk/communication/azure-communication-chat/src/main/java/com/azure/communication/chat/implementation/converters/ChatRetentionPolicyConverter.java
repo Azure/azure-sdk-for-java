@@ -13,11 +13,14 @@ import com.azure.communication.chat.models.ThreadCreationDateRetentionPolicy;
  */
 public final class ChatRetentionPolicyConverter {
     /**
-     * Maps from {com.azure.communication.chat.implementation.models.ChatRetentionPolicy} to {@link ChatRetentionPolicy}.
+     * Maps from the implementation {@link com.azure.communication.chat.implementation.models.ChatRetentionPolicy}
+     * to the public {@link ChatRetentionPolicy} model.
+     *
+     * @param obj the implementation model to convert
+     * @return a {@link ChatRetentionPolicy} instance, or null if the input is null or not a compatible type
      */
     public static ChatRetentionPolicy convertFromImpl(Object obj) {
-        if (obj == null
-            || obj instanceof com.azure.communication.chat.implementation.models.ChatRetentionPolicy == false) {
+        if (!(obj instanceof com.azure.communication.chat.implementation.models.ChatRetentionPolicy == false)) {
             return null;
         }
 
@@ -34,14 +37,14 @@ public final class ChatRetentionPolicyConverter {
     }
 
     /**
-     * Maps from {ChatRetentionPolicy} to {@link com.azure.communication.chat.implementation.models.ChatRetentionPolicy}.
+     * Maps from the public {@link ChatRetentionPolicy} model
+     * to the implementation {@link com.azure.communication.chat.implementation.models.ChatRetentionPolicy} type.
+     *
+     * @param obj the public model to convert
+     * @return an implementation model instance, or null if the input is null or not a compatible type
      */
     public static com.azure.communication.chat.implementation.models.ChatRetentionPolicy convertToImpl(Object obj) {
-        if (obj == null) {
-            return null;
-        }
-
-        if (obj instanceof ChatRetentionPolicy == false) {
+        if (!(obj instanceof ChatRetentionPolicy)) {
             return null;
         }
 
@@ -57,6 +60,7 @@ public final class ChatRetentionPolicyConverter {
         return retentionPolicy;
     }
 
+    // Prevent instantiation
     private ChatRetentionPolicyConverter() {
     }
 }
