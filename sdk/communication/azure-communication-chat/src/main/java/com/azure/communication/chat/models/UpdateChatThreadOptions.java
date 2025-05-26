@@ -4,7 +4,6 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.chat.models.ChatRetentionPolicy;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;

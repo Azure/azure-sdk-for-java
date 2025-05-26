@@ -20,7 +20,7 @@ public final class ChatRetentionPolicyConverter {
      * @return a {@link ChatRetentionPolicy} instance, or null if the input is null or not a compatible type
      */
     public static ChatRetentionPolicy convertFromImpl(Object obj) {
-        if (!(obj instanceof com.azure.communication.chat.implementation.models.ChatRetentionPolicy == false)) {
+        if (!(obj instanceof com.azure.communication.chat.implementation.models.ChatRetentionPolicy)) {
             return null;
         }
 
