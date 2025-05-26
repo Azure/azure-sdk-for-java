@@ -1,14 +1,16 @@
 # Release History
 
-## 2.4.0-beta.3 (Unreleased)
+## 2.4.0 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+Please note, this package has been deprecated and will no longer be maintained after 06/30/2024.
+User can transition to Azure Video Indexer for on-demand video and audio analysis workflows.
+Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 ### Other Changes
+
+- Please note, this package has been deprecated and will no longer be maintained after 06/30/2024.
+User can transition to Azure Video Indexer for on-demand video and audio analysis workflows.
+Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 ## 2.4.0-beta.2 (2024-10-31)
 
