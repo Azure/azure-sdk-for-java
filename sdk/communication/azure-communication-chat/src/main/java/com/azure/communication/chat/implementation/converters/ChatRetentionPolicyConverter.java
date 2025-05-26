@@ -3,9 +3,9 @@
 
 package com.azure.communication.chat.implementation.converters;
 
-import com.azure.communication.chat.implementation.models.ChatRetentionPolicy;
-import com.azure.communication.chat.implementation.models.NoneRetentionPolicy;
-import com.azure.communication.chat.implementation.models.ThreadCreationDateRetentionPolicy;
+import com.azure.communication.chat.models.ChatRetentionPolicy;
+import com.azure.communication.chat.models.NoneRetentionPolicy;
+import com.azure.communication.chat.models.ThreadCreationDateRetentionPolicy;
 
 /**
  * A converter between {@link com.azure.communication.chat.implementation.models.ChatRetentionPolicy} and
@@ -16,7 +16,8 @@ public final class ChatRetentionPolicyConverter {
      * Maps from {com.azure.communication.chat.implementation.models.ChatRetentionPolicy} to {@link ChatRetentionPolicy}.
      */
     public static ChatRetentionPolicy convertFromImpl(Object obj) {
-        if (obj == null || obj instanceof ChatRetentionPolicy == false) {
+        if (obj == null
+            || obj instanceof com.azure.communication.chat.implementation.models.ChatRetentionPolicy == false) {
             return null;
         }
 
@@ -44,16 +45,16 @@ public final class ChatRetentionPolicyConverter {
             return null;
         }
 
-        com.azure.communication.chat.implementation.models.ChatRetentionPolicy chatRetentionPolicy;
+        com.azure.communication.chat.implementation.models.ChatRetentionPolicy retentionPolicy;
         if (obj instanceof ThreadCreationDateRetentionPolicy) {
             ThreadCreationDateRetentionPolicy basedOnThreadCreationDateRetentionPolicy
                 = (ThreadCreationDateRetentionPolicy) obj;
-            chatRetentionPolicy = new ThreadCreationDateRetentionPolicy()
+            retentionPolicy = new com.azure.communication.chat.implementation.models.ThreadCreationDateRetentionPolicy()
                 .setDeleteThreadAfterDays(basedOnThreadCreationDateRetentionPolicy.getDeleteThreadAfterDays());
         } else {
-            chatRetentionPolicy = new NoneRetentionPolicy();
+            retentionPolicy = new com.azure.communication.chat.implementation.models.NoneRetentionPolicy();
         }
-        return chatRetentionPolicy;
+        return retentionPolicy;
     }
 
     private ChatRetentionPolicyConverter() {

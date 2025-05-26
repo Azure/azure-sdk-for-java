@@ -4,7 +4,6 @@
 package com.azure.communication.chat.models;
 
 import com.azure.communication.chat.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.chat.implementation.models.ChatRetentionPolicy;
 import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
@@ -223,6 +222,11 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
                     final CommunicationIdentifierModel identifier
                         = reader.readObject(CommunicationIdentifierModel::fromJson);
                     properties.setCreatedBy(CommunicationIdentifierConverter.convert(identifier));
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    properties.metadata = metadata;
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    properties.retentionPolicy = ChatRetentionPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

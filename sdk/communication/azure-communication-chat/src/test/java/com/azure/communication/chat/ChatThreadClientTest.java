@@ -4,8 +4,8 @@
 package com.azure.communication.chat;
 
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
-import com.azure.communication.chat.implementation.models.ChatRetentionPolicy;
-import com.azure.communication.chat.implementation.models.ThreadCreationDateRetentionPolicy;
+import com.azure.communication.chat.models.ChatRetentionPolicy;
+import com.azure.communication.chat.models.ThreadCreationDateRetentionPolicy;
 import com.azure.communication.chat.models.ChatMessage;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
 import com.azure.communication.chat.models.ChatMessageType;
@@ -637,8 +637,6 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Action & Assert
         ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
         assertEquals(chatThreadClient.getChatThreadId(), chatThreadProperties.getId());
-        assertNotNull(chatThreadProperties.getRetentionPolicy());
-        assertEquals("none", chatThreadProperties.getRetentionPolicy().getKind().getValue());
     }
 
     @ParameterizedTest

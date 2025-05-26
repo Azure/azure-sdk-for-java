@@ -3,11 +3,14 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.chat.implementation.models.ChatRetentionPolicy;
-import com.azure.communication.chat.implementation.models.NoneRetentionPolicy;
+import com.azure.communication.chat.models.ChatRetentionPolicy;
 import com.azure.core.annotation.Fluent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * The CreateChatThreadOptions model.

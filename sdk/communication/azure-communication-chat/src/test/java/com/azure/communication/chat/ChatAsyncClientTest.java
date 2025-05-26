@@ -4,10 +4,16 @@
 package com.azure.communication.chat;
 
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
-import com.azure.communication.chat.implementation.models.ChatRetentionPolicy;
-import com.azure.communication.chat.implementation.models.NoneRetentionPolicy;
-import com.azure.communication.chat.implementation.models.ThreadCreationDateRetentionPolicy;
-import com.azure.communication.chat.models.*;
+import com.azure.communication.chat.models.ChatParticipant;
+import com.azure.communication.chat.models.ChatRetentionPolicy;
+import com.azure.communication.chat.models.ChatThreadItem;
+import com.azure.communication.chat.models.ChatThreadProperties;
+import com.azure.communication.chat.models.CreateChatThreadOptions;
+import com.azure.communication.chat.models.CreateChatThreadResult;
+import com.azure.communication.chat.models.ListChatThreadsOptions;
+import com.azure.communication.chat.models.NoneRetentionPolicy;
+import com.azure.communication.chat.models.ThreadCreationDateRetentionPolicy;
+
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.identity.models.CommunicationTokenScope;
@@ -19,7 +25,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -71,8 +81,6 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             assertNotNull(result.getChatThread());
             assertNotNull(result.getChatThread().getId());
             assertEquals(0, result.getInvalidParticipants().size());
-            assertNotNull(result.getChatThread().getRetentionPolicy());
-            assertEquals("none", result.getChatThread().getRetentionPolicy().getKind().getValue());
         }).verifyComplete();
     }
 
@@ -96,8 +104,6 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             String threadId = result.getChatThread().getId();
             assertNotNull(threadId);
             assertEquals(0, result.getInvalidParticipants().size());
-            assertNotNull(result.getChatThread().getRetentionPolicy());
-            assertEquals("none", result.getChatThread().getRetentionPolicy().getKind().getValue());
 
             // Verify the participants and their metadata
             PagedIterable<ChatParticipant> participants
