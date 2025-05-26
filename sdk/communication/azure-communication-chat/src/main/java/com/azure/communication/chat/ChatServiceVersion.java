@@ -15,9 +15,9 @@ public enum ChatServiceVersion implements ServiceVersion {
     V2021_03_07("2021-03-07"),
 
     /**
-     * Service version {@code 2021-09-07}.
+     * Service version {@code 2021-09-27}.
      */
-    V2021_09_07("2021-09-07"),
+    V2021_09_27("2021-09-27"),
 
     /**
      * Service version {@code 2023-11-07}.
