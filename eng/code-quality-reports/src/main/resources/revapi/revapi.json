@@ -804,60 +804,6 @@
           "code" : "java.method.removed",
           "old" : "method com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest::withType(java.lang.String)",
           "justification" : "The property is a constant, which should not be changed."
-        },
-        {
-          "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult com.azure.resourcemanager.network.models.ConnectionMonitor::query()",
-          "justification": "Query operation is no more valid on connection Monitor resource now."
-        },
-        {
-          "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult com.azure.resourcemanager.network.models.ConnectionMonitor::queryAsync()",
-          "justification": "Query operation is no more valid on connection Monitor resource now."
-        },
-        {
-          "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method void com.azure.resourcemanager.network.models.ConnectionMonitor::start()",
-          "justification": "Start is deprecated now."
-        },
-        {
-          "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method void com.azure.resourcemanager.network.models.ConnectionMonitor::startAsync()",
-          "justification": "Start is deprecated now."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "interface com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult",
-          "justification": "Query operation is no more valid on connection Monitor resource now."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.network.models.ConnectionMonitorSourceStatus",
-          "justification": "Query operation is no more valid on connection Monitor resource now."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.network.models.ConnectionState",
-          "justification": "Query operation is no more valid on connection Monitor resource now."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.network.models.ConnectionStateSnapshot",
-          "justification": "Query operation is no more valid on connection Monitor resource now."
-        },
-        {
-          "ignore": true,
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.network.models.EvaluationState",
-          "justification": "Query operation is no more valid on connection Monitor resource now."
         }
       ]
     }
