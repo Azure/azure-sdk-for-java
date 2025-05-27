@@ -710,12 +710,13 @@ abstract class AsyncBenchmark<T> {
             checkNotNull(diagnosticsContext, "Argument 'diagnosticsContext' must not be null.");
 
             boolean shouldLog = shouldLog(diagnosticsContext);
-            logger.info("SHOULD LOG: {}", shouldLog);
             int previousLogCount = this.logCountInSamplingInterval.getAndIncrement();
 
             if (previousLogCount <= this.maxLogCount) {
+                logger.info("SHOULD LOG: {}", shouldLog);
                 this.log(diagnosticsContext);
             } else if (previousLogCount == this.maxLogCount + 1) {
+                logger.info("SHOULD LOG: {}", shouldLog);
                 logger.info("Already logged {} diagnostics - stopping until sampling interval is reset.", this.maxLogCount);
             }
         }
