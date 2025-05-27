@@ -27,7 +27,6 @@ extends:
             steps:
 
               - checkout: none
-              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
 
               - task: Maven@3
                 displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
