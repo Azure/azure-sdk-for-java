@@ -87,8 +87,12 @@ public final class AzureDatabricksDeltaLakeDatasetTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("table", this.table);
-        jsonWriter.writeUntypedField("database", this.database);
+        if (this.table != null) {
+            jsonWriter.writeUntypedField("table", this.table);
+        }
+        if (this.database != null) {
+            jsonWriter.writeUntypedField("database", this.database);
+        }
         return jsonWriter.writeEndObject();
     }
 

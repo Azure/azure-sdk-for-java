@@ -135,6 +135,11 @@ public final class AzureDatabricksLinkedServiceTypeProperties
      */
     private CredentialReference credential;
 
+    /*
+     * The data security mode for the Databricks Cluster. Type: string (or Expression with resultType string).
+     */
+    private Object dataSecurityMode;
+
     /**
      * Creates an instance of AzureDatabricksLinkedServiceTypeProperties class.
      */
@@ -573,6 +578,28 @@ public final class AzureDatabricksLinkedServiceTypeProperties
     }
 
     /**
+     * Get the dataSecurityMode property: The data security mode for the Databricks Cluster. Type: string (or Expression
+     * with resultType string).
+     * 
+     * @return the dataSecurityMode value.
+     */
+    public Object dataSecurityMode() {
+        return this.dataSecurityMode;
+    }
+
+    /**
+     * Set the dataSecurityMode property: The data security mode for the Databricks Cluster. Type: string (or Expression
+     * with resultType string).
+     * 
+     * @param dataSecurityMode the dataSecurityMode value to set.
+     * @return the AzureDatabricksLinkedServiceTypeProperties object itself.
+     */
+    public AzureDatabricksLinkedServiceTypeProperties withDataSecurityMode(Object dataSecurityMode) {
+        this.dataSecurityMode = dataSecurityMode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -601,26 +628,53 @@ public final class AzureDatabricksLinkedServiceTypeProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("domain", this.domain);
         jsonWriter.writeJsonField("accessToken", this.accessToken);
-        jsonWriter.writeUntypedField("authentication", this.authentication);
-        jsonWriter.writeUntypedField("workspaceResourceId", this.workspaceResourceId);
-        jsonWriter.writeUntypedField("existingClusterId", this.existingClusterId);
-        jsonWriter.writeUntypedField("instancePoolId", this.instancePoolId);
-        jsonWriter.writeUntypedField("newClusterVersion", this.newClusterVersion);
-        jsonWriter.writeUntypedField("newClusterNumOfWorker", this.newClusterNumOfWorker);
-        jsonWriter.writeUntypedField("newClusterNodeType", this.newClusterNodeType);
+        if (this.authentication != null) {
+            jsonWriter.writeUntypedField("authentication", this.authentication);
+        }
+        if (this.workspaceResourceId != null) {
+            jsonWriter.writeUntypedField("workspaceResourceId", this.workspaceResourceId);
+        }
+        if (this.existingClusterId != null) {
+            jsonWriter.writeUntypedField("existingClusterId", this.existingClusterId);
+        }
+        if (this.instancePoolId != null) {
+            jsonWriter.writeUntypedField("instancePoolId", this.instancePoolId);
+        }
+        if (this.newClusterVersion != null) {
+            jsonWriter.writeUntypedField("newClusterVersion", this.newClusterVersion);
+        }
+        if (this.newClusterNumOfWorker != null) {
+            jsonWriter.writeUntypedField("newClusterNumOfWorker", this.newClusterNumOfWorker);
+        }
+        if (this.newClusterNodeType != null) {
+            jsonWriter.writeUntypedField("newClusterNodeType", this.newClusterNodeType);
+        }
         jsonWriter.writeMapField("newClusterSparkConf", this.newClusterSparkConf,
             (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeMapField("newClusterSparkEnvVars", this.newClusterSparkEnvVars,
             (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeMapField("newClusterCustomTags", this.newClusterCustomTags,
             (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeUntypedField("newClusterLogDestination", this.newClusterLogDestination);
-        jsonWriter.writeUntypedField("newClusterDriverNodeType", this.newClusterDriverNodeType);
-        jsonWriter.writeUntypedField("newClusterInitScripts", this.newClusterInitScripts);
-        jsonWriter.writeUntypedField("newClusterEnableElasticDisk", this.newClusterEnableElasticDisk);
+        if (this.newClusterLogDestination != null) {
+            jsonWriter.writeUntypedField("newClusterLogDestination", this.newClusterLogDestination);
+        }
+        if (this.newClusterDriverNodeType != null) {
+            jsonWriter.writeUntypedField("newClusterDriverNodeType", this.newClusterDriverNodeType);
+        }
+        if (this.newClusterInitScripts != null) {
+            jsonWriter.writeUntypedField("newClusterInitScripts", this.newClusterInitScripts);
+        }
+        if (this.newClusterEnableElasticDisk != null) {
+            jsonWriter.writeUntypedField("newClusterEnableElasticDisk", this.newClusterEnableElasticDisk);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
-        jsonWriter.writeUntypedField("policyId", this.policyId);
+        if (this.policyId != null) {
+            jsonWriter.writeUntypedField("policyId", this.policyId);
+        }
         jsonWriter.writeJsonField("credential", this.credential);
+        if (this.dataSecurityMode != null) {
+            jsonWriter.writeUntypedField("dataSecurityMode", this.dataSecurityMode);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -687,6 +741,8 @@ public final class AzureDatabricksLinkedServiceTypeProperties
                 } else if ("credential".equals(fieldName)) {
                     deserializedAzureDatabricksLinkedServiceTypeProperties.credential
                         = CredentialReference.fromJson(reader);
+                } else if ("dataSecurityMode".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.dataSecurityMode = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }
