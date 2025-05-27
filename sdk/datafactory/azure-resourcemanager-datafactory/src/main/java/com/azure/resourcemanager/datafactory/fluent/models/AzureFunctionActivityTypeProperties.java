@@ -167,7 +167,9 @@ public final class AzureFunctionActivityTypeProperties
         jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
         jsonWriter.writeUntypedField("functionName", this.functionName);
         jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeUntypedField("body", this.body);
+        if (this.body != null) {
+            jsonWriter.writeUntypedField("body", this.body);
+        }
         return jsonWriter.writeEndObject();
     }
 
