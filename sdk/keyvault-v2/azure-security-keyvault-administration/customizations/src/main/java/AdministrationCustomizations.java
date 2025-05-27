@@ -53,14 +53,18 @@ public class AdministrationCustomizations extends Customization {
         // Update imports statements for moved classes in impl client.
         classPath = "src/main/java/com/azure/v2/security/keyvault/administration/implementation/RoleAssignmentsImpl.java";
         newFileContent = editor.getFileContent(classPath)
-            .replace("implementation.implementation", "implementation");
+            .replace("implementation.implementation", "implementation")
+            // TODO (vcolin7): Remove this workaround once the client is generated with the correct client reference.
+            .replace("this.httpPipeline", "client.getHttpPipeline()");
 
         editor.replaceFile(classPath, newFileContent);
 
         // Update imports statements for moved classes in impl client.
         classPath = "src/main/java/com/azure/v2/security/keyvault/administration/implementation/RoleDefinitionsImpl.java";
         newFileContent = editor.getFileContent(classPath)
-            .replace("implementation.implementation", "implementation");
+            .replace("implementation.implementation", "implementation")
+            // TODO (vcolin7): Remove this workaround once the client is generated with the correct client reference.
+            .replace("this.httpPipeline", "client.getHttpPipeline()");
 
         editor.replaceFile(classPath, newFileContent);
     }
