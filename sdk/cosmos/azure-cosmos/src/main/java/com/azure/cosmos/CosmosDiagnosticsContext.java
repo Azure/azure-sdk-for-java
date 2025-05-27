@@ -638,6 +638,11 @@ public final class CosmosDiagnosticsContext {
             ctxNode.put("subStatus", this.subStatusCode);
         }
         ctxNode.put("RUs", this.totalRequestCharge);
+        if (this.duration != null) {
+            ctxNode.put("totalDurationInMs",  this.duration.toNanos() / 1_000_000d);
+        } else {
+            ctxNode.put("totalDurationInMs", (Double)null);
+        }
         ctxNode.put("maxRequestSizeInBytes", this.maxRequestSize);
         ctxNode.put("maxResponseSizeInBytes", this.maxResponseSize);
 
@@ -702,13 +707,13 @@ public final class CosmosDiagnosticsContext {
     public String toJson() {
         String snapshot = this.cachedRequestDiagnostics;
         if (snapshot != null) {
-            return snapshot;
+            return "fromcache____" + snapshot;
         }
 
         synchronized (this.contextId) {
             snapshot = this.cachedRequestDiagnostics;
             if (snapshot != null) {
-                return snapshot;
+                return "fromcache____" + snapshot;
             }
 
             this.systemUsage = ClientSideRequestStatistics.fetchSystemInformation().toMap();
