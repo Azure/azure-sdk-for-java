@@ -54,7 +54,6 @@ public final class AvsScriptExecutionCancelledEventData extends AvsScriptExecuti
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operationId", getOperationId());
         jsonWriter.writeStringField("cmdletId", getCmdletId());
-        jsonWriter.writeArrayField("output", getOutput(), (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 

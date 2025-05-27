@@ -4,6 +4,7 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.CoreException;
@@ -431,43 +432,6 @@ public final class CoreUtils {
         return SerializationFormat.JSON;
     }
 
-    /**
-     * Appends a query parameter to the given URL.
-     *
-     * @param host The base URL to which the query parameter will be appended.
-     * @param queryParams A map containing the query parameters and their values.
-     * @return The URL with the appended query parameter.
-     */
-    public static String appendQueryParams(String host, Map<String, Object> queryParams) {
-        if (queryParams == null || queryParams.isEmpty()) {
-            return host;  // No parameters to append
-        }
-
-        UriBuilder uriBuilder = UriBuilder.parse(host);
-
-        // Process each key-value pair in the queryParams map
-        for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-
-            // Skip null values
-            if (value == null) {
-                continue;
-            }
-
-            if (value instanceof List<?>) {
-                List<?> valueList = (List<?>) value;
-                for (Object item : valueList) {
-                    uriBuilder.addQueryParameter(key, String.valueOf(item));
-                }
-            } else {
-                uriBuilder.addQueryParameter(key, String.valueOf(value));
-            }
-        }
-
-        return uriBuilder.toString();
-    }
-
     /*
      * There is a limited set of serialization encodings that are known ahead of time. Instead of using a TreeMap with
      * a case-insensitive comparator, use an optimized search specifically for the known encodings.
@@ -533,6 +497,25 @@ public final class CoreUtils {
         } catch (IOException e) {
             throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
+    }
+
+    /**
+     * Instantiates an {@link HttpResponseException} for unexpected responses.
+     *
+     * @param exceptionMessage The error message to use for the exception.
+     * @param response The HTTP response.
+     * @param decodedValue The decoded value, typically the declared exception type (e.g., ErrorValue).
+     * @return An {@link HttpResponseException} for unexpected responses.
+     */
+    public static HttpResponseException instantiateUnexpectedException(String exceptionMessage,
+        Response<BinaryData> response, Object decodedValue) {
+
+        // The decodedValue should be the declared exception type (e.g., ErrorValue), not a Throwable.
+        // Only wrap as cause if decodedValue is a Throwable.
+        if (decodedValue instanceof Throwable) {
+            return new HttpResponseException(exceptionMessage, response, (Throwable) decodedValue);
+        }
+        return new HttpResponseException(exceptionMessage, response, decodedValue);
     }
 
     private CoreUtils() {

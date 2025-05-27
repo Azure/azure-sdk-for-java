@@ -191,9 +191,15 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
-        jsonWriter.writeUntypedField("disableMetricsCollection", this.disableMetricsCollection);
-        jsonWriter.writeUntypedField("copyBehavior", this.copyBehavior);
+        if (this.maxConcurrentConnections != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
+        }
+        if (this.disableMetricsCollection != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", this.disableMetricsCollection);
+        }
+        if (this.copyBehavior != null) {
+            jsonWriter.writeUntypedField("copyBehavior", this.copyBehavior);
+        }
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {

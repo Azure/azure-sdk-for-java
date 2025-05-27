@@ -13,6 +13,8 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an event grid event for a
+ * Microsoft.ResourceNotifications.ContainerServiceEventResources.ScheduledEventEmitted preview event.Schema of the Data
+ * property of an event grid event for a
  * Microsoft.ResourceNotifications.ContainerServiceEventResources.ScheduledEventEmitted preview event.
  */
 @Immutable

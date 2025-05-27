@@ -15,16 +15,19 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.onlineexperimentation.fluent.OnlineExperimentWorkspacesClient;
 import com.azure.resourcemanager.onlineexperimentation.fluent.OnlineExperimentationMgmtClient;
+import com.azure.resourcemanager.onlineexperimentation.fluent.OnlineExperimentationWorkspacesClient;
 import com.azure.resourcemanager.onlineexperimentation.fluent.OperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -139,17 +142,17 @@ public final class OnlineExperimentationMgmtClientImpl implements OnlineExperime
     }
 
     /**
-     * The OnlineExperimentWorkspacesClient object to access its operations.
+     * The OnlineExperimentationWorkspacesClient object to access its operations.
      */
-    private final OnlineExperimentWorkspacesClient onlineExperimentWorkspaces;
+    private final OnlineExperimentationWorkspacesClient onlineExperimentationWorkspaces;
 
     /**
-     * Gets the OnlineExperimentWorkspacesClient object to access its operations.
+     * Gets the OnlineExperimentationWorkspacesClient object to access its operations.
      * 
-     * @return the OnlineExperimentWorkspacesClient object.
+     * @return the OnlineExperimentationWorkspacesClient object.
      */
-    public OnlineExperimentWorkspacesClient getOnlineExperimentWorkspaces() {
-        return this.onlineExperimentWorkspaces;
+    public OnlineExperimentationWorkspacesClient getOnlineExperimentationWorkspaces() {
+        return this.onlineExperimentationWorkspaces;
     }
 
     /**
@@ -171,7 +174,7 @@ public final class OnlineExperimentationMgmtClientImpl implements OnlineExperime
         this.subscriptionId = subscriptionId;
         this.apiVersion = "2025-05-31-preview";
         this.operations = new OperationsClientImpl(this);
-        this.onlineExperimentWorkspaces = new OnlineExperimentWorkspacesClientImpl(this);
+        this.onlineExperimentationWorkspaces = new OnlineExperimentationWorkspacesClientImpl(this);
     }
 
     /**
@@ -209,6 +212,23 @@ public final class OnlineExperimentationMgmtClientImpl implements OnlineExperime
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

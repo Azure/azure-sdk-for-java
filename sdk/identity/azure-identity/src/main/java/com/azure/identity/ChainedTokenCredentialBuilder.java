@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import java.util.Deque;
  */
 public class ChainedTokenCredentialBuilder {
     private final Deque<TokenCredential> credentials;
+    private static final ClientLogger LOGGER = new ClientLogger(ChainedTokenCredentialBuilder.class);
 
     /**
      * Creates an instance of the builder to config the credential.
@@ -85,6 +87,10 @@ public class ChainedTokenCredentialBuilder {
      * @return a {@link ChainedTokenCredential} with the current configurations.
      */
     public ChainedTokenCredential build() {
+        if (credentials.isEmpty()) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException("At least one credential must be added to the chain."));
+        }
         return new ChainedTokenCredential(new ArrayList<TokenCredential>(credentials));
     }
 }

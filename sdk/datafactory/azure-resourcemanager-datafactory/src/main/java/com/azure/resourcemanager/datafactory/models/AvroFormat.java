@@ -71,8 +71,12 @@ public final class AvroFormat extends DatasetStorageFormat {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("serializer", serializer());
-        jsonWriter.writeUntypedField("deserializer", deserializer());
+        if (serializer() != null) {
+            jsonWriter.writeUntypedField("serializer", serializer());
+        }
+        if (deserializer() != null) {
+            jsonWriter.writeUntypedField("deserializer", deserializer());
+        }
         jsonWriter.writeStringField("type", this.type);
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {

@@ -23,6 +23,9 @@ val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
     "spark.cosmos.account.subscriptionId" -> subscriptionId,
     "spark.cosmos.account.tenantId" -> tenantId,
     "spark.cosmos.account.resourceGroupName" -> resourceGroupName,
+    "spark.cosmos.account.azureEnvironment" -> "Custom",
+    "spark.cosmos.account.azureEnvironment.management" -> "https://management.azure.com/",
+    "spark.cosmos.account.azureEnvironment.aad" -> "https://login.microsoftonline.com/",
     "spark.cosmos.auth.aad.clientId" -> clientId,
     "spark.cosmos.auth.aad.clientSecret" -> clientSecret,
     "spark.cosmos.database" -> cosmosDatabaseName,
@@ -40,7 +43,10 @@ val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEnd
     "spark.cosmos.database" -> cosmosDatabaseName,
     "spark.cosmos.container" -> cosmosContainerName,
     "spark.cosmos.read.inferSchema.enabled" -> "true",
-    "spark.cosmos.enforceNativeTransport" -> "true"
+    "spark.cosmos.enforceNativeTransport" -> "true",
+    "spark.cosmos.account.azureEnvironment" -> "Custom",
+    "spark.cosmos.account.azureEnvironment.management" -> "https://management.azure.com/",
+    "spark.cosmos.account.azureEnvironment.aad" -> "https://login.microsoftonline.com/"
 )
 
 // COMMAND ----------

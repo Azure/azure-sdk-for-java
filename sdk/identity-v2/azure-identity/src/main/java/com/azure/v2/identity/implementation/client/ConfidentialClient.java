@@ -23,7 +23,6 @@ import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.SharedExecutorService;
-import io.clientcore.core.instrumentation.logging.LogLevel;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -94,7 +93,7 @@ public class ConfidentialClient extends ClientBase {
         try {
             return new MsalToken(confidentialClient.acquireToken(builder.build()).get());
         } catch (InterruptedException | ExecutionException e) {
-            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
+            throw LOGGER.throwableAtError().log(e, CredentialAuthenticationException::new);
         }
     }
 
@@ -140,17 +139,17 @@ public class ConfidentialClient extends ClientBase {
             if (OffsetDateTime.now().isBefore(accessToken.getExpiresAt().minus(REFRESH_OFFSET))) {
                 return accessToken;
             } else {
-                throw LOGGER.logThrowableAsError(new IllegalStateException("Received token is close to expiry."));
+                throw LOGGER.throwableAtError().log("Received token is close to expiry.", IllegalStateException::new);
             }
         } catch (MalformedURLException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         } catch (ExecutionException | InterruptedException e) {
             // Cache misses should not throw an exception, but should log.
             if (e.getMessage().contains("Token not found in the cache")) {
-                LOGGER.atLevel(LogLevel.VERBOSE).log("Token not found in the MSAL cache.");
+                LOGGER.atVerbose().log("Token not found in the MSAL cache.");
                 return null;
             } else {
-                throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage()));
+                throw LOGGER.throwableAtError().log(e, CredentialAuthenticationException::new);
             }
         }
     }
@@ -165,17 +164,19 @@ public class ConfidentialClient extends ClientBase {
         ConfidentialClientApplication cc = getConfidentialClientInstance(request).getValue();
         try {
             return new MsalToken(cc.acquireToken(buildOBOFlowParameters(request)).get());
-        } catch (Exception e) {
-            throw LOGGER.logThrowableAsError(
-                new CredentialAuthenticationException("Failed to acquire token with On Behalf Of Authentication.", e));
+        } catch (InterruptedException | ExecutionException | RuntimeException e) {
+            throw LOGGER.throwableAtError()
+                .log("Failed to acquire token with On Behalf Of Authentication.", e,
+                    CredentialAuthenticationException::new);
         }
     }
 
     ConfidentialClientApplication getClient(boolean enableCae) {
 
         if (clientId == null) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                "A non-null value for client ID must be provided for user authentication."));
+            throw LOGGER.throwableAtError()
+                .log("A non-null value for client ID must be provided for user authentication.",
+                    IllegalArgumentException::new);
         }
         String authorityUrl
             = TRAILING_FORWARD_SLASHES.matcher(clientOptions.getAuthorityHost()).replaceAll("") + "/" + tenantId;
@@ -205,8 +206,8 @@ public class ConfidentialClient extends ClientBase {
                     }
                 }
             } catch (IOException | GeneralSecurityException e) {
-                throw LOGGER.logThrowableAsError(new IllegalStateException(
-                    "Failed to parse the certificate for the credential: " + e.getMessage(), e));
+                throw LOGGER.throwableAtError()
+                    .log("Failed to parse the certificate for the credential.", e, IllegalStateException::new);
             }
         } else if (confidentialClientOptions.getClientAssertionSupplier() != null) {
             credential = ClientCredentialFactory
@@ -215,10 +216,12 @@ public class ConfidentialClient extends ClientBase {
             credential = ClientCredentialFactory
                 .createFromClientAssertion(confidentialClientOptions.getClientAssertionFunction().apply(getPipeline()));
         } else {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("Must provide client secret or client certificate path."
-                    + " To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                    + "https://aka.ms/azsdk/java/identity/serviceprincipalauthentication/troubleshoot"));
+            throw LOGGER.throwableAtError()
+                .log(
+                    "Must provide client secret or client certificate path."
+                        + " To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                        + "https://aka.ms/azsdk/java/identity/serviceprincipalauthentication/troubleshoot",
+                    IllegalArgumentException::new);
         }
 
         ConfidentialClientApplication.Builder applicationBuilder
@@ -229,13 +232,13 @@ public class ConfidentialClient extends ClientBase {
                 .logPii(clientOptions.isUnsafeSupportLoggingEnabled());
 
             if (!clientOptions.isInstanceDiscoveryEnabled()) {
-                LOGGER.atLevel(LogLevel.VERBOSE)
+                LOGGER.atVerbose()
                     .log("Instance discovery and authority validation is disabled. In this"
                         + " state, the library will not fetch metadata to validate the specified authority host. As a"
                         + " result, it is crucial to ensure that the configured authority host is valid and trustworthy.");
             }
         } catch (MalformedURLException e) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(e));
+            throw LOGGER.throwableAtError().log(e, IllegalStateException::new);
         }
 
         if (enableCae) {
@@ -265,9 +268,10 @@ public class ConfidentialClient extends ClientBase {
                     .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
                     .setName(tokenCachePersistenceOptions.getName());
                 applicationBuilder.setTokenCacheAccessAspect(tokenCache);
-            } catch (Throwable t) {
-                throw LOGGER.logThrowableAsError(
-                    new CredentialAuthenticationException("Shared token cache is unavailable in this environment.", t));
+            } catch (RuntimeException t) {
+                throw LOGGER.throwableAtError()
+                    .log("Shared token cache is unavailable in this environment.", t,
+                        CredentialAuthenticationException::new);
             }
         }
 
@@ -328,8 +332,8 @@ public class ConfidentialClient extends ClientBase {
             return new MsalToken(
                 getConfidentialClientInstance(request).getValue().acquireToken(parametersBuilder.build()).get());
         } catch (InterruptedException | ExecutionException e) {
-            throw LOGGER.logThrowableAsError(
-                new CredentialAuthenticationException("Failed to acquire token with authorization code", e));
+            throw LOGGER.throwableAtError()
+                .log("Failed to acquire token with authorization code", e, CredentialAuthenticationException::new);
         }
     }
 

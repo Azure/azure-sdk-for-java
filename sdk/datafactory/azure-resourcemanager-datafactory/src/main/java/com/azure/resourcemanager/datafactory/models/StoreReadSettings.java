@@ -134,8 +134,12 @@ public class StoreReadSettings implements JsonSerializable<StoreReadSettings> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
-        jsonWriter.writeUntypedField("disableMetricsCollection", this.disableMetricsCollection);
+        if (this.maxConcurrentConnections != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
+        }
+        if (this.disableMetricsCollection != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", this.disableMetricsCollection);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
