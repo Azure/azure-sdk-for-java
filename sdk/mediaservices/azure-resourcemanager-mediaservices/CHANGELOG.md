@@ -1,5 +1,15 @@
 # Release History
 
+## 2.5.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.4.0 (2025-05-26)
 
 Please note, this package has been deprecated and will no longer be maintained after 06/30/2024.
