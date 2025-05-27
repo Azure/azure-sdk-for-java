@@ -6,12 +6,20 @@
     <Bug pattern="BC_UNCONFIRMED_CAST" />
     <Or>
       <Class name="io.clientcore.annotation.processor.models.TemplateInput" />
+      <Class name="io.clientcore.annotation.processor.utils.AnnotationProcessorUtils" />
       <Class name="io.clientcore.annotation.processor.utils.RequestBodyHandler" />
     </Or>
   </Match>
   <Match>
     <Bug pattern="DCN_NULLPOINTER_EXCEPTION" />
     <Class name="io.clientcore.annotation.processor.utils.PathBuilderTest" />
+  </Match>
+  <Match>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+    <Or>
+      <Class name="io.clientcore.annotation.processor.AnnotationProcessor" />
+      <Class name="io.clientcore.annotation.processor.utils.AnnotationProcessorUtils" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />

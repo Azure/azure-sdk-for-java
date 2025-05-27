@@ -200,14 +200,18 @@ def load_version_map_from_file(the_file, version_map: Dict[str, CodeModule], aut
                     raise ValueError('Version file: {0} does not contain a non-beta or non-unreleased entry for beta_/unreleased_ library: {1}'.format(the_file, module.name))
                 
                 # Unreleased dependencies have a few additional checks.
-                # 1. If 'auto_increment_version' is true, check if the version matches the dependency version of the library.
-                #    If the unreleased dependency version is the same as the dependency version, flag the unreleased dependency for replacement.
-                #    This flag will indicate to the update script that the 'unreleased_*' tag should be replaced with just '*', ex 'unreleased_core' -> 'core'.
-                # 2. Check to see that the version matches the current version of the library, only if we're not setting the nightly dev version.
+                # 1. If 'auto_increment_version' is true, check if the version matches the non-unreleased dependency
+                #    version of the library and that the dependency version doesn't the current version.
+                #    If that check passes, flag the unreleased dependency for replacement.
+                #    This is to allow the update script to replace the 'unreleased_*' tag with just '*', ex 'unreleased_core' -> 'core'.
+                #    When the non-unreleased dependency versions match this is an indication that the library has never
+                #    been released and there is a library outside the /sdk/<group> directory that has a development
+                #    on it.
+                # 2. Check to see that the version matches the current version of the library, , only if we're not setting the nightly dev version.
                 #    If it isn't raise an error as unreleased dependencies should match the current version of the library.
                 if is_unreleased:
                     non_unreleased_module = version_map[tempName]
-                    if auto_increment_version and module.dependency == non_unreleased_module.dependency:
+                    if auto_increment_version and module.dependency == non_unreleased_module.dependency and non_unreleased_module.current != non_unreleased_module.dependency:
                         module.replace_unreleased_dependency = True
                         file_changed = True
                     elif not dev_version and module.dependency != non_unreleased_module.current:

@@ -16,6 +16,9 @@ import com.azure.v2.identity.models.AuthenticationRecord;
 import com.azure.v2.identity.models.TokenCachePersistenceOptions;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
+
+import static com.azure.v2.identity.implementation.util.LoggingUtil.logAndThrowTokenError;
 
 /**
  * <p>Interactive browser authentication is a type of authentication flow offered by
@@ -92,22 +95,22 @@ public class InteractiveBrowserCredential implements TokenCredential {
                     LoggingUtil.logTokenSuccess(LOGGER, request);
                     return token;
                 }
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
             }
         }
         try {
             if (!publicClientOptions.isAutomaticAuthentication()) {
-                throw LOGGER.logThrowableAsError(new AuthenticationRequiredException("Interactive "
-                    + "authentication is needed to acquire token. Call Authenticate to initiate the device "
-                    + "code authentication.", request));
+                throw LOGGER.throwableAtError()
+                    .log(
+                        "Interactive authentication is needed to acquire token. Call Authenticate to initiate the device code authentication.",
+                        message -> new AuthenticationRequiredException(message, request));
             }
             MsalToken accessToken = publicClient.authenticateWithBrowserInteraction(request);
             cache.updateCache(accessToken, publicClientOptions, request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
-        } catch (Exception e) {
-            LoggingUtil.logTokenError(LOGGER, request, e);
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+        } catch (RuntimeException e) {
+            throw logAndThrowTokenError(LOGGER, request, e, CoreException::from);
         }
     }
 
@@ -140,8 +143,9 @@ public class InteractiveBrowserCredential implements TokenCredential {
     public AuthenticationRecord authenticate() {
         String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
-            LoggingUtil.logCredentialUnavailableException(LOGGER, new CredentialUnavailableException(
-                "Authenticating in this " + "environment requires specifying a TokenRequestContext."));
+            throw LOGGER.throwableAtError()
+                .log("Authenticating in this environment requires specifying a TokenRequestContext.",
+                    CredentialUnavailableException::new);
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }
