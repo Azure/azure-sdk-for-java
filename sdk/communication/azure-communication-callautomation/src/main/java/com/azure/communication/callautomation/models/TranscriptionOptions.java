@@ -97,15 +97,6 @@ public final class TranscriptionOptions {
     }
 
     /**
-     * Get the startTranscription property: Which determines if the transcription should be started immediately after call is answered or not.
-     *
-     * @return the startTranscription value.
-     */
-    public boolean getStartTranscription() {
-        return this.startTranscription;
-    }
-
-    /**
      * Get the startTranscription property: Indicates whether the transcription should start immediately after the call
      * is answered.
      *

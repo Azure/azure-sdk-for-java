@@ -83,24 +83,30 @@ public final class OutStreamingData {
      * Get the streaming data for outbound
      * @param audioData the audioData to set
      * @return the string of outstreaming data
-     * 
      */
-    public static String getStreamingDataForOutbound(BinaryData audioData) throws IOException {
-        OutStreamingData data = new OutStreamingData(MediaKind.AUDIO_DATA);
-        data.setAudioData(audioData);
-        return serializeOutStreamingData(data);
+    public static String getStreamingDataForOutbound(BinaryData audioData) {
+        try {
+            OutStreamingData data = new OutStreamingData(MediaKind.AUDIO_DATA);
+            data.setAudioData(audioData);
+            return serializeOutStreamingData(data);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to serialize OutStreamingData", e);
+        }
     }
 
     /**
      * Serialized stop data to stop playing audio back into the call
      * Get the stop audiofor outbound
      * @return the string of outstreaming data
-     * 
      */
-    public static String getStopAudioForOutbound() throws IOException {
-        OutStreamingData data = new OutStreamingData(MediaKind.STOP_AUDIO);
-        data.setStopAudio();
-        return serializeOutStreamingData(data);
+    public static String getStopAudioForOutbound() {
+        try {
+            OutStreamingData data = new OutStreamingData(MediaKind.STOP_AUDIO);
+            data.setStopAudio();
+            return serializeOutStreamingData(data);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to serialize OutStreamingData", e);
+        }
     }
 
     /**

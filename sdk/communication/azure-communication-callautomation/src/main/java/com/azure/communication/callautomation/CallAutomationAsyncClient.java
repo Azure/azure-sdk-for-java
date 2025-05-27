@@ -299,7 +299,7 @@ public final class CallAutomationAsyncClient {
     private TranscriptionOptionsInternal getTranscriptionOptionsInternal(TranscriptionOptions transcriptionOptions) {
         return new WebSocketTranscriptionOptionsInternal().setTransportUrl(transcriptionOptions.getTransportUrl())
             .setLocale(transcriptionOptions.getLocale())
-            .setStartTranscription(transcriptionOptions.getStartTranscription())
+            .setStartTranscription(transcriptionOptions.isStartTranscription())
             .setEnableIntermediateResults(transcriptionOptions.isIntermediateResultsEnabled())
             .setSpeechModelEndpointId(transcriptionOptions.getSpeechRecognitionModelEndpointId());
     }
