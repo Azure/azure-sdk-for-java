@@ -119,6 +119,7 @@
         <groupId>com.azure</groupId>
         <artifactId>azure-communication-rooms</artifactId>
         <version>1.2.0</version>
+      </dependency>
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-communication-sms</artifactId>
