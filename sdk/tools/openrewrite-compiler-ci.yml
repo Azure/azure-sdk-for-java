@@ -4,19 +4,18 @@ trigger:
       - main
   paths:
     include:
-      - sdk/tools/azure-openrewrite-compiler-maven-plugin/
-      - sdk/tools/azure-openrewrite/
+      - /sdk/tools/
     exclude:
-      - sdk/tools/azure-openrewrite/pom.xml
+      - /sdk/tools/azure-openrewrite/pom.xml
 
 extends:
-  template: eng/pipelines/templates/stages/1es-redirect.yml
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
     stages: 
       - stage: CompileSamples
         variables: 
-          - template: eng/pipelines/templates/variables/globals.yml
-          - template: eng/pipelines/templates/variables/image.yml
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
 
         jobs:
           - job: OpenRewriteCompilerPlugin
