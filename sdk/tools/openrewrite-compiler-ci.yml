@@ -34,13 +34,6 @@ extends:
                   Paths:
                     - sdk/tools/azure-openrewrite-compiler-maven-plugin
                     - sdk/tools/azure-openrewrite
-                  Repositories:
-                    - Name: $(Build.Repository.Name)
-                      Commitish: $(Build.SourceVersion)
-                      WorkingDirectory: $(System.DefaultWorkingDirectory)
-                  SkipCheckoutNone: true
-                  TokenToUseForAuth: $(System.AccessToken)
-                  PreserveAuthToken: true
 
               - task: Maven@3
                 displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
