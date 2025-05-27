@@ -20,13 +20,11 @@ extends:
         jobs:
           - job: OpenRewriteCompilerPlugin
             pool: 
-              name: $(WINDOWSPOOL)
-              image: $(WINDOWSVMIMAGE)
+              name: $(LINUXPOOL)
+              image: $(LINUXVMIMAGE)
             displayName: Build and Run OpenRewrite Compiler Plugin
             timeoutInMinutes: 60
             steps:
-
-              - checkout: none
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                 parameters:
                   Paths:
