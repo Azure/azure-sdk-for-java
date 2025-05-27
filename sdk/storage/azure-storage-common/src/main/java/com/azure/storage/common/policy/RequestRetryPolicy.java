@@ -73,6 +73,9 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if (context.getData("isbr").isPresent()) {
+            LOGGER.info("isbr: entering process() in RequestRetryPolicy");
+        }
         boolean considerSecondary = (this.requestRetryOptions.getSecondaryHost() != null)
             && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod())
                 || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
@@ -119,6 +122,9 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
     private Mono<HttpResponse> attemptAsync(HttpPipelineCallContext context, HttpPipelineNextPolicy next,
         HttpRequest originalRequest, boolean considerSecondary, int primaryTry, int attempt,
         List<Throwable> suppressed) {
+        if (context.getData("isbr").isPresent()) {
+            LOGGER.info("isbr: entering attemptAsync() in RequestRetryPolicy");
+        }
         // Determine which endpoint to try. It's primary if there is no secondary or if it is an odd number attempt.
         final boolean tryingPrimary = !considerSecondary || (attempt % 2 != 0);
 
@@ -155,6 +161,12 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         return responseMono.flatMap(response -> {
             boolean newConsiderSecondary = considerSecondary;
             int statusCode = response.getStatusCode();
+            if (context.getData("isbr").isPresent()) {
+                LOGGER.info("isbr: mapping response in attemptAsync() in RequestRetryPolicy, statusCode: {}",
+                    statusCode);
+                LOGGER.info("isbr: response headers in attemptAsync() in RequestRetryPolicy: {}",
+                    response.getHeaders().toString());
+            }
 
             //boolean retry = shouldResponseBeRetried(statusCode, tryingPrimary, response);
             boolean retry = shouldStatusCodeBeRetried(statusCode, tryingPrimary);
@@ -163,6 +175,13 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             }
 
             if (retry && attempt < requestRetryOptions.getMaxTries()) {
+                if (context.getData("isbr").isPresent()) {
+                    LOGGER.info("isbr: retrying in attemptAsync() in RequestRetryPolicy, attempt: {}", attempt);
+                    LOGGER.info(
+                        "isbr: retrying in attemptAsync() in RequestRetryPolicy, requestRetryOptions.getMaxTries(): {}",
+                        requestRetryOptions.getMaxTries());
+                    LOGGER.info("isbr: retrying in attemptAsync() in RequestRetryPolicy, retry boolean: {}", retry);
+                }
                 /*
                  * We increment primaryTry if we are about to try the primary again (which is when we consider the
                  * secondary and tried the secondary this time (tryingPrimary==false) or we do not consider the
@@ -186,6 +205,10 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             }
             return Mono.just(response);
         }).onErrorResume(throwable -> {
+            if (context.getData("isbr").isPresent()) {
+                LOGGER.info("isbr: onErrorResume in attemptAsync() in RequestRetryPolicy, throwable: {}",
+                    throwable.getMessage());
+            }
             /*
              * It is likely that many users will not realize that their Flux must be replayable and get an error upon
              * retries when the provided data length does not match the length of the exact data. We cannot enforce the
@@ -208,6 +231,9 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                 = shouldErrorBeRetried(throwable, attempt, requestRetryOptions.getMaxTries());
 
             if (exceptionRetryStatus.canBeRetried) {
+                if (context.getData("isbr").isPresent()) {
+                    LOGGER.info("isbr: exceptionRetryStatus.canBeRetried in attemptAsync() in RequestRetryPolicy");
+                }
                 /*
                  * We increment primaryTry if we are about to try the primary again (which is when we consider the
                  * secondary and tried the secondary this time (tryingPrimary==false) or we do not consider the

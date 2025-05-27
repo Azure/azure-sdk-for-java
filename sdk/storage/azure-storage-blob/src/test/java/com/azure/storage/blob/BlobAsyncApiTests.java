@@ -2666,6 +2666,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void getAccountInfoBaseFail() {
+        LOGGER.info("isbr: entering getAccountInfoBaseFail test");
         BlobServiceAsyncClient serviceClient
             = instrument(new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
                 .credential(new MockTokenCredential())).buildAsyncClient();
@@ -2673,10 +2674,11 @@ public class BlobAsyncApiTests extends BlobTestBase {
         BlobAsyncClient blobClient
             = serviceClient.getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName());
 
-        StepVerifier.create(blobClient.getAccountInfo()).verifyErrorSatisfies(r -> {
-            BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-            assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
-        });
+        StepVerifier.create(blobClient.getAccountInfo().contextWrite(context -> context.put("isbr", "log")))
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+            });
     }
 
     @Test

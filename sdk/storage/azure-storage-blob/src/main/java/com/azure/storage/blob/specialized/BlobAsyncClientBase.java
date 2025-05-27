@@ -2356,6 +2356,9 @@ public class BlobAsyncClientBase {
     }
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
+        if (context.getData("isbr").isPresent()) {
+            LOGGER.info("isbr: entering getAccountInfoWithResponse(Context context)");
+        }
         return this.azureBlobStorage.getBlobs()
             .getAccountInfoWithResponseAsync(containerName, blobName, null, null, context)
             .map(rb -> {

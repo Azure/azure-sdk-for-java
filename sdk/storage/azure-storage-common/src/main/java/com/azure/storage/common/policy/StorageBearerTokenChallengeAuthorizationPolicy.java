@@ -45,6 +45,9 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
     @Override
     public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
+        if (context.getData("isbr").isPresent()) {
+            LOGGER.info("isbr: entering authorizeRequest in StorageBearerTokenChallengeAuthorizationPolicy");
+        }
         String[] scopes = this.scopes;
         scopes = getScopes(context, scopes);
         if (scopes == null) {
@@ -66,6 +69,9 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
     @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
+        if (context.getData("isbr").isPresent()) {
+            LOGGER.info("isbr: entering authorizeRequestOnChallenge in StorageBearerTokenChallengeAuthorizationPolicy");
+        }
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         Map<String, String> challenges = extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
 
