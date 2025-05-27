@@ -487,8 +487,8 @@ com.azure.resourcemanager:azure-resourcemanager-sitemanager;1.0.0-beta.1;1.0.0-b
 com.azure.resourcemanager:azure-resourcemanager-mongodbatlas;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-purestorageblock;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-planetarycomputer;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-fluxconfigurations;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensions;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-fluxconfigurations;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.1;2.0.0-beta.1
