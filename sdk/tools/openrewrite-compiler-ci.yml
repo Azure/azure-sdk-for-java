@@ -12,6 +12,8 @@ trigger:
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
+    settings:
+      skipInitialCheckout: true
     stages: 
       - stage: CompileSamples
         variables: 
