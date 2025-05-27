@@ -10,85 +10,78 @@ trigger:
       - /sdk/tools/azure-openrewrite/pom.xml
 
 extends:
-  template: /eng/pipelines/templates/stages/archetype-sdk-pom-only.yml
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
-    ServiceDirectory: tools
+    stages: 
+      - stage: Compile Samples
+        variables: 
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
 
-    jobs:
-      - job: OpenRewriteCompilerPlugin
-        displayName: Build and Run OpenRewrite Compiler Plugin
-        timeoutInMinutes: 60
-        pool:
-          vmImage: 'ubuntu-latest'
-        
-        steps:
-          - task: Maven@3
-            displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
-            inputs:
-              mavenPomFile: 'sdk/tools/azure-openrewrite-compiler-maven-plugin/pom.xml'
-              goals: 'clean install'
-              options: '-B -DskipTests -Dgpg.skip'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '1.17'
-              mavenOptions: '-Xmx3072m'
-              publishJUnitResults: false
-          
-          - task: Maven@3
-            displayName: 'Run Golden Image Compiler on OpenRewrite with v1 Profile'
-            inputs:
-              mavenPomFile: 'sdk/tools/azure-openrewrite/pom.xml'
-              goals: 'com.azure:azure-openrewrite-compiler-maven-plugin:compile-golden-image'
-              options: '-B -DtargetProfiles=v1'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '1.17'
-              mavenOptions: '-Xmx3072m'
-              publishJUnitResults: false
-          
-          - task: Maven@3
-            displayName: 'Run Golden Image Compiler on OpenRewrite with v2 Profile'
-            inputs:
-              mavenPomFile: 'sdk/tools/azure-openrewrite/pom.xml'
-              goals: 'com.azure:azure-openrewrite-compiler-maven-plugin:compile-golden-image'
-              options: '-B -DtargetProfiles=v2'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '1.17'
-              mavenOptions: '-Xmx3072m'
-              publishJUnitResults: false
-          
-          - task: Maven@3
-            displayName: 'Verify Azure OpenRewrite Tests'
-            inputs:
-              mavenPomFile: 'sdk/tools/azure-openrewrite/pom.xml'
-              goals: 'verify'
-              options: '-B'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '1.17'
-              mavenOptions: '-Xmx3072m'
-              publishJUnitResults: true
-              testResultsFiles: '**/TEST-*.xml'
+        jobs:
+          - job: OpenRewriteCompilerPlugin
+            displayName: Build and Run OpenRewrite Compiler Plugin
+            timeoutInMinutes: 60
+            pool:
+              vmImage: 'ubuntu-latest'
+            
+            steps:
 
-      # Add a separate job for publishing if required
-      - job: PublishArtifacts
-        displayName: 'Publish Artifacts'
-        dependsOn: OpenRewriteCompilerPlugin
-        condition: succeeded()
-        pool:
-          vmImage: 'ubuntu-latest'
-        
-        steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              source: 'current'
-              artifact: 'OpenRewriteCompilerPlugin'
-              path: '$(Pipeline.Workspace)/artifacts'
-          
-          - task: Maven@3
-            displayName: 'Publish Compiler Maven Plugin'
-            inputs:
-              mavenPomFile: 'sdk/tools/azure-openrewrite-compiler-maven-plugin/pom.xml'
-              goals: 'deploy'
-              options: '-B -DskipTests -Dgpg.skip'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '1.17'
-              mavenOptions: '-Xmx3072m'
-              publishJUnitResults: false
+              - template: /eng/pipelines/templates/steps/sparse-checkout.yml
+                parameters:
+                  Paths:
+                    - sdk/tools/azure-openrewrite-compiler-maven-plugin
+                    - sdk/tools/azure-openrewrite
+                  Repositories:
+                    - Name: $(Build.Repository.Name)
+                      Commitish: $(Build.SourceVersion)
+                      WorkingDirectory: $(System.DefaultWorkingDirectory)
+                  SkipCheckoutNone: true
+                  TokenToUseForAuth: $(System.AccessToken)
+                  PreserveAuthToken: true
+
+              - task: Maven@3
+                displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
+                inputs:
+                  mavenPomFile: 'sdk/tools/azure-openrewrite-compiler-maven-plugin/pom.xml'
+                  goals: 'clean install'
+                  options: '-B -DskipTests -Dgpg.skip'
+                  javaHomeOption: 'JDKVersion'
+                  jdkVersionOption: '1.17'
+                  mavenOptions: '-Xmx3072m'
+                  publishJUnitResults: false
+              
+              - task: Maven@3
+                displayName: 'Run Golden Image Compiler on OpenRewrite with v1 Profile'
+                inputs:
+                  mavenPomFile: 'sdk/tools/azure-openrewrite/pom.xml'
+                  goals: 'com.azure:azure-openrewrite-compiler-maven-plugin:compile-golden-image'
+                  options: '-B -DtargetProfiles=v1'
+                  javaHomeOption: 'JDKVersion'
+                  jdkVersionOption: '1.17'
+                  mavenOptions: '-Xmx3072m'
+                  publishJUnitResults: false
+              
+              - task: Maven@3
+                displayName: 'Run Golden Image Compiler on OpenRewrite with v2 Profile'
+                inputs:
+                  mavenPomFile: 'sdk/tools/azure-openrewrite/pom.xml'
+                  goals: 'com.azure:azure-openrewrite-compiler-maven-plugin:compile-golden-image'
+                  options: '-B -DtargetProfiles=v2'
+                  javaHomeOption: 'JDKVersion'
+                  jdkVersionOption: '1.17'
+                  mavenOptions: '-Xmx3072m'
+                  publishJUnitResults: false
+              
+              - task: Maven@3
+                displayName: 'Verify Azure OpenRewrite Tests'
+                inputs:
+                  mavenPomFile: 'sdk/tools/azure-openrewrite/pom.xml'
+                  goals: 'verify'
+                  options: '-B'
+                  javaHomeOption: 'JDKVersion'
+                  jdkVersionOption: '1.17'
+                  mavenOptions: '-Xmx3072m'
+                  publishJUnitResults: true
+                  testResultsFiles: '**/TEST-*.xml'
+
