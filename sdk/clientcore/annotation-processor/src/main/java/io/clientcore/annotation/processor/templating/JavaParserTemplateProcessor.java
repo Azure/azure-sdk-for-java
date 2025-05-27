@@ -37,7 +37,6 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
@@ -436,17 +435,14 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     }
 
     /**
-     * Adds headers to the HttpRequest using the provided HttpRequestContext.
-     * Handles both static and dynamic headers, and applies correct quoting logic for static values.
+     * Adds headers to the HttpRequest using the provided HttpRequestContext. Handles both static and dynamic headers,
+     * and applies correct quoting logic for static values.
      * <p>
-     * Quoting logic:
-     * - If value starts and ends with ", use as-is.
-     * - If starts with ", append trailing ".
-     * - If ends with ", prepend leading ".
-     * - Otherwise, wrap value in quotes.
+     * Quoting logic: - If value starts and ends with ", use as-is. - If starts with ", append trailing ". - If ends
+     * with ", prepend leading ". - Otherwise, wrap value in quotes.
      * <p>
-     * For dynamic headers (parameter-based), values are not quoted.
-     * For static headers (literal values), quoting is always applied.
+     * For dynamic headers (parameter-based), values are not quoted. For static headers (literal values), quoting is
+     * always applied.
      * <p>
      */
     private void addHeadersToRequest(BlockStmt body, HttpRequestContext method) {
@@ -531,7 +527,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
     private void finalizeHttpRequest(BlockStmt body, TypeMirror returnTypeName, HttpRequestContext method,
         boolean serializationFormatSet) {
-        body.tryAddImportToParentCompilationUnit(Response.class);
         generateResponseHandling(body, returnTypeName, method, serializationFormatSet);
     }
 }

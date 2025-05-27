@@ -132,7 +132,7 @@
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
-      <Class name="io.clientcore.core.utils.serializers.JsonSerializerTests" />
+      <Class name="io.clientcore.core.serialization.json.JsonSerializerTests" />
     </Or>
   </Match>
   <Match>
@@ -295,7 +295,6 @@
       <Class name="io.clientcore.core.serialization.xml.XmlSerializer" />
       <Class name="io.clientcore.core.utils.Base64Uri" />
       <Class name="io.clientcore.core.utils.CoreUtils" />
-      <Class name="io.clientcore.core.utils.serializers.MockSerializer" />
     </Or>
   </Match>
   <Match>
@@ -408,7 +407,7 @@
       <Class name="io.clientcore.core.models.binarydata.BinaryDataTest$BinaryDataAsProperty" />
       <Class name="io.clientcore.core.serialization.xml.DefaultXmlWriterContractTests" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderConfig$EncodingContext" />
-      <Class name="io.clientcore.core.utils.serializers.JsonSerializerTests$DateTimeWrapper" />
+      <Class name="io.clientcore.core.serialization.json.JsonSerializerTests$DateTimeWrapper" />
     </Or>
   </Match>
   <Match>

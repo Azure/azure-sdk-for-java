@@ -86,8 +86,12 @@ public final class SapHanaTableDatasetTypeProperties implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("schema", this.schema);
-        jsonWriter.writeUntypedField("table", this.table);
+        if (this.schema != null) {
+            jsonWriter.writeUntypedField("schema", this.schema);
+        }
+        if (this.table != null) {
+            jsonWriter.writeUntypedField("table", this.table);
+        }
         return jsonWriter.writeEndObject();
     }
 

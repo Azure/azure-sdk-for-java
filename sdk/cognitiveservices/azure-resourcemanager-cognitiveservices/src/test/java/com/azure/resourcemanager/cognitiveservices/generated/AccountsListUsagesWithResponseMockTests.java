@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.QuotaUsageStatus;
@@ -23,27 +23,27 @@ public final class AccountsListUsagesWithResponseMockTests {
     @Test
     public void testListUsagesWithResponse() throws Exception {
         String responseStr
-            = "{\"nextLink\":\"wvsgmwohqfzizvu\",\"value\":[{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"thnwpzte\",\"localizedValue\":\"vmribiat\"},\"quotaPeriod\":\"plucfotangcfhnyk\",\"limit\":34.811432195394524,\"currentValue\":74.0119738169162,\"nextResetTime\":\"wlmzqwmvtxnjmxmc\",\"status\":\"Included\"}]}";
+            = "{\"nextLink\":\"iyfc\",\"value\":[{\"unit\":\"Count\",\"name\":{\"value\":\"bh\",\"localizedValue\":\"bmxuqib\"},\"quotaPeriod\":\"tkcudfbsfarfsiow\",\"limit\":26.474718978582512,\"currentValue\":47.47224739102906,\"nextResetTime\":\"wgfstmhqykizm\",\"status\":\"InOverage\"},{\"unit\":\"Bytes\",\"name\":{\"value\":\"cluqvo\",\"localizedValue\":\"ycjimryvwgcwwpbm\"},\"quotaPeriod\":\"w\",\"limit\":20.639993928091215,\"currentValue\":96.52401297456564,\"nextResetTime\":\"fo\",\"status\":\"Unknown\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UsageListResult response = manager.accounts()
-            .listUsagesWithResponse("bodthsqqgvri", "bakclacjfrnxous", "au", com.azure.core.util.Context.NONE)
+            .listUsagesWithResponse("clgsc", "orim", "rsrrmoucsofldp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wvsgmwohqfzizvu", response.nextLink());
-        Assertions.assertEquals(UnitType.BYTES_PER_SECOND, response.value().get(0).unit());
-        Assertions.assertEquals("thnwpzte", response.value().get(0).name().value());
-        Assertions.assertEquals("vmribiat", response.value().get(0).name().localizedValue());
-        Assertions.assertEquals("plucfotangcfhnyk", response.value().get(0).quotaPeriod());
-        Assertions.assertEquals(34.811432195394524D, response.value().get(0).limit());
-        Assertions.assertEquals(74.0119738169162D, response.value().get(0).currentValue());
-        Assertions.assertEquals("wlmzqwmvtxnjmxmc", response.value().get(0).nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.INCLUDED, response.value().get(0).status());
+        Assertions.assertEquals("iyfc", response.nextLink());
+        Assertions.assertEquals(UnitType.COUNT, response.value().get(0).unit());
+        Assertions.assertEquals("bh", response.value().get(0).name().value());
+        Assertions.assertEquals("bmxuqib", response.value().get(0).name().localizedValue());
+        Assertions.assertEquals("tkcudfbsfarfsiow", response.value().get(0).quotaPeriod());
+        Assertions.assertEquals(26.474718978582512D, response.value().get(0).limit());
+        Assertions.assertEquals(47.47224739102906D, response.value().get(0).currentValue());
+        Assertions.assertEquals("wgfstmhqykizm", response.value().get(0).nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.IN_OVERAGE, response.value().get(0).status());
     }
 }

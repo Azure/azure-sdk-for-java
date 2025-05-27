@@ -522,23 +522,51 @@ public final class OracleLinkedServiceTypeProperties implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
-        jsonWriter.writeUntypedField("server", this.server);
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
+        if (this.server != null) {
+            jsonWriter.writeUntypedField("server", this.server);
+        }
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("encryptionClient", this.encryptionClient);
-        jsonWriter.writeUntypedField("encryptionTypesClient", this.encryptionTypesClient);
-        jsonWriter.writeUntypedField("cryptoChecksumClient", this.cryptoChecksumClient);
-        jsonWriter.writeUntypedField("cryptoChecksumTypesClient", this.cryptoChecksumTypesClient);
-        jsonWriter.writeUntypedField("initialLobFetchSize", this.initialLobFetchSize);
-        jsonWriter.writeUntypedField("fetchSize", this.fetchSize);
-        jsonWriter.writeUntypedField("statementCacheSize", this.statementCacheSize);
-        jsonWriter.writeUntypedField("initializationString", this.initializationString);
-        jsonWriter.writeUntypedField("enableBulkLoad", this.enableBulkLoad);
-        jsonWriter.writeUntypedField("supportV1DataTypes", this.supportV1DataTypes);
-        jsonWriter.writeUntypedField("fetchTswtzAsTimestamp", this.fetchTswtzAsTimestamp);
+        if (this.encryptionClient != null) {
+            jsonWriter.writeUntypedField("encryptionClient", this.encryptionClient);
+        }
+        if (this.encryptionTypesClient != null) {
+            jsonWriter.writeUntypedField("encryptionTypesClient", this.encryptionTypesClient);
+        }
+        if (this.cryptoChecksumClient != null) {
+            jsonWriter.writeUntypedField("cryptoChecksumClient", this.cryptoChecksumClient);
+        }
+        if (this.cryptoChecksumTypesClient != null) {
+            jsonWriter.writeUntypedField("cryptoChecksumTypesClient", this.cryptoChecksumTypesClient);
+        }
+        if (this.initialLobFetchSize != null) {
+            jsonWriter.writeUntypedField("initialLobFetchSize", this.initialLobFetchSize);
+        }
+        if (this.fetchSize != null) {
+            jsonWriter.writeUntypedField("fetchSize", this.fetchSize);
+        }
+        if (this.statementCacheSize != null) {
+            jsonWriter.writeUntypedField("statementCacheSize", this.statementCacheSize);
+        }
+        if (this.initializationString != null) {
+            jsonWriter.writeUntypedField("initializationString", this.initializationString);
+        }
+        if (this.enableBulkLoad != null) {
+            jsonWriter.writeUntypedField("enableBulkLoad", this.enableBulkLoad);
+        }
+        if (this.supportV1DataTypes != null) {
+            jsonWriter.writeUntypedField("supportV1DataTypes", this.supportV1DataTypes);
+        }
+        if (this.fetchTswtzAsTimestamp != null) {
+            jsonWriter.writeUntypedField("fetchTswtzAsTimestamp", this.fetchTswtzAsTimestamp);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }
