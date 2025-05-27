@@ -191,16 +191,4 @@
   <suppress checks="IllegalImport" files="io.clientcore.core.telemetry.*Tests"/>
   <suppress checks="IllegalImport" files="io.clientcore.core.telemetry.*Benchmarks"/>
   <suppress checks="IllegalImport" files="io.clientcore.core.http.pipeline.InstrumentationPolicyTests"/>
-
-  <!-- V2 suppressions -->
-
-  <!-- App Configuration suppressions -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.v2.data.appconfiguration.*" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.v2.data.appconfiguration.*" />
-
-  <!-- These are non-public classes -->
-  <suppress checks="FinalClass" files="com.azure.v2.data.appconfiguration.models.Key.java" />
-  <suppress checks="FinalClass" files="com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientServiceImpl.java" />
-  <suppress checks="RedundantModifier" files="com.azure.v2.data.appconfiguration.models.KeyValue.java" />
-
 </suppressions>
