@@ -51,7 +51,6 @@ public final class TranscriptionOptions {
 
     /**
      * Creates a new instance of TranscriptionOptions with default transportType as WEBSOCKET.
-     * @param transportUrl - The Transport URL
      * @param locale - Locale
      */
     public TranscriptionOptions(String locale) {
