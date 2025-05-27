@@ -709,15 +709,14 @@ abstract class AsyncBenchmark<T> {
         public final void handleDiagnostics(CosmosDiagnosticsContext diagnosticsContext, Context traceContext) {
             checkNotNull(diagnosticsContext, "Argument 'diagnosticsContext' must not be null.");
 
-            if (shouldLog(diagnosticsContext)) {
+            boolean shouldLog = shouldLog(diagnosticsContext);
+            logger.info("SHOULD LOG: {}", shouldLog);
+            int previousLogCount = this.logCountInSamplingInterval.getAndIncrement();
 
-                int previousLogCount = this.logCountInSamplingInterval.getAndIncrement();
-
-                if (previousLogCount <= this.maxLogCount) {
-                    this.log(diagnosticsContext);
-                } else if (previousLogCount == this.maxLogCount + 1) {
-                    logger.info("Already logged {} diagnostics - stopping until sampling interval is reset.", this.maxLogCount);
-                }
+            if (previousLogCount <= this.maxLogCount) {
+                this.log(diagnosticsContext);
+            } else if (previousLogCount == this.maxLogCount + 1) {
+                logger.info("Already logged {} diagnostics - stopping until sampling interval is reset.", this.maxLogCount);
             }
         }
 
