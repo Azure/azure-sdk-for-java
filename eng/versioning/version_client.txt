@@ -119,7 +119,7 @@ com.azure:azure-data-schemaregistry-jsonschema;1.0.1;1.1.0-beta.1
 com.azure:azure-data-tables;12.5.3;12.6.0-beta.1
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-developer-devcenter;1.0.8;1.1.0-beta.1
-com.azure:azure-developer-loadtesting;1.0.22;1.1.0-beta.1
+com.azure:azure-developer-loadtesting;1.0.22;1.1.0-beta.2
 com.azure:azure-digitaltwins-core;1.5.0-beta.1;1.6.0
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-health-deidentification;1.0.0;1.1.0-beta.1
@@ -519,8 +519,6 @@ unreleased_com.azure:azure-core-amqp;2.10.0-beta.1
 
 unreleased_io.clientcore:core;1.0.0-beta.10
 unreleased_io.clientcore:annotation-processor;1.0.0-beta.3
-unreleased_com.azure.v2:azure-core;2.0.0-beta.1
-unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
