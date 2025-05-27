@@ -53,11 +53,11 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("Algorithm not supported.", CoreException::from);
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("Algorithm not supported.", CoreException::from);
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
         if (rsaKeyPair.getPublic() == null) {
@@ -105,11 +105,11 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("Algorithm not supported.", CoreException::from);
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("Algorithm not supported.", CoreException::from);
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
         if (rsaKeyPair.getPrivate() == null) {
@@ -224,11 +224,11 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("Algorithm not supported.", CoreException::from);
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("Algorithm not supported.", CoreException::from);
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
         if (rsaKeyPair.getPrivate() == null) {

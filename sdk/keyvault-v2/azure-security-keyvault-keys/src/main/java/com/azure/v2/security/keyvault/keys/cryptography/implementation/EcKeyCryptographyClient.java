@@ -81,11 +81,11 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("Algorithm not supported.", CoreException::from);
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         } else if (!(baseAlgorithm instanceof AsymmetricSignatureAlgorithm)) {
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("Algorithm not supported.", CoreException::from);
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
         if (ecKeyPair.getPrivate() == null) {
@@ -107,7 +107,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         } else {
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("Algorithm not supported.", CoreException::from);
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
         ISignatureTransform signer = algo.createSignatureTransform(ecKeyPair, provider);
@@ -137,11 +137,11 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("Algorithm not supported.", CoreException::from);
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         } else if (!(baseAlgorithm instanceof AsymmetricSignatureAlgorithm)) {
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("Algorithm not supported.", CoreException::from);
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
         if (ecKeyPair.getPublic() == null) {
@@ -163,7 +163,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         } else {
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("Algorithm not supported.", CoreException::from);
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
         ISignatureTransform signer = algo.createSignatureTransform(ecKeyPair, provider);

@@ -234,7 +234,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("Algorithm not supported.", CoreException::from);
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
         verifyKeyPermissions(jsonWebKey, KeyOperation.WRAP_KEY, LOGGER);
@@ -276,7 +276,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("Algorithm not supported.", CoreException::from);
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
         verifyKeyPermissions(jsonWebKey, KeyOperation.UNWRAP_KEY, LOGGER);

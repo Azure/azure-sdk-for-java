@@ -228,7 +228,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         if (!"https".equals(request.getUri().getScheme())) {
             throw LOGGER.throwableAtError()
                 .addKeyValue("scheme", request.getUri().getScheme())
-                .log("Token credentials require a URL using the HTTPS protocol scheme.", IllegalArgumentException::new);
+                .log("Token credentials require a URL using the HTTPS protocol scheme.", IllegalStateException::new);
         }
 
         HttpPipelineNextPolicy nextPolicy = next.copy();
