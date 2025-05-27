@@ -3,12 +3,10 @@
 package io.clientcore.annotation.processor.test.implementation;
 
 import io.clientcore.core.annotations.ServiceInterface;
-import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
 import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.models.binarydata.BinaryData;
@@ -119,6 +117,7 @@ public interface SpecialReturnBodiesService {
     /**
      * Gets Base64 encoded binary data from the specified URL.
      * @param endpoint The URL.
+     *
      * @return A response containing the Base64 encoded binary data.
      */
     @HttpRequestInformation(

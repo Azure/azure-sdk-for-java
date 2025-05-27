@@ -161,8 +161,6 @@ public final class ResponseHandler {
         HttpRequestContext method, boolean serializationFormatSet) {
         boolean returnIsResponse = TypeConverter.isResponseType(returnType);
 
-        // TODO (alzimmer): Base64Uri needs to be handled. Determine how this will show up in code generation and then
-        //  add support for it.
         if (returnType.getKind() == TypeKind.VOID) {
             // This handles the case where the API returns 'void' itself. This will result in code such as
             // "networkResponse.close()" as 'void' return doesn't use try-with-resources as the compiler will complain
@@ -185,8 +183,7 @@ public final class ResponseHandler {
             if (wireType != null && wireType.getKind() == TypeKind.DECLARED) {
                 DeclaredType declaredWireType = (DeclaredType) wireType;
                 TypeElement wireTypeElement = (TypeElement) declaredWireType.asElement();
-                isBase64Uri
-                    = "io.clientcore.core.utils.Base64Uri".equals(wireTypeElement.getQualifiedName().toString());
+                isBase64Uri = Base64Uri.class.getCanonicalName().equals(wireTypeElement.getQualifiedName().toString());
             }
             String returnExpr;
             if (isBase64Uri) {

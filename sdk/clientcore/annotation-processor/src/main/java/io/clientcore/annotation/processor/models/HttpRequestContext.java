@@ -460,6 +460,7 @@ public final class HttpRequestContext {
     }
 
     /**
+     * Represents a method parameter.
      */
     public static class MethodParameter {
         private final TypeMirror type;

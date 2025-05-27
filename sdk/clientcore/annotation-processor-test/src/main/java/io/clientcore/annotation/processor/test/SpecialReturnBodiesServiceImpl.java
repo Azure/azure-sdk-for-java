@@ -191,8 +191,8 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             int responseCode = networkResponse.getStatusCode();
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
-                String errorMessage = networkResponse.getValue().toString();
-                throw new HttpResponseException(errorMessage, networkResponse, null);
+                // Handle unexpected response
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
             }
             BinaryData responseBody = networkResponse.getValue();
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), responseBody != null ? new Base64Uri(responseBody.toBytes()).decodedBytes() : null);
