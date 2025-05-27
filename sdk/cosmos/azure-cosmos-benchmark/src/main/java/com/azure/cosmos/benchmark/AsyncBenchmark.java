@@ -170,6 +170,9 @@ abstract class AsyncBenchmark<T> {
             );
 
         if (configuration.isDefaultLog4jLoggerEnabled()) {
+            logger.info("Diagnostics thresholds Point: {}, Non-Point: {}",
+                cfg.getPointOperationThreshold(),
+                cfg.getNonPointOperationThreshold());
             telemetryConfig.diagnosticsHandler(
                 new SamplingDiagnosticsLogger(10, 10_000)
             );
@@ -680,12 +683,14 @@ abstract class AsyncBenchmark<T> {
 
         public SamplingDiagnosticsLogger(int maxLogCount, int samplingIntervalInMs) {
             checkArgument(maxLogCount > 0, "Argument 'maxLogCount must be a positive integer.");
+
             this.logCountInSamplingInterval = new AtomicInteger(0);
             this.maxLogCount = maxLogCount;
+            logger.info("MaxLogCount: {}, samplingIntervalInMs: {}", this.maxLogCount, samplingIntervalInMs);
             executor = Executors.newSingleThreadScheduledExecutor(new CosmosDaemonThreadFactory("AsyncBenchmark_logSampling"));
             executor.scheduleAtFixedRate(() -> {
-                this.logCountInSamplingInterval.set(0);
-                logger.info("Resetting number of logs...");
+                int snapshot = this.logCountInSamplingInterval.getAndSet(0);
+                logger.info("Resetting number of logs ({}-0)...", snapshot);
                 },
                 samplingIntervalInMs,
                 samplingIntervalInMs,
