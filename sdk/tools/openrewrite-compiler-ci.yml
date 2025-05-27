@@ -12,6 +12,7 @@ trigger:
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
+    oneESTemplateTag: internal
     stages: 
       - stage: CompileSamples
         variables: 
@@ -26,8 +27,6 @@ extends:
 
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                 parameters:
-                  oneESTemplateTag: internal
-                  SparseCheckout: true
                   Paths:
                     - sdk/tools/azure-openrewrite-compiler-maven-plugin
                     - sdk/tools/azure-openrewrite
