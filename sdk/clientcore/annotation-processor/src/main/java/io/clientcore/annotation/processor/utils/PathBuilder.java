@@ -65,7 +65,7 @@ public final class PathBuilder {
                     Substitution nextLinkSubstitution = method.getSubstitution("nextLink");
                     if (nextLinkSubstitution != null) {
                         // No escaping or concatenation, use the variable name
-                        method.setUriIsNextLink(true);
+                        method.setIsUriNextLink(true);
                         return nextLinkSubstitution.getParameterVariableName();
                     } else {
                         throw new MissingSubstitutionException(
