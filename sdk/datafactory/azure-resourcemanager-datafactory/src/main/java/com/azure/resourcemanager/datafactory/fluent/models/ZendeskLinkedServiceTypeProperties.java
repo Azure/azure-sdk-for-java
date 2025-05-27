@@ -215,7 +215,9 @@ public final class ZendeskLinkedServiceTypeProperties implements JsonSerializabl
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
         jsonWriter.writeUntypedField("url", this.url);
-        jsonWriter.writeUntypedField("userName", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("userName", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeJsonField("apiToken", this.apiToken);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);

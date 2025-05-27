@@ -252,18 +252,38 @@ public final class CommonDataServiceForAppsSink extends CopySink {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        if (writeBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        }
+        if (writeBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        }
+        if (sinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        }
+        if (sinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
         jsonWriter.writeStringField("writeBehavior", this.writeBehavior == null ? null : this.writeBehavior.toString());
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("ignoreNullValues", this.ignoreNullValues);
-        jsonWriter.writeUntypedField("alternateKeyName", this.alternateKeyName);
-        jsonWriter.writeUntypedField("bypassBusinessLogicExecution", this.bypassBusinessLogicExecution);
-        jsonWriter.writeUntypedField("bypassPowerAutomateFlows", this.bypassPowerAutomateFlows);
+        if (this.ignoreNullValues != null) {
+            jsonWriter.writeUntypedField("ignoreNullValues", this.ignoreNullValues);
+        }
+        if (this.alternateKeyName != null) {
+            jsonWriter.writeUntypedField("alternateKeyName", this.alternateKeyName);
+        }
+        if (this.bypassBusinessLogicExecution != null) {
+            jsonWriter.writeUntypedField("bypassBusinessLogicExecution", this.bypassBusinessLogicExecution);
+        }
+        if (this.bypassPowerAutomateFlows != null) {
+            jsonWriter.writeUntypedField("bypassPowerAutomateFlows", this.bypassPowerAutomateFlows);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

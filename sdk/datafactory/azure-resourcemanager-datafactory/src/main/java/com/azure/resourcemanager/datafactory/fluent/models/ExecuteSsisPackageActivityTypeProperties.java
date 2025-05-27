@@ -425,9 +425,15 @@ public final class ExecuteSsisPackageActivityTypeProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("packageLocation", this.packageLocation);
         jsonWriter.writeJsonField("connectVia", this.connectVia);
-        jsonWriter.writeUntypedField("runtime", this.runtime);
-        jsonWriter.writeUntypedField("loggingLevel", this.loggingLevel);
-        jsonWriter.writeUntypedField("environmentPath", this.environmentPath);
+        if (this.runtime != null) {
+            jsonWriter.writeUntypedField("runtime", this.runtime);
+        }
+        if (this.loggingLevel != null) {
+            jsonWriter.writeUntypedField("loggingLevel", this.loggingLevel);
+        }
+        if (this.environmentPath != null) {
+            jsonWriter.writeUntypedField("environmentPath", this.environmentPath);
+        }
         jsonWriter.writeJsonField("executionCredential", this.executionCredential);
         jsonWriter.writeMapField("projectParameters", this.projectParameters,
             (writer, element) -> writer.writeJson(element));

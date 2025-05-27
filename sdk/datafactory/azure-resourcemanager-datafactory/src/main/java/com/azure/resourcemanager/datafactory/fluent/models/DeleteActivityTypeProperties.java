@@ -214,9 +214,13 @@ public final class DeleteActivityTypeProperties implements JsonSerializable<Dele
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("dataset", this.dataset);
-        jsonWriter.writeUntypedField("recursive", this.recursive);
+        if (this.recursive != null) {
+            jsonWriter.writeUntypedField("recursive", this.recursive);
+        }
         jsonWriter.writeNumberField("maxConcurrentConnections", this.maxConcurrentConnections);
-        jsonWriter.writeUntypedField("enableLogging", this.enableLogging);
+        if (this.enableLogging != null) {
+            jsonWriter.writeUntypedField("enableLogging", this.enableLogging);
+        }
         jsonWriter.writeJsonField("logStorageSettings", this.logStorageSettings);
         jsonWriter.writeJsonField("storeSettings", this.storeSettings);
         return jsonWriter.writeEndObject();

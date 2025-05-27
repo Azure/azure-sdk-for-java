@@ -398,6 +398,31 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
+     * Get the enableConnectionTracking property: Defines whether connections between 2 communicating endpoints can be
+     * tracked and associated to the same backend VM over its lifetime when using UDP protocol.
+     * 
+     * @return the enableConnectionTracking value.
+     */
+    public Boolean enableConnectionTracking() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableConnectionTracking();
+    }
+
+    /**
+     * Set the enableConnectionTracking property: Defines whether connections between 2 communicating endpoints can be
+     * tracked and associated to the same backend VM over its lifetime when using UDP protocol.
+     * 
+     * @param enableConnectionTracking the enableConnectionTracking value to set.
+     * @return the LoadBalancingRuleInner object itself.
+     */
+    public LoadBalancingRuleInner withEnableConnectionTracking(Boolean enableConnectionTracking) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadBalancingRulePropertiesFormat();
+        }
+        this.innerProperties().withEnableConnectionTracking(enableConnectionTracking);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the load balancing rule resource.
      * 
      * @return the provisioningState value.

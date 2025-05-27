@@ -597,19 +597,45 @@ public final class PostgreSqlV2LinkedServiceTypeProperties
         jsonWriter.writeUntypedField("database", this.database);
         jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
         jsonWriter.writeUntypedField("sslMode", this.sslMode);
-        jsonWriter.writeUntypedField("port", this.port);
-        jsonWriter.writeUntypedField("schema", this.schema);
-        jsonWriter.writeUntypedField("pooling", this.pooling);
-        jsonWriter.writeUntypedField("connectionTimeout", this.connectionTimeout);
-        jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
-        jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
-        jsonWriter.writeUntypedField("sslCertificate", this.sslCertificate);
-        jsonWriter.writeUntypedField("sslKey", this.sslKey);
-        jsonWriter.writeUntypedField("sslPassword", this.sslPassword);
-        jsonWriter.writeUntypedField("readBufferSize", this.readBufferSize);
-        jsonWriter.writeUntypedField("logParameters", this.logParameters);
-        jsonWriter.writeUntypedField("timezone", this.timezone);
-        jsonWriter.writeUntypedField("encoding", this.encoding);
+        if (this.port != null) {
+            jsonWriter.writeUntypedField("port", this.port);
+        }
+        if (this.schema != null) {
+            jsonWriter.writeUntypedField("schema", this.schema);
+        }
+        if (this.pooling != null) {
+            jsonWriter.writeUntypedField("pooling", this.pooling);
+        }
+        if (this.connectionTimeout != null) {
+            jsonWriter.writeUntypedField("connectionTimeout", this.connectionTimeout);
+        }
+        if (this.commandTimeout != null) {
+            jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+        }
+        if (this.trustServerCertificate != null) {
+            jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
+        }
+        if (this.sslCertificate != null) {
+            jsonWriter.writeUntypedField("sslCertificate", this.sslCertificate);
+        }
+        if (this.sslKey != null) {
+            jsonWriter.writeUntypedField("sslKey", this.sslKey);
+        }
+        if (this.sslPassword != null) {
+            jsonWriter.writeUntypedField("sslPassword", this.sslPassword);
+        }
+        if (this.readBufferSize != null) {
+            jsonWriter.writeUntypedField("readBufferSize", this.readBufferSize);
+        }
+        if (this.logParameters != null) {
+            jsonWriter.writeUntypedField("logParameters", this.logParameters);
+        }
+        if (this.timezone != null) {
+            jsonWriter.writeUntypedField("timezone", this.timezone);
+        }
+        if (this.encoding != null) {
+            jsonWriter.writeUntypedField("encoding", this.encoding);
+        }
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();

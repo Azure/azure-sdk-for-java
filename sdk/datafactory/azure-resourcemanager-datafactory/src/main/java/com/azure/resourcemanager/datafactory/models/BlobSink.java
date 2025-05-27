@@ -245,17 +245,37 @@ public final class BlobSink extends CopySink {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        if (writeBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        }
+        if (writeBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        }
+        if (sinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        }
+        if (sinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("blobWriterOverwriteFiles", this.blobWriterOverwriteFiles);
-        jsonWriter.writeUntypedField("blobWriterDateTimeFormat", this.blobWriterDateTimeFormat);
-        jsonWriter.writeUntypedField("blobWriterAddHeader", this.blobWriterAddHeader);
-        jsonWriter.writeUntypedField("copyBehavior", this.copyBehavior);
+        if (this.blobWriterOverwriteFiles != null) {
+            jsonWriter.writeUntypedField("blobWriterOverwriteFiles", this.blobWriterOverwriteFiles);
+        }
+        if (this.blobWriterDateTimeFormat != null) {
+            jsonWriter.writeUntypedField("blobWriterDateTimeFormat", this.blobWriterDateTimeFormat);
+        }
+        if (this.blobWriterAddHeader != null) {
+            jsonWriter.writeUntypedField("blobWriterAddHeader", this.blobWriterAddHeader);
+        }
+        if (this.copyBehavior != null) {
+            jsonWriter.writeUntypedField("copyBehavior", this.copyBehavior);
+        }
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {

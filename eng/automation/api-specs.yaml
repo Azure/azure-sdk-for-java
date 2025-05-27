@@ -66,6 +66,12 @@ informatica:
   service: informaticadatamanagement
 keyvault:
   suffix: generated
+kubernetesconfiguration/Microsoft.KubernetesConfiguration/extensions:
+  service: kubernetesconfiguration
+  suffix: extensions
+kubernetesconfiguration/Microsoft.KubernetesConfiguration/fluxConfigurations:
+  service: kubernetesconfiguration
+  suffix: fluxconfigurations
 liftrastronomer:
   service: astro
 liftrqumulo:

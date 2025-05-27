@@ -646,6 +646,13 @@ public final class CosmosDiagnosticsContext {
         if (this.subStatusCode != 0) {
             ctxNode.put("subStatus", this.subStatusCode);
         }
+
+        if (this.duration != null) {
+            ctxNode.put("durationInMs",  this.duration.toNanos() / 1_000_000d);
+        } else {
+            ctxNode.put("durationInMs", (Double)null);
+        }
+
         ctxNode.put("RUs", this.totalRequestCharge);
         ctxNode.put("maxRequestSizeInBytes", this.maxRequestSize);
         ctxNode.put("maxResponseSizeInBytes", this.maxResponseSize);

@@ -96,7 +96,9 @@ public final class SsisLogLocationTypeProperties implements JsonSerializable<Ssi
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("accessCredential", this.accessCredential);
-        jsonWriter.writeUntypedField("logRefreshInterval", this.logRefreshInterval);
+        if (this.logRefreshInterval != null) {
+            jsonWriter.writeUntypedField("logRefreshInterval", this.logRefreshInterval);
+        }
         return jsonWriter.writeEndObject();
     }
 
