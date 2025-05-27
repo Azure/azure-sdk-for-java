@@ -17,14 +17,13 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
  * </p>
  */
 class AppConfigurationFeatureManagementPropertySource extends EnumerablePropertySource<FeatureFlagClient> {
-
     private final FeatureFlagClient featureFlagLoader;
 
-    private static final String FEATURE_MANAGEMENT_KEY = "feature_management";
-
-    private static final String FEATURE_FLAG_KEY = FEATURE_MANAGEMENT_KEY + ".feature_flags";
+    private static final String FEATURE_MANAGEMENT_KEY = "feature-management";
 
     private static final ObjectMapper MAPPER = JsonMapper.builder().build();
+
+    private static final String FEATURE_FLAG_KEY = FEATURE_MANAGEMENT_KEY + ".feature-flags";
 
     AppConfigurationFeatureManagementPropertySource(FeatureFlagClient featureFlagLoader) {
         super(FEATURE_MANAGEMENT_KEY, featureFlagLoader);
@@ -33,8 +32,8 @@ class AppConfigurationFeatureManagementPropertySource extends EnumerableProperty
 
     @Override
     public String[] getPropertyNames() {
-        if (featureFlagLoader != null && featureFlagLoader.getFeatureFlags().size() > 0) {
-            return new String[]{ FEATURE_FLAG_KEY };
+        if (featureFlagLoader != null && !featureFlagLoader.getFeatureFlags().isEmpty()) {
+            return new String[] { FEATURE_FLAG_KEY };
         }
         return new String[0];
     }

@@ -26,7 +26,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
     @Mock
     private FeatureFlagClient featureFlagLoaderMock;
 
-    private static final String FEATURE_FLAG_KEY = "feature_management.feature_flags";
+    private static final String FEATURE_FLAG_KEY = "feature-management.feature-flags";
 
     private MockitoSession session;
 
@@ -61,7 +61,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
             featureFlagLoaderMock);
 
         assertNull(featureManagementPropertySource.getProperty("NotFeatureFlagProperty"));
-        when(featureFlagLoaderMock.getFeatureFlags()).thenReturn(List.of());
+        when(featureFlagLoaderMock.getFeatureFlags()).thenReturn(List.of(new Feature()));
         assertNotNull(featureManagementPropertySource.getProperty(FEATURE_FLAG_KEY));
 
     }

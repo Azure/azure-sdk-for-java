@@ -131,7 +131,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 } catch (Exception e) {
                     failedToGeneratePropertySource(e);
 
-                    // Not a retiable error
+                    // Not a retriable error
                     break;
                 }
                 if (sourceList.size() > 0) {
@@ -141,7 +141,10 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         }
 
         StateHolder.updateState(storeState);
-        sourceList.add(new AppConfigurationFeatureManagementPropertySource(featureFlagClient));
+        if (featureFlagClient.getFeatureFlags().size() > 0) {
+            // Don't add feature flags if there are none, otherwise the local file can't load them.
+            sourceList.add(new AppConfigurationFeatureManagementPropertySource(featureFlagClient));
+        }
         return new ConfigData(sourceList);
     }
 

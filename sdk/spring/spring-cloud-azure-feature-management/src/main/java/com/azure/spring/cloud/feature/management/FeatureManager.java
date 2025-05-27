@@ -64,7 +64,7 @@ public class FeatureManager {
     private final TargetingContextAccessor contextAccessor;
 
     private final TargetingEvaluationOptions evaluationOptions;
-    
+
     private final TelemetryPublisher telemetryPublisher;
 
     /**
@@ -186,11 +186,11 @@ public class FeatureManager {
     private Mono<EvaluationEvent> checkFeature(String featureName, Object featureContext)
         throws FilterNotFoundException {
         List<Feature> featureFlags = featureManagementConfigurations.getFeatureFlags();
-        
+
         if (featureFlags == null) {
             return Mono.just(new EvaluationEvent(null));
         }
-        
+
         Feature featureFlag = featureFlags.stream()
             .filter(feature -> feature.getId().equals(featureName)).findAny().orElse(null);
 
@@ -204,7 +204,8 @@ public class FeatureManager {
         if (!featureFlag.isEnabled()) {
             this.assignDefaultDisabledReason(event);
             event.setEnabled(false);
-            if (telemetryPublisher != null && featureFlag.getTelemetry().isEnabled()) {
+            if (telemetryPublisher != null && featureFlag.getTelemetry() != null
+                && featureFlag.getTelemetry().isEnabled()) {
                 telemetryPublisher.publishTelemetry(event);
             }
 
@@ -216,9 +217,10 @@ public class FeatureManager {
 
         result = assignAllocation(result);
         result = result.doOnSuccess(resultEvent -> {
-            if (telemetryPublisher != null && featureFlag.getTelemetry().isEnabled()) {
+            if (telemetryPublisher != null && featureFlag.getTelemetry() != null
+                && featureFlag.getTelemetry().isEnabled()) {
                 telemetryPublisher.publishTelemetry(resultEvent);
-            } 
+            }
         });
         return result;
     }
