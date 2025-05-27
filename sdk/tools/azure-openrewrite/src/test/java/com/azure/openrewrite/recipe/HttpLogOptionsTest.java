@@ -3,23 +3,19 @@
 package com.azure.openrewrite.recipe;
 
 import org.intellij.lang.annotations.Language;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.openrewrite.java.Assertions.java;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
-// TODO: fix these tests to reflect current api
+/**
+ * HttpLogOptionsTest tests the recipe that changes
+ * com.azure.core.http.policy.HttpLogDetailLevel to io.clientcore.core.http.models.HttpLogOptions.HttpLogDetailLevel
+ * and com.azure.core.http.policy.HttpLogOptions to io.clientcore.core.http.models.HttpLogOptions
+ */
 public class HttpLogOptionsTest extends RecipeTestBase {
-    /**
-     * HttpLogOptionsTest tests the recipe that changes
-     * com.azure.core.http.policy.HttpLogDetailLevel to io.clientcore.core.http.models.HttpLogOptions.HttpLogDetailLevel
-     * and com.azure.core.http.policy.HttpLogOptions to io.clientcore.core.http.models.HttpLogOptions
-     *
-     */
 
     /* Test to make sure HttpLogOptions and HttpLogDetailLevel imports are changed*/
-    @Disabled("These tests were written before clientcore structure was finalized. Need to be redone to reflect the current api")
     @Test
     public void testHttpLogOptionsLogLevelImportsChanged() {
         @Language("java") String before = "import com.azure.core.http.policy.HttpLogOptions;";
@@ -41,10 +37,7 @@ public class HttpLogOptionsTest extends RecipeTestBase {
         );
     }
 
-
     /* Test to make sure HttpLogOptions and HttpLogDetailLevel type is changed*/
-
-    @Disabled("These tests were written before clientcore structure was finalized. Need to be redone to reflect the current api")
     @Test
     public void testHttpLogOptionsLogLevelTypesChanged() {
         @Language("java") String before = "\npublic class Testing {";
@@ -55,12 +48,11 @@ public class HttpLogOptionsTest extends RecipeTestBase {
 
         @Language("java") String after = "\npublic class Testing {";
         after += "\n  public Testing(){";
-        after += "\n     io.clientcore.core.http.models.HttpLogOptions h = new io.clientcore.core.http.models.HttpLogOptions();h.setLogLevel( io.clientcore.core.http.models.HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS);";
+        after += "\n    io.clientcore.core.http.models.HttpLogOptions h = new io.clientcore.core.http.models.HttpLogOptions();h.setLogLevel(io.clientcore.core.http.models.HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS);";
         after += "\n  }";
         after += "\n}";
         rewriteRun(
                 java(before, after)
         );
     }
-
 }

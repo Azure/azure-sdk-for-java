@@ -138,15 +138,7 @@
 
     <build>
         <plugins>
-            <!--
-            Used to extract PMD report metrics for the recipes
-            * Run with mvn pmd:pmd
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.15.0</version>
-            </plugin>
+
             <!-- generate sources jar -->
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
@@ -263,32 +255,7 @@
             </configuration>
           </plugin>
 
-          <!-- Checks public surface area for breaking changes. -->
-          <plugin>
-            <groupId>org.revapi</groupId>
-            <artifactId>revapi-maven-plugin</artifactId>
-            <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-            <dependencies>
-              <dependency>
-                <groupId>com.azure</groupId>
-                <artifactId>sdk-build-tools</artifactId>
-                <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-              </dependency>
-              <dependency>
-                <groupId>org.revapi</groupId>
-                <artifactId>revapi-java</artifactId>
-                <version>0.28.3</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
-              </dependency>
-              <dependency>
-                <groupId>org.revapi</groupId>
-                <artifactId>revapi-reporter-json</artifactId>
-                <version>0.5.1</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
-              </dependency>
-            </dependencies>
-          </plugin>
+
 
           <plugin>
             <groupId>com.azure.tools</groupId>
@@ -313,14 +280,7 @@
             </executions>
           </plugin>
 
-          <plugin>
-            <groupId>com.diffplug.spotless</groupId>
-            <artifactId>spotless-maven-plugin</artifactId>
-            <version>2.30.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </plugin>
+
         </plugins>
     </build>
 </project>
