@@ -85,7 +85,9 @@ public final class TeradataImportCommand extends ImportSettings {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("additionalFormatOptions", this.additionalFormatOptions);
+        if (this.additionalFormatOptions != null) {
+            jsonWriter.writeUntypedField("additionalFormatOptions", this.additionalFormatOptions);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

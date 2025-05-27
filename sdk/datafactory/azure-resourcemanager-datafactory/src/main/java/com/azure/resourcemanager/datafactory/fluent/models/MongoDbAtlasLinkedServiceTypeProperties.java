@@ -136,7 +136,9 @@ public final class MongoDbAtlasLinkedServiceTypeProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("connectionString", this.connectionString);
         jsonWriter.writeUntypedField("database", this.database);
-        jsonWriter.writeUntypedField("driverVersion", this.driverVersion);
+        if (this.driverVersion != null) {
+            jsonWriter.writeUntypedField("driverVersion", this.driverVersion);
+        }
         return jsonWriter.writeEndObject();
     }
 

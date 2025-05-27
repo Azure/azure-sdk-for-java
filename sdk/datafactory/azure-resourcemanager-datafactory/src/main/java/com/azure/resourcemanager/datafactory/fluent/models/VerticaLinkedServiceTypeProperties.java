@@ -220,11 +220,21 @@ public final class VerticaLinkedServiceTypeProperties implements JsonSerializabl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
-        jsonWriter.writeUntypedField("server", this.server);
-        jsonWriter.writeUntypedField("port", this.port);
-        jsonWriter.writeUntypedField("uid", this.uid);
-        jsonWriter.writeUntypedField("database", this.database);
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
+        if (this.server != null) {
+            jsonWriter.writeUntypedField("server", this.server);
+        }
+        if (this.port != null) {
+            jsonWriter.writeUntypedField("port", this.port);
+        }
+        if (this.uid != null) {
+            jsonWriter.writeUntypedField("uid", this.uid);
+        }
+        if (this.database != null) {
+            jsonWriter.writeUntypedField("database", this.database);
+        }
         jsonWriter.writeJsonField("pwd", this.pwd);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();

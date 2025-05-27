@@ -125,7 +125,9 @@ public final class AvroDatasetTypeProperties implements JsonSerializable<AvroDat
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("location", this.location);
-        jsonWriter.writeUntypedField("avroCompressionCodec", this.avroCompressionCodec);
+        if (this.avroCompressionCodec != null) {
+            jsonWriter.writeUntypedField("avroCompressionCodec", this.avroCompressionCodec);
+        }
         jsonWriter.writeNumberField("avroCompressionLevel", this.avroCompressionLevel);
         return jsonWriter.writeEndObject();
     }
