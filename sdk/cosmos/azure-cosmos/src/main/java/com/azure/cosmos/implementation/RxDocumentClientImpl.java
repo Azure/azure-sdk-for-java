@@ -1714,7 +1714,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // account's default consistency level in Compute Gateway will result in a 400 Bad Request
             // even when it is done for resource types / operations where this header should simply be ignored
             // making the change here to restrict adding the header to when it is relevant.
-            if (operationType.isReadOnlyOperation() && (resourceType.isMasterResource() || resourceType == ResourceType.Document)) {
+            if ((operationType.isReadOnlyOperation() || operationType == OperationType.Batch) && (resourceType.isMasterResource() || resourceType == ResourceType.Document)) {
                 headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
             }
         }
