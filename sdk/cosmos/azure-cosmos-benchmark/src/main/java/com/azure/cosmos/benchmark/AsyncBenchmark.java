@@ -713,8 +713,15 @@ abstract class AsyncBenchmark<T> {
             int previousLogCount = this.logCountInSamplingInterval.getAndIncrement();
 
             if (previousLogCount <= this.maxLogCount) {
-                logger.info("SHOULD LOG: {}", shouldLog);
-                this.log(diagnosticsContext);
+                logger.info("SHOULD LOG: {}, isThresholdViolated: {}", shouldLog, diagnosticsContext.isThresholdViolated());
+                logger.info(
+                    "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
+                    diagnosticsContext.getAccountName(),
+                    diagnosticsContext.getDatabaseName(),
+                    diagnosticsContext.getContainerName(),
+                    diagnosticsContext.getStatusCode(),
+                    diagnosticsContext.getSubStatusCode(),
+                    diagnosticsContext.toJson());
             } else if (previousLogCount == this.maxLogCount + 1) {
                 logger.info("SHOULD LOG: {}", shouldLog);
                 logger.info("Already logged {} diagnostics - stopping until sampling interval is reset.", this.maxLogCount);
