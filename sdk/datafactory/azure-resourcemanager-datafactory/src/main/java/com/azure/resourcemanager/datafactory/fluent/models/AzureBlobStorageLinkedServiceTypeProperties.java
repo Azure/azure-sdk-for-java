@@ -438,21 +438,37 @@ public final class AzureBlobStorageLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
         jsonWriter.writeJsonField("accountKey", this.accountKey);
-        jsonWriter.writeUntypedField("sasUri", this.sasUri);
+        if (this.sasUri != null) {
+            jsonWriter.writeUntypedField("sasUri", this.sasUri);
+        }
         jsonWriter.writeJsonField("sasToken", this.sasToken);
-        jsonWriter.writeUntypedField("serviceEndpoint", this.serviceEndpoint);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.serviceEndpoint != null) {
+            jsonWriter.writeUntypedField("serviceEndpoint", this.serviceEndpoint);
+        }
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-        jsonWriter.writeUntypedField("tenant", this.tenant);
-        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
-        jsonWriter.writeUntypedField("accountKind", this.accountKind);
+        if (this.tenant != null) {
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+        }
+        if (this.azureCloudType != null) {
+            jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        }
+        if (this.accountKind != null) {
+            jsonWriter.writeUntypedField("accountKind", this.accountKind);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         jsonWriter.writeJsonField("credential", this.credential);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("containerUri", this.containerUri);
+        if (this.containerUri != null) {
+            jsonWriter.writeUntypedField("containerUri", this.containerUri);
+        }
         return jsonWriter.writeEndObject();
     }
 

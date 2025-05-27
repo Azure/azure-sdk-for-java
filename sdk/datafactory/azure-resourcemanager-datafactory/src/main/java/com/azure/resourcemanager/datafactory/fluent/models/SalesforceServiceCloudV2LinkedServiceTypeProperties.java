@@ -208,11 +208,19 @@ public final class SalesforceServiceCloudV2LinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("environmentUrl", this.environmentUrl);
-        jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
-        jsonWriter.writeUntypedField("clientId", this.clientId);
+        if (this.environmentUrl != null) {
+            jsonWriter.writeUntypedField("environmentUrl", this.environmentUrl);
+        }
+        if (this.authenticationType != null) {
+            jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+        }
+        if (this.clientId != null) {
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+        }
         jsonWriter.writeJsonField("clientSecret", this.clientSecret);
-        jsonWriter.writeUntypedField("apiVersion", this.apiVersion);
+        if (this.apiVersion != null) {
+            jsonWriter.writeUntypedField("apiVersion", this.apiVersion);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

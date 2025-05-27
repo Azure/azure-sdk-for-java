@@ -178,9 +178,13 @@ public class AzureStorageLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
         jsonWriter.writeJsonField("accountKey", this.accountKey);
-        jsonWriter.writeUntypedField("sasUri", this.sasUri);
+        if (this.sasUri != null) {
+            jsonWriter.writeUntypedField("sasUri", this.sasUri);
+        }
         jsonWriter.writeJsonField("sasToken", this.sasToken);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
