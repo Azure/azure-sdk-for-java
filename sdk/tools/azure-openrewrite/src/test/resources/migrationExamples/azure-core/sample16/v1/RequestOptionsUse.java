@@ -7,10 +7,10 @@ public class RequestOptionsUse {
         // Sample 1: Basic usage
         RequestOptions options1 = new RequestOptions();
         options1.addHeader("Custom-Header", "CustomValue");
-        options1.setHeader("Another-Header", "AnotherValue");
+        options1.addHeader("Another-Header", "AnotherValue");
 
         options1.addHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
-        options1.setHeader(HttpHeaderName.ACCEPT, "application/json");
+        options1.addHeader(HttpHeaderName.ACCEPT, "application/json");
 
         options1.addQueryParam("queryParam1", "value1")
             .addQueryParam("queryParam2", "value2")
@@ -18,7 +18,7 @@ public class RequestOptionsUse {
 
         RequestOptions options2 = new RequestOptions()
             .addHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
-            .setHeader(HttpHeaderName.ACCEPT, "application/json")
+            .addHeader(HttpHeaderName.ACCEPT, "application/json")
             .addQueryParam("queryParam1", "value1");
 
     }
