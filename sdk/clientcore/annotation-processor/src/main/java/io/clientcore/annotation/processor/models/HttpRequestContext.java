@@ -56,6 +56,7 @@ public final class HttpRequestContext {
     private int[] expectedStatusCodes;
     private TypeMirror defaultExceptionBodyType;
     private boolean isUriNextLink;
+    private TypeMirror returnValueWireType;
 
     /**
      * Constructs a new HttpRequestContext with default values.
@@ -438,6 +439,24 @@ public final class HttpRequestContext {
      */
     public boolean isUriNextLink() {
         return isUriNextLink;
+    }
+
+    /**
+     * Sets the return value wire type.
+     *
+     * @param returnValueWireType the return value wire type to set.
+     */
+    public void setReturnValueWireType(TypeMirror returnValueWireType) {
+        this.returnValueWireType = returnValueWireType;
+    }
+
+    /**
+     * Gets the return value wire type.
+     *
+     * @return the return value wire type.
+     */
+    public TypeMirror getReturnValueWireType() {
+        return returnValueWireType;
     }
 
     /**
