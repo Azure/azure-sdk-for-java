@@ -143,7 +143,7 @@ public final class ResponseHandler {
                 DeclaredType declaredWireType = (DeclaredType) wireType;
                 TypeElement wireTypeElement = (TypeElement) declaredWireType.asElement();
                 isBase64Uri
-                    = "io.clientcore.core.utils.Base64Uri".equals(wireTypeElement.getQualifiedName().toString());
+                    = Base64Uri.class.getCanonicalName().equals(wireTypeElement.getQualifiedName().toString());
             }
             String returnExpr;
             if (isBase64Uri) {
