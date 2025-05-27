@@ -55,6 +55,7 @@ public final class HttpRequestContext {
 
     private int[] expectedStatusCodes;
     private TypeMirror defaultExceptionBodyType;
+    private boolean isUriNextLink;
 
     /**
      * Constructs a new HttpRequestContext with default values.
@@ -419,6 +420,24 @@ public final class HttpRequestContext {
      */
     public TypeMirror getDefaultExceptionBodyType() {
         return defaultExceptionBodyType;
+    }
+
+    /**
+     * Sets whether the URI is a {nextlink}.
+     *
+     * @param isUriNextLink true if it is a {nextlink}, false otherwise.
+     */
+    public void setIsUriNextLink(boolean isUriNextLink) {
+        this.isUriNextLink = isUriNextLink;
+    }
+
+    /**
+     * Checks if the URI is a {nextlink}.
+     *
+     * @return true if it is a {nextlink}, false otherwise.
+     */
+    public boolean isUriNextLink() {
+        return isUriNextLink;
     }
 
     /**
