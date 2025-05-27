@@ -27,6 +27,7 @@ public class LogNewExceptionCheckTestData {
     // correct, trivial param validation does not need a check
     public void validateParams() {
         throw new IllegalArgumentException("'foo' must not be null or empty.");
+        throw new IllegalStateException("'foo' must be provided along with 'bar'.");
         throw new NullPointerException("'foo' must not be null.");
         throw new UnsupportedOperationException("'foo' operation is not supported.");
     }
@@ -65,7 +66,7 @@ public class LogNewExceptionCheckTestData {
 
     @Metadata(properties = {})
     public void benign1() {
-            }
+    }
 
     @Metadata(properties = {MetadataProperties.FLUENT})
     public void benign2() {
