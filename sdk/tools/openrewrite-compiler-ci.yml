@@ -12,8 +12,6 @@ trigger:
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
-    settings:
-      skipInitialCheckout: true
     stages: 
       - stage: CompileSamples
         variables: 
@@ -26,6 +24,7 @@ extends:
             timeoutInMinutes: 60
             steps:
 
+              - checkout: none
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                 parameters:
                   Paths:
