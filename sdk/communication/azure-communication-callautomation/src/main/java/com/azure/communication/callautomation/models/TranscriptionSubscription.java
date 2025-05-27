@@ -54,7 +54,7 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
     /**
      * Creates an instance of TranscriptionSubscriptionInternal class.
      */
-    public TranscriptionSubscription() {
+    TranscriptionSubscription() {
         id = null;
         state = null;
         subscribedResultStates = null;

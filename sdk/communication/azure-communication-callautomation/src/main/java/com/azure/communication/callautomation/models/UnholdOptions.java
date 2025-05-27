@@ -80,7 +80,7 @@ public final class UnholdOptions {
      * @param operationCallbackUrl the operationCallbackUrl value to set.
      * @return the UnholdRequest object itself.
      */
-    public UnholdOptions setOperationCallbackUri(String operationCallbackUrl) {
+    public UnholdOptions setOperationCallbackUrl(String operationCallbackUrl) {
         this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }

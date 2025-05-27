@@ -60,18 +60,6 @@ public final class TranscriptionMetadata extends StreamingData {
     }
 
     /**
-     * Creates an instance of TranscriptionMetadata class.
-     */
-    public TranscriptionMetadata() {
-        super(StreamingDataKind.TRANSCRIPTION_METADATA);
-        this.transcriptionSubscriptionId = null;
-        this.locale = null;
-        this.callConnectionId = null;
-        this.correlationId = null;
-        this.speechRecognitionModelEndpointId = null;
-    }
-
-    /**
      * Get the transcriptionSubscriptionId property.
      *
      * @return the transcriptionSubscriptionId value.

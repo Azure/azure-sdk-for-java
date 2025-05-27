@@ -95,21 +95,6 @@ public final class TranscriptionData extends StreamingData {
         this.resultState = convertToResultStatusEnum(internalData.getResultStatus());
     }
 
-    /**
-     * Create instance of transcription data
-     */
-    public TranscriptionData() {
-        super(StreamingDataKind.TRANSCRIPTION_DATA);
-        this.text = null;
-        this.format = null;
-        this.confidence = null;
-        this.offset = null;
-        this.duration = null;
-        this.words = null;
-        this.participant = null;
-        this.resultState = null;
-    }
-
     private TranscriptionResultState convertToResultStatusEnum(String resultStatus) {
         if ("Intermediate".equalsIgnoreCase(resultStatus)) {
             return TranscriptionResultState.INTERMEDIATE;

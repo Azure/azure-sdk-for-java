@@ -56,17 +56,6 @@ public final class AudioMetadata extends StreamingData {
     }
 
     /**
-     * Creats the audiometadata instance
-     */
-    public AudioMetadata() {
-        super(StreamingDataKind.AUDIO_METADATA);
-        this.mediaSubscriptionId = null;
-        this.encoding = null;
-        this.sampleRate = null;
-        this.channels = null;
-    }
-
-    /**
      * A unique identifier for the media subscription.
      * Get the mediaSubscriptionId property.
      *

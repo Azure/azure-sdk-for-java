@@ -6,11 +6,14 @@ package com.azure.communication.callautomation.implementation.accesshelpers;
 import com.azure.communication.callautomation.implementation.converters.AudioDataConverter;
 import com.azure.communication.callautomation.models.AudioData;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Helper class to access private values of {@link AudioData} across package boundaries.
  */
 public final class AudioDataContructorProxy {
+    private static final ClientLogger LOGGER = new ClientLogger(AudioDataContructorProxy.class);
+
     private static AudioDataContructorProxyAccessor accessor;
 
     private AudioDataContructorProxy() {
@@ -60,7 +63,11 @@ public final class AudioDataContructorProxy {
         // application accesses AudioData which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new AudioData();
+            try {
+                Class.forName(AudioData.class.getName(), true, AudioDataContructorProxyAccessor.class.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
         }
 
         assert accessor != null;
@@ -78,7 +85,11 @@ public final class AudioDataContructorProxy {
         // application accesses AudioData which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new AudioData();
+            try {
+                Class.forName(AudioData.class.getName(), true, AudioDataContructorProxyAccessor.class.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
         }
 
         assert accessor != null;

@@ -49,7 +49,7 @@ public final class MediaStreamingSubscription implements JsonSerializable<MediaS
     /**
      * Creates an instance of MediaStreamingSubscription class.
      */
-    public MediaStreamingSubscription() {
+    MediaStreamingSubscription() {
         id = null;
         state = null;
         subscribedContentTypes = null;
