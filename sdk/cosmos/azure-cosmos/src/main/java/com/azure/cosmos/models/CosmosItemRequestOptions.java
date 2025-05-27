@@ -98,7 +98,6 @@ public class CosmosItemRequestOptions {
         super();
 
         setPartitionKey(partitionKey);
-        this.thresholds = new CosmosDiagnosticsThresholds();
     }
 
     /**
@@ -540,6 +539,9 @@ public class CosmosItemRequestOptions {
      * @return  thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
      */
     public Duration getThresholdForDiagnosticsOnTracer() {
+        if (this.thresholds == null) {
+            return Duration.ofMillis(100);
+        }
 
         return thresholdsAccessor.getPointReadLatencyThreshold(this.thresholds);
     }
@@ -554,6 +556,10 @@ public class CosmosItemRequestOptions {
      * @return the CosmosItemRequestOptions
      */
     public CosmosItemRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+        if (this.thresholds == null) {
+            this.thresholds = new CosmosDiagnosticsThresholds();
+        }
+
         this.thresholds.setPointOperationLatencyThreshold(thresholdForDiagnosticsOnTracer);
 
         return this;
