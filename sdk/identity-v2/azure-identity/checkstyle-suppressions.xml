@@ -19,8 +19,5 @@
   <suppress files="com.azure.v2.identity.implementation.client.PersistentTokenCacheImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.v2.identity.implementation.client.PersistentTokenCacheImpl.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.v2.identity.implementation.models.PublicClientOptions.java" checks="GoodLoggingCheck" />
-
-  <!-- TODO (limolkova): remove, addressing in https://github.com/Azure/azure-sdk-for-java/pull/45296 -->
-  <suppress files="com.azure.v2.identity.*" checks="RawExceptionThrow" />
-
+  <suppress files="com.azure.v2.identity.[\w]+Credential.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
 </suppressions>

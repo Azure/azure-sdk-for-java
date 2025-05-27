@@ -13,6 +13,8 @@ import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
+import static com.azure.v2.identity.implementation.util.LoggingUtil.logAndThrowTokenError;
+
 /**
  * <p>Azure Developer CLI is a command-line interface tool that allows developers to create, manage, and deploy
  * resources in Azure. It's built on top of the Azure CLI and provides additional functionality specific
@@ -72,12 +74,11 @@ public class AzureDeveloperCliCredential implements TokenCredential {
             AccessToken accessToken = devToolslClient.authenticateWithAzureDeveloperCli(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
-        } catch (Exception ex) {
-            LoggingUtil.logTokenError(LOGGER, request, ex);
-            if (devToolslClient.getClientOptions().isChained()) {
-                throw LOGGER.logThrowableAsError(new CredentialUnavailableException(ex.getMessage(), ex));
-            }
-            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(ex.getMessage(), ex));
+        } catch (RuntimeException ex) {
+            throw logAndThrowTokenError(LOGGER, request, ex,
+                devToolslClient.getClientOptions().isChained()
+                    ? CredentialUnavailableException::new
+                    : CredentialAuthenticationException::new);
         }
     }
 }
