@@ -12,7 +12,7 @@ import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
  * Description text should only have one space character after the parameter name or {@code @return} statement.
  * Text should not start on a new line or have any additional spacing or indentation.
  */
-public class JavaDocFormatting extends AbstractJavadocCheck {
+public class JavadocFormatting extends AbstractJavadocCheck {
 
     private static final String JAVA_DOC_RETURN = "javadoc return";
     private static final String JAVA_DOC_PARAMETER = "javadoc parameter";
