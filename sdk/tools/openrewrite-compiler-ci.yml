@@ -22,9 +22,6 @@ extends:
           - job: OpenRewriteCompilerPlugin
             displayName: Build and Run OpenRewrite Compiler Plugin
             timeoutInMinutes: 60
-            pool:
-              vmImage: 'ubuntu-latest'
-            
             steps:
 
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
