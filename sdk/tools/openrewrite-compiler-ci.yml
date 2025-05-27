@@ -27,7 +27,7 @@ extends:
             
             steps:
 
-              - template: /eng/pipelines/templates/steps/sparse-checkout.yml
+              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                 parameters:
                   Paths:
                     - sdk/tools/azure-openrewrite-compiler-maven-plugin
