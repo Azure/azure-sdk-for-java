@@ -50,6 +50,7 @@
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.utils.AuthenticateChallenge" />
       <Class name="io.clientcore.core.utils.CoreUtils" />
+      <Class name="io.clientcore.core.utils.GeneratedCodeUtils" />
       <Class name="io.clientcore.core.utils.DateTimeRfc1123" />
       <Class name="io.clientcore.core.utils.SharedExecutorService" />
       <Class name="io.clientcore.core.utils.Union" />

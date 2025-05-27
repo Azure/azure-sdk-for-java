@@ -32,6 +32,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
+import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.shared.HttpClientTests;
 import io.clientcore.core.shared.HttpClientTestsServer;
 import io.clientcore.core.shared.LocalTestServer;
@@ -1142,6 +1143,7 @@ public class TestInterfaceServiceClientGenerationTests {
 
         @SuppressWarnings("unchecked")
         final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
+
         assertEquals("I'm the body!", expectedBody.get("data"));
     }
 
@@ -1440,11 +1442,16 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    public void unexpectedHTTPOK() {
+    public void unexpectedHTTPOK() throws IOException {
         HttpResponseException e = assertThrows(HttpResponseException.class,
             () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class).getBytes(getRequestUri()));
 
-        assertEquals("Status code 200, (1024-byte body)", e.getMessage());
+        Map<String, String> exContext = parseExceptionContext(e);
+
+        assertEquals("200", exContext.get("http.response.status_code"));
+        assertEquals("1024", exContext.get("http.response.header.content-length"));
+        assertEquals("application/octet-stream", exContext.get("http.response.header.content-type"));
+        assertNull(exContext.get("http.response.body.content"));
     }
 
     @Test
@@ -1930,5 +1937,13 @@ public class TestInterfaceServiceClientGenerationTests {
         }
 
         fail("'" + uri2 + "' does not match with '" + s1 + "' or '" + s2 + "'.");
+    }
+
+    private static Map<String, String> parseExceptionContext(Throwable ex) throws IOException {
+        int jsonPartStart = ex.getMessage().indexOf(";");
+        assertTrue(jsonPartStart > 0, "Expected JSON part in the exception message");
+        try (JsonReader reader = JsonReader.fromString(ex.getMessage().substring(jsonPartStart + 1))) {
+            return reader.readMap(JsonReader::getString);
+        }
     }
 }

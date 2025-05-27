@@ -26,7 +26,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -88,8 +87,8 @@ public class GeneratedCodeUtilsTests {
         JsonSerializer serializer = JsonSerializer.getInstance();
 
         Map<Integer, ParameterizedType> exceptionTypeMap = new HashMap<>();
-        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> GeneratedCodeUtils.handleUnexpectedResponse(500,
-            response, serializer, null, null, exceptionTypeMap, LOGGER));
+        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> GeneratedCodeUtils
+            .handleUnexpectedResponse(500, response, serializer, null, null, exceptionTypeMap, LOGGER));
         assertTrue(ex.getMessage().contains("\"http.response.header.content-length\":\"1024\""));
         assertTrue(ex.getMessage().contains("\"http.response.header.content-type\":\"application/octet-stream\""));
         assertTrue(ex.getMessage().contains("\"http.response.status_code\":500"));
@@ -102,8 +101,8 @@ public class GeneratedCodeUtilsTests {
         JsonSerializer serializer = JsonSerializer.getInstance();
 
         Map<Integer, ParameterizedType> exceptionTypeMap = new HashMap<>();
-        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> GeneratedCodeUtils.handleUnexpectedResponse(404,
-            response, serializer, null, null, exceptionTypeMap, LOGGER));
+        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> GeneratedCodeUtils
+            .handleUnexpectedResponse(404, response, serializer, null, null, exceptionTypeMap, LOGGER));
         Map<String, String> exContext = parseExceptionContext(ex);
         assertEquals("404", exContext.get("http.response.status_code"));
         assertEquals("application/json", exContext.get("http.response.header.content-type"));
@@ -119,8 +118,8 @@ public class GeneratedCodeUtilsTests {
         JsonSerializer serializer = JsonSerializer.getInstance();
 
         Map<Integer, ParameterizedType> exceptionTypeMap = new HashMap<>();
-        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> GeneratedCodeUtils.handleUnexpectedResponse(400,
-            response, serializer, null, null, exceptionTypeMap, LOGGER));
+        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> GeneratedCodeUtils
+            .handleUnexpectedResponse(400, response, serializer, null, null, exceptionTypeMap, LOGGER));
         Map<String, String> exContext = parseExceptionContext(ex);
         assertEquals("400", exContext.get("http.response.status_code"));
         assertEquals("application/json", exContext.get("http.response.header.content-type"));
@@ -142,8 +141,8 @@ public class GeneratedCodeUtilsTests {
         final java.lang.reflect.Type[] capturedType = new java.lang.reflect.Type[1];
         JsonSerializer serializer = new TestJsonSerializer(capturedType);
 
-        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> GeneratedCodeUtils.handleUnexpectedResponse(403,
-            response, serializer, null, null, exceptionTypeMap, LOGGER));
+        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> GeneratedCodeUtils
+            .handleUnexpectedResponse(403, response, serializer, null, null, exceptionTypeMap, LOGGER));
 
         Map<String, String> exContext = parseExceptionContext(ex);
         assertEquals("403", exContext.get("http.response.status_code"));
@@ -168,8 +167,8 @@ public class GeneratedCodeUtilsTests {
         final java.lang.reflect.Type[] capturedType = new java.lang.reflect.Type[1];
         JsonSerializer serializer = new TestJsonSerializer(capturedType);
 
-        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> GeneratedCodeUtils.handleUnexpectedResponse(418,
-            response, serializer, null, defaultType, null, LOGGER));
+        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> GeneratedCodeUtils
+            .handleUnexpectedResponse(418, response, serializer, null, defaultType, null, LOGGER));
 
         Map<String, String> exContext = parseExceptionContext(ex);
         assertEquals("418", exContext.get("http.response.status_code"));

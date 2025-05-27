@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class ExceptionCreatedButNotThrownCheck extends AbstractCheck {
     static final String ERROR_MESSAGE = "An exception is created and logged, but not thrown. Ensure the exception is either thrown or not created at all. "
-        + "See https://github.com/Azure/azure-sdk-for-java/wiki/Client-core:-logging-exceptions-best-practices for more details.";;
+        + "See https://github.com/Azure/azure-sdk-for-java/wiki/Client-core:-logging-exceptions-best-practices for more details.";
     private static final List<String> THROWABLE_AT_LOGGING_METHODS = Arrays.asList(
         ".throwableAtError",
         ".throwableAtWarning");
@@ -42,7 +42,15 @@ public class ExceptionCreatedButNotThrownCheck extends AbstractCheck {
     public void visitToken(DetailAST token) {
         String name = FullIdent.createFullIdentBelow(token).getText();
         if (THROWABLE_AT_LOGGING_METHODS.stream().anyMatch(name::endsWith) && !isInsideThrow(token)) {
-            log(token, ERROR_MESSAGE);
+            DetailAST logMethodCall = token.getParent().getParent();
+            if (logMethodCall == null || logMethodCall.getType() != TokenTypes.METHOD_CALL) {
+                return;
+            }
+
+            String nextName = FullIdent.createFullIdentBelow(logMethodCall).getText();
+            if (nextName.endsWith(".log")) {
+                log(token, ERROR_MESSAGE);
+            }
         }
     }
 

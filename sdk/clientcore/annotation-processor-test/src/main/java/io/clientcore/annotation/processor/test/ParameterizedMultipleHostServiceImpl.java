@@ -58,7 +58,7 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             networkResponse.close();
         }
         HttpBinJSON deserializedResult;

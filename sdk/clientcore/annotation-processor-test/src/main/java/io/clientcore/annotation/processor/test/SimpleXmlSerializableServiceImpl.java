@@ -68,7 +68,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             networkResponse.close();
         }
         networkResponse.close();
@@ -94,7 +94,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             networkResponse.close();
         }
         networkResponse.close();
@@ -114,7 +114,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             networkResponse.close();
         }
         SimpleXmlSerializable deserializedResult;
@@ -144,7 +144,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             networkResponse.close();
         }
         SimpleXmlSerializable deserializedResult;

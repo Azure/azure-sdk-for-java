@@ -30,4 +30,13 @@ public class ThrowCreatedExceptionCheckTestData {
             .setThrowable(ex)
             .log();
     }
+
+    // correct
+    public void logException() {
+        ExceptionLoggingEvent loggedException
+                = logger.throwableAtError();
+
+        loggedException.addKeyValue("foo", "bar");
+        loggedException.log("This is a test exception", RuntimeException::new);
+    }
 }

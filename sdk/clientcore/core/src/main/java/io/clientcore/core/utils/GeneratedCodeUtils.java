@@ -95,8 +95,8 @@ public final class GeneratedCodeUtils {
      * @param xmlSerializer The XML serializer to use for deserialization.
      * @param defaultErrorBodyType The default type to use for error body deserialization if no status-specific mapping exists.
      * @param statusToExceptionTypeMap A map from HTTP status codes to error body types for deserialization.
-     * @throws UnsupportedOperationException if none of the serializers support the format.
-     * @throws RuntimeException if deserialization fails or if the response body is empty.
+     * @param logger The logger to use for logging the error details.
+     * @throws HttpResponseException representing unexpected response.
      */
     public static void handleUnexpectedResponse(int responseCode, Response<BinaryData> networkResponse,
         JsonSerializer jsonSerializer, XmlSerializer xmlSerializer, ParameterizedType defaultErrorBodyType,
@@ -105,8 +105,8 @@ public final class GeneratedCodeUtils {
 
         try {
 
-            ExceptionLoggingEvent loggedException = logger.throwableAtError()
-                .addKeyValue(HTTP_RESPONSE_STATUS_CODE_KEY, networkResponse.getStatusCode());
+            ExceptionLoggingEvent loggedException
+                = logger.throwableAtError().addKeyValue(HTTP_RESPONSE_STATUS_CODE_KEY, networkResponse.getStatusCode());
 
             HttpHeader contentTypeHeader = networkResponse.getHeaders().get(HttpHeaderName.CONTENT_TYPE);
             if (contentTypeHeader != null) {
@@ -120,10 +120,10 @@ public final class GeneratedCodeUtils {
 
             if (networkResponseValue == null
                 || networkResponseValue.toBytes().length == 0
-                || contentTypeHeader == null
-                || "application/octet-stream".equalsIgnoreCase(contentTypeHeader.getValue())) {
-                throw loggedException
-                    .log(UNEXPECTED_SERVER_RESPONSE_MESSAGE, m -> new HttpResponseException(m, networkResponse, null));
+                || (contentTypeHeader != null
+                    && "application/octet-stream".equalsIgnoreCase(contentTypeHeader.getValue()))) {
+                throw loggedException.log(UNEXPECTED_SERVER_RESPONSE_MESSAGE,
+                    m -> createHttpResponseException(m, networkResponse, null));
             }
             Object errorValue;
             ParameterizedType returnType;
@@ -145,8 +145,7 @@ public final class GeneratedCodeUtils {
                 } else if (xmlSerializer.supportsFormat(serializationFormat)) {
                     errorValue = CoreUtils.decodeNetworkResponse(networkResponseValue, xmlSerializer, returnType);
                 } else {
-                    throw loggedException
-                        .addKeyValue("serializationFormat", serializationFormat.name())
+                    throw loggedException.addKeyValue("serializationFormat", serializationFormat.name())
                         .log("None of the provided serializers support the format.",
                             m -> new HttpResponseException(m, networkResponse, null));
                 }
@@ -156,15 +155,24 @@ public final class GeneratedCodeUtils {
             }
 
             throw loggedException
-                // status code, content type, and length are added by default for all HttpResponseExceptions
                 .addKeyValue(HTTP_RESPONSE_BODY_CONTENT_KEY,
                     new String(networkResponseValue.toBytes(), java.nio.charset.StandardCharsets.UTF_8))
-                .log(UNEXPECTED_SERVER_RESPONSE_MESSAGE,
-                    errorValue instanceof Throwable ? (Throwable) errorValue : null,
-                    (m, c) -> new HttpResponseException(m, networkResponse, c));
+                .log(UNEXPECTED_SERVER_RESPONSE_MESSAGE, null,
+                    (m, c) -> createHttpResponseException(m, networkResponse, errorValue));
         } finally {
             networkResponse.close();
         }
+    }
+
+    private static HttpResponseException createHttpResponseException(String message, Response<BinaryData> response,
+        Object decodedValue) {
+
+        // The decodedValue should be the declared exception type (e.g., ErrorValue), not a Throwable.
+        // Only wrap as cause if decodedValue is a Throwable.
+        if (decodedValue instanceof Throwable) {
+            return new HttpResponseException(message, response, (Throwable) decodedValue);
+        }
+        return new HttpResponseException(message, response, decodedValue);
     }
 
     private GeneratedCodeUtils() {
