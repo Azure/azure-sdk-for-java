@@ -354,7 +354,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         } catch (URISyntaxException e) {
             throw LOGGER.throwableAtError()
                 .addKeyValue("scope", scope)
-                .log("The challenge resource is not a valid URI.", e, CoreException::from);
+                .log("The challenge resource is not a valid URI.", e, IllegalArgumentException::new);
         }
 
         // Returns false if the host specified in the scope does not match the requested domain.

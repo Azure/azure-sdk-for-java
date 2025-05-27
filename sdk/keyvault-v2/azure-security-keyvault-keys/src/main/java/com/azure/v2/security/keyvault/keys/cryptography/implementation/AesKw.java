@@ -14,6 +14,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
+import java.util.Objects;
 
 abstract class AesKw extends LocalKeyWrapAlgorithm {
     private static final ClientLogger LOGGER = new ClientLogger(AesKw.class);
@@ -116,9 +117,7 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
     public ICryptoTransform createEncryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException,
         NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
-        if (key == null) {
-            throw LOGGER.throwableAtError().log("key cannot be null.", IllegalArgumentException::new);
-        }
+        Objects.requireNonNull(key, "'key' cannot be null.");
 
         if (key.length != 128 >> 3 && key.length != 192 >> 3 && key.length != 256 >> 3) {
             throw LOGGER.throwableAtError()
@@ -171,9 +170,7 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
     public ICryptoTransform createDecryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException,
         NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
-        if (key == null) {
-            throw LOGGER.throwableAtError().log("key cannot be null.", IllegalArgumentException::new);
-        }
+        Objects.requireNonNull(key, "'key' cannot be null.");
 
         if (key.length != 128 >> 3 && key.length != 192 >> 3 && key.length != 256 >> 3) {
             throw LOGGER.throwableAtError()

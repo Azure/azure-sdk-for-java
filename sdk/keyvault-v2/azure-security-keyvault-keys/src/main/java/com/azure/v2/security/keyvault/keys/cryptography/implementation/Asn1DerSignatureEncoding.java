@@ -71,7 +71,7 @@ final class Asn1DerSignatureEncoding {
         if (asn1DerSignature.read() != 0x30) {
             throw LOGGER.throwableAtError()
                 .addKeyValue("signature", bytesToHexString(bytes))
-                .log("Invalid signature.", CoreException::from);
+                .log("Invalid signature; First byte of field is not 0x30.", CoreException::from);
         }
 
         int objLen = readFieldLength(asn1DerSignature);

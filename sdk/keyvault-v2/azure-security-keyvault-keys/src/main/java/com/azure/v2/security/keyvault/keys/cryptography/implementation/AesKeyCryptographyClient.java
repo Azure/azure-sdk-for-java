@@ -52,7 +52,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (isGcm(algorithm)) {
             throw LOGGER.throwableAtError()
                 .addKeyValue("algorithm", algorithm.getValue())
-                .log("AES-GCM is not supported for local cryptography operations.", IllegalArgumentException::new);
+                .log("AES-GCM is not supported for local cryptography operations.", UnsupportedOperationException::new);
         }
 
         if (!isAes(algorithm)) {

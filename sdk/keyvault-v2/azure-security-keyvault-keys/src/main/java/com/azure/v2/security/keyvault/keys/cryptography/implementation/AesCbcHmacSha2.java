@@ -4,7 +4,6 @@
 package com.azure.v2.security.keyvault.keys.cryptography.implementation;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.models.CoreException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -16,6 +15,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
+import java.util.Objects;
 
 abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
     private static final long BYTE_TO_BITS = 8L;
@@ -68,7 +68,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
                     throw LOGGER.throwableAtError()
                         .addKeyValue("algorithm", algorithm)
                         .addKeyValue("keyLengthInBits", key.length << 3)
-                        .log("Key is too short, must be at least 256.", IllegalArgumentException::new);
+                        .log("Key is too short, must be at least 256 bits long.", IllegalArgumentException::new);
                 }
 
                 hmacKey = new byte[128 >> 3];
@@ -85,7 +85,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
                     throw LOGGER.throwableAtError()
                         .addKeyValue("algorithm", algorithm)
                         .addKeyValue("keyLengthInBits", key.length << 3)
-                        .log("Key is too short, must be at least 384.", IllegalArgumentException::new);
+                        .log("Key is too short, must be at least 384 bits long.", IllegalArgumentException::new);
                 }
 
                 hmacKey = new byte[192 >> 3];
@@ -102,7 +102,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
                     throw LOGGER.throwableAtError()
                         .addKeyValue("algorithm", algorithm)
                         .addKeyValue("keyLengthInBits", key.length << 3)
-                        .log("Key is too short, must be at least 512.", IllegalArgumentException::new);
+                        .log("Key is too short, must be at least 512 bits long.", IllegalArgumentException::new);
                 }
 
                 hmacKey = new byte[256 >> 3];
@@ -154,7 +154,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
             // Check the tag before performing the final decrypt
             if (!sequenceEqualConstantTime(tag, tag)) {
-                throw LOGGER.throwableAtError().log("Data is not authentic", CoreException::from);
+                throw LOGGER.throwableAtError().log("Data is not authentic", IllegalArgumentException::new);
             }
 
             return inner.doFinal(input);
@@ -225,21 +225,10 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
     public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
         byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException,
         NoSuchPaddingException, InvalidAlgorithmParameterException {
-        if (key == null) {
-            throw LOGGER.throwableAtError().log("No key material.", IllegalArgumentException::new);
-        }
-
-        if (iv == null) {
-            throw LOGGER.throwableAtError().log("No initialization vector.", IllegalArgumentException::new);
-        }
-
-        if (additionalAuthenticatedData == null) {
-            throw LOGGER.throwableAtError().log("No authentication data.", IllegalArgumentException::new);
-        }
-
-        if (authenticationTag == null) {
-            throw LOGGER.throwableAtError().log("No authentication tag.", IllegalArgumentException::new);
-        }
+        Objects.requireNonNull(key, "'key' cannot be null.");
+        Objects.requireNonNull(iv, "'iv' cannot be null.");
+        Objects.requireNonNull(additionalAuthenticatedData, "'additionalAuthenticatedData' cannot be null.");
+        Objects.requireNonNull(authenticationTag, "'authenticationTag' cannot be null.");
 
         // Create the Decryptor.
         return new AesCbcHmacSha2Decryptor(getName(), key, iv, additionalAuthenticatedData, authenticationTag,
@@ -259,17 +248,9 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException,
         NoSuchPaddingException, InvalidAlgorithmParameterException {
 
-        if (key == null) {
-            throw LOGGER.throwableAtError().log("No key material.", IllegalArgumentException::new);
-        }
-
-        if (iv == null) {
-            throw LOGGER.throwableAtError().log("No initialization vector.", IllegalArgumentException::new);
-        }
-
-        if (additionalAuthenticatedData == null) {
-            throw LOGGER.throwableAtError().log("No authentication data.", IllegalArgumentException::new);
-        }
+        Objects.requireNonNull(key, "'key' cannot be null.");
+        Objects.requireNonNull(iv, "'iv' cannot be null.");
+        Objects.requireNonNull(additionalAuthenticatedData, "'additionalAuthenticatedData' cannot be null.");
 
         // Create the Encryptor.
         return new AesCbcHmacSha2Encryptor(getName(), key, iv, additionalAuthenticatedData, provider);

@@ -127,7 +127,7 @@ public final class KeyVaultBackupClientBuilder
             throw LOGGER.throwableAtError()
                 .log("An Azure Key Vault or Managed HSM endpoint is required. You can set one by using the"
                     + " KeyVaultBackupClientBuilder.endpoint() method or by setting the environment variable"
-                    + " 'AZURE_KEYVAULT_ENDPOINT'.", IllegalArgumentException::new);
+                    + " 'AZURE_KEYVAULT_ENDPOINT'.", IllegalStateException::new);
         }
 
         KeyVaultAdministrationServiceVersion version

@@ -169,7 +169,7 @@ public final class CryptographyClientBuilder implements ConfigurationTrait<Crypt
         if (credential == null) {
             throw LOGGER.throwableAtError()
                 .log("A credential object is required. You can set one by using the"
-                    + " CryptographyClientBuilder.credential() method.", IllegalArgumentException::new);
+                    + " CryptographyClientBuilder.credential() method.", IllegalStateException::new);
         }
 
         // Closest to API goes first, closest to wire goes last.

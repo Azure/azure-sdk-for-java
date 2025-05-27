@@ -198,9 +198,7 @@ public final class CryptographyUtils {
      * @param keySizeInBytes The minimum size required for the key.
      */
     static void validate(byte[] key, int keySizeInBytes, ClientLogger logger) {
-        if (key == null) {
-            throw logger.throwableAtError().log("key must not be null", NullPointerException::new);
-        }
+        Objects.requireNonNull(key, "'key' cannot be null.");
 
         if (key.length < keySizeInBytes) {
             throw logger.throwableAtError()

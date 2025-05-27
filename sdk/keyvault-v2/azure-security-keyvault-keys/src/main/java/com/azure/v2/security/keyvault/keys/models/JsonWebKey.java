@@ -835,7 +835,7 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
             }
 
             // Did not find a supported curve.
-            throw LOGGER.throwableAtError().log("Unknown curve.", IllegalArgumentException::new);
+            throw LOGGER.throwableAtError().log("Unsupported curve.", IllegalArgumentException::new);
         } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
             throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
