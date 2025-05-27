@@ -43,12 +43,12 @@ public class RequestOptionsCustomRecipe extends Recipe {
 
     @Override
     public String getDisplayName() {
-        return "";
+        return "RequestOptions Custom Recipe";
     }
 
     @Override
     public String getDescription() {
-        return "";
+        return "Migrates the usage of RequestOptions to RequestContext.";
     }
 
     @Override

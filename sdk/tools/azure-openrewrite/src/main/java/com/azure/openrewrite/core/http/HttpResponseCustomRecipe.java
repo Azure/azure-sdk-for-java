@@ -43,12 +43,12 @@ public class HttpResponseCustomRecipe extends Recipe {
 
     @Override
     public @NlsRewrite.DisplayName String getDisplayName() {
-        return "HttpResponseCustomRecipe";
+        return "HttpResponse Custom Recipe";
     }
 
     @Override
     public @NlsRewrite.Description String getDescription() {
-        return "The custom recipe for HttpResponse";
+        return "Custom recipe to migrate the use of HttpResponse.";
     }
 
     @Override

@@ -28,7 +28,7 @@ import org.openrewrite.java.tree.Space;
  * After: io.clientcore.core.credentials.oauth.AccessTokenType getTokenType().value()
  *
  * Before: com.azure.core.credential.AccessToken getDurationUntilExpiration()
- * After: io.clientcore.core.credentials.oauth.AccessTokenType Duration.between(OffsetDateTime.now(), accessToken1.getExpiresAt())
+ * After: io.clientcore.core.credentials.oauth.AccessTokenType Duration.between(OffsetDateTime.now(), accessToken.getExpiresAt())
  * </pre>
  */
 public class AccessTokenCustomRecipe extends Recipe {

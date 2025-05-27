@@ -37,12 +37,12 @@ public class HttpHeadersCustomRecipe extends Recipe {
     }
     @Override
     public String getDisplayName() {
-        return "HttpRequestHeaderCustomRecipe";
+        return "HttpHeaders Custom Recipe";
     }
 
     @Override
     public String getDescription() {
-        return "Convert String Literals to HttpHeaders.";
+        return "Custom recipe to migrate the use of HttpHeaders.";
     }
 
     @Override
