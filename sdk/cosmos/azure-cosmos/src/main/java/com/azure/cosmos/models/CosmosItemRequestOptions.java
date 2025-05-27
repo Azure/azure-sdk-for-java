@@ -98,7 +98,6 @@ public class CosmosItemRequestOptions {
         super();
 
         setPartitionKey(partitionKey);
-        this.thresholds = new CosmosDiagnosticsThresholds();
     }
 
     /**
