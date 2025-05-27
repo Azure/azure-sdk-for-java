@@ -371,18 +371,36 @@ public final class TeradataLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
-        jsonWriter.writeUntypedField("server", this.server);
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
+        if (this.server != null) {
+            jsonWriter.writeUntypedField("server", this.server);
+        }
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("sslMode", this.sslMode);
-        jsonWriter.writeUntypedField("portNumber", this.portNumber);
-        jsonWriter.writeUntypedField("httpsPortNumber", this.httpsPortNumber);
-        jsonWriter.writeUntypedField("useDataEncryption", this.useDataEncryption);
-        jsonWriter.writeUntypedField("characterSet", this.characterSet);
-        jsonWriter.writeUntypedField("maxRespSize", this.maxRespSize);
+        if (this.sslMode != null) {
+            jsonWriter.writeUntypedField("sslMode", this.sslMode);
+        }
+        if (this.portNumber != null) {
+            jsonWriter.writeUntypedField("portNumber", this.portNumber);
+        }
+        if (this.httpsPortNumber != null) {
+            jsonWriter.writeUntypedField("httpsPortNumber", this.httpsPortNumber);
+        }
+        if (this.useDataEncryption != null) {
+            jsonWriter.writeUntypedField("useDataEncryption", this.useDataEncryption);
+        }
+        if (this.characterSet != null) {
+            jsonWriter.writeUntypedField("characterSet", this.characterSet);
+        }
+        if (this.maxRespSize != null) {
+            jsonWriter.writeUntypedField("maxRespSize", this.maxRespSize);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

@@ -148,7 +148,9 @@ public final class SnowflakeExportCopyCommand extends ExportSettings {
             (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeMapField("additionalFormatOptions", this.additionalFormatOptions,
             (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeUntypedField("storageIntegration", this.storageIntegration);
+        if (this.storageIntegration != null) {
+            jsonWriter.writeUntypedField("storageIntegration", this.storageIntegration);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

@@ -218,9 +218,13 @@ public final class AmazonRedshiftLinkedServiceTypeProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("server", this.server);
         jsonWriter.writeUntypedField("database", this.database);
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("port", this.port);
+        if (this.port != null) {
+            jsonWriter.writeUntypedField("port", this.port);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

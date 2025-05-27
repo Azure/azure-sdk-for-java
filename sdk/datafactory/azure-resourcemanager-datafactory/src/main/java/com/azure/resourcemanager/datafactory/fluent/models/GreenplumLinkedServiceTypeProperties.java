@@ -331,18 +331,34 @@ public final class GreenplumLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
         jsonWriter.writeJsonField("pwd", this.pwd);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("host", this.host);
-        jsonWriter.writeUntypedField("port", this.port);
-        jsonWriter.writeUntypedField("username", this.username);
-        jsonWriter.writeUntypedField("database", this.database);
-        jsonWriter.writeUntypedField("sslMode", this.sslMode);
-        jsonWriter.writeUntypedField("connectionTimeout", this.connectionTimeout);
-        jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+        if (this.host != null) {
+            jsonWriter.writeUntypedField("host", this.host);
+        }
+        if (this.port != null) {
+            jsonWriter.writeUntypedField("port", this.port);
+        }
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
+        if (this.database != null) {
+            jsonWriter.writeUntypedField("database", this.database);
+        }
+        if (this.sslMode != null) {
+            jsonWriter.writeUntypedField("sslMode", this.sslMode);
+        }
+        if (this.connectionTimeout != null) {
+            jsonWriter.writeUntypedField("connectionTimeout", this.connectionTimeout);
+        }
+        if (this.commandTimeout != null) {
+            jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+        }
         return jsonWriter.writeEndObject();
     }
 

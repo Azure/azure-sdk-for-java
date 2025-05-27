@@ -177,7 +177,9 @@ public final class DataFlowReference implements JsonSerializable<DataFlowReferen
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("referenceName", this.referenceName);
-        jsonWriter.writeUntypedField("datasetParameters", this.datasetParameters);
+        if (this.datasetParameters != null) {
+            jsonWriter.writeUntypedField("datasetParameters", this.datasetParameters);
+        }
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
