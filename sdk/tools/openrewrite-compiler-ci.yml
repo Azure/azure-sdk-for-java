@@ -22,15 +22,14 @@ extends:
             pool: 
               name: $(LINUXPOOL)
               image: $(LINUXVMIMAGE)
-              os: linux
+              os: 
             displayName: Build and Run OpenRewrite Compiler Plugin
             timeoutInMinutes: 60
             steps:
-              - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
+              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                 parameters:
                   Paths:
-                    - /sdk/tools/azure-openrewrite-compiler-maven-plugin/*
-                    - /sdk/tools/azure-openrewrite/*
+                    - /*
 
               - task: Maven@3
                 displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
