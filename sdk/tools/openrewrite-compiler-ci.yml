@@ -22,17 +22,12 @@ extends:
             pool: 
               name: $(WINDOWSPOOL)
               image: $(WINDOWSVMIMAGE)
-              vmImage: ubuntu-22.04
             displayName: Build and Run OpenRewrite Compiler Plugin
             timeoutInMinutes: 60
             steps:
 
               - checkout: none
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                parameters:
-                  Paths:
-                    - sdk/tools/azure-openrewrite-compiler-maven-plugin
-                    - sdk/tools/azure-openrewrite
 
               - task: Maven@3
                 displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
