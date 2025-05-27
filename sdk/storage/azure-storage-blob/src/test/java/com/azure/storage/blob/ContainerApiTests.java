@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -2004,6 +2005,24 @@ public class ContainerApiTests extends BlobTestBase {
         }
         cc = serviceClient.getBlobContainerClient(containerName);
         assertDoesNotThrow(() -> cc.getAccountInfo(null));
+    }
+
+    @Test
+    public void invalidServiceVersion() {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+
+        BlobServiceClient serviceClient = instrument(builder
+            .addPolicy(new InvalidServiceVersionPipelinePolicy(), HttpPipelinePosition.PER_CALL)
+            .buildClient());
+
+        BlobContainerClient containerClient = serviceClient.getBlobContainerClient(generateContainerName());
+
+        BlobStorageException exception = assertThrows(BlobStorageException.class, containerClient::create);
+
+        assertEquals(BlobErrorCode.INVALID_HEADER_VALUE, exception.getErrorCode());
+        assertTrue(exception.getMessage().contains(Constants.Errors.INVALID_VERSION_HEADER_MESSAGE));
     }
 
     // TODO: Reintroduce these tests once service starts supporting it.
