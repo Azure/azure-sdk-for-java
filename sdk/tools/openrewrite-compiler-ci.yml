@@ -12,7 +12,6 @@ trigger:
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
-    oneESTemplateTag: internal
     stages: 
       - stage: CompileSamples
         variables: 
