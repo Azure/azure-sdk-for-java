@@ -57,6 +57,26 @@ public class LogNewExceptionCheckTestData {
         throw new RuntimeException("This is a test exception");
     }
 
+    // check is skipped in generated methods
+    @Metadata(properties = {FLUENT, GENERATED})
+    public void throwExceptionInGeneratedMethod3() {
+        throw new RuntimeException("This is a test exception");
+    }
+
+    @Metadata(properties = {})
+    public void benign1() {
+            }
+
+    @Metadata(properties = {MetadataProperties.FLUENT})
+    public void benign2() {
+    }
+
+    // check is skipped in generated methods
+    @Metadata(properties = MetadataProperties.GENERATED)
+    public void throwExceptionInGeneratedMethod4() {
+        throw new RuntimeException("This is a test exception");
+    }
+
     // check is skipped in ServiceInterface
     @ServiceInterface(name = "BarServiceImpl", host = "{fooBaseUrl}")
     public interface BarService {

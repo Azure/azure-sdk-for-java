@@ -9,8 +9,7 @@ import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Checks that the exception is created and logged is also thrown.
@@ -18,9 +17,9 @@ import java.util.Set;
 public class ExceptionCreatedButNotThrownCheck extends AbstractCheck {
     static final String ERROR_MESSAGE = "An exception is created and logged, but not thrown. Ensure the exception is either thrown or not created at all. "
         + "See https://github.com/Azure/azure-sdk-for-java/wiki/Client-core:-logging-exceptions-best-practices for more details.";;
-    private static final Set<String> THROWABLE_AT_LOGGING_METHODS = new HashSet<>(Arrays.asList(
+    private static final List<String> THROWABLE_AT_LOGGING_METHODS = Arrays.asList(
         ".throwableAtError",
-        ".throwableAtWarning"));
+        ".throwableAtWarning");
 
     @Override
     public int[] getDefaultTokens() {
@@ -41,11 +40,9 @@ public class ExceptionCreatedButNotThrownCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST token) {
-        if (token.getType() == TokenTypes.METHOD_CALL) {
-            String name = FullIdent.createFullIdentBelow(token).getText();
-            if (THROWABLE_AT_LOGGING_METHODS.stream().anyMatch(name::endsWith) && !isInsideThrow(token)) {
-                log(token, ERROR_MESSAGE);
-            }
+        String name = FullIdent.createFullIdentBelow(token).getText();
+        if (THROWABLE_AT_LOGGING_METHODS.stream().anyMatch(name::endsWith) && !isInsideThrow(token)) {
+            log(token, ERROR_MESSAGE);
         }
     }
 

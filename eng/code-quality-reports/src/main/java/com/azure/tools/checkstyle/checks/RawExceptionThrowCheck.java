@@ -7,11 +7,12 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
+import static com.puppycrawl.tools.checkstyle.utils.JavadocUtil.findFirstToken;
 import static com.puppycrawl.tools.checkstyle.utils.TokenUtil.findFirstTokenByPredicate;
 
 /**
@@ -25,9 +26,9 @@ public class RawExceptionThrowCheck extends AbstractCheck {
         + "such as \"logger.throwableAtError()\" or \"logger.throwableAtWarning()\"."
         + "See https://github.com/Azure/azure-sdk-for-java/wiki/Client-core:-logging-exceptions-best-practices for more details.";
 
-    private static final Set<String> IGNORED_EXCEPTIONS = new HashSet<>(Arrays.asList("NullPointerException",
+    private static final List<String> IGNORED_EXCEPTIONS = Arrays.asList("NullPointerException",
         "IllegalArgumentException",
-        "UnsupportedOperationException"));
+        "UnsupportedOperationException");
 
     private static final String CORE_EXCEPTION_FACTORY_NAME = "CoreException.from";
 
@@ -49,8 +50,7 @@ public class RawExceptionThrowCheck extends AbstractCheck {
         return new int[] {
             TokenTypes.METHOD_DEF,
             TokenTypes.INTERFACE_DEF,
-            TokenTypes.LITERAL_THROW,
-            TokenTypes.METHOD_CALL,
+            TokenTypes.LITERAL_THROW
         };
     }
 
@@ -99,11 +99,6 @@ public class RawExceptionThrowCheck extends AbstractCheck {
                     }
                 }
                 break;
-            case TokenTypes.METHOD_CALL:
-                String name = FullIdent.createFullIdentBelow(token).getText();
-                if (name.endsWith(".fromJson")) {
-                    insideGeneratedMethod = true;
-                }
             default:
                 // Checkstyle complains if there's no default block in switch
                 break;
@@ -133,17 +128,13 @@ public class RawExceptionThrowCheck extends AbstractCheck {
         }
 
         DetailAST argValue = memberValuePairs.findFirstToken(TokenTypes.ANNOTATION_ARRAY_INIT);
-        if (argValue == null) {
-            return false;
-        }
+        return findFirstTokenByPredicate(argValue == null ? memberValuePairs : argValue, expr -> {
+            if (expr.getType() != TokenTypes.EXPR) {
+                return false;
+            }
 
-        DetailAST expr = argValue.findFirstToken(TokenTypes.EXPR);
-        if (expr == null) {
-            return false;
-        }
-
-        String name = FullIdent.createFullIdentBelow(expr).getText();
-        return name.endsWith("GENERATED");
+            return FullIdent.createFullIdentBelow(expr).getText().endsWith("GENERATED");
+        }).isPresent();
     }
 
     private boolean hasServiceInterfaceAnnotation(DetailAST interfaceDefAst) {
