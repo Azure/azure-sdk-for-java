@@ -13,7 +13,7 @@ extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
     stages: 
-      - stage: Compile Samples
+      - stage: CompileSamples
         variables: 
           - template: /eng/pipelines/templates/variables/globals.yml
           - template: /eng/pipelines/templates/variables/image.yml
