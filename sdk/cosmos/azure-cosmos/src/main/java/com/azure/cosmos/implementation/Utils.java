@@ -6,9 +6,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.uuid.EthernetAddress;
-import com.azure.cosmos.implementation.uuid.Generators;
-import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -89,8 +86,7 @@ public class Utils {
 
     private static final ObjectMapper durationEnabledObjectMapper = createAndInitializeDurationObjectMapper();
     private static ObjectMapper simpleObjectMapper = simpleObjectMapperDisallowingDuplicatedProperties;
-    private static final TimeBasedGenerator TIME_BASED_GENERATOR =
-            Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
+
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s");
 
     private static AtomicReference<ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor> itemSerializerAccessor =
