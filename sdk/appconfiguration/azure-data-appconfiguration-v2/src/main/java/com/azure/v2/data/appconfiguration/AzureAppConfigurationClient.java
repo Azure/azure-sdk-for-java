@@ -24,6 +24,8 @@ import io.clientcore.core.annotations.ServiceMethod;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
+import io.clientcore.core.models.CoreException;
+
 import java.util.List;
 
 /**
@@ -55,7 +57,7 @@ class AzureAppConfigurationClient {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -70,7 +72,7 @@ class AzureAppConfigurationClient {
      *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -91,7 +93,7 @@ class AzureAppConfigurationClient {
      * time.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -112,7 +114,7 @@ class AzureAppConfigurationClient {
      * time.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -132,7 +134,7 @@ class AzureAppConfigurationClient {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -143,7 +145,7 @@ class AzureAppConfigurationClient {
     /**
      * Requests the headers and status of the given resource.
      *
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -174,7 +176,7 @@ class AzureAppConfigurationClient {
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -191,7 +193,7 @@ class AzureAppConfigurationClient {
      *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -224,7 +226,7 @@ class AzureAppConfigurationClient {
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -259,7 +261,7 @@ class AzureAppConfigurationClient {
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -293,7 +295,7 @@ class AzureAppConfigurationClient {
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -306,7 +308,7 @@ class AzureAppConfigurationClient {
     /**
      * Requests the headers and status of the given resource.
      *
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -330,7 +332,7 @@ class AzureAppConfigurationClient {
      * match the value provided.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -357,7 +359,7 @@ class AzureAppConfigurationClient {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -374,7 +376,7 @@ class AzureAppConfigurationClient {
      * @param key The key of the key-value.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -397,7 +399,7 @@ class AzureAppConfigurationClient {
      * @param entity The key-value to create.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -423,7 +425,7 @@ class AzureAppConfigurationClient {
      * match the value provided.
      * @param entity The key-value to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -441,7 +443,7 @@ class AzureAppConfigurationClient {
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -463,7 +465,7 @@ class AzureAppConfigurationClient {
      * value provided.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -483,7 +485,7 @@ class AzureAppConfigurationClient {
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
      * value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -498,7 +500,7 @@ class AzureAppConfigurationClient {
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -522,7 +524,7 @@ class AzureAppConfigurationClient {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -547,7 +549,7 @@ class AzureAppConfigurationClient {
      * match the value provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -561,7 +563,7 @@ class AzureAppConfigurationClient {
      *
      * @param key The key of the key-value to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -580,7 +582,7 @@ class AzureAppConfigurationClient {
      * @param status Used to filter returned snapshots by their status property.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -595,7 +597,7 @@ class AzureAppConfigurationClient {
      *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -616,7 +618,7 @@ class AzureAppConfigurationClient {
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -635,7 +637,7 @@ class AzureAppConfigurationClient {
      * to by the specified token.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -651,7 +653,7 @@ class AzureAppConfigurationClient {
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -662,7 +664,7 @@ class AzureAppConfigurationClient {
     /**
      * Requests the headers and status of the given resource.
      *
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -683,7 +685,7 @@ class AzureAppConfigurationClient {
      * match the value provided.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value snapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -707,7 +709,7 @@ class AzureAppConfigurationClient {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value snapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -723,7 +725,7 @@ class AzureAppConfigurationClient {
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value snapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -746,7 +748,7 @@ class AzureAppConfigurationClient {
      * match the value provided.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -773,7 +775,7 @@ class AzureAppConfigurationClient {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -793,7 +795,7 @@ class AzureAppConfigurationClient {
      * @param accept The accept parameter.
      * @param entity The parameters used to update the snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -816,7 +818,7 @@ class AzureAppConfigurationClient {
      * match the value provided.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -836,7 +838,7 @@ class AzureAppConfigurationClient {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -849,7 +851,7 @@ class AzureAppConfigurationClient {
      *
      * @param name The name of the key-value snapshot to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -869,7 +871,7 @@ class AzureAppConfigurationClient {
      * time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -884,7 +886,7 @@ class AzureAppConfigurationClient {
      *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -906,7 +908,7 @@ class AzureAppConfigurationClient {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -928,7 +930,7 @@ class AzureAppConfigurationClient {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -950,7 +952,7 @@ class AzureAppConfigurationClient {
      * time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -962,7 +964,7 @@ class AzureAppConfigurationClient {
     /**
      * Requests the headers and status of the given resource.
      *
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -983,7 +985,7 @@ class AzureAppConfigurationClient {
      * match the value provided.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -1006,7 +1008,7 @@ class AzureAppConfigurationClient {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -1022,7 +1024,7 @@ class AzureAppConfigurationClient {
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -1044,7 +1046,7 @@ class AzureAppConfigurationClient {
      * match the value provided.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -1067,7 +1069,7 @@ class AzureAppConfigurationClient {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -1083,7 +1085,7 @@ class AzureAppConfigurationClient {
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -1109,7 +1111,7 @@ class AzureAppConfigurationClient {
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -1124,7 +1126,7 @@ class AzureAppConfigurationClient {
      *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -1151,7 +1153,7 @@ class AzureAppConfigurationClient {
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -1179,7 +1181,7 @@ class AzureAppConfigurationClient {
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -1206,7 +1208,7 @@ class AzureAppConfigurationClient {
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1219,7 +1221,7 @@ class AzureAppConfigurationClient {
      * Requests the headers and status of the given resource.
      *
     
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1233,7 +1235,7 @@ class AzureAppConfigurationClient {
      * @param snapshot Snapshot identifier for the long running operation.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the state of a long running operation.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -1247,7 +1249,7 @@ class AzureAppConfigurationClient {
      *
      * @param snapshot Snapshot identifier for the long running operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the state of a long running operation.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })

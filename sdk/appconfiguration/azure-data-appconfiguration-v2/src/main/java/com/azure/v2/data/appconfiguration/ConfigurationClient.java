@@ -1444,7 +1444,7 @@ public final class ConfigurationClient {
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1470,7 +1470,7 @@ public final class ConfigurationClient {
      * @param selector Optional. Selector to filter labels from the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1499,7 +1499,7 @@ public final class ConfigurationClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

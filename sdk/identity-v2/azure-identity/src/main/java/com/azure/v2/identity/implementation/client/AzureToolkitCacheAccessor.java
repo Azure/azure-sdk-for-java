@@ -106,7 +106,8 @@ public class AzureToolkitCacheAccessor {
                             reader.skipChildren();
                         }
                     }
-                    throw LOGGER.throwableAtError().log("IntelliJCredential => Refresh Token not found.", CredentialUnavailableException::new);
+                    throw LOGGER.throwableAtError()
+                        .log("IntelliJCredential => Refresh Token not found.", CredentialUnavailableException::new);
                 });
             }
         } catch (IOException e) {
