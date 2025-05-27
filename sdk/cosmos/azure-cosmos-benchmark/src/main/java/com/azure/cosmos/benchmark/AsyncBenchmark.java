@@ -683,10 +683,11 @@ abstract class AsyncBenchmark<T> {
             this.logCountInSamplingInterval = new AtomicInteger(0);
             this.maxLogCount = maxLogCount;
             executor = Executors.newSingleThreadScheduledExecutor(new CosmosDaemonThreadFactory("AsyncBenchmark_logSampling"));
-            executor.schedule(() -> {
+            executor.scheduleAtFixedRate(() -> {
                 this.logCountInSamplingInterval.set(0);
                 logger.info("Resetting number of logs...");
                 },
+                samplingIntervalInMs,
                 samplingIntervalInMs,
                 TimeUnit.MILLISECONDS);
         }
