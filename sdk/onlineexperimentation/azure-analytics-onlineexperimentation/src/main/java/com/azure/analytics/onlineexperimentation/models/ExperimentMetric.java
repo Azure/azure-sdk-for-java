@@ -111,32 +111,6 @@ public final class ExperimentMetric implements JsonSerializable<ExperimentMetric
 
     /**
      * Creates an instance of ExperimentMetric class.
-     *
-     * @param lifecycle Determines whether it is included in experiment analysis.
-     * @param displayName A user-friendly display name for the experiment metric shown in reports and dashboards.
-     * @param description A detailed description of the experiment metric.
-     * @param categories Categories associated with the experiment metric. Used for organizing and filtering metrics.
-     * @param desiredDirection The desired direction for changes in the metric value.
-     * @param definition The metric definition specifying how the metric value is calculated from event data.
-     * Please note {@link ExperimentMetricDefinition} is the base class. According to the scenario, a derived class of
-     * the base class might need to be assigned here, or this property needs to be casted to one of the possible derived
-     * classes.
-     * The available derived classes include {@link AverageMetricDefinition}, {@link EventCountMetricDefinition},
-     * {@link EventRateMetricDefinition}, {@link PercentileMetricDefinition}, {@link SumMetricDefinition},
-     * {@link UserCountMetricDefinition} and {@link UserRateMetricDefinition}.
-     */
-    public ExperimentMetric(LifecycleStage lifecycle, String displayName, String description, List<String> categories,
-        DesiredDirection desiredDirection, ExperimentMetricDefinition definition) {
-        this.setLifecycle(lifecycle);
-        this.setDisplayName(displayName);
-        this.setDescription(description);
-        this.setCategories(categories);
-        this.setDesiredDirection(desiredDirection);
-        this.setDefinition(definition);
-    }
-
-    /**
-     * Creates an instance of ExperimentMetric class.
      */
     @Generated
     public ExperimentMetric() {

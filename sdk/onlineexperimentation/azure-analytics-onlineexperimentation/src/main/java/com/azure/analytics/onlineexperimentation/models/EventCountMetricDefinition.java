@@ -45,15 +45,6 @@ public final class EventCountMetricDefinition extends ExperimentMetricDefinition
     }
 
     /**
-     * Creates an instance of EventCountMetricDefinition with the specified event name.
-     *
-     * @param eventName Name of the event to observe.
-     */
-    public EventCountMetricDefinition(String eventName) {
-        this.setEvent(new ObservedEvent().setEventName(eventName));
-    }
-
-    /**
      * Get the type property: Discriminator property for ExperimentMetricDefinition.
      *
      * @return the type value.

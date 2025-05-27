@@ -65,18 +65,6 @@ public final class OnlineExperimentationClientBuilder
 
     /**
      * Create an instance of the OnlineExperimentationClientBuilder.
-     *
-     * @param endpoint The endpoint URL for the Online Experimentation workspace.
-     * @param tokenCredential The token credential used for authentication with the service.
-     */
-    public OnlineExperimentationClientBuilder(String endpoint, TokenCredential tokenCredential) {
-        this();
-        this.endpoint(endpoint);
-        this.credential(tokenCredential);
-    }
-
-    /**
-     * Create an instance of the OnlineExperimentationClientBuilder.
      */
     @Generated
     public OnlineExperimentationClientBuilder() {

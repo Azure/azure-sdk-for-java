@@ -3,6 +3,7 @@
 
 package com.azure.analytics.onlineexperimentation;
 
+import com.azure.analytics.onlineexperimentation.models.AggregatedValue;
 import com.azure.analytics.onlineexperimentation.models.AverageMetricDefinition;
 import com.azure.analytics.onlineexperimentation.models.DesiredDirection;
 import com.azure.analytics.onlineexperimentation.models.ExperimentMetric;
@@ -32,14 +33,14 @@ public class CreateAverageMetricSample {
             .buildClient();
 
         // Define the Average metric - calculates the mean of a numeric value across events
-        ExperimentMetric avgRevenueMetric = new ExperimentMetric(
-            LifecycleStage.ACTIVE,
-            "Average revenue per purchase",
-            "The average revenue per purchase transaction in USD",
-            Arrays.asList("Business"),
-            DesiredDirection.INCREASE,
-            new AverageMetricDefinition("Purchase", "Revenue")
-        );
+        ExperimentMetric avgRevenueMetric = new ExperimentMetric()
+            .setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName("Average revenue per purchase")
+            .setDescription("The average revenue per purchase transaction in USD")
+            .setCategories(Arrays.asList("Business"))
+            .setDesiredDirection(DesiredDirection.INCREASE)
+            .setDefinition(new AverageMetricDefinition()
+                .setValue(new AggregatedValue().setEventName("Purchase").setEventProperty("Revenue")));
 
         // Create the metric
         ExperimentMetric response = client.createOrUpdateMetric("avg_revenue_per_purchase", avgRevenueMetric);

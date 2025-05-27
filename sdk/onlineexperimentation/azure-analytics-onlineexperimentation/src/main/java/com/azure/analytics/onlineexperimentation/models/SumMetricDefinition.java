@@ -46,16 +46,6 @@ public final class SumMetricDefinition extends ExperimentMetricDefinition {
     }
 
     /**
-     * Creates an instance of SumMetricDefinition with the specified event name and property.
-     *
-     * @param eventName The name of the event.
-     * @param eventProperty The key of the event property to aggregate.
-     */
-    public SumMetricDefinition(String eventName, String eventProperty) {
-        this.setValue(new AggregatedValue().setEventName(eventName).setEventProperty(eventProperty));
-    }
-
-    /**
      * Get the type property: Discriminator property for ExperimentMetricDefinition.
      *
      * @return the type value.

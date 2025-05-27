@@ -52,17 +52,6 @@ public final class EventRateMetricDefinition extends ExperimentMetricDefinition 
     }
 
     /**
-     * Creates an instance of EventRateMetricDefinition with the specified event name and rate condition.
-     *
-     * @param eventName Name of the event to observe.
-     * @param rateCondition The event contributes to the rate numerator if it satisfies this condition.
-     */
-    public EventRateMetricDefinition(String eventName, String rateCondition) {
-        this.setEvent(new ObservedEvent().setEventName(eventName));
-        this.setRateCondition(rateCondition);
-    }
-
-    /**
      * Get the type property: Discriminator property for ExperimentMetricDefinition.
      *
      * @return the type value.

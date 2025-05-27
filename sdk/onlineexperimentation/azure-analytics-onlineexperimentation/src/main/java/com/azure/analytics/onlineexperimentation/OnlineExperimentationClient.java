@@ -63,7 +63,7 @@ public final class OnlineExperimentationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -116,7 +116,7 @@ public final class OnlineExperimentationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -136,9 +136,9 @@ public final class OnlineExperimentationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -179,7 +179,7 @@ public final class OnlineExperimentationClient {
     /**
      * Validates an experiment metric definition.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -199,9 +199,9 @@ public final class OnlineExperimentationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -274,7 +274,7 @@ public final class OnlineExperimentationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -590,15 +590,13 @@ public final class OnlineExperimentationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExperimentMetric> createOrUpdateMetricWithResponse(String experimentMetricId,
         ExperimentMetric resource, RequestOptions requestOptions) {
-
         JsonMergePatchHelper.getExperimentMetricAccessor().prepareModelForJsonMergePatch(resource, true);
         BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
-        resourceInBinaryData.getLength(); // Force serialization
+        // Force serialization
+        resourceInBinaryData.getLength();
         JsonMergePatchHelper.getExperimentMetricAccessor().prepareModelForJsonMergePatch(resource, false);
-
         Response<BinaryData> response
             = createOrUpdateMetricWithResponse(experimentMetricId, resourceInBinaryData, requestOptions);
-
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             response.getValue().toObject(ExperimentMetric.class));
     }
@@ -637,7 +635,6 @@ public final class OnlineExperimentationClient {
     public Response<ExperimentMetric> createMetricWithResponse(String experimentMetricId, ExperimentMetric resource) {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ETag.ALL.toString());
-
         return createOrUpdateMetricWithResponse(experimentMetricId, resource, requestOptions);
     }
 
@@ -697,7 +694,6 @@ public final class OnlineExperimentationClient {
         String ifMatch) {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-
         return createOrUpdateMetricWithResponse(experimentMetricId, resource, requestOptions);
     }
 
@@ -810,7 +806,8 @@ public final class OnlineExperimentationClient {
 
     /**
      * Updates the experiment metric lifecycle to {@link LifecycleStage#INACTIVE}.
-     *o
+     * o
+     *
      * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
      * only lowercase letters, numbers, and underscores.
      *

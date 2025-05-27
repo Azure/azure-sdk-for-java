@@ -51,18 +51,6 @@ public final class PercentileMetricDefinition extends ExperimentMetricDefinition
     }
 
     /**
-     * Creates an instance of PercentileMetricDefinition with the specified event name, property, and percentile.
-     *
-     * @param eventName The name of the event.
-     * @param eventProperty The key of the event property to aggregate.
-     * @param percentile The percentile to measure.
-     */
-    public PercentileMetricDefinition(String eventName, String eventProperty, int percentile) {
-        this.setValue(new AggregatedValue().setEventName(eventName).setEventProperty(eventProperty));
-        this.setPercentile(percentile);
-    }
-
-    /**
      * Get the type property: Discriminator property for ExperimentMetricDefinition.
      *
      * @return the type value.

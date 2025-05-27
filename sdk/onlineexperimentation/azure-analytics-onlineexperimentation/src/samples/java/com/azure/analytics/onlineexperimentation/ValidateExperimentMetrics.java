@@ -9,6 +9,7 @@ import com.azure.analytics.onlineexperimentation.models.EventCountMetricDefiniti
 import com.azure.analytics.onlineexperimentation.models.ExperimentMetric;
 import com.azure.analytics.onlineexperimentation.models.ExperimentMetricValidationResult;
 import com.azure.analytics.onlineexperimentation.models.LifecycleStage;
+import com.azure.analytics.onlineexperimentation.models.ObservedEvent;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -41,14 +42,14 @@ public class ValidateExperimentMetrics {
             .buildClient();
 
         // Define a metric to validate
-        ExperimentMetric metricToValidate = new ExperimentMetric(
-            LifecycleStage.ACTIVE,
-            "Test metric for validation",
-            "This metric definition will be validated before creation",
-            Arrays.asList("Test"),
-            DesiredDirection.INCREASE,
-            new EventCountMetricDefinition("TestEvent")
-        );
+        ExperimentMetric metricToValidate = new ExperimentMetric()
+            .setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName("Test metric for validation")
+            .setDescription("This metric definition will be validated before creation")
+            .setCategories(Arrays.asList("Test"))
+            .setDesiredDirection(DesiredDirection.INCREASE)
+            .setDefinition(new EventCountMetricDefinition()
+                .setEvent(new ObservedEvent().setEventName("TestEvent")));
 
         // Validate the metric - checks for errors in the definition
         ExperimentMetricValidationResult validationResult = client.validateMetric(metricToValidate);

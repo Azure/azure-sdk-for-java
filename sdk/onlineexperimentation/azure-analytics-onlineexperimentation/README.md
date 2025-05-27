@@ -59,17 +59,15 @@ OnlineExperimentationClient client = new OnlineExperimentationClientBuilder()
     .buildClient();
 
 // [Step 2] Define the experiment metric
-ExperimentMetric exampleMetric = new ExperimentMetric(
-    LifecycleStage.ACTIVE,
-    "% users with LLM interaction who made a high-value purchase",
-    "Percentage of users who received a response from the LLM and then made a purchase of $100 or more",
-    Arrays.asList("Business"),
-    DesiredDirection.INCREASE,
-    new EventRateMetricDefinition(
-        "ResponseReceived",
-        "Revenue > 100"
-    )
-);
+ExperimentMetric exampleMetric = new ExperimentMetric()
+    .setLifecycle(LifecycleStage.ACTIVE)
+    .setDisplayName("% users with LLM interaction who made a high-value purchase")
+    .setDescription("Percentage of users who received a response from the LLM and then made a purchase of $100 or more")
+    .setCategories(Arrays.asList("Business"))
+    .setDesiredDirection(DesiredDirection.INCREASE)
+    .setDefinition(new EventRateMetricDefinition()
+        .setEvent(new ObservedEvent().setEventName("ResponseReceived"))
+        .setRateCondition("Revenue > 100"));
 
 // [Optional][Step 2a] Validate the metric - checks for input errors without persisting anything.
 System.out.println("Checking if the experiment metric definition is valid...");

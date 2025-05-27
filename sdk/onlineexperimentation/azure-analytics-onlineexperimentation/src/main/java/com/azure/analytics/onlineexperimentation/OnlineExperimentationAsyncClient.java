@@ -69,7 +69,7 @@ public final class OnlineExperimentationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -123,7 +123,7 @@ public final class OnlineExperimentationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -143,9 +143,9 @@ public final class OnlineExperimentationAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -187,7 +187,7 @@ public final class OnlineExperimentationAsyncClient {
     /**
      * Validates an experiment metric definition.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -207,9 +207,9 @@ public final class OnlineExperimentationAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -283,7 +283,7 @@ public final class OnlineExperimentationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -628,12 +628,11 @@ public final class OnlineExperimentationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExperimentMetric>> createOrUpdateMetricWithResponse(String experimentMetricId,
         ExperimentMetric resource, RequestOptions requestOptions) {
-
         JsonMergePatchHelper.getExperimentMetricAccessor().prepareModelForJsonMergePatch(resource, true);
         BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
-        resourceInBinaryData.getLength(); // Force serialization
+        // Force serialization
+        resourceInBinaryData.getLength();
         JsonMergePatchHelper.getExperimentMetricAccessor().prepareModelForJsonMergePatch(resource, false);
-
         return createOrUpdateMetricWithResponse(experimentMetricId, resourceInBinaryData, requestOptions)
             .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue().toObject(ExperimentMetric.class)));
@@ -675,7 +674,6 @@ public final class OnlineExperimentationAsyncClient {
         ExperimentMetric resource) {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ETag.ALL.toString());
-
         return createOrUpdateMetricWithResponse(experimentMetricId, resource, requestOptions);
     }
 
@@ -718,7 +716,6 @@ public final class OnlineExperimentationAsyncClient {
         ExperimentMetric resource, String ifMatch) {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-
         return createOrUpdateMetricWithResponse(experimentMetricId, resource, requestOptions);
     }
 

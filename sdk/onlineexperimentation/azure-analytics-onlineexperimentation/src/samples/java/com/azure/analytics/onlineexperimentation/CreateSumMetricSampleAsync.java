@@ -3,6 +3,7 @@
 
 package com.azure.analytics.onlineexperimentation;
 
+import com.azure.analytics.onlineexperimentation.models.AggregatedValue;
 import com.azure.analytics.onlineexperimentation.models.DesiredDirection;
 import com.azure.analytics.onlineexperimentation.models.ExperimentMetric;
 import com.azure.analytics.onlineexperimentation.models.LifecycleStage;
@@ -42,18 +43,18 @@ public class CreateSumMetricSampleAsync {
             .buildAsyncClient();
 
         // Define the Sum metric - sums a numeric value across all events of a type
-        SumMetricDefinition sumDefinition = new SumMetricDefinition("Purchase", "Revenue");
+        SumMetricDefinition sumDefinition = new SumMetricDefinition()
+            .setValue(new AggregatedValue().setEventName("Purchase").setEventProperty("Revenue"));
         // Add an optional filter
         sumDefinition.getValue().setFilter("Revenue > 0");
 
-        ExperimentMetric revenueMetric = new ExperimentMetric(
-            LifecycleStage.ACTIVE,
-            "Total revenue",
-            "Sum of revenue from all purchase transactions",
-            Arrays.asList("Business"),
-            DesiredDirection.INCREASE,
-            sumDefinition
-        );
+        ExperimentMetric revenueMetric = new ExperimentMetric()
+            .setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName("Total revenue")
+            .setDescription("Sum of revenue from all purchase transactions")
+            .setCategories(Arrays.asList("Business"))
+            .setDesiredDirection(DesiredDirection.INCREASE)
+            .setDefinition(sumDefinition);
 
         // Create the metric asynchronously
         return client.createOrUpdateMetric("total_revenue", revenueMetric)

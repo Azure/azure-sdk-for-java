@@ -7,6 +7,7 @@ import com.azure.analytics.onlineexperimentation.models.DesiredDirection;
 import com.azure.analytics.onlineexperimentation.models.EventRateMetricDefinition;
 import com.azure.analytics.onlineexperimentation.models.ExperimentMetric;
 import com.azure.analytics.onlineexperimentation.models.LifecycleStage;
+import com.azure.analytics.onlineexperimentation.models.ObservedEvent;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
@@ -42,14 +43,13 @@ public class CreateEventRateMetricSampleAsync {
             .buildAsyncClient();
 
         // Define the Event Rate metric - measures a percentage of events meeting a condition
-        ExperimentMetric relevanceMetric = new ExperimentMetric(
-            LifecycleStage.ACTIVE,
-            "% evaluated conversations with good relevance",
-            "Percentage of evaluated conversations where the LLM response has good relevance (score >= 4)",
-            Arrays.asList("Quality"),
-            DesiredDirection.INCREASE,
-            new EventRateMetricDefinition("EvaluateLLM", "Relevance > 4")
-        );
+        ExperimentMetric relevanceMetric = new ExperimentMetric()
+            .setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName("% evaluated conversations with good relevance")
+            .setDescription("Percentage of evaluated conversations where the LLM response has good relevance (score >= 4)")
+            .setCategories(Arrays.asList("Quality"))
+            .setDesiredDirection(DesiredDirection.INCREASE)
+            .setDefinition(new EventRateMetricDefinition().setEvent(new ObservedEvent("EvaluateLLM")).setRateCondition("Relevance > 4"));
 
         // Create the metric asynchronously
         return client.createOrUpdateMetric("momo_pct_relevance_good", relevanceMetric)

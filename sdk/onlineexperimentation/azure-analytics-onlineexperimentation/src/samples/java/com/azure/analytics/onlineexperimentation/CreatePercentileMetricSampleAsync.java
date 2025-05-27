@@ -7,6 +7,7 @@ import com.azure.analytics.onlineexperimentation.models.DesiredDirection;
 import com.azure.analytics.onlineexperimentation.models.ExperimentMetric;
 import com.azure.analytics.onlineexperimentation.models.LifecycleStage;
 import com.azure.analytics.onlineexperimentation.models.PercentileMetricDefinition;
+import com.azure.analytics.onlineexperimentation.models.AggregatedValue;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
@@ -42,14 +43,15 @@ public class CreatePercentileMetricSampleAsync {
             .buildAsyncClient();
 
         // Define the Percentile metric - calculates a specific percentile of a numeric value
-        ExperimentMetric p95ResponseTimeMetric = new ExperimentMetric(
-            LifecycleStage.ACTIVE,
-            "P95 LLM response time [seconds]",
-            "The 95th percentile of response time in seconds for LLM responses",
-            Arrays.asList("Performance"),
-            DesiredDirection.DECREASE,
-            new PercentileMetricDefinition("ResponseReceived", "ResponseTimeSeconds", 95)
-        );
+        ExperimentMetric p95ResponseTimeMetric = new ExperimentMetric()
+            .setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName("P95 LLM response time [seconds]")
+            .setDescription("The 95th percentile of response time in seconds for LLM responses")
+            .setCategories(Arrays.asList("Performance"))
+            .setDesiredDirection(DesiredDirection.DECREASE)
+            .setDefinition(new PercentileMetricDefinition()
+                .setValue(new AggregatedValue().setEventName("ResponseReceived").setEventProperty("ResponseTimeSeconds"))
+                .setPercentile(95));
 
         // Create the metric asynchronously
         return client.createOrUpdateMetric("p95_response_time_seconds", p95ResponseTimeMetric)

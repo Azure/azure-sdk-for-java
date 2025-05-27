@@ -52,17 +52,6 @@ public final class UserRateMetricDefinition extends ExperimentMetricDefinition {
     }
 
     /**
-     * Creates an instance of UserRateMetricDefinition with the specified start and end event names.
-     *
-     * @param startEventName Name of the event that starts the rate calculation.
-     * @param endEventName Name of the event that ends the rate calculation.
-     */
-    public UserRateMetricDefinition(String startEventName, String endEventName) {
-        this.setStartEvent(new ObservedEvent().setEventName(startEventName));
-        this.setEndEvent(new ObservedEvent().setEventName(endEventName));
-    }
-
-    /**
      * Get the type property: Discriminator property for ExperimentMetricDefinition.
      *
      * @return the type value.

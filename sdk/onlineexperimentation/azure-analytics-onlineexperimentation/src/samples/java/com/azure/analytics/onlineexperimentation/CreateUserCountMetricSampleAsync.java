@@ -6,6 +6,7 @@ package com.azure.analytics.onlineexperimentation;
 import com.azure.analytics.onlineexperimentation.models.DesiredDirection;
 import com.azure.analytics.onlineexperimentation.models.ExperimentMetric;
 import com.azure.analytics.onlineexperimentation.models.LifecycleStage;
+import com.azure.analytics.onlineexperimentation.models.ObservedEvent;
 import com.azure.analytics.onlineexperimentation.models.UserCountMetricDefinition;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -42,18 +43,18 @@ public class CreateUserCountMetricSampleAsync {
             .buildAsyncClient();
 
         // Define the User Count metric with a filter - counts unique users who performed a specific action
-        UserCountMetricDefinition userCountDefinition = new UserCountMetricDefinition("PromptSent");
+        UserCountMetricDefinition userCountDefinition = new UserCountMetricDefinition()
+            .setEvent(new ObservedEvent().setEventName("PromptSent"));
         // Add an optional filter
         userCountDefinition.getEvent().setFilter("Page == 'checkout.html'");
 
-        ExperimentMetric usersPromptSentMetric = new ExperimentMetric(
-            LifecycleStage.ACTIVE,
-            "Users with at least one prompt sent on checkout page",
-            "Counts unique users who sent at least one prompt while on the checkout page",
-            Arrays.asList("Usage"),
-            DesiredDirection.INCREASE,
-            userCountDefinition
-        );
+        ExperimentMetric usersPromptSentMetric = new ExperimentMetric()
+            .setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName("Users with at least one prompt sent on checkout page")
+            .setDescription("Counts unique users who sent at least one prompt while on the checkout page")
+            .setCategories(Arrays.asList("Usage"))
+            .setDesiredDirection(DesiredDirection.INCREASE)
+            .setDefinition(userCountDefinition);
 
         // Create the metric with ID "users_prompt_sent" asynchronously
         return client.createOrUpdateMetric("users_prompt_sent", usersPromptSentMetric)

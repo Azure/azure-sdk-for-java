@@ -19,10 +19,13 @@ import java.util.List;
 public class OnlineExperimentationClientTests extends OnlineExperimentationClientTestBase {
 
     private ExperimentMetric createTestMetric(String metricId, String displayName, String description) {
-        ExperimentMetric metricDefinition = new ExperimentMetric(LifecycleStage.ACTIVE,
-            displayName != null ? displayName : "Test Metric " + metricId,
-            description != null ? description : "A metric created for testing purposes (" + metricId + ")",
-            Collections.singletonList("Test"), DesiredDirection.INCREASE, new EventCountMetricDefinition("TestEvent"));
+        ExperimentMetric metricDefinition = new ExperimentMetric().setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName(displayName != null ? displayName : "Test Metric " + metricId)
+            .setDescription(
+                description != null ? description : "A metric created for testing purposes (" + metricId + ")")
+            .setCategories(Collections.singletonList("Test"))
+            .setDesiredDirection(DesiredDirection.INCREASE)
+            .setDefinition(new EventCountMetricDefinition().setEvent(new ObservedEvent().setEventName("TestEvent")));
 
         return onlineExperimentationClient.createOrUpdateMetric(metricId, metricDefinition);
     }
@@ -31,9 +34,12 @@ public class OnlineExperimentationClientTests extends OnlineExperimentationClien
     @Test
     public void createExperimentMetric() {
         String metricId = "test_metric_create_or_update";
-        ExperimentMetric metricDefinition = new ExperimentMetric(LifecycleStage.ACTIVE, "New Test Metric",
-            "A metric created for testing purposes", Collections.singletonList("Test"), DesiredDirection.INCREASE,
-            new EventCountMetricDefinition("TestEvent"));
+        ExperimentMetric metricDefinition = new ExperimentMetric().setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName("New Test Metric")
+            .setDescription("A metric created for testing purposes")
+            .setCategories(Collections.singletonList("Test"))
+            .setDesiredDirection(DesiredDirection.INCREASE)
+            .setDefinition(new EventCountMetricDefinition().setEvent(new ObservedEvent().setEventName("TestEvent")));
 
         ExperimentMetric response = onlineExperimentationClient.createOrUpdateMetric(metricId, metricDefinition);
 
@@ -52,9 +58,13 @@ public class OnlineExperimentationClientTests extends OnlineExperimentationClien
         } catch (HttpResponseException ex) {
         }
 
-        ExperimentMetric metricDefinition = new ExperimentMetric(LifecycleStage.ACTIVE, "If-None-Match Test Metric",
-            "A metric created with If-None-Match header", Arrays.asList("Test", "Conditional"),
-            DesiredDirection.INCREASE, new EventCountMetricDefinition("ConditionalCreateEvent"));
+        ExperimentMetric metricDefinition = new ExperimentMetric().setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName("If-None-Match Test Metric")
+            .setDescription("A metric created with If-None-Match header")
+            .setCategories(Arrays.asList("Test", "Conditional"))
+            .setDesiredDirection(DesiredDirection.INCREASE)
+            .setDefinition(
+                new EventCountMetricDefinition().setEvent(new ObservedEvent().setEventName("ConditionalCreateEvent")));
 
         ExperimentMetric responseValue = onlineExperimentationClient.createOrUpdateMetric(metricId, metricDefinition,
             new RequestConditions().setIfNoneMatch("*"));
@@ -63,9 +73,12 @@ public class OnlineExperimentationClientTests extends OnlineExperimentationClien
         Assertions.assertEquals(metricId, responseValue.getId());
         Assertions.assertEquals(metricDefinition.getDisplayName(), responseValue.getDisplayName());
 
-        ExperimentMetric updatedDefinition = new ExperimentMetric(LifecycleStage.ACTIVE, "This should not be updated",
-            metricDefinition.getDescription(), metricDefinition.getCategories(), metricDefinition.getDesiredDirection(),
-            metricDefinition.getDefinition());
+        ExperimentMetric updatedDefinition = new ExperimentMetric().setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName("This should not be updated")
+            .setDescription(metricDefinition.getDescription())
+            .setCategories(metricDefinition.getCategories())
+            .setDesiredDirection(metricDefinition.getDesiredDirection())
+            .setDefinition(metricDefinition.getDefinition());
 
         Assertions.assertThrows(HttpResponseException.class, () -> onlineExperimentationClient
             .createOrUpdateMetric(metricId, updatedDefinition, new RequestConditions().setIfNoneMatch("*")));
@@ -76,9 +89,13 @@ public class OnlineExperimentationClientTests extends OnlineExperimentationClien
         String metricId = "test_metric_update_existing";
         ExperimentMetric originalMetric = createTestMetric(metricId, "Original Metric", "Initial description");
 
-        ExperimentMetric updatedDefinition = new ExperimentMetric(LifecycleStage.ACTIVE, "Updated Metric",
-            "This metric has been updated", Arrays.asList("Test", "Updated"), DesiredDirection.INCREASE,
-            new EventCountMetricDefinition("UpdatedTestEvent"));
+        ExperimentMetric updatedDefinition = new ExperimentMetric().setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName("Updated Metric")
+            .setDescription("This metric has been updated")
+            .setCategories(Arrays.asList("Test", "Updated"))
+            .setDesiredDirection(DesiredDirection.INCREASE)
+            .setDefinition(
+                new EventCountMetricDefinition().setEvent(new ObservedEvent().setEventName("UpdatedTestEvent")));
 
         ExperimentMetric updatedMetric = onlineExperimentationClient.createOrUpdateMetric(metricId, updatedDefinition);
 
@@ -107,9 +124,13 @@ public class OnlineExperimentationClientTests extends OnlineExperimentationClien
         ExperimentMetric originalMetric = createTestMetric(metricId, "Original Metric", "Initial description");
         String originalETag = originalMetric.getETag();
 
-        ExperimentMetric updatedDefinition = new ExperimentMetric(LifecycleStage.ACTIVE, "Updated With ETag",
-            "This metric has been updated with ETag condition", Arrays.asList("Test", "Conditional"),
-            DesiredDirection.INCREASE, new EventCountMetricDefinition("ConditionalUpdateEvent"));
+        ExperimentMetric updatedDefinition = new ExperimentMetric().setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName("Updated With ETag")
+            .setDescription("This metric has been updated with ETag condition")
+            .setCategories(Arrays.asList("Test", "Conditional"))
+            .setDesiredDirection(DesiredDirection.INCREASE)
+            .setDefinition(
+                new EventCountMetricDefinition().setEvent(new ObservedEvent().setEventName("ConditionalUpdateEvent")));
 
         ExperimentMetric resultMetric = onlineExperimentationClient.createOrUpdateMetric(metricId, updatedDefinition,
             new RequestConditions().setIfMatch(originalETag));
@@ -140,9 +161,12 @@ public class OnlineExperimentationClientTests extends OnlineExperimentationClien
         String metricId = "test_metric_if_match_fail";
         createTestMetric(metricId, "Original Metric", "Initial description");
 
-        ExperimentMetric updatedDefinition = new ExperimentMetric(LifecycleStage.ACTIVE, "This Should Not Update",
-            "This update should fail due to ETag mismatch", Collections.singletonList("Test"),
-            DesiredDirection.INCREASE, new EventCountMetricDefinition("TestEvent"));
+        ExperimentMetric updatedDefinition = new ExperimentMetric().setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName("This Should Not Update")
+            .setDescription("This update should fail due to ETag mismatch")
+            .setCategories(Collections.singletonList("Test"))
+            .setDesiredDirection(DesiredDirection.INCREASE)
+            .setDefinition(new EventCountMetricDefinition().setEvent(new ObservedEvent().setEventName("TestEvent")));
 
         HttpResponseException exception = Assertions.assertThrows(HttpResponseException.class,
             () -> onlineExperimentationClient.createOrUpdateMetric(metricId, updatedDefinition,
@@ -207,9 +231,13 @@ public class OnlineExperimentationClientTests extends OnlineExperimentationClien
     // VALIDATE operations
     @Test
     public void validateValidExperimentMetric() {
-        ExperimentMetric validDefinition = new ExperimentMetric(LifecycleStage.ACTIVE, "Valid Metric",
-            "A valid metric for validation testing", Arrays.asList("Test", "Validation"), DesiredDirection.INCREASE,
-            new EventCountMetricDefinition("ValidationEvent"));
+        ExperimentMetric validDefinition = new ExperimentMetric().setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName("Valid Metric")
+            .setDescription("A valid metric for validation testing")
+            .setCategories(Arrays.asList("Test", "Validation"))
+            .setDesiredDirection(DesiredDirection.INCREASE)
+            .setDefinition(
+                new EventCountMetricDefinition().setEvent(new ObservedEvent().setEventName("ValidationEvent")));
 
         ExperimentMetricValidationResult result = onlineExperimentationClient.validateMetric(validDefinition);
 
@@ -224,12 +252,15 @@ public class OnlineExperimentationClientTests extends OnlineExperimentationClien
 
     @Test
     public void returnDiagnosticsForInvalidExperimentMetric() {
-        EventCountMetricDefinition invalidMetricDefinition = new EventCountMetricDefinition("ValidationEvent");
-        invalidMetricDefinition.getEvent().setFilter("this is not a valid filter expression.");
+        EventCountMetricDefinition invalidMetricDefinition = new EventCountMetricDefinition().setEvent(
+            new ObservedEvent().setEventName("ValidationEvent").setFilter("this is not a valid filter expression."));
 
-        ExperimentMetric invalidMetric
-            = new ExperimentMetric(LifecycleStage.ACTIVE, "Invalid Metric", "An invalid metric for validation testing",
-                Collections.singletonList("Test"), DesiredDirection.INCREASE, invalidMetricDefinition);
+        ExperimentMetric invalidMetric = new ExperimentMetric().setLifecycle(LifecycleStage.ACTIVE)
+            .setDisplayName("Invalid Metric")
+            .setDescription("An invalid metric for validation testing")
+            .setCategories(Collections.singletonList("Test"))
+            .setDesiredDirection(DesiredDirection.INCREASE)
+            .setDefinition(invalidMetricDefinition);
 
         ExperimentMetricValidationResult result = onlineExperimentationClient.validateMetric(invalidMetric);
 
