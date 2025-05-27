@@ -7,12 +7,10 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.puppycrawl.tools.checkstyle.utils.JavadocUtil.findFirstToken;
 import static com.puppycrawl.tools.checkstyle.utils.TokenUtil.findFirstTokenByPredicate;
 
 /**
@@ -28,6 +26,7 @@ public class RawExceptionThrowCheck extends AbstractCheck {
 
     private static final List<String> IGNORED_EXCEPTIONS = Arrays.asList("NullPointerException",
         "IllegalArgumentException",
+        "IllegalStateException",
         "UnsupportedOperationException");
 
     private static final String CORE_EXCEPTION_FACTORY_NAME = "CoreException.from";
