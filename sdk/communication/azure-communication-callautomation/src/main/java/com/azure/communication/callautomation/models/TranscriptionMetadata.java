@@ -7,7 +7,7 @@ import com.azure.communication.callautomation.implementation.accesshelpers.Trans
 import com.azure.communication.callautomation.implementation.converters.TranscriptionMetadataConverter;
 
 /**
- * Metadata for Transcription Streaming.
+ * The metadata of transcription which contains the information such as subscriptionId, locale ...
  */
 public final class TranscriptionMetadata extends StreamingData {
 
@@ -60,6 +60,7 @@ public final class TranscriptionMetadata extends StreamingData {
     }
 
     /**
+     * The custom speech recognition model endpoint id
      * Get the transcriptionSubscriptionId property.
      *
      * @return the transcriptionSubscriptionId value.
@@ -97,6 +98,7 @@ public final class TranscriptionMetadata extends StreamingData {
     }
 
     /**
+     * The custom speech recognition model endpoint id
      * Get the speechRecognitionModelEndpointId property.
      *
      * @return the speechRecognitionModelEndpointId value.

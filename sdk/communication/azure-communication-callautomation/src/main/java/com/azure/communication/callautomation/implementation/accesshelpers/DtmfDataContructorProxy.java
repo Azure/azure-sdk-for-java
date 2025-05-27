@@ -5,11 +5,13 @@ package com.azure.communication.callautomation.implementation.accesshelpers;
 
 import com.azure.communication.callautomation.implementation.converters.DtmfDataConverter;
 import com.azure.communication.callautomation.models.DtmfData;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Helper class to access private values of {@link DtmdfData} across package boundaries.
  */
 public final class DtmfDataContructorProxy {
+    private static final ClientLogger LOGGER = new ClientLogger(DtmfDataContructorProxy.class);
     private static DtmfDataContructorProxyAccessor accessor;
 
     private DtmfDataContructorProxy() {
@@ -59,7 +61,11 @@ public final class DtmfDataContructorProxy {
         // application accesses DtmfData which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new DtmfData();
+            try {
+                Class.forName(DtmfData.class.getName(), true, DtmfDataContructorProxyAccessor.class.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
         }
 
         assert accessor != null;
@@ -77,7 +83,11 @@ public final class DtmfDataContructorProxy {
         // application accesses DtmfData which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new DtmfData();
+            try {
+                Class.forName(DtmfData.class.getName(), true, DtmfDataContructorProxyAccessor.class.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
         }
 
         assert accessor != null;

@@ -17,17 +17,6 @@ public final class DtmfData extends StreamingData {
      */
     private final String data;
 
-    /*
-     * The timestamp indicating when the media content was received by the bot, or if the bot is sending media, 
-     * the timestamp of when the media was sourced. The format is ISO 8601 (yyyy-mm-ddThh:mm)
-     */
-    private final OffsetDateTime timestamp;
-
-    /*
-     * The raw ID of the participant.
-     */
-    private final CommunicationIdentifier participant;
-
     static {
         DtmfDataContructorProxy.setAccessor(new DtmfDataContructorProxy.DtmfDataContructorProxyAccessor() {
             @Override
@@ -50,22 +39,6 @@ public final class DtmfData extends StreamingData {
     DtmfData(DtmfDataConverter internalData) {
         super(StreamingDataKind.DTMF_DATA);
         this.data = internalData.getData();
-        this.timestamp = OffsetDateTime.parse(internalData.getTimestamp(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        if (internalData.getParticipantRawID() != null && !internalData.getParticipantRawID().isEmpty()) {
-            this.participant = CommunicationIdentifier.fromRawId(internalData.getParticipantRawID());
-        } else {
-            participant = null;
-        }
-    }
-
-    /**
-     * The constructor
-     */
-    public DtmfData() {
-        super(StreamingDataKind.DTMF_DATA);
-        this.data = null;
-        this.timestamp = null;
-        this.participant = null;
     }
 
     /**
@@ -76,8 +49,6 @@ public final class DtmfData extends StreamingData {
     DtmfData(String data) {
         super(StreamingDataKind.DTMF_DATA);
         this.data = data;
-        this.timestamp = null;
-        this.participant = null;
     }
 
     /**
@@ -87,23 +58,5 @@ public final class DtmfData extends StreamingData {
      */
     public String getData() {
         return data;
-    }
-
-    /**
-     * Get the timestamp property.
-     *
-     * @return the timestamp value.
-     */
-    public OffsetDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    /**
-     * Get the participantRawID property.
-     *
-     * @return the participantRawID value.
-     */
-    public CommunicationIdentifier getParticipant() {
-        return participant;
     }
 }

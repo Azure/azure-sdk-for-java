@@ -11,7 +11,8 @@ import com.azure.communication.callautomation.implementation.converters.AudioDat
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.util.BinaryData;
 
-/** The MediaStreamingAudio model. */
+/** The data which contains the audio data stream information such as timestamp, data..
+ */
 public final class AudioData extends StreamingData {
     /*
      * The audio data, encoded as a binary data.
@@ -79,10 +80,10 @@ public final class AudioData extends StreamingData {
     }
 
     /**
-     * The audio data, encoded as a binary data.
+     * The audio data, encoded audio binary data.
      * Get the data property.
      *
-     * @return the data value.
+     * @return the encoded audio binary data.
      */
     public BinaryData getData() {
         return data;
@@ -110,6 +111,7 @@ public final class AudioData extends StreamingData {
     }
 
     /**
+     * Indicates if the received audio buffer contains only silence
      * Get the silent property.
      *
      * @return the silent value.

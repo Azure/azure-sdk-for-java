@@ -8,14 +8,12 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Base64;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
 
-/** The PlaySource model. */
-@Fluent
-public class OutStreamingData {
+/** This class stream audio data back to Azure Communication Services, which plays the audio into the cal */
+public final class OutStreamingData {
 
     /**
      * Out streaming data kind ex. StopAudio, AudioData
@@ -37,7 +35,7 @@ public class OutStreamingData {
      * 
      * @param kind media kind type on the out streaming data
      */
-    public OutStreamingData(MediaKind kind) {
+    OutStreamingData(MediaKind kind) {
         this.kind = kind;
     }
 
@@ -81,10 +79,10 @@ public class OutStreamingData {
     }
 
     /**
+     * Serialized audio data to play back into the cal 
      * Get the streaming data for outbound
      * @param audioData the audioData to set
      * @return the string of outstreaming data
-     * @throws IOException when failed to serilize the data
      * 
      */
     public static String getStreamingDataForOutbound(BinaryData audioData) throws IOException {
@@ -94,9 +92,9 @@ public class OutStreamingData {
     }
 
     /**
+     * Serialized stop data to stop playing audio back into the call
      * Get the stop audiofor outbound
      * @return the string of outstreaming data
-     * @throws IOException throws exception when failed to serialize
      * 
      */
     public static String getStopAudioForOutbound() throws IOException {

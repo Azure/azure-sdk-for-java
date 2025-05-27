@@ -13,7 +13,7 @@ import java.util.List;
 import java.time.Duration;
 
 /**
- * The TranscriptionData model.
+ * The data which contains the transcription data stream information such as DisplayText..
  */
 @Immutable
 public final class TranscriptionData extends StreamingData {
@@ -125,7 +125,8 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
-     * Get the format property.
+     * The format of tex
+     *  Get the format property.
      *
      * @return the format value.
      */
@@ -144,7 +145,7 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
-     * The position of this payload
+     * The starting position of this payload
      * Get the offset property.
      *
      * @return the offset value.
@@ -154,6 +155,7 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
+     * Duration of this payload in the media
      * Duration in ticks. 1 tick = 100 nanoseconds.
      * Get the duration property.
      *
@@ -183,6 +185,7 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
+     * Status of the result of transcription
      * Get the resultState property.
      *
      * @return the resultState value.

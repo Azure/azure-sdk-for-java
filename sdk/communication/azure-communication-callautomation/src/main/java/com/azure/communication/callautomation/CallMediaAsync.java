@@ -882,7 +882,7 @@ public final class CallMediaAsync {
     }
 
     /**
-     * Updates transcription language
+     * API to change transcription language
      *
      * @param locale Defines new locale for transcription.
      * @return Response for successful operation.
@@ -893,7 +893,7 @@ public final class CallMediaAsync {
     }
 
     /**
-    * Updates transcription language
+    * API to change transcription language
     * @param options Options for the Update Transcription operation.
     * @return Response for successful operation.
     */
