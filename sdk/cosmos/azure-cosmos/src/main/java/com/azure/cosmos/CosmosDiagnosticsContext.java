@@ -20,6 +20,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -42,6 +44,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkSt
  * by diagnostic handlers
  */
 public final class CosmosDiagnosticsContext {
+    private final static Logger logger = LoggerFactory.getLogger(CosmosDiagnosticsContext.class);
+
     private final static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
@@ -288,6 +292,11 @@ public final class CosmosDiagnosticsContext {
      * exceeded its threshold.
      */
     public boolean isThresholdViolated() {
+        return this.isThresholdViolated(false);
+    }
+
+
+    public boolean isThresholdViolated(boolean forceLogs) {
         if (!this.isCompleted()) {
             return false;
         }
@@ -297,6 +306,13 @@ public final class CosmosDiagnosticsContext {
         }
 
         if (this.operationType.isPointOperation()) {
+            if (forceLogs) {
+                logger.info(
+                    "Threshold: {}, Duration: {}, Comparison: {}",
+                    this.thresholds.getPointOperationLatencyThreshold(),
+                    this.duration,
+                    this.thresholds.getPointOperationLatencyThreshold().compareTo(this.duration) < 0);
+            }
             if (Duration.ZERO.equals(this.thresholds.getPointOperationLatencyThreshold())
                 || this.thresholds.getPointOperationLatencyThreshold().compareTo(this.duration) < 0) {
                 return true;
