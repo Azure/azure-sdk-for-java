@@ -111,6 +111,7 @@ public final class ConnectionPolicy {
                 .DirectConnectionConfigHelper
                 .getDirectConnectionConfigAccessor()
                 .isHealthCheckTimeoutDetectionEnabled(directConnectionConfig);
+        this.http2ConnectionConfig = gatewayConnectionConfig.getHttp2ConnectionConfig();
 
         // NOTE: should be compared with COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT
         // read during client initialization before connections are created for the container
