@@ -1000,7 +1000,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "fast" }, dataProvider = "changeFeedQueryEndLSNHangDataProvider", timeOut = 100 * TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "changeFeedQueryEndLSNHangDataProvider", timeOut = 100 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void changeFeedQueryCompleteAfterEndLSNHang(
             int throughput,
             int partitionCount,

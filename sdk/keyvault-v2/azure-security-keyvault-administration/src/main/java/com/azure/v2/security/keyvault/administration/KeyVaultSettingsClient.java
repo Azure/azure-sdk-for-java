@@ -149,20 +149,16 @@ public final class KeyVaultSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSetting updateSetting(KeyVaultSetting setting) {
-        try {
-            Objects.requireNonNull(setting, String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL, "'setting'"));
+        Objects.requireNonNull(setting, "'setting' cannot be null.");
 
-            String settingValue = null;
+        String settingValue = null;
 
-            if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
-                settingValue = Boolean.toString(setting.asBoolean());
-            }
-
-            return transformToKeyVaultSetting(
-                clientImpl.updateSetting(setting.getName(), new UpdateSettingRequest(settingValue)));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
+        if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
+            settingValue = Boolean.toString(setting.asBoolean());
         }
+
+        return transformToKeyVaultSetting(
+            clientImpl.updateSetting(setting.getName(), new UpdateSettingRequest(settingValue)));
     }
 
     /**
@@ -196,23 +192,19 @@ public final class KeyVaultSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSetting> updateSettingWithResponse(KeyVaultSetting setting, RequestContext requestContext) {
-        try {
-            Objects.requireNonNull(setting, String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL, "'setting'"));
+        Objects.requireNonNull(setting, "'setting' cannot be null.");
 
-            String settingValue = null;
+        String settingValue = null;
 
-            if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
-                settingValue = Boolean.toString(setting.asBoolean());
-            }
-
-            Response<Setting> response = clientImpl.updateSettingWithResponse(setting.getName(),
-                new UpdateSettingRequest(settingValue), requestContext);
-
-            return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                transformToKeyVaultSetting(response.getValue()));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
+        if (setting.getType() == KeyVaultSettingType.BOOLEAN) {
+            settingValue = Boolean.toString(setting.asBoolean());
         }
+
+        Response<Setting> response = clientImpl.updateSettingWithResponse(setting.getName(),
+            new UpdateSettingRequest(settingValue), requestContext);
+
+        return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            transformToKeyVaultSetting(response.getValue()));
     }
 
     /**
@@ -237,16 +229,11 @@ public final class KeyVaultSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSetting getSetting(String name) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                    String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'name'")));
-            }
-
-            return transformToKeyVaultSetting(clientImpl.getSetting(name));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
+
+        return transformToKeyVaultSetting(clientImpl.getSetting(name));
     }
 
     /**
@@ -279,19 +266,14 @@ public final class KeyVaultSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSetting> getSettingWithResponse(String name, RequestContext requestContext) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                    String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'name'")));
-            }
-
-            Response<Setting> response = clientImpl.getSettingWithResponse(name, requestContext);
-
-            return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                transformToKeyVaultSetting(response.getValue()));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
+
+        Response<Setting> response = clientImpl.getSettingWithResponse(name, requestContext);
+
+        return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            transformToKeyVaultSetting(response.getValue()));
     }
 
     /**
@@ -316,17 +298,13 @@ public final class KeyVaultSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultGetSettingsResult getSettings() {
-        try {
-            List<KeyVaultSetting> keyVaultSettings = clientImpl.getSettings()
-                .getSettings()
-                .stream()
-                .map(KeyVaultSettingsClient::transformToKeyVaultSetting)
-                .collect(Collectors.toList());
+        List<KeyVaultSetting> keyVaultSettings = clientImpl.getSettings()
+            .getSettings()
+            .stream()
+            .map(KeyVaultSettingsClient::transformToKeyVaultSetting)
+            .collect(Collectors.toList());
 
-            return new KeyVaultGetSettingsResult(keyVaultSettings);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return new KeyVaultGetSettingsResult(keyVaultSettings);
     }
 
     /**
@@ -352,28 +330,25 @@ public final class KeyVaultSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultGetSettingsResult> getSettingsWithResponse(RequestContext requestContext) {
-        try {
-            Response<SettingsListResult> response = clientImpl.getSettingsWithResponse(requestContext);
-            List<KeyVaultSetting> keyVaultSettings = response.getValue()
-                .getSettings()
-                .stream()
-                .map(KeyVaultSettingsClient::transformToKeyVaultSetting)
-                .collect(Collectors.toList());
+        Response<SettingsListResult> response = clientImpl.getSettingsWithResponse(requestContext);
+        List<KeyVaultSetting> keyVaultSettings = response.getValue()
+            .getSettings()
+            .stream()
+            .map(KeyVaultSettingsClient::transformToKeyVaultSetting)
+            .collect(Collectors.toList());
 
-            return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                new KeyVaultGetSettingsResult(keyVaultSettings));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            new KeyVaultGetSettingsResult(keyVaultSettings));
     }
 
     private static KeyVaultSetting transformToKeyVaultSetting(Setting setting) {
         if (KeyVaultSettingType.BOOLEAN.toString().equalsIgnoreCase(setting.getType().toString())) {
             return new KeyVaultSetting(setting.getName(), Boolean.parseBoolean(setting.getValue()));
         } else {
-            throw new IllegalArgumentException(
-                String.format("Could not deserialize setting with name '%s'. Type '%s' is not supported.",
-                    setting.getName(), setting.getType()));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("settingName", setting.getName())
+                .addKeyValue("settingType", setting.getType().getValue())
+                .log("Could not deserialize setting.", IllegalArgumentException::new);
         }
     }
 }
