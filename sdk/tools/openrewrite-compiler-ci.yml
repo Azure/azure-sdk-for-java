@@ -29,7 +29,8 @@ extends:
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                 parameters:
                   Paths:
-                    - /*
+                    - /sdk/tools/azure-openrewrite-compiler-maven-plugin/
+                    - /sdk/tools/azure-openrewrite/
 
               - task: Maven@3
                 displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
