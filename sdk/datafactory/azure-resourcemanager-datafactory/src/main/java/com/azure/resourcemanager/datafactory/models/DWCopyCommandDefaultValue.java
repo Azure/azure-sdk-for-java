@@ -88,8 +88,12 @@ public final class DWCopyCommandDefaultValue implements JsonSerializable<DWCopyC
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("columnName", this.columnName);
-        jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
+        if (this.columnName != null) {
+            jsonWriter.writeUntypedField("columnName", this.columnName);
+        }
+        if (this.defaultValue != null) {
+            jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
+        }
         return jsonWriter.writeEndObject();
     }
 

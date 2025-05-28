@@ -383,15 +383,29 @@ public final class CosmosDbLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
-        jsonWriter.writeUntypedField("accountEndpoint", this.accountEndpoint);
-        jsonWriter.writeUntypedField("database", this.database);
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
+        if (this.accountEndpoint != null) {
+            jsonWriter.writeUntypedField("accountEndpoint", this.accountEndpoint);
+        }
+        if (this.database != null) {
+            jsonWriter.writeUntypedField("database", this.database);
+        }
         jsonWriter.writeJsonField("accountKey", this.accountKey);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
-        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
+        if (this.servicePrincipalCredentialType != null) {
+            jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        }
         jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
-        jsonWriter.writeUntypedField("tenant", this.tenant);
-        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        if (this.tenant != null) {
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+        }
+        if (this.azureCloudType != null) {
+            jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        }
         jsonWriter.writeStringField("connectionMode",
             this.connectionMode == null ? null : this.connectionMode.toString());
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);

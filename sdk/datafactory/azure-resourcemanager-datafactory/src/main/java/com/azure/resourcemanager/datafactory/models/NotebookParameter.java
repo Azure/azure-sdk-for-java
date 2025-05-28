@@ -86,7 +86,9 @@ public final class NotebookParameter implements JsonSerializable<NotebookParamet
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }

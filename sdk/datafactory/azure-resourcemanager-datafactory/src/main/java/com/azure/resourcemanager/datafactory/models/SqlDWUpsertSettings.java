@@ -91,8 +91,12 @@ public final class SqlDWUpsertSettings implements JsonSerializable<SqlDWUpsertSe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("interimSchemaName", this.interimSchemaName);
-        jsonWriter.writeUntypedField("keys", this.keys);
+        if (this.interimSchemaName != null) {
+            jsonWriter.writeUntypedField("interimSchemaName", this.interimSchemaName);
+        }
+        if (this.keys != null) {
+            jsonWriter.writeUntypedField("keys", this.keys);
+        }
         return jsonWriter.writeEndObject();
     }
 

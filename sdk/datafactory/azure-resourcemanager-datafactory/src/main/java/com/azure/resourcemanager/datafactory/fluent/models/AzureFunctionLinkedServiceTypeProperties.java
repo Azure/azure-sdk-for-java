@@ -218,8 +218,12 @@ public final class AzureFunctionLinkedServiceTypeProperties
         jsonWriter.writeJsonField("functionKey", this.functionKey);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         jsonWriter.writeJsonField("credential", this.credential);
-        jsonWriter.writeUntypedField("resourceId", this.resourceId);
-        jsonWriter.writeUntypedField("authentication", this.authentication);
+        if (this.resourceId != null) {
+            jsonWriter.writeUntypedField("resourceId", this.resourceId);
+        }
+        if (this.authentication != null) {
+            jsonWriter.writeUntypedField("authentication", this.authentication);
+        }
         return jsonWriter.writeEndObject();
     }
 
