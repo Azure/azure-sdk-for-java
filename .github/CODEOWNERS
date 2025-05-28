@@ -844,7 +844,7 @@
 /sdk/tools/azure-openrewrite/                        @jairmyree @srnagar @jonathangiles @samvaity
 
 # PRLabel: %Azure SDK Tools
-/sdk/tools/azure-openrewrite/azure-openrewrite-compiler-maven-plugin       @jairmyree @srnagar @jonathangiles @samvaity
+/sdk/tools/azure-openrewrite-compiler-maven-plugin/       @jairmyree @srnagar @jonathangiles @samvaity
 
 # ServiceLabel: %Azure SDK Tools
 # AzureSdkOwners:                                    @srnagar @jonathangiles
