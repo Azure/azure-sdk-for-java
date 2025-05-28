@@ -16,7 +16,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.BgpPeerStatusListResultInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverSingleTestDetailsInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverTestDetailsInner;
+import com.azure.resourcemanager.network.fluent.models.GatewayResiliencyInformationInner;
 import com.azure.resourcemanager.network.fluent.models.GatewayRouteListResultInner;
+import com.azure.resourcemanager.network.fluent.models.GatewayRouteSetsInformationInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionListEntityInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.VpnClientConnectionHealthDetailListResultInner;
@@ -24,6 +26,7 @@ import com.azure.resourcemanager.network.fluent.models.VpnClientIPsecParametersI
 import com.azure.resourcemanager.network.models.ExpressRouteFailoverStopApiParameters;
 import com.azure.resourcemanager.network.models.P2SVpnConnectionRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayMigrationParameters;
 import com.azure.resourcemanager.network.models.VpnClientParameters;
 import com.azure.resourcemanager.network.models.VpnDeviceScriptParameters;
 import com.azure.resourcemanager.network.models.VpnPacketCaptureStartParameters;
@@ -1453,6 +1456,284 @@ public interface VirtualNetworkGatewaysClient
         String peer, Context context);
 
     /**
+     * This operation retrieves the resiliency information for an Express Route Gateway, including the gateway's current
+     * resiliency score and recommendations to further improve the score.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param attemptRefresh Attempt to recalculate the Resiliency Information for the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Resiliency Information along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getResiliencyInformationWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, Boolean attemptRefresh);
+
+    /**
+     * This operation retrieves the resiliency information for an Express Route Gateway, including the gateway's current
+     * resiliency score and recommendations to further improve the score.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param attemptRefresh Attempt to recalculate the Resiliency Information for the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of gateway Resiliency Information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<GatewayResiliencyInformationInner>, GatewayResiliencyInformationInner>
+        beginGetResiliencyInformationAsync(String resourceGroupName, String virtualNetworkGatewayName,
+            Boolean attemptRefresh);
+
+    /**
+     * This operation retrieves the resiliency information for an Express Route Gateway, including the gateway's current
+     * resiliency score and recommendations to further improve the score.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of gateway Resiliency Information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<GatewayResiliencyInformationInner>, GatewayResiliencyInformationInner>
+        beginGetResiliencyInformationAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves the resiliency information for an Express Route Gateway, including the gateway's current
+     * resiliency score and recommendations to further improve the score.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of gateway Resiliency Information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GatewayResiliencyInformationInner>, GatewayResiliencyInformationInner>
+        beginGetResiliencyInformation(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves the resiliency information for an Express Route Gateway, including the gateway's current
+     * resiliency score and recommendations to further improve the score.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param attemptRefresh Attempt to recalculate the Resiliency Information for the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of gateway Resiliency Information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GatewayResiliencyInformationInner>, GatewayResiliencyInformationInner>
+        beginGetResiliencyInformation(String resourceGroupName, String virtualNetworkGatewayName,
+            Boolean attemptRefresh, Context context);
+
+    /**
+     * This operation retrieves the resiliency information for an Express Route Gateway, including the gateway's current
+     * resiliency score and recommendations to further improve the score.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param attemptRefresh Attempt to recalculate the Resiliency Information for the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Resiliency Information on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GatewayResiliencyInformationInner> getResiliencyInformationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, Boolean attemptRefresh);
+
+    /**
+     * This operation retrieves the resiliency information for an Express Route Gateway, including the gateway's current
+     * resiliency score and recommendations to further improve the score.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Resiliency Information on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GatewayResiliencyInformationInner> getResiliencyInformationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves the resiliency information for an Express Route Gateway, including the gateway's current
+     * resiliency score and recommendations to further improve the score.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Resiliency Information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayResiliencyInformationInner getResiliencyInformation(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves the resiliency information for an Express Route Gateway, including the gateway's current
+     * resiliency score and recommendations to further improve the score.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param attemptRefresh Attempt to recalculate the Resiliency Information for the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Resiliency Information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayResiliencyInformationInner getResiliencyInformation(String resourceGroupName,
+        String virtualNetworkGatewayName, Boolean attemptRefresh, Context context);
+
+    /**
+     * This operation retrieves the route set information for an Express Route Gateway based on their resiliency.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param attemptRefresh Attempt to recalculate the Route Sets Information for the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Route Sets Information along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getRoutesInformationWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, Boolean attemptRefresh);
+
+    /**
+     * This operation retrieves the route set information for an Express Route Gateway based on their resiliency.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param attemptRefresh Attempt to recalculate the Route Sets Information for the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of gateway Route Sets Information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<GatewayRouteSetsInformationInner>, GatewayRouteSetsInformationInner>
+        beginGetRoutesInformationAsync(String resourceGroupName, String virtualNetworkGatewayName,
+            Boolean attemptRefresh);
+
+    /**
+     * This operation retrieves the route set information for an Express Route Gateway based on their resiliency.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of gateway Route Sets Information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<GatewayRouteSetsInformationInner>, GatewayRouteSetsInformationInner>
+        beginGetRoutesInformationAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves the route set information for an Express Route Gateway based on their resiliency.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of gateway Route Sets Information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GatewayRouteSetsInformationInner>, GatewayRouteSetsInformationInner>
+        beginGetRoutesInformation(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves the route set information for an Express Route Gateway based on their resiliency.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param attemptRefresh Attempt to recalculate the Route Sets Information for the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of gateway Route Sets Information.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<GatewayRouteSetsInformationInner>, GatewayRouteSetsInformationInner>
+        beginGetRoutesInformation(String resourceGroupName, String virtualNetworkGatewayName, Boolean attemptRefresh,
+            Context context);
+
+    /**
+     * This operation retrieves the route set information for an Express Route Gateway based on their resiliency.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param attemptRefresh Attempt to recalculate the Route Sets Information for the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Route Sets Information on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GatewayRouteSetsInformationInner> getRoutesInformationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, Boolean attemptRefresh);
+
+    /**
+     * This operation retrieves the route set information for an Express Route Gateway based on their resiliency.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Route Sets Information on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GatewayRouteSetsInformationInner> getRoutesInformationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves the route set information for an Express Route Gateway based on their resiliency.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Route Sets Information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayRouteSetsInformationInner getRoutesInformation(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * This operation retrieves the route set information for an Express Route Gateway based on their resiliency.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param attemptRefresh Attempt to recalculate the Route Sets Information for the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Route Sets Information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayRouteSetsInformationInner getRoutesInformation(String resourceGroupName, String virtualNetworkGatewayName,
+        Boolean attemptRefresh, Context context);
+
+    /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
      * gateway in the specified resource group through Network resource provider.
      * 
@@ -2679,4 +2960,401 @@ public interface VirtualNetworkGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     void disconnectVirtualNetworkGatewayVpnConnections(String resourceGroupName, String virtualNetworkGatewayName,
         P2SVpnConnectionRequest request, Context context);
+
+    /**
+     * Trigger prepare migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @param migrationParams Parameters supplied to the Begin Prepare migration on basic vpn gateway through Network
+     * resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> invokePrepareMigrationWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, VirtualNetworkGatewayMigrationParameters migrationParams);
+
+    /**
+     * Trigger prepare migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @param migrationParams Parameters supplied to the Begin Prepare migration on basic vpn gateway through Network
+     * resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginInvokePrepareMigrationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, VirtualNetworkGatewayMigrationParameters migrationParams);
+
+    /**
+     * Trigger prepare migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @param migrationParams Parameters supplied to the Begin Prepare migration on basic vpn gateway through Network
+     * resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginInvokePrepareMigration(String resourceGroupName,
+        String virtualNetworkGatewayName, VirtualNetworkGatewayMigrationParameters migrationParams);
+
+    /**
+     * Trigger prepare migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @param migrationParams Parameters supplied to the Begin Prepare migration on basic vpn gateway through Network
+     * resource provider.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginInvokePrepareMigration(String resourceGroupName,
+        String virtualNetworkGatewayName, VirtualNetworkGatewayMigrationParameters migrationParams, Context context);
+
+    /**
+     * Trigger prepare migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @param migrationParams Parameters supplied to the Begin Prepare migration on basic vpn gateway through Network
+     * resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> invokePrepareMigrationAsync(String resourceGroupName, String virtualNetworkGatewayName,
+        VirtualNetworkGatewayMigrationParameters migrationParams);
+
+    /**
+     * Trigger prepare migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @param migrationParams Parameters supplied to the Begin Prepare migration on basic vpn gateway through Network
+     * resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void invokePrepareMigration(String resourceGroupName, String virtualNetworkGatewayName,
+        VirtualNetworkGatewayMigrationParameters migrationParams);
+
+    /**
+     * Trigger prepare migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @param migrationParams Parameters supplied to the Begin Prepare migration on basic vpn gateway through Network
+     * resource provider.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void invokePrepareMigration(String resourceGroupName, String virtualNetworkGatewayName,
+        VirtualNetworkGatewayMigrationParameters migrationParams, Context context);
+
+    /**
+     * Trigger execute migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> invokeExecuteMigrationWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * Trigger execute migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginInvokeExecuteMigrationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * Trigger execute migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginInvokeExecuteMigration(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * Trigger execute migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginInvokeExecuteMigration(String resourceGroupName,
+        String virtualNetworkGatewayName, Context context);
+
+    /**
+     * Trigger execute migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> invokeExecuteMigrationAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Trigger execute migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void invokeExecuteMigration(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Trigger execute migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void invokeExecuteMigration(String resourceGroupName, String virtualNetworkGatewayName, Context context);
+
+    /**
+     * Trigger commit migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> invokeCommitMigrationWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * Trigger commit migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginInvokeCommitMigrationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * Trigger commit migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginInvokeCommitMigration(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * Trigger commit migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginInvokeCommitMigration(String resourceGroupName,
+        String virtualNetworkGatewayName, Context context);
+
+    /**
+     * Trigger commit migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> invokeCommitMigrationAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Trigger commit migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void invokeCommitMigration(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Trigger commit migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void invokeCommitMigration(String resourceGroupName, String virtualNetworkGatewayName, Context context);
+
+    /**
+     * Trigger abort migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> invokeAbortMigrationWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * Trigger abort migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginInvokeAbortMigrationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * Trigger abort migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginInvokeAbortMigration(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * Trigger abort migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginInvokeAbortMigration(String resourceGroupName,
+        String virtualNetworkGatewayName, Context context);
+
+    /**
+     * Trigger abort migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> invokeAbortMigrationAsync(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Trigger abort migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void invokeAbortMigration(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * Trigger abort migration for the virtual network gateway.
+     * 
+     * @param resourceGroupName The resource group name of the virtual network gateway.
+     * @param virtualNetworkGatewayName The name of the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void invokeAbortMigration(String resourceGroupName, String virtualNetworkGatewayName, Context context);
 }

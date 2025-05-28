@@ -226,21 +226,18 @@ public final class KeyVaultBackupClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultBackupOperation, String> beginBackup(String blobStorageUrl, String sasToken) {
         if (isNullOrEmpty(blobStorageUrl)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'blobStorageUrl'")));
+            throw LOGGER.throwableAtError()
+                .log("'blobStorageUrl' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return Poller.createPoller(Duration.ofSeconds(1),
-                pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                    backupWithResponse(blobStorageUrl, sasToken).getValue()),
-                pollingContext -> backupPollOperation(pollingContext.getLatestResponse(), RequestContext.none()),
-                (pollingContext, firstResponse) -> {
-                    throw new UnsupportedOperationException("Cancellation is not supported");
-                }, pollingContext -> pollingContext.getLatestResponse().getValue().getAzureStorageBlobContainerUrl());
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return Poller.createPoller(Duration.ofSeconds(1),
+            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                backupWithResponse(blobStorageUrl, sasToken).getValue()),
+            pollingContext -> backupPollOperation(pollingContext.getLatestResponse(), RequestContext.none()),
+            (pollingContext, firstResponse) -> {
+                throw LOGGER.throwableAtError()
+                    .log("Cancellation is not supported", UnsupportedOperationException::new);
+            }, pollingContext -> pollingContext.getLatestResponse().getValue().getAzureStorageBlobContainerUrl());
     }
 
     private Response<KeyVaultBackupOperation> backupWithResponse(String blobStorageUrl, String sasToken) {
@@ -252,7 +249,7 @@ public final class KeyVaultBackupClient {
 
             return new Response<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
                 backupOperationResponse.getHeaders(),
-                (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue()));
+                (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue(), LOGGER));
         }
     }
 
@@ -281,12 +278,9 @@ public final class KeyVaultBackupClient {
 
                 return processOperationResponse(
                     new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        (KeyVaultBackupOperation) transformToLongRunningOperation(response.getValue())));
+                        (KeyVaultBackupOperation) transformToLongRunningOperation(response.getValue(), LOGGER)));
             }
         } catch (HttpResponseException e) {
-            //noinspection ThrowableNotThrown
-            LOGGER.logThrowableAsError(e);
-
             return new PollResponse<>(LongRunningOperationStatus.FAILED, null);
         }
     }
@@ -337,20 +331,16 @@ public final class KeyVaultBackupClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultRestoreOperation, KeyVaultRestoreResult> beginRestore(String folderUrl, String sasToken) {
         if (isNullOrEmpty(folderUrl)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'folderUrl'")));
+            throw LOGGER.throwableAtError().log("'folderUrl' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return Poller.createPoller(Duration.ofSeconds(1),
-                pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                    restoreActivationOperation(folderUrl, sasToken)),
-                this::restorePollOperation, (pollingContext, firstResponse) -> {
-                    throw new UnsupportedOperationException("Cancellation is not supported");
-                }, pollingContext -> new KeyVaultRestoreResult());
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return Poller.createPoller(Duration.ofSeconds(1),
+            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                restoreActivationOperation(folderUrl, sasToken)),
+            this::restorePollOperation, (pollingContext, firstResponse) -> {
+                throw LOGGER.throwableAtError()
+                    .log("Cancellation is not supported", UnsupportedOperationException::new);
+            }, pollingContext -> new KeyVaultRestoreResult());
     }
 
     Response<KeyVaultRestoreOperation> restoreWithResponse(String folderUrl, String sasToken) {
@@ -367,7 +357,7 @@ public final class KeyVaultBackupClient {
             = clientImpl.fullRestoreOperationWithResponse(restoreOperationParameters, RequestContext.none())) {
 
             return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue()));
+                (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue(), LOGGER));
         }
     }
 
@@ -404,12 +394,9 @@ public final class KeyVaultBackupClient {
 
                 return processOperationResponse(
                     new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue())));
+                        (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue(), LOGGER)));
             }
         } catch (HttpResponseException e) {
-            //noinspection ThrowableNotThrown
-            LOGGER.logThrowableAsError(e);
-
             return new PollResponse<>(LongRunningOperationStatus.FAILED, null);
         }
     }
@@ -464,25 +451,21 @@ public final class KeyVaultBackupClient {
         beginSelectiveKeyRestore(String keyName, String folderUrl, String sasToken) {
 
         if (isNullOrEmpty(keyName)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'keyName'")));
+            throw LOGGER.throwableAtError().log(("'keyName' cannot be null or empty."), IllegalArgumentException::new);
         }
 
         if (isNullOrEmpty(folderUrl)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'folderUrl'")));
+            throw LOGGER.throwableAtError()
+                .log(("'folderUrl' cannot be null or empty."), IllegalArgumentException::new);
         }
 
-        try {
-            return Poller.createPoller(Duration.ofSeconds(1),
-                pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                    selectiveKeyRestoreActivationOperation(keyName, folderUrl, sasToken)),
-                this::selectiveKeyRestorePollOperation, (pollingContext, firstResponse) -> {
-                    throw new UnsupportedOperationException("Cancellation is not supported");
-                }, pollingContext -> new KeyVaultSelectiveKeyRestoreResult());
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return Poller.createPoller(Duration.ofSeconds(1),
+            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                selectiveKeyRestoreActivationOperation(keyName, folderUrl, sasToken)),
+            this::selectiveKeyRestorePollOperation, (pollingContext, firstResponse) -> {
+                throw LOGGER.throwableAtError()
+                    .log("Cancellation is not supported", UnsupportedOperationException::new);
+            }, pollingContext -> new KeyVaultSelectiveKeyRestoreResult());
     }
 
     Response<KeyVaultSelectiveKeyRestoreOperation> selectiveKeyRestoreWithResponse(String keyName, String folderUrl,
@@ -504,7 +487,7 @@ public final class KeyVaultBackupClient {
             return new Response<>(selectiveKeyRestoreOperationResponse.getRequest(),
                 selectiveKeyRestoreOperationResponse.getStatusCode(), selectiveKeyRestoreOperationResponse.getHeaders(),
                 (KeyVaultSelectiveKeyRestoreOperation) transformToLongRunningOperation(
-                    selectiveKeyRestoreOperationResponse.getValue()));
+                    selectiveKeyRestoreOperationResponse.getValue(), LOGGER));
         }
     }
 
@@ -546,12 +529,10 @@ public final class KeyVaultBackupClient {
 
                 return processOperationResponse(
                     new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        (KeyVaultSelectiveKeyRestoreOperation) transformToLongRunningOperation(response.getValue())));
+                        (KeyVaultSelectiveKeyRestoreOperation) transformToLongRunningOperation(response.getValue(),
+                            LOGGER)));
             }
         } catch (HttpResponseException e) {
-            //noinspection ThrowableNotThrown
-            LOGGER.logThrowableAsError(e);
-
             return new PollResponse<>(LongRunningOperationStatus.FAILED, null);
         }
     }
@@ -567,7 +548,9 @@ public final class KeyVaultBackupClient {
         } else if (value instanceof SelectiveKeyRestoreOperation) {
             status = ((SelectiveKeyRestoreOperation) value).getStatus();
         } else {
-            throw new IllegalArgumentException("Unsupported operation type: " + value.getClass());
+            throw LOGGER.throwableAtError()
+                .addKeyValue("operationType", value.getClass().getCanonicalName())
+                .log("Unsupported operation type.", UnsupportedOperationException::new);
         }
 
         return new PollResponse<>(toLongRunningOperationStatus(status.toString().toLowerCase(Locale.US)),

@@ -236,7 +236,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void querySprocs() throws Exception {
         CosmosStoredProcedureProperties properties = getCosmosStoredProcedureProperties();
         CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(properties);

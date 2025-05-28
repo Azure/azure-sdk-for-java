@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ChildResource;
+import com.azure.resourcemanager.network.models.ConnectivityConfigurationPropertiesConnectivityCapabilities;
 import com.azure.resourcemanager.network.models.ConnectivityGroupItem;
 import com.azure.resourcemanager.network.models.ConnectivityTopology;
 import com.azure.resourcemanager.network.models.DeleteExistingPeering;
@@ -207,6 +208,32 @@ public final class ConnectivityConfigurationInner extends ChildResource {
             this.innerProperties = new ConnectivityConfigurationProperties();
         }
         this.innerProperties().withIsGlobal(isGlobal);
+        return this;
+    }
+
+    /**
+     * Get the connectivityCapabilities property: Collection of additional settings to enhance specific topology
+     * behaviors of the connectivity configuration resource.
+     * 
+     * @return the connectivityCapabilities value.
+     */
+    public ConnectivityConfigurationPropertiesConnectivityCapabilities connectivityCapabilities() {
+        return this.innerProperties() == null ? null : this.innerProperties().connectivityCapabilities();
+    }
+
+    /**
+     * Set the connectivityCapabilities property: Collection of additional settings to enhance specific topology
+     * behaviors of the connectivity configuration resource.
+     * 
+     * @param connectivityCapabilities the connectivityCapabilities value to set.
+     * @return the ConnectivityConfigurationInner object itself.
+     */
+    public ConnectivityConfigurationInner withConnectivityCapabilities(
+        ConnectivityConfigurationPropertiesConnectivityCapabilities connectivityCapabilities) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectivityConfigurationProperties();
+        }
+        this.innerProperties().withConnectivityCapabilities(connectivityCapabilities);
         return this;
     }
 

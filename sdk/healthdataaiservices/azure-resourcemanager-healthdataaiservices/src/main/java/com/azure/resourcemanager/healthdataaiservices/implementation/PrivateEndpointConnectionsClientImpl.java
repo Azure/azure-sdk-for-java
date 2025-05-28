@@ -52,22 +52,22 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * The service client containing this operation class.
      */
-    private final HealthDataAIServicesClientImpl client;
+    private final HealthDataAIServicesManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateEndpointConnectionsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateEndpointConnectionsClientImpl(HealthDataAIServicesClientImpl client) {
+    PrivateEndpointConnectionsClientImpl(HealthDataAIServicesManagementClientImpl client) {
         this.service = RestProxy.create(PrivateEndpointConnectionsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for HealthDataAIServicesClientPrivateEndpointConnections to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for HealthDataAIServicesManagementClientPrivateEndpointConnections to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "HealthDataAIServices")

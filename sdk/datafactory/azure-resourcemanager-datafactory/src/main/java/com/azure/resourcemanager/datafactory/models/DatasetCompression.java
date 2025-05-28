@@ -121,7 +121,9 @@ public final class DatasetCompression implements JsonSerializable<DatasetCompres
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("type", this.type);
-        jsonWriter.writeUntypedField("level", this.level);
+        if (this.level != null) {
+            jsonWriter.writeUntypedField("level", this.level);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

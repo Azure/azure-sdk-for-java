@@ -268,18 +268,14 @@ public final class CertificateClient {
         CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
 
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return Poller.createPoller(Duration.ofSeconds(1),
-                pollingContext -> createCertificateActivation(name, policy, isEnabled, tags),
-                pollingContext -> certificatePollOperation(name),
-                (pollingContext, pollResponse) -> certificateCancellationOperation(name),
-                pollingContext -> fetchCertificateOperation(name));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return Poller.createPoller(Duration.ofSeconds(1),
+            pollingContext -> createCertificateActivation(name, policy, isEnabled, tags),
+            pollingContext -> certificatePollOperation(name),
+            (pollingContext, pollResponse) -> certificateCancellationOperation(name),
+            pollingContext -> fetchCertificateOperation(name));
     }
 
     private PollResponse<CertificateOperation> createCertificateActivation(String certificateName,
@@ -351,14 +347,10 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy getCertificate(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createCertificateWithPolicy(clientImpl.getCertificate(name, ""));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createCertificateWithPolicy(clientImpl.getCertificate(name, ""));
     }
 
     /**
@@ -391,14 +383,10 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy getCertificate(String name, String version) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createCertificateWithPolicy(clientImpl.getCertificate(name, version));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createCertificateWithPolicy(clientImpl.getCertificate(name, version));
     }
 
     /**
@@ -439,15 +427,11 @@ public final class CertificateClient {
         RequestContext requestContext) {
 
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.getCertificateWithResponse(name, version, requestContext),
-                KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.getCertificateWithResponse(name, version, requestContext),
+            KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
     }
 
     /**
@@ -485,30 +469,23 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificate updateCertificateProperties(CertificateProperties certificateProperties) {
-        if (certificateProperties == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'certificateProperties' cannot be null."));
-        }
-
+        Objects.requireNonNull(certificateProperties, "'certificateProperties' cannot be null.");
         if (isNullOrEmpty(certificateProperties.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'certificateProperties.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'certificateProperties.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            CertificateAttributes certificateAttributes
-                = new CertificateAttributes().setEnabled(certificateProperties.isEnabled())
-                    .setExpires(certificateProperties.getExpiresOn())
-                    .setNotBefore(certificateProperties.getNotBefore());
+        CertificateAttributes certificateAttributes
+            = new CertificateAttributes().setEnabled(certificateProperties.isEnabled())
+                .setExpires(certificateProperties.getExpiresOn())
+                .setNotBefore(certificateProperties.getNotBefore());
 
-            CertificateUpdateParameters certificateUpdateParameters
-                = new CertificateUpdateParameters().setCertificateAttributes(certificateAttributes)
-                    .setTags(certificateProperties.getTags());
+        CertificateUpdateParameters certificateUpdateParameters
+            = new CertificateUpdateParameters().setCertificateAttributes(certificateAttributes)
+                .setTags(certificateProperties.getTags());
 
-            return createCertificateWithPolicy(clientImpl.updateCertificate(certificateProperties.getName(),
-                certificateProperties.getVersion(), certificateUpdateParameters));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createCertificateWithPolicy(clientImpl.updateCertificate(certificateProperties.getName(),
+            certificateProperties.getVersion(), certificateUpdateParameters));
     }
 
     /**
@@ -556,32 +533,26 @@ public final class CertificateClient {
     public Response<KeyVaultCertificate> updateCertificatePropertiesWithResponse(
         CertificateProperties certificateProperties, RequestContext requestContext) {
 
-        if (certificateProperties == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'certificateProperties' cannot be null."));
-        }
+        Objects.requireNonNull(certificateProperties, "'certificateProperties' cannot be null.");
 
         if (isNullOrEmpty(certificateProperties.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'certificateProperties.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'certificateProperties.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            CertificateAttributes certificateAttributes
-                = new CertificateAttributes().setEnabled(certificateProperties.isEnabled())
-                    .setExpires(certificateProperties.getExpiresOn())
-                    .setNotBefore(certificateProperties.getNotBefore());
+        CertificateAttributes certificateAttributes
+            = new CertificateAttributes().setEnabled(certificateProperties.isEnabled())
+                .setExpires(certificateProperties.getExpiresOn())
+                .setNotBefore(certificateProperties.getNotBefore());
 
-            CertificateUpdateParameters certificateUpdateParameters
-                = new CertificateUpdateParameters().setCertificateAttributes(certificateAttributes)
-                    .setTags(certificateProperties.getTags());
+        CertificateUpdateParameters certificateUpdateParameters
+            = new CertificateUpdateParameters().setCertificateAttributes(certificateAttributes)
+                .setTags(certificateProperties.getTags());
 
-            return mapResponse(
-                clientImpl.updateCertificateWithResponse(certificateProperties.getName(),
-                    certificateProperties.getVersion(), certificateUpdateParameters, requestContext),
-                KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(
+            clientImpl.updateCertificateWithResponse(certificateProperties.getName(),
+                certificateProperties.getVersion(), certificateUpdateParameters, requestContext),
+            KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
     }
 
     /**
@@ -614,18 +585,14 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<DeletedCertificate, Void> beginDeleteCertificate(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return Poller.createPoller(Duration.ofSeconds(1),
-                pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                    createDeletedCertificate(clientImpl.deleteCertificate(name))),
-                pollingContext -> deleteCertificatePollOperation(name, pollingContext),
-                (pollingContext, pollResponse) -> null, pollingContext -> null);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return Poller.createPoller(Duration.ofSeconds(1),
+            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                createDeletedCertificate(clientImpl.deleteCertificate(name))),
+            pollingContext -> deleteCertificatePollOperation(name, pollingContext),
+            (pollingContext, pollResponse) -> null, pollingContext -> null);
     }
 
     private PollResponse<DeletedCertificate> deleteCertificatePollOperation(String name,
@@ -678,14 +645,10 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedCertificate getDeletedCertificate(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createDeletedCertificate(clientImpl.getDeletedCertificate(name));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createDeletedCertificate(clientImpl.getDeletedCertificate(name));
     }
 
     /**
@@ -720,15 +683,11 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedCertificate> getDeletedCertificateWithResponse(String name, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.getDeletedCertificateWithResponse(name, requestContext),
-                DeletedCertificateHelper::createDeletedCertificate);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.getDeletedCertificateWithResponse(name, requestContext),
+            DeletedCertificateHelper::createDeletedCertificate);
     }
 
     /**
@@ -751,14 +710,10 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeletedCertificate(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            clientImpl.purgeDeletedCertificate(name);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        clientImpl.purgeDeletedCertificate(name);
     }
 
     /**
@@ -791,14 +746,10 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedCertificateWithResponse(String name, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return clientImpl.purgeDeletedCertificateWithResponse(name, requestContext);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return clientImpl.purgeDeletedCertificateWithResponse(name, requestContext);
     }
 
     /**
@@ -831,18 +782,14 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return Poller.createPoller(Duration.ofSeconds(1),
-                pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                    createCertificateWithPolicy(clientImpl.recoverDeletedCertificate(name))),
-                pollingContext -> recoverDeletedCertificatePollOperation(name, pollingContext),
-                (pollingContext, firstResponse) -> null, pollingContext -> null);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return Poller.createPoller(Duration.ofSeconds(1),
+            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                createCertificateWithPolicy(clientImpl.recoverDeletedCertificate(name))),
+            pollingContext -> recoverDeletedCertificatePollOperation(name, pollingContext),
+            (pollingContext, firstResponse) -> null, pollingContext -> null);
     }
 
     private PollResponse<KeyVaultCertificateWithPolicy> recoverDeletedCertificatePollOperation(String certificateName,
@@ -894,14 +841,10 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] backupCertificate(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return clientImpl.backupCertificate(name).getValue();
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return clientImpl.backupCertificate(name).getValue();
     }
 
     /**
@@ -935,15 +878,11 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupCertificateWithResponse(String name, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.backupCertificateWithResponse(name, requestContext),
-                BackupCertificateResult::getValue);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.backupCertificateWithResponse(name, requestContext),
+            BackupCertificateResult::getValue);
     }
 
     /**
@@ -970,11 +909,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy restoreCertificateBackup(byte[] backup) {
-        try {
-            return createCertificateWithPolicy(clientImpl.restoreCertificate(new CertificateRestoreParameters(backup)));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createCertificateWithPolicy(clientImpl.restoreCertificate(new CertificateRestoreParameters(backup)));
     }
 
     /**
@@ -1010,13 +945,9 @@ public final class CertificateClient {
     public Response<KeyVaultCertificateWithPolicy> restoreCertificateBackupWithResponse(byte[] backup,
         RequestContext requestContext) {
 
-        try {
-            return mapResponse(
-                clientImpl.restoreCertificateWithResponse(new CertificateRestoreParameters(backup), requestContext),
-                KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(
+            clientImpl.restoreCertificateWithResponse(new CertificateRestoreParameters(backup), requestContext),
+            KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
     }
 
     /**
@@ -1124,13 +1055,9 @@ public final class CertificateClient {
     public PagedIterable<CertificateProperties> listPropertiesOfCertificates(boolean includePending,
         RequestContext requestContext) {
 
-        try {
-            return mapPages(pagingOptions -> clientImpl.getCertificatesSinglePage(null, includePending),
-                (pagingOptions, nextLink) -> clientImpl.getCertificatesNextSinglePage(nextLink, requestContext),
-                CertificatePropertiesHelper::createCertificateProperties);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapPages(pagingOptions -> clientImpl.getCertificatesSinglePage(null, includePending),
+            (pagingOptions, nextLink) -> clientImpl.getCertificatesNextSinglePage(nextLink, requestContext),
+            CertificatePropertiesHelper::createCertificateProperties);
     }
 
     /**
@@ -1212,13 +1139,9 @@ public final class CertificateClient {
     public PagedIterable<DeletedCertificate> listDeletedCertificates(boolean includePending,
         RequestContext requestContext) {
 
-        try {
-            return mapPages(pagingOptions -> clientImpl.getDeletedCertificatesSinglePage(null, includePending),
-                (pagingOptions, nextLink) -> clientImpl.getDeletedCertificatesNextSinglePage(nextLink, requestContext),
-                DeletedCertificateHelper::createDeletedCertificate);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapPages(pagingOptions -> clientImpl.getDeletedCertificatesSinglePage(null, includePending),
+            (pagingOptions, nextLink) -> clientImpl.getDeletedCertificatesNextSinglePage(nextLink, requestContext),
+            DeletedCertificateHelper::createDeletedCertificate);
     }
 
     /**
@@ -1336,13 +1259,9 @@ public final class CertificateClient {
     public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String name,
         RequestContext requestContext) {
 
-        try {
-            return mapPages(pagingOptions -> clientImpl.getCertificateVersionsSinglePage(name, null),
-                (pagingOptions, nextLink) -> clientImpl.getCertificateVersionsNextSinglePage(nextLink, requestContext),
-                CertificatePropertiesHelper::createCertificateProperties);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapPages(pagingOptions -> clientImpl.getCertificateVersionsSinglePage(name, null),
+            (pagingOptions, nextLink) -> clientImpl.getCertificateVersionsNextSinglePage(nextLink, requestContext),
+            CertificatePropertiesHelper::createCertificateProperties);
     }
 
     /**
@@ -1371,15 +1290,11 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificatePolicy getCertificatePolicy(String certificateName) {
         if (isNullOrEmpty(certificateName)) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'certificateName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createCertificatePolicy(clientImpl.getCertificatePolicy(certificateName));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createCertificatePolicy(clientImpl.getCertificatePolicy(certificateName));
     }
 
     /**
@@ -1418,16 +1333,12 @@ public final class CertificateClient {
         RequestContext requestContext) {
 
         if (isNullOrEmpty(certificateName)) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'certificateName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.getCertificatePolicyWithResponse(certificateName, requestContext),
-                CertificatePolicyHelper::createCertificatePolicy);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.getCertificatePolicyWithResponse(certificateName, requestContext),
+            CertificatePolicyHelper::createCertificatePolicy);
     }
 
     /**
@@ -1466,18 +1377,14 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificatePolicy updateCertificatePolicy(String certificateName, CertificatePolicy policy) {
         if (isNullOrEmpty(certificateName)) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'certificateName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            Objects.requireNonNull(policy, "'policy' cannot be null.");
+        Objects.requireNonNull(policy, "'policy' cannot be null.");
 
-            return createCertificatePolicy(
-                clientImpl.updateCertificatePolicy(certificateName, getImplCertificatePolicy(policy)));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createCertificatePolicy(
+            clientImpl.updateCertificatePolicy(certificateName, getImplCertificatePolicy(policy)));
     }
 
     /**
@@ -1524,18 +1431,14 @@ public final class CertificateClient {
         CertificatePolicy policy, RequestContext requestContext) {
 
         if (isNullOrEmpty(certificateName)) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'certificateName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            Objects.requireNonNull(policy, "'policy' cannot be null.");
+        Objects.requireNonNull(policy, "'policy' cannot be null.");
 
-            return mapResponse(clientImpl.updateCertificatePolicyWithResponse(certificateName,
-                getImplCertificatePolicy(policy), requestContext), CertificatePolicyHelper::createCertificatePolicy);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.updateCertificatePolicyWithResponse(certificateName,
+            getImplCertificatePolicy(policy), requestContext), CertificatePolicyHelper::createCertificatePolicy);
     }
 
     /**
@@ -1568,21 +1471,17 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateIssuer createIssuer(CertificateIssuer issuer) {
-        try {
-            Objects.requireNonNull(issuer, "'issuer' cannot be null.");
+        Objects.requireNonNull(issuer, "'issuer' cannot be null.");
 
-            IssuerBundle issuerBundle = getIssuerBundle(issuer);
-            CertificateIssuerSetParameters certificateIssuerSetParameters
-                = new CertificateIssuerSetParameters(issuerBundle.getProvider())
-                    .setOrganizationDetails(issuerBundle.getOrganizationDetails())
-                    .setCredentials(issuerBundle.getCredentials())
-                    .setAttributes(issuerBundle.getAttributes());
+        IssuerBundle issuerBundle = getIssuerBundle(issuer);
+        CertificateIssuerSetParameters certificateIssuerSetParameters
+            = new CertificateIssuerSetParameters(issuerBundle.getProvider())
+                .setOrganizationDetails(issuerBundle.getOrganizationDetails())
+                .setCredentials(issuerBundle.getCredentials())
+                .setAttributes(issuerBundle.getAttributes());
 
-            return createCertificateIssuer(
-                clientImpl.setCertificateIssuer(issuer.getName(), certificateIssuerSetParameters));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createCertificateIssuer(
+            clientImpl.setCertificateIssuer(issuer.getName(), certificateIssuerSetParameters));
     }
 
     /**
@@ -1625,21 +1524,17 @@ public final class CertificateClient {
     public Response<CertificateIssuer> createIssuerWithResponse(CertificateIssuer issuer,
         RequestContext requestContext) {
 
-        try {
-            Objects.requireNonNull(issuer, "'issuer' cannot be null.");
+        Objects.requireNonNull(issuer, "'issuer' cannot be null.");
 
-            IssuerBundle issuerBundle = getIssuerBundle(issuer);
-            CertificateIssuerSetParameters certificateIssuerSetParameters
-                = new CertificateIssuerSetParameters(issuerBundle.getProvider())
-                    .setOrganizationDetails(issuerBundle.getOrganizationDetails())
-                    .setCredentials(issuerBundle.getCredentials())
-                    .setAttributes(issuerBundle.getAttributes());
+        IssuerBundle issuerBundle = getIssuerBundle(issuer);
+        CertificateIssuerSetParameters certificateIssuerSetParameters
+            = new CertificateIssuerSetParameters(issuerBundle.getProvider())
+                .setOrganizationDetails(issuerBundle.getOrganizationDetails())
+                .setCredentials(issuerBundle.getCredentials())
+                .setAttributes(issuerBundle.getAttributes());
 
-            return mapResponse(clientImpl.setCertificateIssuerWithResponse(issuer.getName(),
-                certificateIssuerSetParameters, requestContext), CertificateIssuerHelper::createCertificateIssuer);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.setCertificateIssuerWithResponse(issuer.getName(), certificateIssuerSetParameters,
+            requestContext), CertificateIssuerHelper::createCertificateIssuer);
     }
 
     /**
@@ -1667,14 +1562,10 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateIssuer getIssuer(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createCertificateIssuer(clientImpl.getCertificateIssuer(name));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createCertificateIssuer(clientImpl.getCertificateIssuer(name));
     }
 
     /**
@@ -1709,15 +1600,11 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> getIssuerWithResponse(String name, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.getCertificateIssuerWithResponse(name, requestContext),
-                CertificateIssuerHelper::createCertificateIssuer);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.getCertificateIssuerWithResponse(name, requestContext),
+            CertificateIssuerHelper::createCertificateIssuer);
     }
 
     /**
@@ -1745,14 +1632,10 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateIssuer deleteIssuer(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createCertificateIssuer(clientImpl.deleteCertificateIssuer(name));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createCertificateIssuer(clientImpl.deleteCertificateIssuer(name));
     }
 
     /**
@@ -1782,15 +1665,11 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> deleteIssuerWithResponse(String name, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.deleteCertificateIssuerWithResponse(name, requestContext),
-                CertificateIssuerHelper::createCertificateIssuer);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.deleteCertificateIssuerWithResponse(name, requestContext),
+            CertificateIssuerHelper::createCertificateIssuer);
     }
 
     /**
@@ -1884,13 +1763,9 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IssuerProperties> listPropertiesOfIssuers(RequestContext requestContext) {
-        try {
-            return mapPages(pagingOptions -> clientImpl.getCertificateIssuersSinglePage(null),
-                (pagingOptions, nextLink) -> clientImpl.getCertificateIssuersNextSinglePage(nextLink, requestContext),
-                IssuerPropertiesHelper::createIssuerProperties);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapPages(pagingOptions -> clientImpl.getCertificateIssuersSinglePage(null),
+            (pagingOptions, nextLink) -> clientImpl.getCertificateIssuersNextSinglePage(nextLink, requestContext),
+            IssuerPropertiesHelper::createIssuerProperties);
     }
 
     /**
@@ -1923,28 +1798,21 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateIssuer updateIssuer(CertificateIssuer issuer) {
-        if (issuer == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'issuer' cannot be null."));
-        }
-
+        Objects.requireNonNull(issuer, "'issuer' cannot be null.");
         if (isNullOrEmpty(issuer.getName())) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'issuer.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'issuer.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            IssuerBundle issuerBundle = getIssuerBundle(issuer);
-            CertificateIssuerUpdateParameters certificateIssuerUpdateParameters
-                = new CertificateIssuerUpdateParameters().setProvider(issuerBundle.getProvider())
-                    .setOrganizationDetails(issuerBundle.getOrganizationDetails())
-                    .setCredentials(issuerBundle.getCredentials())
-                    .setAttributes(issuerBundle.getAttributes());
+        IssuerBundle issuerBundle = getIssuerBundle(issuer);
+        CertificateIssuerUpdateParameters certificateIssuerUpdateParameters
+            = new CertificateIssuerUpdateParameters().setProvider(issuerBundle.getProvider())
+                .setOrganizationDetails(issuerBundle.getOrganizationDetails())
+                .setCredentials(issuerBundle.getCredentials())
+                .setAttributes(issuerBundle.getAttributes());
 
-            return createCertificateIssuer(
-                clientImpl.updateCertificateIssuer(issuer.getName(), certificateIssuerUpdateParameters));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createCertificateIssuer(
+            clientImpl.updateCertificateIssuer(issuer.getName(), certificateIssuerUpdateParameters));
     }
 
     /**
@@ -1986,29 +1854,22 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> updateIssuerWithResponse(CertificateIssuer issuer,
         RequestContext requestContext) {
-
-        if (issuer == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'issuer' cannot be null."));
-        }
+        Objects.requireNonNull(issuer, "'issuer' cannot be null.");
 
         if (isNullOrEmpty(issuer.getName())) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'issuer.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'issuer.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            IssuerBundle issuerBundle = getIssuerBundle(issuer);
-            CertificateIssuerUpdateParameters certificateIssuerUpdateParameters
-                = new CertificateIssuerUpdateParameters().setProvider(issuerBundle.getProvider())
-                    .setOrganizationDetails(issuerBundle.getOrganizationDetails())
-                    .setCredentials(issuerBundle.getCredentials())
-                    .setAttributes(issuerBundle.getAttributes());
+        IssuerBundle issuerBundle = getIssuerBundle(issuer);
+        CertificateIssuerUpdateParameters certificateIssuerUpdateParameters
+            = new CertificateIssuerUpdateParameters().setProvider(issuerBundle.getProvider())
+                .setOrganizationDetails(issuerBundle.getOrganizationDetails())
+                .setCredentials(issuerBundle.getCredentials())
+                .setAttributes(issuerBundle.getAttributes());
 
-            return mapResponse(clientImpl.updateCertificateIssuerWithResponse(issuer.getName(),
-                certificateIssuerUpdateParameters, requestContext), CertificateIssuerHelper::createCertificateIssuer);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.updateCertificateIssuerWithResponse(issuer.getName(),
+            certificateIssuerUpdateParameters, requestContext), CertificateIssuerHelper::createCertificateIssuer);
     }
 
     /**
@@ -2074,12 +1935,8 @@ public final class CertificateClient {
     public PagedIterable<CertificateContact> setContacts(List<CertificateContact> contacts,
         RequestContext requestContext) {
 
-        try {
-            return new PagedIterable<>((pagingOptions) -> mapContactsToPagedResponse(clientImpl
-                .setCertificateContactsWithResponse(new Contacts().setContactList(contacts), requestContext)));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return new PagedIterable<>((pagingOptions) -> mapContactsToPagedResponse(
+            clientImpl.setCertificateContactsWithResponse(new Contacts().setContactList(contacts), requestContext)));
     }
 
     /**
@@ -2128,12 +1985,8 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> listContacts(RequestContext requestContext) {
-        try {
-            return new PagedIterable<>((pagingOptions) -> mapContactsToPagedResponse(
-                clientImpl.getCertificateContactsWithResponse(requestContext)));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return new PagedIterable<>((pagingOptions) -> mapContactsToPagedResponse(
+            clientImpl.getCertificateContactsWithResponse(requestContext)));
     }
 
     /**
@@ -2182,12 +2035,8 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> deleteContacts(RequestContext requestContext) {
-        try {
-            return new PagedIterable<>((pagingOptions) -> mapContactsToPagedResponse(
-                clientImpl.deleteCertificateContactsWithResponse(requestContext)));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return new PagedIterable<>((pagingOptions) -> mapContactsToPagedResponse(
+            clientImpl.deleteCertificateContactsWithResponse(requestContext)));
     }
 
     /**
@@ -2220,19 +2069,15 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
         if (isNullOrEmpty(certificateName)) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'certificateName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return Poller.createPoller(Duration.ofSeconds(1),
-                pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null),
-                pollingContext -> certificatePollOperation(certificateName),
-                (pollingContext, pollResponse) -> certificateCancellationOperation(certificateName),
-                pollingContext -> fetchCertificateOperation(certificateName));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return Poller.createPoller(Duration.ofSeconds(1),
+            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null),
+            pollingContext -> certificatePollOperation(certificateName),
+            (pollingContext, pollResponse) -> certificateCancellationOperation(certificateName),
+            pollingContext -> fetchCertificateOperation(certificateName));
     }
 
     /**
@@ -2261,15 +2106,11 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateOperation deleteCertificateOperation(String certificateName) {
         if (isNullOrEmpty(certificateName)) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'certificateName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createCertificateOperation(clientImpl.deleteCertificateOperation(certificateName));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createCertificateOperation(clientImpl.deleteCertificateOperation(certificateName));
     }
 
     /**
@@ -2302,16 +2143,12 @@ public final class CertificateClient {
         RequestContext requestContext) {
 
         if (isNullOrEmpty(certificateName)) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'certificateName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.deleteCertificateOperationWithResponse(certificateName, requestContext),
-                CertificateOperationHelper::createCertificateOperation);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.deleteCertificateOperationWithResponse(certificateName, requestContext),
+            CertificateOperationHelper::createCertificateOperation);
     }
 
     /**
@@ -2341,16 +2178,12 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateOperation cancelCertificateOperation(String certificateName) {
         if (isNullOrEmpty(certificateName)) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'certificateName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createCertificateOperation(
-                clientImpl.updateCertificateOperation(certificateName, new CertificateOperationUpdateParameter(true)));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createCertificateOperation(
+            clientImpl.updateCertificateOperation(certificateName, new CertificateOperationUpdateParameter(true)));
     }
 
     /**
@@ -2386,14 +2219,10 @@ public final class CertificateClient {
     public Response<CertificateOperation> cancelCertificateOperationWithResponse(String certificateName,
         RequestContext requestContext) {
 
-        try {
-            return mapResponse(
-                clientImpl.updateCertificateOperationWithResponse(certificateName,
-                    new CertificateOperationUpdateParameter(true), requestContext),
-                CertificateOperationHelper::createCertificateOperation);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(
+            clientImpl.updateCertificateOperationWithResponse(certificateName,
+                new CertificateOperationUpdateParameter(true), requestContext),
+            CertificateOperationHelper::createCertificateOperation);
     }
 
     /**
@@ -2429,20 +2258,15 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy mergeCertificate(MergeCertificateOptions mergeCertificateOptions) {
-        try {
-            Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
+        Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
 
-            CertificateMergeParameters certificateMergeParameters
-                = new CertificateMergeParameters(mergeCertificateOptions.getX509Certificates())
-                    .setTags(mergeCertificateOptions.getTags())
-                    .setCertificateAttributes(
-                        new CertificateAttributes().setEnabled(mergeCertificateOptions.isEnabled()));
+        CertificateMergeParameters certificateMergeParameters
+            = new CertificateMergeParameters(mergeCertificateOptions.getX509Certificates())
+                .setTags(mergeCertificateOptions.getTags())
+                .setCertificateAttributes(new CertificateAttributes().setEnabled(mergeCertificateOptions.isEnabled()));
 
-            return createCertificateWithPolicy(
-                clientImpl.mergeCertificate(mergeCertificateOptions.getName(), certificateMergeParameters));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createCertificateWithPolicy(
+            clientImpl.mergeCertificate(mergeCertificateOptions.getName(), certificateMergeParameters));
     }
 
     /**
@@ -2486,28 +2310,21 @@ public final class CertificateClient {
     public Response<KeyVaultCertificateWithPolicy>
         mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions, RequestContext requestContext) {
 
-        if (mergeCertificateOptions == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'mergeCertificateOptions' cannot be null."));
-        }
+        Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
 
         if (isNullOrEmpty(mergeCertificateOptions.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'mergeCertificateOptions.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'mergeCertificateOptions.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            CertificateMergeParameters certificateMergeParameters
-                = new CertificateMergeParameters(mergeCertificateOptions.getX509Certificates())
-                    .setTags(mergeCertificateOptions.getTags())
-                    .setCertificateAttributes(
-                        new CertificateAttributes().setEnabled(mergeCertificateOptions.isEnabled()));
+        CertificateMergeParameters certificateMergeParameters
+            = new CertificateMergeParameters(mergeCertificateOptions.getX509Certificates())
+                .setTags(mergeCertificateOptions.getTags())
+                .setCertificateAttributes(new CertificateAttributes().setEnabled(mergeCertificateOptions.isEnabled()));
 
-            return mapResponse(clientImpl.mergeCertificateWithResponse(mergeCertificateOptions.getName(),
-                certificateMergeParameters, requestContext),
-                KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.mergeCertificateWithResponse(mergeCertificateOptions.getName(),
+            certificateMergeParameters, requestContext),
+            KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
     }
 
     /**
@@ -2544,32 +2361,25 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy importCertificate(ImportCertificateOptions importCertificateOptions) {
-        if (importCertificateOptions == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'importCertificateOptions' cannot be null."));
-        }
+        Objects.requireNonNull(importCertificateOptions, "'importCertificateOptions' cannot be null.");
 
         if (isNullOrEmpty(importCertificateOptions.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'importCertificateOptions.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'importCertificateOptions.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy
-                = getImplCertificatePolicy(importCertificateOptions.getPolicy());
+        com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy
+            = getImplCertificatePolicy(importCertificateOptions.getPolicy());
 
-            CertificateImportParameters certificateImportParameters
-                = new CertificateImportParameters(transformCertificateForImport(importCertificateOptions))
-                    .setPassword(importCertificateOptions.getPassword())
-                    .setCertificatePolicy(implPolicy)
-                    .setTags(importCertificateOptions.getTags())
-                    .setCertificateAttributes(
-                        new CertificateAttributes().setEnabled(importCertificateOptions.isEnabled()));
+        CertificateImportParameters certificateImportParameters
+            = new CertificateImportParameters(transformCertificateForImport(importCertificateOptions))
+                .setPassword(importCertificateOptions.getPassword())
+                .setCertificatePolicy(implPolicy)
+                .setTags(importCertificateOptions.getTags())
+                .setCertificateAttributes(new CertificateAttributes().setEnabled(importCertificateOptions.isEnabled()));
 
-            return createCertificateWithPolicy(
-                clientImpl.importCertificate(importCertificateOptions.getName(), certificateImportParameters));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createCertificateWithPolicy(
+            clientImpl.importCertificate(importCertificateOptions.getName(), certificateImportParameters));
     }
 
     /**
@@ -2614,35 +2424,26 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> importCertificateWithResponse(
         ImportCertificateOptions importCertificateOptions, RequestContext requestContext) {
-
-        if (importCertificateOptions == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'importCertificateOptions' cannot be null."));
-        }
+        Objects.requireNonNull(importCertificateOptions, "'importCertificateOptions' cannot be null.");
 
         if (isNullOrEmpty(importCertificateOptions.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'importCertificateOptions.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'importCertificateOptions.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy
-                = getImplCertificatePolicy(importCertificateOptions.getPolicy());
+        com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy
+            = getImplCertificatePolicy(importCertificateOptions.getPolicy());
 
-            CertificateImportParameters certificateImportParameters
-                = new CertificateImportParameters(transformCertificateForImport(importCertificateOptions))
-                    .setPassword(importCertificateOptions.getPassword())
-                    .setCertificatePolicy(implPolicy)
-                    .setTags(importCertificateOptions.getTags())
-                    .setCertificateAttributes(
-                        new CertificateAttributes().setEnabled(importCertificateOptions.isEnabled()));
+        CertificateImportParameters certificateImportParameters
+            = new CertificateImportParameters(transformCertificateForImport(importCertificateOptions))
+                .setPassword(importCertificateOptions.getPassword())
+                .setCertificatePolicy(implPolicy)
+                .setTags(importCertificateOptions.getTags())
+                .setCertificateAttributes(new CertificateAttributes().setEnabled(importCertificateOptions.isEnabled()));
 
-            return mapResponse(
-                clientImpl.importCertificateWithResponse(importCertificateOptions.getName(),
-                    certificateImportParameters, requestContext),
-                KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.importCertificateWithResponse(importCertificateOptions.getName(),
+            certificateImportParameters, requestContext),
+            KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
     }
 
     private static <T, S> Response<S> mapResponse(Response<T> response, Function<T, S> mapper) {
