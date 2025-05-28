@@ -60,8 +60,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     @Override
     protected Map<String, String> getDefaultHeaders(
         ApiType apiType,
-        UserAgentContainer userAgentContainer,
-        ConsistencyLevel clientDefaultConsistencyLevel) {
+        UserAgentContainer userAgentContainer) {
 
         checkNotNull(userAgentContainer, "Argument 'userAGentContainer' must not be null.");
 

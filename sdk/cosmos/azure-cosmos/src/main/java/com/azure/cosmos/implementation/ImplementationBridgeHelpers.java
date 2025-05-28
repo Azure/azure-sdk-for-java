@@ -893,6 +893,7 @@ public class ImplementationBridgeHelpers {
                 OperationType operationType,
                 String operationId,
                 ConsistencyLevel consistencyLevel,
+                ReadConsistencyStrategy readConsistencyStrategy,
                 Integer maxItemCount,
                 CosmosDiagnosticsThresholds thresholds,
                 String trackingId,
@@ -1445,6 +1446,12 @@ public class ImplementationBridgeHelpers {
                 CosmosAsyncClient client,
                 OperationType operationType,
                 ConsistencyLevel desiredConsistencyLevelOfOperation);
+
+            ReadConsistencyStrategy getEffectiveReadConsistencyStrategy(
+                CosmosAsyncClient client,
+                ResourceType resourceType,
+                OperationType operationType,
+                ReadConsistencyStrategy desiredReadConsistencyStrategy);
 
             CosmosDiagnosticsThresholds getEffectiveDiagnosticsThresholds(
                 CosmosAsyncClient client,

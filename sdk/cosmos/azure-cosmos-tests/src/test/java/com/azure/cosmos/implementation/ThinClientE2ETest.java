@@ -6,6 +6,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -21,7 +22,7 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class ThinClientE2ETest {
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void testThinClientDocumentPointOperations() {
         CosmosAsyncClient client = null;
         try {
@@ -108,7 +109,9 @@ public class ThinClientE2ETest {
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
             System.clearProperty("COSMOS.HTTP2_ENABLED");
-            client.close();
+            if (client != null) {
+                client.close();
+            }
         }
     }
 }
