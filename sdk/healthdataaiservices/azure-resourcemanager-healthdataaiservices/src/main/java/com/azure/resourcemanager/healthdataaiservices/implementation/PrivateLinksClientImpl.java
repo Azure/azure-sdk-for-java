@@ -43,22 +43,22 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
     /**
      * The service client containing this operation class.
      */
-    private final HealthDataAIServicesClientImpl client;
+    private final HealthDataAIServicesManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinksClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateLinksClientImpl(HealthDataAIServicesClientImpl client) {
+    PrivateLinksClientImpl(HealthDataAIServicesManagementClientImpl client) {
         this.service
             = RestProxy.create(PrivateLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for HealthDataAIServicesClientPrivateLinks to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for HealthDataAIServicesManagementClientPrivateLinks to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "HealthDataAIServices")
