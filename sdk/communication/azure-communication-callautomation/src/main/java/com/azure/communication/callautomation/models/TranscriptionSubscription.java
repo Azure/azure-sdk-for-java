@@ -32,7 +32,7 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
     private TranscriptionSubscriptionState state;
 
     /*
-     * Gets or Sets subscription Id.
+     * Gets or Sets Locale.
      */
     private String Locale;
 
