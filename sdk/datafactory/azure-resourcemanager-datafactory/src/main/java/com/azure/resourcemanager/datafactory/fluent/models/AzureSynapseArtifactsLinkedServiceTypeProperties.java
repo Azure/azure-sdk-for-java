@@ -133,8 +133,12 @@ public final class AzureSynapseArtifactsLinkedServiceTypeProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("endpoint", this.endpoint);
-        jsonWriter.writeUntypedField("authentication", this.authentication);
-        jsonWriter.writeUntypedField("workspaceResourceId", this.workspaceResourceId);
+        if (this.authentication != null) {
+            jsonWriter.writeUntypedField("authentication", this.authentication);
+        }
+        if (this.workspaceResourceId != null) {
+            jsonWriter.writeUntypedField("workspaceResourceId", this.workspaceResourceId);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -935,25 +935,6 @@ public class CosmosClientBuilder implements
         }
     }
 
-    void resetIsPerPartitionAutomaticFailoverEnabledAndEnforcePerPartitionCircuitBreakerIfNeeded() {
-        String isPerPartitionAutomaticFailoverEnabledAsStr
-            = Configs.isPerPartitionAutomaticFailoverEnabled();
-
-        if (!StringUtils.isEmpty(isPerPartitionAutomaticFailoverEnabledAsStr)) {
-            this.isPerPartitionAutomaticFailoverEnabled = Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledAsStr);
-        }
-
-        if (this.isPerPartitionAutomaticFailoverEnabled) {
-
-            PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
-
-            if (partitionLevelCircuitBreakerConfig != null && !partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
-                logger.info("As Per-Partition Automatic Failover is enabled, Per-Partition Circuit Breaker is enabled too by default!");
-                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true}");
-            }
-        }
-    }
-
     /**
      * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
      * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
@@ -1253,7 +1234,6 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
-        this.resetIsPerPartitionAutomaticFailoverEnabledAndEnforcePerPartitionCircuitBreakerIfNeeded();
 
         validateConfig();
         buildConnectionPolicy();
@@ -1295,7 +1275,6 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
-        this.resetIsPerPartitionAutomaticFailoverEnabledAndEnforcePerPartitionCircuitBreakerIfNeeded();
 
         validateConfig();
         buildConnectionPolicy();

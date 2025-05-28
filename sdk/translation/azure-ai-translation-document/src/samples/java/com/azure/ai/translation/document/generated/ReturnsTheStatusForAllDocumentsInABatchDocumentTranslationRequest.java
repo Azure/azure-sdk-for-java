@@ -17,7 +17,7 @@ public class ReturnsTheStatusForAllDocumentsInABatchDocumentTranslationRequest {
             = new DocumentTranslationClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.ai.translation.document.generated.listdocumentstatuses.returnsthestatusforalldocumentsinabatchdocumenttranslationrequest
+        // BEGIN:com.azure.ai.translation.document.generated.list-document-statuses.returns-the-status-for-all-documents-in-a-batch-document-translation-request
         RequestOptions requestOptions = new RequestOptions().addQueryParam("top", "2")
             .addQueryParam("skip", "0")
             .addQueryParam("maxpagesize", "1")
@@ -28,6 +28,6 @@ public class ReturnsTheStatusForAllDocumentsInABatchDocumentTranslationRequest {
             .addQueryParam("ids", "273622bd-835c-4946-9798-fd8f19f6bbf2,511b6a66-a6f8-4640-83e1-48c325e9fa29");
         PagedIterable<BinaryData> response
             = documentTranslationClient.listDocumentStatuses("727BF148-F327-47A0-9481-ABAE6362F11E", requestOptions);
-        // END:com.azure.ai.translation.document.generated.listdocumentstatuses.returnsthestatusforalldocumentsinabatchdocumenttranslationrequest
+        // END:com.azure.ai.translation.document.generated.list-document-statuses.returns-the-status-for-all-documents-in-a-batch-document-translation-request
     }
 }

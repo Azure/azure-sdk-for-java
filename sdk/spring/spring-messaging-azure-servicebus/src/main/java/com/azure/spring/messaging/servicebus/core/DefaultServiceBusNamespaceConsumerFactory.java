@@ -80,7 +80,10 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
     public ServiceBusSessionReceiverClient createReceiver(String name, ServiceBusEntityType entityType) {
         ConsumerProperties consumerProperties = this.propertiesSupplier.getProperties(new ConsumerIdentifier(name)) != null
             ? this.propertiesSupplier.getProperties(new ConsumerIdentifier(name)) : new ConsumerProperties();
-        if (entityType != null) {
+        // Set the entityType only if it is not already defined in consumerProperties.
+        // This ensures that the entityType provided as a method argument is used as a fallback
+        // when consumerProperties does not specify one.
+        if (consumerProperties.getEntityType() == null && entityType != null) {
             consumerProperties.setEntityType(entityType);
         }
         return doCreateReceiver(name, consumerProperties);

@@ -37,7 +37,6 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
@@ -45,11 +44,6 @@ import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.GeneratedCodeUtils;
 import io.clientcore.core.utils.UriBuilder;
-
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
-import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -63,6 +57,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
+import javax.tools.Diagnostic;
 
 import static io.clientcore.annotation.processor.utils.ResponseHandler.generateResponseHandling;
 
@@ -354,8 +352,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 .filter(param -> param.getVariableElement().getAnnotation(HostParam.class) != null)
                 .map(HttpRequestContext.MethodParameter::getName)
                 .collect(Collectors.joining(" + "));
-
-            if (CoreUtils.isNullOrEmpty(concatenatedHostParams)) {
+            if (method.isUriNextLink() || CoreUtils.isNullOrEmpty(concatenatedHostParams)) {
                 urlStatement = method.getHost();
             } else {
                 urlStatement = concatenatedHostParams + " + \"/\" + " + method.getHost();
@@ -363,7 +360,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         } else {
             urlStatement = method.getHost();
         }
-
         // If the method doesn't have query parameters to set, inline the call to HttpRequest.setUri and return.
         if (method.getQueryParams().isEmpty()) {
             // The 'createHttpRequest' expression is the scope for the method call expression being added.
@@ -438,17 +434,14 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     }
 
     /**
-     * Adds headers to the HttpRequest using the provided HttpRequestContext.
-     * Handles both static and dynamic headers, and applies correct quoting logic for static values.
+     * Adds headers to the HttpRequest using the provided HttpRequestContext. Handles both static and dynamic headers,
+     * and applies correct quoting logic for static values.
      * <p>
-     * Quoting logic:
-     * - If value starts and ends with ", use as-is.
-     * - If starts with ", append trailing ".
-     * - If ends with ", prepend leading ".
-     * - Otherwise, wrap value in quotes.
+     * Quoting logic: - If value starts and ends with ", use as-is. - If starts with ", append trailing ". - If ends
+     * with ", prepend leading ". - Otherwise, wrap value in quotes.
      * <p>
-     * For dynamic headers (parameter-based), values are not quoted.
-     * For static headers (literal values), quoting is always applied.
+     * For dynamic headers (parameter-based), values are not quoted. For static headers (literal values), quoting is
+     * always applied.
      * <p>
      */
     private void addHeadersToRequest(BlockStmt body, HttpRequestContext method) {
@@ -533,7 +526,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
     private void finalizeHttpRequest(BlockStmt body, TypeMirror returnTypeName, HttpRequestContext method,
         boolean serializationFormatSet) {
-        body.tryAddImportToParentCompilationUnit(Response.class);
         generateResponseHandling(body, returnTypeName, method, serializationFormatSet);
     }
 }

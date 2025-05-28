@@ -101,6 +101,11 @@ public final class SearchField implements JsonSerializable<SearchField> {
     private Boolean facetable;
 
     /*
+     * A value indicating whether the field should be used as a permission filter.
+     */
+    private PermissionFilter permissionFilter;
+
+    /*
      * The name of the analyzer to use for the field. This option can be used only with searchable fields and it can't
      * be set together with either searchAnalyzer or indexAnalyzer. Once the analyzer is chosen, it cannot be changed
      * for the field. Must be null for complex fields.
@@ -402,6 +407,26 @@ public final class SearchField implements JsonSerializable<SearchField> {
     }
 
     /**
+     * Get the permissionFilter property: A value indicating whether the field should be used as a permission filter.
+     *
+     * @return the permissionFilter value.
+     */
+    public PermissionFilter getPermissionFilter() {
+        return this.permissionFilter;
+    }
+
+    /**
+     * Set the permissionFilter property: A value indicating whether the field should be used as a permission filter.
+     *
+     * @param permissionFilter the permissionFilter value to set.
+     * @return the SearchField object itself.
+     */
+    public SearchField setPermissionFilter(PermissionFilter permissionFilter) {
+        this.permissionFilter = permissionFilter;
+        return this;
+    }
+
+    /**
      * Get the analyzerName property: The name of the analyzer to use for the field. This option can be used only with
      * searchable fields and it can't be set together with either searchAnalyzer or indexAnalyzer. Once the analyzer is
      * chosen, it cannot be changed for the field. Must be null for complex fields.
@@ -632,6 +657,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
         jsonWriter.writeBooleanField("filterable", this.filterable);
         jsonWriter.writeBooleanField("sortable", this.sortable);
         jsonWriter.writeBooleanField("facetable", this.facetable);
+        jsonWriter.writeStringField("permissionFilter",
+            this.permissionFilter == null ? null : this.permissionFilter.toString());
         jsonWriter.writeStringField("analyzer", this.analyzerName == null ? null : this.analyzerName.toString());
         jsonWriter.writeStringField("searchAnalyzer",
             this.searchAnalyzerName == null ? null : this.searchAnalyzerName.toString());
@@ -670,6 +697,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
             Boolean filterable = null;
             Boolean sortable = null;
             Boolean facetable = null;
+            PermissionFilter permissionFilter = null;
             LexicalAnalyzerName analyzerName = null;
             LexicalAnalyzerName searchAnalyzerName = null;
             LexicalAnalyzerName indexAnalyzerName = null;
@@ -702,6 +730,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     sortable = reader.getNullable(JsonReader::getBoolean);
                 } else if ("facetable".equals(fieldName)) {
                     facetable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("permissionFilter".equals(fieldName)) {
+                    permissionFilter = PermissionFilter.fromString(reader.getString());
                 } else if ("analyzer".equals(fieldName)) {
                     analyzerName = LexicalAnalyzerName.fromString(reader.getString());
                 } else if ("searchAnalyzer".equals(fieldName)) {
@@ -733,6 +763,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                 deserializedSearchField.filterable = filterable;
                 deserializedSearchField.sortable = sortable;
                 deserializedSearchField.facetable = facetable;
+                deserializedSearchField.permissionFilter = permissionFilter;
                 deserializedSearchField.analyzerName = analyzerName;
                 deserializedSearchField.searchAnalyzerName = searchAnalyzerName;
                 deserializedSearchField.indexAnalyzerName = indexAnalyzerName;

@@ -248,14 +248,30 @@ public final class TypeConversionSettings implements JsonSerializable<TypeConver
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("allowDataTruncation", this.allowDataTruncation);
-        jsonWriter.writeUntypedField("treatBooleanAsNumber", this.treatBooleanAsNumber);
-        jsonWriter.writeUntypedField("dateTimeFormat", this.dateTimeFormat);
-        jsonWriter.writeUntypedField("dateTimeOffsetFormat", this.dateTimeOffsetFormat);
-        jsonWriter.writeUntypedField("timeSpanFormat", this.timeSpanFormat);
-        jsonWriter.writeUntypedField("timeFormat", this.timeFormat);
-        jsonWriter.writeUntypedField("dateFormat", this.dateFormat);
-        jsonWriter.writeUntypedField("culture", this.culture);
+        if (this.allowDataTruncation != null) {
+            jsonWriter.writeUntypedField("allowDataTruncation", this.allowDataTruncation);
+        }
+        if (this.treatBooleanAsNumber != null) {
+            jsonWriter.writeUntypedField("treatBooleanAsNumber", this.treatBooleanAsNumber);
+        }
+        if (this.dateTimeFormat != null) {
+            jsonWriter.writeUntypedField("dateTimeFormat", this.dateTimeFormat);
+        }
+        if (this.dateTimeOffsetFormat != null) {
+            jsonWriter.writeUntypedField("dateTimeOffsetFormat", this.dateTimeOffsetFormat);
+        }
+        if (this.timeSpanFormat != null) {
+            jsonWriter.writeUntypedField("timeSpanFormat", this.timeSpanFormat);
+        }
+        if (this.timeFormat != null) {
+            jsonWriter.writeUntypedField("timeFormat", this.timeFormat);
+        }
+        if (this.dateFormat != null) {
+            jsonWriter.writeUntypedField("dateFormat", this.dateFormat);
+        }
+        if (this.culture != null) {
+            jsonWriter.writeUntypedField("culture", this.culture);
+        }
         return jsonWriter.writeEndObject();
     }
 

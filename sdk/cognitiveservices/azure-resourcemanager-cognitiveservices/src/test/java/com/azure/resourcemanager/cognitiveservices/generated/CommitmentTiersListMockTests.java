@@ -7,8 +7,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentTier;
@@ -23,27 +23,27 @@ public final class CommitmentTiersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"jucejikzoeovvtz\",\"skuName\":\"et\",\"hostingModel\":\"Web\",\"planType\":\"tikyj\",\"tier\":\"k\",\"maxCount\":1015093902,\"quota\":{\"quantity\":3276001010985311867,\"unit\":\"zvhqjwtrhtgvg\"},\"cost\":{\"commitmentMeterId\":\"rrkolawjmjs\",\"overageMeterId\":\"rokcdxfzzzwyjaf\"}}]}";
+            = "{\"value\":[{\"kind\":\"klsbsbqqqagw\",\"skuName\":\"xaomzisglrrc\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"hhltnjadhqo\",\"tier\":\"jqoyueayfbpcm\",\"maxCount\":1533039435,\"quota\":{\"quantity\":1984867649894606351,\"unit\":\"eqthwmg\"},\"cost\":{\"commitmentMeterId\":\"scbbxig\",\"overageMeterId\":\"xiidloped\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CommitmentTier> response
-            = manager.commitmentTiers().list("jpu", com.azure.core.util.Context.NONE);
+            = manager.commitmentTiers().list("gnepz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jucejikzoeovvtz", response.iterator().next().kind());
-        Assertions.assertEquals("et", response.iterator().next().skuName());
-        Assertions.assertEquals(HostingModel.WEB, response.iterator().next().hostingModel());
-        Assertions.assertEquals("tikyj", response.iterator().next().planType());
-        Assertions.assertEquals("k", response.iterator().next().tier());
-        Assertions.assertEquals(1015093902, response.iterator().next().maxCount());
-        Assertions.assertEquals(3276001010985311867L, response.iterator().next().quota().quantity());
-        Assertions.assertEquals("zvhqjwtrhtgvg", response.iterator().next().quota().unit());
-        Assertions.assertEquals("rrkolawjmjs", response.iterator().next().cost().commitmentMeterId());
-        Assertions.assertEquals("rokcdxfzzzwyjaf", response.iterator().next().cost().overageMeterId());
+        Assertions.assertEquals("klsbsbqqqagw", response.iterator().next().kind());
+        Assertions.assertEquals("xaomzisglrrc", response.iterator().next().skuName());
+        Assertions.assertEquals(HostingModel.PROVISIONED_WEB, response.iterator().next().hostingModel());
+        Assertions.assertEquals("hhltnjadhqo", response.iterator().next().planType());
+        Assertions.assertEquals("jqoyueayfbpcm", response.iterator().next().tier());
+        Assertions.assertEquals(1533039435, response.iterator().next().maxCount());
+        Assertions.assertEquals(1984867649894606351L, response.iterator().next().quota().quantity());
+        Assertions.assertEquals("eqthwmg", response.iterator().next().quota().unit());
+        Assertions.assertEquals("scbbxig", response.iterator().next().cost().commitmentMeterId());
+        Assertions.assertEquals("xiidloped", response.iterator().next().cost().overageMeterId());
     }
 }

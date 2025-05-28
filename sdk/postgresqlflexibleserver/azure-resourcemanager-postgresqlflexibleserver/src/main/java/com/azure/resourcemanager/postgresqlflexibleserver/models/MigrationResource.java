@@ -95,7 +95,10 @@ public interface MigrationResource {
 
     /**
      * Gets the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM,
-     * PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB.
+     * PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, EDB,
+     * EDB_Oracle_Server, EDB_PostgreSQL, PostgreSQLFlexibleServer, PostgreSQLCosmosDB, Huawei_RDS, Huawei_Compute,
+     * Heroku_PostgreSQL, Crunchy_PostgreSQL, ApsaraDB_RDS, Digital_Ocean_Droplets, Digital_Ocean_PostgreSQL, or
+     * Supabase_PostgreSQL.
      * 
      * @return the sourceType value.
      */
@@ -416,10 +419,16 @@ public interface MigrationResource {
         interface WithSourceType {
             /**
              * Specifies the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM,
-             * PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB.
+             * PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, EDB,
+             * EDB_Oracle_Server, EDB_PostgreSQL, PostgreSQLFlexibleServer, PostgreSQLCosmosDB, Huawei_RDS,
+             * Huawei_Compute, Heroku_PostgreSQL, Crunchy_PostgreSQL, ApsaraDB_RDS, Digital_Ocean_Droplets,
+             * Digital_Ocean_PostgreSQL, or Supabase_PostgreSQL.
              * 
              * @param sourceType migration source server type : OnPremises, AWS, GCP, AzureVM, PostgreSQLSingleServer,
-             * AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB.
+             * AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, EDB, EDB_Oracle_Server,
+             * EDB_PostgreSQL, PostgreSQLFlexibleServer, PostgreSQLCosmosDB, Huawei_RDS, Huawei_Compute,
+             * Heroku_PostgreSQL, Crunchy_PostgreSQL, ApsaraDB_RDS, Digital_Ocean_Droplets, Digital_Ocean_PostgreSQL, or
+             * Supabase_PostgreSQL.
              * @return the next definition stage.
              */
             WithCreate withSourceType(SourceType sourceType);

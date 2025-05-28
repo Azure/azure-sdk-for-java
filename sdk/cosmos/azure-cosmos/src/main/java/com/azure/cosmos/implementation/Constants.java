@@ -203,6 +203,7 @@ public final class Constants {
         public static final String THINCLIENT_WRITABLE_LOCATIONS = "thinClientWritableLocations";
         public static final String THINCLIENT_READABLE_LOCATIONS = "thinClientReadableLocations";
         public static final String DATABASE_ACCOUNT_ENDPOINT = "databaseAccountEndpoint";
+        public static final String ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR = "enablePerPartitionFailoverBehavior";
 
       //Authorization
         public static final String MASTER_TOKEN = "master";

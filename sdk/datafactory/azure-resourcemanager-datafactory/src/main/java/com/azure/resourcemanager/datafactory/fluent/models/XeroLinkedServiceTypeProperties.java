@@ -262,13 +262,23 @@ public final class XeroLinkedServiceTypeProperties implements JsonSerializable<X
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
-        jsonWriter.writeUntypedField("host", this.host);
+        if (this.connectionProperties != null) {
+            jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+        }
+        if (this.host != null) {
+            jsonWriter.writeUntypedField("host", this.host);
+        }
         jsonWriter.writeJsonField("consumerKey", this.consumerKey);
         jsonWriter.writeJsonField("privateKey", this.privateKey);
-        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
-        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
-        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        if (this.useEncryptedEndpoints != null) {
+            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        }
+        if (this.useHostVerification != null) {
+            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        }
+        if (this.usePeerVerification != null) {
+            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

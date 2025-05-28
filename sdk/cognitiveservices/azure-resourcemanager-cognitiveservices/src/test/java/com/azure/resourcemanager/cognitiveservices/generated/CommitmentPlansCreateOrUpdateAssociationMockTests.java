@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlanAccountAssociation;
@@ -23,24 +23,25 @@ public final class CommitmentPlansCreateOrUpdateAssociationMockTests {
     @Test
     public void testCreateOrUpdateAssociation() throws Exception {
         String responseStr
-            = "{\"etag\":\"aafrqulhmzyqbhd\",\"tags\":{\"wmzwdfkbnrzorpdl\":\"jrqpjiyrqjcrga\",\"qjf\":\"bqc\",\"gvpyigdaqqilzdc\":\"xxsaetgz\"},\"properties\":{\"accountId\":\"joedx\"},\"id\":\"gucaif\",\"name\":\"aurwwgilfjq\",\"type\":\"a\"}";
+            = "{\"etag\":\"tjrrlkmds\",\"tags\":{\"xcxscvslxlh\":\"hxdlajf\"},\"properties\":{\"accountId\":\"krmukmyjmkxett\"},\"id\":\"slojfkqidnqt\",\"name\":\"qxjhqxcsqhtkbtnq\",\"type\":\"rngl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CommitmentPlanAccountAssociation response = manager.commitmentPlans()
-            .defineAssociation("wlwxlboncqbazqic")
-            .withExistingCommitmentPlan("ykmxcpwzvm", "oksqdt")
-            .withTags(mapOf("i", "xyqvg", "tvo", "od", "s", "kxdxuwsaifmcwn", "y", "zlehgcvkbcknjolg"))
-            .withAccountId("velsz")
+            .defineAssociation("n")
+            .withExistingCommitmentPlan("qwtygevgwmseharx", "fv")
+            .withTags(mapOf("btpakftngatw", "dqpx", "pycvjqdvdwkqpldr", "ykyutrymdwmfj", "taoutnpdct", "efgnaavuagnt",
+                "yeuyldph", "hspfefyihd"))
+            .withAccountId("bkcgsuthhllnm")
             .create();
 
-        Assertions.assertEquals("jrqpjiyrqjcrga", response.tags().get("wmzwdfkbnrzorpdl"));
-        Assertions.assertEquals("joedx", response.accountId());
+        Assertions.assertEquals("hxdlajf", response.tags().get("xcxscvslxlh"));
+        Assertions.assertEquals("krmukmyjmkxett", response.accountId());
     }
 
     // Use "Map.of" if available

@@ -14,7 +14,7 @@ import com.azure.resourcemanager.containerregistry.models.PrivateLinkServiceConn
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2025-04-01/examples/
      * PrivateEndpointConnectionCreateOrUpdate.json
      */
     /**

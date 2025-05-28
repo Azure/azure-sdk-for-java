@@ -3,9 +3,7 @@
 
 package com.azure.cosmos.implementation.perPartitionCircuitBreaker;
 
-import com.azure.cosmos.implementation.AvailabilityStrategyContext;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -45,8 +43,8 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
     private final GlobalEndpointManager globalEndpointManager;
     private final ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelLocationUnavailabilityInfo> partitionKeyRangeToLocationSpecificUnavailabilityInfo;
-    private final LocationSpecificHealthContextTransitionHandler locationSpecificHealthContextTransitionHandler;
-    private final ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker;
+    private LocationSpecificHealthContextTransitionHandler locationSpecificHealthContextTransitionHandler;
+    private ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker;
     private final AtomicReference<GlobalAddressResolver> globalAddressResolverSnapshot;
     private final ConcurrentHashMap<RegionalRoutingContext, String> regionalRoutingContextToRegion;
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
@@ -554,5 +552,16 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
     public PartitionLevelCircuitBreakerConfig getCircuitBreakerConfig() {
         return this.consecutiveExceptionBasedCircuitBreaker.getPartitionLevelCircuitBreakerConfig();
+    }
+
+    public synchronized void resetCircuitBreakerConfig() {
+        PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig
+            = Configs.getPartitionLevelCircuitBreakerConfig();
+
+        this.consecutiveExceptionBasedCircuitBreaker
+            = new ConsecutiveExceptionBasedCircuitBreaker(partitionLevelCircuitBreakerConfig);
+
+        this.locationSpecificHealthContextTransitionHandler
+            = new LocationSpecificHealthContextTransitionHandler(this.consecutiveExceptionBasedCircuitBreaker);
     }
 }
