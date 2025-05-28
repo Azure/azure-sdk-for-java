@@ -9,11 +9,13 @@ import java.io.Writer;
 import java.util.Base64;
 
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
 
 /** This class stream audio data back to Azure Communication Services, which plays the audio into the cal */
 public final class OutStreamingData {
+    private static final ClientLogger LOGGER = new ClientLogger(OutStreamingData.class);
 
     /**
      * Out streaming data kind ex. StopAudio, AudioData
@@ -90,7 +92,7 @@ public final class OutStreamingData {
             data.setAudioData(audioData);
             return serializeOutStreamingData(data);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to serialize OutStreamingData", e);
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to serialize OutStreamingData", e));
         }
     }
 
@@ -105,7 +107,7 @@ public final class OutStreamingData {
             data.setStopAudio();
             return serializeOutStreamingData(data);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to serialize OutStreamingData", e);
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to serialize OutStreamingData", e));
         }
     }
 

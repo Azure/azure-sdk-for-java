@@ -3,12 +3,8 @@
 
 package com.azure.communication.callautomation.models;
 
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-
 import com.azure.communication.callautomation.implementation.accesshelpers.DtmfDataContructorProxy;
 import com.azure.communication.callautomation.implementation.converters.DtmfDataConverter;
-import com.azure.communication.common.CommunicationIdentifier;
 
 /** The dtmf data model. */
 public final class DtmfData extends StreamingData {
