@@ -48,6 +48,7 @@ required-fields-as-ctor-args: true
 license-header: MICROSOFT_MIT_SMALL
 disable-client-builder: true
 default-http-exception-type: com.azure.core.exception.HttpResponseException
+use-eclipse-language-server: false
 ```
 
 ### Renames enums
