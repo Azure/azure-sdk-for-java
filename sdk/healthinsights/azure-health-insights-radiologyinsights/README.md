@@ -925,6 +925,37 @@ private static void displayScoringAndAssessmentInference(RadiologyInsightsInfere
 
 ## Troubleshooting
 
+### General
+
+When you interact with App Configuration using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a configuration setting that doesn't exist in your configuration store, a `404` error is returned, indicating `Not Found`.
+
+App Configuration provides a way to define customized headers through `Context` object in the public API. 
+
+```java readme-sample-customHeaders
+// Add your headers
+HttpHeaders headers = new HttpHeaders();
+headers.set("my-header1", "my-header1-value");
+headers.set("my-header2", "my-header2-value");
+headers.set("my-header3", "my-header3-value");
+// Call API by passing headers in Context.
+configurationClient.addConfigurationSettingWithResponse(
+    new ConfigurationSetting().setKey("key").setValue("value"),
+    new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
+// Above three HttpHeader will be added in outgoing HttpRequest.
+```
+For more detail information, check out the [AddHeadersFromContextPolicy][add_headers_from_context_policy]
+
+### Default HTTP Client
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
+the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
+better performance compared to the default SSL implementation within the JDK. For more information, including how to 
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+
 ## Next steps
 Explore the complete set of [sample source code files][samples_location].
 
