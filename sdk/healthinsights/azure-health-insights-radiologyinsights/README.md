@@ -723,7 +723,7 @@ private static void displaySexMismatches(RadiologyInsightsInferenceResult radiol
 
 ### Get Guidance Inference information
 
-Display information about the guidance
+Display information about the guidance. See [SampleGuidanceInferenceAsync.java][ri_async_sample_guidance] for the complete code.
 
 ```java com.azure.health.insights.radiologyinsights.displayresults.guidance
 private static void displayGuidanceInference(RadiologyInsightsInferenceResult radiologyInsightsResult) {
@@ -960,8 +960,9 @@ For details on contributing to this repository, see the [contributing guide](htt
 [ri_async_sample_limitedorderdiscrepancy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleLimitedOrderDiscrepancyInferenceAsync.java
 [ri_async_sample_radiologyprocedure]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleRadiologyProcedureInferenceAsync.java
 [ri_async_sample_sexmismatch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleSexMismatchInferenceAsync.java
-[ri_async_sample_qualitymeasure]: https://github.com/koen-mertens/azure-sdk-for-java/blob/Scope2-RI-Updates/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleQualityMeasureInferenceAsync.java
-[ri_async_sample_scoringandassessment]: https://github.com/koen-mertens/azure-sdk-for-java/blob/Scope2-RI-Updates/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleScoringAndAssessmentInferenceAsync.java
+[ri_async_sample_qualitymeasure]: https://github.com/koen-mertens/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/
+[ri_async_sample_scoringandassessment]: https://github.com/koen-mertens/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/
+[ri_async_sample_guidance]: https://github.com/koen-mertens/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/
 [product_documentation]: https://learn.microsoft.com/azure/azure-health-insights/radiology-insights/
 [radiology_insights_inferences]: https://learn.microsoft.com/azure/azure-health-insights/radiology-insights/inferences
 [azure_subscription]: https://azure.microsoft.com/free/
