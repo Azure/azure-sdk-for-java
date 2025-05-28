@@ -21,7 +21,7 @@ public final class ManagedVirtualNetworksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"vNetId\":\"bheiywmxsxl\",\"alias\":\"lqtnngw\",\"\":{\"bgaafttv\":\"datafrt\",\"afrwmxmd\":\"datamdnigajbxjnrlfdq\"}},\"name\":\"zhutcaqqdchmxr\",\"type\":\"ljqhoiqvk\",\"etag\":\"djlxzt\",\"id\":\"vawy\"}";
+            = "{\"properties\":{\"vNetId\":\"bheiywmxsxl\",\"alias\":\"lqtnngw\",\"bgaafttv\":\"datafrt\",\"afrwmxmd\":\"datamdnigajbxjnrlfdq\"},\"name\":\"zhutcaqqdchmxr\",\"type\":\"ljqhoiqvk\",\"etag\":\"djlxzt\",\"id\":\"vawy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

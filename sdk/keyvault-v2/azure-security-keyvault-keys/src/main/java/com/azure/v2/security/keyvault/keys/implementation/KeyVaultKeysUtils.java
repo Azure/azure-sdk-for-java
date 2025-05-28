@@ -120,7 +120,7 @@ public final class KeyVaultKeysUtils {
             }
         } catch (URISyntaxException e) {
             // Should never come here.
-            LOGGER.atError().log("Received malformed key id from service");
+            LOGGER.atError().setThrowable(e).log("Received malformed key id from service");
         }
     }
 

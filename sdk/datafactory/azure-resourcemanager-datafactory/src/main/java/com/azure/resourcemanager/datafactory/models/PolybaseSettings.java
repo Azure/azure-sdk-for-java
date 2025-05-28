@@ -173,9 +173,15 @@ public final class PolybaseSettings implements JsonSerializable<PolybaseSettings
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("rejectType", this.rejectType == null ? null : this.rejectType.toString());
-        jsonWriter.writeUntypedField("rejectValue", this.rejectValue);
-        jsonWriter.writeUntypedField("rejectSampleValue", this.rejectSampleValue);
-        jsonWriter.writeUntypedField("useTypeDefault", this.useTypeDefault);
+        if (this.rejectValue != null) {
+            jsonWriter.writeUntypedField("rejectValue", this.rejectValue);
+        }
+        if (this.rejectSampleValue != null) {
+            jsonWriter.writeUntypedField("rejectSampleValue", this.rejectSampleValue);
+        }
+        if (this.useTypeDefault != null) {
+            jsonWriter.writeUntypedField("useTypeDefault", this.useTypeDefault);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

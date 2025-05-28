@@ -1028,33 +1028,71 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties
         jsonWriter.writeUntypedField("hostSubscriptionId", this.hostSubscriptionId);
         jsonWriter.writeUntypedField("tenant", this.tenant);
         jsonWriter.writeUntypedField("clusterResourceGroup", this.clusterResourceGroup);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-        jsonWriter.writeUntypedField("clusterNamePrefix", this.clusterNamePrefix);
-        jsonWriter.writeUntypedField("clusterUserName", this.clusterUsername);
+        if (this.clusterNamePrefix != null) {
+            jsonWriter.writeUntypedField("clusterNamePrefix", this.clusterNamePrefix);
+        }
+        if (this.clusterUsername != null) {
+            jsonWriter.writeUntypedField("clusterUserName", this.clusterUsername);
+        }
         jsonWriter.writeJsonField("clusterPassword", this.clusterPassword);
-        jsonWriter.writeUntypedField("clusterSshUserName", this.clusterSshUsername);
+        if (this.clusterSshUsername != null) {
+            jsonWriter.writeUntypedField("clusterSshUserName", this.clusterSshUsername);
+        }
         jsonWriter.writeJsonField("clusterSshPassword", this.clusterSshPassword);
         jsonWriter.writeArrayField("additionalLinkedServiceNames", this.additionalLinkedServiceNames,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("hcatalogLinkedServiceName", this.hcatalogLinkedServiceName);
-        jsonWriter.writeUntypedField("clusterType", this.clusterType);
-        jsonWriter.writeUntypedField("sparkVersion", this.sparkVersion);
-        jsonWriter.writeUntypedField("coreConfiguration", this.coreConfiguration);
-        jsonWriter.writeUntypedField("hBaseConfiguration", this.hBaseConfiguration);
-        jsonWriter.writeUntypedField("hdfsConfiguration", this.hdfsConfiguration);
-        jsonWriter.writeUntypedField("hiveConfiguration", this.hiveConfiguration);
-        jsonWriter.writeUntypedField("mapReduceConfiguration", this.mapReduceConfiguration);
-        jsonWriter.writeUntypedField("oozieConfiguration", this.oozieConfiguration);
-        jsonWriter.writeUntypedField("stormConfiguration", this.stormConfiguration);
-        jsonWriter.writeUntypedField("yarnConfiguration", this.yarnConfiguration);
+        if (this.clusterType != null) {
+            jsonWriter.writeUntypedField("clusterType", this.clusterType);
+        }
+        if (this.sparkVersion != null) {
+            jsonWriter.writeUntypedField("sparkVersion", this.sparkVersion);
+        }
+        if (this.coreConfiguration != null) {
+            jsonWriter.writeUntypedField("coreConfiguration", this.coreConfiguration);
+        }
+        if (this.hBaseConfiguration != null) {
+            jsonWriter.writeUntypedField("hBaseConfiguration", this.hBaseConfiguration);
+        }
+        if (this.hdfsConfiguration != null) {
+            jsonWriter.writeUntypedField("hdfsConfiguration", this.hdfsConfiguration);
+        }
+        if (this.hiveConfiguration != null) {
+            jsonWriter.writeUntypedField("hiveConfiguration", this.hiveConfiguration);
+        }
+        if (this.mapReduceConfiguration != null) {
+            jsonWriter.writeUntypedField("mapReduceConfiguration", this.mapReduceConfiguration);
+        }
+        if (this.oozieConfiguration != null) {
+            jsonWriter.writeUntypedField("oozieConfiguration", this.oozieConfiguration);
+        }
+        if (this.stormConfiguration != null) {
+            jsonWriter.writeUntypedField("stormConfiguration", this.stormConfiguration);
+        }
+        if (this.yarnConfiguration != null) {
+            jsonWriter.writeUntypedField("yarnConfiguration", this.yarnConfiguration);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
-        jsonWriter.writeUntypedField("headNodeSize", this.headNodeSize);
-        jsonWriter.writeUntypedField("dataNodeSize", this.dataNodeSize);
-        jsonWriter.writeUntypedField("zookeeperNodeSize", this.zookeeperNodeSize);
+        if (this.headNodeSize != null) {
+            jsonWriter.writeUntypedField("headNodeSize", this.headNodeSize);
+        }
+        if (this.dataNodeSize != null) {
+            jsonWriter.writeUntypedField("dataNodeSize", this.dataNodeSize);
+        }
+        if (this.zookeeperNodeSize != null) {
+            jsonWriter.writeUntypedField("zookeeperNodeSize", this.zookeeperNodeSize);
+        }
         jsonWriter.writeArrayField("scriptActions", this.scriptActions, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeUntypedField("virtualNetworkId", this.virtualNetworkId);
-        jsonWriter.writeUntypedField("subnetName", this.subnetName);
+        if (this.virtualNetworkId != null) {
+            jsonWriter.writeUntypedField("virtualNetworkId", this.virtualNetworkId);
+        }
+        if (this.subnetName != null) {
+            jsonWriter.writeUntypedField("subnetName", this.subnetName);
+        }
         jsonWriter.writeJsonField("credential", this.credential);
         return jsonWriter.writeEndObject();
     }

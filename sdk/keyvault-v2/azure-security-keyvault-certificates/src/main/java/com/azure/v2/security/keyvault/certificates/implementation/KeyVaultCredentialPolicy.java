@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Base64Uri;
 
@@ -169,12 +170,12 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         } else {
             if (!disableChallengeResourceVerification) {
                 if (!isChallengeResourceValid(request, scope)) {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(String.format(
-                        "The challenge resource '%s' does not match the requested domain. If you wish to disable "
+                    throw LOGGER.throwableAtError()
+                        .addKeyValue("scope", scope)
+                        .log("The challenge resource does not match the requested domain. If you wish to disable "
                             + "this check for your client, pass 'true' to the SecretClientBuilder"
                             + ".disableChallengeResourceVerification() method when building it. See "
-                            + "https://aka.ms/azsdk/blog/vault-uri for more information.",
-                        scope)));
+                            + "https://aka.ms/azsdk/blog/vault-uri for more information.", CoreException::from);
                 }
             }
 
@@ -189,8 +190,9 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             try {
                 authorizationUri = new URI(authorization);
             } catch (URISyntaxException e) {
-                throw LOGGER.logThrowableAsError(new RuntimeException(
-                    String.format("The challenge authorization URI '%s' is invalid.", authorization), e));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("scope", scope)
+                    .log("The challenge resource is not a valid URI.", e, IllegalArgumentException::new);
             }
 
             this.challenge = new ChallengeParameters(authorizationUri, new String[] { scope });
@@ -224,8 +226,9 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     @Override
     public Response<BinaryData> process(HttpRequest request, HttpPipelineNextPolicy next) {
         if (!"https".equals(request.getUri().getScheme())) {
-            throw LOGGER.logThrowableAsError(
-                new RuntimeException("Token credentials require a URL using the HTTPS protocol scheme."));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("scheme", request.getUri().getScheme())
+                .log("Token credentials require a URL using the HTTPS protocol scheme.", IllegalStateException::new);
         }
 
         HttpPipelineNextPolicy nextPolicy = next.copy();
@@ -349,8 +352,9 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         try {
             scopeUri = new URI(scope);
         } catch (URISyntaxException e) {
-            throw LOGGER.logThrowableAsError(
-                new RuntimeException(String.format("The challenge resource '%s' is not a valid URI.", scope), e));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("scope", scope)
+                .log("The challenge resource is not a valid URI.", e, IllegalArgumentException::new);
         }
 
         // Returns false if the host specified in the scope does not match the requested domain.

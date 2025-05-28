@@ -656,27 +656,59 @@ public final class AzurePostgreSqlLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
-        jsonWriter.writeUntypedField("server", this.server);
-        jsonWriter.writeUntypedField("port", this.port);
-        jsonWriter.writeUntypedField("username", this.username);
-        jsonWriter.writeUntypedField("database", this.database);
-        jsonWriter.writeUntypedField("sslMode", this.sslMode);
-        jsonWriter.writeUntypedField("timeout", this.timeout);
-        jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
-        jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
-        jsonWriter.writeUntypedField("readBufferSize", this.readBufferSize);
-        jsonWriter.writeUntypedField("timezone", this.timezone);
-        jsonWriter.writeUntypedField("encoding", this.encoding);
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
+        if (this.server != null) {
+            jsonWriter.writeUntypedField("server", this.server);
+        }
+        if (this.port != null) {
+            jsonWriter.writeUntypedField("port", this.port);
+        }
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
+        if (this.database != null) {
+            jsonWriter.writeUntypedField("database", this.database);
+        }
+        if (this.sslMode != null) {
+            jsonWriter.writeUntypedField("sslMode", this.sslMode);
+        }
+        if (this.timeout != null) {
+            jsonWriter.writeUntypedField("timeout", this.timeout);
+        }
+        if (this.commandTimeout != null) {
+            jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+        }
+        if (this.trustServerCertificate != null) {
+            jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
+        }
+        if (this.readBufferSize != null) {
+            jsonWriter.writeUntypedField("readBufferSize", this.readBufferSize);
+        }
+        if (this.timezone != null) {
+            jsonWriter.writeUntypedField("timezone", this.timezone);
+        }
+        if (this.encoding != null) {
+            jsonWriter.writeUntypedField("encoding", this.encoding);
+        }
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        if (this.servicePrincipalCredentialType != null) {
+            jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        }
         jsonWriter.writeJsonField("servicePrincipalEmbeddedCert", this.servicePrincipalEmbeddedCert);
         jsonWriter.writeJsonField("servicePrincipalEmbeddedCertPassword", this.servicePrincipalEmbeddedCertPassword);
-        jsonWriter.writeUntypedField("tenant", this.tenant);
-        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        if (this.tenant != null) {
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+        }
+        if (this.azureCloudType != null) {
+            jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        }
         jsonWriter.writeJsonField("credential", this.credential);
         return jsonWriter.writeEndObject();
     }

@@ -111,9 +111,15 @@ public final class ContinuationSettingsReference implements JsonSerializable<Con
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("continuationTtlInMinutes", this.continuationTtlInMinutes);
-        jsonWriter.writeUntypedField("idleCondition", this.idleCondition);
-        jsonWriter.writeUntypedField("customizedCheckpointKey", this.customizedCheckpointKey);
+        if (this.continuationTtlInMinutes != null) {
+            jsonWriter.writeUntypedField("continuationTtlInMinutes", this.continuationTtlInMinutes);
+        }
+        if (this.idleCondition != null) {
+            jsonWriter.writeUntypedField("idleCondition", this.idleCondition);
+        }
+        if (this.customizedCheckpointKey != null) {
+            jsonWriter.writeUntypedField("customizedCheckpointKey", this.customizedCheckpointKey);
+        }
         return jsonWriter.writeEndObject();
     }
 

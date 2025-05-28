@@ -50,8 +50,11 @@ public class LinuxKeyRingAccessor {
             error, this.attributeKey1, attributeValue1, this.attributeKey2, attributeValue2, (Pointer) null);
         if (error[0] != Pointer.NULL) {
             GError err = new GError(error[0]);
-            throw LOGGER.logThrowableAsError(new RuntimeException("An error while reading secret from keyring, domain:"
-                + err.domain + " code:" + err.code + " message:" + err.message));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("errorDomain", err.domain)
+                .addKeyValue("errorCode", err.code)
+                .addKeyValue("errorMessage", err.message)
+                .log("An error while reading secret from keyring.", RuntimeException::new);
         } else {
             if (secret != null && !secret.isEmpty()) {
                 data = secret.getBytes(StandardCharsets.UTF_8);
@@ -73,8 +76,9 @@ public class LinuxKeyRingAccessor {
             this.libSecretSchema = ISecurityLibrary.library.secret_schema_new(this.keyringSchemaName, 0,
                 this.attributeKey1, 0, this.attributeKey2, 0, (Pointer) null);
             if (this.libSecretSchema == Pointer.NULL) {
-                throw LOGGER.logThrowableAsError(
-                    new RuntimeException("Failed to create libSecret schema " + this.keyringSchemaName));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("keyringSchemaName", this.keyringSchemaName)
+                    .log("Failed to create libSecret schema.", RuntimeException::new);
             }
         }
 

@@ -100,7 +100,9 @@ public final class LogLocationSettings implements JsonSerializable<LogLocationSe
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
-        jsonWriter.writeUntypedField("path", this.path);
+        if (this.path != null) {
+            jsonWriter.writeUntypedField("path", this.path);
+        }
         return jsonWriter.writeEndObject();
     }
 

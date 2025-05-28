@@ -17,9 +17,9 @@ import com.azure.v2.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.v2.security.keyvault.keys.models.JsonWebKey;
 import com.azure.v2.security.keyvault.keys.models.KeyOperation;
 import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.MessageDigest;
@@ -29,6 +29,7 @@ import java.util.Objects;
 import static com.azure.v2.security.keyvault.keys.cryptography.implementation.CryptographyUtils.verifyKeyPermissions;
 
 class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
+    private static final ClientLogger LOGGER = new ClientLogger(RsaKeyCryptographyClient.class);
     private final KeyPair rsaKeyPair;
 
     RsaKeyCryptographyClient(JsonWebKey jsonWebKey, CryptographyClientImpl implClient) {
@@ -47,32 +48,29 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (baseAlgorithm == null) {
             if (implClient != null) {
-                try {
-                    return implClient.encrypt(algorithm, plaintext, null, null, requestContext);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
+                return implClient.encrypt(algorithm, plaintext, null, null, requestContext);
             }
 
-            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
         if (rsaKeyPair.getPublic() == null) {
             if (implClient != null) {
-                try {
-                    return implClient.encrypt(algorithm, plaintext, null, null, requestContext);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
+                return implClient.encrypt(algorithm, plaintext, null, null, requestContext);
             }
 
-            throw new IllegalArgumentException(
-                "The public portion of the key is not available to perform the encrypt operation.");
+            throw LOGGER.throwableAtError()
+                .log("The public portion of the key is not available to perform the encrypt operation.",
+                    IllegalArgumentException::new);
         }
 
-        verifyKeyPermissions(jsonWebKey, KeyOperation.ENCRYPT);
+        verifyKeyPermissions(jsonWebKey, KeyOperation.ENCRYPT, LOGGER);
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
@@ -81,7 +79,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             return new EncryptResult(transform.doFinal(plaintext), algorithm, jsonWebKey.getId());
         } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -102,32 +100,29 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (baseAlgorithm == null) {
             if (implClient != null) {
-                try {
-                    return implClient.decrypt(algorithm, ciphertext, requestContext);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
+                return implClient.decrypt(algorithm, ciphertext, requestContext);
             }
 
-            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
         if (rsaKeyPair.getPrivate() == null) {
             if (implClient != null) {
-                try {
-                    return implClient.decrypt(algorithm, ciphertext, requestContext);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
+                return implClient.decrypt(algorithm, ciphertext, requestContext);
             }
 
-            throw new IllegalArgumentException(
-                "The private portion of the key is not available to perform the decrypt operation.");
+            throw LOGGER.throwableAtError()
+                .log("The private portion of the key is not available to perform the decrypt operation.",
+                    IllegalArgumentException::new);
         }
 
-        verifyKeyPermissions(jsonWebKey, KeyOperation.DECRYPT);
+        verifyKeyPermissions(jsonWebKey, KeyOperation.DECRYPT, LOGGER);
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
@@ -136,7 +131,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             return new DecryptResult(transform.doFinal(ciphertext), algorithm, jsonWebKey.getId());
         } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -150,13 +145,11 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     @Override
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, RequestContext requestContext) {
         if (implClient != null) {
-            try {
-                return implClient.sign(algorithm, digest, requestContext);
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
+            return implClient.sign(algorithm, digest, requestContext);
         } else {
-            throw new UnsupportedOperationException("The sign operation on local RSA key is not currently supported.");
+            throw LOGGER.throwableAtError()
+                .log("The sign operation on a local RSA key is not currently supported.",
+                    UnsupportedOperationException::new);
         }
     }
 
@@ -164,14 +157,11 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
         RequestContext requestContext) {
         if (implClient != null) {
-            try {
-                return implClient.verify(algorithm, digest, signature, requestContext);
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
+            return implClient.verify(algorithm, digest, signature, requestContext);
         } else {
-            throw new UnsupportedOperationException(
-                "The verify operation on a local RSA key is not currently supported.");
+            throw LOGGER.throwableAtError()
+                .log("The verify operation on a local RSA key is not currently supported.",
+                    UnsupportedOperationException::new);
         }
     }
 
@@ -184,32 +174,29 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (baseAlgorithm == null) {
             if (implClient != null) {
-                try {
-                    return implClient.wrapKey(algorithm, keyToWrap, requestContext);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
+                return implClient.wrapKey(algorithm, keyToWrap, requestContext);
             }
 
-            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
         if (rsaKeyPair.getPublic() == null) {
             if (implClient != null) {
-                try {
-                    return implClient.wrapKey(algorithm, keyToWrap, requestContext);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
+                return implClient.wrapKey(algorithm, keyToWrap, requestContext);
             }
 
-            throw new IllegalArgumentException(
-                "The public portion of the key is not available to perform the key wrap operation.");
+            throw LOGGER.throwableAtError()
+                .log("The public portion of the key is not available to perform the key wrap operation.",
+                    IllegalArgumentException::new);
         }
 
-        verifyKeyPermissions(jsonWebKey, KeyOperation.WRAP_KEY);
+        verifyKeyPermissions(jsonWebKey, KeyOperation.WRAP_KEY, LOGGER);
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
@@ -218,7 +205,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             return new WrapResult(transform.doFinal(keyToWrap), algorithm, jsonWebKey.getId());
         } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -232,32 +219,29 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (baseAlgorithm == null) {
             if (implClient != null) {
-                try {
-                    return implClient.unwrapKey(algorithm, encryptedKey, requestContext);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
+                return implClient.unwrapKey(algorithm, encryptedKey, requestContext);
             }
 
-            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
         if (rsaKeyPair.getPrivate() == null) {
             if (implClient != null) {
-                try {
-                    return implClient.unwrapKey(algorithm, encryptedKey, requestContext);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
+                return implClient.unwrapKey(algorithm, encryptedKey, requestContext);
             }
 
-            throw new IllegalArgumentException(
-                "The private portion of the key is not available to perform the key unwrap operation.");
+            throw LOGGER.throwableAtError()
+                .log("The public portion of the key is not available to perform the key wrap operation.",
+                    IllegalArgumentException::new);
         }
 
-        verifyKeyPermissions(jsonWebKey, KeyOperation.UNWRAP_KEY);
+        verifyKeyPermissions(jsonWebKey, KeyOperation.UNWRAP_KEY, LOGGER);
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
@@ -266,33 +250,33 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             return new UnwrapResult(transform.doFinal(encryptedKey), algorithm, jsonWebKey.getId());
         } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
     @Override
     public SignResult signData(SignatureAlgorithm algorithm, byte[] data, RequestContext requestContext) {
-        try {
-            return sign(algorithm, calculateDigest(algorithm, data), requestContext);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        return sign(algorithm, calculateDigest(algorithm, data), requestContext);
     }
 
     @Override
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
         RequestContext requestContext) {
 
-        try {
-            return verify(algorithm, calculateDigest(algorithm, data), signature, requestContext);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        return verify(algorithm, calculateDigest(algorithm, data), signature, requestContext);
     }
 
-    private static byte[] calculateDigest(SignatureAlgorithm algorithm, byte[] data) throws NoSuchAlgorithmException {
+    private static byte[] calculateDigest(SignatureAlgorithm algorithm, byte[] data) {
         HashAlgorithm hashAlgorithm = SignatureHashResolver.DEFAULT.get(algorithm);
-        MessageDigest md = MessageDigest.getInstance(Objects.toString(hashAlgorithm, null));
+        MessageDigest md;
+
+        try {
+            md = MessageDigest.getInstance(Objects.toString(hashAlgorithm, null));
+        } catch (NoSuchAlgorithmException e) {
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log(e, IllegalArgumentException::new);
+        }
 
         md.update(data);
 

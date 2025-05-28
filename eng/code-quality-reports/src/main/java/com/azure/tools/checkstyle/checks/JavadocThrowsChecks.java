@@ -4,7 +4,6 @@
 package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.DetailNodeTreeStringPrinter;
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
@@ -21,7 +20,7 @@ import java.util.Set;
 /**
  * Verifies that all throws in the public API have JavaDocs explaining why and when they are thrown.
  */
-public class JavadocThrowsChecks extends AbstractCheck {
+public class JavadocThrowsChecks extends ImplementationExcludingCheck {
     static final String MISSING_DESCRIPTION_MESSAGE =
         "@throws tag requires a description explaining when the error is thrown.";
     static final String MISSING_THROWS_TAG_MESSAGE = "Javadoc @throws tag required for unchecked throw.";
@@ -44,17 +43,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
     private boolean currentScopeNeedsChecking;
 
     @Override
-    public int[] getDefaultTokens() {
-        return getRequiredTokens();
-    }
-
-    @Override
-    public int[] getAcceptableTokens() {
-        return getRequiredTokens();
-    }
-
-    @Override
-    public int[] getRequiredTokens() {
+    public int[] getTokensForCheck() {
         return TOKENS;
     }
 
@@ -64,7 +53,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
     }
 
     @Override
-    public void beginTree(DetailAST rootToken) {
+    public void beforeTree(DetailAST rootToken) {
         javadocThrowsMapping = new HashMap<>();
         exceptionMapping = new HashMap<>();
         currentScopeNeedsChecking = false;
@@ -72,7 +61,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
     }
 
     @Override
-    public void visitToken(DetailAST token) {
+    public void processToken(DetailAST token) {
         switch (token.getType()) {
             case TokenTypes.CTOR_DEF:
             case TokenTypes.METHOD_DEF:

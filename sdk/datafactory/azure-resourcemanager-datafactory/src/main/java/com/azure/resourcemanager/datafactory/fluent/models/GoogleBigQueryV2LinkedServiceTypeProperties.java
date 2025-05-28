@@ -253,7 +253,9 @@ public final class GoogleBigQueryV2LinkedServiceTypeProperties
         jsonWriter.writeUntypedField("projectId", this.projectId);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("clientId", this.clientId);
+        if (this.clientId != null) {
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+        }
         jsonWriter.writeJsonField("clientSecret", this.clientSecret);
         jsonWriter.writeJsonField("refreshToken", this.refreshToken);
         jsonWriter.writeJsonField("keyFileContent", this.keyFileContent);

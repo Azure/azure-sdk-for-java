@@ -25,7 +25,7 @@ public final class CredentialOperationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Credential\",\"description\":\"rgwmge\",\"annotations\":[\"datairnfnlyvdryx\",\"datauqwtazuacawxs\",\"datas\"],\"\":{\"xycvoexbxr\":\"databbqqtvp\",\"acgmnelozzfwyegd\":\"datarvxwlfmbb\"}},\"name\":\"fktmdlf\",\"type\":\"jucpt\",\"etag\":\"esdfujfpn\",\"id\":\"zablqmsybvjf\"}";
+            = "{\"properties\":{\"type\":\"Credential\",\"description\":\"rgwmge\",\"annotations\":[\"datairnfnlyvdryx\",\"datauqwtazuacawxs\",\"datas\"],\"xycvoexbxr\":\"databbqqtvp\",\"acgmnelozzfwyegd\":\"datarvxwlfmbb\"},\"name\":\"fktmdlf\",\"type\":\"jucpt\",\"etag\":\"esdfujfpn\",\"id\":\"zablqmsybvjf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,7 +39,7 @@ public final class CredentialOperationsCreateOrUpdateWithResponseMockTests {
             .withExistingFactory("gunnjwmdtb", "qtomcbaiamtdfpkf")
             .withProperties(new Credential().withDescription("elxd")
                 .withAnnotations(Arrays.asList("datafsteouzoglvtz", "datajlejvlf", "datazrqkgibpeh", "databctz"))
-                .withAdditionalProperties(mapOf("type", "Credential")))
+                .withAdditionalProperties(mapOf("type", "Credential", "xfbwsdoaypixryf", "dataqehxigs")))
             .withIfMatch("par")
             .create();
 

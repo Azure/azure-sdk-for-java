@@ -301,19 +301,43 @@ public final class AzureSqlSource extends TabularSource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
-        jsonWriter.writeUntypedField("queryTimeout", queryTimeout());
-        jsonWriter.writeUntypedField("additionalColumns", additionalColumns());
+        if (sourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        }
+        if (sourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
+        if (queryTimeout() != null) {
+            jsonWriter.writeUntypedField("queryTimeout", queryTimeout());
+        }
+        if (additionalColumns() != null) {
+            jsonWriter.writeUntypedField("additionalColumns", additionalColumns());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("sqlReaderQuery", this.sqlReaderQuery);
-        jsonWriter.writeUntypedField("sqlReaderStoredProcedureName", this.sqlReaderStoredProcedureName);
-        jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
-        jsonWriter.writeUntypedField("isolationLevel", this.isolationLevel);
-        jsonWriter.writeUntypedField("produceAdditionalTypes", this.produceAdditionalTypes);
-        jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        if (this.sqlReaderQuery != null) {
+            jsonWriter.writeUntypedField("sqlReaderQuery", this.sqlReaderQuery);
+        }
+        if (this.sqlReaderStoredProcedureName != null) {
+            jsonWriter.writeUntypedField("sqlReaderStoredProcedureName", this.sqlReaderStoredProcedureName);
+        }
+        if (this.storedProcedureParameters != null) {
+            jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
+        }
+        if (this.isolationLevel != null) {
+            jsonWriter.writeUntypedField("isolationLevel", this.isolationLevel);
+        }
+        if (this.produceAdditionalTypes != null) {
+            jsonWriter.writeUntypedField("produceAdditionalTypes", this.produceAdditionalTypes);
+        }
+        if (this.partitionOption != null) {
+            jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        }
         jsonWriter.writeJsonField("partitionSettings", this.partitionSettings);
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {

@@ -56,6 +56,11 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
      */
     private NetworkRuleBypassOptions networkRuleBypassOptions;
 
+    /*
+     * Enables registry-wide pull from unauthenticated clients.
+     */
+    private Boolean anonymousPullEnabled;
+
     /**
      * Creates an instance of RegistryPropertiesUpdateParameters class.
      */
@@ -206,6 +211,26 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
     }
 
     /**
+     * Get the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     * 
+     * @return the anonymousPullEnabled value.
+     */
+    public Boolean anonymousPullEnabled() {
+        return this.anonymousPullEnabled;
+    }
+
+    /**
+     * Set the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     * 
+     * @param anonymousPullEnabled the anonymousPullEnabled value to set.
+     * @return the RegistryPropertiesUpdateParameters object itself.
+     */
+    public RegistryPropertiesUpdateParameters withAnonymousPullEnabled(Boolean anonymousPullEnabled) {
+        this.anonymousPullEnabled = anonymousPullEnabled;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -237,6 +262,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeStringField("networkRuleBypassOptions",
             this.networkRuleBypassOptions == null ? null : this.networkRuleBypassOptions.toString());
+        jsonWriter.writeBooleanField("anonymousPullEnabled", this.anonymousPullEnabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -274,6 +300,9 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
                 } else if ("networkRuleBypassOptions".equals(fieldName)) {
                     deserializedRegistryPropertiesUpdateParameters.networkRuleBypassOptions
                         = NetworkRuleBypassOptions.fromString(reader.getString());
+                } else if ("anonymousPullEnabled".equals(fieldName)) {
+                    deserializedRegistryPropertiesUpdateParameters.anonymousPullEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

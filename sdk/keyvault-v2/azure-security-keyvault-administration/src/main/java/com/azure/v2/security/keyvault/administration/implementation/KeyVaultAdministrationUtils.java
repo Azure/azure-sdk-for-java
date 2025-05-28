@@ -13,7 +13,6 @@ import io.clientcore.core.http.models.HttpResponseException;
  */
 public final class KeyVaultAdministrationUtils {
     private KeyVaultAdministrationUtils() {
-        throw new UnsupportedOperationException("Cannot instantiate KeyVaultAdministrationUtils");
     }
 
     /**

@@ -10,6 +10,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerregistry.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.containerregistry.fluent.CacheRulesClient;
+import com.azure.resourcemanager.containerregistry.fluent.ConnectedRegistriesClient;
 import com.azure.resourcemanager.containerregistry.fluent.ContainerRegistryManagementClient;
 import com.azure.resourcemanager.containerregistry.fluent.CredentialSetsClient;
 import com.azure.resourcemanager.containerregistry.fluent.OperationsClient;
@@ -113,6 +114,20 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
      */
     public CacheRulesClient getCacheRules() {
         return this.cacheRules;
+    }
+
+    /**
+     * The ConnectedRegistriesClient object to access its operations.
+     */
+    private final ConnectedRegistriesClient connectedRegistries;
+
+    /**
+     * Gets the ConnectedRegistriesClient object to access its operations.
+     * 
+     * @return the ConnectedRegistriesClient object.
+     */
+    public ConnectedRegistriesClient getConnectedRegistries() {
+        return this.connectedRegistries;
     }
 
     /**
@@ -302,6 +317,7 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.cacheRules = new CacheRulesClientImpl(this);
+        this.connectedRegistries = new ConnectedRegistriesClientImpl(this);
         this.credentialSets = new CredentialSetsClientImpl(this);
         this.registries = new RegistriesClientImpl(this);
         this.operations = new OperationsClientImpl(this);

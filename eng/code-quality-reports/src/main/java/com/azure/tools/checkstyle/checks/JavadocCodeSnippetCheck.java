@@ -10,7 +10,6 @@ import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.utils.BlockCommentPosition;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
@@ -19,6 +18,7 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Queue;
 
+// TODO (alzimmer): This rule needs to be reimplemented to check for codesnippet plugin patterns.
 /**
  * Codesnippet description should match naming pattern requirement below:
  * <ol>
@@ -33,15 +33,13 @@ import java.util.Queue;
 public class JavadocCodeSnippetCheck extends AbstractCheck {
 
     private static final String CODE_SNIPPET_ANNOTATION = "@codesnippet";
-    private static final String MISSING_CODESNIPPET_TAG_MESSAGE = "There is a @codesnippet block in the JavaDoc, but it"
-        + " does not refer to any sample.";
 
     private static final int[] TOKENS = new int[] {
         TokenTypes.PACKAGE_DEF, TokenTypes.BLOCK_COMMENT_BEGIN, TokenTypes.CLASS_DEF, TokenTypes.METHOD_DEF };
 
     private String packageName;
     // A LIFO queue contains all class name visited, remove the class name when leave the same token
-    private Queue<String> classNameStack = Collections.asLifoQueue(new ArrayDeque<>());
+    private final Queue<String> classNameStack = Collections.asLifoQueue(new ArrayDeque<>());
     // Current METHOD_DEF token while traversal tree
     private DetailAST methodDefToken = null;
 
@@ -93,11 +91,6 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
         }
     }
 
-    @Override
-    public void destroy() {
-        super.destroy();
-    }
-
     /**
      * Check if the given block comment is on method. If not, skip the check.
      * Otherwise, check if the codesnippet has matching the naming pattern
@@ -134,7 +127,6 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
             // Missing Description
             DetailNode descriptionNode = JavadocUtil.findFirstToken(node, JavadocTokenTypes.DESCRIPTION);
             if (descriptionNode == null) {
-                log(node.getLineNumber(), MISSING_CODESNIPPET_TAG_MESSAGE);
                 return;
             }
 

@@ -6,17 +6,16 @@ package com.azure.developer.loadtesting;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.util.BinaryData;
+import com.azure.developer.loadtesting.models.LoadTest;
+import com.azure.developer.loadtesting.models.LoadTestRun;
+import com.azure.developer.loadtesting.models.LoadTestingFileType;
+import com.azure.developer.loadtesting.models.TestFileInfo;
+import com.azure.developer.loadtesting.models.TestProfile;
+import com.azure.developer.loadtesting.models.TestProfileRun;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
-
-import java.io.IOException;
-import java.util.Map;
 
 /**
- * Sample demonstrates how to list tests, test files and test runs for a given resource.
+ * Sample demonstrates how to list tests, test files, test runs, test profiles and test profile runs for a given resource.
  */
 public final class ListOperationsAsync {
     /**
@@ -32,6 +31,8 @@ public final class ListOperationsAsync {
         listTests();
         listTestRuns();
         listTestFiles();
+        listTestProfiles();
+        listTestProfileRuns();
     }
 
     public static void listTests() {
@@ -41,24 +42,17 @@ public final class ListOperationsAsync {
             .endpoint("<endpoint>")
             .buildAsyncClient();
 
-        RequestOptions reqOpts = new RequestOptions()
-            .addQueryParam("orderBy", "lastModifiedDateTime")
-            .addQueryParam("maxPageSize", "10");
+        PagedFlux<LoadTest> tests = client.listTests(
+            "lastModifiedDateTime desc", // orderBy
+            null, // search
+            null, // lastModifiedStartTime
+            null // lastModifiedEndTime
+        );
 
-        PagedFlux<BinaryData> tests = client.listTests(reqOpts);
-
-        tests.subscribe(testBinary -> {
-            try (JsonReader jsonReader = JsonProviders.createReader(testBinary.toBytes())) {
-                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
-                String testId = jsonTree.get("testId").toString();
-                String displayName = (jsonTree.get("displayName") != null)
-                    ? jsonTree.get("displayName").toString()
-                    : "";
-                System.out.println(String.format("%s\t%s", testId, displayName));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        tests.subscribe(test -> {
+            String testId = test.getTestId();
+            String displayName = test.getDisplayName();
+            System.out.println(String.format("%s\\t%s", testId, displayName));
         });
         // END: java-listOperationsAsync-sample-listTests
     }
@@ -70,27 +64,21 @@ public final class ListOperationsAsync {
             .endpoint("<endpoint>")
             .buildAsyncClient();
 
-        RequestOptions reqOpts = new RequestOptions()
-            .addQueryParam("search", "scenario1")
-            .addQueryParam("orderBy", "lastModifiedDateTime")
-            .addQueryParam("status", "EXECUTING,DONE")
-            .addQueryParam("maxPageSize", "10");
+        PagedFlux<LoadTestRun> testRuns = client.listTestRuns(
+            "lastModifiedDateTime desc", // orderBy
+            "scenario1", // search
+            null, // testId
+            null, // executionFrom
+            null, // executionTo
+            "EXECUTING,DONE", // status
+            null // testRunIds (List<String>)
+        );
 
-        PagedFlux<BinaryData> testRuns = client.listTestRuns(reqOpts);
-
-        testRuns.subscribe(testRunBinary -> {
-            try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())) {
-                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
-                String testRunId = jsonTree.get("testRunId").toString();
-                String testId = jsonTree.get("testId").toString();
-                String displayName = (jsonTree.get("displayName") != null)
-                    ? jsonTree.get("displayName").toString()
-                    : "";
-                System.out.println(String.format("%s\t%s\t%s", testRunId, testId, displayName));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        testRuns.subscribe(testRun -> {
+            String testRunId = testRun.getTestRunId();
+            String testId = testRun.getTestId();
+            String displayName = testRun.getDisplayName();
+            System.out.println(String.format("%s\\t%s\\t%s", testRunId, testId, displayName));
         });
         // END: java-listOperationsAsync-sample-listTestRuns
     }
@@ -104,20 +92,44 @@ public final class ListOperationsAsync {
 
         String inputTestId = "12345678-1234-1234-1234-123456789abc";
 
-        PagedFlux<BinaryData> files = client.listTestFiles(inputTestId, null);
+        PagedFlux<TestFileInfo> files = client.listTestFiles(inputTestId);
 
-        files.subscribe(fileBinary -> {
-            try (JsonReader jsonReader = JsonProviders.createReader(fileBinary.toBytes())) {
-                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
-                String blobUrl = jsonTree.get("url").toString();
-                String fileName = jsonTree.get("fileName").toString();
-                String fileType = jsonTree.get("fileType").toString();
-                System.out.println(String.format("%s\t%s\t%s", fileName, fileType, blobUrl));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        files.subscribe(fileInfo -> {
+            String fileName = fileInfo.getFileName();
+            LoadTestingFileType fileType = fileInfo.getFileType();
+            String blobUrl = fileInfo.getUrl();
+            System.out.println(String.format("%s\\t%s\\t%s", fileName, fileType, blobUrl));
         });
         // END: java-listOperationsAsync-sample-listTestFiles
+    }
+
+    public static void listTestProfiles() {
+        // BEGIN: java-listOperationsAsync-sample-listTestProfiles
+        LoadTestAdministrationAsyncClient client = new LoadTestAdministrationClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint("<endpoint>")
+            .buildAsyncClient();
+
+        PagedFlux<TestProfile> testProfiles = client.listTestProfiles();
+
+        testProfiles.subscribe(testProfile -> {
+            System.out.println(String.format("%s\\t%s", testProfile.getTestProfileId(), testProfile.getDisplayName()));
+        });
+        // END: java-listOperationsAsync-sample-listTestProfiles
+    }
+
+    public static void listTestProfileRuns() {
+        // BEGIN: java-listOperationsAsync-sample-listTestProfileRuns
+        LoadTestRunAsyncClient client = new LoadTestRunClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint("<endpoint>")
+            .buildAsyncClient();
+
+        PagedFlux<TestProfileRun> testProfileRuns = client.listTestProfileRuns();
+
+        testProfileRuns.subscribe(testProfileRun -> {
+            System.out.println(String.format("%s\\t%s", testProfileRun.getTestProfileRunId(), testProfileRun.getDisplayName()));
+        });
+        // END: java-listOperationsAsync-sample-listTestProfileRuns
     }
 }

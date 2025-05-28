@@ -506,18 +506,32 @@ public final class SynapseSparkJobActivityTypeProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("sparkJob", this.sparkJob);
         jsonWriter.writeArrayField("args", this.arguments, (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeUntypedField("file", this.file);
-        jsonWriter.writeUntypedField("scanFolder", this.scanFolder);
-        jsonWriter.writeUntypedField("className", this.className);
+        if (this.file != null) {
+            jsonWriter.writeUntypedField("file", this.file);
+        }
+        if (this.scanFolder != null) {
+            jsonWriter.writeUntypedField("scanFolder", this.scanFolder);
+        }
+        if (this.className != null) {
+            jsonWriter.writeUntypedField("className", this.className);
+        }
         jsonWriter.writeArrayField("files", this.files, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeArrayField("pythonCodeReference", this.pythonCodeReference,
             (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeArrayField("filesV2", this.filesV2, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("targetBigDataPool", this.targetBigDataPool);
-        jsonWriter.writeUntypedField("executorSize", this.executorSize);
-        jsonWriter.writeUntypedField("conf", this.conf);
-        jsonWriter.writeUntypedField("driverSize", this.driverSize);
-        jsonWriter.writeUntypedField("numExecutors", this.numExecutors);
+        if (this.executorSize != null) {
+            jsonWriter.writeUntypedField("executorSize", this.executorSize);
+        }
+        if (this.conf != null) {
+            jsonWriter.writeUntypedField("conf", this.conf);
+        }
+        if (this.driverSize != null) {
+            jsonWriter.writeUntypedField("driverSize", this.driverSize);
+        }
+        if (this.numExecutors != null) {
+            jsonWriter.writeUntypedField("numExecutors", this.numExecutors);
+        }
         jsonWriter.writeStringField("configurationType",
             this.configurationType == null ? null : this.configurationType.toString());
         jsonWriter.writeJsonField("targetSparkConfiguration", this.targetSparkConfiguration);

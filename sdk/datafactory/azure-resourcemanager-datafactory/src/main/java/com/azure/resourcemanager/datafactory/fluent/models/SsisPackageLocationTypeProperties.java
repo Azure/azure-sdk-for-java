@@ -259,10 +259,14 @@ public final class SsisPackageLocationTypeProperties implements JsonSerializable
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("packagePassword", this.packagePassword);
         jsonWriter.writeJsonField("accessCredential", this.accessCredential);
-        jsonWriter.writeUntypedField("configurationPath", this.configurationPath);
+        if (this.configurationPath != null) {
+            jsonWriter.writeUntypedField("configurationPath", this.configurationPath);
+        }
         jsonWriter.writeJsonField("configurationAccessCredential", this.configurationAccessCredential);
         jsonWriter.writeStringField("packageName", this.packageName);
-        jsonWriter.writeUntypedField("packageContent", this.packageContent);
+        if (this.packageContent != null) {
+            jsonWriter.writeUntypedField("packageContent", this.packageContent);
+        }
         jsonWriter.writeStringField("packageLastModifiedDate", this.packageLastModifiedDate);
         jsonWriter.writeArrayField("childPackages", this.childPackages, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();

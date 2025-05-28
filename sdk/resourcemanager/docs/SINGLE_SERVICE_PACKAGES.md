@@ -358,6 +358,8 @@ service
 <details>
 <summary> cognitiveservices </summary>
 
+* [package-preview-2025-04-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager#tag-package-preview-2025-04-01-preview)
+    * [1.2.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-cognitiveservices/1.2.0-beta.1)
 * [package-2024-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager#tag-package-2024-10)
     * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-cognitiveservices/1.1.0)
 * [package-2023-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager#tag-package-2023-05)
@@ -1452,25 +1454,25 @@ service
 <details>
 <summary> mediaservices </summary>
 
-* [package-account-2023-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager#tag-package-account-2023-01)
+* package-account-2023-01
     * [2.4.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/2.4.0-beta.2)
     * [2.4.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/2.4.0-beta.1)
-* [package-encoding-2022-07](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager#tag-package-encoding-2022-07)
+* package-encoding-2022-07
     * [2.3.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/2.3.0)
-* [package-metadata-2022-08](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager#tag-package-metadata-2022-08)
+* package-metadata-2022-08
     * [2.2.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/2.2.0)
     * [2.2.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/2.2.0-beta.1)
-* [package-account-2021-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager#tag-package-account-2021-11)
+* package-account-2021-11
     * [2.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/2.1.0)
     * [2.1.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/2.1.0-beta.1)
-* [package-2021-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager#tag-package-2021-11)
+* package-2021-11
     * [2.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/2.0.0)
     * [1.1.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/1.1.0-beta.3)
-* [package-2021-06](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager#tag-package-2021-06)
+* package-2021-06
     * [1.1.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/1.1.0-beta.2)
-* [package-2021-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager#tag-package-2021-05)
+* package-2021-05
     * [1.1.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/1.1.0-beta.1)
-* [package-2020-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager#tag-package-2020-05)
+* package-2020-05
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/1.0.0)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/1.0.0-beta.2)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mediaservices/1.0.0-beta.1)

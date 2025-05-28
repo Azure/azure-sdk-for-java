@@ -3,15 +3,14 @@
 
 package com.azure.v2.identity.implementation.client;
 
+import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.azure.v2.identity.models.TokenCachePersistenceOptions;
 import com.azure.v2.identity.models.BrowserCustomizationOptions;
 import com.azure.v2.identity.models.DeviceCodeInfo;
-import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.azure.v2.identity.exceptions.CredentialAuthenticationException;
 import com.azure.v2.identity.implementation.models.MsalToken;
 import com.azure.v2.identity.implementation.models.PublicClientOptions;
 import com.azure.v2.identity.implementation.util.IdentityUtil;
-import com.azure.v2.identity.implementation.util.LoggingUtil;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
@@ -24,7 +23,6 @@ import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.SharedExecutorService;
 
@@ -126,14 +124,14 @@ public class PublicClient extends ClientBase {
         try {
             return new MsalToken(pc.acquireTokenSilently(parametersBuilder.build()).get());
         } catch (MalformedURLException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e.getMessage(), e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         } catch (ExecutionException | InterruptedException e) {
             // Cache misses should not throw an exception, but should log.
             if (e.getMessage().contains("Token not found in the cache")) {
-                LOGGER.atLevel(LogLevel.VERBOSE).log("Token not found in the MSAL cache.");
+                LOGGER.atVerbose().log("Token not found in the MSAL cache.");
                 return null;
             } else {
-                throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
+                throw LOGGER.throwableAtError().log(e, CredentialAuthenticationException::new);
             }
         }
     }
@@ -146,8 +144,9 @@ public class PublicClient extends ClientBase {
      */
     PublicClientApplication getClient(boolean enableCae) {
         if (clientId == null) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                "A non-null value for client ID must be provided for user authentication."));
+            throw LOGGER.throwableAtError()
+                .log("A non-null value for client ID must be provided for user authentication.",
+                    IllegalArgumentException::new);
         }
         String authorityUrl
             = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("") + "/" + tenantId;
@@ -158,13 +157,13 @@ public class PublicClient extends ClientBase {
                 .logPii(options.isUnsafeSupportLoggingEnabled());
 
             if (!options.isInstanceDiscoveryEnabled()) {
-                LOGGER.atLevel(LogLevel.VERBOSE)
+                LOGGER.atVerbose()
                     .log("Instance discovery and authority validation is disabled. In this"
                         + " state, the library will not fetch metadata to validate the specified authority host. As a"
                         + " result, it is crucial to ensure that the configured authority host is valid and trustworthy.");
             }
         } catch (MalformedURLException e) {
-            throw LOGGER.logThrowableAsWarning(new IllegalStateException(e));
+            throw LOGGER.throwableAtWarning().log(e, IllegalStateException::new);
         }
 
         initializeHttpPipelineAdapter();
@@ -190,9 +189,10 @@ public class PublicClient extends ClientBase {
                     .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
                     .setName(tokenCachePersistenceOptions.getName());
                 builder.setTokenCacheAccessAspect(tokenCache);
-            } catch (Throwable t) {
-                throw LOGGER.logThrowableAsError(
-                    new CredentialAuthenticationException("Shared token cache is unavailable in this environment.", t));
+            } catch (RuntimeException t) {
+                throw LOGGER.throwableAtError()
+                    .log("Shared token cache is unavailable in this environment.", t,
+                        CredentialAuthenticationException::new);
             }
         }
         PublicClientApplication publicClientApplication = builder.build();
@@ -220,7 +220,7 @@ public class PublicClient extends ClientBase {
             try {
                 redirectUri = new URI(HTTP_LOCALHOST);
             } catch (URISyntaxException ex) {
-                throw LOGGER.logThrowableAsError(new IllegalStateException(ex));
+                throw LOGGER.throwableAtError().log(ex, IllegalStateException::new);
             }
         }
         PublicClientApplication pc = getClientInstance(request).getValue();
@@ -234,9 +234,10 @@ public class PublicClient extends ClientBase {
 
             try {
                 return new MsalToken(pc.acquireToken(builder.build()).get());
-            } catch (Exception e) {
-                throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(
-                    "Failed to acquire token with Interactive Browser Authentication.", e));
+            } catch (InterruptedException | ExecutionException e) {
+                throw LOGGER.throwableAtError()
+                    .log("Failed to acquire token with Interactive Browser Authentication.", e,
+                        CredentialAuthenticationException::new);
             }
         }
         return token;
@@ -298,9 +299,9 @@ public class PublicClient extends ClientBase {
 
         try {
             return new MsalToken(pc.acquireToken(parametersBuilder.build()).get());
-        } catch (Exception e) {
-            throw LOGGER.logThrowableAsError(
-                new CredentialAuthenticationException("Failed to acquire token with device code.", e));
+        } catch (InterruptedException | ExecutionException | RuntimeException e) {
+            throw LOGGER.throwableAtError()
+                .log("Failed to acquire token with device code.", e, CredentialAuthenticationException::new);
         }
     }
 
@@ -348,8 +349,8 @@ public class PublicClient extends ClientBase {
         try {
             return new MsalToken(publicClient.getValue().acquireToken(parametersBuilder.build()).get());
         } catch (InterruptedException | ExecutionException e) {
-            throw LOGGER.logThrowableAsError(
-                new CredentialAuthenticationException("Failed to acquire token with authorization code", e));
+            throw LOGGER.throwableAtError()
+                .log("Failed to acquire token with authorization code", e, CredentialAuthenticationException::new);
         }
     }
 
@@ -377,14 +378,15 @@ public class PublicClient extends ClientBase {
                 return new MsalToken(
                     getClientInstance(request).getValue().acquireToken(refreshTokenParametersBuilder.build()).get());
             } catch (InterruptedException | ExecutionException e) {
-                throw LOGGER.logThrowableAsError(
-                    new CredentialAuthenticationException("Failed to get token using IntelliJ auth", e));
+                throw LOGGER.throwableAtError()
+                    .log("Failed to get token using IntelliJ auth", e, CredentialAuthenticationException::new);
             }
         }
-        String exception
-            = "Azure Toolkit authentication not available. Please login with the Azure Toolkit for IntelliJ/Eclipse.";
-        LoggingUtil.logCredentialUnavailableException(LOGGER, new CredentialUnavailableException(exception));
-        return null;
+
+        throw LOGGER.throwableAtError()
+            .log(
+                "Azure Toolkit authentication not available. Please login with the Azure Toolkit for IntelliJ/Eclipse.",
+                CredentialUnavailableException::new);
     }
 
     /**

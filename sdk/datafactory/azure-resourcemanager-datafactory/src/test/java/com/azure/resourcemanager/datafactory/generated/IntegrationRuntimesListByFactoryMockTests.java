@@ -22,7 +22,7 @@ public final class IntegrationRuntimesListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"cwkwm\",\"\":{\"ukvsgkzxzn\":\"dataqldacxofaqas\",\"qpkpvdiirvxahx\":\"datatxocznszmjzsjfc\"}},\"name\":\"lhxo\",\"type\":\"omakmi\",\"etag\":\"hduflajsgut\",\"id\":\"cbvxyqpr\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"cwkwm\",\"ukvsgkzxzn\":\"dataqldacxofaqas\",\"qpkpvdiirvxahx\":\"datatxocznszmjzsjfc\"},\"name\":\"lhxo\",\"type\":\"omakmi\",\"etag\":\"hduflajsgut\",\"id\":\"cbvxyqpr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

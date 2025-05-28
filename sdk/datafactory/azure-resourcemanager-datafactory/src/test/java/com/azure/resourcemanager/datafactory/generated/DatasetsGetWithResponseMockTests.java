@@ -22,7 +22,7 @@ public final class DatasetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"dnxwkf\",\"structure\":\"dataursbyfoavozqn\",\"schema\":\"datamxitvmrq\",\"linkedServiceName\":{\"referenceName\":\"kzchcmuvskdvqyf\",\"parameters\":{\"f\":\"dataxca\",\"yohzhu\":\"datavjpfojhvqmdo\",\"k\":\"datad\",\"pgarhf\":\"datadxfvjdfusuwght\"}},\"parameters\":{\"vqpmwqsd\":{\"type\":\"String\",\"defaultValue\":\"dataivadpc\"}},\"annotations\":[\"datae\",\"datakfsgrheakvl\",\"dataukmnu\"],\"folder\":{\"name\":\"bjclihfzrii\"},\"\":{\"nctkqbvtdeou\":\"dataqyptmjqjoamzdsa\",\"juwdvfaulbfrc\":\"dataixgtpykbjevj\"}},\"name\":\"ucobpkphxh\",\"type\":\"fekxbcbumj\",\"etag\":\"ukezqohthsmdua\",\"id\":\"pryuw\"}";
+            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"dnxwkf\",\"structure\":\"dataursbyfoavozqn\",\"schema\":\"datamxitvmrq\",\"linkedServiceName\":{\"referenceName\":\"kzchcmuvskdvqyf\",\"parameters\":{\"f\":\"dataxca\",\"yohzhu\":\"datavjpfojhvqmdo\",\"k\":\"datad\",\"pgarhf\":\"datadxfvjdfusuwght\"}},\"parameters\":{\"vqpmwqsd\":{\"type\":\"String\",\"defaultValue\":\"dataivadpc\"}},\"annotations\":[\"datae\",\"datakfsgrheakvl\",\"dataukmnu\"],\"folder\":{\"name\":\"bjclihfzrii\"},\"nctkqbvtdeou\":\"dataqyptmjqjoamzdsa\",\"juwdvfaulbfrc\":\"dataixgtpykbjevj\"},\"name\":\"ucobpkphxh\",\"type\":\"fekxbcbumj\",\"etag\":\"ukezqohthsmdua\",\"id\":\"pryuw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

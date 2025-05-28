@@ -107,7 +107,6 @@ extends:
         safeName: azurecore
         releaseInBatch: ${{ parameters.release_azurecore }}
         triggeringPaths:
-        - /eng
         - /sdk/parents/azure-sdk-parent
         - /sdk/parents/azure-client-sdk-parent
       - name: azure-core-amqp

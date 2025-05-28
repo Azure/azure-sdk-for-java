@@ -91,8 +91,12 @@ public final class CassandraTableDatasetTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("tableName", this.tableName);
-        jsonWriter.writeUntypedField("keyspace", this.keyspace);
+        if (this.tableName != null) {
+            jsonWriter.writeUntypedField("tableName", this.tableName);
+        }
+        if (this.keyspace != null) {
+            jsonWriter.writeUntypedField("keyspace", this.keyspace);
+        }
         return jsonWriter.writeEndObject();
     }
 

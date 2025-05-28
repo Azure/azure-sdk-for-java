@@ -234,12 +234,22 @@ public final class ExcelDatasetTypeProperties implements JsonSerializable<ExcelD
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("location", this.location);
-        jsonWriter.writeUntypedField("sheetName", this.sheetName);
-        jsonWriter.writeUntypedField("sheetIndex", this.sheetIndex);
-        jsonWriter.writeUntypedField("range", this.range);
-        jsonWriter.writeUntypedField("firstRowAsHeader", this.firstRowAsHeader);
+        if (this.sheetName != null) {
+            jsonWriter.writeUntypedField("sheetName", this.sheetName);
+        }
+        if (this.sheetIndex != null) {
+            jsonWriter.writeUntypedField("sheetIndex", this.sheetIndex);
+        }
+        if (this.range != null) {
+            jsonWriter.writeUntypedField("range", this.range);
+        }
+        if (this.firstRowAsHeader != null) {
+            jsonWriter.writeUntypedField("firstRowAsHeader", this.firstRowAsHeader);
+        }
         jsonWriter.writeJsonField("compression", this.compression);
-        jsonWriter.writeUntypedField("nullValue", this.nullValue);
+        if (this.nullValue != null) {
+            jsonWriter.writeUntypedField("nullValue", this.nullValue);
+        }
         return jsonWriter.writeEndObject();
     }
 

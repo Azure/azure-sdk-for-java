@@ -352,14 +352,28 @@ public final class HBaseLinkedServiceTypeProperties implements JsonSerializable<
         jsonWriter.writeUntypedField("host", this.host);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("port", this.port);
-        jsonWriter.writeUntypedField("httpPath", this.httpPath);
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.port != null) {
+            jsonWriter.writeUntypedField("port", this.port);
+        }
+        if (this.httpPath != null) {
+            jsonWriter.writeUntypedField("httpPath", this.httpPath);
+        }
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
-        jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
-        jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostnameCNMismatch);
-        jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+        if (this.enableSsl != null) {
+            jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+        }
+        if (this.trustedCertPath != null) {
+            jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
+        }
+        if (this.allowHostnameCNMismatch != null) {
+            jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostnameCNMismatch);
+        }
+        if (this.allowSelfSignedServerCert != null) {
+            jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

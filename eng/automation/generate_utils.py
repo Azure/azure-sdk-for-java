@@ -284,8 +284,22 @@ def get_and_update_service_from_api_specs(
     api_specs_file: str,
     spec: str,
     service: str = None,
+    suffix: str = None,
     truncate_service: bool = False,
 ):
+    """
+    Updates the API specs file with the provided service name and optional suffix.
+
+    Args:
+        api_specs_file (str): Path to the API specs file.
+        spec (str): The specification key to update in the API specs.
+        service (str, optional): The service name to associate with the spec. If not provided, it will be derived.
+        suffix (str, optional): An optional suffix to add to the spec entry in the API specs file.
+        truncate_service (bool, optional): Whether to truncate the service name to a maximum length of 32 characters.
+
+    Returns:
+        str: The validated and potentially updated service name.
+    """
     special_spec = {"resources"}
     if spec in special_spec:
         if not service:
@@ -314,6 +328,9 @@ def get_and_update_service_from_api_specs(
     if service != spec:
         api_specs[spec] = dict() if not api_spec else api_spec
         api_specs[spec]["service"] = service
+
+    if suffix:
+        api_specs[spec]["suffix"] = suffix
 
     write_api_specs(api_specs_file, comment, api_specs)
 

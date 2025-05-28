@@ -87,10 +87,12 @@ public class WorkloadIdentityCredential implements TokenCredential {
     @Override
     public AccessToken getToken(TokenRequestContext request) {
         if (clientAssertionCredential == null) {
-            throw LOGGER.logThrowableAsError(new CredentialUnavailableException("WorkloadIdentityCredential"
-                + " authentication unavailable. The workload options are not fully configured. See the troubleshooting"
-                + " guide for more information."
-                + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot"));
+            throw LOGGER.throwableAtError()
+                .log("WorkloadIdentityCredential"
+                    + " authentication unavailable. The workload options are not fully configured. See the troubleshooting"
+                    + " guide for more information."
+                    + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot",
+                    CredentialUnavailableException::new);
         }
         return clientAssertionCredential.getToken(request);
     }
@@ -101,11 +103,12 @@ public class WorkloadIdentityCredential implements TokenCredential {
                 byte[] encoded = Files.readAllBytes(Paths.get(clientAssertionFilePath));
                 return new String(encoded, StandardCharsets.UTF_8);
             } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
+                throw LOGGER.throwableAtError().log(e, CredentialAuthenticationException::new);
             }
         } else {
-            throw LOGGER.logThrowableAsError(new IllegalStateException("Client Assertion File Path is not provided."
-                + " It should be provided to authenticate with client assertion."));
+            throw LOGGER.throwableAtError()
+                .log("Client Assertion File Path is not provided."
+                    + " It should be provided to authenticate with client assertion.", IllegalStateException::new);
         }
     }
 }

@@ -264,14 +264,22 @@ public final class FtpServerLinkedServiceTypeProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("host", this.host);
-        jsonWriter.writeUntypedField("port", this.port);
+        if (this.port != null) {
+            jsonWriter.writeUntypedField("port", this.port);
+        }
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("userName", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("userName", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
-        jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
-        jsonWriter.writeUntypedField("enableServerCertificateValidation", this.enableServerCertificateValidation);
+        if (this.enableSsl != null) {
+            jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+        }
+        if (this.enableServerCertificateValidation != null) {
+            jsonWriter.writeUntypedField("enableServerCertificateValidation", this.enableServerCertificateValidation);
+        }
         return jsonWriter.writeEndObject();
     }
 

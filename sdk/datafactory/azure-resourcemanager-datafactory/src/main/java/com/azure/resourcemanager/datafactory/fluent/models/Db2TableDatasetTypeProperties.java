@@ -113,9 +113,15 @@ public final class Db2TableDatasetTypeProperties implements JsonSerializable<Db2
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("tableName", this.tableName);
-        jsonWriter.writeUntypedField("schema", this.schema);
-        jsonWriter.writeUntypedField("table", this.table);
+        if (this.tableName != null) {
+            jsonWriter.writeUntypedField("tableName", this.tableName);
+        }
+        if (this.schema != null) {
+            jsonWriter.writeUntypedField("schema", this.schema);
+        }
+        if (this.table != null) {
+            jsonWriter.writeUntypedField("table", this.table);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -185,9 +185,13 @@ public final class HdfsLinkedServiceTypeProperties implements JsonSerializable<H
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("url", this.url);
-        jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+        if (this.authenticationType != null) {
+            jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
-        jsonWriter.writeUntypedField("userName", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("userName", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
         return jsonWriter.writeEndObject();
     }

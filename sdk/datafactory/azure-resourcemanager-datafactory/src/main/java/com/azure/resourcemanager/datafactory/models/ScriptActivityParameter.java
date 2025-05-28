@@ -161,9 +161,13 @@ public final class ScriptActivityParameter implements JsonSerializable<ScriptAct
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("name", this.name);
+        if (this.name != null) {
+            jsonWriter.writeUntypedField("name", this.name);
+        }
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         jsonWriter.writeStringField("direction", this.direction == null ? null : this.direction.toString());
         jsonWriter.writeNumberField("size", this.size);
         return jsonWriter.writeEndObject();

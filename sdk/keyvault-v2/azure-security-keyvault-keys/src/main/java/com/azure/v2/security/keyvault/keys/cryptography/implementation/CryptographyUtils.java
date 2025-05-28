@@ -53,46 +53,50 @@ public final class CryptographyUtils {
      */
     public static List<String> unpackAndValidateId(String keyId, ClientLogger logger) {
         if (isNullOrEmpty(keyId)) {
-            throw logger.logThrowableAsError(new IllegalArgumentException("'keyId' cannot be null or empty."));
+            throw logger.throwableAtError().log("'keyId' cannot be null or empty.", IllegalArgumentException::new);
         }
 
+        URI uri;
         try {
-            URI uri = new URI(keyId);
-            String[] tokens = uri.getPath().split("/");
-            String vaultUrl = uri.getScheme() + "://" + uri.getHost();
-
-            if (uri.getPort() != -1) {
-                vaultUrl += ":" + uri.getPort();
-            }
-
-            String keyCollection = (tokens.length >= 2 ? tokens[1] : null);
-            String keyName = (tokens.length >= 3 ? tokens[2] : null);
-            String keyVersion = (tokens.length >= 4 ? tokens[3] : null);
-
-            if (isNullOrEmpty(vaultUrl)) {
-                throw logger
-                    .logThrowableAsError(new IllegalArgumentException("Key endpoint in key identifier is invalid."));
-            } else if (isNullOrEmpty(keyName)) {
-                throw logger
-                    .logThrowableAsError(new IllegalArgumentException("Key name in key identifier is invalid."));
-            }
-
-            return Arrays.asList(vaultUrl, keyCollection, keyName, keyVersion);
+            uri = new URI(keyId);
         } catch (URISyntaxException e) {
-            throw logger.logThrowableAsError(new IllegalArgumentException("The key identifier is malformed.", e));
+            throw logger.throwableAtError().log("The key identifier is malformed.", e, IllegalArgumentException::new);
         }
+
+        String[] tokens = uri.getPath().split("/");
+        String vaultUrl = uri.getScheme() + "://" + uri.getHost();
+
+        if (uri.getPort() != -1) {
+            vaultUrl += ":" + uri.getPort();
+        }
+
+        String keyCollection = (tokens.length >= 2 ? tokens[1] : null);
+        String keyName = (tokens.length >= 3 ? tokens[2] : null);
+        String keyVersion = (tokens.length >= 4 ? tokens[3] : null);
+
+        if (isNullOrEmpty(vaultUrl)) {
+            throw logger.throwableAtError()
+                .log("Key endpoint in key identifier is invalid.", IllegalArgumentException::new);
+        } else if (isNullOrEmpty(keyName)) {
+            throw logger.throwableAtError()
+                .log("Key name in key identifier is invalid.", IllegalArgumentException::new);
+        }
+
+        return Arrays.asList(vaultUrl, keyCollection, keyName, keyVersion);
     }
 
     /**
      * Creates a local cryptography client using the provided key identifier and cryptography client implementation.
      *
      * @param implClient The cryptography client implementation.
+     * @param logger The logger to use for logging errors.
      * @return A local cryptography client.
      *
      * @throws IllegalStateException If either of the key identifier or JSON Web Key is invalid or if the latter cannot
      * be retrieved.
      */
-    public static LocalKeyCryptographyClient retrieveJwkAndCreateLocalClient(CryptographyClientImpl implClient) {
+    public static LocalKeyCryptographyClient retrieveJwkAndCreateLocalClient(CryptographyClientImpl implClient,
+        ClientLogger logger) {
         // Technically the collection portion of a key identifier should never be null/empty, but we still check for it.
         if (!isNullOrEmpty(implClient.getKeyCollection())) {
             // Get the JWK from the service and validate it. Then attempt to create a local cryptography client or
@@ -102,16 +106,20 @@ public final class CryptographyUtils {
                 : implClient.getKeyWithResponse(RequestContext.none()).getValue().getKey();
 
             if (jsonWebKey == null) {
-                throw new IllegalStateException(
-                    "Could not retrieve JSON Web Key to perform local cryptographic operations.");
+                throw logger.throwableAtError()
+                    .log("Could not retrieve JSON Web Key to perform local cryptographic operations.",
+                        IllegalStateException::new);
             } else if (!jsonWebKey.isValid()) {
-                throw new IllegalStateException("The retrieved JSON Web Key is not valid.");
+                throw logger.throwableAtError()
+                    .log("The retrieved JSON Web Key is not valid.", IllegalStateException::new);
             } else {
-                return createLocalClient(jsonWebKey, implClient);
+                return createLocalClient(jsonWebKey, implClient, logger);
             }
         } else {
             // Couldn't/didn't create a local cryptography client.
-            throw new IllegalStateException("Could not create a local cryptography client.");
+            throw logger.throwableAtError()
+                .log("Could not create a local cryptography client, key collection is invalid",
+                    IllegalStateException::new);
         }
     }
 
@@ -120,18 +128,14 @@ public final class CryptographyUtils {
      *
      * @param jsonWebKey The JSON Web Key to use for local cryptographic operations.
      * @param implClient The cryptography client implementation.
+     * @param logger The logger to use for logging errors.
      * @return A local cryptography client.
      *
      * @throws IllegalArgumentException If the JSON Web Key type is not supported.
      * @throws IllegalStateException If the local cryptography client cannot be created.
      */
-    public static LocalKeyCryptographyClient createLocalClient(JsonWebKey jsonWebKey,
-        CryptographyClientImpl implClient) {
-
-        if (!KeyType.values().contains(jsonWebKey.getKeyType())) {
-            throw new IllegalArgumentException(
-                String.format("The JSON Web Key type: %s is not supported.", jsonWebKey.getKeyType().toString()));
-        }
+    public static LocalKeyCryptographyClient createLocalClient(JsonWebKey jsonWebKey, CryptographyClientImpl implClient,
+        ClientLogger logger) {
 
         if (jsonWebKey.getKeyType().equals(RSA) || jsonWebKey.getKeyType().equals(RSA_HSM)) {
             return new RsaKeyCryptographyClient(jsonWebKey, implClient);
@@ -142,7 +146,9 @@ public final class CryptographyUtils {
         }
 
         // Should never reach this point.
-        throw new IllegalStateException("Could not create local cryptography client.");
+        throw logger.throwableAtError()
+            .addKeyValue("keyType", jsonWebKey.getKeyType().getValue())
+            .log("The JSON Web Key type is not supported.", IllegalArgumentException::new);
     }
 
     /**
@@ -150,15 +156,18 @@ public final class CryptographyUtils {
      *
      * @param jsonWebKey The JSON Web Key to verify.
      * @param keyOperation The key operation to verify.
+     * @param logger The logger to use for logging errors.
      *
      * @throws UnsupportedOperationException If the key operation is not supported by the key.
      */
-    public static void verifyKeyPermissions(JsonWebKey jsonWebKey, KeyOperation keyOperation) {
+    public static void verifyKeyPermissions(JsonWebKey jsonWebKey, KeyOperation keyOperation, ClientLogger logger) {
         if (!jsonWebKey.getKeyOps().contains(keyOperation)) {
             String keyOperationName = keyOperation == null ? null : keyOperation.toString().toLowerCase(Locale.ROOT);
 
-            throw new UnsupportedOperationException(String.format("The %s operation is not allowed for key with id: %s",
-                keyOperationName, jsonWebKey.getId()));
+            throw logger.throwableAtError()
+                .addKeyValue("keyOperationName", keyOperationName)
+                .addKeyValue("keyId", jsonWebKey.getId())
+                .log("The operation is not allowed for key", UnsupportedOperationException::new);
         }
     }
 
@@ -188,40 +197,15 @@ public final class CryptographyUtils {
      * @param key The key to be checked.
      * @param keySizeInBytes The minimum size required for the key.
      */
-    static void validate(byte[] key, int keySizeInBytes) {
-        if (key == null) {
-            throw new IllegalArgumentException("key must not be null");
-        }
+    static void validate(byte[] key, int keySizeInBytes, ClientLogger logger) {
+        Objects.requireNonNull(key, "'key' cannot be null.");
 
         if (key.length < keySizeInBytes) {
-            throw new IllegalArgumentException(String.format("key must be at least %d bits long", keySizeInBytes << 3));
+            throw logger.throwableAtError()
+                .addKeyValue("expectedLengthInBytes", keySizeInBytes)
+                .addKeyValue("keyLength", key.length)
+                .log("Key is too short", IllegalArgumentException::new);
         }
-    }
-
-    /**
-     * Compares two byte arrays in constant time.
-     *
-     * @param self The first byte array to compare.
-     * @param other The second byte array to compare.
-     * @return True if the two byte arrays are equal.
-     */
-    static boolean sequenceEqualConstantTime(byte[] self, byte[] other) {
-        if (self == null) {
-            throw new IllegalArgumentException("self");
-        }
-
-        if (other == null) {
-            throw new IllegalArgumentException("other");
-        }
-
-        // Constant time comparison of two byte arrays
-        long difference = (self.length & 0xffffffffL) ^ (other.length & 0xffffffffL);
-
-        for (int i = 0; i < self.length && i < other.length; i++) {
-            difference |= (self[i] ^ other[i]) & 0xffffffffL;
-        }
-
-        return difference == 0;
     }
 
     static JsonWebKey transformSecretBundle(SecretBundle secretKey) {

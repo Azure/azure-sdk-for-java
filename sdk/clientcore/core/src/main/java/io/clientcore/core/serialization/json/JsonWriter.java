@@ -3,6 +3,7 @@
 
 package io.clientcore.core.serialization.json;
 
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.implementation.jackson.core.JsonFactory;
 import io.clientcore.core.serialization.json.implementation.jackson.core.JsonGenerator;
 import io.clientcore.core.utils.IOExceptionCheckedBiConsumer;
@@ -1322,6 +1323,9 @@ public final class JsonWriter implements Closeable {
             return writeString(String.valueOf(((Character) value).charValue()));
         } else if (value instanceof JsonSerializable<?>) {
             return ((JsonSerializable<?>) value).toJson(this);
+        } else if (value instanceof BinaryData) {
+            ((BinaryData) value).writeTo(this);
+            return this;
         } else if (value instanceof Object[]) {
             writeStartArray();
             for (Object element : (Object[]) value) {

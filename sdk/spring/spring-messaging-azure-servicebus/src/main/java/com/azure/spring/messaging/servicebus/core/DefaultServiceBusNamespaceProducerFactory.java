@@ -78,7 +78,10 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     public ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType entityType) {
         ProducerProperties producerProperties = this.propertiesSupplier.getProperties(name) != null
             ? this.propertiesSupplier.getProperties(name) : new ProducerProperties();
-        if (entityType != null) {
+        // Assign the entityType from the method parameter to producerProperties only if
+        // producerProperties' entityType is null. This ensures that the method parameter
+        // has a lower priority compared to an already set entityType in producerProperties.
+        if (producerProperties.getEntityType() == null && entityType != null) {
             producerProperties.setEntityType(entityType);
         }
         return doCreateProducer(name, producerProperties);

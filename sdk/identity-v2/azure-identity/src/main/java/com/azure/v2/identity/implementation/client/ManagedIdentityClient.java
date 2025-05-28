@@ -58,8 +58,8 @@ public class ManagedIdentityClient extends ClientBase {
         try {
             return new MsalToken(managedIdentityApplication.acquireTokenForManagedIdentity(builder.build()).get());
         } catch (Exception e) {
-            throw LOGGER.logThrowableAsError(
-                new CredentialAuthenticationException("Managed Identity authentication is not available.", e));
+            throw LOGGER.throwableAtError()
+                .log("Managed Identity authentication is not available.", e, CredentialAuthenticationException::new);
         }
     }
 

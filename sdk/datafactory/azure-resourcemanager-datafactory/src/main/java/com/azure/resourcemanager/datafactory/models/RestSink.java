@@ -249,18 +249,40 @@ public final class RestSink extends CopySink {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        if (writeBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        }
+        if (writeBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        }
+        if (sinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        }
+        if (sinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
-        jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
-        jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
-        jsonWriter.writeUntypedField("requestInterval", this.requestInterval);
-        jsonWriter.writeUntypedField("httpCompressionType", this.httpCompressionType);
+        if (this.requestMethod != null) {
+            jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
+        }
+        if (this.additionalHeaders != null) {
+            jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
+        }
+        if (this.httpRequestTimeout != null) {
+            jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        }
+        if (this.requestInterval != null) {
+            jsonWriter.writeUntypedField("requestInterval", this.requestInterval);
+        }
+        if (this.httpCompressionType != null) {
+            jsonWriter.writeUntypedField("httpCompressionType", this.httpCompressionType);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

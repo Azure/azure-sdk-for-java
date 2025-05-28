@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
-import com.azure.cosmos.implementation.CosmosDaemonThreadFactory
+import com.azure.cosmos.implementation.{CosmosDaemonThreadFactory, UUIDs}
 import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException}
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.implementation.batch.{BatchRequestResponseConstants, BulkExecutorDiagnosticsTracker, ItemBulkOperation}
@@ -193,7 +193,7 @@ private class BulkWriter
         val executor = new ScheduledThreadPoolExecutor(
           1,
           new CosmosDaemonThreadFactory(
-            "BulkWriterReadManyFlush" + UUID.randomUUID()
+            "BulkWriterReadManyFlush" + UUIDs.nonBlockingRandomUUID()
           ))
         executor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false)
         executor.setRemoveOnCancelPolicy(true)
@@ -212,7 +212,7 @@ private class BulkWriter
     private def initializeOperationContext(): SparkTaskContext = {
     val taskContext = TaskContext.get
 
-    val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUID.randomUUID(), "BulkWriter")
+    val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUIDs.nonBlockingRandomUUID(), "BulkWriter")
 
     if (taskContext != null) {
       val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,

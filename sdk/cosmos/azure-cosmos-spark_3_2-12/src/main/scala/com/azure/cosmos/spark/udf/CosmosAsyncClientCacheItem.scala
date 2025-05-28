@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark.udf
 
 import com.azure.cosmos.ReadConsistencyStrategy
+import com.azure.cosmos.implementation.UUIDs
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{CosmosClientCache, CosmosClientCacheItem, CosmosClientConfiguration}
 
@@ -14,7 +15,7 @@ final class CosmosAsyncClientCacheItem
   private[spark] val readConsistencyStrategy: ReadConsistencyStrategy,
   private[spark] val sparkEnvironmentInfo: String
 ) extends AutoCloseable with BasicLoggingTrait {
-  private val id = UUID.randomUUID().toString
+  private val id = UUIDs.nonBlockingRandomUUID().toString
   logInfo(s"CosmosAsyncClientCacheItem '$id' created.")
   private lazy val cosmosClientConfig = {
     logDebug(s"CosmosAsyncClientCacheItem '$id' - creating  cosmosClientConfig")

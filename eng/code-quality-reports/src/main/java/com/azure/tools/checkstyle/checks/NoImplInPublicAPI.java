@@ -3,7 +3,6 @@
 
 package com.azure.tools.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.Scope;
@@ -22,7 +21,7 @@ import java.util.regex.Pattern;
  * 1) no return classes are from the implementation package
  * 2) no class of implementation package as method's parameters
  */
-public class NoImplInPublicAPI extends AbstractCheck {
+public class NoImplInPublicAPI extends ImplementationExcludingCheck {
     private static final String ALTERNATIVE_MOVE_TO_PUBLIC_API = "Alternatively, it can be removed from the "
         + "implementation package and made public API, after appropriate API review.";
     static final String TYPE_PARAM_TYPE_ERROR = "\"%s\" is in an implementation package and should not be used as a "
@@ -39,26 +38,11 @@ public class NoImplInPublicAPI extends AbstractCheck {
     // Pattern that matches either an import statement or a fully-qualified type reference for being implementation.
     private static final Pattern IMPLEMENTATION_CLASS = Pattern.compile(".*?\\.implementation.*?\\.(\\w+)");
 
-    private Set<String> implementationClassSet = new HashSet<>();
-
-    // Flag that indicates if the current definition is contained in an implementation package.
-    // Definitions contained in implementation can be ignored as implementation doesn't have public API.
-    private boolean inImplementationClass = false;
+    private final Set<String> implementationClassSet = new HashSet<>();
 
     @Override
-    public int[] getDefaultTokens() {
-        return getRequiredTokens();
-    }
-
-    @Override
-    public int[] getAcceptableTokens() {
-        return getRequiredTokens();
-    }
-
-    @Override
-    public int[] getRequiredTokens() {
+    public int[] getTokensForCheck() {
         return new int[]{
-            TokenTypes.PACKAGE_DEF,
             TokenTypes.IMPORT,
             TokenTypes.CLASS_DEF,
             TokenTypes.INTERFACE_DEF,
@@ -68,23 +52,13 @@ public class NoImplInPublicAPI extends AbstractCheck {
     }
 
     @Override
-    public void beginTree(DetailAST root) {
+    public void beforeTree(DetailAST root) {
         this.implementationClassSet.clear();
-        this.inImplementationClass = false;
     }
 
     @Override
-    public void visitToken(DetailAST ast) {
-        if (inImplementationClass) {
-            return;
-        }
-
+    public void processToken(DetailAST ast) {
         switch (ast.getType()) {
-            case TokenTypes.PACKAGE_DEF:
-                String packageName = FullIdent.createFullIdent(ast.findFirstToken(TokenTypes.DOT)).getText();
-                inImplementationClass = packageName.contains("implementation");
-                break;
-
             case TokenTypes.IMPORT:
                 String importClassPath = FullIdent.createFullIdentBelow(ast).getText();
                 Matcher implementationMatch = IMPLEMENTATION_CLASS.matcher(importClassPath);

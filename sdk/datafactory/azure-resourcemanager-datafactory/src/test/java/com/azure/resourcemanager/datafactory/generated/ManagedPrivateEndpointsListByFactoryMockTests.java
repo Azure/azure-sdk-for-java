@@ -22,7 +22,7 @@ public final class ManagedPrivateEndpointsListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"connectionState\":{\"actionsRequired\":\"zpupkebwsesblsb\",\"description\":\"dfoprdytsgypvi\",\"status\":\"ooqzdoytnpkjp\"},\"fqdns\":[\"gnhzufhw\",\"tjnvrptqxksid\",\"jfh\"],\"groupId\":\"gizzrlx\",\"isReserved\":true,\"privateLinkResourceId\":\"xjqqozxtnowv\",\"provisioningState\":\"fypdxsy\",\"\":{\"mwvdmwaamqfeq\":\"datauueeokvq\",\"tqaomihrtbksd\":\"databjygnckeq\"}},\"name\":\"pxwficzzoxnl\",\"type\":\"xndsiqxzaolzko\",\"etag\":\"iragbbiukmkmthio\",\"id\":\"oh\"}]}";
+            = "{\"value\":[{\"properties\":{\"connectionState\":{\"actionsRequired\":\"zpupkebwsesblsb\",\"description\":\"dfoprdytsgypvi\",\"status\":\"ooqzdoytnpkjp\"},\"fqdns\":[\"gnhzufhw\",\"tjnvrptqxksid\",\"jfh\"],\"groupId\":\"gizzrlx\",\"isReserved\":true,\"privateLinkResourceId\":\"xjqqozxtnowv\",\"provisioningState\":\"fypdxsy\",\"mwvdmwaamqfeq\":\"datauueeokvq\",\"tqaomihrtbksd\":\"databjygnckeq\"},\"name\":\"pxwficzzoxnl\",\"type\":\"xndsiqxzaolzko\",\"etag\":\"iragbbiukmkmthio\",\"id\":\"oh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

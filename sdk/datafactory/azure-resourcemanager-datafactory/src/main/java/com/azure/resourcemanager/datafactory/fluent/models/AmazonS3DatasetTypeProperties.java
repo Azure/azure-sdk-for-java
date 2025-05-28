@@ -261,11 +261,21 @@ public final class AmazonS3DatasetTypeProperties implements JsonSerializable<Ama
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("bucketName", this.bucketName);
-        jsonWriter.writeUntypedField("key", this.key);
-        jsonWriter.writeUntypedField("prefix", this.prefix);
-        jsonWriter.writeUntypedField("version", this.version);
-        jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
-        jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        if (this.key != null) {
+            jsonWriter.writeUntypedField("key", this.key);
+        }
+        if (this.prefix != null) {
+            jsonWriter.writeUntypedField("prefix", this.prefix);
+        }
+        if (this.version != null) {
+            jsonWriter.writeUntypedField("version", this.version);
+        }
+        if (this.modifiedDatetimeStart != null) {
+            jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+        }
+        if (this.modifiedDatetimeEnd != null) {
+            jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        }
         jsonWriter.writeJsonField("format", this.format);
         jsonWriter.writeJsonField("compression", this.compression);
         return jsonWriter.writeEndObject();

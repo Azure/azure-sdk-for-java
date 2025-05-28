@@ -153,7 +153,9 @@ public final class FileServerLinkedServiceTypeProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("host", this.host);
-        jsonWriter.writeUntypedField("userId", this.userId);
+        if (this.userId != null) {
+            jsonWriter.writeUntypedField("userId", this.userId);
+        }
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();

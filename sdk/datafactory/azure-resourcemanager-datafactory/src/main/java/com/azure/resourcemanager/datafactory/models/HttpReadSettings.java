@@ -211,14 +211,28 @@ public final class HttpReadSettings extends StoreReadSettings {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
-        jsonWriter.writeUntypedField("requestBody", this.requestBody);
-        jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
-        jsonWriter.writeUntypedField("requestTimeout", this.requestTimeout);
-        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (this.requestMethod != null) {
+            jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
+        }
+        if (this.requestBody != null) {
+            jsonWriter.writeUntypedField("requestBody", this.requestBody);
+        }
+        if (this.additionalHeaders != null) {
+            jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
+        }
+        if (this.requestTimeout != null) {
+            jsonWriter.writeUntypedField("requestTimeout", this.requestTimeout);
+        }
+        if (this.additionalColumns != null) {
+            jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

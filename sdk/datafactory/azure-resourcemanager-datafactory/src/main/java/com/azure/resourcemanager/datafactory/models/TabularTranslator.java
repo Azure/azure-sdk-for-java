@@ -264,12 +264,24 @@ public final class TabularTranslator extends CopyTranslator {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("columnMappings", this.columnMappings);
-        jsonWriter.writeUntypedField("schemaMapping", this.schemaMapping);
-        jsonWriter.writeUntypedField("collectionReference", this.collectionReference);
-        jsonWriter.writeUntypedField("mapComplexValuesToString", this.mapComplexValuesToString);
-        jsonWriter.writeUntypedField("mappings", this.mappings);
-        jsonWriter.writeUntypedField("typeConversion", this.typeConversion);
+        if (this.columnMappings != null) {
+            jsonWriter.writeUntypedField("columnMappings", this.columnMappings);
+        }
+        if (this.schemaMapping != null) {
+            jsonWriter.writeUntypedField("schemaMapping", this.schemaMapping);
+        }
+        if (this.collectionReference != null) {
+            jsonWriter.writeUntypedField("collectionReference", this.collectionReference);
+        }
+        if (this.mapComplexValuesToString != null) {
+            jsonWriter.writeUntypedField("mapComplexValuesToString", this.mapComplexValuesToString);
+        }
+        if (this.mappings != null) {
+            jsonWriter.writeUntypedField("mappings", this.mappings);
+        }
+        if (this.typeConversion != null) {
+            jsonWriter.writeUntypedField("typeConversion", this.typeConversion);
+        }
         jsonWriter.writeJsonField("typeConversionSettings", this.typeConversionSettings);
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {

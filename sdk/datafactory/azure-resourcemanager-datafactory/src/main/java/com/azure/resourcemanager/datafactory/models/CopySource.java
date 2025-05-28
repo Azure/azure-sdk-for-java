@@ -187,10 +187,18 @@ public class CopySource implements JsonSerializable<CopySource> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("sourceRetryCount", this.sourceRetryCount);
-        jsonWriter.writeUntypedField("sourceRetryWait", this.sourceRetryWait);
-        jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
-        jsonWriter.writeUntypedField("disableMetricsCollection", this.disableMetricsCollection);
+        if (this.sourceRetryCount != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", this.sourceRetryCount);
+        }
+        if (this.sourceRetryWait != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", this.sourceRetryWait);
+        }
+        if (this.maxConcurrentConnections != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
+        }
+        if (this.disableMetricsCollection != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", this.disableMetricsCollection);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

@@ -3,7 +3,6 @@
 
 package com.azure.v2.identity.implementation.util;
 
-import com.azure.v2.identity.exceptions.CredentialUnavailableException;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
@@ -12,7 +11,7 @@ import io.clientcore.core.utils.configuration.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.function.BiFunction;
 
 /**
  * Utilities to handle logging for credentials.
@@ -24,56 +23,45 @@ public final class LoggingUtil {
      * @param context the context of the getToken() request
      */
     public static void logTokenSuccess(ClientLogger logger, TokenRequestContext context) {
-        logger.atLevel(LogLevel.VERBOSE)
-            .log(String.format("Azure Identity => SUCCESS getToken() result for scopes [%s]",
-                CoreUtils.stringJoin(", ", context.getScopes())));
+        logger.atVerbose()
+            .addKeyValue("scopes", () -> CoreUtils.stringJoin(", ", context.getScopes()))
+            .addKeyValue("event.name", "azure.identity.get_token.success")
+            .log();
     }
 
     /**
      * Log an error message for a getToken() call.
      * @param logger the logger to output the log message
      * @param context the context of the getToken() request
-     * @param error the error thrown during getToken()
+     * @param cause the error thrown during getToken()
+     * @param factory a factory to create the exception to be thrown
+     * @param <T> the type of the exception to be thrown
+     * @return the exception to be thrown
      */
-    public static void logTokenError(ClientLogger logger, TokenRequestContext context, Throwable error) {
-        logger.atLevel(LogLevel.ERROR)
-            .log(String.format("Azure Identity => ERROR in getToken() call for scopes [%s]: %s",
-                CoreUtils.stringJoin(", ", context.getScopes()), error == null ? "" : error.getMessage()));
+    public static <T extends Throwable> T logAndThrowTokenError(ClientLogger logger, TokenRequestContext context,
+        Throwable cause, BiFunction<String, Throwable, T> factory) {
+        return logAndThrowTokenError(logger, cause.getMessage(), context, cause, factory);
+    }
+
+    /**
+     * Log an error message for a getToken() call.
+     * @param logger the logger to output the log message
+     * @param message the short message
+     * @param context the context of the getToken() request
+     * @param cause the error thrown during getToken()
+     * @param factory a factory to create the exception to be thrown
+     * @param <T> the type of the exception to be thrown
+     * @return the exception to be thrown
+     */
+    public static <T extends Throwable> T logAndThrowTokenError(ClientLogger logger, String message,
+        TokenRequestContext context, Throwable cause, BiFunction<String, Throwable, T> factory) {
+        return logger.throwableAtError()
+            .addKeyValue("scopes", CoreUtils.stringJoin(", ", context.getScopes()))
+            .addKeyValue("event.name", "azure.identity.get_token.error")
+            .log(message, cause, factory);
     }
 
     private LoggingUtil() {
-    }
-
-    /**
-     * Logs {@link CredentialUnavailableException} as ERROR.
-     *
-     * @param logger the logger to be used for logging
-     * @param exception the cred unavailable exception
-     * @return the logged exception
-     */
-    public static CredentialUnavailableException logCredentialUnavailableException(ClientLogger logger,
-        CredentialUnavailableException exception) {
-        throw logger.logThrowableAsError(exception);
-    }
-
-    /**
-     * Logs the message at ERROR level.
-     *
-     * @param logger the logger to be used for logging
-     * @param message the error message to be logged
-     */
-    public static void logError(ClientLogger logger, String message) {
-        logger.atLevel(LogLevel.ERROR).log(message);
-    }
-
-    /**
-     * Logs the message at ERROR level.
-     *
-     * @param logger the logger to be used for logging
-     * @param messageSupplier the error message supplier
-     */
-    public static void logError(ClientLogger logger, Supplier<String> messageSupplier) {
-        logger.atLevel(LogLevel.ERROR).log(messageSupplier.get());
     }
 
     /**
@@ -84,6 +72,10 @@ public final class LoggingUtil {
      * @param configuration the configuration store
      */
     public static void logAvailableEnvironmentVariables(ClientLogger logger, Configuration configuration) {
+        if (!logger.canLogAtLevel(LogLevel.VERBOSE)) {
+            return;
+        }
+
         String clientId = configuration.get(IdentityUtil.PROPERTY_AZURE_CLIENT_ID);
         String tenantId = configuration.get(IdentityUtil.PROPERTY_AZURE_TENANT_ID);
         String clientSecret = configuration.get(IdentityUtil.PROPERTY_AZURE_CLIENT_SECRET);
@@ -101,9 +93,9 @@ public final class LoggingUtil {
         if (certPath != null) {
             envVars.add(IdentityUtil.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
         }
-        logger.atLevel(LogLevel.VERBOSE)
-            .log(String.format("Azure Identity => Found the following environment variables: {}",
-                String.join(", ", envVars)));
+        logger.atVerbose()
+            .addKeyValue("providedEnvVars", String.join(", ", envVars))
+            .log("Azure Identity => Environment variables");
     }
 
 }

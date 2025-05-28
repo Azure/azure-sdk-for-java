@@ -181,9 +181,15 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
-        jsonWriter.writeUntypedField("path", this.path);
-        jsonWriter.writeUntypedField("logLevel", this.logLevel);
-        jsonWriter.writeUntypedField("enableReliableLogging", this.enableReliableLogging);
+        if (this.path != null) {
+            jsonWriter.writeUntypedField("path", this.path);
+        }
+        if (this.logLevel != null) {
+            jsonWriter.writeUntypedField("logLevel", this.logLevel);
+        }
+        if (this.enableReliableLogging != null) {
+            jsonWriter.writeUntypedField("enableReliableLogging", this.enableReliableLogging);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

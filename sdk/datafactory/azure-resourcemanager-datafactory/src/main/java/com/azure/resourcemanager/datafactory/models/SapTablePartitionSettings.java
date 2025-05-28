@@ -148,10 +148,18 @@ public final class SapTablePartitionSettings implements JsonSerializable<SapTabl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
-        jsonWriter.writeUntypedField("partitionUpperBound", this.partitionUpperBound);
-        jsonWriter.writeUntypedField("partitionLowerBound", this.partitionLowerBound);
-        jsonWriter.writeUntypedField("maxPartitionsNumber", this.maxPartitionsNumber);
+        if (this.partitionColumnName != null) {
+            jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
+        }
+        if (this.partitionUpperBound != null) {
+            jsonWriter.writeUntypedField("partitionUpperBound", this.partitionUpperBound);
+        }
+        if (this.partitionLowerBound != null) {
+            jsonWriter.writeUntypedField("partitionLowerBound", this.partitionLowerBound);
+        }
+        if (this.maxPartitionsNumber != null) {
+            jsonWriter.writeUntypedField("maxPartitionsNumber", this.maxPartitionsNumber);
+        }
         return jsonWriter.writeEndObject();
     }
 

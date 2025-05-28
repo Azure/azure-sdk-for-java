@@ -94,7 +94,9 @@ public final class ParameterSpecification implements JsonSerializable<ParameterS
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
+        if (this.defaultValue != null) {
+            jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
+        }
         return jsonWriter.writeEndObject();
     }
 
