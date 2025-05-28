@@ -47,7 +47,7 @@ public class PowershellManager {
             }
             return output.toString();
         } catch (IOException | InterruptedException e) {
-            throw LOGGER.logThrowableAsError(new CredentialUnavailableException("PowerShell command failure.", e));
+            throw LOGGER.throwableAtError().log("PowerShell command failure.", e, CredentialUnavailableException::new);
         }
     }
 
