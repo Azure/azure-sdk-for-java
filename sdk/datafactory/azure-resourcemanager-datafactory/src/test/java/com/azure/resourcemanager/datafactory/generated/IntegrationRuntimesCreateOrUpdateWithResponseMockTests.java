@@ -24,7 +24,7 @@ public final class IntegrationRuntimesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"udyuoholyyx\",\"\":{\"ttclnhoituk\":\"dataxlyfrrczhnvtih\"}},\"name\":\"rorepbqkmyljxic\",\"type\":\"rlv\",\"etag\":\"avplqkc\",\"id\":\"bvvniwqpcqyouj\"}";
+            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"udyuoholyyx\",\"ttclnhoituk\":\"dataxlyfrrczhnvtih\"},\"name\":\"rorepbqkmyljxic\",\"type\":\"rlv\",\"etag\":\"avplqkc\",\"id\":\"bvvniwqpcqyouj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,15 @@ public final class IntegrationRuntimesCreateOrUpdateWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        IntegrationRuntimeResource response = manager.integrationRuntimes()
-            .define("zr")
-            .withExistingFactory("fz", "qqtpwhicnnan")
-            .withProperties(new IntegrationRuntime().withDescription("bdptmzsdwxls")
-                .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))
-            .withIfMatch("tsnnsxouz")
-            .create();
+        IntegrationRuntimeResource response
+            = manager.integrationRuntimes()
+                .define("zr")
+                .withExistingFactory("fz", "qqtpwhicnnan")
+                .withProperties(new IntegrationRuntime().withDescription("bdptmzsdwxls")
+                    .withAdditionalProperties(mapOf("hvdwr", "datahldqbwkxevnroeww", "jrhzdfpea", "datazxinwjuq",
+                        "type", "IntegrationRuntime")))
+                .withIfMatch("tsnnsxouz")
+                .create();
 
         Assertions.assertEquals("bvvniwqpcqyouj", response.id());
         Assertions.assertEquals("udyuoholyyx", response.properties().description());

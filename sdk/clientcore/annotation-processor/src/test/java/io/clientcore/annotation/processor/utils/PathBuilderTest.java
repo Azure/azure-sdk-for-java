@@ -108,7 +108,7 @@ public class PathBuilderTest {
     public void buildsPathWithMissingQueryParameter() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", "value1", false, false);
+        context.addQueryParam("key1", "value1", false, false, false);
         assertThrows(MissingSubstitutionException.class,
             () -> PathBuilder.buildPath("https://{endpoint}/keys?key2={value2}", context));
     }
@@ -383,8 +383,36 @@ public class PathBuilderTest {
     public void buildsPathWithNullQueryParameterValue() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", null, false, false);
+        context.addQueryParam("key1", null, false, false, false);
         String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
         assertEquals("\"https://\" + myEndpoint + \"/keys\"", result);
+    }
+
+    @Test
+    public void buildsPathWithNextLinkSpecialCase() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.setMethodName("linkNext");
+        context.addSubstitution(new Substitution("nextLink", "nextLinkVar"));
+        String result = PathBuilder.buildPath("{nextLink}", context);
+        assertEquals("nextLinkVar", result);
+    }
+
+    @Test
+    public void buildsPathWithNextLinkSpecialCaseMissingSubstitution() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.setMethodName("linkNext");
+        MissingSubstitutionException ex
+            = assertThrows(MissingSubstitutionException.class, () -> PathBuilder.buildPath("{nextLink}", context));
+        assertEquals("Could not find substitution for 'nextLink' in method 'linkNext'", ex.getMessage());
+    }
+
+    @Test
+    public void buildsPathWithEndpointAndNextLink() {
+        HttpRequestContext context = new HttpRequestContext();
+        context.setMethodName("linkNext");
+        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
+        context.addSubstitution(new Substitution("nextLink", "nextLinkVar"));
+        String result = PathBuilder.buildPath("{nextLink}", context);
+        assertEquals("nextLinkVar", result);
     }
 }

@@ -15,9 +15,9 @@ public class CancelACurrentlyProcessingOrQueuedTranslation {
             = new DocumentTranslationClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.ai.translation.document.generated.canceltranslation.cancelacurrentlyprocessingorqueuedtranslation
+        // BEGIN:com.azure.ai.translation.document.generated.cancel-translation.cancel-a-currently-processing-or-queued-translation
         TranslationStatusResult response
             = documentTranslationClient.cancelTranslation("727BF148-F327-47A0-9481-ABAE6362F11E");
-        // END:com.azure.ai.translation.document.generated.canceltranslation.cancelacurrentlyprocessingorqueuedtranslation
+        // END:com.azure.ai.translation.document.generated.cancel-translation.cancel-a-currently-processing-or-queued-translation
     }
 }

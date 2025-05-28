@@ -6,9 +6,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.uuid.EthernetAddress;
-import com.azure.cosmos.implementation.uuid.Generators;
-import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -78,6 +75,10 @@ public class Utils {
     public static final Base64.Decoder Base64Decoder = Base64.getDecoder();
     public static final Base64.Encoder Base64UrlEncoder = Base64.getUrlEncoder();
 
+    public static final Duration ONE_SECOND = Duration.ofSeconds(1);
+    public static final Duration HALF_SECOND = Duration.ofMillis(500);
+    public static final Duration SIX_SECONDS = Duration.ofSeconds(6);
+
     private static final ObjectMapper simpleObjectMapperAllowingDuplicatedProperties =
         createAndInitializeObjectMapper(true);
     private static final ObjectMapper simpleObjectMapperDisallowingDuplicatedProperties =
@@ -85,8 +86,7 @@ public class Utils {
 
     private static final ObjectMapper durationEnabledObjectMapper = createAndInitializeDurationObjectMapper();
     private static ObjectMapper simpleObjectMapper = simpleObjectMapperDisallowingDuplicatedProperties;
-    private static final TimeBasedGenerator TIME_BASED_GENERATOR =
-            Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
+
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s");
 
     private static AtomicReference<ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor> itemSerializerAccessor =
@@ -484,10 +484,6 @@ public class Utils {
         return Utils.RFC_1123_DATE_TIME.format(now);
     }
 
-    public static UUID randomUUID() {
-        return TIME_BASED_GENERATOR.generate();
-    }
-
     public static String instantAsUTCRFC1123(Instant instant){
         return Utils.RFC_1123_DATE_TIME.format(instant.atZone(GMT_ZONE_ID));
     }
@@ -807,5 +803,15 @@ public class Utils {
                     String.valueOf(DEFAULT_ALLOW_UNQUOTED_CONTROL_CHARS)));
 
         return Boolean.parseBoolean(shouldAllowUnquotedControlCharsConfig);
+    }
+
+    public static Duration min(Duration duration1, Duration duration2) {
+        if (duration1 == null) {
+            return duration2;
+        } else if (duration2 == null) {
+            return duration1;
+        } else {
+            return duration1.compareTo(duration2) < 0 ? duration1 : duration2;
+        }
     }
 }

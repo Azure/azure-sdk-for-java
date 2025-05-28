@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, UUIDs}
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.{IdAttributeName, RawJsonBodyAttributeName, TimestampAttributeName}
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
@@ -110,7 +110,7 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
         Some(CosmosClientCache(
           CosmosClientConfiguration(
             effectiveUserConfig,
-            useEventualConsistency = readConfig.forceEventualConsistency,
+            readConsistencyStrategy = readConfig.readConsistencyStrategy,
             sparkEnvironmentInfo),
           None,
           calledFrom
@@ -144,7 +144,7 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
           CosmosClientCache(
             CosmosClientConfiguration(
               effectiveUserConfig,
-              useEventualConsistency = readConfig.forceEventualConsistency,
+              readConsistencyStrategy = readConfig.readConsistencyStrategy,
               sparkEnvironmentInfo),
             None,
             calledFrom)),
@@ -163,8 +163,8 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
             clientCacheItems(1))
         try {
           container.readItem(
-            UUID.randomUUID().toString,
-            new PartitionKey(UUID.randomUUID().toString),
+            UUIDs.nonBlockingRandomUUID().toString,
+            new PartitionKey(UUIDs.nonBlockingRandomUUID().toString),
             classOf[ObjectNode])
            .block()
         } catch {

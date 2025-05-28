@@ -3,11 +3,15 @@
 
 package io.clientcore.annotation.processor.test;
 
+import io.clientcore.annotation.processor.test.implementation.HostEdgeCase1Service;
+import io.clientcore.annotation.processor.test.implementation.HostEdgeCase2Service;
 import io.clientcore.annotation.processor.test.implementation.ParameterizedHostService;
 import io.clientcore.annotation.processor.test.implementation.ParameterizedMultipleHostService;
 import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientImpl;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
+import io.clientcore.annotation.processor.test.implementation.models.OperationError;
+import io.clientcore.annotation.processor.test.implementation.models.ServiceError;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -123,7 +127,8 @@ public class TestInterfaceServiceClientGenerationTests {
     @Test
     public void testGetFoo() {
         String wireValue
-            = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
+            =
+            "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(request -> new MockHttpResponse(request, 200, BinaryData.fromString(wireValue)))
@@ -170,7 +175,35 @@ public class TestInterfaceServiceClientGenerationTests {
         final byte[] result = service.getByteArray("http", "localhost:" + server.getHttpPort(), 100);
 
         assertNotNull(result);
-        assertEquals(result.length, 100);
+        assertEquals(100, result.length);
+    }
+
+    /**
+     * Tests that the response body is correctly returned as a byte array.
+     */
+    @Test
+    public void requestWithByteArrayReturnTypeAndHostEdgeCase1() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        byte[] result = HostEdgeCase1Service.getNewInstance(pipeline)
+            .getByteArray("http://localhost:" + server.getHttpPort(), 100);
+
+        assertNotNull(result);
+        assertEquals(100, result.length);
+    }
+
+    /**
+     * Tests that the response body is correctly returned as a byte array.
+     */
+    @Test
+    public void requestWithByteArrayReturnTypeAndHostEdgeCase2() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        byte[] result = HostEdgeCase2Service.getNewInstance(pipeline)
+            .getByteArray("http://localhost:" + server.getHttpPort(), 100);
+
+        assertNotNull(result);
+        assertEquals(100, result.length);
     }
 
     /**
@@ -924,7 +957,7 @@ public class TestInterfaceServiceClientGenerationTests {
         try {
             return UriBuilder.parse(getServerUri(isSecure()) + "/" + requestPath).toUri();
         } catch (URISyntaxException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
     }
 
@@ -967,7 +1000,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final byte[] result = createService(ParameterizedHostService.class)
             .getByteArray(getRequestScheme(), "localhost:" + getPort(), 0);
 
-        assertNull(result);
+        assertEquals(0, result.length);
     }
 
     private static final HttpHeaderName HEADER_A = HttpHeaderName.fromString("A");
@@ -1042,33 +1075,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
-    public void putRequestWithBodyLessThanContentLength() {
-        ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
-        Exception unexpectedLengthException = assertThrows(Exception.class, () -> {
-            createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
-                .putBodyAndContentLength(getRequestUri(), body, 5L);
-            body.clear();
-        });
-
-        assertTrue(unexpectedLengthException.getMessage().contains("less than"));
-    }
-
-    @Test
-    @Disabled("Add support for content length validation - confirm if service should not handle it")
-    public void putRequestWithBodyMoreThanContentLength() {
-        ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
-        Exception unexpectedLengthException = assertThrows(Exception.class, () -> {
-            createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
-                .putBodyAndContentLength(getRequestUri(), body, 3L);
-            body.clear();
-        });
-
-        assertTrue(unexpectedLengthException.getMessage().contains("more than"));
-    }
-
-    @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
     public void putRequestWithUnexpectedResponseAndNoFallthroughExceptionType() {
         HttpResponseException e = assertThrows(HttpResponseException.class,
             () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
@@ -1084,7 +1090,151 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    public void headRequest() throws IOException {
+    public void unexpectedResponseWithStatusCodeAndExceptionType400ReturnsError() {
+        String errorJson = "{\"error\":{\"code\":\"BadRequest\",\"message\":\"bad body\"}}";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new MockHttpResponse(request, 400, BinaryData.fromString(errorJson)))
+            .build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        HttpResponseException e = assertThrows(HttpResponseException.class, () ->
+            service.unexpectedResponseWithStatusCodeAndExceptionType(getRequestUri(), "bad body")
+        );
+        assertNotNull(e.getValue());
+        assertInstanceOf(ServiceError.class, e.getValue());
+        ServiceError serviceError = (ServiceError) e.getValue();
+        assertInstanceOf(OperationError.class, serviceError.getError());
+        OperationError operationError = serviceError.getError();
+        assertEquals("bad body", operationError.getMessage());
+        assertEquals("BadRequest", operationError.getCode());
+    }
+
+    @Test
+    public void unexpectedResponseWithStatusCodeAndExceptionType403ReturnsOperationError() {
+        // The error JSON should match the OperationError structure
+        String errorJson = "{\"code\":\"Forbidden\",\"message\":\"forbidden body\"}";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new MockHttpResponse(request, 403, BinaryData.fromString(errorJson)))
+            .build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        HttpResponseException e = assertThrows(HttpResponseException.class, () ->
+            service.unexpectedResponseWithStatusCodeAndExceptionType(getRequestUri(), "forbidden body")
+        );
+        assertNotNull(e.getValue());
+        assertInstanceOf(OperationError.class, e.getValue());
+        OperationError operationError = (OperationError) e.getValue();
+        assertEquals("forbidden body", operationError.getMessage());
+        assertEquals("Forbidden", operationError.getCode());
+    }
+
+    @Test
+    public void putRequestWithUnexpectedResponse() {
+        HttpResponseException e = assertThrows(HttpResponseException.class,
+            () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class).putWithUnexpectedResponse(getRequestUri(), "I'm the body!"));
+
+        assertNotNull(e.getValue());
+        assertInstanceOf(LinkedHashMap.class, e.getValue());
+
+        @SuppressWarnings("unchecked")
+        final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
+        assertEquals("I'm the body!", expectedBody.get("data"));
+    }
+
+    @Test
+    public void putWithUnexpectedResponseNoStatusCodeAndExceptionTypeReturnsObject() {
+        // This should use Error.class for any unexpected status code
+        String errorJson = "{\"error\":{\"code\":\"SomeCode\",\"message\":\"some message\"}}";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new MockHttpResponse(request, 400, BinaryData.fromString(errorJson)))
+            .build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        HttpResponseException e = assertThrows(HttpResponseException.class, () ->
+            service.putWithUnexpectedResponseAndExceptionType(getRequestUri(), "body")
+        );
+        assertNotNull(e.getValue());
+        assertInstanceOf(ServiceError.class, e.getValue());
+        @SuppressWarnings("unchecked")
+        final ServiceError error = (ServiceError) e.getValue();
+        assertNotNull(error.getError());
+        @SuppressWarnings("unchecked")
+        OperationError innerError = error.getError();
+        assertEquals("SomeCode", innerError.getCode());
+        assertEquals("some message", innerError.getMessage());
+    }
+
+    @Test
+    public void putWithUnexpectedResponseAndDeterminedExceptionTypeReturnsErrorOn200() {
+        // This should use Error.class for status 200 only
+        String errorJson = "{\"error\":{\"code\":\"OKButError\",\"message\":\"should not happen\"}}";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new MockHttpResponse(request, 200, BinaryData.fromString(errorJson)))
+            .build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        HttpResponseException e = assertThrows(HttpResponseException.class, () ->
+            service.putWithUnexpectedResponseAndDeterminedExceptionType(getRequestUri(), "body")
+        );
+        assertNotNull(e.getValue());
+        assertInstanceOf(ServiceError.class, e.getValue());
+        ServiceError serviceError = (ServiceError) e.getValue();
+        assertInstanceOf(OperationError.class, serviceError.getError());
+        OperationError operationError = serviceError.getError();
+        assertEquals("should not happen", operationError.getMessage());
+        assertEquals("OKButError", operationError.getCode());
+    }
+
+    @Test
+    public void putWithUnexpectedResponseAndFallthroughExceptionTypeReturnsObjectOn400AndErrorOn403() {
+        // 400 should fall back to LinkedHashMap, 403 should use Error.class if mapped
+        String errorJson = "{\"error\":{\"code\":\"Forbidden\",\"message\":\"forbidden body\"}}";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> {
+                int status = request.getUri().toString().contains("403") ? 403 : 400;
+                return new MockHttpResponse(request, status, BinaryData.fromString(errorJson));
+            })
+            .build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        // 400: fallback to LinkedHashMap
+        HttpResponseException e400 = assertThrows(HttpResponseException.class, () ->
+            service.putWithUnexpectedResponseAndFallthroughExceptionType(getRequestUri(), "body")
+        );
+        assertNotNull(e400.getValue());
+        assertInstanceOf(LinkedHashMap.class, e400.getValue());
+
+        // 403: mapped to Error.class
+        HttpPipeline pipeline403 = new HttpPipelineBuilder()
+            .httpClient(request -> new MockHttpResponse(request, 403, BinaryData.fromString(errorJson)))
+            .build();
+        TestInterfaceClientImpl.TestInterfaceClientService service403 =
+            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline403);
+
+        HttpResponseException e403 = assertThrows(HttpResponseException.class, () ->
+            service403.putWithUnexpectedResponseAndFallthroughExceptionType(getRequestUri(), "body")
+        );
+        assertNotNull(e403.getValue());
+        assertInstanceOf(ServiceError.class, e403.getValue());
+        ServiceError serviceError = (ServiceError) e403.getValue();
+        assertInstanceOf(OperationError.class, serviceError.getError());
+        OperationError operationError = serviceError.getError();
+        assertEquals("forbidden body", operationError.getMessage());
+        assertEquals("Forbidden", operationError.getCode());
+    }
+
+    @Test
+    public void headRequest() {
         try (Response<Void> response
             = createService(TestInterfaceClientImpl.TestInterfaceClientService.class).head(getRequestUri())) {
             assertNull(response.getValue());
@@ -1194,7 +1344,9 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service18GetStatus300() {
-        createService(TestInterfaceClientImpl.TestInterfaceClientService.class).getStatus300(getRequestUri());
+        assertThrows(HttpResponseException.class,
+            () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+                .getStatus300(getRequestUri()));
     }
 
     @Test
@@ -1204,7 +1356,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
     public void service18GetStatus400() {
         assertThrows(HttpResponseException.class,
             () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
@@ -1218,7 +1369,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
     public void service18GetStatus500() {
         assertThrows(HttpResponseException.class,
             () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
@@ -1290,7 +1440,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
     public void unexpectedHTTPOK() {
         HttpResponseException e = assertThrows(HttpResponseException.class,
             () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class).getBytes(getRequestUri()));
@@ -1447,20 +1596,9 @@ public class TestInterfaceServiceClientGenerationTests {
             (uri, service28) -> service28.headResponseVoid(uri));
     }
 
-    @ParameterizedTest
-    @MethodSource("voidErrorReturnsErrorBodySupplier")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
-    public void
-        voidErrorReturnsErrorBody(BiConsumer<String, TestInterfaceClientImpl.TestInterfaceClientService> executable) {
-        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> executable
-            .accept(getServerUri(isSecure()), createService(TestInterfaceClientImpl.TestInterfaceClientService.class)));
-
-        assertTrue(exception.getMessage().contains("void exception body thrown"));
-    }
-
     @Test
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/44746")
-    public void canReceiveServerSentEvents() throws IOException {
+    public void canReceiveServerSentEvents() {
         final int[] i = { 0 };
         TestInterfaceClientImpl.TestInterfaceClientService service
             = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
@@ -1494,7 +1632,7 @@ public class TestInterfaceServiceClientGenerationTests {
      */
     @Test
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/44746")
-    public void canRecognizeServerSentEvent() throws IOException {
+    public void canRecognizeServerSentEvent() {
         BinaryData requestBody = BinaryData.fromString("test body");
         TestInterfaceClientImpl.TestInterfaceClientService service
             = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
@@ -1574,14 +1712,8 @@ public class TestInterfaceServiceClientGenerationTests {
         assertThrows(RuntimeException.class, () -> service.put(getServerUri(isSecure()), requestBody, null).close());
     }
 
-    private static Stream<BiConsumer<String, TestInterfaceClientImpl.TestInterfaceClientService>>
-        voidErrorReturnsErrorBodySupplier() {
-        return Stream.of((uri, service29) -> service29.headvoid(uri), (uri, service29) -> service29.headVoid(uri),
-            (uri, service29) -> service29.headResponseVoid(uri));
-    }
-
     @Test
-    public void bodyIsPresentWhenNoBodyHandlingOptionIsSet() throws IOException {
+    public void bodyIsPresentWhenNoBodyHandlingOptionIsSet() {
         TestInterfaceClientImpl.TestInterfaceClientService service
             = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
         HttpBinJSON httpBinJSON = service.put(getServerUri(isSecure()), 42, null);
@@ -1693,7 +1825,8 @@ public class TestInterfaceServiceClientGenerationTests {
 
         assertNotNull(queryParams);
         assertEquals(1, queryParams.size());
-        assertTrue(json.uri().substring(json.uri().indexOf('?'), json.uri().length()).contains("some=value"));
+        assertTrue(json.uri().substring(json.uri().indexOf('?')).contains("some=value"),
+            "Expected URI query to contain 'some=value', but it didn't and was: " + json.uri());
     }
 
     @Test

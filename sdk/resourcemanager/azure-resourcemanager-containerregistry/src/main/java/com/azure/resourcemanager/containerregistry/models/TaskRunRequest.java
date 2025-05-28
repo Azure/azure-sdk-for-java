@@ -123,7 +123,6 @@ public final class TaskRunRequest extends RunRequest {
      */
     @Override
     public void validate() {
-        super.validate();
         if (taskId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property taskId in model TaskRunRequest"));

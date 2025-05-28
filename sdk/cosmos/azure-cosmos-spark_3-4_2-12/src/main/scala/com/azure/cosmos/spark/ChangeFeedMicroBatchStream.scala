@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, UUIDs}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
@@ -29,7 +29,7 @@ private class ChangeFeedMicroBatchStream
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  private val correlationActivityId = UUID.randomUUID()
+  private val correlationActivityId = UUIDs.nonBlockingRandomUUID()
   private val streamId = correlationActivityId.toString
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName}.$streamId")
 
@@ -38,7 +38,7 @@ private class ChangeFeedMicroBatchStream
   private val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
   private val clientConfiguration = CosmosClientConfiguration.apply(
     config,
-    readConfig.forceEventualConsistency,
+    readConfig.readConsistencyStrategy,
     sparkEnvironmentInfo)
   private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   private val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)

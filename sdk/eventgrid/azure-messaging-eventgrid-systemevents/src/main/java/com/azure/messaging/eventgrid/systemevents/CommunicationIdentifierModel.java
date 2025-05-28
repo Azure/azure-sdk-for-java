@@ -23,13 +23,13 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * The identifier kind. Only required in responses.
      */
     @Generated
-    private final CommunicationIdentifierKind kind;
+    private CommunicationIdentifierKind kind;
 
     /*
      * Raw Id of the identifier. Optional in requests, required in responses.
      */
     @Generated
-    private String rawId;
+    private final String rawId;
 
     /*
      * The communication user.
@@ -41,38 +41,30 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * The phone number.
      */
     @Generated
-    private final PhoneNumberIdentifierModel phoneNumber;
+    private PhoneNumberIdentifierModel phoneNumber;
 
     /*
      * The Microsoft Teams user.
      */
     @Generated
-    private final MicrosoftTeamsUserIdentifierModel microsoftTeamsUser;
+    private MicrosoftTeamsUserIdentifierModel microsoftTeamsUser;
 
     /*
      * The Microsoft Teams application.
      */
     @Generated
-    private final MicrosoftTeamsAppIdentifier microsoftTeamsApp;
+    private MicrosoftTeamsAppIdentifier microsoftTeamsApp;
 
     /**
      * Creates an instance of CommunicationIdentifierModel class.
      * 
-     * @param kind the kind value to set.
+     * @param rawId the rawId value to set.
      * @param communicationUser the communicationUser value to set.
-     * @param phoneNumber the phoneNumber value to set.
-     * @param microsoftTeamsUser the microsoftTeamsUser value to set.
-     * @param microsoftTeamsApp the microsoftTeamsApp value to set.
      */
     @Generated
-    private CommunicationIdentifierModel(CommunicationIdentifierKind kind,
-        CommunicationUserIdentifierModel communicationUser, PhoneNumberIdentifierModel phoneNumber,
-        MicrosoftTeamsUserIdentifierModel microsoftTeamsUser, MicrosoftTeamsAppIdentifier microsoftTeamsApp) {
-        this.kind = kind;
+    private CommunicationIdentifierModel(String rawId, CommunicationUserIdentifierModel communicationUser) {
+        this.rawId = rawId;
         this.communicationUser = communicationUser;
-        this.phoneNumber = phoneNumber;
-        this.microsoftTeamsUser = microsoftTeamsUser;
-        this.microsoftTeamsApp = microsoftTeamsApp;
     }
 
     /**
@@ -142,12 +134,12 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("rawId", this.rawId);
         jsonWriter.writeJsonField("communicationUser", this.communicationUser);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("phoneNumber", this.phoneNumber);
         jsonWriter.writeJsonField("microsoftTeamsUser", this.microsoftTeamsUser);
         jsonWriter.writeJsonField("microsoftTeamsApp", this.microsoftTeamsApp);
-        jsonWriter.writeStringField("rawId", this.rawId);
         return jsonWriter.writeEndObject();
     }
 
@@ -163,35 +155,38 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
     @Generated
     public static CommunicationIdentifierModel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            CommunicationIdentifierKind kind = null;
+            String rawId = null;
             CommunicationUserIdentifierModel communicationUser = null;
+            CommunicationIdentifierKind kind = null;
             PhoneNumberIdentifierModel phoneNumber = null;
             MicrosoftTeamsUserIdentifierModel microsoftTeamsUser = null;
             MicrosoftTeamsAppIdentifier microsoftTeamsApp = null;
-            String rawId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("kind".equals(fieldName)) {
-                    kind = CommunicationIdentifierKind.fromString(reader.getString());
+                if ("rawId".equals(fieldName)) {
+                    rawId = reader.getString();
                 } else if ("communicationUser".equals(fieldName)) {
                     communicationUser = CommunicationUserIdentifierModel.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    kind = CommunicationIdentifierKind.fromString(reader.getString());
                 } else if ("phoneNumber".equals(fieldName)) {
                     phoneNumber = PhoneNumberIdentifierModel.fromJson(reader);
                 } else if ("microsoftTeamsUser".equals(fieldName)) {
                     microsoftTeamsUser = MicrosoftTeamsUserIdentifierModel.fromJson(reader);
                 } else if ("microsoftTeamsApp".equals(fieldName)) {
                     microsoftTeamsApp = MicrosoftTeamsAppIdentifier.fromJson(reader);
-                } else if ("rawId".equals(fieldName)) {
-                    rawId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            CommunicationIdentifierModel deserializedCommunicationIdentifierModel = new CommunicationIdentifierModel(
-                kind, communicationUser, phoneNumber, microsoftTeamsUser, microsoftTeamsApp);
-            deserializedCommunicationIdentifierModel.rawId = rawId;
+            CommunicationIdentifierModel deserializedCommunicationIdentifierModel
+                = new CommunicationIdentifierModel(rawId, communicationUser);
+            deserializedCommunicationIdentifierModel.kind = kind;
+            deserializedCommunicationIdentifierModel.phoneNumber = phoneNumber;
+            deserializedCommunicationIdentifierModel.microsoftTeamsUser = microsoftTeamsUser;
+            deserializedCommunicationIdentifierModel.microsoftTeamsApp = microsoftTeamsApp;
 
             return deserializedCommunicationIdentifierModel;
         });

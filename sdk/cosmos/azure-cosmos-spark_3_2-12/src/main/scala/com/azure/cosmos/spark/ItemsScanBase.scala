@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, UUIDs}
 import com.azure.cosmos.models.{PartitionKeyDefinition, SqlParameter, SqlQuerySpec}
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
@@ -38,7 +38,7 @@ private[spark] abstract class ItemsScanBase(session: SparkSession,
 
   private val clientConfiguration = CosmosClientConfiguration.apply(
     config,
-    readConfig.forceEventualConsistency,
+    readConfig.readConsistencyStrategy,
     CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
   )
   private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
@@ -189,7 +189,7 @@ private[spark] abstract class ItemsScanBase(session: SparkSession,
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {
-    val correlationActivityId = UUID.randomUUID()
+    val correlationActivityId = UUIDs.nonBlockingRandomUUID()
     log.logInfo(s"Creating ItemsScan with CorrelationActivityId '${correlationActivityId.toString}' for query '${cosmosQuery.queryText}'")
     ItemsScanPartitionReaderFactory(
       config,

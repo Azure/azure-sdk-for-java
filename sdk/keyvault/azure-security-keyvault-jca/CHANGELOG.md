@@ -7,13 +7,21 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+- Included the `org.brotli:dec` library in the list of shaded dependencies to avoid issues when generating and publishing docs to MSLearn.
+
+## 2.10.1 (2025-05-12)
+
+### Bugs Fixed
 - Fixed bug: Missing logging for abnormal http status codes when processing HTTP responses. [#42859](https://github.com/Azure/azure-sdk-for-java/issues/42859).
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded from `org.apache.httpcomponents:httpclient:4.5.14` to `org.apache.httpcomponents.client5:httpclient5:5.4.3`.
+- Replaced `org.apache.httpcomponents:httpclient:4.5.14` with `org.apache.httpcomponents.client5:httpclient5:5.4.3`.
+- Updated `com.azure:azure-json:1.3.0` to `com.azure:azure-json:1.5.0`.
 
 ## 2.10.0 (2024-11-26)
 

@@ -229,7 +229,9 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("plan", plan());
-        jsonWriter.writeUntypedField("properties", properties());
+        if (properties() != null) {
+            jsonWriter.writeUntypedField("properties", properties());
+        }
         jsonWriter.writeStringField("kind", kind());
         jsonWriter.writeStringField("managedBy", managedBy());
         jsonWriter.writeJsonField("sku", sku());

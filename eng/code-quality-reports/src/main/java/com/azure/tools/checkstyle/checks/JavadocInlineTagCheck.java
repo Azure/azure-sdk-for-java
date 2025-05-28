@@ -27,10 +27,6 @@ public class JavadocInlineTagCheck extends AbstractJavadocCheck {
     private static final String MULTIPLE_LINE_SPAN_ERROR = "Tag '%s' spans multiple lines. Use @codesnippet annotation"
         + " instead of '%s' to ensure that the code block always compiles.";
 
-    // HTML tag set that need to be checked to see if there tags span on multiple lines.
-    private static final Set<String> CHECK_TAGS = Collections.unmodifiableSet(new HashSet<>(
-        Arrays.asList("pre", "code")));
-
     @Override
     public int[] getDefaultJavadocTokens() {
         return getRequiredJavadocTokens();
@@ -77,7 +73,7 @@ public class JavadocInlineTagCheck extends AbstractJavadocCheck {
             JavadocUtil.findFirstToken(htmlElementStartNode, JavadocTokenTypes.HTML_TAG_NAME);
         // HTML tags are case-insensitive
         final String tagName = tagNameNode.getText().toLowerCase();
-        if (!CHECK_TAGS.contains(tagName)) {
+        if (!tagName.equals("pre") && !tagName.equals("code")) {
             return;
         }
 

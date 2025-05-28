@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.CosmosSchedulers;
@@ -196,14 +197,15 @@ public class ConsistencyWriter {
                 try {
                     primaryURI.set(primaryUri);
                     if ((this.useMultipleWriteLocations || request.getOperationType() == OperationType.Batch) &&
-                        RequestHelper.getConsistencyLevelToUse(this.serviceConfigReader, request) == ConsistencyLevel.SESSION) {
+                        (RequestHelper.getReadConsistencyStrategyToUse(this.serviceConfigReader, request)
+                            == ReadConsistencyStrategy.SESSION)) {
                         // Set session token to ensure session consistency for write requests
                         // 1. when writes can be issued to multiple locations
                         // 2. When we have Batch requests, since it can have Reads in it.
                         SessionTokenHelper.setPartitionLocalSessionToken(request, this.sessionContainer);
                     } else {
                         // When writes can only go to single location, there is no reason
-                        // to session session token to the server.
+                        // to session token to the server.
                         SessionTokenHelper.validateAndRemoveSessionToken(request);
                     }
 

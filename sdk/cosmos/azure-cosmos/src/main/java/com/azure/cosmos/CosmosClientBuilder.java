@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.azure.cosmos.util.Beta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,6 +127,7 @@ public class CosmosClientBuilder implements
     private GatewayConnectionConfig gatewayConnectionConfig;
     private DirectConnectionConfig directConnectionConfig;
     private ConsistencyLevel desiredConsistencyLevel;
+    private ReadConsistencyStrategy readConsistencyStrategy;
     private List<CosmosPermissionProperties> permissions;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private AzureKeyCredential credential;
@@ -546,6 +548,10 @@ public class CosmosClientBuilder implements
         return this.desiredConsistencyLevel;
     }
 
+    ReadConsistencyStrategy getReadConsistencyStrategy() {
+        return this.readConsistencyStrategy;
+    }
+
     /**
      * Sets the {@link ConsistencyLevel} to be used
      * <br/>
@@ -556,6 +562,19 @@ public class CosmosClientBuilder implements
      */
     public CosmosClientBuilder consistencyLevel(ConsistencyLevel desiredConsistencyLevel) {
         this.desiredConsistencyLevel = desiredConsistencyLevel;
+        return this;
+    }
+
+    /**
+     * Sets the {@link ReadConsistencyStrategy} to be used by this client for read/query operations by default. The
+     * read consistency strategy can be overridden via RequestOptions.
+     *
+     * @param readConsistencyStrategy {@link ReadConsistencyStrategy}
+     * @return current Builder
+     */
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosClientBuilder readConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+        this.readConsistencyStrategy = readConsistencyStrategy;
         return this;
     }
 
@@ -915,25 +934,6 @@ public class CosmosClientBuilder implements
         }
     }
 
-    void resetIsPerPartitionAutomaticFailoverEnabledAndEnforcePerPartitionCircuitBreakerIfNeeded() {
-        String isPerPartitionAutomaticFailoverEnabledAsStr
-            = Configs.isPerPartitionAutomaticFailoverEnabled();
-
-        if (!StringUtils.isEmpty(isPerPartitionAutomaticFailoverEnabledAsStr)) {
-            this.isPerPartitionAutomaticFailoverEnabled = Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledAsStr);
-        }
-
-        if (this.isPerPartitionAutomaticFailoverEnabled) {
-
-            PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
-
-            if (partitionLevelCircuitBreakerConfig != null && !partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
-                logger.info("As Per-Partition Automatic Failover is enabled, Per-Partition Circuit Breaker is enabled too by default!");
-                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true}");
-            }
-        }
-    }
-
     /**
      * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
      * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
@@ -1224,7 +1224,6 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
-        this.resetIsPerPartitionAutomaticFailoverEnabledAndEnforcePerPartitionCircuitBreakerIfNeeded();
 
         validateConfig();
         buildConnectionPolicy();
@@ -1266,7 +1265,6 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
-        this.resetIsPerPartitionAutomaticFailoverEnabledAndEnforcePerPartitionCircuitBreakerIfNeeded();
 
         validateConfig();
         buildConnectionPolicy();
