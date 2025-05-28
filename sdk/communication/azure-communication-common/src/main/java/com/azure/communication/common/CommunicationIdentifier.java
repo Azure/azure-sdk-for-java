@@ -64,30 +64,38 @@ public abstract class CommunicationIdentifier {
         final String prefix = segments[0] + ":" + segments[1] + ":";
         final String suffix = segments[2];
 
-        if (TEAMS_USER_ANONYMOUS_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsUserIdentifier(suffix, true);
-        } else if (TEAMS_USER_PUBLIC_CLOUD_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsUserIdentifier(suffix, false);
-        } else if (TEAMS_USER_DOD_CLOUD_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsUserIdentifier(suffix, false)
-                .setCloudEnvironment(CommunicationCloudEnvironment.DOD);
-        } else if (TEAMS_USER_GCCH_CLOUD_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsUserIdentifier(suffix, false)
-                .setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
-        } else if (ACS_USER_PREFIX.equals(prefix)
-            || SPOOL_USER_PREFIX.equals(prefix)
-            || ACS_USER_DOD_CLOUD_PREFIX.equals(prefix)
-            || ACS_USER_GCCH_CLOUD_PREFIX.equals(prefix)) {
+        return switch (prefix) {
+            case TEAMS_USER_ANONYMOUS_PREFIX -> new MicrosoftTeamsUserIdentifier(suffix, true);
+            case TEAMS_USER_PUBLIC_CLOUD_PREFIX -> new MicrosoftTeamsUserIdentifier(suffix, false);
+            case TEAMS_USER_DOD_CLOUD_PREFIX -> new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
+            case TEAMS_USER_GCCH_CLOUD_PREFIX -> new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
+            case SPOOL_USER_PREFIX -> new CommunicationUserIdentifier(rawId);
+            case ACS_USER_PREFIX, ACS_USER_DOD_CLOUD_PREFIX, ACS_USER_GCCH_CLOUD_PREFIX -> tryCreateTeamsExtensionUserOrCommunicationUser(prefix, suffix, rawId);
+            case TEAMS_APP_PUBLIC_CLOUD_PREFIX -> new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.PUBLIC);
+            case TEAMS_APP_GCCH_CLOUD_PREFIX -> new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.GCCH);
+            case TEAMS_APP_DOD_CLOUD_PREFIX -> new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.DOD);
+            default -> new UnknownIdentifier(rawId);
+        };
+    }
+
+    private static CommunicationIdentifier tryCreateTeamsExtensionUserOrCommunicationUser(String prefix, String suffix, String rawId) {
+        String[] segments = suffix.split("_");
+        if (segments.length != 3) {
             return new CommunicationUserIdentifier(rawId);
-        } else if (TEAMS_APP_PUBLIC_CLOUD_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.PUBLIC);
-        } else if (TEAMS_APP_GCCH_CLOUD_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.GCCH);
-        } else if (TEAMS_APP_DOD_CLOUD_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.DOD);
         }
 
-        return new UnknownIdentifier(rawId);
+        String resourceId = segments[0];
+        String tenantId = segments[1];
+        String userId = segments[2];
+        CommunicationCloudEnvironment cloud = switch (prefix) {
+            case ACS_USER_PREFIX -> CommunicationCloudEnvironment.PUBLIC;
+            case ACS_USER_DOD_CLOUD_PREFIX -> CommunicationCloudEnvironment.DOD;
+            case ACS_USER_GCCH_CLOUD_PREFIX -> CommunicationCloudEnvironment.GCCH;
+            default ->
+                throw new IllegalArgumentException("Invalid prefix " + prefix + " for TeamsExtensionUserIdentifier");
+        };
+
+        return new TeamsExtensionUserIdentifier(userId, tenantId, resourceId, cloud);
     }
 
     /**
