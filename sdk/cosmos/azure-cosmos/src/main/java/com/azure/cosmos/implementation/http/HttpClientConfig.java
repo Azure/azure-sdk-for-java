@@ -177,6 +177,8 @@ public class HttpClientConfig {
 
     public Http2ConnectionConfig getHttp2ConnectionConfig() {
         return this.http2ConnectionConfig;
+    }
+
     public boolean isEnableDnsLookupLogging() {
         return enableDnsLookupLogging;
     }
