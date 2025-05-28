@@ -26,8 +26,5 @@
 
   <!-- TODO (lmolkova): update codegen to log exceptions -->
   <suppress checks="RawExceptionThrow" files="com.azure.v2.security.keyvault.keys.implementation.*Impl.java" />
-  <suppress checks="RawExceptionThrow" files="com.azure.v2.security.keyvault.keys.implementation.*Client.java" />
-  <suppress checks="RawExceptionThrow" files="com.azure.v2.security.keyvault.keys.cryptography.implementation.*.java" />
-  <suppress checks="RawExceptionThrow" files="com.azure.v2.security.keyvault.keys.models.JsonWebKey.java" />
 
 </suppressions>
