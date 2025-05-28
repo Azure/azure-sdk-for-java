@@ -17,4 +17,7 @@
   <suppress checks="FinalClass" files="com.azure.v2.data.appconfiguration.models.Key.java" />
   <suppress checks="FinalClass" files="com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientServiceImpl.java" />
   <suppress checks="RedundantModifier" files="com.azure.v2.data.appconfiguration.models.KeyValue.java" />
+
+  <!-- TODO (lmolkova): update codegen to log exceptions -->
+  <suppress checks="RawExceptionThrow" files="com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientImpl.java" />
 </suppressions>

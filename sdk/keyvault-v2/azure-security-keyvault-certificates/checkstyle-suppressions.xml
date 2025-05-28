@@ -16,6 +16,6 @@
   <!-- TODO (vcolin7): Remove after updating the CheckStyle tool to handle RequestContext and Poller instead of RequestOptions and SyncPoller, respectively -->
   <suppress checks="ServiceClient" files="com.azure.v2.security.keyvault.certificates.CertificateClient.java" />
 
-  <!-- TODO (limolkova): remove, addressing in https://github.com/Azure/azure-sdk-for-java/pull/45418 -->
-  <suppress checks="RawExceptionThrow" files="com.azure.v2.security.keyvault.*" />
+  <!-- TODO (lmolkova): update codegen to log exceptions -->
+  <suppress checks="RawExceptionThrow" files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientImpl.java" />
 </suppressions>

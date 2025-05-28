@@ -24,4 +24,8 @@
   <suppress checks="ServiceClient" files="com.azure.v2.security.keyvault.administration.KeyVaultBackupClient.java" />
   <suppress checks="ServiceClient" files="com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.java" />
 
+  <!-- TODO (lmolkova): update codegen to log exceptions -->
+  <suppress checks="RawExceptionThrow" files="com.azure.v2.security.keyvault.administration.implementation.RoleDefinitionsImpl.java" />
+  <suppress checks="RawExceptionThrow" files="com.azure.v2.security.keyvault.administration.implementation.RoleAssignmentsImpl.java" />
+  <suppress checks="RawExceptionThrow" files="com.azure.v2.security.keyvault.administration.implementation.KeyVaultAdministrationClientImpl.java" />
 </suppressions>
