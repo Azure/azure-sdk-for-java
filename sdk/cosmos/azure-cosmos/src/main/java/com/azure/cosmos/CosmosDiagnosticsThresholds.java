@@ -76,16 +76,6 @@ public final class CosmosDiagnosticsThresholds {
      * Creates an instance of the CosmosDiagnosticsThresholds class with default values
      */
     public CosmosDiagnosticsThresholds() {
-
-        StringBuilder sb = new StringBuilder();
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-
-        for (StackTraceElement element : stackTrace) {
-            sb.append(element.toString()).append("\n");
-        }
-
-        LOGGER.info("CTOR CosmosDiagnosticsThresholds - {}", sb);
-
         this.pointOperationLatencyThreshold = DEFAULT_POINT_OPERATION_LATENCY_THRESHOLD;
         this.nonPointOperationLatencyThreshold = DEFAULT_NON_POINT_OPERATION_LATENCY_THRESHOLD;
         this.requestChargeThreshold = DEFAULT_REQUEST_CHARGE_THRESHOLD;
@@ -112,14 +102,6 @@ public final class CosmosDiagnosticsThresholds {
             "Argument 'pointOperationLatencyThreshold' must not be null.");
 
         this.pointOperationLatencyThreshold = pointOperationLatencyThreshold;
-        StringBuilder sb = new StringBuilder();
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-
-        for (StackTraceElement element : stackTrace) {
-            sb.append(element.toString()).append("\n");
-        }
-
-        LOGGER.info("setPointOperationLatencyThreshold {} - {}", pointOperationLatencyThreshold,  sb);
 
         return this;
     }
