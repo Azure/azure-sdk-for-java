@@ -11,6 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 
 import java.time.OffsetDateTime;
@@ -85,8 +86,10 @@ public final class JobScheduleDeletePoller {
                     return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, jobSchedule);
                 }
 
-            } catch (Exception e) {
+            } catch (ResourceNotFoundException rnfe) {
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null);
+            } catch (Exception e) {
+                return new PollResponse<>(LongRunningOperationStatus.FAILED, null);
             }
         };
     }
