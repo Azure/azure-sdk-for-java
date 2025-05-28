@@ -25,6 +25,10 @@ import com.openai.models.chat.completions.ChatCompletionMessage;
 import com.openai.models.chat.completions.ChatCompletionMessageParam;
 import com.openai.models.chat.completions.ChatCompletionMessageToolCall;
 import com.openai.models.completions.CompletionUsage;
+import com.openai.models.embeddings.CreateEmbeddingResponse;
+import com.openai.models.embeddings.Embedding;
+import com.openai.models.embeddings.EmbeddingCreateParams;
+import com.openai.models.embeddings.EmbeddingModel;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseRetrieveParams;
@@ -676,5 +680,27 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertNotNull(text, "Text should not be null");
         assertFalse(text.trim().isEmpty(), "Text should not be empty");
         assertTrue(text.contains("blue") && text.contains("logo"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    public void embeddingsReturnSuccessfully(String apiType, String apiVersion, String testModel) {
+        OpenAIClient client = createClient(apiType, apiVersion);
+
+        EmbeddingCreateParams createParams = EmbeddingCreateParams.builder()
+            .input("The quick brown fox jumped over the lazy dog")
+            .model(EmbeddingModel.TEXT_EMBEDDING_ADA_002)
+            .build();
+
+        CreateEmbeddingResponse response = client.embeddings().create(createParams);
+
+        assertNotNull(response, "Embedding response should not be null");
+        List<Embedding> embeddings = response.data();
+        assertNotNull(embeddings, "Embedding list should not be null");
+        assertFalse(embeddings.isEmpty(), "Embedding list should not be empty");
+
+        Embedding embedding = embeddings.get(0);
+        assertNotNull(embedding.embedding(), "Embedding vector should not be null");
+        assertFalse(embedding.embedding().isEmpty(), "Embedding vector should not be empty");
     }
 }
