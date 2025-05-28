@@ -50,8 +50,8 @@ public final class MediaStreamingOptions {
 
     /**
      * Creates a new instance of MediaStreamingOptions
-     * @param transportUrl - The Transport URL
      * @param audioChannelType - Audio Channel Type
+     * @param transportType - The type of transport to be used for media streaming, eg. Websocket
      */
     public MediaStreamingOptions(MediaStreamingAudioChannel audioChannelType, StreamingTransport transportType) {
         this.transportType = StreamingTransport.WEBSOCKET;
@@ -62,8 +62,7 @@ public final class MediaStreamingOptions {
 
     /**
      * Creates a new instance of TranscriptionOptions with default transportType as WEBSOCKET.
-     * @param transportUrl - The Transport URL
-     * @param locale - Locale
+     * @param audioChannelType - Audio Channel Type
      */
     public MediaStreamingOptions(MediaStreamingAudioChannel audioChannelType) {
         this(audioChannelType, StreamingTransport.WEBSOCKET);
