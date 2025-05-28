@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPublicIp;
@@ -21,20 +21,20 @@ public final class WorkloadNetworksGetPublicIpWithResponseMockTests {
     @Test
     public void testGetPublicIpWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"fg\",\"numberOfPublicIPs\":1524478115165309750,\"publicIPBlock\":\"pcbbnzqcykna\",\"provisioningState\":\"Deleting\"},\"id\":\"yuicdhzbdy\",\"name\":\"wwgbdv\",\"type\":\"bid\"}";
+            = "{\"properties\":{\"displayName\":\"fjkutycyarnroo\",\"numberOfPublicIPs\":178457974168076809,\"publicIPBlock\":\"zoghktdpyczhc\",\"provisioningState\":\"Deleting\"},\"id\":\"nhzqrottjzcfy\",\"name\":\"zptwrlohap\",\"type\":\"infsz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkPublicIp response = manager.workloadNetworks()
-            .getPublicIpWithResponse("vfxzopjh", "zxlioh", "d", com.azure.core.util.Context.NONE)
+            .getPublicIpWithResponse("zkye", "nfnzhhh", "o", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fg", response.displayName());
-        Assertions.assertEquals(1524478115165309750L, response.numberOfPublicIPs());
+        Assertions.assertEquals("fjkutycyarnroo", response.displayName());
+        Assertions.assertEquals(178457974168076809L, response.numberOfPublicIPs());
     }
 }

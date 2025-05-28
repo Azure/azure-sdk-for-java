@@ -12,7 +12,7 @@ import com.azure.resourcemanager.avs.models.Sku;
 public final class LocationsCheckTrialAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Locations_CheckTrialAvailability.
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/Locations_CheckTrialAvailability.
      * json
      */
     /**
@@ -25,7 +25,7 @@ public final class LocationsCheckTrialAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/
      * Locations_CheckTrialAvailabilityWithSku.json
      */
     /**

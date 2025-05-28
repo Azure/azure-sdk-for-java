@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.ScriptExecution;
@@ -21,25 +21,25 @@ public final class ScriptExecutionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"scriptCmdletId\":\"ajqglcf\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"rqryxynqn\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"p\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"ovw\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"zn\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"tgoe\"}],\"failureReason\":\"bbabp\",\"timeout\":\"hv\",\"retention\":\"lkvn\",\"submittedAt\":\"2021-08-17T19:10:03Z\",\"startedAt\":\"2021-02-17T02:46:23Z\",\"finishedAt\":\"2021-08-14T15:24:28Z\",\"provisioningState\":\"Succeeded\",\"output\":[\"rioov\"],\"namedOutputs\":{\"frygznmmax\":\"datasxwaabzm\",\"xlhslnel\":\"dataizkzobgo\"},\"information\":[\"ixynllxecwcrojp\",\"slhcawjutifd\",\"fmvigorqjbttzh\",\"aglkafhon\"],\"warnings\":[\"jeick\",\"zvcpopm\"],\"errors\":[\"nwcl\",\"yjede\",\"xm\"]},\"id\":\"mkqscaz\",\"name\":\"awx\",\"type\":\"z\"}";
+            = "{\"properties\":{\"scriptCmdletId\":\"ohec\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"pwndyqlea\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"lklmtkhlo\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"kxxpvbrd\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"jmzsyzfh\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"h\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"k\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"yych\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"nsjlpjrtws\"}],\"failureReason\":\"vv\",\"timeout\":\"icphvtrrmhw\",\"retention\":\"fdpyflubh\",\"submittedAt\":\"2021-03-31T10:36:55Z\",\"startedAt\":\"2021-06-05T23:01:13Z\",\"finishedAt\":\"2021-05-09T12:14:46Z\",\"provisioningState\":\"Canceled\",\"output\":[\"whhmemhooc\"],\"namedOutputs\":{\"qmemc\":\"datan\",\"mykyujxsglhs\":\"datajk\",\"fihotj\":\"datarryejylmbkzudnig\"},\"information\":[\"pxuzzjg\",\"refqy\",\"qotoihiqakydiwfb\",\"kwpzdqtvh\"],\"warnings\":[\"odaqaxsi\",\"ietgbebjfu\"],\"errors\":[\"oichdlpnfpubnt\",\"batzviqsows\",\"aelcat\",\"cjuhplrvkm\"]},\"id\":\"wmj\",\"name\":\"lgfggcvk\",\"type\":\"y\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ScriptExecution response = manager.scriptExecutions()
-            .getWithResponse("qxtbjwgnyf", "sf", "svtui", com.azure.core.util.Context.NONE)
+            .getWithResponse("ycjimryvwgcwwpbm", "gwe", "ydsx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ajqglcf", response.scriptCmdletId());
-        Assertions.assertEquals("rqryxynqn", response.parameters().get(0).name());
-        Assertions.assertEquals("p", response.hiddenParameters().get(0).name());
-        Assertions.assertEquals("bbabp", response.failureReason());
-        Assertions.assertEquals("hv", response.timeout());
-        Assertions.assertEquals("lkvn", response.retention());
-        Assertions.assertEquals("rioov", response.output().get(0));
+        Assertions.assertEquals("ohec", response.scriptCmdletId());
+        Assertions.assertEquals("pwndyqlea", response.parameters().get(0).name());
+        Assertions.assertEquals("h", response.hiddenParameters().get(0).name());
+        Assertions.assertEquals("vv", response.failureReason());
+        Assertions.assertEquals("icphvtrrmhw", response.timeout());
+        Assertions.assertEquals("fdpyflubh", response.retention());
+        Assertions.assertEquals("whhmemhooc", response.output().get(0));
     }
 }

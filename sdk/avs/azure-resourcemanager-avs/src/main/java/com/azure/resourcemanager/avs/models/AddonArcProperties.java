@@ -25,11 +25,6 @@ public final class AddonArcProperties extends AddonProperties {
      */
     private String vCenter;
 
-    /*
-     * The state of the addon provisioning
-     */
-    private AddonProvisioningState provisioningState;
-
     /**
      * Creates an instance of AddonArcProperties class.
      */
@@ -64,16 +59,6 @@ public final class AddonArcProperties extends AddonProperties {
     public AddonArcProperties withVCenter(String vCenter) {
         this.vCenter = vCenter;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: The state of the addon provisioning.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public AddonProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -112,8 +97,8 @@ public final class AddonArcProperties extends AddonProperties {
                 reader.nextToken();
 
                 if ("provisioningState".equals(fieldName)) {
-                    deserializedAddonArcProperties.provisioningState
-                        = AddonProvisioningState.fromString(reader.getString());
+                    deserializedAddonArcProperties
+                        .withProvisioningState(AddonProvisioningState.fromString(reader.getString()));
                 } else if ("addonType".equals(fieldName)) {
                     deserializedAddonArcProperties.addonType = AddonType.fromString(reader.getString());
                 } else if ("vCenter".equals(fieldName)) {
