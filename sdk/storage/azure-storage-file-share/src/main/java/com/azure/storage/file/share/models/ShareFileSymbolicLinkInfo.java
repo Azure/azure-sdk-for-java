@@ -4,6 +4,8 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareFileSymbolicLinkInfoHelper;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -22,10 +24,24 @@ public class ShareFileSymbolicLinkInfo {
      * @param lastModified Last time the symbolic link file was modified.
      * @param linkText The absolute or relative path of the symbolic link file.
      */
-    public ShareFileSymbolicLinkInfo(String eTag, OffsetDateTime lastModified, String linkText) {
+    ShareFileSymbolicLinkInfo(String eTag, OffsetDateTime lastModified, String linkText) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.linkText = linkText;
+    }
+
+    static {
+        ShareFileSymbolicLinkInfoHelper.setAccessor(ShareFileSymbolicLinkInfo::new);
+    }
+
+    /**
+     * Default constructor
+     */
+    public ShareFileSymbolicLinkInfo() {
+        // Non user-settable properties
+        this.eTag = null;
+        this.lastModified = null;
+        this.linkText = null;
     }
 
     /**
