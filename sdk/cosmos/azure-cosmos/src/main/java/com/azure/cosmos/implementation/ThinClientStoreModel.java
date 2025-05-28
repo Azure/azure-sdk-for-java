@@ -20,6 +20,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,10 +57,9 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             ? userAgentContainer.getUserAgent()
             : UserAgentContainer.BASE_USER_AGENT_STRING;
 
-        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(1);
-        this.defaultHeaders = builder
-            .put(HttpConstants.HttpHeaders.USER_AGENT, userAgent)
-            .build();
+        this.defaultHeaders = Collections.singletonMap(
+            HttpConstants.HttpHeaders.USER_AGENT, userAgent
+        );
     }
 
     @Override
