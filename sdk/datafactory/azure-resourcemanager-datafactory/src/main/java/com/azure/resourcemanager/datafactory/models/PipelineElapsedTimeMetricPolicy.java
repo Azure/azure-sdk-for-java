@@ -61,7 +61,9 @@ public final class PipelineElapsedTimeMetricPolicy implements JsonSerializable<P
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("duration", this.duration);
+        if (this.duration != null) {
+            jsonWriter.writeUntypedField("duration", this.duration);
+        }
         return jsonWriter.writeEndObject();
     }
 

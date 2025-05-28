@@ -28,6 +28,18 @@ public final class ApplicationGatewayFirewallUserSessionVariable
     public static final ApplicationGatewayFirewallUserSessionVariable NONE = fromString("None");
 
     /**
+     * Static value ClientAddrXFFHeader for ApplicationGatewayFirewallUserSessionVariable.
+     */
+    public static final ApplicationGatewayFirewallUserSessionVariable CLIENT_ADDR_XFFHEADER
+        = fromString("ClientAddrXFFHeader");
+
+    /**
+     * Static value GeoLocationXFFHeader for ApplicationGatewayFirewallUserSessionVariable.
+     */
+    public static final ApplicationGatewayFirewallUserSessionVariable GEO_LOCATION_XFFHEADER
+        = fromString("GeoLocationXFFHeader");
+
+    /**
      * Creates a new instance of ApplicationGatewayFirewallUserSessionVariable value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
