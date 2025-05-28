@@ -2,12 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.v2.security.keyvault.keys.cryptography.implementation;
 
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.util.Arrays;
 
+import static io.clientcore.core.utils.CoreUtils.bytesToHexString;
+
 final class Asn1DerSignatureEncoding {
+    private static final ClientLogger LOGGER = new ClientLogger(Asn1DerSignatureEncoding.class);
     // The EDCSA ASN.1 DER signature is in the format:
     // 0x30 b1 0x02 b2 (vr) 0x02 b3 (vs)
     // where:
@@ -30,7 +36,10 @@ final class Asn1DerSignatureEncoding {
 
         // Verify that the signature is the correct length for the given algorithm.
         if (signature.length != (coordLength * 2)) {
-            throw new IllegalArgumentException("Invalid signature.");
+            throw LOGGER.throwableAtError()
+                .addKeyValue("signature", bytesToHexString(signature))
+                .addKeyValue("len", signature.length)
+                .log("Invalid signature; invalid length.", CoreException::from);
         }
 
         // r is the first half of the signature.
@@ -60,14 +69,19 @@ final class Asn1DerSignatureEncoding {
 
         // Verify byte 0 is 0x30.
         if (asn1DerSignature.read() != 0x30) {
-            throw new IllegalArgumentException("Invalid signature.");
+            throw LOGGER.throwableAtError()
+                .addKeyValue("signature", bytesToHexString(bytes))
+                .log("Invalid signature; First byte of field is not 0x30.", CoreException::from);
         }
 
         int objLen = readFieldLength(asn1DerSignature);
 
         // Verify the object length is equal to the remaining length of the _asn1DerSignature.
         if (objLen != asn1DerSignature.available()) {
-            throw new IllegalArgumentException(String.format("Invalid signature; invalid field len %d", objLen));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("signature", bytesToHexString(bytes))
+                .addKeyValue("len", objLen)
+                .log("Invalid signature; invalid field len.", CoreException::from);
         }
 
         byte[] rawSignature = new byte[coordLength * 2];
@@ -120,7 +134,8 @@ final class Asn1DerSignatureEncoding {
     static void decodeIntField(ByteArrayInputStream bytes, byte[] dest, int index, int intlen) {
         // Verify the first byte of field is 0x02.
         if (bytes.read() != 0x02) {
-            throw new IllegalArgumentException("Invalid signature.");
+            throw LOGGER.throwableAtError()
+                .log("Invalid signature; First byte of field is not 0x02.", CoreException::from);
         }
 
         // Get the length of the field.
@@ -131,7 +146,11 @@ final class Asn1DerSignatureEncoding {
 
         // Validate that len is within the max range and doesn't run past the end of bytes.
         if (len > intlen + 1 || len > bytes.available()) {
-            throw new IllegalArgumentException("Invalid signature.");
+            throw LOGGER.throwableAtError()
+                .addKeyValue("len", len)
+                .addKeyValue("intlen", intlen)
+                .addKeyValue("bytesAvailable", bytes.available())
+                .log("Invalid signature; invalid field len.", CoreException::from);
         }
 
         // If len is greater than intlen increment _bytesRead and decrement len.
@@ -156,7 +175,10 @@ final class Asn1DerSignatureEncoding {
 
         // If the number of len bytes is greater than the remaining signature the signature is invalid.
         if (numLenBytes > bytes.available()) {
-            throw new IllegalArgumentException("Invalid signature.");
+            throw LOGGER.throwableAtError()
+                .addKeyValue("numLenBytes", numLenBytes)
+                .addKeyValue("bytesAvailable", bytes.available())
+                .log("Invalid signature; invalid field len.", CoreException::from);
         }
 
         byte[] lenBytes = new byte[numLenBytes];
@@ -165,10 +187,12 @@ final class Asn1DerSignatureEncoding {
 
         BigInteger bigLen = new BigInteger(1, lenBytes);
 
-        // For DSA signatures no feilds should be longer than can be expressed in an integer this means that the
+        // For DSA signatures no fields should be longer than can be expressed in an integer this means that the
         // bitLength must be 31 or less to account for the leading zero of a positive integer.
         if (bigLen.bitLength() >= 31) {
-            throw new IllegalArgumentException("Invalid signature.");
+            throw LOGGER.throwableAtError()
+                .addKeyValue("bigLen", bigLen.toString())
+                .log("Invalid signature; invalid field len.", CoreException::from);
         }
 
         return bigLen.intValue();
