@@ -68,7 +68,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
                     throw LOGGER.throwableAtError()
                         .addKeyValue("algorithm", algorithm)
                         .addKeyValue("keyLengthInBits", key.length << 3)
-                        .log("Key is too short, must be at least 256 bits long.", IllegalArgumentException::new);
+                        .log("Key is too short, must be at least 256 bits long.", InvalidKeyException::new);
                 }
 
                 hmacKey = new byte[128 >> 3];
@@ -85,7 +85,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
                     throw LOGGER.throwableAtError()
                         .addKeyValue("algorithm", algorithm)
                         .addKeyValue("keyLengthInBits", key.length << 3)
-                        .log("Key is too short, must be at least 384 bits long.", IllegalArgumentException::new);
+                        .log("Key is too short, must be at least 384 bits long.", InvalidKeyException::new);
                 }
 
                 hmacKey = new byte[192 >> 3];
@@ -102,7 +102,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
                     throw LOGGER.throwableAtError()
                         .addKeyValue("algorithm", algorithm)
                         .addKeyValue("keyLengthInBits", key.length << 3)
-                        .log("Key is too short, must be at least 512 bits long.", IllegalArgumentException::new);
+                        .log("Key is too short, must be at least 512 bits long.", InvalidKeyException::new);
                 }
 
                 hmacKey = new byte[256 >> 3];
