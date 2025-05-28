@@ -531,6 +531,18 @@ public final class CallAutomationAsyncClient {
                 request.setCallIntelligenceOptions(callIntelligenceOptionsInternal);
             }
 
+            if (connectCallOptions.getMediaStreamingOptions() != null) {
+                MediaStreamingOptionsInternal streamingOptionsInternal
+                    = getMediaStreamingOptionsInternal(connectCallOptions.getMediaStreamingOptions());
+                request.setMediaStreamingOptions(streamingOptionsInternal);
+            }
+
+            if (connectCallOptions.getTranscriptionOptions() != null) {
+                TranscriptionOptionsInternal transcriptionOptionsInternal
+                    = getTranscriptionOptionsInternal(connectCallOptions.getTranscriptionOptions());
+                request.setTranscriptionOptions(transcriptionOptionsInternal);
+            }
+
             return azureCommunicationCallAutomationServiceInternal.connectWithResponseAsync(request, context)
                 .map(response -> {
                     try {
