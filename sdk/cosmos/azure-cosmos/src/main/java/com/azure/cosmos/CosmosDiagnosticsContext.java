@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.OverridableRequestOptions;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -45,6 +47,7 @@ public final class CosmosDiagnosticsContext {
 
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
+    private final UUID contextId;
     private final String spanName;
     private final String accountName;
     private final String endpoint;
@@ -124,6 +127,7 @@ public final class CosmosDiagnosticsContext {
         checkNotNull(connectionMode, "Argument 'connectionMode' must not be null.");
         checkNotNull(userAgent, "Argument 'userAgent' must not be null.");
 
+        this.contextId = UUIDs.nonBlockingRandomUUID();
         this.spanName = spanName;
         this.accountName = accountName;
         this.endpoint = endpoint;
@@ -323,7 +327,7 @@ public final class CosmosDiagnosticsContext {
             return;
         }
 
-        synchronized (this.spanName) {
+        synchronized (this.contextId) {
             if (this.samplingRateSnapshot != null) {
                 diagAccessor.setSamplingRateSnapshot(cosmosDiagnostics, this.samplingRateSnapshot);
             }
@@ -428,7 +432,7 @@ public final class CosmosDiagnosticsContext {
      * @return the system usage
      */
     public Map<String, Object> getSystemUsage() {
-        synchronized (this.spanName) {
+        synchronized (this.contextId) {
             Map<String, Object> snapshot = this.systemUsage;
             if (snapshot != null) {
                 return snapshot;
@@ -464,19 +468,19 @@ public final class CosmosDiagnosticsContext {
     }
 
     void addRequestCharge(float requestCharge) {
-        synchronized (this.spanName) {
+        synchronized (this.contextId) {
             this.totalRequestCharge += requestCharge;
         }
     }
 
     void addRequestSize(int bytes) {
-        synchronized (this.spanName) {
+        synchronized (this.contextId) {
             this.maxRequestSize = Math.max(this.maxRequestSize, bytes);
         }
     }
 
     void addResponseSize(int bytes) {
-        synchronized (this.spanName) {
+        synchronized (this.contextId) {
             this.maxResponseSize = Math.max(this.maxResponseSize, bytes);
         }
     }
@@ -519,7 +523,7 @@ public final class CosmosDiagnosticsContext {
     }
 
     void startOperation() {
-        synchronized (this.spanName) {
+        synchronized (this.contextId) {
             checkState(
                 this.startTime == null,
                 "Method 'startOperation' must not be called multiple times.");
@@ -539,7 +543,7 @@ public final class CosmosDiagnosticsContext {
                          Integer targetMaxMicroBatchSize,
                          CosmosDiagnostics diagnostics,
                          Throwable finalError) {
-        synchronized (this.spanName) {
+        synchronized (this.contextId) {
             boolean hasCompletedOperation = this.isCompleted.compareAndSet(false, true);
             if (hasCompletedOperation) {
                 this.recordOperation(
@@ -561,7 +565,7 @@ public final class CosmosDiagnosticsContext {
                          CosmosDiagnostics diagnostics,
                          Throwable finalError) {
 
-        synchronized (this.spanName) {
+        synchronized (this.contextId) {
             this.statusCode = statusCode;
             this.subStatusCode = subStatusCode;
             this.finalError = finalError;
@@ -595,7 +599,7 @@ public final class CosmosDiagnosticsContext {
     }
 
     void setSamplingRateSnapshot(double samplingRate, boolean isSampledOut) {
-        synchronized (this.spanName) {
+        synchronized (this.contextId) {
             this.samplingRateSnapshot = samplingRate;
             this.isSampledOut = isSampledOut;
             for (CosmosDiagnostics d : this.diagnostics) {
@@ -708,7 +712,7 @@ public final class CosmosDiagnosticsContext {
             return snapshot;
         }
 
-        synchronized (this.spanName) {
+        synchronized (this.contextId) {
             snapshot = this.cachedRequestDiagnostics;
             if (snapshot != null) {
                 return snapshot;
@@ -913,7 +917,7 @@ public final class CosmosDiagnosticsContext {
      * individual requests issued in the transport layer to process this operation.
      */
     public Collection<CosmosDiagnosticsRequestInfo> getRequestInfo() {
-        synchronized (this.spanName) {
+        synchronized (this.contextId) {
             ArrayList<CosmosDiagnosticsRequestInfo> snapshot = this.requestInfo;
             if (snapshot != null) {
                 return snapshot;

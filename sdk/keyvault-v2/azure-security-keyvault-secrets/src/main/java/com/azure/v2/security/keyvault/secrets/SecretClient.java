@@ -30,6 +30,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -174,7 +175,7 @@ public final class SecretClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret setSecret(String name, String value) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
         return setSecret(new KeyVaultSecret(name, value));
@@ -212,20 +213,14 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret setSecret(KeyVaultSecret secret) {
-        if (secret == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'secret' cannot be null."));
-        }
+        Objects.requireNonNull(secret, "'secret' cannot be null.");
 
         if (isNullOrEmpty(secret.getName())) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'secret.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'secret.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createKeyVaultSecret(clientImpl.setSecret(secret.getName(), prepareSecretSetParameters(secret)));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createKeyVaultSecret(clientImpl.setSecret(secret.getName(), prepareSecretSetParameters(secret)));
     }
 
     /**
@@ -271,22 +266,16 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> setSecretWithResponse(KeyVaultSecret secret, RequestContext requestContext) {
-        if (secret == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'secret' cannot be null."));
-        }
+        Objects.requireNonNull(secret, "'secret' cannot be null.");
 
         if (isNullOrEmpty(secret.getName())) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'secret.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'secret.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(
-                clientImpl.setSecretWithResponse(secret.getName(), prepareSecretSetParameters(secret), requestContext),
-                SecretsModelsUtils::createKeyVaultSecret);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(
+            clientImpl.setSecretWithResponse(secret.getName(), prepareSecretSetParameters(secret), requestContext),
+            SecretsModelsUtils::createKeyVaultSecret);
     }
 
     private static SecretSetParameters prepareSecretSetParameters(KeyVaultSecret secret) {
@@ -355,14 +344,10 @@ public final class SecretClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret getSecret(String name, String version) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createKeyVaultSecret(clientImpl.getSecret(name, version));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createKeyVaultSecret(clientImpl.getSecret(name, version));
     }
 
     /**
@@ -405,15 +390,11 @@ public final class SecretClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> getSecretWithResponse(String name, String version, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.getSecretWithResponse(name, version, requestContext),
-                SecretsModelsUtils::createKeyVaultSecret);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.getSecretWithResponse(name, version, requestContext),
+            SecretsModelsUtils::createKeyVaultSecret);
     }
 
     /**
@@ -454,21 +435,15 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretProperties updateSecretProperties(SecretProperties secretProperties) {
-        if (secretProperties == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'secretProperties' cannot be null."));
-        }
+        Objects.requireNonNull(secretProperties, "'secretProperties' cannot be null.");
 
         if (isNullOrEmpty(secretProperties.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'secretProperties.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'secretProperties.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createSecretProperties(clientImpl.updateSecret(secretProperties.getName(),
-                secretProperties.getVersion(), prepareUpdateSecretParameters(secretProperties)));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createSecretProperties(clientImpl.updateSecret(secretProperties.getName(), secretProperties.getVersion(),
+            prepareUpdateSecretParameters(secretProperties)));
     }
 
     /**
@@ -523,23 +498,17 @@ public final class SecretClient {
     public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secretProperties,
         RequestContext requestContext) {
 
-        if (secretProperties == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'secretProperties' cannot be null."));
-        }
+        Objects.requireNonNull(secretProperties, "'secretProperties' cannot be null.");
 
         if (isNullOrEmpty(secretProperties.getName())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'secretProperties.getName()' cannot be null or empty."));
+            throw LOGGER.throwableAtError()
+                .log("'secretProperties.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(
-                clientImpl.updateSecretWithResponse(secretProperties.getName(), secretProperties.getVersion(),
-                    prepareUpdateSecretParameters(secretProperties), requestContext),
-                SecretsModelsUtils::createSecretProperties);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(
+            clientImpl.updateSecretWithResponse(secretProperties.getName(), secretProperties.getVersion(),
+                prepareUpdateSecretParameters(secretProperties), requestContext),
+            SecretsModelsUtils::createSecretProperties);
     }
 
     private static SecretUpdateParameters prepareUpdateSecretParameters(SecretProperties secretProperties) {
@@ -587,18 +556,14 @@ public final class SecretClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<DeletedSecret, Void> beginDeleteSecret(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return Poller.createPoller(Duration.ofSeconds(1),
-                pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                    createDeletedSecret(clientImpl.deleteSecret(name))),
-                pollingContext -> deletePollOperation(name, pollingContext), (pollingContext, response) -> null,
-                pollingContext -> null);
-        } catch (HttpResponseException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return Poller.createPoller(Duration.ofSeconds(1),
+            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                createDeletedSecret(clientImpl.deleteSecret(name))),
+            pollingContext -> deletePollOperation(name, pollingContext), (pollingContext, response) -> null,
+            pollingContext -> null);
     }
 
     private PollResponse<DeletedSecret> deletePollOperation(String name, PollingContext<DeletedSecret> pollingContext) {
@@ -648,14 +613,10 @@ public final class SecretClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedSecret getDeletedSecret(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return createDeletedSecret(clientImpl.getDeletedSecret(name));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createDeletedSecret(clientImpl.getDeletedSecret(name));
     }
 
     /**
@@ -693,15 +654,11 @@ public final class SecretClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedSecret> getDeletedSecretWithResponse(String name, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.getDeletedSecretWithResponse(name, requestContext),
-                SecretsModelsUtils::createDeletedSecret);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.getDeletedSecretWithResponse(name, requestContext),
+            SecretsModelsUtils::createDeletedSecret);
     }
 
     /**
@@ -724,14 +681,10 @@ public final class SecretClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeletedSecret(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            clientImpl.purgeDeletedSecret(name);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        clientImpl.purgeDeletedSecret(name);
     }
 
     /**
@@ -764,14 +717,10 @@ public final class SecretClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedSecretWithResponse(String name, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return clientImpl.purgeDeletedSecretWithResponse(name, requestContext);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return clientImpl.purgeDeletedSecretWithResponse(name, requestContext);
     }
 
     /**
@@ -804,18 +753,14 @@ public final class SecretClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return Poller.createPoller(Duration.ofSeconds(1),
-                pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                    createKeyVaultSecret(clientImpl.recoverDeletedSecret(name))),
-                pollingContext -> recoverPollOperation(name, pollingContext), (pollingContext, response) -> null,
-                pollingContext -> null);
-        } catch (HttpResponseException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return Poller.createPoller(Duration.ofSeconds(1),
+            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                createKeyVaultSecret(clientImpl.recoverDeletedSecret(name))),
+            pollingContext -> recoverPollOperation(name, pollingContext), (pollingContext, response) -> null,
+            pollingContext -> null);
     }
 
     private PollResponse<KeyVaultSecret> recoverPollOperation(String name,
@@ -865,14 +810,10 @@ public final class SecretClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] backupSecret(String name) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return clientImpl.backupSecret(name).getValue();
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return clientImpl.backupSecret(name).getValue();
     }
 
     /**
@@ -909,14 +850,10 @@ public final class SecretClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupSecretWithResponse(String name, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapResponse(clientImpl.backupSecretWithResponse(name, requestContext), BackupSecretResult::getValue);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.backupSecretWithResponse(name, requestContext), BackupSecretResult::getValue);
     }
 
     /**
@@ -941,11 +878,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret restoreSecretBackup(byte[] backup) {
-        try {
-            return createKeyVaultSecret(clientImpl.restoreSecret(new SecretRestoreParameters(backup)));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return createKeyVaultSecret(clientImpl.restoreSecret(new SecretRestoreParameters(backup)));
     }
 
     /**
@@ -982,13 +915,8 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> restoreSecretBackupWithResponse(byte[] backup, RequestContext requestContext) {
-        try {
-            return mapResponse(
-                clientImpl.restoreSecretWithResponse(new SecretRestoreParameters(backup), requestContext),
-                SecretsModelsUtils::createKeyVaultSecret);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(clientImpl.restoreSecretWithResponse(new SecretRestoreParameters(backup), requestContext),
+            SecretsModelsUtils::createKeyVaultSecret);
     }
 
     /**
@@ -1092,13 +1020,9 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecrets(RequestContext requestContext) {
-        try {
-            return mapPages(pagingOptions -> clientImpl.getSecretsSinglePage(null, requestContext),
-                (pagingOptions, nextLink) -> clientImpl.getSecretsNextSinglePage(nextLink, requestContext),
-                SecretsModelsUtils::createSecretProperties);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapPages(pagingOptions -> clientImpl.getSecretsSinglePage(null, requestContext),
+            (pagingOptions, nextLink) -> clientImpl.getSecretsNextSinglePage(nextLink, requestContext),
+            SecretsModelsUtils::createSecretProperties);
     }
 
     /**
@@ -1183,17 +1107,13 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecret> listDeletedSecrets(RequestContext requestContext) {
-        try {
-            Stream<PagedResponse<DeletedSecret>> stream = clientImpl.getDeletedSecrets(null, requestContext)
-                .streamByPage()
-                .map(pagedResponse -> mapPagedResponse(pagedResponse, SecretsModelsUtils::createDeletedSecret));
+        Stream<PagedResponse<DeletedSecret>> stream = clientImpl.getDeletedSecrets(null, requestContext)
+            .streamByPage()
+            .map(pagedResponse -> mapPagedResponse(pagedResponse, SecretsModelsUtils::createDeletedSecret));
 
-            return mapPages(pagingOptions -> clientImpl.getDeletedSecretsSinglePage(null, requestContext),
-                (pagingOptions, nextLink) -> clientImpl.getDeletedSecretsNextSinglePage(nextLink, requestContext),
-                SecretsModelsUtils::createDeletedSecret);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapPages(pagingOptions -> clientImpl.getDeletedSecretsSinglePage(null, requestContext),
+            (pagingOptions, nextLink) -> clientImpl.getDeletedSecretsNextSinglePage(nextLink, requestContext),
+            SecretsModelsUtils::createDeletedSecret);
     }
 
     /**
@@ -1297,16 +1217,12 @@ public final class SecretClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecretVersions(String name, RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try {
-            return mapPages(pagingOptions -> clientImpl.getSecretVersionsSinglePage(name, null, requestContext),
-                (pagingOptions, nextLink) -> clientImpl.getSecretVersionsNextSinglePage(nextLink, requestContext),
-                SecretsModelsUtils::createSecretProperties);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapPages(pagingOptions -> clientImpl.getSecretVersionsSinglePage(name, null, requestContext),
+            (pagingOptions, nextLink) -> clientImpl.getSecretVersionsNextSinglePage(nextLink, requestContext),
+            SecretsModelsUtils::createSecretProperties);
     }
 
     private static <T, S> Response<S> mapResponse(Response<T> response, Function<T, S> mapper) {

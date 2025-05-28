@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -598,7 +599,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         FluxSink<CosmosItemOperation> groupSink,
         PartitionScopeThresholds thresholds) {
 
-        String batchTrackingId = UUID.randomUUID().toString();
+        String batchTrackingId = UUIDs.nonBlockingRandomUUID().toString();
         logTraceOrWarning(
             "Executing batch of PKRangeId %s - batch TrackingId: %s",
             serverRequest.getPartitionKeyRangeId(),

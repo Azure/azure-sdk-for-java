@@ -1,0 +1,259 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.core.http.policy
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.core.http.policy
+displayName: Migrate from azure.core.http.policy to next generation stack
+description: This recipe migrates azure.core.http.policy package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # AddDatePolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # AddHeadersFromContextPolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # AddHeadersPolicy
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.policy.AddHeadersPolicy
+      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.AddHeadersPolicy
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # AfterRetryPolicyProvider
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # AzureKeyCredentialPolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # AzureSasCredentialPolicy
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.policy.AzureSasCredentialPolicy
+      newFullyQualifiedTypeName: com.azure.v2.core.http.pipeline.AzureSasCredentialPolicy
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # BearerTokenAuthenticationPolicy
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.policy.BearerTokenAuthenticationPolicy
+      newFullyQualifiedTypeName: com.azure.v2.core.http.pipeline.BearerTokenAuthenticationPolicy
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # BeforeRetryPolicyProvider
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # CookiePolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # DefaultRedirectStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ExponentialBackoff
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ExponentialBackoffOptions
+  # --------------------------------------------------------------------
+
+  #  TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # FixedDelay
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # FixedDelayOptions
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HostPolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HttpLogDetailLevel
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HttpLogOptions
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HttpLoggingPolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HttpPipelinePolicy
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.policy.HttpPipelinePolicy
+      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.HttpPipelinePolicy
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # HttpPipelineSyncPolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HttpPolicyProvider
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HttpPolicyProviders
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HttpRequestLogger
+  # --------------------------------------------------------------------
+
+  #  TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HttpResponseLoggingContext
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # KeyCredentialPolicy
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.policy.KeyCredentialPolicy
+      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.KeyCredentialPolicy
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # PortPolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ProtocolPolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # RedirectPolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # RedirectStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # RequestIdPolicy
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.policy.RequestIdPolicy
+      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.RequestIdPolicy
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # RequestRetryCondition
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # RetryOptions
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # RetryPolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # RetryStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # TimeoutPolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # UserAgentPolicy
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.policy.UserAgentPolicy
+      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.UserAgentPolicy
+
+  # TODO: Migrate Methods and Fields
+
+
+
+
+
