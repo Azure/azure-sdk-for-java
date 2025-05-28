@@ -22,7 +22,7 @@ extends:
             pool: 
               name: $(LINUXPOOL)
               image: $(LINUXVMIMAGE)
-              os: 
+              os: linux
             displayName: Build and Run OpenRewrite Compiler Plugin
             timeoutInMinutes: 60
             steps:
