@@ -4,7 +4,6 @@
 package com.azure.core.test.http;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -103,10 +102,10 @@ public class TestProxyPlaybackClient implements HttpClient {
                 xRecordingFileLocation = new String(
                     Base64.getUrlDecoder().decode(response.getHeaders().getValue(X_RECORDING_FILE_LOCATION)),
                     StandardCharsets.UTF_8);
-                addProxySanitization(this.sanitizers);
-                addMatcherRequests(this.matchers);
                 body = response.getBodyAsString().block();
             }
+            addProxySanitization(this.sanitizers);
+            addMatcherRequests(this.matchers);
             // The test proxy stores variables in a map with no guaranteed order.
             // The Java implementation of recording did not use a map, but relied on the order
             // of the variables as they were stored. Our scheme instead sets an increasing integer
@@ -139,15 +138,6 @@ public class TestProxyPlaybackClient implements HttpClient {
         int retries = 0;
         while (true) {
             try {
-                String message
-                    = "Sending request to test proxy. RecordingID " + xRecordingId + " request: " + request.getUrl();
-                for (HttpHeader entry : request.getHeaders()) {
-                    message += " " + entry.getName() + ": " + entry.getValue();
-                }
-                if (request.getBody() != null) {
-                    message += " body: " + request.getBodyAsBinaryData().toString();
-                }
-                LOGGER.verbose(message);
                 HttpResponse response = client.sendSync(request, Context.NONE);
                 if (response.getStatusCode() / 100 != 2) {
                     String body = response.getBodyAsString().block();
@@ -166,15 +156,15 @@ public class TestProxyPlaybackClient implements HttpClient {
                 if (retries >= 3) {
                     throw e;
                 }
-                sleep(1);
+                sleep();
                 LOGGER.warning("Retrying request to test proxy. Retry attempt: " + retries);
             }
         }
     }
 
-    private void sleep(int durationInSeconds) {
+    private void sleep() {
         try {
-            TimeUnit.SECONDS.sleep(durationInSeconds);
+            TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

@@ -3,7 +3,6 @@
 package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.http.TestProxyPlaybackClient;
@@ -21,8 +20,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
-import io.netty.handler.logging.LogLevel;
-import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -334,10 +331,7 @@ public class InterceptorManager implements AutoCloseable {
                 throw new IllegalStateException("A playback client can only be requested in PLAYBACK mode.");
             }
             if (testProxyPlaybackClient == null) {
-                reactor.netty.http.client.HttpClient client = reactor.netty.http.client.HttpClient.create()
-                    .wiretap("reactor.netty.http.client.HttpClient", LogLevel.TRACE, AdvancedByteBufFormat.TEXTUAL);
-                HttpClient localClient = new NettyAsyncHttpClientBuilder(client).build();
-                testProxyPlaybackClient = new TestProxyPlaybackClient(localClient, skipRecordingRequestBody);
+                testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient, skipRecordingRequestBody);
                 proxyVariableQueue
                     .addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile(), testClassPath));
                 xRecordingFileLocation = testProxyPlaybackClient.getRecordingFileLocation();

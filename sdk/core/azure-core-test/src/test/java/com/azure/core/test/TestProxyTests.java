@@ -68,8 +68,6 @@ public class TestProxyTests extends TestProxyTestBase {
     private static final HttpHeaderName OCP_APIM_SUBSCRIPTION_KEY
         = HttpHeaderName.fromString("Ocp-Apim-Subscription-Key");
 
-    private HttpClient wiretapClient;
-
     static {
         CUSTOM_SANITIZER.add(new TestProxySanitizer("$..modelId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
         CUSTOM_SANITIZER.add(new TestProxySanitizer("TableName\\\"*:*\\\"(?<tablename>.*)\\\"", REDACTED,
@@ -86,14 +84,10 @@ public class TestProxyTests extends TestProxyTestBase {
         server.close();
     }
 
-    private HttpClient getRecordHttpClient() {
-        return wiretapClient;
-    }
-
     @Test
     @Tag("Record")
     public void testBasicRecord() {
-        HttpClient client = getRecordHttpClient();
+        HttpClient client = getHttpClients().findFirst().orElse(null);
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
 
@@ -142,8 +136,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Tag("Record")
     @RecordWithoutRequestBody
     public void testRecordWithPath() {
-
-        HttpClient client = getRecordHttpClient();
+        HttpClient client = getHttpClients().findFirst().orElse(null);
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
 
@@ -162,7 +155,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Record")
     public void testRecordWithHeaders() {
-        HttpClient client = getRecordHttpClient();
+        HttpClient client = getHttpClients().findFirst().orElse(null);
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
 
@@ -334,7 +327,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Record")
     public void testResetTestProxyData() {
-        HttpClient client = getRecordHttpClient();
+        HttpClient client = getHttpClients().findFirst().orElse(null);
 
         final HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
@@ -353,7 +346,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Record")
     public void testRecordWithRedirect() {
-        HttpClient client = getRecordHttpClient();
+        HttpClient client = getHttpClients().findFirst().orElse(null);
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client)
             .policies(new RedirectPolicy(), interceptorManager.getRecordPolicy())

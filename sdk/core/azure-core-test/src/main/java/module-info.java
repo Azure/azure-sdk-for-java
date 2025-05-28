@@ -18,7 +18,6 @@ module com.azure.core.test {
     requires reactor.netty.core;
     requires io.netty.codec.http;
     requires ant;
-    requires io.netty.handler;
 
     exports com.azure.core.test;
     exports com.azure.core.test.annotation;

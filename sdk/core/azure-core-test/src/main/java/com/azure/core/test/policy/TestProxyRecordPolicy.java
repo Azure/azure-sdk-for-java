@@ -281,15 +281,15 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
                 if (retries >= 3) {
                     throw e;
                 }
-                sleep(1);
+                sleep();
                 LOGGER.warning("Retrying request to test proxy. Retry attempt: " + retries);
             }
         }
     }
 
-    private void sleep(int durationInSeconds) {
+    private void sleep() {
         try {
-            TimeUnit.SECONDS.sleep(durationInSeconds);
+            TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

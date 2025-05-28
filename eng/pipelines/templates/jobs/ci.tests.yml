@@ -150,7 +150,7 @@ jobs:
           VersionOverride: ${{ parameters.VersionOverride }}
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
-          
+
       - pwsh: |
           $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy.log
           foreach($file in $files){
@@ -170,7 +170,7 @@ jobs:
           }
         displayName: Dump Test-Proxy Error Logs
         condition: succeededOrFailed()
-    
+
       - pwsh: |
           $content = (Invoke-WebRequest -Uri "http://localhost:5000/Audit/Logs")
           Write-Host $content.Content

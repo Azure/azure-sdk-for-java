@@ -190,6 +190,7 @@ public class TestProxyUtils {
             requestHeaders.remove(X_RECORDING_ID);
             return response;
         } catch (MalformedURLException e) {
+            response.close();
             throw new RuntimeException(e);
         }
     }
@@ -225,6 +226,7 @@ public class TestProxyUtils {
             error = httpResponse.getHeaderValue(X_REQUEST_EXCEPTION_EXCEPTION_ERROR);
         }
         if (error != null) {
+            httpResponse.close();
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 "Test proxy exception: " + new String(Base64.getDecoder().decode(error), StandardCharsets.UTF_8)));
         }

@@ -40,6 +40,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 
 /**
@@ -200,10 +203,10 @@ public class NettyAsyncHttpClientBuilder {
         if (proxyOptions == null) {
             nettyHttpClient = nettyHttpClient.resolver(DefaultAddressResolverGroup.INSTANCE);
         }
-        //
-        //        long writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis();
-        //        long responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout()).toMillis();
-        //        long readTimeout = getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis();
+
+        long writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis();
+        long responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout()).toMillis();
+        long readTimeout = getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis();
 
         // Get the initial HttpResponseDecoderSpec and update it.
         // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
@@ -214,7 +217,8 @@ public class NettyAsyncHttpClientBuilder {
                 (int) getTimeout(connectTimeout, getDefaultConnectTimeout()).toMillis())
             // TODO (alzimmer): What does validating HTTP response headers get us?
             .httpResponseDecoder(httpResponseDecoderSpec -> initialSpec.validateHeaders(false))
-
+            .doOnRequest(
+                (request, connection) -> addHandler(request, connection, writeTimeout, responseTimeout, readTimeout))
             .doAfterResponseSuccess((ignored, connection) -> removeHandler(connection));
 
         LoggingHandler loggingHandler = nettyHttpClient.configuration().loggingHandler();
