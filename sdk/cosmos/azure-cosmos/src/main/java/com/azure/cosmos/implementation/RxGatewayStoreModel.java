@@ -120,7 +120,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         checkNotNull(userAgentContainer, "Argument 'userAGentContainer' must not be null.");
 
-        Map<String, String> defaultHeaders = new HashMap<>(6);
+        Map<String, String> defaultHeaders = new HashMap<>(6 * 4 / 3); // load factor is 0.75
         defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
             "no-cache");
         defaultHeaders.put(HttpConstants.HttpHeaders.VERSION,
