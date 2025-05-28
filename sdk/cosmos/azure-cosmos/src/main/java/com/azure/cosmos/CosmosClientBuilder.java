@@ -153,6 +153,7 @@ public class CosmosClientBuilder implements
     private boolean isRegionScopedSessionCapturingEnabled = false;
     private boolean isPerPartitionAutomaticFailoverEnabled = false;
     private boolean serverCertValidationDisabled = false;
+    private boolean isDnsLookupLoggingEnabled = false;
 
     private Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory = null;
 
@@ -1220,6 +1221,15 @@ public class CosmosClientBuilder implements
         return this.defaultCustomSerializer;
     }
 
+    public CosmosClientBuilder dnsLookupLoggingEnabled(boolean isDnsLookupLoggingEnabled) {
+        this.isDnsLookupLoggingEnabled = isDnsLookupLoggingEnabled;
+        return this;
+    }
+
+    boolean isDnsLookupLoggingEnabled() {
+        return this.isDnsLookupLoggingEnabled;
+    }
+
     /**
      * Builds a cosmos async client with the provided properties
      *
@@ -1329,6 +1339,8 @@ public class CosmosClientBuilder implements
         this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
         this.connectionPolicy.setServerCertValidationDisabled(this.serverCertValidationDisabled);
+        this.connectionPolicy.setDnsLookupLoggingEnabled(this.isDnsLookupLoggingEnabled);
+
         return this.connectionPolicy;
     }
 

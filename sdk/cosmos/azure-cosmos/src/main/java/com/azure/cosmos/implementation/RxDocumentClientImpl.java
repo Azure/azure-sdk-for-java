@@ -899,6 +899,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .withProxy(this.connectionPolicy.getProxy())
             .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout())
             .withServerCertValidationDisabled(this.connectionPolicy.isServerCertValidationDisabled())
+            .withEnableDnsLookupLogging(this.connectionPolicy.isDnsLookupLoggingEnabled())
             .withHttp2Config(new Http2ConnectionConfig());
 
         if (connectionSharingAcrossClientsEnabled) {

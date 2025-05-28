@@ -6,9 +6,16 @@ import com.azure.cosmos.implementation.Configs;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
+import io.netty.resolver.AddressResolver;
+import io.netty.resolver.AddressResolverGroup;
 import io.netty.resolver.DefaultAddressResolverGroup;
+import io.netty.resolver.DefaultNameResolver;
+import io.netty.util.concurrent.EventExecutor;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.Promise;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
@@ -30,8 +37,11 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.invoke.WrongMethodTypeException;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
@@ -78,6 +88,171 @@ public class ReactorNettyClient implements HttpClient {
             .newConnection()
             .observe(getConnectionObserver())
             .resolver(DefaultAddressResolverGroup.INSTANCE);
+        reactorNettyClient.configureChannelPipelineHandlers();
+        attemptToWarmupHttpClient(reactorNettyClient);
+        return reactorNettyClient;
+    }
+
+    public static ReactorNettyClient createWithDnsResolutionLogging(ConnectionProvider connectionProvider, HttpClientConfig httpClientConfig) {
+        ReactorNettyClient reactorNettyClient = new ReactorNettyClient();
+
+        AddressResolverGroup<InetSocketAddress> addressResolverGroupWithLogging = new AddressResolverGroup<InetSocketAddress>() {
+
+            @Override
+            protected AddressResolver<InetSocketAddress> newResolver(EventExecutor executor) throws Exception {
+
+                DefaultNameResolver defaultNameResolver = new DefaultNameResolver(executor);
+                AddressResolver<InetSocketAddress> addressResolver = defaultNameResolver.asAddressResolver();
+
+                return new AddressResolver<InetSocketAddress>() {
+
+                    @Override
+                    public boolean isSupported(SocketAddress address) {
+                        return addressResolver.isSupported(address);
+                    }
+
+                    @Override
+                    public boolean isResolved(SocketAddress address) {
+                        return addressResolver.isResolved(address);
+                    }
+
+                    @Override
+                    public Future<InetSocketAddress> resolve(SocketAddress address) {
+
+                        if (address instanceof InetSocketAddress) {
+                            InetSocketAddress inetSocketAddress = (InetSocketAddress) address;
+                            if (inetSocketAddress.isUnresolved()) {
+                                logger.info("Resolving address: {}", inetSocketAddress);
+                            } else {
+                                logger.info("Address is already resolved: {}", inetSocketAddress.getAddress().toString());
+                            }
+                        } else {
+                            logger.info("Resolving non-InetSocketAddress: {}", address);
+                        }
+
+                        Future<InetSocketAddress> inetSocketAddressFuture = addressResolver.resolve(address);
+
+                        inetSocketAddressFuture.addListener(future -> {
+                            if (future.isSuccess()) {
+                                InetSocketAddress resolvedAddress = inetSocketAddressFuture.getNow();
+                                logger.info("Resolved address: {}", resolvedAddress.getAddress().toString());
+                            } else {
+                                logger.error("Failed to resolve address: {}", address, future.cause());
+                            }
+                        });
+
+                        return inetSocketAddressFuture;
+                    }
+
+                    @Override
+                    public Future<InetSocketAddress> resolve(SocketAddress address, Promise<InetSocketAddress> promise) {
+
+                        if (address instanceof InetSocketAddress) {
+                            InetSocketAddress inetSocketAddress = (InetSocketAddress) address;
+                            if (inetSocketAddress.isUnresolved()) {
+                                logger.info("Resolving address: {}", inetSocketAddress);
+                            } else {
+                                logger.info("Address is already resolved: {}", inetSocketAddress.getAddress().toString());
+                            }
+                        } else {
+                            logger.info("Resolving non-InetSocketAddress: {}", address);
+                        }
+
+                        Future<InetSocketAddress> inetSocketAddressFuture = addressResolver.resolve(address, promise);
+
+                        inetSocketAddressFuture.addListener(future -> {
+                            if (future.isSuccess()) {
+                                InetSocketAddress resolvedAddress = inetSocketAddressFuture.getNow();
+                                logger.info("Resolved address: {}", resolvedAddress.getAddress().toString());
+                            } else {
+                                logger.error("Failed to resolve address: {}", address, future.cause());
+                            }
+                        });
+
+                        return inetSocketAddressFuture;
+                    }
+
+                    @Override
+                    public Future<List<InetSocketAddress>> resolveAll(SocketAddress address) {
+
+                        if (address instanceof InetSocketAddress) {
+                            InetSocketAddress inetSocketAddress = (InetSocketAddress) address;
+                            if (inetSocketAddress.isUnresolved()) {
+                                logger.info("Resolving all addresses for: {}", inetSocketAddress);
+                            } else {
+                                logger.info("Address is already resolved: {}", inetSocketAddress);
+                            }
+                        } else {
+                            logger.info("Resolving all addresses for non-InetSocketAddress: {}", address);
+                        }
+
+                        Future<List<InetSocketAddress>> inetSocketAddressListFuture = addressResolver.resolveAll(address);
+
+                        inetSocketAddressListFuture.addListener(future -> {
+                            if (future.isSuccess()) {
+                                List<InetSocketAddress> resolvedAddresses = inetSocketAddressListFuture.getNow();
+
+                                resolvedAddresses.forEach(resolvedAddress -> {
+                                    logger.info("Resolved address: {}", resolvedAddress.getAddress().toString());
+                                });
+
+                                logger.info("Resolved addresses: {}", resolvedAddresses);
+                            } else {
+                                logger.error("Failed to resolve all addresses for: {}", address, future.cause());
+                            }
+                        });
+
+                        return inetSocketAddressListFuture;
+                    }
+
+                    @Override
+                    public Future<List<InetSocketAddress>> resolveAll(SocketAddress address, Promise<List<InetSocketAddress>> promise) {
+
+                        if (address instanceof InetSocketAddress) {
+                            InetSocketAddress inetSocketAddress = (InetSocketAddress) address;
+                            if (inetSocketAddress.isUnresolved()) {
+                                logger.info("Resolving all addresses for: {}", inetSocketAddress);
+                            } else {
+                                logger.info("Address is already resolved: {}", inetSocketAddress);
+                            }
+                        } else {
+                            logger.info("Resolving all addresses for non-InetSocketAddress: {}", address);
+                        }
+
+                        Future<List<InetSocketAddress>> inetSocketAddressListFuture = addressResolver.resolveAll(address, promise);
+
+                        inetSocketAddressListFuture.addListener(future -> {
+                            if (future.isSuccess()) {
+                                List<InetSocketAddress> resolvedAddresses = inetSocketAddressListFuture.getNow();
+
+                                resolvedAddresses.forEach(resolvedAddress -> {
+                                    logger.info("Resolved address: {}", resolvedAddress.getAddress().toString());
+                                });
+
+                                logger.info("Resolved addresses: {}", resolvedAddresses);
+                            } else {
+                                logger.error("Failed to resolve all addresses for: {}", address, future.cause());
+                            }
+                        });
+
+                        return inetSocketAddressListFuture;
+                    }
+
+                    @Override
+                    public void close() {
+                        addressResolver.close();
+                    }
+                };
+            }
+        };
+
+        reactorNettyClient.connectionProvider = connectionProvider;
+        reactorNettyClient.httpClientConfig = httpClientConfig;
+        reactorNettyClient.reactorNetworkLogCategory = httpClientConfig.getReactorNetworkLogCategory();
+        reactorNettyClient.httpClient = reactor.netty.http.client.HttpClient
+            .create(connectionProvider)
+            .observe(getConnectionObserver())
+            .resolver(addressResolverGroupWithLogging);
         reactorNettyClient.configureChannelPipelineHandlers();
         attemptToWarmupHttpClient(reactorNettyClient);
         return reactorNettyClient;

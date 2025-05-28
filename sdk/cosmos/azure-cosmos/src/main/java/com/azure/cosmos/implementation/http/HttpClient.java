@@ -61,6 +61,10 @@ public interface HttpClient {
             );
         }
 
+        if (httpClientConfig.isEnableDnsLookupLogging()) {
+            return ReactorNettyClient.createWithDnsResolutionLogging(fixedConnectionProviderBuilder.build(), httpClientConfig);
+        }
+
         return ReactorNettyClient.createWithConnectionProvider(fixedConnectionProviderBuilder.build(),
             httpClientConfig);
     }
