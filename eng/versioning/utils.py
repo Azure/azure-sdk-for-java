@@ -173,7 +173,7 @@ def run_check_call(
                 return err
 
 
-def load_version_map_from_file(the_file, version_map: Dict[str, CodeModule], auto_increment_version=False):
+def load_version_map_from_file(the_file, version_map: Dict[str, CodeModule], auto_increment_version=False, dev_version=False):
     newlines = []
     file_changed = False
     with open(the_file) as f:
@@ -207,14 +207,14 @@ def load_version_map_from_file(the_file, version_map: Dict[str, CodeModule], aut
                 #    When the non-unreleased dependency versions match this is an indication that the library has never
                 #    been released and there is a library outside the /sdk/<group> directory that has a development
                 #    on it.
-                # 2. Check to see that the version matches the current version of the library.
+                # 2. Check to see that the version matches the current version of the library, , only if we're not setting the nightly dev version.
                 #    If it isn't raise an error as unreleased dependencies should match the current version of the library.
                 if is_unreleased:
                     non_unreleased_module = version_map[tempName]
                     if auto_increment_version and module.dependency == non_unreleased_module.dependency and non_unreleased_module.current != non_unreleased_module.dependency:
                         module.replace_unreleased_dependency = True
                         file_changed = True
-                    elif module.dependency != non_unreleased_module.current:
+                    elif not dev_version and module.dependency != non_unreleased_module.current:
                         raise ValueError('Version file: {0} contains an unreleased dependency: {1} with a dependency version of {2} which does not match the current version of the library it represents: {3}'.format(the_file, module.name, module.dependency, version_map[tempName].current))
             
             if not module.replace_unreleased_dependency:
