@@ -4,6 +4,7 @@
 
 package com.azure.maps.weather.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class BasinId extends ExpandableStringEnum<BasinId> {
     /**
      * Atlantic.
      */
+    @Generated
     public static final BasinId AL = fromString("AL");
 
     /**
      * Eastern Pacific.
      */
+    @Generated
     public static final BasinId EP = fromString("EP");
 
     /**
      * Southwest Indian Ocean.
      */
+    @Generated
     public static final BasinId SI = fromString("SI");
 
     /**
      * North Indian Ocean.
      */
+    @Generated
     public static final BasinId NI = fromString("NI");
 
     /**
      * Central Pacific.
      */
+    @Generated
     public static final BasinId CP = fromString("CP");
 
     /**
      * Northwest Pacific.
      */
+    @Generated
     public static final BasinId NP = fromString("NP");
 
     /**
      * South Pacific.
      */
+    @Generated
     public static final BasinId SP = fromString("SP");
 
     /**
@@ -51,6 +59,7 @@ public final class BasinId extends ExpandableStringEnum<BasinId> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public BasinId() {
     }
@@ -61,6 +70,7 @@ public final class BasinId extends ExpandableStringEnum<BasinId> {
      * @param name a name to look for.
      * @return the corresponding BasinId.
      */
+    @Generated
     public static BasinId fromString(String name) {
         return fromString(name, BasinId.class);
     }
@@ -70,6 +80,7 @@ public final class BasinId extends ExpandableStringEnum<BasinId> {
      * 
      * @return known BasinId values.
      */
+    @Generated
     public static Collection<BasinId> values() {
         return values(BasinId.class);
     }

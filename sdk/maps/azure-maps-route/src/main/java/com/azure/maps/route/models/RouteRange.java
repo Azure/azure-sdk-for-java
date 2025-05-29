@@ -4,6 +4,8 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -12,7 +14,6 @@ import com.azure.maps.route.implementation.models.LatLongPair;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.azure.core.models.GeoPosition;
 
 /**
  * Reachable Range.
@@ -23,16 +24,19 @@ public final class RouteRange implements JsonSerializable<RouteRange> {
     /*
      * Center point of the reachable range
      */
+    @Generated
     private LatLongPair center;
 
     /*
      * Polygon boundary of the reachable range represented as a list of points.
      */
+    @Generated
     private List<LatLongPair> boundary;
 
     /**
      * Creates an instance of RouteRange class.
      */
+    @Generated
     public RouteRange() {
     }
 
@@ -41,6 +45,7 @@ public final class RouteRange implements JsonSerializable<RouteRange> {
      *
      * @return a {@code GeoPosition} with the coordinates of the center.
      */
+    @Generated
     public GeoPosition getCenter() {
         return new GeoPosition(this.center.getLongitude(), this.center.getLatitude());
     }
@@ -50,6 +55,7 @@ public final class RouteRange implements JsonSerializable<RouteRange> {
      *
      * @return a list of {@code GeoPosition} representing the boundary.
      */
+    @Generated
     public List<GeoPosition> getBoundary() {
         return this.boundary.stream()
             .map(item -> new GeoPosition(item.getLongitude(), item.getLatitude()))
@@ -59,6 +65,7 @@ public final class RouteRange implements JsonSerializable<RouteRange> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -74,6 +81,7 @@ public final class RouteRange implements JsonSerializable<RouteRange> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the RouteRange.
      */
+    @Generated
     public static RouteRange fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteRange deserializedRouteRange = new RouteRange();

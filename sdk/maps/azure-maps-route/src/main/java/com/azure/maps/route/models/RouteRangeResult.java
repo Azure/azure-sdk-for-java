@@ -5,6 +5,7 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class RouteRangeResult implements JsonSerializable<RouteRangeResult
     /*
      * Format Version property
      */
+    @Generated
     private String formatVersion;
 
     /*
      * Reachable Range
      */
+    @Generated
     private RouteRange reachableRange;
 
     /*
      * Reports the effective settings used in the current call.
      */
+    @Generated
     private RouteReport report;
 
     /**
      * Creates an instance of RouteRangeResult class.
      */
+    @Generated
     public RouteRangeResult() {
     }
 
@@ -42,6 +47,7 @@ public final class RouteRangeResult implements JsonSerializable<RouteRangeResult
      * 
      * @return the formatVersion value.
      */
+    @Generated
     public String getFormatVersion() {
         return this.formatVersion;
     }
@@ -51,6 +57,7 @@ public final class RouteRangeResult implements JsonSerializable<RouteRangeResult
      * 
      * @return the reachableRange value.
      */
+    @Generated
     public RouteRange getReachableRange() {
         return this.reachableRange;
     }
@@ -61,6 +68,7 @@ public final class RouteRangeResult implements JsonSerializable<RouteRangeResult
      * @param reachableRange the reachableRange value to set.
      * @return the RouteRangeResult object itself.
      */
+    @Generated
     public RouteRangeResult setReachableRange(RouteRange reachableRange) {
         this.reachableRange = reachableRange;
         return this;
@@ -71,6 +79,7 @@ public final class RouteRangeResult implements JsonSerializable<RouteRangeResult
      * 
      * @return the report value.
      */
+    @Generated
     public RouteReport getReport() {
         return this.report;
     }
@@ -81,6 +90,7 @@ public final class RouteRangeResult implements JsonSerializable<RouteRangeResult
      * @param report the report value to set.
      * @return the RouteRangeResult object itself.
      */
+    @Generated
     public RouteRangeResult setReport(RouteReport report) {
         this.report = report;
         return this;
@@ -89,6 +99,7 @@ public final class RouteRangeResult implements JsonSerializable<RouteRangeResult
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -105,6 +116,7 @@ public final class RouteRangeResult implements JsonSerializable<RouteRangeResult
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteRangeResult.
      */
+    @Generated
     public static RouteRangeResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteRangeResult deserializedRouteRangeResult = new RouteRangeResult();

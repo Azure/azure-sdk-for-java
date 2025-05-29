@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class ClassifyDocumentRequest implements JsonSerializable<ClassifyD
     /*
      * Document URL to classify. Either urlSource or base64Source must be specified.
      */
+    @Generated
     private String urlSource;
 
     /*
      * Base64 encoding of the document to classify. Either urlSource or base64Source must be specified.
      */
+    @Generated
     private byte[] base64Source;
 
     /**
      * Creates an instance of ClassifyDocumentRequest class.
      */
+    @Generated
     public ClassifyDocumentRequest() {
     }
 
@@ -38,6 +42,7 @@ public final class ClassifyDocumentRequest implements JsonSerializable<ClassifyD
      * 
      * @return the urlSource value.
      */
+    @Generated
     public String getUrlSource() {
         return this.urlSource;
     }
@@ -48,6 +53,7 @@ public final class ClassifyDocumentRequest implements JsonSerializable<ClassifyD
      * @param urlSource the urlSource value to set.
      * @return the ClassifyDocumentRequest object itself.
      */
+    @Generated
     public ClassifyDocumentRequest setUrlSource(String urlSource) {
         this.urlSource = urlSource;
         return this;
@@ -59,6 +65,7 @@ public final class ClassifyDocumentRequest implements JsonSerializable<ClassifyD
      * 
      * @return the base64Source value.
      */
+    @Generated
     public byte[] getBase64Source() {
         return CoreUtils.clone(this.base64Source);
     }
@@ -70,6 +77,7 @@ public final class ClassifyDocumentRequest implements JsonSerializable<ClassifyD
      * @param base64Source the base64Source value to set.
      * @return the ClassifyDocumentRequest object itself.
      */
+    @Generated
     public ClassifyDocumentRequest setBase64Source(byte[] base64Source) {
         this.base64Source = CoreUtils.clone(base64Source);
         return this;
@@ -78,6 +86,7 @@ public final class ClassifyDocumentRequest implements JsonSerializable<ClassifyD
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +103,7 @@ public final class ClassifyDocumentRequest implements JsonSerializable<ClassifyD
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ClassifyDocumentRequest.
      */
+    @Generated
     public static ClassifyDocumentRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ClassifyDocumentRequest deserializedClassifyDocumentRequest = new ClassifyDocumentRequest();

@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class Style implements JsonSerializable<Style> {
     /*
      * The text line style name, including handwriting and other.
      */
+    @Generated
     private TextStyleName name;
 
     /*
      * The confidence of text line style.
      */
+    @Generated
     private float confidence;
 
     /**
      * Creates an instance of Style class.
      */
+    @Generated
     public Style() {
     }
 
@@ -38,6 +42,7 @@ public final class Style implements JsonSerializable<Style> {
      * 
      * @return the name value.
      */
+    @Generated
     public TextStyleName getName() {
         return this.name;
     }
@@ -48,6 +53,7 @@ public final class Style implements JsonSerializable<Style> {
      * @param name the name value to set.
      * @return the Style object itself.
      */
+    @Generated
     public Style setName(TextStyleName name) {
         this.name = name;
         return this;
@@ -58,6 +64,7 @@ public final class Style implements JsonSerializable<Style> {
      * 
      * @return the confidence value.
      */
+    @Generated
     public float getConfidence() {
         return this.confidence;
     }
@@ -68,6 +75,7 @@ public final class Style implements JsonSerializable<Style> {
      * @param confidence the confidence value to set.
      * @return the Style object itself.
      */
+    @Generated
     public Style setConfidence(float confidence) {
         this.confidence = confidence;
         return this;
@@ -76,6 +84,7 @@ public final class Style implements JsonSerializable<Style> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class Style implements JsonSerializable<Style> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Style.
      */
+    @Generated
     public static Style fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Style deserializedStyle = new Style();

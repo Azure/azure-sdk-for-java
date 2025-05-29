@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class Report extends ExpandableStringEnum<Report> {
     /**
      * Reports the effective parameters or data used when calling the API.
      */
+    @Generated
     public static final Report EFFECTIVE_SETTINGS = fromString("effectiveSettings");
 
     /**
@@ -21,6 +23,7 @@ public final class Report extends ExpandableStringEnum<Report> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public Report() {
     }
@@ -31,6 +34,7 @@ public final class Report extends ExpandableStringEnum<Report> {
      * @param name a name to look for.
      * @return the corresponding Report.
      */
+    @Generated
     public static Report fromString(String name) {
         return fromString(name, Report.class);
     }
@@ -40,6 +44,7 @@ public final class Report extends ExpandableStringEnum<Report> {
      * 
      * @return known Report values.
      */
+    @Generated
     public static Collection<Report> values() {
         return values(Report.class);
     }

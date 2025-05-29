@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,47 +24,56 @@ public final class ImportJob implements JsonSerializable<ImportJob> {
     /*
      * The identifier of the import job.
      */
+    @Generated
     private String id;
 
     /*
      * The path to the input Azure storage blob that contains file(s) describing the operations to perform in the job.
      */
+    @Generated
     private final String inputBlobUri;
 
     /*
      * The path to the output Azure storage blob that will contain the errors and progress logs of import job.
      */
+    @Generated
     private final String outputBlobUri;
 
     /*
      * Status of the job.
      */
+    @Generated
     private Status status;
 
     /*
      * Start time of the job. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @Generated
     private OffsetDateTime createdDateTime;
 
     /*
      * Last time service performed any action from the job. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @Generated
     private OffsetDateTime lastActionDateTime;
 
     /*
      * End time of the job. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @Generated
     private OffsetDateTime finishedDateTime;
 
     /*
      * Time at which job will be purged by the service from the system. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @Generated
     private OffsetDateTime purgeDateTime;
 
     /*
      * Details of the error(s) that occurred executing the import job.
      */
+    @Generated
     private Error error;
 
     /**
@@ -72,6 +82,7 @@ public final class ImportJob implements JsonSerializable<ImportJob> {
      * @param inputBlobUri the inputBlobUri value to set.
      * @param outputBlobUri the outputBlobUri value to set.
      */
+    @Generated
     public ImportJob(String inputBlobUri, String outputBlobUri) {
         this.inputBlobUri = inputBlobUri;
         this.outputBlobUri = outputBlobUri;
@@ -82,6 +93,7 @@ public final class ImportJob implements JsonSerializable<ImportJob> {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -92,6 +104,7 @@ public final class ImportJob implements JsonSerializable<ImportJob> {
      * 
      * @return the inputBlobUri value.
      */
+    @Generated
     public String getInputBlobUri() {
         return this.inputBlobUri;
     }
@@ -102,6 +115,7 @@ public final class ImportJob implements JsonSerializable<ImportJob> {
      * 
      * @return the outputBlobUri value.
      */
+    @Generated
     public String getOutputBlobUri() {
         return this.outputBlobUri;
     }
@@ -111,6 +125,7 @@ public final class ImportJob implements JsonSerializable<ImportJob> {
      * 
      * @return the status value.
      */
+    @Generated
     public Status getStatus() {
         return this.status;
     }
@@ -121,6 +136,7 @@ public final class ImportJob implements JsonSerializable<ImportJob> {
      * 
      * @return the createdDateTime value.
      */
+    @Generated
     public OffsetDateTime getCreatedDateTime() {
         return this.createdDateTime;
     }
@@ -131,6 +147,7 @@ public final class ImportJob implements JsonSerializable<ImportJob> {
      * 
      * @return the lastActionDateTime value.
      */
+    @Generated
     public OffsetDateTime getLastActionDateTime() {
         return this.lastActionDateTime;
     }
@@ -141,6 +158,7 @@ public final class ImportJob implements JsonSerializable<ImportJob> {
      * 
      * @return the finishedDateTime value.
      */
+    @Generated
     public OffsetDateTime getFinishedDateTime() {
         return this.finishedDateTime;
     }
@@ -151,6 +169,7 @@ public final class ImportJob implements JsonSerializable<ImportJob> {
      * 
      * @return the purgeDateTime value.
      */
+    @Generated
     public OffsetDateTime getPurgeDateTime() {
         return this.purgeDateTime;
     }
@@ -160,6 +179,7 @@ public final class ImportJob implements JsonSerializable<ImportJob> {
      * 
      * @return the error value.
      */
+    @Generated
     public Error getError() {
         return this.error;
     }
@@ -170,6 +190,7 @@ public final class ImportJob implements JsonSerializable<ImportJob> {
      * @param error the error value to set.
      * @return the ImportJob object itself.
      */
+    @Generated
     public ImportJob setError(Error error) {
         this.error = error;
         return this;
@@ -178,6 +199,7 @@ public final class ImportJob implements JsonSerializable<ImportJob> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -196,6 +218,7 @@ public final class ImportJob implements JsonSerializable<ImportJob> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ImportJob.
      */
+    @Generated
     public static ImportJob fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputBlobUriFound = false;

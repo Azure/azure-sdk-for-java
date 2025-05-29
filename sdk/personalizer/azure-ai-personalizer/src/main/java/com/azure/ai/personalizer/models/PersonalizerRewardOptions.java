@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class PersonalizerRewardOptions implements JsonSerializable<Persona
      * Reward to be assigned to an action. Value is a float calculated by your application, typically between 0 and 1,
      * and must be between -1 and 1.
      */
+    @Generated
     private float value;
 
     /**
      * Creates an instance of PersonalizerRewardOptions class.
      */
+    @Generated
     public PersonalizerRewardOptions() {
     }
 
@@ -34,6 +37,7 @@ public final class PersonalizerRewardOptions implements JsonSerializable<Persona
      * 
      * @return the value value.
      */
+    @Generated
     public float getValue() {
         return this.value;
     }
@@ -45,6 +49,7 @@ public final class PersonalizerRewardOptions implements JsonSerializable<Persona
      * @param value the value value to set.
      * @return the PersonalizerRewardOptions object itself.
      */
+    @Generated
     public PersonalizerRewardOptions setValue(float value) {
         this.value = value;
         return this;
@@ -53,6 +58,7 @@ public final class PersonalizerRewardOptions implements JsonSerializable<Persona
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,6 +75,7 @@ public final class PersonalizerRewardOptions implements JsonSerializable<Persona
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PersonalizerRewardOptions.
      */
+    @Generated
     public static PersonalizerRewardOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerRewardOptions deserializedPersonalizerRewardOptions = new PersonalizerRewardOptions();

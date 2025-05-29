@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class DocumentSelectionMark implements JsonSerializable<DocumentSel
     /*
      * State of the selection mark.
      */
+    @Generated
     private final SelectionMarkState state;
 
     /*
      * Bounding polygon of the selection mark.
      */
+    @Generated
     private List<Float> polygon;
 
     /*
      * Location of the selection mark in the reading order concatenated content.
      */
+    @Generated
     private final DocumentSpan span;
 
     /*
      * Confidence of correctly extracting the selection mark.
      */
+    @Generated
     private final float confidence;
 
     /**
@@ -45,6 +50,7 @@ public final class DocumentSelectionMark implements JsonSerializable<DocumentSel
      * @param span the span value to set.
      * @param confidence the confidence value to set.
      */
+    @Generated
     public DocumentSelectionMark(SelectionMarkState state, DocumentSpan span, float confidence) {
         this.state = state;
         this.span = span;
@@ -56,6 +62,7 @@ public final class DocumentSelectionMark implements JsonSerializable<DocumentSel
      * 
      * @return the state value.
      */
+    @Generated
     public SelectionMarkState getState() {
         return this.state;
     }
@@ -65,6 +72,7 @@ public final class DocumentSelectionMark implements JsonSerializable<DocumentSel
      * 
      * @return the polygon value.
      */
+    @Generated
     public List<Float> getPolygon() {
         return this.polygon;
     }
@@ -75,6 +83,7 @@ public final class DocumentSelectionMark implements JsonSerializable<DocumentSel
      * @param polygon the polygon value to set.
      * @return the DocumentSelectionMark object itself.
      */
+    @Generated
     public DocumentSelectionMark setPolygon(List<Float> polygon) {
         this.polygon = polygon;
         return this;
@@ -85,6 +94,7 @@ public final class DocumentSelectionMark implements JsonSerializable<DocumentSel
      * 
      * @return the span value.
      */
+    @Generated
     public DocumentSpan getSpan() {
         return this.span;
     }
@@ -94,6 +104,7 @@ public final class DocumentSelectionMark implements JsonSerializable<DocumentSel
      * 
      * @return the confidence value.
      */
+    @Generated
     public float getConfidence() {
         return this.confidence;
     }
@@ -101,6 +112,7 @@ public final class DocumentSelectionMark implements JsonSerializable<DocumentSel
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -120,6 +132,7 @@ public final class DocumentSelectionMark implements JsonSerializable<DocumentSel
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentSelectionMark.
      */
+    @Generated
     public static DocumentSelectionMark fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean stateFound = false;

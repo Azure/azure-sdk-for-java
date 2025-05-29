@@ -4,7 +4,9 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,56 +22,80 @@ public final class RouteLegSummary implements JsonSerializable<RouteLegSummary> 
     /*
      * Length In Meters property
      */
+    @Generated
     private Integer lengthInMeters;
 
     /*
-     * Estimated travel time in seconds property that includes the delay due to real-time traffic. Note that even when traffic=false travelTimeInSeconds still includes the delay due to traffic. If DepartAt is in the future, travel time is calculated using time-dependent historic traffic data.
+     * Estimated travel time in seconds property that includes the delay due to real-time traffic. Note that even when
+     * traffic=false travelTimeInSeconds still includes the delay due to traffic. If DepartAt is in the future, travel
+     * time is calculated using time-dependent historic traffic data.
      */
+    @Generated
     private Integer travelTimeInSeconds;
 
     /*
-     * Estimated delay in seconds caused by the real-time incident(s) according to traffic information. For routes planned with departure time in the future, delays is always 0. To return additional travel times using different types of traffic information, parameter computeTravelTimeFor=all needs to be added.
+     * Estimated delay in seconds caused by the real-time incident(s) according to traffic information. For routes
+     * planned with departure time in the future, delays is always 0. To return additional travel times using different
+     * types of traffic information, parameter computeTravelTimeFor=all needs to be added.
      */
+    @Generated
     private Integer trafficDelayInSeconds;
 
     /*
      * The estimated departure time for the route or leg. Time is in UTC.
      */
+    @Generated
     private OffsetDateTime departureTime;
 
     /*
      * The estimated arrival time for the route or leg. Time is in UTC.
      */
+    @Generated
     private OffsetDateTime arrivalTime;
 
     /*
-     * Estimated travel time calculated as if there are no delays on the route due to traffic conditions (e.g. congestion). Included only if computeTravelTimeFor = all is used in the query.
+     * Estimated travel time calculated as if there are no delays on the route due to traffic conditions (e.g.
+     * congestion). Included only if computeTravelTimeFor = all is used in the query.
      */
+    @Generated
     private Integer noTrafficTravelTimeInSeconds;
 
     /*
-     * Estimated travel time calculated using time-dependent historic traffic data. Included only if computeTravelTimeFor = all is used in the query.
+     * Estimated travel time calculated using time-dependent historic traffic data. Included only if
+     * computeTravelTimeFor = all is used in the query.
      */
+    @Generated
     private Integer historicTrafficTravelTimeInSeconds;
 
     /*
-     * Estimated travel time calculated using real-time speed data. Included only if computeTravelTimeFor = all is used in the query.
+     * Estimated travel time calculated using real-time speed data. Included only if computeTravelTimeFor = all is used
+     * in the query.
      */
+    @Generated
     private Integer liveTrafficIncidentsTravelTimeInSeconds;
 
     /*
-     * Estimated fuel consumption in liters using the Combustion Consumption Model. Included if vehicleEngineType is set to _combustion_ and constantSpeedConsumptionInLitersPerHundredkm is specified. The value will be non-negative.
+     * Estimated fuel consumption in liters using the Combustion Consumption Model. Included if vehicleEngineType is set
+     * to _combustion_ and constantSpeedConsumptionInLitersPerHundredkm is specified. The value will be non-negative.
      */
+    @Generated
     private Double fuelConsumptionInLiters;
 
     /*
-     * Estimated electric energy consumption in kilowatt hours (kWh) using the Electric Consumption Model. Included if vehicleEngineType is set to electric and constantSpeedConsumptionInkWhPerHundredkm is specified. The value of batteryConsumptionInkWh includes the recuperated electric energy and can therefore be negative (which indicates gaining energy). If both maxChargeInkWh and currentChargeInkWh are specified, recuperation will be capped to ensure that the battery charge level never exceeds maxChargeInkWh. If neither maxChargeInkWh nor currentChargeInkWh are specified, unconstrained recuperation is assumed in the consumption calculation.
+     * Estimated electric energy consumption in kilowatt hours (kWh) using the Electric Consumption Model. Included if
+     * vehicleEngineType is set to electric and constantSpeedConsumptionInkWhPerHundredkm is specified. The value of
+     * batteryConsumptionInkWh includes the recuperated electric energy and can therefore be negative (which indicates
+     * gaining energy). If both maxChargeInkWh and currentChargeInkWh are specified, recuperation will be capped to
+     * ensure that the battery charge level never exceeds maxChargeInkWh. If neither maxChargeInkWh nor
+     * currentChargeInkWh are specified, unconstrained recuperation is assumed in the consumption calculation.
      */
+    @Generated
     private Double batteryConsumptionInKwH;
 
     /**
      * Creates an instance of RouteLegSummary class.
      */
+    @Generated
     public RouteLegSummary() {
     }
 
@@ -78,6 +104,7 @@ public final class RouteLegSummary implements JsonSerializable<RouteLegSummary> 
      * 
      * @return the lengthInMeters value.
      */
+    @Generated
     public Integer getLengthInMeters() {
         return this.lengthInMeters;
     }
@@ -89,6 +116,7 @@ public final class RouteLegSummary implements JsonSerializable<RouteLegSummary> 
      * 
      * @return the travelTimeInSeconds value.
      */
+    @Generated
     public Integer getTravelTimeInSeconds() {
         return this.travelTimeInSeconds;
     }
@@ -101,6 +129,7 @@ public final class RouteLegSummary implements JsonSerializable<RouteLegSummary> 
      * 
      * @return the trafficDelayInSeconds value.
      */
+    @Generated
     public Integer getTrafficDelayInSeconds() {
         return this.trafficDelayInSeconds;
     }
@@ -110,6 +139,7 @@ public final class RouteLegSummary implements JsonSerializable<RouteLegSummary> 
      * 
      * @return the departureTime value.
      */
+    @Generated
     public OffsetDateTime getDepartureTime() {
         return this.departureTime;
     }
@@ -119,6 +149,7 @@ public final class RouteLegSummary implements JsonSerializable<RouteLegSummary> 
      * 
      * @return the arrivalTime value.
      */
+    @Generated
     public OffsetDateTime getArrivalTime() {
         return this.arrivalTime;
     }
@@ -130,6 +161,7 @@ public final class RouteLegSummary implements JsonSerializable<RouteLegSummary> 
      * 
      * @return the noTrafficTravelTimeInSeconds value.
      */
+    @Generated
     public Integer getNoTrafficTravelTimeInSeconds() {
         return this.noTrafficTravelTimeInSeconds;
     }
@@ -140,6 +172,7 @@ public final class RouteLegSummary implements JsonSerializable<RouteLegSummary> 
      * 
      * @return the historicTrafficTravelTimeInSeconds value.
      */
+    @Generated
     public Integer getHistoricTrafficTravelTimeInSeconds() {
         return this.historicTrafficTravelTimeInSeconds;
     }
@@ -150,6 +183,7 @@ public final class RouteLegSummary implements JsonSerializable<RouteLegSummary> 
      * 
      * @return the liveTrafficIncidentsTravelTimeInSeconds value.
      */
+    @Generated
     public Integer getLiveTrafficIncidentsTravelTimeInSeconds() {
         return this.liveTrafficIncidentsTravelTimeInSeconds;
     }
@@ -161,6 +195,7 @@ public final class RouteLegSummary implements JsonSerializable<RouteLegSummary> 
      * 
      * @return the fuelConsumptionInLiters value.
      */
+    @Generated
     public Double getFuelConsumptionInLiters() {
         return this.fuelConsumptionInLiters;
     }
@@ -176,6 +211,7 @@ public final class RouteLegSummary implements JsonSerializable<RouteLegSummary> 
      * 
      * @return the batteryConsumptionInKwH value.
      */
+    @Generated
     public Double getBatteryConsumptionInKwH() {
         return this.batteryConsumptionInKwH;
     }
@@ -183,6 +219,7 @@ public final class RouteLegSummary implements JsonSerializable<RouteLegSummary> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -197,6 +234,7 @@ public final class RouteLegSummary implements JsonSerializable<RouteLegSummary> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteLegSummary.
      */
+    @Generated
     public static RouteLegSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteLegSummary deserializedRouteLegSummary = new RouteLegSummary();
@@ -211,11 +249,11 @@ public final class RouteLegSummary implements JsonSerializable<RouteLegSummary> 
                 } else if ("trafficDelayInSeconds".equals(fieldName)) {
                     deserializedRouteLegSummary.trafficDelayInSeconds = reader.getNullable(JsonReader::getInt);
                 } else if ("departureTime".equals(fieldName)) {
-                    deserializedRouteLegSummary.departureTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedRouteLegSummary.departureTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("arrivalTime".equals(fieldName)) {
-                    deserializedRouteLegSummary.arrivalTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedRouteLegSummary.arrivalTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("noTrafficTravelTimeInSeconds".equals(fieldName)) {
                     deserializedRouteLegSummary.noTrafficTravelTimeInSeconds = reader.getNullable(JsonReader::getInt);
                 } else if ("historicTrafficTravelTimeInSeconds".equals(fieldName)) {

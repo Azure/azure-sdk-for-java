@@ -5,6 +5,7 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class GeocodingResponse implements JsonSerializable<GeocodingRespon
     /*
      * The type of a FeatureCollection object must be FeatureCollection.
      */
+    @Generated
     private FeatureCollectionEnum type;
 
     /*
      * The features property.
      */
+    @Generated
     private List<FeaturesItem> features;
 
     /*
      * The is the link to the next page of the features returned. If it's the last page, no this field.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of GeocodingResponse class.
      */
+    @Generated
     public GeocodingResponse() {
     }
 
@@ -44,6 +49,7 @@ public final class GeocodingResponse implements JsonSerializable<GeocodingRespon
      * 
      * @return the type value.
      */
+    @Generated
     public FeatureCollectionEnum getType() {
         return this.type;
     }
@@ -54,6 +60,7 @@ public final class GeocodingResponse implements JsonSerializable<GeocodingRespon
      * @param type the type value to set.
      * @return the GeocodingResponse object itself.
      */
+    @Generated
     public GeocodingResponse setType(FeatureCollectionEnum type) {
         this.type = type;
         return this;
@@ -64,6 +71,7 @@ public final class GeocodingResponse implements JsonSerializable<GeocodingRespon
      * 
      * @return the features value.
      */
+    @Generated
     public List<FeaturesItem> getFeatures() {
         return this.features;
     }
@@ -74,6 +82,7 @@ public final class GeocodingResponse implements JsonSerializable<GeocodingRespon
      * @param features the features value to set.
      * @return the GeocodingResponse object itself.
      */
+    @Generated
     public GeocodingResponse setFeatures(List<FeaturesItem> features) {
         this.features = features;
         return this;
@@ -85,6 +94,7 @@ public final class GeocodingResponse implements JsonSerializable<GeocodingRespon
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -96,6 +106,7 @@ public final class GeocodingResponse implements JsonSerializable<GeocodingRespon
      * @param nextLink the nextLink value to set.
      * @return the GeocodingResponse object itself.
      */
+    @Generated
     public GeocodingResponse setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -104,6 +115,7 @@ public final class GeocodingResponse implements JsonSerializable<GeocodingRespon
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -121,6 +133,7 @@ public final class GeocodingResponse implements JsonSerializable<GeocodingRespon
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the GeocodingResponse.
      */
+    @Generated
     public static GeocodingResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeocodingResponse deserializedGeocodingResponse = new GeocodingResponse();

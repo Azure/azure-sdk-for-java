@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,6 +23,7 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
     /*
      * Name of the index, for example, "Construction", "Outdoor Activity", "Flight Delays".
      */
+    @Generated
     private String indexName;
 
     /*
@@ -29,11 +31,13 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
      * Maps](/azure/azure-maps/weather-services-concepts#daily-index-range-sets) for details and to see the supported
      * index IDs. For example, the index ID can support UI visualization scenarios.
      */
+    @Generated
     private Integer indexId;
 
     /*
      * Date and time of the current observation displayed in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00.
      */
+    @Generated
     private OffsetDateTime dateTime;
 
     /*
@@ -41,12 +45,14 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
      * Maps](/azure/azure-maps/weather-services-concepts#daily-index-range-sets) for details and to see the supported
      * ranges.
      */
+    @Generated
     private Float value;
 
     /*
      * Textual description for `categoryValue` corresponding to the level that the index value falls under, for example
      * "Very Good".
      */
+    @Generated
     private String categoryDescription;
 
     /*
@@ -54,6 +60,7 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
      * used in combination with the `ascending` flag because it can differ among indices. For example, the following
      * values apply for Mosquito Activity: Low=1, Moderate=2, High=3, Very High=4, and Extreme=5.
      */
+    @Generated
     private Integer categoryValue;
 
     /*
@@ -61,6 +68,7 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
      * value is 0 and the best index value is 10. When set to `true`, the poorest index value is 10 and the best index
      * value is 0.
      */
+    @Generated
     private Boolean isAscending;
 
     /*
@@ -68,11 +76,13 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
      * example, when the index value for Flight Delays is very good, the description will be
      * "Conditions are excellent for flying!".
      */
+    @Generated
     private String description;
 
     /**
      * Set default DailyIndex constructor to private
      */
+    @Generated
     private DailyIndex() {
     }
 
@@ -81,6 +91,7 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
      *
      * @return the indexName value.
      */
+    @Generated
     public String getIndexName() {
         return this.indexName;
     }
@@ -92,6 +103,7 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
      *
      * @return the indexId value.
      */
+    @Generated
     public Integer getIndexId() {
         return this.indexId;
     }
@@ -102,6 +114,7 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
      *
      * @return the dateTime value.
      */
+    @Generated
     public OffsetDateTime getDateTime() {
         return this.dateTime;
     }
@@ -113,6 +126,7 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
      *
      * @return the value value.
      */
+    @Generated
     public Float getValue() {
         return this.value;
     }
@@ -123,6 +137,7 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
      *
      * @return the categoryDescription value.
      */
+    @Generated
     public String getCategoryDescription() {
         return this.categoryDescription;
     }
@@ -135,6 +150,7 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
      *
      * @return the categoryValue value.
      */
+    @Generated
     public Integer getCategoryValue() {
         return this.categoryValue;
     }
@@ -146,6 +162,7 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
      *
      * @return the isAscending value.
      */
+    @Generated
     public Boolean isAscending() {
         return this.isAscending;
     }
@@ -157,6 +174,7 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
      *
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -164,6 +182,7 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -187,6 +206,7 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the DailyIndex.
      */
+    @Generated
     public static DailyIndex fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DailyIndex deserializedDailyIndex = new DailyIndex();

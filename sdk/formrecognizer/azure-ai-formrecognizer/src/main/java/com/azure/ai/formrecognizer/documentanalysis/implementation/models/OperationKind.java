@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class OperationKind extends ExpandableStringEnum<OperationKind> {
     /**
      * Build a new custom document model.
      */
+    @Generated
     public static final OperationKind DOCUMENT_MODEL_BUILD = fromString("documentModelBuild");
 
     /**
      * Compose a new custom document model from existing models.
      */
+    @Generated
     public static final OperationKind DOCUMENT_MODEL_COMPOSE = fromString("documentModelCompose");
 
     /**
      * Copy an existing document model to potentially a different resource, region, or subscription.
      */
+    @Generated
     public static final OperationKind DOCUMENT_MODEL_COPY_TO = fromString("documentModelCopyTo");
 
     /**
      * Build a new custom classifier model.
      */
+    @Generated
     public static final OperationKind DOCUMENT_CLASSIFIER_BUILD = fromString("documentClassifierBuild");
 
     /**
@@ -36,6 +41,7 @@ public final class OperationKind extends ExpandableStringEnum<OperationKind> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OperationKind() {
     }
@@ -46,6 +52,7 @@ public final class OperationKind extends ExpandableStringEnum<OperationKind> {
      * @param name a name to look for.
      * @return the corresponding OperationKind.
      */
+    @Generated
     public static OperationKind fromString(String name) {
         return fromString(name, OperationKind.class);
     }
@@ -55,6 +62,7 @@ public final class OperationKind extends ExpandableStringEnum<OperationKind> {
      * 
      * @return known OperationKind values.
      */
+    @Generated
     public static Collection<OperationKind> values() {
         return values(OperationKind.class);
     }

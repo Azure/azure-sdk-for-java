@@ -5,6 +5,7 @@
 package com.azure.maps.route.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,18 +18,23 @@ import java.io.IOException;
 @Fluent
 public final class RouteMatrixQueryPrivate implements JsonSerializable<RouteMatrixQueryPrivate> {
     /*
-     * A valid `GeoJSON MultiPoint` geometry type. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.3) for details.
+     * A valid `GeoJSON MultiPoint` geometry type. Please refer to [RFC
+     * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.3) for details.
      */
+    @Generated
     private GeoJsonMultiPoint origins;
 
     /*
-     * A valid `GeoJSON MultiPoint` geometry type. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.3) for details.
+     * A valid `GeoJSON MultiPoint` geometry type. Please refer to [RFC
+     * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.3) for details.
      */
+    @Generated
     private GeoJsonMultiPoint destinations;
 
     /**
      * Creates an instance of RouteMatrixQueryPrivate class.
      */
+    @Generated
     public RouteMatrixQueryPrivate() {
     }
 
@@ -38,6 +44,7 @@ public final class RouteMatrixQueryPrivate implements JsonSerializable<RouteMatr
      * 
      * @return the origins value.
      */
+    @Generated
     public GeoJsonMultiPoint getOrigins() {
         return this.origins;
     }
@@ -49,6 +56,7 @@ public final class RouteMatrixQueryPrivate implements JsonSerializable<RouteMatr
      * @param origins the origins value to set.
      * @return the RouteMatrixQueryPrivate object itself.
      */
+    @Generated
     public RouteMatrixQueryPrivate setOrigins(GeoJsonMultiPoint origins) {
         this.origins = origins;
         return this;
@@ -60,6 +68,7 @@ public final class RouteMatrixQueryPrivate implements JsonSerializable<RouteMatr
      * 
      * @return the destinations value.
      */
+    @Generated
     public GeoJsonMultiPoint getDestinations() {
         return this.destinations;
     }
@@ -71,6 +80,7 @@ public final class RouteMatrixQueryPrivate implements JsonSerializable<RouteMatr
      * @param destinations the destinations value to set.
      * @return the RouteMatrixQueryPrivate object itself.
      */
+    @Generated
     public RouteMatrixQueryPrivate setDestinations(GeoJsonMultiPoint destinations) {
         this.destinations = destinations;
         return this;
@@ -79,6 +89,7 @@ public final class RouteMatrixQueryPrivate implements JsonSerializable<RouteMatr
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,6 +106,7 @@ public final class RouteMatrixQueryPrivate implements JsonSerializable<RouteMatr
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteMatrixQueryPrivate.
      */
+    @Generated
     public static RouteMatrixQueryPrivate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteMatrixQueryPrivate deserializedRouteMatrixQueryPrivate = new RouteMatrixQueryPrivate();

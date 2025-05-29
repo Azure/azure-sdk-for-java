@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,31 +23,37 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
     /*
      * List of the documents used to train the model and any errors reported in each document.
      */
+    @Generated
     private List<TrainingDocumentInfo> trainingDocuments;
 
     /*
      * List of fields used to train the model and the train operation error reported by each.
      */
+    @Generated
     private List<FormFieldsReport> fields;
 
     /*
      * Average accuracy.
      */
+    @Generated
     private Float averageModelAccuracy;
 
     /*
      * Model identifier.
      */
+    @Generated
     private UUID modelId;
 
     /*
      * Errors returned during the training operation.
      */
+    @Generated
     private List<ErrorInformation> errors;
 
     /**
      * Creates an instance of TrainResult class.
      */
+    @Generated
     public TrainResult() {
     }
 
@@ -56,6 +63,7 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
      * 
      * @return the trainingDocuments value.
      */
+    @Generated
     public List<TrainingDocumentInfo> getTrainingDocuments() {
         return this.trainingDocuments;
     }
@@ -67,6 +75,7 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
      * @param trainingDocuments the trainingDocuments value to set.
      * @return the TrainResult object itself.
      */
+    @Generated
     public TrainResult setTrainingDocuments(List<TrainingDocumentInfo> trainingDocuments) {
         this.trainingDocuments = trainingDocuments;
         return this;
@@ -77,6 +86,7 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
      * 
      * @return the fields value.
      */
+    @Generated
     public List<FormFieldsReport> getFields() {
         return this.fields;
     }
@@ -87,6 +97,7 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
      * @param fields the fields value to set.
      * @return the TrainResult object itself.
      */
+    @Generated
     public TrainResult setFields(List<FormFieldsReport> fields) {
         this.fields = fields;
         return this;
@@ -97,6 +108,7 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
      * 
      * @return the averageModelAccuracy value.
      */
+    @Generated
     public Float getAverageModelAccuracy() {
         return this.averageModelAccuracy;
     }
@@ -107,6 +119,7 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
      * @param averageModelAccuracy the averageModelAccuracy value to set.
      * @return the TrainResult object itself.
      */
+    @Generated
     public TrainResult setAverageModelAccuracy(Float averageModelAccuracy) {
         this.averageModelAccuracy = averageModelAccuracy;
         return this;
@@ -117,6 +130,7 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
      * 
      * @return the modelId value.
      */
+    @Generated
     public UUID getModelId() {
         return this.modelId;
     }
@@ -127,6 +141,7 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
      * @param modelId the modelId value to set.
      * @return the TrainResult object itself.
      */
+    @Generated
     public TrainResult setModelId(UUID modelId) {
         this.modelId = modelId;
         return this;
@@ -137,6 +152,7 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
      * 
      * @return the errors value.
      */
+    @Generated
     public List<ErrorInformation> getErrors() {
         return this.errors;
     }
@@ -147,6 +163,7 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
      * @param errors the errors value to set.
      * @return the TrainResult object itself.
      */
+    @Generated
     public TrainResult setErrors(List<ErrorInformation> errors) {
         this.errors = errors;
         return this;
@@ -155,6 +172,7 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -176,6 +194,7 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TrainResult.
      */
+    @Generated
     public static TrainResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TrainResult deserializedTrainResult = new TrainResult();

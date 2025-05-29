@@ -6,7 +6,6 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.body.MethodDeclaration;
 import org.slf4j.Logger;
 
 /**
@@ -30,18 +29,16 @@ public class DigitalTwinsCustomization extends Customization {
      * a second time, resulting in incorrect JSON being sent to the service, resulting in the operation failing.
      */
     private static void customizeQuerySpecification(ClassCustomization customization) {
-        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
-            MethodDeclaration toJsonMethod = clazz.getMethodsByName("toJson").get(0);
-            String toJsonMethodBodyString = toJsonMethod.getBody().get().toString();
-
-            // Replace 'jsonWriter.writeStringField("continuationToken", this.continuationToken)' with
-            // if (this.continuationToken != null) { jsonWriter.writeRawField("continuationToken", this.continuationToken); }
-            // to have the continuationToken written as raw JSON as needed by the service to prevent double
-            // stringify.
-            toJsonMethodBodyString = toJsonMethodBodyString.replace(
-                "jsonWriter.writeStringField(\"continuationToken\", this.continuationToken);",
-                "if (this.continuationToken != null) {jsonWriter.writeRawField(\"continuationToken\", this.continuationToken);}");
-            toJsonMethod.setBody(StaticJavaParser.parseBlock(toJsonMethodBodyString));
-        }));
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz ->
+            clazz.getMethodsByName("toJson").forEach(toJson -> toJson.getBody().ifPresent(body -> {
+                // Replace 'jsonWriter.writeStringField("continuationToken", this.continuationToken)' with
+                // if (this.continuationToken != null) { jsonWriter.writeRawField("continuationToken", this.continuationToken); }
+                // to have the continuationToken written as raw JSON as needed by the service to prevent double
+                // stringify.
+                String bodyString = body.toString()
+                    .replace("jsonWriter.writeStringField(\"continuationToken\", this.continuationToken);",
+                        "if (this.continuationToken != null) {jsonWriter.writeRawField(\"continuationToken\", this.continuationToken);}");
+                toJson.setBody(StaticJavaParser.parseBlock(bodyString));
+            }))));
     }
 }

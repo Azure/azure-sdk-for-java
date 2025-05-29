@@ -5,6 +5,7 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,46 +22,57 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
     /*
      * AddressLine that includes Street Name and Number
      */
+    @Generated
     private String addressLine;
 
     /*
      * locality property
      */
+    @Generated
     private String locality;
 
     /*
      * neighborhood property
      */
+    @Generated
     private String neighborhood;
 
     /*
-     * The subdivision name in the country or region for an address. This element is typically treated as the first order administrative subdivision, but in some cases it also contains the second, third, or fourth order subdivision in a country, dependency, or region.
+     * The subdivision name in the country or region for an address. This element is typically treated as the first
+     * order administrative subdivision, but in some cases it also contains the second, third, or fourth order
+     * subdivision in a country, dependency, or region.
      */
+    @Generated
     private List<MapsSearchAddressAdminDistrictsItem> adminDistricts;
 
     /*
      * Postal Code property
      */
+    @Generated
     private String postalCode;
 
     /*
      * The countryRegion property.
      */
+    @Generated
     private MapsSearchAddressCountryRegion countryRegion;
 
     /*
      * Formatted Address property
      */
+    @Generated
     private String formattedAddress;
 
     /*
      * The address of the result.
      */
+    @Generated
     private Intersection intersection;
 
     /**
      * Creates an instance of MapsSearchAddress class.
      */
+    @Generated
     public MapsSearchAddress() {
     }
 
@@ -69,6 +81,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * 
      * @return the addressLine value.
      */
+    @Generated
     public String getAddressLine() {
         return this.addressLine;
     }
@@ -79,6 +92,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * @param addressLine the addressLine value to set.
      * @return the MapsSearchAddress object itself.
      */
+    @Generated
     public MapsSearchAddress setAddressLine(String addressLine) {
         this.addressLine = addressLine;
         return this;
@@ -89,6 +103,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * 
      * @return the locality value.
      */
+    @Generated
     public String getLocality() {
         return this.locality;
     }
@@ -99,6 +114,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * @param locality the locality value to set.
      * @return the MapsSearchAddress object itself.
      */
+    @Generated
     public MapsSearchAddress setLocality(String locality) {
         this.locality = locality;
         return this;
@@ -109,6 +125,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * 
      * @return the neighborhood value.
      */
+    @Generated
     public String getNeighborhood() {
         return this.neighborhood;
     }
@@ -119,6 +136,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * @param neighborhood the neighborhood value to set.
      * @return the MapsSearchAddress object itself.
      */
+    @Generated
     public MapsSearchAddress setNeighborhood(String neighborhood) {
         this.neighborhood = neighborhood;
         return this;
@@ -131,6 +149,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * 
      * @return the adminDistricts value.
      */
+    @Generated
     public List<MapsSearchAddressAdminDistrictsItem> getAdminDistricts() {
         return this.adminDistricts;
     }
@@ -143,6 +162,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * @param adminDistricts the adminDistricts value to set.
      * @return the MapsSearchAddress object itself.
      */
+    @Generated
     public MapsSearchAddress setAdminDistricts(List<MapsSearchAddressAdminDistrictsItem> adminDistricts) {
         this.adminDistricts = adminDistricts;
         return this;
@@ -153,6 +173,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * 
      * @return the postalCode value.
      */
+    @Generated
     public String getPostalCode() {
         return this.postalCode;
     }
@@ -163,6 +184,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * @param postalCode the postalCode value to set.
      * @return the MapsSearchAddress object itself.
      */
+    @Generated
     public MapsSearchAddress setPostalCode(String postalCode) {
         this.postalCode = postalCode;
         return this;
@@ -173,6 +195,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * 
      * @return the countryRegion value.
      */
+    @Generated
     public MapsSearchAddressCountryRegion getCountryRegion() {
         return this.countryRegion;
     }
@@ -183,6 +206,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * @param countryRegion the countryRegion value to set.
      * @return the MapsSearchAddress object itself.
      */
+    @Generated
     public MapsSearchAddress setCountryRegion(MapsSearchAddressCountryRegion countryRegion) {
         this.countryRegion = countryRegion;
         return this;
@@ -193,6 +217,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * 
      * @return the formattedAddress value.
      */
+    @Generated
     public String getFormattedAddress() {
         return this.formattedAddress;
     }
@@ -203,6 +228,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * @param formattedAddress the formattedAddress value to set.
      * @return the MapsSearchAddress object itself.
      */
+    @Generated
     public MapsSearchAddress setFormattedAddress(String formattedAddress) {
         this.formattedAddress = formattedAddress;
         return this;
@@ -213,6 +239,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * 
      * @return the intersection value.
      */
+    @Generated
     public Intersection getIntersection() {
         return this.intersection;
     }
@@ -223,6 +250,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * @param intersection the intersection value to set.
      * @return the MapsSearchAddress object itself.
      */
+    @Generated
     public MapsSearchAddress setIntersection(Intersection intersection) {
         this.intersection = intersection;
         return this;
@@ -231,6 +259,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -254,6 +283,7 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MapsSearchAddress.
      */
+    @Generated
     public static MapsSearchAddress fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MapsSearchAddress deserializedMapsSearchAddress = new MapsSearchAddress();

@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class CustomDocumentModelsDetails implements JsonSerializable<Custo
     /*
      * Number of custom document models in the current resource.
      */
+    @Generated
     private final int count;
 
     /*
      * Maximum number of custom document models supported in the current resource.
      */
+    @Generated
     private final int limit;
 
     /**
@@ -34,6 +37,7 @@ public final class CustomDocumentModelsDetails implements JsonSerializable<Custo
      * @param count the count value to set.
      * @param limit the limit value to set.
      */
+    @Generated
     public CustomDocumentModelsDetails(int count, int limit) {
         this.count = count;
         this.limit = limit;
@@ -44,6 +48,7 @@ public final class CustomDocumentModelsDetails implements JsonSerializable<Custo
      * 
      * @return the count value.
      */
+    @Generated
     public int getCount() {
         return this.count;
     }
@@ -53,6 +58,7 @@ public final class CustomDocumentModelsDetails implements JsonSerializable<Custo
      * 
      * @return the limit value.
      */
+    @Generated
     public int getLimit() {
         return this.limit;
     }
@@ -60,6 +66,7 @@ public final class CustomDocumentModelsDetails implements JsonSerializable<Custo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -77,6 +84,7 @@ public final class CustomDocumentModelsDetails implements JsonSerializable<Custo
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomDocumentModelsDetails.
      */
+    @Generated
     public static CustomDocumentModelsDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean countFound = false;

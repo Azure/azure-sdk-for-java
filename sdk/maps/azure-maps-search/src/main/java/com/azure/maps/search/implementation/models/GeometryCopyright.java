@@ -5,6 +5,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class GeometryCopyright implements JsonSerializable<GeometryCopyrig
     /*
      * The name of the data provider
      */
+    @Generated
     private String sourceName;
 
     /*
      * The copyright string for the data provider
      */
+    @Generated
     private String copyright;
 
     /**
      * Creates an instance of GeometryCopyright class.
      */
+    @Generated
     public GeometryCopyright() {
     }
 
@@ -37,6 +41,7 @@ public final class GeometryCopyright implements JsonSerializable<GeometryCopyrig
      * 
      * @return the sourceName value.
      */
+    @Generated
     public String getSourceName() {
         return this.sourceName;
     }
@@ -47,6 +52,7 @@ public final class GeometryCopyright implements JsonSerializable<GeometryCopyrig
      * @param sourceName the sourceName value to set.
      * @return the GeometryCopyright object itself.
      */
+    @Generated
     public GeometryCopyright setSourceName(String sourceName) {
         this.sourceName = sourceName;
         return this;
@@ -57,6 +63,7 @@ public final class GeometryCopyright implements JsonSerializable<GeometryCopyrig
      * 
      * @return the copyright value.
      */
+    @Generated
     public String getCopyright() {
         return this.copyright;
     }
@@ -67,6 +74,7 @@ public final class GeometryCopyright implements JsonSerializable<GeometryCopyrig
      * @param copyright the copyright value to set.
      * @return the GeometryCopyright object itself.
      */
+    @Generated
     public GeometryCopyright setCopyright(String copyright) {
         this.copyright = copyright;
         return this;
@@ -75,6 +83,7 @@ public final class GeometryCopyright implements JsonSerializable<GeometryCopyrig
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class GeometryCopyright implements JsonSerializable<GeometryCopyrig
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the GeometryCopyright.
      */
+    @Generated
     public static GeometryCopyright fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeometryCopyright deserializedGeometryCopyright = new GeometryCopyright();

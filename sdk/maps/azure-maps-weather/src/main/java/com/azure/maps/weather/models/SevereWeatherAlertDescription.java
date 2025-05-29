@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class SevereWeatherAlertDescription implements JsonSerializable<Sev
      * Description of the alert in the specified language. By default English (en-US) is returned if the language
      * parameter is not specified in the request.
      */
+    @Generated
     private String description;
 
     /*
      * Description of the alert in English (en-US).
      */
+    @Generated
     private String status;
 
     /**
      * Set default SevereWeatherAlertDescription constructor to private
      */
+    @Generated
     private SevereWeatherAlertDescription() {
     }
 
@@ -39,6 +43,7 @@ public final class SevereWeatherAlertDescription implements JsonSerializable<Sev
      *
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -48,6 +53,7 @@ public final class SevereWeatherAlertDescription implements JsonSerializable<Sev
      *
      * @return the status value.
      */
+    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -55,6 +61,7 @@ public final class SevereWeatherAlertDescription implements JsonSerializable<Sev
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -71,6 +78,7 @@ public final class SevereWeatherAlertDescription implements JsonSerializable<Sev
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SevereWeatherAlertDescription.
      */
+    @Generated
     public static SevereWeatherAlertDescription fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SevereWeatherAlertDescription deserializedSevereWeatherAlertDescription

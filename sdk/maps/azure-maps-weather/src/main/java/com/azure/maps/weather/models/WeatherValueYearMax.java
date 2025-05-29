@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class WeatherValueYearMax implements JsonSerializable<WeatherValueY
     /*
      * Maximum temperature for the time period.
      */
+    @Generated
     private WeatherValueYear maximum;
 
     /**
      * Set default WeatherValueYearMax constructor to private
      */
+    @Generated
     private WeatherValueYearMax() {
     }
 
@@ -32,6 +35,7 @@ public final class WeatherValueYearMax implements JsonSerializable<WeatherValueY
      *
      * @return the maximum value.
      */
+    @Generated
     public WeatherValueYear getMaximum() {
         return this.maximum;
     }
@@ -39,6 +43,7 @@ public final class WeatherValueYearMax implements JsonSerializable<WeatherValueY
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -54,6 +59,7 @@ public final class WeatherValueYearMax implements JsonSerializable<WeatherValueY
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the WeatherValueYearMax.
      */
+    @Generated
     public static WeatherValueYearMax fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WeatherValueYearMax deserializedWeatherValueYearMax = new WeatherValueYearMax();

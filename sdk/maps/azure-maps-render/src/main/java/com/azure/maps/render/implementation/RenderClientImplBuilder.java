@@ -13,7 +13,6 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -23,8 +22,8 @@ import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -76,6 +75,22 @@ public final class RenderClientImplBuilder
     }
 
     /*
+     * The HTTP client used to send the request.
+     */
+    @Generated
+    private HttpClient httpClient;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public RenderClientImplBuilder httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through.
      */
     @Generated
@@ -91,22 +106,6 @@ public final class RenderClientImplBuilder
             LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
-     * The HTTP client used to send the request.
-     */
-    @Generated
-    private HttpClient httpClient;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public RenderClientImplBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
         return this;
     }
 
@@ -218,7 +217,8 @@ public final class RenderClientImplBuilder
     }
 
     /*
-     * The Accept header field can be used to specify preferences regarding response media types. Allowed media types include image/jpeg and image/png. Return image in image/png if Accept header is not specified.
+     * The Accept header field can be used to specify preferences regarding response media types. Allowed media types
+     * include image/jpeg and image/png. Return image in image/png if Accept header is not specified.
      */
     @Generated
     private MediaType accept;
@@ -237,7 +237,10 @@ public final class RenderClientImplBuilder
     }
 
     /*
-     * Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security model.  It represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management  plane Account API. To use Microsoft Entra ID security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
+     * Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security model. It
+     * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
+     * Account API. To use Microsoft Entra ID security in Azure Maps see the following
+     * [articles](https://aka.ms/amauthdetails) for guidance.
      */
     @Generated
     private String clientId;
@@ -336,6 +339,7 @@ public final class RenderClientImplBuilder
      */
     @Generated
     public RenderClientImpl buildClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://atlas.microsoft.com";
         String localApiVersion = (apiVersion != null) ? apiVersion : "2024-04-01";
@@ -344,6 +348,12 @@ public final class RenderClientImplBuilder
         RenderClientImpl client = new RenderClientImpl(localPipeline, localSerializerAdapter, this.accept,
             this.clientId, localHost, localApiVersion);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
     }
 
     @Generated
@@ -359,10 +369,8 @@ public final class RenderClientImplBuilder
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()

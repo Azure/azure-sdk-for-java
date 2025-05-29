@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,37 +22,44 @@ public final class DeleteJob implements JsonSerializable<DeleteJob> {
     /*
      * The identifier of the delete job.
      */
+    @Generated
     private String id;
 
     /*
      * Status of the job.
      */
+    @Generated
     private DeleteJobStatus status;
 
     /*
      * Start time of the job. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @Generated
     private OffsetDateTime createdDateTime;
 
     /*
      * End time of the job. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @Generated
     private OffsetDateTime finishedDateTime;
 
     /*
      * Time at which job will be purged by the service from the system. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @Generated
     private OffsetDateTime purgeDateTime;
 
     /*
      * Details of the error(s) that occurred executing the import job.
      */
+    @Generated
     private Error error;
 
     /**
      * Creates an instance of DeleteJob class.
      */
+    @Generated
     public DeleteJob() {
     }
 
@@ -60,6 +68,7 @@ public final class DeleteJob implements JsonSerializable<DeleteJob> {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -69,6 +78,7 @@ public final class DeleteJob implements JsonSerializable<DeleteJob> {
      * 
      * @return the status value.
      */
+    @Generated
     public DeleteJobStatus getStatus() {
         return this.status;
     }
@@ -79,6 +89,7 @@ public final class DeleteJob implements JsonSerializable<DeleteJob> {
      * 
      * @return the createdDateTime value.
      */
+    @Generated
     public OffsetDateTime getCreatedDateTime() {
         return this.createdDateTime;
     }
@@ -89,6 +100,7 @@ public final class DeleteJob implements JsonSerializable<DeleteJob> {
      * 
      * @return the finishedDateTime value.
      */
+    @Generated
     public OffsetDateTime getFinishedDateTime() {
         return this.finishedDateTime;
     }
@@ -99,6 +111,7 @@ public final class DeleteJob implements JsonSerializable<DeleteJob> {
      * 
      * @return the purgeDateTime value.
      */
+    @Generated
     public OffsetDateTime getPurgeDateTime() {
         return this.purgeDateTime;
     }
@@ -108,6 +121,7 @@ public final class DeleteJob implements JsonSerializable<DeleteJob> {
      * 
      * @return the error value.
      */
+    @Generated
     public Error getError() {
         return this.error;
     }
@@ -118,6 +132,7 @@ public final class DeleteJob implements JsonSerializable<DeleteJob> {
      * @param error the error value to set.
      * @return the DeleteJob object itself.
      */
+    @Generated
     public DeleteJob setError(Error error) {
         this.error = error;
         return this;
@@ -126,6 +141,7 @@ public final class DeleteJob implements JsonSerializable<DeleteJob> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -141,6 +157,7 @@ public final class DeleteJob implements JsonSerializable<DeleteJob> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the DeleteJob.
      */
+    @Generated
     public static DeleteJob fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeleteJob deserializedDeleteJob = new DeleteJob();

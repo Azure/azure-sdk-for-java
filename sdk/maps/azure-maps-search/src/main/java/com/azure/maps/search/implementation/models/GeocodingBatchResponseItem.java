@@ -5,6 +5,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,31 +22,37 @@ public final class GeocodingBatchResponseItem implements JsonSerializable<Geocod
     /*
      * id of the batchItem which would be the same as the id in the request
      */
+    @Generated
     private String optionalId;
 
     /*
      * The type of a FeatureCollection object must be FeatureCollection.
      */
+    @Generated
     private FeatureCollectionEnum type;
 
     /*
      * The features property.
      */
+    @Generated
     private List<FeaturesItem> features;
 
     /*
      * The is the link to the next page of the features returned. If it's the last page, no this field.
      */
+    @Generated
     private String nextLink;
 
     /*
      * The error detail.
      */
+    @Generated
     private ErrorDetail error;
 
     /**
      * Creates an instance of GeocodingBatchResponseItem class.
      */
+    @Generated
     public GeocodingBatchResponseItem() {
     }
 
@@ -54,6 +61,7 @@ public final class GeocodingBatchResponseItem implements JsonSerializable<Geocod
      * 
      * @return the optionalId value.
      */
+    @Generated
     public String getOptionalId() {
         return this.optionalId;
     }
@@ -64,6 +72,7 @@ public final class GeocodingBatchResponseItem implements JsonSerializable<Geocod
      * @param optionalId the optionalId value to set.
      * @return the GeocodingBatchResponseItem object itself.
      */
+    @Generated
     public GeocodingBatchResponseItem setOptionalId(String optionalId) {
         this.optionalId = optionalId;
         return this;
@@ -74,6 +83,7 @@ public final class GeocodingBatchResponseItem implements JsonSerializable<Geocod
      * 
      * @return the type value.
      */
+    @Generated
     public FeatureCollectionEnum getType() {
         return this.type;
     }
@@ -84,6 +94,7 @@ public final class GeocodingBatchResponseItem implements JsonSerializable<Geocod
      * @param type the type value to set.
      * @return the GeocodingBatchResponseItem object itself.
      */
+    @Generated
     public GeocodingBatchResponseItem setType(FeatureCollectionEnum type) {
         this.type = type;
         return this;
@@ -94,6 +105,7 @@ public final class GeocodingBatchResponseItem implements JsonSerializable<Geocod
      * 
      * @return the features value.
      */
+    @Generated
     public List<FeaturesItem> getFeatures() {
         return this.features;
     }
@@ -104,6 +116,7 @@ public final class GeocodingBatchResponseItem implements JsonSerializable<Geocod
      * @param features the features value to set.
      * @return the GeocodingBatchResponseItem object itself.
      */
+    @Generated
     public GeocodingBatchResponseItem setFeatures(List<FeaturesItem> features) {
         this.features = features;
         return this;
@@ -115,6 +128,7 @@ public final class GeocodingBatchResponseItem implements JsonSerializable<Geocod
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -126,6 +140,7 @@ public final class GeocodingBatchResponseItem implements JsonSerializable<Geocod
      * @param nextLink the nextLink value to set.
      * @return the GeocodingBatchResponseItem object itself.
      */
+    @Generated
     public GeocodingBatchResponseItem setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -136,6 +151,7 @@ public final class GeocodingBatchResponseItem implements JsonSerializable<Geocod
      * 
      * @return the error value.
      */
+    @Generated
     public ErrorDetail getError() {
         return this.error;
     }
@@ -146,6 +162,7 @@ public final class GeocodingBatchResponseItem implements JsonSerializable<Geocod
      * @param error the error value to set.
      * @return the GeocodingBatchResponseItem object itself.
      */
+    @Generated
     public GeocodingBatchResponseItem setError(ErrorDetail error) {
         this.error = error;
         return this;
@@ -154,6 +171,7 @@ public final class GeocodingBatchResponseItem implements JsonSerializable<Geocod
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -173,6 +191,7 @@ public final class GeocodingBatchResponseItem implements JsonSerializable<Geocod
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the GeocodingBatchResponseItem.
      */
+    @Generated
     public static GeocodingBatchResponseItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeocodingBatchResponseItem deserializedGeocodingBatchResponseItem = new GeocodingBatchResponseItem();
