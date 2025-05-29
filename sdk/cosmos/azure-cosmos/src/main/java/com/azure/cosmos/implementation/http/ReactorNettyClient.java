@@ -178,7 +178,11 @@ public class ReactorNettyClient implements HttpClient {
                     }
 
                     Map<String, ChannelHandler> dummy = channelPipeline.toMap();
+                    logger.info("====================================================================================");
+                    logger.info("HTTP HANDLERS: {}", this);
+                    logger.info("====================================================================================");
                     dummy.entrySet().forEach(entry -> logger.info("Http2Handler {}: {}", entry.getKey(), entry.getValue()));
+                    logger.info("====================================================================================");
                 }));
         }
     }
