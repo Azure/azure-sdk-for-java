@@ -2,12 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.Slf4jLoggingRegistryFactory;
-import io.micrometer.core.instrument.Metrics;
-import io.netty.util.internal.logging.Slf4JLoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.Http2AllocationStrategy;
 import reactor.netty.resources.ConnectionProvider;
