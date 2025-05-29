@@ -680,7 +680,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void embeddingsReturnSuccessfully(String apiType, String apiVersion, String testModel) {
-        OpenAIClientAsync client = createAsyncClient(apiType, apiVersion);
+        client = createAsyncClient(apiType, apiVersion);
 
         EmbeddingCreateParams createParams = EmbeddingCreateParams.builder()
             .input("The quick brown fox jumped over the lazy dog")
@@ -697,5 +697,25 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
         Embedding embedding = embeddings.get(0);
         assertNotNull(embedding.embedding(), "Embedding vector should not be null");
         assertFalse(embedding.embedding().isEmpty(), "Embedding vector should not be empty");
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    void streamingReturnSuccessfully(String apiType, String apiVersion, String testModel) {
+        client = createAsyncClient(apiType, apiVersion);
+
+        ResponseCreateParams createParams = ResponseCreateParams.builder()
+            .input("Tell me a short story about building the best SDK!")
+            .model(ChatModel.GPT_4O_MINI)
+            .build();
+
+        client.responses()
+            .createStreaming(createParams)
+            .subscribe(event -> event.outputTextDelta().ifPresent(textEvent -> {
+                assertNotNull(textEvent.delta(), "Text delta should not be null");
+                assertFalse(textEvent.delta().isEmpty(), "Text delta should not be empty");
+            }))
+            .onCompleteFuture()
+            .join();
     }
 }
