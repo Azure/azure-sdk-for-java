@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class MetricResultsResponse implements JsonSerializable<MetricResul
     /*
      * The collection of metric data responses per resource, per metric.
      */
+    @Generated
     private List<MetricResultsResponseValuesItem> values;
 
     /**
      * Creates an instance of MetricResultsResponse class.
      */
+    @Generated
     public MetricResultsResponse() {
     }
 
@@ -33,6 +36,7 @@ public final class MetricResultsResponse implements JsonSerializable<MetricResul
      * 
      * @return the values value.
      */
+    @Generated
     public List<MetricResultsResponseValuesItem> getValues() {
         return this.values;
     }
@@ -43,6 +47,7 @@ public final class MetricResultsResponse implements JsonSerializable<MetricResul
      * @param values the values value to set.
      * @return the MetricResultsResponse object itself.
      */
+    @Generated
     public MetricResultsResponse setValues(List<MetricResultsResponseValuesItem> values) {
         this.values = values;
         return this;
@@ -51,6 +56,7 @@ public final class MetricResultsResponse implements JsonSerializable<MetricResul
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,6 +72,7 @@ public final class MetricResultsResponse implements JsonSerializable<MetricResul
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetricResultsResponse.
      */
+    @Generated
     public static MetricResultsResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricResultsResponse deserializedMetricResultsResponse = new MetricResultsResponse();

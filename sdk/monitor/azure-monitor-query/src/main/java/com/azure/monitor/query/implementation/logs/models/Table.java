@@ -4,6 +4,7 @@
 
 package com.azure.monitor.query.implementation.logs.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,16 +24,19 @@ public final class Table implements JsonSerializable<Table> {
     /*
      * The name of the table.
      */
+    @Generated
     private final String name;
 
     /*
      * The list of columns in this table.
      */
+    @Generated
     private final List<Column> columns;
 
     /*
      * The resulting rows from this query.
      */
+    @Generated
     private final List<List<Object>> rows;
 
     /**
@@ -42,6 +46,7 @@ public final class Table implements JsonSerializable<Table> {
      * @param columns the columns value to set.
      * @param rows the rows value to set.
      */
+    @Generated
     public Table(String name, List<Column> columns, List<List<Object>> rows) {
         this.name = name;
         this.columns = columns;
@@ -53,6 +58,7 @@ public final class Table implements JsonSerializable<Table> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -62,6 +68,7 @@ public final class Table implements JsonSerializable<Table> {
      * 
      * @return the columns value.
      */
+    @Generated
     public List<Column> getColumns() {
         return this.columns;
     }
@@ -71,6 +78,7 @@ public final class Table implements JsonSerializable<Table> {
      * 
      * @return the rows value.
      */
+    @Generated
     public List<List<Object>> getRows() {
         return this.rows;
     }
@@ -78,6 +86,7 @@ public final class Table implements JsonSerializable<Table> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -97,6 +106,7 @@ public final class Table implements JsonSerializable<Table> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Table.
      */
+    @Generated
     public static Table fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

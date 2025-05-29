@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.metricsdefinitions.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class LocalizableString implements JsonSerializable<LocalizableStri
     /*
      * The invariant value.
      */
+    @Generated
     private final String value;
 
     /*
      * The display name.
      */
+    @Generated
     private String localizedValue;
 
     /**
@@ -31,6 +34,7 @@ public final class LocalizableString implements JsonSerializable<LocalizableStri
      * 
      * @param value the value value to set.
      */
+    @Generated
     public LocalizableString(String value) {
         this.value = value;
     }
@@ -40,6 +44,7 @@ public final class LocalizableString implements JsonSerializable<LocalizableStri
      * 
      * @return the value value.
      */
+    @Generated
     public String getValue() {
         return this.value;
     }
@@ -49,6 +54,7 @@ public final class LocalizableString implements JsonSerializable<LocalizableStri
      * 
      * @return the localizedValue value.
      */
+    @Generated
     public String getLocalizedValue() {
         return this.localizedValue;
     }
@@ -59,6 +65,7 @@ public final class LocalizableString implements JsonSerializable<LocalizableStri
      * @param localizedValue the localizedValue value to set.
      * @return the LocalizableString object itself.
      */
+    @Generated
     public LocalizableString setLocalizedValue(String localizedValue) {
         this.localizedValue = localizedValue;
         return this;
@@ -67,6 +74,7 @@ public final class LocalizableString implements JsonSerializable<LocalizableStri
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -84,6 +92,7 @@ public final class LocalizableString implements JsonSerializable<LocalizableStri
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LocalizableString.
      */
+    @Generated
     public static LocalizableString fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean valueFound = false;

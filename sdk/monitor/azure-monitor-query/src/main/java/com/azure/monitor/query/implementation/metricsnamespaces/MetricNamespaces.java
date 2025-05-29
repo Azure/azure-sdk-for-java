@@ -31,7 +31,7 @@ import reactor.core.publisher.Mono;
 /**
  * An instance of this class provides access to all the operations defined in MetricNamespaces.
  */
-public final class MetricNamespacesImpl {
+public final class MetricNamespaces {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -40,14 +40,14 @@ public final class MetricNamespacesImpl {
     /**
      * The service client containing this operation class.
      */
-    private final MetricsNamespacesClientImpl client;
+    private final MonitorManagementClient client;
 
     /**
      * Initializes an instance of MetricNamespaces.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    MetricNamespacesImpl(MetricsNamespacesClientImpl client) {
+    MetricNamespaces(MonitorManagementClient client) {
         this.service
             = RestProxy.create(MetricNamespacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -201,7 +201,7 @@ public final class MetricNamespacesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespace> list(String resourceUri, String startTime) {
-        return new PagedIterable<>(() -> listSinglePage(resourceUri, startTime, Context.NONE));
+        return new PagedIterable<>(() -> listSinglePage(resourceUri, startTime));
     }
 
     /**

@@ -4,6 +4,7 @@
 
 package com.azure.monitor.query.implementation.logs.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,6 +21,7 @@ public final class BatchRequest implements JsonSerializable<BatchRequest> {
     /*
      * An single request in a batch.
      */
+    @Generated
     private final List<BatchQueryRequest> requests;
 
     /**
@@ -27,6 +29,7 @@ public final class BatchRequest implements JsonSerializable<BatchRequest> {
      * 
      * @param requests the requests value to set.
      */
+    @Generated
     public BatchRequest(List<BatchQueryRequest> requests) {
         this.requests = requests;
     }
@@ -36,6 +39,7 @@ public final class BatchRequest implements JsonSerializable<BatchRequest> {
      * 
      * @return the requests value.
      */
+    @Generated
     public List<BatchQueryRequest> getRequests() {
         return this.requests;
     }
@@ -43,6 +47,7 @@ public final class BatchRequest implements JsonSerializable<BatchRequest> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -59,6 +64,7 @@ public final class BatchRequest implements JsonSerializable<BatchRequest> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchRequest.
      */
+    @Generated
     public static BatchRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean requestsFound = false;

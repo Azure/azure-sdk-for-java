@@ -14,7 +14,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 /**
  * Initializes a new instance of the AzureLogAnalytics type.
  */
-public final class AzureLogAnalyticsImpl {
+public final class AzureLogAnalytics {
     /**
      * server parameter.
      */
@@ -60,28 +60,28 @@ public final class AzureLogAnalyticsImpl {
     /**
      * The Queries object to access its operations.
      */
-    private final QueriesImpl queries;
+    private final Queries queries;
 
     /**
      * Gets the Queries object to access its operations.
      * 
      * @return the Queries object.
      */
-    public QueriesImpl getQueries() {
+    public Queries getQueries() {
         return this.queries;
     }
 
     /**
      * The Metadatas object to access its operations.
      */
-    private final MetadatasImpl metadatas;
+    private final Metadatas metadatas;
 
     /**
      * Gets the Metadatas object to access its operations.
      * 
      * @return the Metadatas object.
      */
-    public MetadatasImpl getMetadatas() {
+    public Metadatas getMetadatas() {
         return this.metadatas;
     }
 
@@ -90,7 +90,7 @@ public final class AzureLogAnalyticsImpl {
      * 
      * @param host server parameter.
      */
-    AzureLogAnalyticsImpl(String host) {
+    AzureLogAnalytics(String host) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), host);
     }
@@ -101,7 +101,7 @@ public final class AzureLogAnalyticsImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param host server parameter.
      */
-    AzureLogAnalyticsImpl(HttpPipeline httpPipeline, String host) {
+    AzureLogAnalytics(HttpPipeline httpPipeline, String host) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host);
     }
 
@@ -112,11 +112,11 @@ public final class AzureLogAnalyticsImpl {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param host server parameter.
      */
-    AzureLogAnalyticsImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host) {
+    AzureLogAnalytics(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.host = host;
-        this.queries = new QueriesImpl(this);
-        this.metadatas = new MetadatasImpl(this);
+        this.queries = new Queries(this);
+        this.metadatas = new Metadatas(this);
     }
 }

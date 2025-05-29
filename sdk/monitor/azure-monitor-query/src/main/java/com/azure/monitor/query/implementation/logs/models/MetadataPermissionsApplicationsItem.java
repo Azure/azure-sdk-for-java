@@ -4,6 +4,7 @@
 
 package com.azure.monitor.query.implementation.logs.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,6 +21,7 @@ public final class MetadataPermissionsApplicationsItem
     /*
      * The resource ID on the permission indication.
      */
+    @Generated
     private final String resourceId;
 
     /**
@@ -27,6 +29,7 @@ public final class MetadataPermissionsApplicationsItem
      * 
      * @param resourceId the resourceId value to set.
      */
+    @Generated
     public MetadataPermissionsApplicationsItem(String resourceId) {
         this.resourceId = resourceId;
     }
@@ -36,6 +39,7 @@ public final class MetadataPermissionsApplicationsItem
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String getResourceId() {
         return this.resourceId;
     }
@@ -43,6 +47,7 @@ public final class MetadataPermissionsApplicationsItem
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -59,6 +64,7 @@ public final class MetadataPermissionsApplicationsItem
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetadataPermissionsApplicationsItem.
      */
+    @Generated
     public static MetadataPermissionsApplicationsItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean resourceIdFound = false;

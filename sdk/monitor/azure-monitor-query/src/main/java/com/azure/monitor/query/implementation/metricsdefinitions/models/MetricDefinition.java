@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.metricsdefinitions.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,71 +21,85 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
     /*
      * Flag to indicate whether the dimension is required.
      */
+    @Generated
     private Boolean isDimensionRequired;
 
     /*
      * The resource identifier of the resource that emitted the metric.
      */
+    @Generated
     private String resourceId;
 
     /*
      * The namespace the metric belongs to.
      */
+    @Generated
     private String namespace;
 
     /*
      * The name and the display name of the metric, i.e. it is a localizable string.
      */
+    @Generated
     private LocalizableString name;
 
     /*
      * Detailed description of this metric.
      */
+    @Generated
     private String displayDescription;
 
     /*
      * Custom category name for this metric.
      */
+    @Generated
     private String category;
 
     /*
      * The class of the metric.
      */
+    @Generated
     private MetricClass metricClass;
 
     /*
      * The unit of the metric.
      */
+    @Generated
     private MetricUnit unit;
 
     /*
      * The primary aggregation type value defining how to use the values for display.
      */
+    @Generated
     private AggregationType primaryAggregationType;
 
     /*
      * The collection of what aggregation types are supported.
      */
+    @Generated
     private List<AggregationType> supportedAggregationTypes;
 
     /*
      * The collection of what aggregation intervals are available to be queried.
      */
+    @Generated
     private List<MetricAvailability> metricAvailabilities;
 
     /*
      * The resource identifier of the metric definition.
      */
+    @Generated
     private String id;
 
     /*
      * The name and the display name of the dimension, i.e. it is a localizable string.
      */
+    @Generated
     private List<LocalizableString> dimensions;
 
     /**
      * Creates an instance of MetricDefinition class.
      */
+    @Generated
     public MetricDefinition() {
     }
 
@@ -93,6 +108,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * 
      * @return the isDimensionRequired value.
      */
+    @Generated
     public Boolean isDimensionRequired() {
         return this.isDimensionRequired;
     }
@@ -103,6 +119,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @param isDimensionRequired the isDimensionRequired value to set.
      * @return the MetricDefinition object itself.
      */
+    @Generated
     public MetricDefinition setIsDimensionRequired(Boolean isDimensionRequired) {
         this.isDimensionRequired = isDimensionRequired;
         return this;
@@ -113,6 +130,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String getResourceId() {
         return this.resourceId;
     }
@@ -123,6 +141,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @param resourceId the resourceId value to set.
      * @return the MetricDefinition object itself.
      */
+    @Generated
     public MetricDefinition setResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
@@ -133,6 +152,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * 
      * @return the namespace value.
      */
+    @Generated
     public String getNamespace() {
         return this.namespace;
     }
@@ -143,6 +163,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @param namespace the namespace value to set.
      * @return the MetricDefinition object itself.
      */
+    @Generated
     public MetricDefinition setNamespace(String namespace) {
         this.namespace = namespace;
         return this;
@@ -153,6 +174,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * 
      * @return the name value.
      */
+    @Generated
     public LocalizableString getName() {
         return this.name;
     }
@@ -163,6 +185,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @param name the name value to set.
      * @return the MetricDefinition object itself.
      */
+    @Generated
     public MetricDefinition setName(LocalizableString name) {
         this.name = name;
         return this;
@@ -173,6 +196,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * 
      * @return the displayDescription value.
      */
+    @Generated
     public String getDisplayDescription() {
         return this.displayDescription;
     }
@@ -183,6 +207,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @param displayDescription the displayDescription value to set.
      * @return the MetricDefinition object itself.
      */
+    @Generated
     public MetricDefinition setDisplayDescription(String displayDescription) {
         this.displayDescription = displayDescription;
         return this;
@@ -193,6 +218,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * 
      * @return the category value.
      */
+    @Generated
     public String getCategory() {
         return this.category;
     }
@@ -203,6 +229,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @param category the category value to set.
      * @return the MetricDefinition object itself.
      */
+    @Generated
     public MetricDefinition setCategory(String category) {
         this.category = category;
         return this;
@@ -213,6 +240,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * 
      * @return the metricClass value.
      */
+    @Generated
     public MetricClass getMetricClass() {
         return this.metricClass;
     }
@@ -223,6 +251,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @param metricClass the metricClass value to set.
      * @return the MetricDefinition object itself.
      */
+    @Generated
     public MetricDefinition setMetricClass(MetricClass metricClass) {
         this.metricClass = metricClass;
         return this;
@@ -233,6 +262,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * 
      * @return the unit value.
      */
+    @Generated
     public MetricUnit getUnit() {
         return this.unit;
     }
@@ -243,6 +273,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @param unit the unit value to set.
      * @return the MetricDefinition object itself.
      */
+    @Generated
     public MetricDefinition setUnit(MetricUnit unit) {
         this.unit = unit;
         return this;
@@ -254,6 +285,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * 
      * @return the primaryAggregationType value.
      */
+    @Generated
     public AggregationType getPrimaryAggregationType() {
         return this.primaryAggregationType;
     }
@@ -265,6 +297,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @param primaryAggregationType the primaryAggregationType value to set.
      * @return the MetricDefinition object itself.
      */
+    @Generated
     public MetricDefinition setPrimaryAggregationType(AggregationType primaryAggregationType) {
         this.primaryAggregationType = primaryAggregationType;
         return this;
@@ -275,6 +308,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * 
      * @return the supportedAggregationTypes value.
      */
+    @Generated
     public List<AggregationType> getSupportedAggregationTypes() {
         return this.supportedAggregationTypes;
     }
@@ -285,6 +319,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @param supportedAggregationTypes the supportedAggregationTypes value to set.
      * @return the MetricDefinition object itself.
      */
+    @Generated
     public MetricDefinition setSupportedAggregationTypes(List<AggregationType> supportedAggregationTypes) {
         this.supportedAggregationTypes = supportedAggregationTypes;
         return this;
@@ -295,6 +330,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * 
      * @return the metricAvailabilities value.
      */
+    @Generated
     public List<MetricAvailability> getMetricAvailabilities() {
         return this.metricAvailabilities;
     }
@@ -305,6 +341,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @param metricAvailabilities the metricAvailabilities value to set.
      * @return the MetricDefinition object itself.
      */
+    @Generated
     public MetricDefinition setMetricAvailabilities(List<MetricAvailability> metricAvailabilities) {
         this.metricAvailabilities = metricAvailabilities;
         return this;
@@ -315,6 +352,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -325,6 +363,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @param id the id value to set.
      * @return the MetricDefinition object itself.
      */
+    @Generated
     public MetricDefinition setId(String id) {
         this.id = id;
         return this;
@@ -335,6 +374,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * 
      * @return the dimensions value.
      */
+    @Generated
     public List<LocalizableString> getDimensions() {
         return this.dimensions;
     }
@@ -345,6 +385,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @param dimensions the dimensions value to set.
      * @return the MetricDefinition object itself.
      */
+    @Generated
     public MetricDefinition setDimensions(List<LocalizableString> dimensions) {
         this.dimensions = dimensions;
         return this;
@@ -353,6 +394,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -383,6 +425,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetricDefinition.
      */
+    @Generated
     public static MetricDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricDefinition deserializedMetricDefinition = new MetricDefinition();

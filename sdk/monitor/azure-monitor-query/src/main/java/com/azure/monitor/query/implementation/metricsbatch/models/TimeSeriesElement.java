@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,17 +21,20 @@ public final class TimeSeriesElement implements JsonSerializable<TimeSeriesEleme
     /*
      * The metadata values returned if $filter was specified in the call.
      */
+    @Generated
     private List<MetadataValue> metadatavalues;
 
     /*
      * An array of data points representing the metric values. This is only returned if a result type of data is
      * specified.
      */
+    @Generated
     private List<MetricValue> data;
 
     /**
      * Creates an instance of TimeSeriesElement class.
      */
+    @Generated
     public TimeSeriesElement() {
     }
 
@@ -39,6 +43,7 @@ public final class TimeSeriesElement implements JsonSerializable<TimeSeriesEleme
      * 
      * @return the metadatavalues value.
      */
+    @Generated
     public List<MetadataValue> getMetadatavalues() {
         return this.metadatavalues;
     }
@@ -49,6 +54,7 @@ public final class TimeSeriesElement implements JsonSerializable<TimeSeriesEleme
      * @param metadatavalues the metadatavalues value to set.
      * @return the TimeSeriesElement object itself.
      */
+    @Generated
     public TimeSeriesElement setMetadatavalues(List<MetadataValue> metadatavalues) {
         this.metadatavalues = metadatavalues;
         return this;
@@ -60,6 +66,7 @@ public final class TimeSeriesElement implements JsonSerializable<TimeSeriesEleme
      * 
      * @return the data value.
      */
+    @Generated
     public List<MetricValue> getData() {
         return this.data;
     }
@@ -71,6 +78,7 @@ public final class TimeSeriesElement implements JsonSerializable<TimeSeriesEleme
      * @param data the data value to set.
      * @return the TimeSeriesElement object itself.
      */
+    @Generated
     public TimeSeriesElement setData(List<MetricValue> data) {
         this.data = data;
         return this;
@@ -79,6 +87,7 @@ public final class TimeSeriesElement implements JsonSerializable<TimeSeriesEleme
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +105,7 @@ public final class TimeSeriesElement implements JsonSerializable<TimeSeriesEleme
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the TimeSeriesElement.
      */
+    @Generated
     public static TimeSeriesElement fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TimeSeriesElement deserializedTimeSeriesElement = new TimeSeriesElement();

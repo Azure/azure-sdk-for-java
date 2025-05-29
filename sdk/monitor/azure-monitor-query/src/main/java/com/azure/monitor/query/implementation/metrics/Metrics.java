@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 /**
  * An instance of this class provides access to all the operations defined in Metrics.
  */
-public final class MetricsImpl {
+public final class Metrics {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -42,14 +42,14 @@ public final class MetricsImpl {
     /**
      * The service client containing this operation class.
      */
-    private final MonitorManagementClientImpl client;
+    private final AzureMonitorMetricsDataAPI client;
 
     /**
      * Initializes an instance of Metrics.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    MetricsImpl(MonitorManagementClientImpl client) {
+    Metrics(AzureMonitorMetricsDataAPI client) {
         this.service = RestProxy.create(MetricsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
