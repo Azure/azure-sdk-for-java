@@ -4,6 +4,7 @@
 
 package com.azure.ai.personalizer.administration.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -21,16 +22,19 @@ public class PersonalizerDateRange implements JsonSerializable<PersonalizerDateR
     /*
      * Start date for the range.
      */
+    @Generated
     private OffsetDateTime from;
 
     /*
      * End date for the range.
      */
+    @Generated
     private OffsetDateTime to;
 
     /**
      * Creates an instance of PersonalizerDateRange class.
      */
+    @Generated
     public PersonalizerDateRange() {
     }
 
@@ -39,6 +43,7 @@ public class PersonalizerDateRange implements JsonSerializable<PersonalizerDateR
      * 
      * @return the from value.
      */
+    @Generated
     public OffsetDateTime getFrom() {
         return this.from;
     }
@@ -49,6 +54,7 @@ public class PersonalizerDateRange implements JsonSerializable<PersonalizerDateR
      * @param from the from value to set.
      * @return the PersonalizerDateRange object itself.
      */
+    @Generated
     PersonalizerDateRange setFrom(OffsetDateTime from) {
         this.from = from;
         return this;
@@ -59,6 +65,7 @@ public class PersonalizerDateRange implements JsonSerializable<PersonalizerDateR
      * 
      * @return the to value.
      */
+    @Generated
     public OffsetDateTime getTo() {
         return this.to;
     }
@@ -69,6 +76,7 @@ public class PersonalizerDateRange implements JsonSerializable<PersonalizerDateR
      * @param to the to value to set.
      * @return the PersonalizerDateRange object itself.
      */
+    @Generated
     PersonalizerDateRange setTo(OffsetDateTime to) {
         this.to = to;
         return this;
@@ -77,6 +85,7 @@ public class PersonalizerDateRange implements JsonSerializable<PersonalizerDateR
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public class PersonalizerDateRange implements JsonSerializable<PersonalizerDateR
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PersonalizerDateRange.
      */
+    @Generated
     public static PersonalizerDateRange fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerDateRange deserializedPersonalizerDateRange = new PersonalizerDateRange();
