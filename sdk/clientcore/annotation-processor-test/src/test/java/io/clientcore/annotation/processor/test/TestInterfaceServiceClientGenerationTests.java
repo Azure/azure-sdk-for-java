@@ -358,7 +358,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final HttpBinJSON result
             = service.putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
 
-        assertEquals("", result.data());
+        assertEquals("\"\"", result.data());
     }
 
     @Test
@@ -441,7 +441,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final HttpBinJSON result
             = service.putWithHeaderApplicationJsonContentTypeAndStringBody(getServerUri(false), "");
 
-        assertEquals("", result.data());
+        assertEquals("\"\"", result.data());
     }
 
     @Test
@@ -452,7 +452,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final HttpBinJSON result = service
             .putWithHeaderApplicationJsonContentTypeAndStringBody(getServerUri(false), "soups and stuff");
 
-        assertEquals("soups and stuff", result.data());
+        assertEquals("\"soups and stuff\"", result.data());
     }
 
     @Test
@@ -474,8 +474,7 @@ public class TestInterfaceServiceClientGenerationTests {
 
         final HttpBinJSON result
             = service.putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), requestBody);
-        String expected = new String(requestBody, StandardCharsets.UTF_8);
-        assertEquals(expected, result.data());
+        assertEquals("\"AAECAwQ=\"", result.data());
     }
 
     @Test
@@ -519,8 +518,6 @@ public class TestInterfaceServiceClientGenerationTests {
         Response<HttpBinJSON> response
             = service.putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), null);
         assertNotNull(response);
-        assertEquals("application/octet-stream",
-            response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
 
         assertEquals("", response.getValue().data());
     }
@@ -580,7 +577,6 @@ public class TestInterfaceServiceClientGenerationTests {
         final Response<HttpBinJSON> response
             = service.putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), null);
         assertNotNull(response);
-        assertEquals("application/json", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
         assertEquals("", response.getValue().data());
     }
 
@@ -593,7 +589,7 @@ public class TestInterfaceServiceClientGenerationTests {
             = service.putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), "");
         assertNotNull(response);
         assertEquals("application/json", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
-        assertEquals("", response.getValue().data());
+        assertEquals("\"\"", response.getValue().data());
     }
 
     @Test
@@ -605,7 +601,7 @@ public class TestInterfaceServiceClientGenerationTests {
             .putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), "soups and stuff");
         assertNotNull(response);
         assertEquals("application/json", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
-        assertEquals("soups and stuff", response.getValue().data());
+        assertEquals("\"soups and stuff\"", response.getValue().data());
     }
 
     @Test
@@ -660,7 +656,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final HttpBinJSON result = service
             .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
 
-        assertEquals("", result.data());
+        assertEquals("\"\"", result.data());
     }
 
     @Test
@@ -671,7 +667,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final HttpBinJSON result = service.putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(
             getServerUri(false), new byte[] { 0, 1, 2, 3, 4 });
 
-        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
+        assertEquals("\"AAECAwQ=\"", result.data());
     }
 
     @Test

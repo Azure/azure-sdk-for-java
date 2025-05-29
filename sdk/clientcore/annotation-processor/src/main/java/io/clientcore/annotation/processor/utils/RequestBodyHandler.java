@@ -7,6 +7,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
@@ -29,12 +30,13 @@ public final class RequestBodyHandler {
      * Determines the content type if not explicitly set, and adds the appropriate request body statements.
      *
      * @param body The BlockStmt to which the statements are added.
-     * @param requestBody The request body context containing parameter type and content type.
+     * @param requestContext The request body context containing parameter type and content type.
      * @param processingEnv The processing environment providing utility methods for operating on program elements and types.
      * @return true if a serialization format is set and used in the request body, false otherwise.
      */
-    public static boolean configureRequestBody(BlockStmt body, HttpRequestContext.Body requestBody,
+    public static boolean configureRequestBody(BlockStmt body, HttpRequestContext requestContext,
         ProcessingEnvironment processingEnv) {
+        HttpRequestContext.Body requestBody = requestContext.getBody();
         if (requestBody == null) {
             return false;
         }
@@ -45,13 +47,17 @@ public final class RequestBodyHandler {
             setEmptyBody(body);
             return false;
         }
+        boolean isContentTypeSetInHeaders
+            = requestContext.getParameters().stream().anyMatch(p -> "contentType".equals(p.getName()));
 
         if (parameterType.getKind().isPrimitive()) {
             return addRequestBodyStatements(body, parameterType, requestBody.getParameterName(),
-                processingEnv.getElementUtils(), processingEnv.getTypeUtils());
+                processingEnv.getElementUtils(), processingEnv.getTypeUtils(), requestBody.getContentType(),
+                isContentTypeSetInHeaders);
         } else {
             addRequestBodyWithNullCheck(body, parameterType, requestBody.getParameterName(),
-                processingEnv.getElementUtils(), processingEnv.getTypeUtils());
+                processingEnv.getElementUtils(), processingEnv.getTypeUtils(), requestBody.getContentType(),
+                isContentTypeSetInHeaders);
             // serializationFormat could be set but not in scope to use for response body handling
             return false;
         }
@@ -211,30 +217,54 @@ public final class RequestBodyHandler {
     }
 
     private static void addRequestBodyWithNullCheck(BlockStmt body, TypeMirror parameterType, String parameterName,
-        Elements elementUtils, Types typeUtils) {
+        Elements elementUtils, Types typeUtils, String bodyContentType, boolean isContentTypeSetInHeaders) {
         body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
         body.tryAddImportToParentCompilationUnit(CoreUtils.class);
 
         BlockStmt ifBlock = new BlockStmt();
         IfStmt ifStatement = new IfStmt(StaticJavaParser.parseExpression(parameterName + " != null"), ifBlock, null);
 
-        addRequestBodyStatements(ifBlock, parameterType, parameterName, elementUtils, typeUtils);
+        addRequestBodyStatements(ifBlock, parameterType, parameterName, elementUtils, typeUtils, bodyContentType,
+            isContentTypeSetInHeaders);
         body.addStatement(ifStatement);
     }
 
     private static boolean addRequestBodyStatements(BlockStmt body, TypeMirror parameterType, String parameterName,
-        Elements elementUtils, Types typeUtils) {
-        if (RequestBodyHandler.isBinaryDataType(parameterType, elementUtils, typeUtils)) {
-            RequestBodyHandler.addBinaryDataRequestBody(body, parameterName);
-        } else if (RequestBodyHandler.isByteArray(parameterType)) {
-            RequestBodyHandler.addByteArrayRequestBody(body, parameterName);
-        } else if (RequestBodyHandler.isStringType(parameterType, elementUtils, typeUtils)) {
-            RequestBodyHandler.addStringRequestBody(body, parameterName);
-        } else if (RequestBodyHandler.isByteBufferType(parameterType, elementUtils, typeUtils)) {
-            RequestBodyHandler.addByteBufferRequestBody(body, parameterName);
+        Elements elementUtils, Types typeUtils, String bodyContentType, boolean isContentTypeSetInHeaders) {
+        if (isContentTypeSetInHeaders) {
+            body.addStatement(StaticJavaParser
+                .parseStatement("httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType);"));
         } else {
-            RequestBodyHandler.handleRequestBodySerialization(body, parameterName);
-            // return true as this is the only place where serialization statements are set
+            setContentTypeHeader(body, bodyContentType == null ? ContentType.APPLICATION_JSON : bodyContentType);
+        }
+        // Use content type to decide serialization
+        if (bodyContentType != null && bodyContentType.trim().equalsIgnoreCase(ContentType.APPLICATION_JSON)) {
+            handleRequestBodySerialization(body, parameterName);
+            return true;
+        }
+
+        if (handleTypeBasedRequestBody(body, parameterType, parameterName, elementUtils, typeUtils)) {
+            return false;
+        }
+
+        // If no specific type handling was done, default to serialization
+        handleRequestBodySerialization(body, parameterName);
+        return true;
+    }
+
+    private static boolean handleTypeBasedRequestBody(BlockStmt body, TypeMirror parameterType, String parameterName,
+        Elements elementUtils, Types typeUtils) {
+        if (isBinaryDataType(parameterType, elementUtils, typeUtils)) {
+            addBinaryDataRequestBody(body, parameterName);
+            return true;
+        } else if (isByteArray(parameterType)) {
+            addByteArrayRequestBody(body, parameterName);
+            return true;
+        } else if (isStringType(parameterType, elementUtils, typeUtils)) {
+            addStringRequestBody(body, parameterName);
+            return true;
+        } else if (isByteBufferType(parameterType, elementUtils, typeUtils)) {
+            addByteBufferRequestBody(body, parameterName);
             return true;
         }
         return false;

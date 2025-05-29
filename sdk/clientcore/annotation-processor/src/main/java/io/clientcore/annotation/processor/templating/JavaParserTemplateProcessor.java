@@ -48,6 +48,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.net.URI;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -255,28 +256,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         BlockStmt body = internalMethod.getBody().get();
 
         initializeHttpRequest(body, method);
-        setContentType(body, method);
-        boolean serializationFormatSet = RequestBodyHandler.configureRequestBody(body, method.getBody(), processingEnv);
+        boolean serializationFormatSet = RequestBodyHandler.configureRequestBody(body, method, processingEnv);
         addRequestContextToRequestIfPresent(body, method);
         finalizeHttpRequest(body, method.getMethodReturnType(), method, serializationFormatSet);
 
         internalMethod.setBody(body);
-    }
-
-    private void setContentType(BlockStmt body, HttpRequestContext method) {
-        final HttpRequestContext.Body requestBody = method.getBody();
-        if (requestBody == null || requestBody.getParameterType() == null) {
-            return;
-        }
-
-        boolean isContentTypeSetInHeaders
-            = method.getParameters().stream().anyMatch(p -> "contentType".equals(p.getName()));
-
-        // Header param to have precedence
-        if (!isContentTypeSetInHeaders) {
-            String contentType = requestBody.getContentType();
-            RequestBodyHandler.setContentTypeHeader(body, contentType);
-        }
     }
 
     private void writeFile(String packageName, String serviceInterfaceImplShortName,
@@ -457,6 +441,10 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             // Start building the header addition for the HttpRequest.
             StringBuilder addHeader = new StringBuilder();
 
+            String constantName = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerKey.toLowerCase(Locale.ROOT));
+            if ("CONTENT_TYPE".equals(constantName)) {
+                continue;
+            }
             if (headerValues.isEmpty()) {
                 // If headerValues is empty, skip adding this header.
                 continue;
@@ -485,6 +473,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                         // Dynamic header: use parameter name directly.
                         ifCheck = value + " != null";
                         valueExpression = value;
+                    } else if ("OffsetDateTime".equals(paramType)) {
+                        // Special case for OffsetDateTime, format it to ISO_INSTANT.
+                        body.tryAddImportToParentCompilationUnit(DateTimeFormatter.class);
+                        ifCheck = value + " != null";
+                        valueExpression = value + ".format(DateTimeFormatter.ISO_INSTANT)";
                     } else {
                         if (!paramOpt.get().getTypeMirror().getKind().isPrimitive()) {
                             ifCheck = value + " != null";
@@ -497,7 +490,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 }
             }
 
-            String constantName = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerKey.toLowerCase(Locale.ROOT));
             if (constantName != null) {
                 addHeader.append("httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.")
                     .append(constantName)
