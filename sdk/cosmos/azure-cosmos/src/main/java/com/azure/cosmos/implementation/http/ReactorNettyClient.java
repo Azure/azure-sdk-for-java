@@ -150,13 +150,13 @@ public class ReactorNettyClient implements HttpClient {
                     httpResponseDecoderSpec.maxInitialLineLength(this.httpClientConfig.getMaxInitialLineLength())
                         .maxHeaderSize(this.httpClientConfig.getMaxHeaderSize())
                         .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
-                        .validateHeaders(true));
+                        .validateHeaders(false));
 
         ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor =
             ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
         if (http2CfgAccessor.isEffectivelyEnabled(http2Cfg)) {
-            if (!Configs.shouldDisableCustomHttp2HeaderCleaner()) {
+            if (Configs.shouldDisableCustomHttp2HeaderCleaner()) {
                 this.httpClient = this.httpClient
                     .secure(sslContextSpec ->
                         sslContextSpec.sslContext(
