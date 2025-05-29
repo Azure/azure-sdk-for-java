@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Slf4jLoggingRegistryFactory;
 import com.azure.cosmos.implementation.UUIDs;
 import io.micrometer.core.instrument.Metrics;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
@@ -37,6 +38,7 @@ import java.lang.invoke.MethodType;
 import java.lang.invoke.WrongMethodTypeException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -174,6 +176,9 @@ public class ReactorNettyClient implements HttpClient {
                             "customHeaderCleaner",
                             new Http2ResponseHeaderCleanerHandler());
                     }
+
+                    Map<String, ChannelHandler> dummy = channelPipeline.toMap();
+                    dummy.entrySet().forEach(entry -> logger.info("Http2Handler {}: {}", entry.getKey(), entry.getValue()));
                 }));
         }
     }

@@ -713,7 +713,7 @@ abstract class AsyncBenchmark<T> {
             int previousLogCount = this.logCountInSamplingInterval.getAndIncrement();
 
             if (previousLogCount <= this.maxLogCount) {
-                logger.info("SHOULD LOG: {}, isThresholdViolated: {}, isCompleted: {}, isFailure: {}", shouldLog, diagnosticsContext.isThresholdViolated(true), diagnosticsContext.isCompleted(), diagnosticsContext.isFailure());
+                logger.info("SHOULD LOG: {}, isThresholdViolated: {}, isCompleted: {}, isFailure: {}", shouldLog, diagnosticsContext.isThresholdViolated(), diagnosticsContext.isCompleted(), diagnosticsContext.isFailure());
                 logger.info(
                     "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
                     diagnosticsContext.getAccountName(),
