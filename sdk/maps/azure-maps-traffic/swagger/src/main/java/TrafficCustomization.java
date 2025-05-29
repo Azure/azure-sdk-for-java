@@ -1,4 +1,3 @@
-import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
@@ -15,17 +14,11 @@ public class TrafficCustomization extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         PackageCustomization models = customization.getPackage("com.azure.maps.traffic.models");
 
-        // customize TrafficFlowSegmentDataFlowSegmentDataCoordinates
-        customizeTrafficFlowSegmentDataFlowSegmentDataCoordinates(models);
+        // customize TrafficFlowSegmentDataPropertiesCoordinates
+        customizeTrafficFlowSegmentDataPropertiesCoordinates(models);
 
         // customize TrafficIncidentViewport
         customizeTrafficIncidentViewport(models);
-
-        // customize TrafficIncidentViewportViewpResp
-        customizeTrafficIncidentViewportViewpResp(models);
-
-        // customize Point
-        customizePoint(models);
 
         // customize TrafficFlowSegmentData
         customizeTrafficFlowSegmentData(models);
@@ -33,45 +26,41 @@ public class TrafficCustomization extends Customization {
         // customize TrafficIncidentDetail
         customizeTrafficIncidentDetail(models);
 
-        // customize TrafficIncidentPointOfInterest
-        customizeTrafficIncidentPointOfInterest(models);
-
-        // customize TrafficState
-        customizeTrafficState(models);
-
-        // customize TrafficIncidentViewportResponse
-        customizeTrafficIncidentViewportResponse(models);
+        setConstructorPrivate(models, "MapsPoint", "TrafficIncidentPointOfInterest", "TrafficState",
+            "TrafficIncidentViewportResponse");
     }
 
-    // Customizes the TrafficFlowSegmentDataFlowSegmentDataCoordinates class
-    private void customizeTrafficFlowSegmentDataFlowSegmentDataCoordinates(PackageCustomization models) {
-        models.getClass("TrafficFlowSegmentDataFlowSegmentDataCoordinates").customizeAst(ast -> {
+    private static void setConstructorPrivate(PackageCustomization customization, String... classNames) {
+        for (String name : classNames) {
+            customization.getClass(name).customizeAst(ast -> ast.getClassByName(name).ifPresent(clazz ->
+                clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PRIVATE)
+                    .setJavadocComment("Set default constructor to private")));
+        }
+    }
+
+    // Customizes the TrafficFlowSegmentDataPropertiesCoordinates class
+    private void customizeTrafficFlowSegmentDataPropertiesCoordinates(PackageCustomization models) {
+        models.getClass("TrafficFlowSegmentDataPropertiesCoordinates").customizeAst(ast -> {
             ast.addImport("java.util.List");
             ast.addImport("java.util.stream.Collectors");
             ast.addImport("java.util.Arrays");
             ast.addImport("com.azure.core.models.GeoPosition");
 
-            ast.getClassByName("TrafficFlowSegmentDataFlowSegmentDataCoordinates").ifPresent(clazz -> {
-                clazz.getConstructors().get(0)
-                    .setModifiers(Modifier.Keyword.PRIVATE)
+            ast.getClassByName("TrafficFlowSegmentDataPropertiesCoordinates").ifPresent(clazz -> {
+                clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PRIVATE)
                     .setJavadocComment("Set default constructor to private");
 
                 clazz.getMethodsByName("getCoordinates").forEach(Node::remove);
 
                 clazz.addMethod("getCoordinates", Modifier.Keyword.PUBLIC)
                     .setType("List<GeoPosition>")
-                    .setBody(StaticJavaParser.parseBlock("{ return this.coordinates.stream()" +
-                        "       .map(item -> new GeoPosition(item.getLongitude(), item.getLatitude()))" +
-                        "       .collect(Collectors.toList()); }"))
+                    .setBody(StaticJavaParser.parseBlock("{ return this.coordinates.stream()"
+                        + ".map(item -> new GeoPosition(item.getLongitude(), item.getLatitude()))"
+                        + ".collect(Collectors.toList()); }"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("Return the coordinates"))
                         .addBlockTag("return", "Returns a list of {@link GeoPosition} coordinates."));
             });
         });
-
-        // Rename required as the class name is from handling an object definition within an object definition, so
-        // the rename directive doesn't work for this.
-        models.getClass("TrafficFlowSegmentDataFlowSegmentDataCoordinates")
-            .rename("TrafficFlowSegmentDataPropertiesCoordinates");
     }
 
     // Customizes the TrafficIncidentViewport class
@@ -82,22 +71,9 @@ public class TrafficCustomization extends Customization {
                     .setModifiers(Modifier.Keyword.PRIVATE)
                     .setJavadocComment("Set default constructor to private");
 
-                clazz.getMethodsByName("getViewpResp").get(0).setName("getViewportResponse");
+                clazz.getMethodsByName("getViewpResp").forEach(method -> method.setName("getViewportResponse"));
             }));
     }
-
-    // Customizes the TrafficIncidentViewportResponse class
-    private void customizeTrafficIncidentViewportViewpResp(PackageCustomization models) {
-        models.getClass("TrafficIncidentViewportViewpResp").rename("TrafficIncidentViewportResponse");
-    }
-
-     // Customizes the Point class
-     private void customizePoint(PackageCustomization models) {
-         models.getClass("MapsPoint").customizeAst(ast -> ast.getClassByName("MapsPoint").ifPresent(clazz ->
-             clazz.getConstructors().get(0)
-                 .setModifiers(Modifier.Keyword.PRIVATE)
-                 .setJavadocComment("Set default constructor to private")));
-     }
 
      // Customizes the TrafficFlowSegmentData class
      private void customizeTrafficFlowSegmentData(PackageCustomization models) {
@@ -110,13 +86,12 @@ public class TrafficCustomization extends Customization {
                  clazz.getMethodsByName("getFlowSegmentData").forEach(Node::remove);
                  clazz.addMethod("getFunctionalRoadClass", Modifier.Keyword.PUBLIC)
                      .setType("String")
-                        .setBody(StaticJavaParser.parseBlock("{ return this.flowSegmentData.getFunctionalRoadClass(); }"))
-                        .setJavadocComment(new Javadoc(JavadocDescription.parseText("Get the functionalRoadClass "
-                            + "property: Functional Road Class. This indicates the road type: 0: Motorway, freeway or "
-                            + "other major road. 1: Major road, less important than a motorway. 2: Other major road. "
-                            + "3: Secondary road. 4: Local connecting road. 5: Local road of high importance. "
-                            + "6: Local road."))
-                            .addBlockTag("return", "the functionalRoadClass value."));
+                     .setBody(StaticJavaParser.parseBlock("{ return this.flowSegmentData.getFunctionalRoadClass(); }"))
+                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("Get the functionalRoadClass "
+                         + "property: Functional Road Class. This indicates the road type: 0: Motorway, freeway or "
+                         + "other major road. 1: Major road, less important than a motorway. 2: Other major road. 3: "
+                         + "Secondary road. 4: Local connecting road. 5: Local road of high importance. 6: Local road."))
+                         .addBlockTag("return", "the functionalRoadClass value."));
 
                  clazz.addMethod("getCurrentSpeed", Modifier.Keyword.PUBLIC)
                      .setType("Integer")
@@ -201,41 +176,17 @@ public class TrafficCustomization extends Customization {
                  clazz.addMethod("getId", Modifier.Keyword.PUBLIC)
                      .setType("String")
                      .setBody(StaticJavaParser.parseBlock("{ return this.tm.getId(); }"))
-                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("Get the id property: ID of the traffic model for this incident."))
+                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("Get the id property: ID of the "
+                         + "traffic model for this incident."))
                          .addBlockTag("return", "the id value."));
 
                 clazz.addMethod("getPointsOfInterest", Modifier.Keyword.PUBLIC)
                     .setType("List<TrafficIncidentPointOfInterest>")
                     .setBody(StaticJavaParser.parseBlock("{ return this.tm.getPointsOfInterest(); }"))
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText("Get the pointsOfInterest property: A single traffic incident, or a cluster of traffic incidents."))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText("Get the pointsOfInterest property: A "
+                        + "single traffic incident, or a cluster of traffic incidents."))
                         .addBlockTag("return", "the pointsOfInterest value."));
              });
          });
-     }
-
-     // Customizes the TrafficIncidentPointOfInterest class
-     private void customizeTrafficIncidentPointOfInterest(PackageCustomization models) {
-         models.getClass("TrafficIncidentPointOfInterest").customizeAst(ast ->
-             ast.getClassByName("TrafficIncidentPointOfInterest").ifPresent(clazz ->
-                 clazz.getConstructors().get(0)
-                     .setModifiers(Modifier.Keyword.PRIVATE)
-                     .setJavadocComment("Set default constructor to private")));
-     }
-
-     // Customizes the TrafficState class
-     private void customizeTrafficState(PackageCustomization models) {
-         models.getClass("TrafficState").customizeAst(ast -> ast.getClassByName("TrafficState").ifPresent(clazz ->
-             clazz.getConstructors().get(0)
-                 .setModifiers(Modifier.Keyword.PRIVATE)
-                 .setJavadocComment("Set default constructor to private")));
-     }
-
-     // Customizes the TrafficIncidentViewport class
-     private void customizeTrafficIncidentViewportResponse(PackageCustomization models) {
-        models.getClass("TrafficIncidentViewportResponse").customizeAst(ast ->
-            ast.getClassByName("TrafficIncidentViewportResponse").ifPresent(clazz ->
-                clazz.getConstructors().get(0)
-                    .setModifiers(Modifier.Keyword.PRIVATE)
-                    .setJavadocComment("Set default constructor to private")));
      }
 }

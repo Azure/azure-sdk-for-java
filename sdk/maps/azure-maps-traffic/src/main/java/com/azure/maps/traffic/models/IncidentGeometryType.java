@@ -4,6 +4,7 @@
 
 package com.azure.maps.traffic.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class IncidentGeometryType extends ExpandableStringEnum<IncidentGeo
     /**
      * Places incidents precisely on the road.
      */
+    @Generated
     public static final IncidentGeometryType ORIGINAL = fromString("original");
 
     /**
      * Moves the incident slightly (depending on zoom level) to indicate specific road lanes.
      */
+    @Generated
     public static final IncidentGeometryType SHIFTED = fromString("shifted");
 
     /**
@@ -26,6 +29,7 @@ public final class IncidentGeometryType extends ExpandableStringEnum<IncidentGeo
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IncidentGeometryType() {
     }
@@ -36,6 +40,7 @@ public final class IncidentGeometryType extends ExpandableStringEnum<IncidentGeo
      * @param name a name to look for.
      * @return the corresponding IncidentGeometryType.
      */
+    @Generated
     public static IncidentGeometryType fromString(String name) {
         return fromString(name, IncidentGeometryType.class);
     }
@@ -45,6 +50,7 @@ public final class IncidentGeometryType extends ExpandableStringEnum<IncidentGeo
      * 
      * @return known IncidentGeometryType values.
      */
+    @Generated
     public static Collection<IncidentGeometryType> values() {
         return values(IncidentGeometryType.class);
     }
