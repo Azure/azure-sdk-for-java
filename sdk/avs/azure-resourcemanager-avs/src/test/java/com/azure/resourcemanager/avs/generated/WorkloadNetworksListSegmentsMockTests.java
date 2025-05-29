@@ -7,8 +7,8 @@ package com.azure.resourcemanager.avs.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegment;
@@ -22,22 +22,22 @@ public final class WorkloadNetworksListSegmentsMockTests {
     @Test
     public void testListSegments() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"hbragapyyr\",\"connectedGateway\":\"svbpavbopfppdbwn\",\"subnet\":{\"dhcpRanges\":[\"hxkumasjcaacfdmm\",\"pugmehqe\"],\"gatewayAddress\":\"u\"},\"portVif\":[{\"portName\":\"ehewhoqh\"}],\"status\":\"SUCCESS\",\"provisioningState\":\"Deleting\",\"revision\":4907564329393150795},\"id\":\"eaclgschorimk\",\"name\":\"srrm\",\"type\":\"ucsofldpuviyf\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"xj\",\"connectedGateway\":\"gcm\",\"subnet\":{\"dhcpRanges\":[\"hhhqxuwyv\",\"acoyvivbsizusjs\"],\"gatewayAddress\":\"bscm\"},\"portVif\":[{\"portName\":\"jiu\"},{\"portName\":\"hgm\"},{\"portName\":\"lnwyvqkxr\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Failed\",\"revision\":5119795222738778166},\"id\":\"yfw\",\"name\":\"zutgqztwhghmupg\",\"type\":\"yjtcdxabbujftab\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<WorkloadNetworkSegment> response
-            = manager.workloadNetworks().listSegments("xoy", "ukphaimmoiroq", com.azure.core.util.Context.NONE);
+            = manager.workloadNetworks().listSegments("jenkyh", "qzvs", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hbragapyyr", response.iterator().next().displayName());
-        Assertions.assertEquals("svbpavbopfppdbwn", response.iterator().next().connectedGateway());
-        Assertions.assertEquals("hxkumasjcaacfdmm", response.iterator().next().subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("u", response.iterator().next().subnet().gatewayAddress());
-        Assertions.assertEquals(4907564329393150795L, response.iterator().next().revision());
+        Assertions.assertEquals("xj", response.iterator().next().displayName());
+        Assertions.assertEquals("gcm", response.iterator().next().connectedGateway());
+        Assertions.assertEquals("hhhqxuwyv", response.iterator().next().subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("bscm", response.iterator().next().subnet().gatewayAddress());
+        Assertions.assertEquals(5119795222738778166L, response.iterator().next().revision());
     }
 }

@@ -68,6 +68,13 @@ public interface AvsClient {
     PrivateCloudsClient getPrivateClouds();
 
     /**
+     * Gets the SkusClient object to access its operations.
+     * 
+     * @return the SkusClient object.
+     */
+    SkusClient getSkus();
+
+    /**
      * Gets the AddonsClient object to access its operations.
      * 
      * @return the AddonsClient object.
@@ -103,6 +110,13 @@ public interface AvsClient {
     DatastoresClient getDatastores();
 
     /**
+     * Gets the HostsClient object to access its operations.
+     * 
+     * @return the HostsClient object.
+     */
+    HostsClient getHosts();
+
+    /**
      * Gets the PlacementPoliciesClient object to access its operations.
      * 
      * @return the PlacementPoliciesClient object.
@@ -136,6 +150,20 @@ public interface AvsClient {
      * @return the IscsiPathsClient object.
      */
     IscsiPathsClient getIscsiPaths();
+
+    /**
+     * Gets the ProvisionedNetworksClient object to access its operations.
+     * 
+     * @return the ProvisionedNetworksClient object.
+     */
+    ProvisionedNetworksClient getProvisionedNetworks();
+
+    /**
+     * Gets the PureStoragePoliciesClient object to access its operations.
+     * 
+     * @return the PureStoragePoliciesClient object.
+     */
+    PureStoragePoliciesClient getPureStoragePolicies();
 
     /**
      * Gets the ScriptExecutionsClient object to access its operations.

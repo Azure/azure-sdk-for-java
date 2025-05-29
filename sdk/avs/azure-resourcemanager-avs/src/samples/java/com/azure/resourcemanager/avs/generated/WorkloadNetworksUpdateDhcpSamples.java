@@ -13,7 +13,7 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpServer;
 public final class WorkloadNetworksUpdateDhcpSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateDhcp.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/WorkloadNetworks_UpdateDhcp.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateDhcp.
