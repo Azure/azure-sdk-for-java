@@ -14173,6 +14173,56 @@ public final class BatchAsyncClient {
     }
 
     /**
+     * Begins deleting a Job Schedule from the specified Account asynchronously, with support for optional parameters.
+     *
+     * When you delete a Job Schedule, this also deletes all Jobs and Tasks under that
+     * schedule. When Tasks are deleted, all the files in their working directories on
+     * the Compute Nodes are also deleted (the retention period is ignored). The Job
+     * Schedule statistics are no longer accessible once the Job Schedule is deleted,
+     * though they are still counted towards Account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to delete.
+     * @param options Optional parameters for Delete Job Schedule operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @return A {@link PollerFlux} that polls the deletion of the Job Schedule. The poller provides
+     * {@link BatchJobSchedule} instances during polling and returns {@code null} upon successful deletion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId,
+        BatchJobScheduleDeleteOptions options, RequestConditions requestConditions) {
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Boolean force = options == null ? null : options.isForce();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        JobScheduleDeletePollerAsync poller = new JobScheduleDeletePollerAsync(this, jobScheduleId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
+    }
+
+    /**
      * Gets information about the specified Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule to get.
