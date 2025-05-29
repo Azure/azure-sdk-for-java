@@ -114,7 +114,7 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
         doc.put("BranchName", this.branchName);
         doc.put("CommitId", this.commitId);
         doc.put("Concurrency", this.concurrency);
-        doc.put("CpuUsage", (cpuUsageSnapshot.get75thPercentile())/100d);
+        doc.put("CpuUsage", (cpuUsageSnapshot.get75thPercentile())/1000d);
         doc.put("SuccessRate", ((long)successSnapshot.get75thPercentile())/100d);
         doc.put("FailureRate", ((long)failureSnapshot.get75thPercentile())/100d);
         double p99 = new BigDecimal(Double.toString(p99LatencySnapshot.get75thPercentile()/100000000d))
@@ -149,7 +149,7 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
 
         double intervalInSeconds = Duration.between(lastRecorded, nowSnapshot).toMillis() / 1000;
         if (intervalInSeconds > 0) {
-            this.cpuUsage.update((long)(100d * cpuReader.getSystemWideCpuUsage()));
+            this.cpuUsage.update((long)(100000d * cpuReader.getSystemWideCpuUsage()));
 
             long successSnapshot = successMeter.getCount();
             long failureSnapshot = failureMeter.getCount();
