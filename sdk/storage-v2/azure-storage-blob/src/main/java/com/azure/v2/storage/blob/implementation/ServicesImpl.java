@@ -32,8 +32,8 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -44,7 +44,6 @@ import java.util.stream.Collectors;
  * An instance of this class provides access to all the operations defined in Services.
  */
 public final class ServicesImpl {
-    private static final ClientLogger LOGGER = new ClientLogger(ServicesImpl.class);
     /**
      * The proxy service used to perform REST calls.
      */
@@ -57,7 +56,7 @@ public final class ServicesImpl {
 
     /**
      * Initializes an instance of ServicesImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServicesImpl(AzureBlobStorageImpl client) {
@@ -67,7 +66,7 @@ public final class ServicesImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public AzureBlobStorageServiceVersion getServiceVersion() {
@@ -166,7 +165,7 @@ public final class ServicesImpl {
     /**
      * Sets properties for a storage account's Blob service endpoint, including properties for Storage Analytics and
      * CORS (Cross-Origin Resource Sharing) rules.
-     *
+     * 
      * @param blobServiceProperties The StorageService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -192,7 +191,7 @@ public final class ServicesImpl {
     /**
      * Sets properties for a storage account's Blob service endpoint, including properties for Storage Analytics and
      * CORS (Cross-Origin Resource Sharing) rules.
-     *
+     * 
      * @param blobServiceProperties The StorageService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -211,7 +210,7 @@ public final class ServicesImpl {
     /**
      * gets the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
      * (Cross-Origin Resource Sharing) rules.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -237,7 +236,7 @@ public final class ServicesImpl {
     /**
      * gets the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
      * (Cross-Origin Resource Sharing) rules.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -257,7 +256,7 @@ public final class ServicesImpl {
     /**
      * Retrieves statistics related to replication for the Blob service. It is only available on the secondary location
      * endpoint when read-access geo-redundant replication is enabled for the storage account.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -282,7 +281,7 @@ public final class ServicesImpl {
     /**
      * Retrieves statistics related to replication for the Blob service. It is only available on the secondary location
      * endpoint when read-access geo-redundant replication is enabled for the storage account.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -300,7 +299,7 @@ public final class ServicesImpl {
 
     /**
      * The List Containers Segment operation returns a list of the containers under the specified account.
-     *
+     * 
      * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
      * @param marker A string value that identifies the portion of the list of containers to be returned with the next
      * listing operation. The operation returns the NextMarker value within the response body if the listing operation
@@ -344,7 +343,7 @@ public final class ServicesImpl {
 
     /**
      * The List Containers Segment operation returns a list of the containers under the specified account.
-     *
+     * 
      * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
      * @param marker A string value that identifies the portion of the list of containers to be returned with the next
      * listing operation. The operation returns the NextMarker value within the response body if the listing operation
@@ -389,7 +388,7 @@ public final class ServicesImpl {
 
     /**
      * The List Containers Segment operation returns a list of the containers under the specified account.
-     *
+     * 
      * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
      * @param marker A string value that identifies the portion of the list of containers to be returned with the next
      * listing operation. The operation returns the NextMarker value within the response body if the listing operation
@@ -440,7 +439,7 @@ public final class ServicesImpl {
 
     /**
      * The List Containers Segment operation returns a list of the containers under the specified account.
-     *
+     * 
      * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
      * @param marker A string value that identifies the portion of the list of containers to be returned with the next
      * listing operation. The operation returns the NextMarker value within the response body if the listing operation
@@ -496,7 +495,7 @@ public final class ServicesImpl {
     /**
      * Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token
      * authentication.
-     *
+     * 
      * @param keyInfo Key information.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -522,7 +521,7 @@ public final class ServicesImpl {
     /**
      * Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token
      * authentication.
-     *
+     * 
      * @param keyInfo Key information.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -541,7 +540,7 @@ public final class ServicesImpl {
 
     /**
      * Returns the sku name and account kind.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -564,7 +563,7 @@ public final class ServicesImpl {
 
     /**
      * Returns the sku name and account kind.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -581,7 +580,7 @@ public final class ServicesImpl {
 
     /**
      * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
-     *
+     * 
      * @param contentLength The length of the request.
      * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary.
      * Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
@@ -608,7 +607,7 @@ public final class ServicesImpl {
 
     /**
      * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
-     *
+     * 
      * @param contentLength The length of the request.
      * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary.
      * Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
@@ -634,7 +633,7 @@ public final class ServicesImpl {
      * The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given search
      * expression. Filter blobs searches across all containers within a storage account but can be scoped within the
      * expression to a single container.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -676,7 +675,7 @@ public final class ServicesImpl {
      * The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given search
      * expression. Filter blobs searches across all containers within a storage account but can be scoped within the
      * expression to a single container.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -708,7 +707,7 @@ public final class ServicesImpl {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -728,7 +727,7 @@ public final class ServicesImpl {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -747,4 +746,6 @@ public final class ServicesImpl {
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             res.getValue().getBlobContainerItems(), null, res.getValue().getNextMarker(), null, null, null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServicesImpl.class);
 }

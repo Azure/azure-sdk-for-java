@@ -179,7 +179,7 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
 
     /**
      * Sets The URL of the service account, container, or blob that is the target of the desired operation.
-     *
+     * 
      * @param url the url value.
      * @return the AzureBlobStorageBuilder.
      */
@@ -197,7 +197,7 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
 
     /**
      * Sets Specifies the version of the operation to use for this request.
-     *
+     * 
      * @param version the version value.
      * @return the AzureBlobStorageBuilder.
      */
@@ -215,7 +215,7 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
 
     /**
      * Sets Service version.
-     *
+     * 
      * @param serviceVersion the serviceVersion value.
      * @return the AzureBlobStorageBuilder.
      */
@@ -227,7 +227,7 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
 
     /**
      * Builds an instance of AzureBlobStorageImpl with the provided parameters.
-     *
+     * 
      * @return an instance of AzureBlobStorageImpl.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -269,9 +269,9 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
     }
 
     /**
-     * Builds an instance of ServiceClient class.
-     *
-     * @return an instance of ServiceClient.
+     * Builds an instance of StorageServiceClient class.
+     * 
+     * @return an instance of StorageServiceClient.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public StorageServiceClient buildServiceClient() {
@@ -280,7 +280,7 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
 
     /**
      * Builds an instance of ContainerClient class.
-     *
+     * 
      * @return an instance of ContainerClient.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -290,7 +290,7 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
 
     /**
      * Builds an instance of BlobClient class.
-     *
+     * 
      * @return an instance of BlobClient.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -300,7 +300,7 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
 
     /**
      * Builds an instance of PageBlobClient class.
-     *
+     * 
      * @return an instance of PageBlobClient.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -310,7 +310,7 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
 
     /**
      * Builds an instance of AppendBlobClient class.
-     *
+     * 
      * @return an instance of AppendBlobClient.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -320,7 +320,7 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
 
     /**
      * Builds an instance of BlockBlobClient class.
-     *
+     * 
      * @return an instance of BlockBlobClient.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
