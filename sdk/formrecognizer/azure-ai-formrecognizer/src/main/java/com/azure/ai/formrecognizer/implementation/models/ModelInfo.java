@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,36 +25,43 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
     /*
      * Model identifier.
      */
+    @Generated
     private UUID modelId;
 
     /*
      * Status of the model.
      */
+    @Generated
     private ModelStatus status;
 
     /*
      * Date and time (UTC) when the model was created.
      */
+    @Generated
     private OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
+    @Generated
     private OffsetDateTime lastUpdatedDateTime;
 
     /*
      * Optional user defined model name (max length: 1024).
      */
+    @Generated
     private String modelName;
 
     /*
      * Optional model attributes.
      */
+    @Generated
     private Attributes attributes;
 
     /**
      * Creates an instance of ModelInfo class.
      */
+    @Generated
     public ModelInfo() {
     }
 
@@ -62,6 +70,7 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
      * 
      * @return the modelId value.
      */
+    @Generated
     public UUID getModelId() {
         return this.modelId;
     }
@@ -72,6 +81,7 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
      * @param modelId the modelId value to set.
      * @return the ModelInfo object itself.
      */
+    @Generated
     public ModelInfo setModelId(UUID modelId) {
         this.modelId = modelId;
         return this;
@@ -82,6 +92,7 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
      * 
      * @return the status value.
      */
+    @Generated
     public ModelStatus getStatus() {
         return this.status;
     }
@@ -92,6 +103,7 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
      * @param status the status value to set.
      * @return the ModelInfo object itself.
      */
+    @Generated
     public ModelInfo setStatus(ModelStatus status) {
         this.status = status;
         return this;
@@ -102,6 +114,7 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
      * 
      * @return the createdDateTime value.
      */
+    @Generated
     public OffsetDateTime getCreatedDateTime() {
         return this.createdDateTime;
     }
@@ -112,6 +125,7 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
      * @param createdDateTime the createdDateTime value to set.
      * @return the ModelInfo object itself.
      */
+    @Generated
     public ModelInfo setCreatedDateTime(OffsetDateTime createdDateTime) {
         this.createdDateTime = createdDateTime;
         return this;
@@ -122,6 +136,7 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
      * 
      * @return the lastUpdatedDateTime value.
      */
+    @Generated
     public OffsetDateTime getLastUpdatedDateTime() {
         return this.lastUpdatedDateTime;
     }
@@ -132,6 +147,7 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      * @return the ModelInfo object itself.
      */
+    @Generated
     public ModelInfo setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
         this.lastUpdatedDateTime = lastUpdatedDateTime;
         return this;
@@ -142,6 +158,7 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
      * 
      * @return the modelName value.
      */
+    @Generated
     public String getModelName() {
         return this.modelName;
     }
@@ -152,6 +169,7 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
      * @param modelName the modelName value to set.
      * @return the ModelInfo object itself.
      */
+    @Generated
     public ModelInfo setModelName(String modelName) {
         this.modelName = modelName;
         return this;
@@ -162,6 +180,7 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
      * 
      * @return the attributes value.
      */
+    @Generated
     public Attributes getAttributes() {
         return this.attributes;
     }
@@ -172,6 +191,7 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
      * @param attributes the attributes value to set.
      * @return the ModelInfo object itself.
      */
+    @Generated
     public ModelInfo setAttributes(Attributes attributes) {
         this.attributes = attributes;
         return this;
@@ -180,6 +200,7 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -205,6 +226,7 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ModelInfo.
      */
+    @Generated
     public static ModelInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ModelInfo deserializedModelInfo = new ModelInfo();

@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,31 +24,37 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
     /*
      * Document type.
      */
+    @Generated
     private String docType;
 
     /*
      * Model identifier.
      */
+    @Generated
     private UUID modelId;
 
     /*
      * First and last page number where the document is found.
      */
+    @Generated
     private List<Integer> pageRange;
 
     /*
      * Predicted document type confidence.
      */
+    @Generated
     private Float docTypeConfidence;
 
     /*
      * Dictionary of named field values.
      */
+    @Generated
     private Map<String, FieldValue> fields;
 
     /**
      * Creates an instance of DocumentResult class.
      */
+    @Generated
     public DocumentResult() {
     }
 
@@ -56,6 +63,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
      * 
      * @return the docType value.
      */
+    @Generated
     public String getDocType() {
         return this.docType;
     }
@@ -66,6 +74,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
      * @param docType the docType value to set.
      * @return the DocumentResult object itself.
      */
+    @Generated
     public DocumentResult setDocType(String docType) {
         this.docType = docType;
         return this;
@@ -76,6 +85,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
      * 
      * @return the modelId value.
      */
+    @Generated
     public UUID getModelId() {
         return this.modelId;
     }
@@ -86,6 +96,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
      * @param modelId the modelId value to set.
      * @return the DocumentResult object itself.
      */
+    @Generated
     public DocumentResult setModelId(UUID modelId) {
         this.modelId = modelId;
         return this;
@@ -96,6 +107,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
      * 
      * @return the pageRange value.
      */
+    @Generated
     public List<Integer> getPageRange() {
         return this.pageRange;
     }
@@ -106,6 +118,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
      * @param pageRange the pageRange value to set.
      * @return the DocumentResult object itself.
      */
+    @Generated
     public DocumentResult setPageRange(List<Integer> pageRange) {
         this.pageRange = pageRange;
         return this;
@@ -116,6 +129,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
      * 
      * @return the docTypeConfidence value.
      */
+    @Generated
     public Float getDocTypeConfidence() {
         return this.docTypeConfidence;
     }
@@ -126,6 +140,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
      * @param docTypeConfidence the docTypeConfidence value to set.
      * @return the DocumentResult object itself.
      */
+    @Generated
     public DocumentResult setDocTypeConfidence(Float docTypeConfidence) {
         this.docTypeConfidence = docTypeConfidence;
         return this;
@@ -136,6 +151,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
      * 
      * @return the fields value.
      */
+    @Generated
     public Map<String, FieldValue> getFields() {
         return this.fields;
     }
@@ -146,6 +162,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
      * @param fields the fields value to set.
      * @return the DocumentResult object itself.
      */
+    @Generated
     public DocumentResult setFields(Map<String, FieldValue> fields) {
         this.fields = fields;
         return this;
@@ -154,6 +171,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -174,6 +192,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentResult.
      */
+    @Generated
     public static DocumentResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentResult deserializedDocumentResult = new DocumentResult();

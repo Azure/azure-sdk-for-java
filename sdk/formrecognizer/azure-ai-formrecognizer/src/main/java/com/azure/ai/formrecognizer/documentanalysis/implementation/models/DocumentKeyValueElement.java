@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class DocumentKeyValueElement implements JsonSerializable<DocumentK
     /*
      * Concatenated content of the key-value element in reading order.
      */
+    @Generated
     private final String content;
 
     /*
      * Bounding regions covering the key-value element.
      */
+    @Generated
     private List<BoundingRegion> boundingRegions;
 
     /*
      * Location of the key-value element in the reading order concatenated content.
      */
+    @Generated
     private final List<DocumentSpan> spans;
 
     /**
@@ -39,6 +43,7 @@ public final class DocumentKeyValueElement implements JsonSerializable<DocumentK
      * @param content the content value to set.
      * @param spans the spans value to set.
      */
+    @Generated
     public DocumentKeyValueElement(String content, List<DocumentSpan> spans) {
         this.content = content;
         this.spans = spans;
@@ -49,6 +54,7 @@ public final class DocumentKeyValueElement implements JsonSerializable<DocumentK
      * 
      * @return the content value.
      */
+    @Generated
     public String getContent() {
         return this.content;
     }
@@ -58,6 +64,7 @@ public final class DocumentKeyValueElement implements JsonSerializable<DocumentK
      * 
      * @return the boundingRegions value.
      */
+    @Generated
     public List<BoundingRegion> getBoundingRegions() {
         return this.boundingRegions;
     }
@@ -68,6 +75,7 @@ public final class DocumentKeyValueElement implements JsonSerializable<DocumentK
      * @param boundingRegions the boundingRegions value to set.
      * @return the DocumentKeyValueElement object itself.
      */
+    @Generated
     public DocumentKeyValueElement setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
         return this;
@@ -78,6 +86,7 @@ public final class DocumentKeyValueElement implements JsonSerializable<DocumentK
      * 
      * @return the spans value.
      */
+    @Generated
     public List<DocumentSpan> getSpans() {
         return this.spans;
     }
@@ -85,6 +94,7 @@ public final class DocumentKeyValueElement implements JsonSerializable<DocumentK
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -104,6 +114,7 @@ public final class DocumentKeyValueElement implements JsonSerializable<DocumentK
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentKeyValueElement.
      */
+    @Generated
     public static DocumentKeyValueElement fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean contentFound = false;

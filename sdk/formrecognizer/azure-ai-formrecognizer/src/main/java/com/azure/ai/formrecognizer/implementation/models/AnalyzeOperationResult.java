@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,26 +23,31 @@ public final class AnalyzeOperationResult implements JsonSerializable<AnalyzeOpe
     /*
      * Operation status.
      */
+    @Generated
     private OperationStatus status;
 
     /*
      * Date and time (UTC) when the analyze operation was submitted.
      */
+    @Generated
     private OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
+    @Generated
     private OffsetDateTime lastUpdatedDateTime;
 
     /*
      * Results of the analyze operation.
      */
+    @Generated
     private AnalyzeResult analyzeResult;
 
     /**
      * Creates an instance of AnalyzeOperationResult class.
      */
+    @Generated
     public AnalyzeOperationResult() {
     }
 
@@ -50,6 +56,7 @@ public final class AnalyzeOperationResult implements JsonSerializable<AnalyzeOpe
      * 
      * @return the status value.
      */
+    @Generated
     public OperationStatus getStatus() {
         return this.status;
     }
@@ -60,6 +67,7 @@ public final class AnalyzeOperationResult implements JsonSerializable<AnalyzeOpe
      * @param status the status value to set.
      * @return the AnalyzeOperationResult object itself.
      */
+    @Generated
     public AnalyzeOperationResult setStatus(OperationStatus status) {
         this.status = status;
         return this;
@@ -70,6 +78,7 @@ public final class AnalyzeOperationResult implements JsonSerializable<AnalyzeOpe
      * 
      * @return the createdDateTime value.
      */
+    @Generated
     public OffsetDateTime getCreatedDateTime() {
         return this.createdDateTime;
     }
@@ -80,6 +89,7 @@ public final class AnalyzeOperationResult implements JsonSerializable<AnalyzeOpe
      * @param createdDateTime the createdDateTime value to set.
      * @return the AnalyzeOperationResult object itself.
      */
+    @Generated
     public AnalyzeOperationResult setCreatedDateTime(OffsetDateTime createdDateTime) {
         this.createdDateTime = createdDateTime;
         return this;
@@ -90,6 +100,7 @@ public final class AnalyzeOperationResult implements JsonSerializable<AnalyzeOpe
      * 
      * @return the lastUpdatedDateTime value.
      */
+    @Generated
     public OffsetDateTime getLastUpdatedDateTime() {
         return this.lastUpdatedDateTime;
     }
@@ -100,6 +111,7 @@ public final class AnalyzeOperationResult implements JsonSerializable<AnalyzeOpe
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      * @return the AnalyzeOperationResult object itself.
      */
+    @Generated
     public AnalyzeOperationResult setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
         this.lastUpdatedDateTime = lastUpdatedDateTime;
         return this;
@@ -110,6 +122,7 @@ public final class AnalyzeOperationResult implements JsonSerializable<AnalyzeOpe
      * 
      * @return the analyzeResult value.
      */
+    @Generated
     public AnalyzeResult getAnalyzeResult() {
         return this.analyzeResult;
     }
@@ -120,6 +133,7 @@ public final class AnalyzeOperationResult implements JsonSerializable<AnalyzeOpe
      * @param analyzeResult the analyzeResult value to set.
      * @return the AnalyzeOperationResult object itself.
      */
+    @Generated
     public AnalyzeOperationResult setAnalyzeResult(AnalyzeResult analyzeResult) {
         this.analyzeResult = analyzeResult;
         return this;
@@ -128,6 +142,7 @@ public final class AnalyzeOperationResult implements JsonSerializable<AnalyzeOpe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -151,6 +166,7 @@ public final class AnalyzeOperationResult implements JsonSerializable<AnalyzeOpe
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeOperationResult.
      */
+    @Generated
     public static AnalyzeOperationResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnalyzeOperationResult deserializedAnalyzeOperationResult = new AnalyzeOperationResult();

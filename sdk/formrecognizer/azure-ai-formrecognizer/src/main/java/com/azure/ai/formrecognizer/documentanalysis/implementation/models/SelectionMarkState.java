@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SelectionMarkState extends ExpandableStringEnum<SelectionMark
     /**
      * The selection mark is selected, often indicated by a check ✓ or cross X inside the selection mark.
      */
+    @Generated
     public static final SelectionMarkState SELECTED = fromString("selected");
 
     /**
      * The selection mark is not selected.
      */
+    @Generated
     public static final SelectionMarkState UNSELECTED = fromString("unselected");
 
     /**
@@ -26,6 +29,7 @@ public final class SelectionMarkState extends ExpandableStringEnum<SelectionMark
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SelectionMarkState() {
     }
@@ -36,6 +40,7 @@ public final class SelectionMarkState extends ExpandableStringEnum<SelectionMark
      * @param name a name to look for.
      * @return the corresponding SelectionMarkState.
      */
+    @Generated
     public static SelectionMarkState fromString(String name) {
         return fromString(name, SelectionMarkState.class);
     }
@@ -45,6 +50,7 @@ public final class SelectionMarkState extends ExpandableStringEnum<SelectionMark
      * 
      * @return known SelectionMarkState values.
      */
+    @Generated
     public static Collection<SelectionMarkState> values() {
         return values(SelectionMarkState.class);
     }

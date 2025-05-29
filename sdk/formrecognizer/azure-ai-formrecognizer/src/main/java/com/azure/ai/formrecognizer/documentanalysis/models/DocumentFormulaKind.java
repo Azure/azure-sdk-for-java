@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class DocumentFormulaKind extends ExpandableStringEnum<DocumentForm
     /**
      * A formula embedded within the content of a paragraph.
      */
+    @Generated
     public static final DocumentFormulaKind INLINE = fromString("inline");
 
     /**
      * A formula in display mode that takes up an entire line.
      */
+    @Generated
     public static final DocumentFormulaKind DISPLAY = fromString("display");
 
     /**
@@ -26,6 +29,7 @@ public final class DocumentFormulaKind extends ExpandableStringEnum<DocumentForm
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DocumentFormulaKind() {
     }
@@ -36,6 +40,7 @@ public final class DocumentFormulaKind extends ExpandableStringEnum<DocumentForm
      * @param name a name to look for.
      * @return the corresponding DocumentFormulaKind.
      */
+    @Generated
     public static DocumentFormulaKind fromString(String name) {
         return fromString(name, DocumentFormulaKind.class);
     }
@@ -45,6 +50,7 @@ public final class DocumentFormulaKind extends ExpandableStringEnum<DocumentForm
      * 
      * @return known DocumentFormulaKind values.
      */
+    @Generated
     public static Collection<DocumentFormulaKind> values() {
         return values(DocumentFormulaKind.class);
     }
