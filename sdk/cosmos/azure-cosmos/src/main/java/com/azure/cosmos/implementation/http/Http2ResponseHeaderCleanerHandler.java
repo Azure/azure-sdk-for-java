@@ -44,10 +44,10 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
 
         // Pass the message to the next handler in the pipeline
         if (msg instanceof Http2SettingsAckFrame) {
-            logger.info("Ignore " + ((Http2SettingsAckFrame) msg).name() + " frame");
+            logger.info("Http2SettingsAckFrame Observed - " + ((Http2SettingsAckFrame) msg).name() + " frame");
             // we ignore SETTINGS(ACK)
-        } else {
-            super.channelRead(ctx, msg);
         }
+        
+        super.channelRead(ctx, msg);
     }
 }
