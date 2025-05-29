@@ -28,7 +28,7 @@ autorest
 
 ```yaml
 java: true
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.50'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/monitor/data-plane/ingestion/stable/2023-01-01/DataCollectionRules.json
@@ -43,4 +43,5 @@ artifact-id: azure-monitor-ingestion
 data-plane: true
 enable-sync-stack: true
 customization-class: src/main/java/MonitorIngestionCustomizations.java
+use-eclipse-language-server: false
 ```

@@ -112,7 +112,7 @@ public class MonitorIngestionCustomizations extends Customization {
                         .addBlockTag("param", "audience", "the audience indicating the authorization scope of log ingestion clients.")
                         .addBlockTag("return", "the IngestionUsingDataCollectionRulesClientBuilder."));
 
-                clazz.getMethodsByName("createHttpPipeline").get(0).setBody(StaticJavaParser.parseBlock(
+                clazz.getMethodsByName("createHttpPipeline").forEach(method -> method.setBody(StaticJavaParser.parseBlock(
                     String.join("\n",
                         "{",
                         "Configuration buildConfiguration",
@@ -151,7 +151,7 @@ public class MonitorIngestionCustomizations extends Customization {
                         "return httpPipeline;",
                         "}"
                     )
-                ));
+                )));
             });
         });
     }
