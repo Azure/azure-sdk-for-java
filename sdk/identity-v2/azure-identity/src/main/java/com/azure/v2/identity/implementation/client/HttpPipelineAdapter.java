@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * Adapts an HttpPipeline to an instance of IHttpClient in the MSAL4j pipeline.
  */
 class HttpPipelineAdapter implements IHttpClient {
-    private static final ClientLogger CLIENT_LOGGER = new ClientLogger(HttpPipelineAdapter.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineAdapter.class);
     private static final String APPLICATION_ID_JSON_KEY = "appid";
     private static final String OBJECT_ID_JSON_KEY = "oid";
     private static final String TENANT_ID_JSON_KEY = "tid";
@@ -77,7 +77,7 @@ class HttpPipelineAdapter implements IHttpClient {
     }
 
     private void logAccountIdentifiersIfConfigured(String body) {
-        if (!CLIENT_LOGGER.canLogAtLevel(LogLevel.INFORMATIONAL)) {
+        if (!LOGGER.canLogAtLevel(LogLevel.INFORMATIONAL)) {
             return;
         }
 
@@ -91,7 +91,7 @@ class HttpPipelineAdapter implements IHttpClient {
 
                     Map<String, String> jsonMap = IdentityUtil.parseJsonIntoMap(data);
 
-                    CLIENT_LOGGER.atInfo()
+                    LOGGER.atInfo()
                         .addKeyValue("applicationId", jsonMap.getOrDefault(APPLICATION_ID_JSON_KEY, "not available"))
                         .addKeyValue("tenantId", jsonMap.getOrDefault(TENANT_ID_JSON_KEY, "not available"))
                         .addKeyValue("userPrincipalName",
@@ -101,7 +101,7 @@ class HttpPipelineAdapter implements IHttpClient {
                 }
             }
         } catch (IOException e) {
-            CLIENT_LOGGER.atWarning().setThrowable(e).log();
+            LOGGER.atWarning().setThrowable(e).log();
         }
     }
 }

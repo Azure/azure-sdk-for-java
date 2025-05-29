@@ -60,7 +60,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             networkResponse.close();
         }
         return networkResponse.getValue();
@@ -77,7 +77,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             networkResponse.close();
         }
         return networkResponse;
@@ -94,7 +94,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;
@@ -112,7 +112,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             }
             BinaryData responseBody = networkResponse.getValue();
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), responseBody != null ? responseBody.toBytes() : null);
@@ -130,7 +130,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             networkResponse.close();
         }
         return networkResponse.getValue().toStream();
@@ -147,7 +147,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             networkResponse.close();
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), networkResponse.getValue().toStream());
@@ -164,7 +164,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             networkResponse.close();
         }
         List<BinaryData> deserializedResult;
@@ -175,7 +175,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
+            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
         }
         networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
@@ -192,7 +192,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             boolean expectedResponse = responseCode == 200;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             }
             BinaryData responseBody = networkResponse.getValue();
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), responseBody != null ? new Base64Uri(responseBody.toBytes()).decodedBytes() : null);

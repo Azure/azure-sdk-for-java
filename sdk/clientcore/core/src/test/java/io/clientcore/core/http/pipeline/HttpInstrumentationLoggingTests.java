@@ -412,7 +412,7 @@ public class HttpInstrumentationLoggingTests {
 
         Map<String, Object> responseLog = logMessages.get(1);
         assertResponseLog(responseLog, response);
-        assertEquals("Response body", responseLog.get("http.request.body.content"));
+        assertEquals("Response body", responseLog.get("http.response.body.content"));
     }
 
     @Test
@@ -448,7 +448,7 @@ public class HttpInstrumentationLoggingTests {
 
         Map<String, Object> responseLog = logMessages.get(1);
         assertResponseLog(responseLog, response);
-        assertEquals("Response body", responseLog.get("http.request.body.content"));
+        assertEquals("Response body", responseLog.get("http.response.body.content"));
 
         assertEquals(requestBody.getLength(), requestStream.getPosition());
         assertEquals(responseBody.getLength(), responseStream.getPosition());

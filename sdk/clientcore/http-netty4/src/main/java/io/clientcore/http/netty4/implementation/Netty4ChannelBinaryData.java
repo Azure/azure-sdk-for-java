@@ -14,7 +14,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
@@ -60,7 +59,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
                 } catch (IOException ex) {
                     // This exception thrown here will eventually close the Channel, resulting in the latch being
                     // counted down.
-                    throw new UncheckedIOException(ex);
+                    throw LOGGER.throwableAtError().log(ex, CoreException::from);
                 }
             }));
 
@@ -121,7 +120,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
                     try {
                         buf.readBytes(outputStream, buf.readableBytes());
                     } catch (IOException ex) {
-                        throw new UncheckedIOException(ex);
+                        throw LOGGER.throwableAtError().log(ex, CoreException::from);
                     }
                 }));
 

@@ -100,7 +100,8 @@ public class OnBehalfOfCredentialBuilder extends EntraIdCredentialBuilderBase<On
      * @return An updated instance of this builder.
      */
     public OnBehalfOfCredentialBuilder clientCertificate(InputStream certificate) {
-        this.confidentialClientOptions.setCertificateBytes(IdentityUtil.convertInputStreamToByteArray(certificate));
+        this.confidentialClientOptions
+            .setCertificateBytes(IdentityUtil.convertInputStreamToByteArray(certificate, LOGGER));
         return this;
     }
 
