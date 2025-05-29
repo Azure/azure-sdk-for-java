@@ -4,11 +4,12 @@
 
 package com.azure.maps.render.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for TilesetID.
+ * Defines values for TilesetId.
  */
 public final class TilesetId extends ExpandableStringEnum<TilesetId> {
     /**
@@ -17,6 +18,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
      * 
      * Supports zoom levels 0 through 22. Format: vector (pbf).
      */
+    @Generated
     public static final TilesetId MICROSOFT_BASE = fromString("microsoft.base");
 
     /**
@@ -24,6 +26,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
      * 
      * Supports zoom levels 0 through 22. Format: vector (pbf).
      */
+    @Generated
     public static final TilesetId MICROSOFT_BASE_LABELS = fromString("microsoft.base.labels");
 
     /**
@@ -31,6 +34,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
      * 
      * Supports zoom levels 0 through 22. Format: vector (pbf).
      */
+    @Generated
     public static final TilesetId MICROSOFT_BASE_HYBRID = fromString("microsoft.base.hybrid");
 
     /**
@@ -38,6 +42,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
      * 
      * Supports zoom levels 0 through 6. Format: raster (png).
      */
+    @Generated
     public static final TilesetId MICROSOFT_TERRA_MAIN = fromString("microsoft.terra.main");
 
     /**
@@ -45,6 +50,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
      * 
      * Supports zoom levels 0 through 22. Format: raster (png).
      */
+    @Generated
     public static final TilesetId MICROSOFT_BASE_ROAD = fromString("microsoft.base.road");
 
     /**
@@ -52,6 +58,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
      * 
      * Supports zoom levels 0 through 22. Format: raster (png).
      */
+    @Generated
     public static final TilesetId MICROSOFT_BASE_DARKGREY = fromString("microsoft.base.darkgrey");
 
     /**
@@ -59,6 +66,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
      * 
      * Supports zoom levels 0 through 22. Format: raster (png).
      */
+    @Generated
     public static final TilesetId MICROSOFT_BASE_LABELS_ROAD = fromString("microsoft.base.labels.road");
 
     /**
@@ -66,6 +74,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
      * 
      * Supports zoom levels 0 through 22. Format: raster (png).
      */
+    @Generated
     public static final TilesetId MICROSOFT_BASE_LABELS_DARKGREY = fromString("microsoft.base.labels.darkgrey");
 
     /**
@@ -73,6 +82,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
      * 
      * Supports zoom levels 0 through 22. Format: raster (png).
      */
+    @Generated
     public static final TilesetId MICROSOFT_BASE_HYBRID_ROAD = fromString("microsoft.base.hybrid.road");
 
     /**
@@ -80,6 +90,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
      * 
      * Supports zoom levels 0 through 22. Format: raster (png).
      */
+    @Generated
     public static final TilesetId MICROSOFT_BASE_HYBRID_DARKGREY = fromString("microsoft.base.hybrid.darkgrey");
 
     /**
@@ -87,6 +98,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
      * 
      * Supports zoom levels 1 through 19. Format: raster (png).
      */
+    @Generated
     public static final TilesetId MICROSOFT_IMAGERY = fromString("microsoft.imagery");
 
     /**
@@ -97,6 +109,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
      * 
      * Supports zoom levels 0 through 15. Format: raster (png).
      */
+    @Generated
     public static final TilesetId MICROSOFT_WEATHER_RADAR_MAIN = fromString("microsoft.weather.radar.main");
 
     /**
@@ -107,77 +120,90 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
      * 
      * Supports zoom levels 0 through 15. Format: raster (png).
      */
+    @Generated
     public static final TilesetId MICROSOFT_WEATHER_INFRARED_MAIN = fromString("microsoft.weather.infrared.main");
 
     /**
      * absolute traffic tiles in vector.
      */
+    @Generated
     public static final TilesetId MICROSOFT_TRAFFIC_ABSOLUTE = fromString("microsoft.traffic.absolute");
 
     /**
      * absolute traffic tiles in raster in our main style.
      */
+    @Generated
     public static final TilesetId MICROSOFT_TRAFFIC_ABSOLUTE_MAIN = fromString("microsoft.traffic.absolute.main");
 
     /**
      * relative traffic tiles in vector.
      */
+    @Generated
     public static final TilesetId MICROSOFT_TRAFFIC_RELATIVE = fromString("microsoft.traffic.relative");
 
     /**
      * relative traffic tiles in raster in our main style.
      */
+    @Generated
     public static final TilesetId MICROSOFT_TRAFFIC_RELATIVE_MAIN = fromString("microsoft.traffic.relative.main");
 
     /**
      * relative traffic tiles in raster in our dark style.
      */
+    @Generated
     public static final TilesetId MICROSOFT_TRAFFIC_RELATIVE_DARK = fromString("microsoft.traffic.relative.dark");
 
     /**
      * traffic tiles in vector.
      */
+    @Generated
     public static final TilesetId MICROSOFT_TRAFFIC_DELAY = fromString("microsoft.traffic.delay");
 
     /**
      * traffic tiles in raster in our main style.
      */
+    @Generated
     public static final TilesetId MICROSOFT_TRAFFIC_DELAY_MAIN = fromString("microsoft.traffic.delay.main");
 
     /**
      * reduced traffic tiles in raster in our main style.
      */
+    @Generated
     public static final TilesetId MICROSOFT_TRAFFIC_REDUCED_MAIN = fromString("microsoft.traffic.reduced.main");
 
     /**
      * incident tiles in vector.
      */
+    @Generated
     public static final TilesetId MICROSOFT_TRAFFIC_INCIDENT = fromString("microsoft.traffic.incident");
 
     /**
-     * Creates a new instance of TilesetID value.
+     * Creates a new instance of TilesetId value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TilesetId() {
     }
 
     /**
-     * Creates or finds a TilesetID from its string representation.
+     * Creates or finds a TilesetId from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding TilesetID.
+     * @return the corresponding TilesetId.
      */
+    @Generated
     public static TilesetId fromString(String name) {
         return fromString(name, TilesetId.class);
     }
 
     /**
-     * Gets known TilesetID values.
+     * Gets known TilesetId values.
      * 
-     * @return known TilesetID values.
+     * @return known TilesetId values.
      */
+    @Generated
     public static Collection<TilesetId> values() {
         return values(TilesetId.class);
     }

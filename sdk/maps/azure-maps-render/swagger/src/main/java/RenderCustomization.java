@@ -20,22 +20,12 @@ public class RenderCustomization extends Customization {
         customizeMapTileSize(models);
 
         customizeRegionCopyrights(models);
-
-        models.getClass("TilesetID").rename("TilesetId");
     }
 
     private void customizeRegionCopyrights(PackageCustomization models) {
-        models.getClass("RegionCopyrights").customizeAst(ast -> {
-
-            ast.getClassByName("RegionCopyrights").ifPresent(clazz -> {
-              /*  clazz.getMethodsByName("setBounds").forEach(Node::remove);
-                clazz.getMethodsByName("setCenter").forEach(Node::remove);*/
-
-                clazz.getMethodsByName("fromJson").forEach(method -> {
-                    method.setBody(StaticJavaParser.parseBlock("{ return jsonReader.readObject(reader -> { reader.nextToken(); reader.nextToken(); RegionCopyrights deserializedRegionCopyrights = new RegionCopyrights(); while (reader.nextToken() != JsonToken.END_OBJECT) { String fieldName = reader.getFieldName(); reader.nextToken(); if (\"copyrights\".equals(fieldName)) {List<String> copyrights = reader.readArray(reader1 -> reader1.getString());deserializedRegionCopyrights.copyrights = copyrights;} else if (\"country\".equals(fieldName)) {deserializedRegionCopyrights.country = RegionCopyrightsCountry.fromJson(reader);} else {reader.skipChildren();}} return deserializedRegionCopyrights;});}"));
-                });
-            });
-        });
+        models.getClass("RegionCopyrights").customizeAst(ast -> ast.getClassByName("RegionCopyrights")
+            .ifPresent(clazz -> clazz.getMethodsByName("fromJson")
+                .forEach(method -> method.setBody(StaticJavaParser.parseBlock("{ return jsonReader.readObject(reader -> { reader.nextToken(); reader.nextToken(); RegionCopyrights deserializedRegionCopyrights = new RegionCopyrights(); while (reader.nextToken() != JsonToken.END_OBJECT) { String fieldName = reader.getFieldName(); reader.nextToken(); if (\"copyrights\".equals(fieldName)) {List<String> copyrights = reader.readArray(reader1 -> reader1.getString());deserializedRegionCopyrights.copyrights = copyrights;} else if (\"country\".equals(fieldName)) {deserializedRegionCopyrights.country = RegionCopyrightsCountry.fromJson(reader);} else {reader.skipChildren();}} return deserializedRegionCopyrights;});}")))));
     }
 
     // Customizes the MapTileset class
@@ -48,15 +38,11 @@ public class RenderCustomization extends Customization {
                 clazz.getMethodsByName("setBounds").forEach(Node::remove);
                 clazz.getMethodsByName("setCenter").forEach(Node::remove);
 
-                clazz.getMethodsByName("getBounds").forEach(method -> {
-                    method.setType("GeoBoundingBox");
-                    method.setBody(StaticJavaParser.parseBlock("{ return new GeoBoundingBox(this.bounds.get(0), this.bounds.get(1), this.bounds.get(2), this.bounds.get(3)); }"));
-                });
+                clazz.getMethodsByName("getBounds").forEach(method -> method.setType("GeoBoundingBox")
+                    .setBody(StaticJavaParser.parseBlock("{ return new GeoBoundingBox(this.bounds.get(0), this.bounds.get(1), this.bounds.get(2), this.bounds.get(3)); }")));
 
-                clazz.getMethodsByName("getCenter").forEach(method -> {
-                    method.setType("GeoPosition");
-                    method.setBody(StaticJavaParser.parseBlock("{ return new GeoPosition(this.center.get(0).doubleValue(), this.center.get(1).doubleValue(), this.center.get(2).doubleValue()); }"));
-                });
+                clazz.getMethodsByName("getCenter").forEach(method -> method.setType("GeoPosition")
+                    .setBody(StaticJavaParser.parseBlock("{ return new GeoPosition(this.center.get(0).doubleValue(), this.center.get(1).doubleValue(), this.center.get(2).doubleValue()); }")));
             });
         });
     }
