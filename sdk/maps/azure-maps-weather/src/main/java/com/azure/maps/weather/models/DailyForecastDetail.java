@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,33 +21,39 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure
      * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      */
+    @Generated
     private IconCode iconCode;
 
     /*
      * Phrase description of the icon. Displayed in specified language. For example, 'Sunny'.
      */
+    @Generated
     private String iconPhrase;
 
     /*
      * Local weather data provider information.
      */
+    @Generated
     private LocalSource localSource;
 
     /*
      * Indicates the presence or absence of precipitation. True indicates the presence of precipitation, false indicates
      * the absence of precipitation.
      */
+    @Generated
     private Boolean hasPrecipitation;
 
     /*
      * Specifies the type of precipitation ("Rain" "Snow" "Ice" or "Mix"). If dbz is zero, precipitationType is not
      * present in the response.
      */
+    @Generated
     private PrecipitationType precipitationType;
 
     /*
      * Description of the intensity.
      */
+    @Generated
     private String precipitationIntensity;
 
     /*
@@ -54,6 +61,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      * characters in length, but some languages/weather events may result in a longer phrase length, exceeding 30
      * characters.
      */
+    @Generated
     private String shortDescription;
 
     /*
@@ -61,91 +69,109 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      * characters in length, but some languages/weather events may result in a longer phrase length, exceeding 100
      * characters.
      */
+    @Generated
     private String longPhrase;
 
     /*
      * Percent representing the probability of precipitation. For example, '20'.
      */
+    @Generated
     private Integer precipitationProbability;
 
     /*
      * Percent representing the probability of a thunderstorm. For example, '80'.
      */
+    @Generated
     private Integer thunderstormProbability;
 
     /*
      * Percent representing the probability of rain. For example, '40'.
      */
+    @Generated
     private Integer rainProbability;
 
     /*
      * Percent representing the probability of snow. For example, '30'.
      */
+    @Generated
     private Integer snowProbability;
 
     /*
      * Percent representing the probability of ice. For example, '30'.
      */
+    @Generated
     private Integer iceProbability;
 
     /*
      * Wind details being returned including speed and direction.
      */
+    @Generated
     private WindDetails wind;
 
     /*
      * Wind gust. Wind gust is a sudden, brief increase in speed of the wind.
      */
+    @Generated
     private WindDetails windGust;
 
     /*
      * Total liquid equivalent of precipitation during the forecast period.
      */
+    @Generated
     private WeatherUnitDetails totalLiquid;
 
     /*
      * Rain
      */
+    @Generated
     private WeatherUnitDetails rain;
 
     /*
      * Snow
      */
+    @Generated
     private WeatherUnitDetails snow;
 
     /*
      * Ice
      */
+    @Generated
     private WeatherUnitDetails ice;
 
     /*
      * Hours of precipitation
      */
+    @Generated
     private Float hoursOfPrecipitation;
 
     /*
      * Hours of rain.
      */
+    @Generated
     private Float hoursOfRain;
 
     /*
      * Hours of snow.
      */
+    @Generated
     private Float hoursOfSnow;
 
     /*
      * Hours of ice.
      */
+    @Generated
     private Float hoursOfIce;
 
     /*
      * Percent representing cloud cover.
      */
+    @Generated
     private Integer cloudCover;
 
     /**
      * Set default DailyForecastDetail constructor to private
      */
+    @Generated
     private DailyForecastDetail() {
     }
 
@@ -155,6 +181,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the iconCode value.
      */
+    @Generated
     public IconCode getIconCode() {
         return this.iconCode;
     }
@@ -165,6 +192,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the iconPhrase value.
      */
+    @Generated
     public String getIconPhrase() {
         return this.iconPhrase;
     }
@@ -174,6 +202,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the localSource value.
      */
+    @Generated
     public LocalSource getLocalSource() {
         return this.localSource;
     }
@@ -184,6 +213,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the hasPrecipitation value.
      */
+    @Generated
     public Boolean hasPrecipitation() {
         return this.hasPrecipitation;
     }
@@ -194,6 +224,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the precipitationType value.
      */
+    @Generated
     public PrecipitationType getPrecipitationType() {
         return this.precipitationType;
     }
@@ -203,6 +234,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the precipitationIntensity value.
      */
+    @Generated
     public String getPrecipitationIntensity() {
         return this.precipitationIntensity;
     }
@@ -214,6 +246,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the shortDescription value.
      */
+    @Generated
     public String getShortDescription() {
         return this.shortDescription;
     }
@@ -225,6 +258,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the longPhrase value.
      */
+    @Generated
     public String getLongPhrase() {
         return this.longPhrase;
     }
@@ -235,6 +269,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the precipitationProbability value.
      */
+    @Generated
     public Integer getPrecipitationProbability() {
         return this.precipitationProbability;
     }
@@ -245,6 +280,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the thunderstormProbability value.
      */
+    @Generated
     public Integer getThunderstormProbability() {
         return this.thunderstormProbability;
     }
@@ -254,6 +290,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the rainProbability value.
      */
+    @Generated
     public Integer getRainProbability() {
         return this.rainProbability;
     }
@@ -263,6 +300,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the snowProbability value.
      */
+    @Generated
     public Integer getSnowProbability() {
         return this.snowProbability;
     }
@@ -272,6 +310,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the iceProbability value.
      */
+    @Generated
     public Integer getIceProbability() {
         return this.iceProbability;
     }
@@ -281,6 +320,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the wind value.
      */
+    @Generated
     public WindDetails getWindUnitDetails() {
         return this.wind;
     }
@@ -290,6 +330,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the windGust value.
      */
+    @Generated
     public WindDetails getWindGust() {
         return this.windGust;
     }
@@ -299,6 +340,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the totalLiquid value.
      */
+    @Generated
     public WeatherUnitDetails getTotalLiquid() {
         return this.totalLiquid;
     }
@@ -308,6 +350,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the rain value.
      */
+    @Generated
     public WeatherUnitDetails getRainUnitDetails() {
         return this.rain;
     }
@@ -317,6 +360,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the snow value.
      */
+    @Generated
     public WeatherUnitDetails getSnowUnitDetails() {
         return this.snow;
     }
@@ -326,6 +370,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the ice value.
      */
+    @Generated
     public WeatherUnitDetails getIceUnitDetails() {
         return this.ice;
     }
@@ -335,6 +380,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the hoursOfPrecipitation value.
      */
+    @Generated
     public Float getHoursOfPrecipitation() {
         return this.hoursOfPrecipitation;
     }
@@ -344,6 +390,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the hoursOfRain value.
      */
+    @Generated
     public Float getHoursOfRain() {
         return this.hoursOfRain;
     }
@@ -353,6 +400,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the hoursOfSnow value.
      */
+    @Generated
     public Float getHoursOfSnow() {
         return this.hoursOfSnow;
     }
@@ -362,6 +410,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the hoursOfIce value.
      */
+    @Generated
     public Float getHoursOfIce() {
         return this.hoursOfIce;
     }
@@ -371,6 +420,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      *
      * @return the cloudCover value.
      */
+    @Generated
     public Integer getCloudCover() {
         return this.cloudCover;
     }
@@ -378,6 +428,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -417,6 +468,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DailyForecastDetail.
      */
+    @Generated
     public static DailyForecastDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DailyForecastDetail deserializedDailyForecastDetail = new DailyForecastDetail();

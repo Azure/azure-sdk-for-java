@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,42 +20,50 @@ public final class IntervalSummary implements JsonSerializable<IntervalSummary> 
     /*
      * The first minute to which the summary applies.
      */
+    @Generated
     private Integer startMinute;
 
     /*
      * The last minute to which the summary applies.
      */
+    @Generated
     private Integer endMinute;
 
     /*
      * The number of minutes for which the summary applies.
      */
+    @Generated
     private Integer totalMinutes;
 
     /*
      * Short summary phrase. Phrase length is approximately 25 characters.
      */
+    @Generated
     private String shortDescription;
 
     /*
      * Brief summary phrase. Phrase length is approximately 60 characters.
      */
+    @Generated
     private String briefDescription;
 
     /*
      * Long summary phrase. Phrase length is 60+ characters.
      */
+    @Generated
     private String longPhrase;
 
     /*
      * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure
      * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      */
+    @Generated
     private IconCode iconCode;
 
     /**
      * Set default IntervalSummary constructor to private
      */
+    @Generated
     private IntervalSummary() {
     }
 
@@ -63,6 +72,7 @@ public final class IntervalSummary implements JsonSerializable<IntervalSummary> 
      *
      * @return the startMinute value.
      */
+    @Generated
     public Integer getStartMinute() {
         return this.startMinute;
     }
@@ -72,6 +82,7 @@ public final class IntervalSummary implements JsonSerializable<IntervalSummary> 
      *
      * @return the endMinute value.
      */
+    @Generated
     public Integer getEndMinute() {
         return this.endMinute;
     }
@@ -81,6 +92,7 @@ public final class IntervalSummary implements JsonSerializable<IntervalSummary> 
      *
      * @return the totalMinutes value.
      */
+    @Generated
     public Integer getTotalMinutes() {
         return this.totalMinutes;
     }
@@ -90,6 +102,7 @@ public final class IntervalSummary implements JsonSerializable<IntervalSummary> 
      *
      * @return the shortDescription value.
      */
+    @Generated
     public String getShortDescription() {
         return this.shortDescription;
     }
@@ -99,6 +112,7 @@ public final class IntervalSummary implements JsonSerializable<IntervalSummary> 
      *
      * @return the briefDescription value.
      */
+    @Generated
     public String getBriefDescription() {
         return this.briefDescription;
     }
@@ -108,6 +122,7 @@ public final class IntervalSummary implements JsonSerializable<IntervalSummary> 
      *
      * @return the longPhrase value.
      */
+    @Generated
     public String getLongPhrase() {
         return this.longPhrase;
     }
@@ -118,6 +133,7 @@ public final class IntervalSummary implements JsonSerializable<IntervalSummary> 
      *
      * @return the iconCode value.
      */
+    @Generated
     public IconCode getIconCode() {
         return this.iconCode;
     }
@@ -125,6 +141,7 @@ public final class IntervalSummary implements JsonSerializable<IntervalSummary> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -146,6 +163,7 @@ public final class IntervalSummary implements JsonSerializable<IntervalSummary> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the IntervalSummary.
      */
+    @Generated
     public static IntervalSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IntervalSummary deserializedIntervalSummary = new IntervalSummary();

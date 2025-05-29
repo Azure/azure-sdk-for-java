@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.models.GeoPolygon;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.CoreUtils;
@@ -27,42 +28,50 @@ public final class WeatherWindow implements JsonSerializable<WeatherWindow> {
     /*
      * Location of the point on the left side of the window at the time of the timeframe.
      */
+    @Generated
     private LatLongPair topLeft;
 
     /*
      * Location of the point on the right side of the window at the end of the timeframe.
      */
+    @Generated
     private LatLongPair bottomRight;
 
     /*
      * DateTime of the beginning of the window of movement, displayed in ISO8601 format.
      */
+    @Generated
     private OffsetDateTime beginTimestamp;
 
     /*
      * DateTime of the end of the window of movement, displayed in ISO8601 format.
      */
+    @Generated
     private OffsetDateTime endTimestamp;
 
     /*
      * Storm status at the beginning of the window.
      */
+    @Generated
     private String beginStatus;
 
     /*
      * Storm status at the end of the window.
      */
+    @Generated
     private String endStatus;
 
     /*
      * Displayed when windowGeometry=true in request. GeoJSON object containing coordinates describing the window of
      * movement during the specified timeframe.
      */
+    @Generated
     private GeoJsonGeometry geometry;
 
     /**
      * Set default WeatherWindow constructor to private
      */
+    @Generated
     private WeatherWindow() {
     }
 
@@ -71,6 +80,7 @@ public final class WeatherWindow implements JsonSerializable<WeatherWindow> {
      *
      * @return the topLeft value.
      */
+    @Generated
     public GeoPosition getTopLeft() {
         return new GeoPosition(this.topLeft.getLongitude(), this.topLeft.getLatitude());
     }
@@ -80,6 +90,7 @@ public final class WeatherWindow implements JsonSerializable<WeatherWindow> {
      *
      * @return the bottomRight value.
      */
+    @Generated
     public GeoPosition getBottomRight() {
         return new GeoPosition(this.bottomRight.getLongitude(), this.bottomRight.getLatitude());
     }
@@ -90,6 +101,7 @@ public final class WeatherWindow implements JsonSerializable<WeatherWindow> {
      *
      * @return the beginTimestamp value.
      */
+    @Generated
     public OffsetDateTime getBeginTimestamp() {
         return this.beginTimestamp;
     }
@@ -99,6 +111,7 @@ public final class WeatherWindow implements JsonSerializable<WeatherWindow> {
      *
      * @return the endTimestamp value.
      */
+    @Generated
     public OffsetDateTime getEndTimestamp() {
         return this.endTimestamp;
     }
@@ -108,6 +121,7 @@ public final class WeatherWindow implements JsonSerializable<WeatherWindow> {
      *
      * @return the beginStatus value.
      */
+    @Generated
     public String getBeginStatus() {
         return this.beginStatus;
     }
@@ -117,6 +131,7 @@ public final class WeatherWindow implements JsonSerializable<WeatherWindow> {
      *
      * @return the endStatus value.
      */
+    @Generated
     public String getEndStatus() {
         return this.endStatus;
     }
@@ -124,6 +139,7 @@ public final class WeatherWindow implements JsonSerializable<WeatherWindow> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -147,6 +163,7 @@ public final class WeatherWindow implements JsonSerializable<WeatherWindow> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the WeatherWindow.
      */
+    @Generated
     public static WeatherWindow fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WeatherWindow deserializedWeatherWindow = new WeatherWindow();

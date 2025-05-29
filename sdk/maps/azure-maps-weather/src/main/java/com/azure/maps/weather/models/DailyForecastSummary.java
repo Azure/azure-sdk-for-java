@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,31 +25,37 @@ public final class DailyForecastSummary implements JsonSerializable<DailyForecas
      * Date and time that the summary is in effect, displayed in ISO 8601 format, for example,
      * 2019-10-27T19:39:57-08:00.
      */
+    @Generated
     private OffsetDateTime startDate;
 
     /*
      * Date and time that the summary period ends, displayed in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00.
      */
+    @Generated
     private OffsetDateTime endDate;
 
     /*
      * severity
      */
+    @Generated
     private Integer severity;
 
     /*
      * Summary phrase of the daily forecast. Displayed in specified language.
      */
+    @Generated
     private String phrase;
 
     /*
      * one or 2 word(s) to summarize the phrase.
      */
+    @Generated
     private String category;
 
     /**
      * Set default DailyForecastSummary constructor to private
      */
+    @Generated
     private DailyForecastSummary() {
     }
 
@@ -58,6 +65,7 @@ public final class DailyForecastSummary implements JsonSerializable<DailyForecas
      *
      * @return the startDate value.
      */
+    @Generated
     public OffsetDateTime getStartDate() {
         return this.startDate;
     }
@@ -68,6 +76,7 @@ public final class DailyForecastSummary implements JsonSerializable<DailyForecas
      *
      * @return the endDate value.
      */
+    @Generated
     public OffsetDateTime getEndDate() {
         return this.endDate;
     }
@@ -77,6 +86,7 @@ public final class DailyForecastSummary implements JsonSerializable<DailyForecas
      *
      * @return the severity value.
      */
+    @Generated
     public Integer getSeverity() {
         return this.severity;
     }
@@ -86,6 +96,7 @@ public final class DailyForecastSummary implements JsonSerializable<DailyForecas
      *
      * @return the phrase value.
      */
+    @Generated
     public String getPhrase() {
         return this.phrase;
     }
@@ -95,6 +106,7 @@ public final class DailyForecastSummary implements JsonSerializable<DailyForecas
      *
      * @return the category value.
      */
+    @Generated
     public String getCategory() {
         return this.category;
     }
@@ -102,6 +114,7 @@ public final class DailyForecastSummary implements JsonSerializable<DailyForecas
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -123,6 +136,7 @@ public final class DailyForecastSummary implements JsonSerializable<DailyForecas
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DailyForecastSummary.
      */
+    @Generated
     public static DailyForecastSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DailyForecastSummary deserializedDailyForecastSummary = new DailyForecastSummary();

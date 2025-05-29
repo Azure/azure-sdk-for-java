@@ -4,6 +4,7 @@
 
 package com.azure.maps.weather.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableEnum;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -28,36 +29,43 @@ public final class DailyDuration implements ExpandableEnum<Integer>, JsonSeriali
     /**
      * 1 day.
      */
+    @Generated
     public static final DailyDuration ONE_DAY = fromValue(1);
 
     /**
      * 2 days.
      */
+    @Generated
     public static final DailyDuration TWO_DAYS = fromValue(2);
 
     /**
      * 3 days.
      */
+    @Generated
     public static final DailyDuration THREE_DAYS = fromValue(3);
 
     /**
      * 4 days.
      */
+    @Generated
     public static final DailyDuration FOUR_DAYS = fromValue(4);
 
     /**
      * 5 days.
      */
+    @Generated
     public static final DailyDuration FIVE_DAYS = fromValue(5);
 
     /**
      * 6 days.
      */
+    @Generated
     public static final DailyDuration SIX_DAYS = fromValue(6);
 
     /**
      * 7 days.
      */
+    @Generated
     public static final DailyDuration SEVEN_DAYS = fromValue(7);
 
     private final Integer value;
@@ -73,6 +81,7 @@ public final class DailyDuration implements ExpandableEnum<Integer>, JsonSeriali
      * @return the corresponding DailyDuration.
      * @throws IllegalArgumentException if value is null.
      */
+    @Generated
     public static DailyDuration fromValue(Integer value) {
         if (value == null) {
             throw new IllegalArgumentException("'value' cannot be null.");
@@ -85,6 +94,7 @@ public final class DailyDuration implements ExpandableEnum<Integer>, JsonSeriali
      * 
      * @return Known DailyDuration values.
      */
+    @Generated
     public static Collection<DailyDuration> values() {
         return new ArrayList<>(VALUES.values());
     }
@@ -94,6 +104,7 @@ public final class DailyDuration implements ExpandableEnum<Integer>, JsonSeriali
      * 
      * @return the value of the DailyDuration instance.
      */
+    @Generated
     @Override
     public Integer getValue() {
         return this.value;
@@ -102,6 +113,7 @@ public final class DailyDuration implements ExpandableEnum<Integer>, JsonSeriali
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeInt(getValue());
@@ -116,6 +128,7 @@ public final class DailyDuration implements ExpandableEnum<Integer>, JsonSeriali
      * @throws IOException If an error occurs while reading the DailyDuration.
      * @throws IllegalStateException If unexpected JSON token is found.
      */
+    @Generated
     public static DailyDuration fromJson(JsonReader jsonReader) throws IOException {
         JsonToken nextToken = jsonReader.nextToken();
         if (nextToken == JsonToken.NULL) {
@@ -128,16 +141,19 @@ public final class DailyDuration implements ExpandableEnum<Integer>, JsonSeriali
         return DailyDuration.fromValue(jsonReader.getInt());
     }
 
+    @Generated
     @Override
     public String toString() {
         return Objects.toString(this.value);
     }
 
+    @Generated
     @Override
     public boolean equals(Object obj) {
         return this == obj;
     }
 
+    @Generated
     @Override
     public int hashCode() {
         return Objects.hashCode(this.value);
