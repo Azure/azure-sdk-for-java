@@ -4,6 +4,7 @@
 
 package com.azure.data.appconfiguration.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,11 +17,13 @@ public final class SnapshotComposition extends ExpandableStringEnum<SnapshotComp
     /**
      * Static value key for SnapshotComposition.
      */
+    @Generated
     public static final SnapshotComposition KEY = fromString("key");
 
     /**
      * Static value key_label for SnapshotComposition.
      */
+    @Generated
     public static final SnapshotComposition KEY_LABEL = fromString("key_label");
 
     /**
@@ -28,6 +31,7 @@ public final class SnapshotComposition extends ExpandableStringEnum<SnapshotComp
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SnapshotComposition() {
     }
@@ -38,6 +42,7 @@ public final class SnapshotComposition extends ExpandableStringEnum<SnapshotComp
      * @param name a name to look for.
      * @return the corresponding SnapshotComposition.
      */
+    @Generated
     public static SnapshotComposition fromString(String name) {
         return fromString(name, SnapshotComposition.class);
     }
@@ -47,6 +52,7 @@ public final class SnapshotComposition extends ExpandableStringEnum<SnapshotComp
      * 
      * @return known SnapshotComposition values.
      */
+    @Generated
     public static Collection<SnapshotComposition> values() {
         return values(SnapshotComposition.class);
     }
