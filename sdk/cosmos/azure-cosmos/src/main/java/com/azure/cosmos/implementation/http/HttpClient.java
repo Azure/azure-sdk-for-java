@@ -61,16 +61,13 @@ public interface HttpClient {
             ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
         if (http2CfgAccessor.isEffectivelyEnabled(http2Cfg)) {
-            ReactorNettyClient.ensureLogsEnabled();
-            fixedConnectionProviderBuilder
-                .metrics(true)
-                .allocationStrategy(
-                    Http2AllocationStrategy.builder()
-                        .minConnections(http2CfgAccessor.getEffectiveMinConnectionPoolSize(http2Cfg))
-                        .maxConnections(http2CfgAccessor.getEffectiveMaxConnectionPoolSize(http2Cfg))
-                        .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))
-                        .build()
-                );
+            fixedConnectionProviderBuilder.allocationStrategy(
+                Http2AllocationStrategy.builder()
+                                       .minConnections(http2CfgAccessor.getEffectiveMinConnectionPoolSize(http2Cfg))
+                                       .maxConnections(http2CfgAccessor.getEffectiveMaxConnectionPoolSize(http2Cfg))
+                                       .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))
+                                       .build()
+            );
         }
 
         return ReactorNettyClient.createWithConnectionProvider(fixedConnectionProviderBuilder.build(),

@@ -149,7 +149,7 @@ public class ReactorNettyClient implements HttpClient {
                     httpResponseDecoderSpec.maxInitialLineLength(this.httpClientConfig.getMaxInitialLineLength())
                         .maxHeaderSize(this.httpClientConfig.getMaxHeaderSize())
                         .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
-                        .validateHeaders(false));
+                        .validateHeaders(true));
 
         ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor =
             ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
@@ -163,7 +163,6 @@ public class ReactorNettyClient implements HttpClient {
                             true
                         )))
                 .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
-                .metrics(true, tag -> tag)
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:
                     // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
@@ -260,23 +259,6 @@ public class ReactorNettyClient implements HttpClient {
     public void shutdown() {
         if (this.connectionProvider != null) {
             this.connectionProvider.dispose();
-        }
-    }
-
-    private static final String lockObject = UUIDs.nonBlockingRandomUUID().toString();
-    private static boolean loggingIsEnabled = false;
-
-    public static void ensureLogsEnabled() {
-        if (loggingIsEnabled) {
-            return;
-        }
-        synchronized (lockObject) {
-            if (loggingIsEnabled) {
-                return;
-            }
-
-            Metrics.addRegistry(Slf4jLoggingRegistryFactory.create(10, "INFO"));
-            loggingIsEnabled = true;
         }
     }
 
