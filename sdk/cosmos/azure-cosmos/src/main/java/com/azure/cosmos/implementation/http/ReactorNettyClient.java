@@ -156,46 +156,46 @@ public class ReactorNettyClient implements HttpClient {
             ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
         if (http2CfgAccessor.isEffectivelyEnabled(http2Cfg)) {
-            this.httpClient = this.httpClient
-                .secure(sslContextSpec ->
-                    sslContextSpec.sslContext(
-                        configs.getSslContext(
-                            httpClientConfig.isServerCertValidationDisabled(),
-                            true
-                        )))
-                .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
-                .metrics(true, tag -> tag)
-                .doOnDisconnected(connection -> {
-                    // The response header clean up pipeline is being added due to an error getting when calling gateway:
-                    // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
-                    // validateHeaders(false) does not work for http2
-                    ChannelPipeline channelPipeline = connection.channel().pipeline();
-                    Map<String, ChannelHandler> dummy = channelPipeline.toMap();
-                    logger.info("====================================================================================");
-                    logger.info("DISCONNECT HTTP HANDLERS: {}", this);
-                    logger.info("====================================================================================");
-                    dummy.entrySet().forEach(entry -> logger.info("Http2Handler {}: {}", entry.getKey(), entry.getValue()));
-                    logger.info("====================================================================================");
-                })
-                .doOnConnected((connection -> {
-                    // The response header clean up pipeline is being added due to an error getting when calling gateway:
-                    // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
-                    // validateHeaders(false) does not work for http2
-                    ChannelPipeline channelPipeline = connection.channel().pipeline();
-                    if (channelPipeline.get("reactor.left.httpCodec") != null) {
-                        channelPipeline.addAfter(
-                            "reactor.left.httpCodec",
-                            "customHeaderCleaner",
-                            new Http2ResponseHeaderCleanerHandler());
-                    }
+            if (!Configs.shouldDisableCustomHttp2HeaderCleaner()) {
+                this.httpClient = this.httpClient
+                    .secure(sslContextSpec ->
+                        sslContextSpec.sslContext(
+                            configs.getSslContext(
+                                httpClientConfig.isServerCertValidationDisabled(),
+                                true
+                            )))
+                    .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
+                    .metrics(true, tag -> tag)
+                    .doOnConnected((connection -> {
+                        // The response header clean up pipeline is being added due to an error getting when calling gateway:
+                        // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
+                        // validateHeaders(false) does not work for http2
+                        ChannelPipeline channelPipeline = connection.channel().pipeline();
+                        if (channelPipeline.get("reactor.left.httpCodec") != null) {
+                            channelPipeline.addAfter(
+                                "reactor.left.httpCodec",
+                                "customHeaderCleaner",
+                                new Http2ResponseHeaderCleanerHandler());
+                        }
 
-                    Map<String, ChannelHandler> dummy = channelPipeline.toMap();
-                    logger.info("====================================================================================");
-                    logger.info("CONNECT HTTP HANDLERS: {}", this);
-                    logger.info("====================================================================================");
-                    dummy.entrySet().forEach(entry -> logger.info("Http2Handler {}: {}", entry.getKey(), entry.getValue()));
-                    logger.info("====================================================================================");
-                }));
+                        Map<String, ChannelHandler> dummy = channelPipeline.toMap();
+                        logger.info("====================================================================================");
+                        logger.info("CONNECT HTTP HANDLERS: {}", this);
+                        logger.info("====================================================================================");
+                        dummy.entrySet().forEach(entry -> logger.info("Http2Handler {}: {}", entry.getKey(), entry.getValue()));
+                        logger.info("====================================================================================");
+                    }));
+            } else {
+                this.httpClient = this.httpClient
+                    .secure(sslContextSpec ->
+                        sslContextSpec.sslContext(
+                            configs.getSslContext(
+                                httpClientConfig.isServerCertValidationDisabled(),
+                                true
+                            )))
+                    .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
+                    .metrics(true, tag -> tag);
+            }
         }
     }
 

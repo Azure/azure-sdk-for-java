@@ -689,8 +689,8 @@ abstract class AsyncBenchmark<T> {
             logger.info("MaxLogCount: {}, samplingIntervalInMs: {}", this.maxLogCount, samplingIntervalInMs);
             executor = Executors.newSingleThreadScheduledExecutor(new CosmosDaemonThreadFactory("AsyncBenchmark_logSampling"));
             executor.scheduleAtFixedRate(() -> {
-                int snapshot = this.logCountInSamplingInterval.getAndSet(0);
-                logger.info("Resetting number of logs ({}-0)...", snapshot);
+                    int snapshot = this.logCountInSamplingInterval.getAndSet(0);
+                    logger.info("Resetting number of logs ({}-0)...", snapshot);
                 },
                 samplingIntervalInMs,
                 samplingIntervalInMs,
@@ -713,7 +713,6 @@ abstract class AsyncBenchmark<T> {
             int previousLogCount = this.logCountInSamplingInterval.getAndIncrement();
 
             if (previousLogCount <= this.maxLogCount) {
-                logger.info("SHOULD LOG: {}, isThresholdViolated: {}, isCompleted: {}, isFailure: {}", shouldLog, diagnosticsContext.isThresholdViolated(), diagnosticsContext.isCompleted(), diagnosticsContext.isFailure());
                 logger.info(
                     "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
                     diagnosticsContext.getAccountName(),
@@ -723,7 +722,6 @@ abstract class AsyncBenchmark<T> {
                     diagnosticsContext.getSubStatusCode(),
                     diagnosticsContext.toJson());
             } else if (previousLogCount == this.maxLogCount + 1) {
-                logger.info("SHOULD LOG: {}", shouldLog);
                 logger.info("Already logged {} diagnostics - stopping until sampling interval is reset.", this.maxLogCount);
             }
         }
