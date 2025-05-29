@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,6 +22,7 @@ public final class RequestData extends MonitorDomain {
     /*
      * Identifier of a request call instance. Used for correlation between request and other telemetry items.
      */
+    @Generated
     private String id;
 
     /*
@@ -28,46 +30,55 @@ public final class RequestData extends MonitorDomain {
      * grouping of requests. For HTTP requests it represents the HTTP method and URL path template like 'GET
      * /values/{id}'.
      */
+    @Generated
     private String name;
 
     /*
      * Request duration in format: DD.HH:MM:SS.MMMMMM. Must be less than 1000 days.
      */
+    @Generated
     private String duration;
 
     /*
      * Indication of successful or unsuccessful call.
      */
+    @Generated
     private boolean success;
 
     /*
      * Result of a request execution. HTTP status code for HTTP requests.
      */
+    @Generated
     private String responseCode;
 
     /*
      * Source of the request. Examples are the instrumentation key of the caller or the ip address of the caller.
      */
+    @Generated
     private String source;
 
     /*
      * Request URL with all query string parameters.
      */
+    @Generated
     private String url;
 
     /*
      * Collection of custom properties.
      */
+    @Generated
     private Map<String, String> properties;
 
     /*
      * Collection of custom measurements.
      */
+    @Generated
     private Map<String, Double> measurements;
 
     /**
      * Creates an instance of RequestData class.
      */
+    @Generated
     public RequestData() {
     }
 
@@ -77,6 +88,7 @@ public final class RequestData extends MonitorDomain {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -88,6 +100,7 @@ public final class RequestData extends MonitorDomain {
      * @param id the id value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setId(String id) {
         this.id = id;
         return this;
@@ -100,6 +113,7 @@ public final class RequestData extends MonitorDomain {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -112,6 +126,7 @@ public final class RequestData extends MonitorDomain {
      * @param name the name value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setName(String name) {
         this.name = name;
         return this;
@@ -122,6 +137,7 @@ public final class RequestData extends MonitorDomain {
      * 
      * @return the duration value.
      */
+    @Generated
     public String getDuration() {
         return this.duration;
     }
@@ -132,6 +148,7 @@ public final class RequestData extends MonitorDomain {
      * @param duration the duration value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setDuration(String duration) {
         this.duration = duration;
         return this;
@@ -142,6 +159,7 @@ public final class RequestData extends MonitorDomain {
      * 
      * @return the success value.
      */
+    @Generated
     public boolean isSuccess() {
         return this.success;
     }
@@ -152,6 +170,7 @@ public final class RequestData extends MonitorDomain {
      * @param success the success value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setSuccess(boolean success) {
         this.success = success;
         return this;
@@ -162,6 +181,7 @@ public final class RequestData extends MonitorDomain {
      * 
      * @return the responseCode value.
      */
+    @Generated
     public String getResponseCode() {
         return this.responseCode;
     }
@@ -172,6 +192,7 @@ public final class RequestData extends MonitorDomain {
      * @param responseCode the responseCode value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setResponseCode(String responseCode) {
         this.responseCode = responseCode;
         return this;
@@ -183,6 +204,7 @@ public final class RequestData extends MonitorDomain {
      * 
      * @return the source value.
      */
+    @Generated
     public String getSource() {
         return this.source;
     }
@@ -194,6 +216,7 @@ public final class RequestData extends MonitorDomain {
      * @param source the source value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setSource(String source) {
         this.source = source;
         return this;
@@ -204,6 +227,7 @@ public final class RequestData extends MonitorDomain {
      * 
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -214,6 +238,7 @@ public final class RequestData extends MonitorDomain {
      * @param url the url value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setUrl(String url) {
         this.url = url;
         return this;
@@ -224,6 +249,7 @@ public final class RequestData extends MonitorDomain {
      * 
      * @return the properties value.
      */
+    @Generated
     public Map<String, String> getProperties() {
         return this.properties;
     }
@@ -234,6 +260,7 @@ public final class RequestData extends MonitorDomain {
      * @param properties the properties value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
@@ -244,6 +271,7 @@ public final class RequestData extends MonitorDomain {
      * 
      * @return the measurements value.
      */
+    @Generated
     public Map<String, Double> getMeasurements() {
         return this.measurements;
     }
@@ -254,6 +282,7 @@ public final class RequestData extends MonitorDomain {
      * @param measurements the measurements value to set.
      * @return the RequestData object itself.
      */
+    @Generated
     public RequestData setMeasurements(Map<String, Double> measurements) {
         this.measurements = measurements;
         return this;
@@ -262,6 +291,7 @@ public final class RequestData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RequestData setVersion(int version) {
         super.setVersion(version);
@@ -271,6 +301,7 @@ public final class RequestData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -301,6 +332,7 @@ public final class RequestData extends MonitorDomain {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RequestData.
      */
+    @Generated
     public static RequestData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RequestData deserializedRequestData = new RequestData();

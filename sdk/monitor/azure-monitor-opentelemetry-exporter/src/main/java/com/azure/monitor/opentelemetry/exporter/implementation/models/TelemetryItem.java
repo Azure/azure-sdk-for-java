@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -29,11 +30,13 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      * Envelope version. For internal use only. By assigning this the default, it will not be serialized within the
      * payload unless changed to a value other than #1.
      */
+    @Generated
     private Integer version;
 
     /*
      * Type name of telemetry data item.
      */
+    @Generated
     private String name;
 
     /*
@@ -44,36 +47,43 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      * managed code consumers should not use format 'O' for parsing as it specifies a fixed length. Example:
      * 2009-06-15T13:45:30.0000000Z.
      */
+    @Generated
     private OffsetDateTime time;
 
     /*
      * Sampling rate used in application. This telemetry item represents 100 / sampleRate actual telemetry items.
      */
+    @Generated
     private Float sampleRate;
 
     /*
      * Sequence field used to track absolute order of uploaded events.
      */
+    @Generated
     private String sequence;
 
     /*
      * The instrumentation key of the Application Insights resource.
      */
+    @Generated
     private String instrumentationKey;
 
     /*
      * Key/value collection of context properties. See ContextTagKeys for information on available properties.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * Telemetry data item.
      */
+    @Generated
     private MonitorBase data;
 
     /**
      * Creates an instance of TelemetryItem class.
      */
+    @Generated
     public TelemetryItem() {
     }
 
@@ -83,6 +93,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      *
      * @return the version value.
      */
+    @Generated
     public Integer getVersion() {
         return this.version;
     }
@@ -94,6 +105,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      * @param version the version value to set.
      * @return the TelemetryItem object itself.
      */
+    @Generated
     public TelemetryItem setVersion(Integer version) {
         this.version = version;
         return this;
@@ -104,6 +116,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -114,6 +127,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      * @param name the name value to set.
      * @return the TelemetryItem object itself.
      */
+    @Generated
     public TelemetryItem setName(String name) {
         this.name = name;
         return this;
@@ -129,6 +143,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      *
      * @return the time value.
      */
+    @Generated
     public OffsetDateTime getTime() {
         return this.time;
     }
@@ -144,6 +159,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      * @param time the time value to set.
      * @return the TelemetryItem object itself.
      */
+    @Generated
     public TelemetryItem setTime(OffsetDateTime time) {
         this.time = time;
         return this;
@@ -155,6 +171,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      *
      * @return the sampleRate value.
      */
+    @Generated
     public Float getSampleRate() {
         return this.sampleRate;
     }
@@ -166,6 +183,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      * @param sampleRate the sampleRate value to set.
      * @return the TelemetryItem object itself.
      */
+    @Generated
     public TelemetryItem setSampleRate(Float sampleRate) {
         this.sampleRate = sampleRate;
         return this;
@@ -176,6 +194,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      *
      * @return the sequence value.
      */
+    @Generated
     public String getSequence() {
         return this.sequence;
     }
@@ -186,6 +205,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      * @param sequence the sequence value to set.
      * @return the TelemetryItem object itself.
      */
+    @Generated
     public TelemetryItem setSequence(String sequence) {
         this.sequence = sequence;
         return this;
@@ -196,6 +216,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      *
      * @return the instrumentationKey value.
      */
+    @Generated
     public String getInstrumentationKey() {
         return this.instrumentationKey;
     }
@@ -206,6 +227,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      * @param instrumentationKey the instrumentationKey value to set.
      * @return the TelemetryItem object itself.
      */
+    @Generated
     public TelemetryItem setInstrumentationKey(String instrumentationKey) {
         this.instrumentationKey = instrumentationKey;
         return this;
@@ -217,6 +239,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      *
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -228,6 +251,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      * @param tags the tags value to set.
      * @return the TelemetryItem object itself.
      */
+    @Generated
     public TelemetryItem setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -238,6 +262,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      *
      * @return the data value.
      */
+    @Generated
     public MonitorBase getData() {
         return this.data;
     }
@@ -248,6 +273,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      * @param data the data value to set.
      * @return the TelemetryItem object itself.
      */
+    @Generated
     public TelemetryItem setData(MonitorBase data) {
         this.data = data;
         return this;
@@ -256,6 +282,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -280,6 +307,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TelemetryItem.
      */
+    @Generated
     public static TelemetryItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TelemetryItem deserializedTelemetryItem = new TelemetryItem();
@@ -333,8 +361,8 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
     }
 
     public TelemetryItem setConnectionString(StatsbeatConnectionString connectionString) {
-        instrumentationKey = connectionString.getInstrumentationKey();
         // TODO (heya) turn StatsbeatConnectionString into a real connection string?
+        instrumentationKey = connectionString.getInstrumentationKey();
         this.connectionString = "InstrumentationKey=" + instrumentationKey + ";IngestionEndpoint="
             + connectionString.getIngestionEndpoint();
         return this;

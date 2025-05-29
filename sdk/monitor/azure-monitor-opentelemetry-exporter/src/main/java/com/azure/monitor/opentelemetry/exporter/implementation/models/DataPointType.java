@@ -4,6 +4,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class DataPointType extends ExpandableStringEnum<DataPointType> {
     /**
      * Static value Measurement for DataPointType.
      */
+    @Generated
     public static final DataPointType MEASUREMENT = fromString("Measurement");
 
     /**
      * Static value Aggregation for DataPointType.
      */
+    @Generated
     public static final DataPointType AGGREGATION = fromString("Aggregation");
 
     /**
@@ -26,6 +29,7 @@ public final class DataPointType extends ExpandableStringEnum<DataPointType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataPointType() {
     }
@@ -36,6 +40,7 @@ public final class DataPointType extends ExpandableStringEnum<DataPointType> {
      * @param name a name to look for.
      * @return the corresponding DataPointType.
      */
+    @Generated
     public static DataPointType fromString(String name) {
         return fromString(name, DataPointType.class);
     }
@@ -45,6 +50,7 @@ public final class DataPointType extends ExpandableStringEnum<DataPointType> {
      * 
      * @return known DataPointType values.
      */
+    @Generated
     public static Collection<DataPointType> values() {
         return values(DataPointType.class);
     }

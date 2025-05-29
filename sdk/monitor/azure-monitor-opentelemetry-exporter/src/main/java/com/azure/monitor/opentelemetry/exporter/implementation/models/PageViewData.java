@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,42 +22,50 @@ public final class PageViewData extends MonitorDomain {
     /*
      * Identifier of a page view instance. Used for correlation between page view and other telemetry items.
      */
+    @Generated
     private String id;
 
     /*
      * Event name. Keep it low cardinality to allow proper grouping and useful metrics.
      */
+    @Generated
     private String name;
 
     /*
      * Request URL with all query string parameters
      */
+    @Generated
     private String url;
 
     /*
      * Request duration in format: DD.HH:MM:SS.MMMMMM. For a page view (PageViewData), this is the duration. For a page
      * view with performance information (PageViewPerfData), this is the page load time. Must be less than 1000 days.
      */
+    @Generated
     private String duration;
 
     /*
      * Fully qualified page URI or URL of the referring page; if unknown, leave blank
      */
+    @Generated
     private String referredUri;
 
     /*
      * Collection of custom properties.
      */
+    @Generated
     private Map<String, String> properties;
 
     /*
      * Collection of custom measurements.
      */
+    @Generated
     private Map<String, Double> measurements;
 
     /**
      * Creates an instance of PageViewData class.
      */
+    @Generated
     public PageViewData() {
     }
 
@@ -66,6 +75,7 @@ public final class PageViewData extends MonitorDomain {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -77,6 +87,7 @@ public final class PageViewData extends MonitorDomain {
      * @param id the id value to set.
      * @return the PageViewData object itself.
      */
+    @Generated
     public PageViewData setId(String id) {
         this.id = id;
         return this;
@@ -87,6 +98,7 @@ public final class PageViewData extends MonitorDomain {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -97,6 +109,7 @@ public final class PageViewData extends MonitorDomain {
      * @param name the name value to set.
      * @return the PageViewData object itself.
      */
+    @Generated
     public PageViewData setName(String name) {
         this.name = name;
         return this;
@@ -107,6 +120,7 @@ public final class PageViewData extends MonitorDomain {
      * 
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -117,6 +131,7 @@ public final class PageViewData extends MonitorDomain {
      * @param url the url value to set.
      * @return the PageViewData object itself.
      */
+    @Generated
     public PageViewData setUrl(String url) {
         this.url = url;
         return this;
@@ -129,6 +144,7 @@ public final class PageViewData extends MonitorDomain {
      * 
      * @return the duration value.
      */
+    @Generated
     public String getDuration() {
         return this.duration;
     }
@@ -141,6 +157,7 @@ public final class PageViewData extends MonitorDomain {
      * @param duration the duration value to set.
      * @return the PageViewData object itself.
      */
+    @Generated
     public PageViewData setDuration(String duration) {
         this.duration = duration;
         return this;
@@ -151,6 +168,7 @@ public final class PageViewData extends MonitorDomain {
      * 
      * @return the referredUri value.
      */
+    @Generated
     public String getReferredUri() {
         return this.referredUri;
     }
@@ -161,6 +179,7 @@ public final class PageViewData extends MonitorDomain {
      * @param referredUri the referredUri value to set.
      * @return the PageViewData object itself.
      */
+    @Generated
     public PageViewData setReferredUri(String referredUri) {
         this.referredUri = referredUri;
         return this;
@@ -171,6 +190,7 @@ public final class PageViewData extends MonitorDomain {
      * 
      * @return the properties value.
      */
+    @Generated
     public Map<String, String> getProperties() {
         return this.properties;
     }
@@ -181,6 +201,7 @@ public final class PageViewData extends MonitorDomain {
      * @param properties the properties value to set.
      * @return the PageViewData object itself.
      */
+    @Generated
     public PageViewData setProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
@@ -191,6 +212,7 @@ public final class PageViewData extends MonitorDomain {
      * 
      * @return the measurements value.
      */
+    @Generated
     public Map<String, Double> getMeasurements() {
         return this.measurements;
     }
@@ -201,6 +223,7 @@ public final class PageViewData extends MonitorDomain {
      * @param measurements the measurements value to set.
      * @return the PageViewData object itself.
      */
+    @Generated
     public PageViewData setMeasurements(Map<String, Double> measurements) {
         this.measurements = measurements;
         return this;
@@ -209,6 +232,7 @@ public final class PageViewData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PageViewData setVersion(int version) {
         super.setVersion(version);
@@ -218,6 +242,7 @@ public final class PageViewData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -246,6 +271,7 @@ public final class PageViewData extends MonitorDomain {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PageViewData.
      */
+    @Generated
     public static PageViewData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PageViewData deserializedPageViewData = new PageViewData();
