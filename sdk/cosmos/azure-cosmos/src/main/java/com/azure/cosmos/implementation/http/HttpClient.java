@@ -63,10 +63,10 @@ public interface HttpClient {
         if (http2CfgAccessor.isEffectivelyEnabled(http2Cfg)) {
             fixedConnectionProviderBuilder.allocationStrategy(
                 Http2AllocationStrategy.builder()
-                   .minConnections(http2CfgAccessor.getEffectiveMinConnectionPoolSize(http2Cfg))
-                   .maxConnections(http2CfgAccessor.getEffectiveMaxConnectionPoolSize(http2Cfg))
-                   .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))
-                   .build()
+                    .minConnections(http2CfgAccessor.getEffectiveMinConnectionPoolSize(http2Cfg))
+                    .maxConnections(http2CfgAccessor.getEffectiveMaxConnectionPoolSize(http2Cfg))
+                    .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))
+                    .build()
             );
         }
 
