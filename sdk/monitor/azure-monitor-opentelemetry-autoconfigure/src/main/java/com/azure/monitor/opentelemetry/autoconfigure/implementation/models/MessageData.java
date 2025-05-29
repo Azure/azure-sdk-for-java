@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,26 +22,31 @@ public final class MessageData extends MonitorDomain {
     /*
      * Trace message
      */
+    @Generated
     private String message;
 
     /*
      * Trace severity level.
      */
+    @Generated
     private SeverityLevel severityLevel;
 
     /*
      * Collection of custom properties.
      */
+    @Generated
     private Map<String, String> properties;
 
     /*
      * Collection of custom measurements.
      */
+    @Generated
     private Map<String, Double> measurements;
 
     /**
      * Creates an instance of MessageData class.
      */
+    @Generated
     public MessageData() {
     }
 
@@ -49,6 +55,7 @@ public final class MessageData extends MonitorDomain {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -59,6 +66,7 @@ public final class MessageData extends MonitorDomain {
      * @param message the message value to set.
      * @return the MessageData object itself.
      */
+    @Generated
     public MessageData setMessage(String message) {
         this.message = message;
         return this;
@@ -69,6 +77,7 @@ public final class MessageData extends MonitorDomain {
      * 
      * @return the severityLevel value.
      */
+    @Generated
     public SeverityLevel getSeverityLevel() {
         return this.severityLevel;
     }
@@ -79,6 +88,7 @@ public final class MessageData extends MonitorDomain {
      * @param severityLevel the severityLevel value to set.
      * @return the MessageData object itself.
      */
+    @Generated
     public MessageData setSeverityLevel(SeverityLevel severityLevel) {
         this.severityLevel = severityLevel;
         return this;
@@ -89,6 +99,7 @@ public final class MessageData extends MonitorDomain {
      * 
      * @return the properties value.
      */
+    @Generated
     public Map<String, String> getProperties() {
         return this.properties;
     }
@@ -99,6 +110,7 @@ public final class MessageData extends MonitorDomain {
      * @param properties the properties value to set.
      * @return the MessageData object itself.
      */
+    @Generated
     public MessageData setProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
@@ -109,6 +121,7 @@ public final class MessageData extends MonitorDomain {
      * 
      * @return the measurements value.
      */
+    @Generated
     public Map<String, Double> getMeasurements() {
         return this.measurements;
     }
@@ -119,6 +132,7 @@ public final class MessageData extends MonitorDomain {
      * @param measurements the measurements value to set.
      * @return the MessageData object itself.
      */
+    @Generated
     public MessageData setMeasurements(Map<String, Double> measurements) {
         this.measurements = measurements;
         return this;
@@ -127,6 +141,7 @@ public final class MessageData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MessageData setVersion(int version) {
         super.setVersion(version);
@@ -136,6 +151,7 @@ public final class MessageData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -161,6 +177,7 @@ public final class MessageData extends MonitorDomain {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MessageData.
      */
+    @Generated
     public static MessageData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MessageData deserializedMessageData = new MessageData();

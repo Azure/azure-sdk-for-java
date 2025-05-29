@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,21 +20,25 @@ public final class Exception extends DocumentIngress {
     /*
      * Telemetry type. Types not defined in enum will get replaced with a 'Unknown' type.
      */
+    @Generated
     private DocumentType documentType = DocumentType.EXCEPTION;
 
     /*
      * Exception type name.
      */
+    @Generated
     private String exceptionType;
 
     /*
      * Exception message.
      */
+    @Generated
     private String exceptionMessage;
 
     /**
      * Creates an instance of Exception class.
      */
+    @Generated
     public Exception() {
     }
 
@@ -42,6 +47,7 @@ public final class Exception extends DocumentIngress {
      * 
      * @return the documentType value.
      */
+    @Generated
     @Override
     public DocumentType getDocumentType() {
         return this.documentType;
@@ -52,6 +58,7 @@ public final class Exception extends DocumentIngress {
      * 
      * @return the exceptionType value.
      */
+    @Generated
     public String getExceptionType() {
         return this.exceptionType;
     }
@@ -62,6 +69,7 @@ public final class Exception extends DocumentIngress {
      * @param exceptionType the exceptionType value to set.
      * @return the Exception object itself.
      */
+    @Generated
     public Exception setExceptionType(String exceptionType) {
         this.exceptionType = exceptionType;
         return this;
@@ -72,6 +80,7 @@ public final class Exception extends DocumentIngress {
      * 
      * @return the exceptionMessage value.
      */
+    @Generated
     public String getExceptionMessage() {
         return this.exceptionMessage;
     }
@@ -82,6 +91,7 @@ public final class Exception extends DocumentIngress {
      * @param exceptionMessage the exceptionMessage value to set.
      * @return the Exception object itself.
      */
+    @Generated
     public Exception setExceptionMessage(String exceptionMessage) {
         this.exceptionMessage = exceptionMessage;
         return this;
@@ -90,6 +100,7 @@ public final class Exception extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Exception setDocumentStreamIds(List<String> documentStreamIds) {
         super.setDocumentStreamIds(documentStreamIds);
@@ -99,6 +110,7 @@ public final class Exception extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Exception setProperties(List<KeyValuePairString> properties) {
         super.setProperties(properties);
@@ -108,6 +120,7 @@ public final class Exception extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -128,6 +141,7 @@ public final class Exception extends DocumentIngress {
      * to JSON null.
      * @throws IOException If an error occurs while reading the Exception.
      */
+    @Generated
     public static Exception fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Exception deserializedException = new Exception();

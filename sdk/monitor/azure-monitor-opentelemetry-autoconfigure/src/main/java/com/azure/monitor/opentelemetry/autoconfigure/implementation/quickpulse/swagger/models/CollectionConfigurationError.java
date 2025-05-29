@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class CollectionConfigurationError implements JsonSerializable<Coll
     /*
      * Error type.
      */
+    @Generated
     private CollectionConfigurationErrorType collectionConfigurationErrorType;
 
     /*
      * Error message.
      */
+    @Generated
     private String message;
 
     /*
      * Exception that led to the creation of the configuration error.
      */
+    @Generated
     private String fullException;
 
     /*
      * Custom properties to add more information to the error.
      */
+    @Generated
     private List<KeyValuePairString> data;
 
     /**
      * Creates an instance of CollectionConfigurationError class.
      */
+    @Generated
     public CollectionConfigurationError() {
     }
 
@@ -48,6 +54,7 @@ public final class CollectionConfigurationError implements JsonSerializable<Coll
      * 
      * @return the collectionConfigurationErrorType value.
      */
+    @Generated
     public CollectionConfigurationErrorType getCollectionConfigurationErrorType() {
         return this.collectionConfigurationErrorType;
     }
@@ -58,6 +65,7 @@ public final class CollectionConfigurationError implements JsonSerializable<Coll
      * @param collectionConfigurationErrorType the collectionConfigurationErrorType value to set.
      * @return the CollectionConfigurationError object itself.
      */
+    @Generated
     public CollectionConfigurationError
         setCollectionConfigurationErrorType(CollectionConfigurationErrorType collectionConfigurationErrorType) {
         this.collectionConfigurationErrorType = collectionConfigurationErrorType;
@@ -69,6 +77,7 @@ public final class CollectionConfigurationError implements JsonSerializable<Coll
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -79,6 +88,7 @@ public final class CollectionConfigurationError implements JsonSerializable<Coll
      * @param message the message value to set.
      * @return the CollectionConfigurationError object itself.
      */
+    @Generated
     public CollectionConfigurationError setMessage(String message) {
         this.message = message;
         return this;
@@ -89,6 +99,7 @@ public final class CollectionConfigurationError implements JsonSerializable<Coll
      * 
      * @return the fullException value.
      */
+    @Generated
     public String getFullException() {
         return this.fullException;
     }
@@ -99,6 +110,7 @@ public final class CollectionConfigurationError implements JsonSerializable<Coll
      * @param fullException the fullException value to set.
      * @return the CollectionConfigurationError object itself.
      */
+    @Generated
     public CollectionConfigurationError setFullException(String fullException) {
         this.fullException = fullException;
         return this;
@@ -109,6 +121,7 @@ public final class CollectionConfigurationError implements JsonSerializable<Coll
      * 
      * @return the data value.
      */
+    @Generated
     public List<KeyValuePairString> getData() {
         return this.data;
     }
@@ -119,6 +132,7 @@ public final class CollectionConfigurationError implements JsonSerializable<Coll
      * @param data the data value to set.
      * @return the CollectionConfigurationError object itself.
      */
+    @Generated
     public CollectionConfigurationError setData(List<KeyValuePairString> data) {
         this.data = data;
         return this;
@@ -127,6 +141,7 @@ public final class CollectionConfigurationError implements JsonSerializable<Coll
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -147,6 +162,7 @@ public final class CollectionConfigurationError implements JsonSerializable<Coll
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CollectionConfigurationError.
      */
+    @Generated
     public static CollectionConfigurationError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CollectionConfigurationError deserializedCollectionConfigurationError = new CollectionConfigurationError();

@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,31 +20,37 @@ public final class RemoteDependency extends DocumentIngress {
     /*
      * Telemetry type. Types not defined in enum will get replaced with a 'Unknown' type.
      */
+    @Generated
     private DocumentType documentType = DocumentType.REMOTE_DEPENDENCY;
 
     /*
      * Name of the command initiated with this dependency call, e.g., GET /username.
      */
+    @Generated
     private String name;
 
     /*
      * URL of the dependency call to the target, with all query string parameters.
      */
+    @Generated
     private String commandName;
 
     /*
      * Result code of a dependency call. Examples are SQL error code and HTTP status code.
      */
+    @Generated
     private String resultCode;
 
     /*
      * Request duration in ISO 8601 duration format, i.e., P[n]Y[n]M[n]DT[n]H[n]M[n]S or P[n]W.
      */
+    @Generated
     private String duration;
 
     /**
      * Creates an instance of RemoteDependency class.
      */
+    @Generated
     public RemoteDependency() {
     }
 
@@ -52,6 +59,7 @@ public final class RemoteDependency extends DocumentIngress {
      * 
      * @return the documentType value.
      */
+    @Generated
     @Override
     public DocumentType getDocumentType() {
         return this.documentType;
@@ -62,6 +70,7 @@ public final class RemoteDependency extends DocumentIngress {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -72,6 +81,7 @@ public final class RemoteDependency extends DocumentIngress {
      * @param name the name value to set.
      * @return the RemoteDependency object itself.
      */
+    @Generated
     public RemoteDependency setName(String name) {
         this.name = name;
         return this;
@@ -82,6 +92,7 @@ public final class RemoteDependency extends DocumentIngress {
      * 
      * @return the commandName value.
      */
+    @Generated
     public String getCommandName() {
         return this.commandName;
     }
@@ -92,6 +103,7 @@ public final class RemoteDependency extends DocumentIngress {
      * @param commandName the commandName value to set.
      * @return the RemoteDependency object itself.
      */
+    @Generated
     public RemoteDependency setCommandName(String commandName) {
         this.commandName = commandName;
         return this;
@@ -102,6 +114,7 @@ public final class RemoteDependency extends DocumentIngress {
      * 
      * @return the resultCode value.
      */
+    @Generated
     public String getResultCode() {
         return this.resultCode;
     }
@@ -112,6 +125,7 @@ public final class RemoteDependency extends DocumentIngress {
      * @param resultCode the resultCode value to set.
      * @return the RemoteDependency object itself.
      */
+    @Generated
     public RemoteDependency setResultCode(String resultCode) {
         this.resultCode = resultCode;
         return this;
@@ -123,6 +137,7 @@ public final class RemoteDependency extends DocumentIngress {
      * 
      * @return the duration value.
      */
+    @Generated
     public String getDuration() {
         return this.duration;
     }
@@ -134,6 +149,7 @@ public final class RemoteDependency extends DocumentIngress {
      * @param duration the duration value to set.
      * @return the RemoteDependency object itself.
      */
+    @Generated
     public RemoteDependency setDuration(String duration) {
         this.duration = duration;
         return this;
@@ -142,6 +158,7 @@ public final class RemoteDependency extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RemoteDependency setDocumentStreamIds(List<String> documentStreamIds) {
         super.setDocumentStreamIds(documentStreamIds);
@@ -151,6 +168,7 @@ public final class RemoteDependency extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RemoteDependency setProperties(List<KeyValuePairString> properties) {
         super.setProperties(properties);
@@ -160,6 +178,7 @@ public final class RemoteDependency extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -182,6 +201,7 @@ public final class RemoteDependency extends DocumentIngress {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RemoteDependency.
      */
+    @Generated
     public static RemoteDependency fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RemoteDependency deserializedRemoteDependency = new RemoteDependency();

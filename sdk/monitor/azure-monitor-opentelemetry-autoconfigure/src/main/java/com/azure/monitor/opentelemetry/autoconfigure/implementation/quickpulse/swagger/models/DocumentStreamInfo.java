@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class DocumentStreamInfo implements JsonSerializable<DocumentStream
     /*
      * Identifier of the document stream initiated by a UX.
      */
+    @Generated
     private String id;
 
     /*
      * Gets or sets an OR-connected collection of filter groups.
      */
+    @Generated
     private List<DocumentFilterConjunctionGroupInfo> documentFilterGroups;
 
     /**
      * Creates an instance of DocumentStreamInfo class.
      */
+    @Generated
     public DocumentStreamInfo() {
     }
 
@@ -38,6 +42,7 @@ public final class DocumentStreamInfo implements JsonSerializable<DocumentStream
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -48,6 +53,7 @@ public final class DocumentStreamInfo implements JsonSerializable<DocumentStream
      * @param id the id value to set.
      * @return the DocumentStreamInfo object itself.
      */
+    @Generated
     public DocumentStreamInfo setId(String id) {
         this.id = id;
         return this;
@@ -58,6 +64,7 @@ public final class DocumentStreamInfo implements JsonSerializable<DocumentStream
      * 
      * @return the documentFilterGroups value.
      */
+    @Generated
     public List<DocumentFilterConjunctionGroupInfo> getDocumentFilterGroups() {
         return this.documentFilterGroups;
     }
@@ -68,6 +75,7 @@ public final class DocumentStreamInfo implements JsonSerializable<DocumentStream
      * @param documentFilterGroups the documentFilterGroups value to set.
      * @return the DocumentStreamInfo object itself.
      */
+    @Generated
     public DocumentStreamInfo setDocumentFilterGroups(List<DocumentFilterConjunctionGroupInfo> documentFilterGroups) {
         this.documentFilterGroups = documentFilterGroups;
         return this;
@@ -76,6 +84,7 @@ public final class DocumentStreamInfo implements JsonSerializable<DocumentStream
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +103,7 @@ public final class DocumentStreamInfo implements JsonSerializable<DocumentStream
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentStreamInfo.
      */
+    @Generated
     public static DocumentStreamInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentStreamInfo deserializedDocumentStreamInfo = new DocumentStreamInfo();

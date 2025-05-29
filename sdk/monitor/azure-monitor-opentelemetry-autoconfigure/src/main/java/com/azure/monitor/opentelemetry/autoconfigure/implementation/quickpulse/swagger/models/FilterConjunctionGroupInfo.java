@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class FilterConjunctionGroupInfo implements JsonSerializable<Filter
     /*
      * An array of filters.
      */
+    @Generated
     private List<FilterInfo> filters;
 
     /**
      * Creates an instance of FilterConjunctionGroupInfo class.
      */
+    @Generated
     public FilterConjunctionGroupInfo() {
     }
 
@@ -33,6 +36,7 @@ public final class FilterConjunctionGroupInfo implements JsonSerializable<Filter
      * 
      * @return the filters value.
      */
+    @Generated
     public List<FilterInfo> getFilters() {
         return this.filters;
     }
@@ -43,6 +47,7 @@ public final class FilterConjunctionGroupInfo implements JsonSerializable<Filter
      * @param filters the filters value to set.
      * @return the FilterConjunctionGroupInfo object itself.
      */
+    @Generated
     public FilterConjunctionGroupInfo setFilters(List<FilterInfo> filters) {
         this.filters = filters;
         return this;
@@ -51,6 +56,7 @@ public final class FilterConjunctionGroupInfo implements JsonSerializable<Filter
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +73,7 @@ public final class FilterConjunctionGroupInfo implements JsonSerializable<Filter
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FilterConjunctionGroupInfo.
      */
+    @Generated
     public static FilterConjunctionGroupInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FilterConjunctionGroupInfo deserializedFilterConjunctionGroupInfo = new FilterConjunctionGroupInfo();

@@ -4,6 +4,7 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class TelemetryType extends ExpandableStringEnum<TelemetryType> {
     /**
      * Represents a request telemetry type.
      */
+    @Generated
     public static final TelemetryType REQUEST = fromString("Request");
 
     /**
      * Represents a dependency telemetry type.
      */
+    @Generated
     public static final TelemetryType DEPENDENCY = fromString("Dependency");
 
     /**
      * Represents an exception telemetry type.
      */
+    @Generated
     public static final TelemetryType EXCEPTION = fromString("Exception");
 
     /**
      * Represents an event telemetry type.
      */
+    @Generated
     public static final TelemetryType EVENT = fromString("Event");
 
     /**
      * Represents a metric telemetry type.
      */
+    @Generated
     public static final TelemetryType METRIC = fromString("Metric");
 
     /**
      * Represents a performance counter telemetry type.
      */
+    @Generated
     public static final TelemetryType PERFORMANCE_COUNTER = fromString("PerformanceCounter");
 
     /**
      * Represents a trace telemetry type.
      */
+    @Generated
     public static final TelemetryType TRACE = fromString("Trace");
 
     /**
@@ -51,6 +59,7 @@ public final class TelemetryType extends ExpandableStringEnum<TelemetryType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TelemetryType() {
     }
@@ -61,6 +70,7 @@ public final class TelemetryType extends ExpandableStringEnum<TelemetryType> {
      * @param name a name to look for.
      * @return the corresponding TelemetryType.
      */
+    @Generated
     public static TelemetryType fromString(String name) {
         return fromString(name, TelemetryType.class);
     }
@@ -70,6 +80,7 @@ public final class TelemetryType extends ExpandableStringEnum<TelemetryType> {
      * 
      * @return known TelemetryType values.
      */
+    @Generated
     public static Collection<TelemetryType> values() {
         return values(TelemetryType.class);
     }
