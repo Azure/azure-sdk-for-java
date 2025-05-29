@@ -1,0 +1,4 @@
+directory: specification/vmware/Microsoft.AVS.Management
+commit: 42e37c8285d86999b1f41c2b47c70ba0ca992cc4
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 
