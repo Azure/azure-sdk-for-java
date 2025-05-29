@@ -10,6 +10,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http2.Http2FrameLogger;
 import io.netty.handler.logging.LogLevel;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import org.reactivestreams.Publisher;
@@ -171,6 +172,14 @@ public class ReactorNettyClient implements HttpClient {
                     // validateHeaders(false) does not work for http2
                     ChannelPipeline channelPipeline = connection.channel().pipeline();
                     if (channelPipeline.get("reactor.left.httpCodec") != null) {
+                        // Add frame logging for debugging if trace is enabled
+                        if (logger.isInfoEnabled()) {
+                            channelPipeline.addAfter(
+                                "reactor.left.httpCodec",
+                                "http2FrameLogger",
+                                new Http2FrameLogger(LogLevel.INFO, "HTTP2"));
+                        }
+
                         channelPipeline.addAfter(
                             "reactor.left.httpCodec",
                             "customHeaderCleaner",
