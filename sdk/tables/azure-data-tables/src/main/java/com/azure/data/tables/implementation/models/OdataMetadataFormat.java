@@ -4,6 +4,7 @@
 
 package com.azure.data.tables.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,18 +15,21 @@ public final class OdataMetadataFormat extends ExpandableStringEnum<OdataMetadat
     /**
      * Static value application/json;odata=nometadata for OdataMetadataFormat.
      */
+    @Generated
     public static final OdataMetadataFormat APPLICATION_JSON_ODATA_NOMETADATA
         = fromString("application/json;odata=nometadata");
 
     /**
      * Static value application/json;odata=minimalmetadata for OdataMetadataFormat.
      */
+    @Generated
     public static final OdataMetadataFormat APPLICATION_JSON_ODATA_MINIMALMETADATA
         = fromString("application/json;odata=minimalmetadata");
 
     /**
      * Static value application/json;odata=fullmetadata for OdataMetadataFormat.
      */
+    @Generated
     public static final OdataMetadataFormat APPLICATION_JSON_ODATA_FULLMETADATA
         = fromString("application/json;odata=fullmetadata");
 
@@ -34,6 +38,7 @@ public final class OdataMetadataFormat extends ExpandableStringEnum<OdataMetadat
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OdataMetadataFormat() {
     }
@@ -44,6 +49,7 @@ public final class OdataMetadataFormat extends ExpandableStringEnum<OdataMetadat
      * @param name a name to look for.
      * @return the corresponding OdataMetadataFormat.
      */
+    @Generated
     public static OdataMetadataFormat fromString(String name) {
         return fromString(name, OdataMetadataFormat.class);
     }
@@ -53,6 +59,7 @@ public final class OdataMetadataFormat extends ExpandableStringEnum<OdataMetadat
      * 
      * @return known OdataMetadataFormat values.
      */
+    @Generated
     public static Collection<OdataMetadataFormat> values() {
         return values(OdataMetadataFormat.class);
     }

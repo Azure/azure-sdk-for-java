@@ -5,7 +5,7 @@
 package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,31 +21,37 @@ public final class TableServiceLogging implements XmlSerializable<TableServiceLo
     /*
      * The version of Analytics to configure.
      */
+    @Generated
     private String analyticsVersion;
 
     /*
      * Indicates whether all delete requests should be logged.
      */
+    @Generated
     private boolean deleteLogged;
 
     /*
      * Indicates whether all read requests should be logged.
      */
+    @Generated
     private boolean readLogged;
 
     /*
      * Indicates whether all write requests should be logged.
      */
+    @Generated
     private boolean writeLogged;
 
     /*
      * The retention policy.
      */
+    @Generated
     private TableServiceRetentionPolicy retentionPolicy;
 
     /**
      * Creates an instance of TableServiceLogging class.
      */
+    @Generated
     public TableServiceLogging() {
     }
 
@@ -54,6 +60,7 @@ public final class TableServiceLogging implements XmlSerializable<TableServiceLo
      * 
      * @return the analyticsVersion value.
      */
+    @Generated
     public String getAnalyticsVersion() {
         return this.analyticsVersion;
     }
@@ -64,6 +71,7 @@ public final class TableServiceLogging implements XmlSerializable<TableServiceLo
      * @param analyticsVersion the analyticsVersion value to set.
      * @return the TableServiceLogging object itself.
      */
+    @Generated
     public TableServiceLogging setAnalyticsVersion(String analyticsVersion) {
         this.analyticsVersion = analyticsVersion;
         return this;
@@ -74,6 +82,7 @@ public final class TableServiceLogging implements XmlSerializable<TableServiceLo
      * 
      * @return the deleteLogged value.
      */
+    @Generated
     public boolean isDeleteLogged() {
         return this.deleteLogged;
     }
@@ -84,6 +93,7 @@ public final class TableServiceLogging implements XmlSerializable<TableServiceLo
      * @param deleteLogged the deleteLogged value to set.
      * @return the TableServiceLogging object itself.
      */
+    @Generated
     public TableServiceLogging setDeleteLogged(boolean deleteLogged) {
         this.deleteLogged = deleteLogged;
         return this;
@@ -94,6 +104,7 @@ public final class TableServiceLogging implements XmlSerializable<TableServiceLo
      * 
      * @return the readLogged value.
      */
+    @Generated
     public boolean isReadLogged() {
         return this.readLogged;
     }
@@ -104,6 +115,7 @@ public final class TableServiceLogging implements XmlSerializable<TableServiceLo
      * @param readLogged the readLogged value to set.
      * @return the TableServiceLogging object itself.
      */
+    @Generated
     public TableServiceLogging setReadLogged(boolean readLogged) {
         this.readLogged = readLogged;
         return this;
@@ -114,6 +126,7 @@ public final class TableServiceLogging implements XmlSerializable<TableServiceLo
      * 
      * @return the writeLogged value.
      */
+    @Generated
     public boolean isWriteLogged() {
         return this.writeLogged;
     }
@@ -124,6 +137,7 @@ public final class TableServiceLogging implements XmlSerializable<TableServiceLo
      * @param writeLogged the writeLogged value to set.
      * @return the TableServiceLogging object itself.
      */
+    @Generated
     public TableServiceLogging setWriteLogged(boolean writeLogged) {
         this.writeLogged = writeLogged;
         return this;
@@ -134,6 +148,7 @@ public final class TableServiceLogging implements XmlSerializable<TableServiceLo
      * 
      * @return the retentionPolicy value.
      */
+    @Generated
     public TableServiceRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
     }
@@ -144,19 +159,22 @@ public final class TableServiceLogging implements XmlSerializable<TableServiceLo
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the TableServiceLogging object itself.
      */
+    @Generated
     public TableServiceLogging setRetentionPolicy(TableServiceRetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Logging" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Logging" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Version", this.analyticsVersion);
         xmlWriter.writeBooleanElement("Delete", this.deleteLogged);
@@ -174,6 +192,7 @@ public final class TableServiceLogging implements XmlSerializable<TableServiceLo
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceLogging.
      */
+    @Generated
     public static TableServiceLogging fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -188,8 +207,10 @@ public final class TableServiceLogging implements XmlSerializable<TableServiceLo
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceLogging.
      */
+    @Generated
     public static TableServiceLogging fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Logging" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "Logging" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             TableServiceLogging deserializedTableServiceLogging = new TableServiceLogging();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
