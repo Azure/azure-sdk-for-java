@@ -12,13 +12,23 @@ import io.netty.handler.codec.http2.Http2HeadersFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Handler responsible for cleaning HTTP/2 response headers by removing unwanted whitespace.
+ * This handler only processes HTTP/2 header frames and lets all other frame types pass through
+ * to be handled by Netty's HTTP/2 implementation.
+ */
 public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(Http2ResponseHeaderCleanerHandler.class);
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-
+        // Only process HTTP/2 header frames
         if (msg instanceof Http2HeadersFrame) {
+            if (logger.isTraceEnabled()) {
+                logger.trace("Processing HTTP/2 headers frame");
+            }
+
             Http2HeadersFrame headersFrame = (Http2HeadersFrame) msg;
             Http2Headers headers = headersFrame.headers();
 
@@ -26,22 +36,17 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
                 CharSequence key = entry.getKey();
                 CharSequence value = entry.getValue();
 
-                // Based on the tests, only 'x-ms-serviceversion' header has extra value,
-                // so only check this specific header here
-                if (StringUtils.equalsIgnoreCase(key, HttpConstants.HttpHeaders.SERVER_VERSION)) {
-                    // Check for leading whitespace or other prohibited characters
-                    if (StringUtils.isNotEmpty(value) && (value.charAt(0) == ' ' || value.charAt(value.length() - 1) == ' ')) {
-                        // Clean up the header value by trimming or handling as needed
-                        logger.trace("There are extra white space for key {} with value {}", key, value);
-
-                        // TODO[Http2]: for now just trim the spaces, explore other options for example escape the whitespace
-                        headers.set(key, value.toString().trim());
-                    }
+                // Clean any headers that have leading or trailing whitespace
+                if (StringUtils.isNotEmpty(value) && 
+                    (value.charAt(0) == ' ' || value.charAt(value.length() - 1) == ' ')) {
+                    logger.debug("Cleaning whitespace from header '{}' with value '{}'", key, value);
+                    headers.set(key, value.toString().trim());
                 }
             });
         }
 
         // Pass the message to the next handler in the pipeline
-        super.channelRead(ctx, msg);
+        // All other frame types (including SETTINGS, SETTINGS_ACK) are handled by Netty
+        ctx.fireChannelRead(msg);
     }
 }
