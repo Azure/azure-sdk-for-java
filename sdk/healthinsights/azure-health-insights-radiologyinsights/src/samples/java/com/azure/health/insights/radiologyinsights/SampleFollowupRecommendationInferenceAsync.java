@@ -124,7 +124,7 @@ public class SampleFollowupRecommendationInferenceAsync {
         latch.await();
         mono.subscribe(radiologyInsightsResult -> {
             // Process the result asynchronously
-        	displayFollowUpRecommendations(radiologyInsightsResult);
+            displayFollowUpRecommendations(radiologyInsightsResult);
         }, error -> {
             // Handle any errors
             System.err.println("Error occurred: " + error.getMessage());

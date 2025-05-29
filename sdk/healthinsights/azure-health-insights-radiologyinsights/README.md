@@ -931,7 +931,7 @@ When you interact with App Configuration using this Java client library, errors 
 
 App Configuration provides a way to define customized headers through `Context` object in the public API. 
 
-```java readme-sample-customHeaders
+```java
 // Add your headers
 HttpHeaders headers = new HttpHeaders();
 headers.set("my-header1", "my-header1-value");
@@ -943,6 +943,7 @@ configurationClient.addConfigurationSettingWithResponse(
     new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
 // Above three HttpHeader will be added in outgoing HttpRequest.
 ```
+
 For more detail information, check out the [AddHeadersFromContextPolicy][add_headers_from_context_policy]
 
 ### Default HTTP Client

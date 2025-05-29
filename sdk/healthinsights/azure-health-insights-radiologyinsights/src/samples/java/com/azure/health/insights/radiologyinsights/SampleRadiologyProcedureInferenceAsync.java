@@ -120,7 +120,7 @@ public class SampleRadiologyProcedureInferenceAsync {
         latch.await();
         mono.subscribe(radiologyInsightsResult -> {
             // Process the result asynchronously
-        	displayRadiologyProcedures(radiologyInsightsResult);
+            displayRadiologyProcedures(radiologyInsightsResult);
         }, error -> {
             // Handle any errors
             System.err.println("Error occurred: " + error.getMessage());

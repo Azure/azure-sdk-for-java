@@ -105,7 +105,7 @@ public class SampleLateralityDiscrepancyInferenceAsync {
         latch.await();
         mono.subscribe(radiologyInsightsResult -> {
             // Process the result asynchronously
-        	displayLateralityDiscrepancies(radiologyInsightsResult);
+            displayLateralityDiscrepancies(radiologyInsightsResult);
         }, error -> {
             // Handle any errors
             System.err.println("Error occurred: " + error.getMessage());

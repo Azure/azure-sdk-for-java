@@ -115,7 +115,7 @@ public class SampleLimitedOrderDiscrepancyInferenceAsync {
         latch.await();
         mono.subscribe(radiologyInsightsResult -> {
             // Process the result asynchronously
-        	displayLimitedOrderDiscrepancies(radiologyInsightsResult);
+            displayLimitedOrderDiscrepancies(radiologyInsightsResult);
         }, error -> {
             // Handle any errors
             System.err.println("Error occurred: " + error.getMessage());

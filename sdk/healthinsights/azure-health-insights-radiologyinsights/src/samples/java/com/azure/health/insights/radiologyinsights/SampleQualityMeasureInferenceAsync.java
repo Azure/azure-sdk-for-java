@@ -127,7 +127,7 @@ public class SampleQualityMeasureInferenceAsync {
         latch.await();
         mono.subscribe(radiologyInsightsResult -> {
             // Process the result asynchronously
-        	displayQualityMeasureInference(radiologyInsightsResult);
+            displayQualityMeasureInference(radiologyInsightsResult);
         }, error -> {
             // Handle any errors
             System.err.println("Error occurred: " + error.getMessage());

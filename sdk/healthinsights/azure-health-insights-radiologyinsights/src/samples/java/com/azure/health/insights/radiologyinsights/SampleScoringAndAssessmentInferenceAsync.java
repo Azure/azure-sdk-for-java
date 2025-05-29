@@ -124,7 +124,7 @@ public class SampleScoringAndAssessmentInferenceAsync {
         latch.await();
         mono.subscribe(radiologyInsightsResult -> {
             // Process the result asynchronously
-        	displayScoringAndAssessmentInference(radiologyInsightsResult);
+            displayScoringAndAssessmentInference(radiologyInsightsResult);
         }, error -> {
             // Handle any errors
             System.err.println("Error occurred: " + error.getMessage());
