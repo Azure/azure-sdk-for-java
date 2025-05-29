@@ -173,15 +173,13 @@ public class ReactorNettyClient implements HttpClient {
                     ChannelPipeline channelPipeline = connection.channel().pipeline();
                     if (channelPipeline.get("reactor.left.httpCodec") != null) {
                         // Add frame logging for debugging if trace is enabled
-                        if (logger.isInfoEnabled()) {
-                            channelPipeline.addAfter(
-                                "reactor.left.httpCodec",
-                                "http2FrameLogger",
-                                new Http2FrameLogger(LogLevel.INFO, "HTTP2"));
-                        }
-
                         channelPipeline.addAfter(
                             "reactor.left.httpCodec",
+                            "http2FrameLogger",
+                            new Http2FrameLogger(LogLevel.INFO, "HTTP2"));
+
+                        channelPipeline.addAfter(
+                            "http2FrameLogger",
                             "customHeaderCleaner",
                             new Http2ResponseHeaderCleanerHandler());
                     }
@@ -191,7 +189,6 @@ public class ReactorNettyClient implements HttpClient {
                     connection.channel().config().setOption(ChannelOption.SO_SNDBUF, 1024 * 1024); // 1MB send buffer
                     connection.channel().config().setOption(ChannelOption.TCP_NODELAY, true);
 
-                    /*
                     Map<String, ChannelHandler> dummy = channelPipeline.toMap();
                     logger.info("====================================================================================");
                     logger.info("CONNECT HTTP HANDLERS: {}", this);
@@ -201,7 +198,6 @@ public class ReactorNettyClient implements HttpClient {
                             logger.info("Http2Handler {}: {}", entry.getKey(), entry.getValue());
                         });
                     logger.info("====================================================================================");
-                    */
                 }));
         }
     }
