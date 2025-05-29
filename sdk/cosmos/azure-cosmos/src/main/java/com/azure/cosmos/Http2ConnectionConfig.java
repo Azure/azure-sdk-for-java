@@ -41,6 +41,7 @@ public class Http2ConnectionConfig {
 
     /***
      * Configures the maximum number of live connections to keep in the pool.
+     * Recommended value: 1000 for large workloads.
      * If not configured, will be default to 1000.
      *
      * @param maxConnectionPoolSize the maximum number of live connections to keep in the pool.
@@ -70,10 +71,11 @@ public class Http2ConnectionConfig {
     /***
      * Configures the maximum number of the concurrent streams that can be opened to the remote peer.
      * When evaluating how many streams can be opened to the remote peer, the minimum of this configuration and the remote peer configuration is taken (unless -1 is used).
-     * Default to 30.
+     * Recommended value: 200 for better performance with large workloads.
+     * Default to 200.
      *
      * @param maxConcurrentStreams the maximum number of the concurrent streams that can be opened to the remote peer.
-     * If null, the default value `30` will be applied for http/2.
+     * If null, the default value `200` will be applied for http/2.
      * @return the current {@link Http2ConnectionConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -97,9 +99,12 @@ public class Http2ConnectionConfig {
     }
 
     /***
-     * Configures the minimum number of live connections to keep in the pool (can be the best effort). Default to 1.
+     * Configures the minimum number of live connections to keep in the pool (can be the best effort).
+     * Recommended value: 50 for better performance with large workloads.
+     * Default to 50.
+     * 
      * @param minConnectionPoolSize the minimum number of live connections to keep in the pool (can be the best effort).
-     * If null, the default value `1` will be applied for http/2.
+     * If null, the default value `50` will be applied for http/2.
      * @return the current {@link Http2ConnectionConfig}.
      */
     @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)

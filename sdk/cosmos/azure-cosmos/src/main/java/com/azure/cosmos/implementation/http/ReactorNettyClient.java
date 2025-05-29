@@ -10,6 +10,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
+import io.netty.handler.codec.http2.Http2FrameLogger;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
@@ -163,17 +164,35 @@ public class ReactorNettyClient implements HttpClient {
                             true
                         )))
                 .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
+                .http2Settings(settings -> settings
+                    .initialWindowSize(1048576) // 1MB initial window size
+                    .maxFrameSize(16384)        // 16KB max frame size
+                    .maxConcurrentStreams(200)  // Increased from default 30
+                )
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:
                     // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
                     // validateHeaders(false) does not work for http2
                     ChannelPipeline channelPipeline = connection.channel().pipeline();
                     if (channelPipeline.get("reactor.left.httpCodec") != null) {
+                        // Add frame logging for debugging if trace is enabled
+                        if (logger.isTraceEnabled()) {
+                            channelPipeline.addAfter(
+                                "reactor.left.httpCodec",
+                                "http2FrameLogger",
+                                new Http2FrameLogger(LogLevel.TRACE, "HTTP2"));
+                        }
+                        
                         channelPipeline.addAfter(
                             "reactor.left.httpCodec",
                             "customHeaderCleaner",
                             new Http2ResponseHeaderCleanerHandler());
                     }
+                    
+                    // Optimize socket settings for HTTP/2
+                    connection.channel().config().setOption(ChannelOption.SO_RCVBUF, 1048576); // 1MB receive buffer
+                    connection.channel().config().setOption(ChannelOption.SO_SNDBUF, 1048576); // 1MB send buffer
+                    connection.channel().config().setOption(ChannelOption.TCP_NODELAY, true);
                 }));
         }
     }
