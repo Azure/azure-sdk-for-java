@@ -122,14 +122,6 @@ public class SampleScoringAndAssessmentInferenceAsync {
             });
 
         latch.await();
-        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
-        // the thread so the program does not end before the send operation is complete. Using .block() instead of
-        // .subscribe() will turn this into a synchronous call.
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         mono.subscribe(radiologyInsightsResult -> {
             // Process the result asynchronously
         	displayScoringAndAssessmentInference(radiologyInsightsResult);
@@ -138,6 +130,14 @@ public class SampleScoringAndAssessmentInferenceAsync {
             System.err.println("Error occurred: " + error.getMessage());
             error.printStackTrace();
         });
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
