@@ -710,19 +710,21 @@ abstract class AsyncBenchmark<T> {
             checkNotNull(diagnosticsContext, "Argument 'diagnosticsContext' must not be null.");
 
             boolean shouldLog = shouldLog(diagnosticsContext);
-            int previousLogCount = this.logCountInSamplingInterval.getAndIncrement();
+            if (shouldLog) {
+                int previousLogCount = this.logCountInSamplingInterval.getAndIncrement();
 
-            if (previousLogCount <= this.maxLogCount) {
-                logger.info(
-                    "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
-                    diagnosticsContext.getAccountName(),
-                    diagnosticsContext.getDatabaseName(),
-                    diagnosticsContext.getContainerName(),
-                    diagnosticsContext.getStatusCode(),
-                    diagnosticsContext.getSubStatusCode(),
-                    diagnosticsContext.toJson());
-            } else if (previousLogCount == this.maxLogCount + 1) {
-                logger.info("Already logged {} diagnostics - stopping until sampling interval is reset.", this.maxLogCount);
+                if (previousLogCount <= this.maxLogCount) {
+                    logger.info(
+                        "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
+                        diagnosticsContext.getAccountName(),
+                        diagnosticsContext.getDatabaseName(),
+                        diagnosticsContext.getContainerName(),
+                        diagnosticsContext.getStatusCode(),
+                        diagnosticsContext.getSubStatusCode(),
+                        diagnosticsContext.toJson());
+                } else if (previousLogCount == this.maxLogCount + 1) {
+                    logger.info("Already logged {} diagnostics - stopping until sampling interval is reset.", this.maxLogCount);
+                }
             }
         }
 
