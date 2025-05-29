@@ -7,8 +7,8 @@ package com.azure.resourcemanager.avs.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPublicIp;
@@ -22,19 +22,19 @@ public final class WorkloadNetworksListPublicIPsMockTests {
     @Test
     public void testListPublicIPs() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"yo\",\"numberOfPublicIPs\":8001190211178708850,\"publicIPBlock\":\"uuxvnsasbcry\",\"provisioningState\":\"Succeeded\"},\"id\":\"zrxklobd\",\"name\":\"nazpmk\",\"type\":\"lmv\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"fe\",\"numberOfPublicIPs\":599193553895116004,\"publicIPBlock\":\"rq\",\"provisioningState\":\"Updating\"},\"id\":\"qkratbnxwbjsid\",\"name\":\"irkfpksokdgo\",\"type\":\"ewijymrhbguz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<WorkloadNetworkPublicIp> response = manager.workloadNetworks()
-            .listPublicIPs("pxbannovvoxc", "ytprwnwvroev", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadNetworkPublicIp> response
+            = manager.workloadNetworks().listPublicIPs("aujvaa", "nggiycwkdtaa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yo", response.iterator().next().displayName());
-        Assertions.assertEquals(8001190211178708850L, response.iterator().next().numberOfPublicIPs());
+        Assertions.assertEquals("fe", response.iterator().next().displayName());
+        Assertions.assertEquals(599193553895116004L, response.iterator().next().numberOfPublicIPs());
     }
 }

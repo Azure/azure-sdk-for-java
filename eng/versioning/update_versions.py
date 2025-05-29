@@ -211,7 +211,7 @@ def display_version_info(version_map):
     for value in version_map.values():
         print(value)
 
-def update_versions_all(update_type, build_type, target_file, skip_readme, auto_version_increment: bool, library_array, version_overrides, include_perf_tests):
+def update_versions_all(update_type, build_type, target_file, skip_readme, auto_version_increment: bool, library_array, version_overrides, include_perf_tests, setting_dev_version: bool):
     version_map: Dict[str, CodeModule] = {}
     ext_dep_map: Dict[str, CodeModule] = {}
     # Load the version and/or external dependency file for the given UpdateType
@@ -219,7 +219,7 @@ def update_versions_all(update_type, build_type, target_file, skip_readme, auto_
     # the libraries and external dependencies are being updated.
     if update_type == UpdateType.library or update_type == UpdateType.all:
         version_file = os.path.join(os.path.dirname(__file__), 'version_' + build_type.name + '.txt')
-        load_version_map_from_file(version_file, version_map, auto_version_increment)
+        load_version_map_from_file(version_file, version_map, auto_version_increment, setting_dev_version)
 
     if update_type == UpdateType.external_dependency or update_type == UpdateType.all:
         dependency_file = os.path.join(os.path.dirname(__file__), 'external_dependencies.txt')
@@ -286,6 +286,7 @@ def main():
     parser.add_argument('--library-list', '--ll', nargs='?', help='(Optional) Comma seperated list of groupId:artifactId. If updating MD files, only update entries in this list.')
     parser.add_argument('--version_override', '--vo', nargs='?', help='(Optional) identifier of version update configuratation matching (exactly) first-level identifier in supported_external_dependency_versions.json')
     parser.add_argument('--include-perf-tests', '--ipt', action='store_true', help='Whether perf-tests.yml/perf-tests.yaml files are included in the update')
+    parser.add_argument('--setting-dev-version', '--sdv', action='store_true', help='Whether the dev version is being set in the pom.xml files. This is used in CI only.')
     args = parser.parse_args()
     if args.build_type == BuildType.management:
         raise ValueError('{} is not currently supported.'.format(BuildType.management.name))
@@ -295,7 +296,7 @@ def main():
         library_array = args.library_list.split(',')
     print('library_array length: {0}'.format(len(library_array)))
     print(library_array)
-    update_versions_all(args.update_type, args.build_type, args.target_file, args.skip_readme, args.auto_version_increment, library_array, args.version_override, args.include_perf_tests)
+    update_versions_all(args.update_type, args.build_type, args.target_file, args.skip_readme, args.auto_version_increment, library_array, args.version_override, args.include_perf_tests, args.setting_dev_version)
     elapsed_time = time.time() - start_time
     print('elapsed_time={}'.format(elapsed_time))
     print('Total time for replacement: {}'.format(str(timedelta(seconds=elapsed_time))))

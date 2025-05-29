@@ -53,10 +53,10 @@ public final class RntbdRequestArgs {
         this.lifetime = Stopwatch.createStarted();
         this.origin = physicalAddressUri.getURI().getScheme() + "://" + physicalAddressUri.getURI().getAuthority();
         this.physicalAddressUri = physicalAddressUri;
-        if (physicalAddressUri != emptyUri) {
-            this.replicaPath = StringUtils.stripEnd(physicalAddressUri.getURI().getPath(), "/");
-        } else {
+        if (emptyUri.equals(physicalAddressUri)) {
             this.replicaPath = emptyUriPath;
+        } else {
+            this.replicaPath = StringUtils.stripEnd(physicalAddressUri.getURI().getPath(), "/");
         }
         this.serviceRequest = serviceRequest;
         this.transportRequestId = instanceCount.incrementAndGet();

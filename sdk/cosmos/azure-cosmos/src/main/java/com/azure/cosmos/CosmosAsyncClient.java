@@ -743,6 +743,30 @@ public final class CosmosAsyncClient implements Closeable {
         return this.accountConsistencyLevel;
     }
 
+    ReadConsistencyStrategy getEffectiveReadConsistencyStrategy(
+        ResourceType resourceType,
+        OperationType operationType,
+        ReadConsistencyStrategy desiredReadConsistencyStrategyOfOperation) {
+
+        if (resourceType != ResourceType.Document) {
+            return ReadConsistencyStrategy.DEFAULT;
+        }
+
+        if (operationType.isWriteOperation()) {
+            return ReadConsistencyStrategy.DEFAULT;
+        }
+
+        if (desiredReadConsistencyStrategyOfOperation != null) {
+            return desiredReadConsistencyStrategyOfOperation;
+        }
+
+        if (this.readConsistencyStrategy != null) {
+            return readConsistencyStrategy;
+        }
+
+        return ReadConsistencyStrategy.DEFAULT;
+    }
+
     CosmosDiagnosticsThresholds getEffectiveDiagnosticsThresholds(
         CosmosDiagnosticsThresholds operationLevelThresholds) {
 
@@ -883,6 +907,20 @@ public final class CosmosAsyncClient implements Closeable {
                     ConsistencyLevel desiredConsistencyLevelOfOperation) {
 
                     return client.getEffectiveConsistencyLevel(operationType, desiredConsistencyLevelOfOperation);
+                }
+
+                @Override
+                public ReadConsistencyStrategy getEffectiveReadConsistencyStrategy(
+                    CosmosAsyncClient client,
+                    ResourceType resourceType,
+                    OperationType operationType,
+                    ReadConsistencyStrategy desiredReadConsistencyStrategy) {
+
+                    return client
+                        .getEffectiveReadConsistencyStrategy(
+                            resourceType,
+                            operationType,
+                            desiredReadConsistencyStrategy);
                 }
 
                 @Override

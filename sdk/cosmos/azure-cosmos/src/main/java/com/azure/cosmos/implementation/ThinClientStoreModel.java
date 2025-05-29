@@ -20,6 +20,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +34,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class ThinClientStoreModel extends RxGatewayStoreModel {
     private String globalDatabaseAccountName = null;
+    private final Map<String, String> defaultHeaders;
 
     public ThinClientStoreModel(
         DiagnosticsClientContext clientContext,
@@ -50,7 +52,15 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             globalEndpointManager,
             httpClient,
             ApiType.SQL);
-   }
+
+        String userAgent = userAgentContainer != null
+            ? userAgentContainer.getUserAgent()
+            : UserAgentContainer.BASE_USER_AGENT_STRING;
+
+        this.defaultHeaders = Collections.singletonMap(
+            HttpConstants.HttpHeaders.USER_AGENT, userAgent
+        );
+    }
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
@@ -60,8 +70,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     @Override
     protected Map<String, String> getDefaultHeaders(
         ApiType apiType,
-        UserAgentContainer userAgentContainer,
-        ConsistencyLevel clientDefaultConsistencyLevel) {
+        UserAgentContainer userAgentContainer) {
 
         // For ThinClient http/2 used for framing only
         // All operation-level headers are only added to the rntbd-encoded message
@@ -69,14 +78,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         // missing headers for routing (like partitionId or replicaId)
         // Since the Thin client proxy also needs to set the user-agent header to a different value
         // it is not added to the rntbd headers - just http-headers in the SDK
-        String userAgent = userAgentContainer != null
-            ? userAgentContainer.getUserAgent()
-            : UserAgentContainer.BASE_USER_AGENT_STRING;
-
-        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(1);
-        return builder
-            .put(HttpConstants.HttpHeaders.USER_AGENT, userAgent)
-            .build();
+        return this.defaultHeaders;
     }
 
     @Override
@@ -147,9 +149,11 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     }
 
     private HttpHeaders getHttpHeaders() {
-        HttpHeaders httpHeaders = new HttpHeaders(32);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        // todo: select only required headers from defaults
+        Map<String, String> defaultHeaders = this.getDefaultHeaders();
 
-        for (Map.Entry<String, String> header : this.getDefaultHeaders().entrySet()) {
+        for (Map.Entry<String, String> header : defaultHeaders.entrySet()) {
             httpHeaders.set(header.getKey(), header.getValue());
         }
 

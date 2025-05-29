@@ -12,7 +12,7 @@ import com.azure.resourcemanager.avs.models.Cluster;
 public final class ClustersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Clusters_Update.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/Clusters_Update.json
      */
     /**
      * Sample code: Clusters_Update.
