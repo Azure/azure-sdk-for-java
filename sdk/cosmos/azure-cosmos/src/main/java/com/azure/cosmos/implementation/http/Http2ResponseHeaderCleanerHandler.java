@@ -55,4 +55,12 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
             ctx.fireChannelRead(msg);
         }
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        logger.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        logger.error("exceptionCaught {}", cause.getMessage(), cause);
+        logger.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        super.exceptionCaught(ctx, cause);
+    }
 }
