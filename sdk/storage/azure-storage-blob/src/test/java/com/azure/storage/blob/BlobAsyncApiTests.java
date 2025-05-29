@@ -2665,6 +2665,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @LiveOnly //TODO (isbr): remove @LiveOnly when a different HTTP stack is chosen for test-proxy
     public void getAccountInfoBaseFail() {
         BlobServiceAsyncClient serviceClient
             = instrument(new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
