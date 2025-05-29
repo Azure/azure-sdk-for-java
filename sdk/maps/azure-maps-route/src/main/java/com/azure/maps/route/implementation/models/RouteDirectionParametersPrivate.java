@@ -5,6 +5,7 @@
 package com.azure.maps.route.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,36 +19,54 @@ import java.util.List;
 @Fluent
 public final class RouteDirectionParametersPrivate implements JsonSerializable<RouteDirectionParametersPrivate> {
     /*
-     * A GeoJSON Geometry collection representing sequence of coordinates used as input for route reconstruction and for calculating zero or more alternative routes to this reference route.
-     *   - The provided sequence of supporting points is used as input for route reconstruction.
-     *   - The alternative routes are calculated between the origin and destination points specified in the base path parameter locations.
-     *   - If both _minDeviationDistance_ and _minDeviationTime_ are set to zero, then these origin and destination points are
-     *   expected to be at (or very near) the beginning and end of the reference route, respectively.
-     *   - Intermediate locations (_waypoints_) are not supported when using <_supportingPoints_>.
-     *   - The reference route may contain traffic incidents of type _ROAD_CLOSURE_, which are
-     *   ignored for the calculation of the reference route's travel time and traffic delay.
-     *  Please refer to [Supporting Points](https://docs.microsoft.com/azure/azure-maps/how-to-use-best-practices-for-routing#calculate-and-bias-alternative-routes-using-supporting-points) for details.
+     * A GeoJSON Geometry collection representing sequence of coordinates used as input for route reconstruction and for
+     * calculating zero or more alternative routes to this reference route.
+     * - The provided sequence of supporting points is used as input for route reconstruction.
+     * - The alternative routes are calculated between the origin and destination points specified in the base path
+     * parameter locations.
+     * - If both _minDeviationDistance_ and _minDeviationTime_ are set to zero, then these origin and destination points
+     * are
+     * expected to be at (or very near) the beginning and end of the reference route, respectively.
+     * - Intermediate locations (_waypoints_) are not supported when using <_supportingPoints_>.
+     * - The reference route may contain traffic incidents of type _ROAD_CLOSURE_, which are
+     * ignored for the calculation of the reference route's travel time and traffic delay.
+     * Please refer to [Supporting
+     * Points](https://docs.microsoft.com/azure/azure-maps/how-to-use-best-practices-for-routing#calculate-and-bias-
+     * alternative-routes-using-supporting-points) for details.
      */
+    @Generated
     private GeoJsonGeometryCollection supportingPoints;
 
     /*
-     * This is a list of 3-character, ISO 3166-1, alpha-3 country codes of countries/regions in which all toll roads with vignettes are to be avoided, e.g. "AUS,CHE". Toll roads with vignettes in countries/regions not in the list are unaffected. Note: It is an error to specify both **avoidVignette** and **allowVignette**.
+     * This is a list of 3-character, ISO 3166-1, alpha-3 country codes of countries/regions in which all toll roads
+     * with vignettes are to be avoided, e.g. "AUS,CHE". Toll roads with vignettes in countries/regions not in the list
+     * are unaffected. Note: It is an error to specify both **avoidVignette** and **allowVignette**.
      */
+    @Generated
     private List<String> avoidVignette;
 
     /*
-     * This is a list of 3-character, ISO 3166-1, alpha-3 country codes of countries/regions in which toll roads with vignettes are allowed, e.g. "AUS,CHE". Specifying **allowVignette** with some countries/regions X is equivalent to specifying **avoidVignette** with all countries/regions but X. Specifying **allowVignette** with an empty list is the same as avoiding all toll roads with vignettes. Note: It is an error to specify both **avoidVignette** and **allowVignette**.
+     * This is a list of 3-character, ISO 3166-1, alpha-3 country codes of countries/regions in which toll roads with
+     * vignettes are allowed, e.g. "AUS,CHE". Specifying **allowVignette** with some countries/regions X is equivalent
+     * to specifying **avoidVignette** with all countries/regions but X. Specifying **allowVignette** with an empty list
+     * is the same as avoiding all toll roads with vignettes. Note: It is an error to specify both **avoidVignette** and
+     * **allowVignette**.
      */
+    @Generated
     private List<String> allowVignette;
 
     /*
-     * A GeoJSON MultiPolygon representing list of areas to avoid. Only rectangle polygons are supported. The maximum size of a rectangle is about 160x160 km. Maximum number of avoided areas is **10**. It cannot cross the 180th meridian. It must be between -80 and +80 degrees of latitude.
+     * A GeoJSON MultiPolygon representing list of areas to avoid. Only rectangle polygons are supported. The maximum
+     * size of a rectangle is about 160x160 km. Maximum number of avoided areas is **10**. It cannot cross the 180th
+     * meridian. It must be between -80 and +80 degrees of latitude.
      */
+    @Generated
     private GeoJsonMultiPolygon avoidAreas;
 
     /**
      * Creates an instance of RouteDirectionParametersPrivate class.
      */
+    @Generated
     public RouteDirectionParametersPrivate() {
     }
 
@@ -69,6 +88,7 @@ public final class RouteDirectionParametersPrivate implements JsonSerializable<R
      * 
      * @return the supportingPoints value.
      */
+    @Generated
     public GeoJsonGeometryCollection getSupportingPoints() {
         return this.supportingPoints;
     }
@@ -92,6 +112,7 @@ public final class RouteDirectionParametersPrivate implements JsonSerializable<R
      * @param supportingPoints the supportingPoints value to set.
      * @return the RouteDirectionParametersPrivate object itself.
      */
+    @Generated
     public RouteDirectionParametersPrivate setSupportingPoints(GeoJsonGeometryCollection supportingPoints) {
         this.supportingPoints = supportingPoints;
         return this;
@@ -105,6 +126,7 @@ public final class RouteDirectionParametersPrivate implements JsonSerializable<R
      * 
      * @return the avoidVignette value.
      */
+    @Generated
     public List<String> getAvoidVignette() {
         return this.avoidVignette;
     }
@@ -118,6 +140,7 @@ public final class RouteDirectionParametersPrivate implements JsonSerializable<R
      * @param avoidVignette the avoidVignette value to set.
      * @return the RouteDirectionParametersPrivate object itself.
      */
+    @Generated
     public RouteDirectionParametersPrivate setAvoidVignette(List<String> avoidVignette) {
         this.avoidVignette = avoidVignette;
         return this;
@@ -132,6 +155,7 @@ public final class RouteDirectionParametersPrivate implements JsonSerializable<R
      * 
      * @return the allowVignette value.
      */
+    @Generated
     public List<String> getAllowVignette() {
         return this.allowVignette;
     }
@@ -146,6 +170,7 @@ public final class RouteDirectionParametersPrivate implements JsonSerializable<R
      * @param allowVignette the allowVignette value to set.
      * @return the RouteDirectionParametersPrivate object itself.
      */
+    @Generated
     public RouteDirectionParametersPrivate setAllowVignette(List<String> allowVignette) {
         this.allowVignette = allowVignette;
         return this;
@@ -158,6 +183,7 @@ public final class RouteDirectionParametersPrivate implements JsonSerializable<R
      * 
      * @return the avoidAreas value.
      */
+    @Generated
     public GeoJsonMultiPolygon getAvoidAreas() {
         return this.avoidAreas;
     }
@@ -170,6 +196,7 @@ public final class RouteDirectionParametersPrivate implements JsonSerializable<R
      * @param avoidAreas the avoidAreas value to set.
      * @return the RouteDirectionParametersPrivate object itself.
      */
+    @Generated
     public RouteDirectionParametersPrivate setAvoidAreas(GeoJsonMultiPolygon avoidAreas) {
         this.avoidAreas = avoidAreas;
         return this;
@@ -178,6 +205,7 @@ public final class RouteDirectionParametersPrivate implements JsonSerializable<R
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -198,6 +226,7 @@ public final class RouteDirectionParametersPrivate implements JsonSerializable<R
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteDirectionParametersPrivate.
      */
+    @Generated
     public static RouteDirectionParametersPrivate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteDirectionParametersPrivate deserializedRouteDirectionParametersPrivate

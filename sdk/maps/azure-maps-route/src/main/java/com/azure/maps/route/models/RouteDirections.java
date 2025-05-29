@@ -5,6 +5,7 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,15 +21,18 @@ public class RouteDirections implements JsonSerializable<RouteDirections> {
     /*
      * Format Version property
      */
+    @Generated
     private String formatVersion;
 
     /*
      * Routes array
      */
+    @Generated
     private List<MapsSearchRoute> routes;
 
     /*
-     * Optimized sequence of waypoints. It shows the index from the user provided waypoint sequence for the original and optimized list. For instance, a response: 
+     * Optimized sequence of waypoints. It shows the index from the user provided waypoint sequence for the original and
+     * optimized list. For instance, a response:
      * 
      * ```
      * <optimizedWaypoints>
@@ -38,18 +42,22 @@ public class RouteDirections implements JsonSerializable<RouteDirections> {
      * </optimizedWaypoints>
      * ```
      * 
-     * means that the original sequence is [0, 1, 2] and optimized sequence is [1, 2, 0]. Since the index starts by 0 the original is "first, second, third" while the optimized is "second, third, first".
+     * means that the original sequence is [0, 1, 2] and optimized sequence is [1, 2, 0]. Since the index starts by 0
+     * the original is "first, second, third" while the optimized is "second, third, first".
      */
+    @Generated
     private List<RouteOptimizedWaypoint> optimizedWaypoints;
 
     /*
      * Reports the effective settings used in the current call.
      */
+    @Generated
     private RouteReport report;
 
     /**
      * Creates an instance of RouteDirections class.
      */
+    @Generated
     public RouteDirections() {
     }
 
@@ -58,6 +66,7 @@ public class RouteDirections implements JsonSerializable<RouteDirections> {
      * 
      * @return the formatVersion value.
      */
+    @Generated
     public String getFormatVersion() {
         return this.formatVersion;
     }
@@ -68,6 +77,7 @@ public class RouteDirections implements JsonSerializable<RouteDirections> {
      * @param formatVersion the formatVersion value to set.
      * @return the RouteDirections object itself.
      */
+    @Generated
     RouteDirections setFormatVersion(String formatVersion) {
         this.formatVersion = formatVersion;
         return this;
@@ -78,6 +88,7 @@ public class RouteDirections implements JsonSerializable<RouteDirections> {
      * 
      * @return the routes value.
      */
+    @Generated
     public List<MapsSearchRoute> getRoutes() {
         return this.routes;
     }
@@ -88,6 +99,7 @@ public class RouteDirections implements JsonSerializable<RouteDirections> {
      * @param routes the routes value to set.
      * @return the RouteDirections object itself.
      */
+    @Generated
     RouteDirections setRoutes(List<MapsSearchRoute> routes) {
         this.routes = routes;
         return this;
@@ -110,6 +122,7 @@ public class RouteDirections implements JsonSerializable<RouteDirections> {
      * 
      * @return the optimizedWaypoints value.
      */
+    @Generated
     public List<RouteOptimizedWaypoint> getOptimizedWaypoints() {
         return this.optimizedWaypoints;
     }
@@ -132,6 +145,7 @@ public class RouteDirections implements JsonSerializable<RouteDirections> {
      * @param optimizedWaypoints the optimizedWaypoints value to set.
      * @return the RouteDirections object itself.
      */
+    @Generated
     RouteDirections setOptimizedWaypoints(List<RouteOptimizedWaypoint> optimizedWaypoints) {
         this.optimizedWaypoints = optimizedWaypoints;
         return this;
@@ -142,6 +156,7 @@ public class RouteDirections implements JsonSerializable<RouteDirections> {
      * 
      * @return the report value.
      */
+    @Generated
     public RouteReport getReport() {
         return this.report;
     }
@@ -152,6 +167,7 @@ public class RouteDirections implements JsonSerializable<RouteDirections> {
      * @param report the report value to set.
      * @return the RouteDirections object itself.
      */
+    @Generated
     public RouteDirections setReport(RouteReport report) {
         this.report = report;
         return this;
@@ -160,6 +176,7 @@ public class RouteDirections implements JsonSerializable<RouteDirections> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -175,6 +192,7 @@ public class RouteDirections implements JsonSerializable<RouteDirections> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteDirections.
      */
+    @Generated
     public static RouteDirections fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteDirections deserializedRouteDirections = new RouteDirections();
