@@ -150,9 +150,13 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
         double intervalInSeconds = Duration.between(lastRecorded, nowSnapshot).toMillis() / 1000;
         if (intervalInSeconds > 0) {
             long successSnapshot = successMeter.getCount();
-            this.successRate.update((long)(100d * (successSnapshot - lastRecordedSuccessCount) / intervalInSeconds));
-
             long failureSnapshot = failureMeter.getCount();
+
+            if (successSnapshot == 0 && failureSnapshot == 0) {
+                return;
+            }
+
+            this.successRate.update((long)(100d * (successSnapshot - lastRecordedSuccessCount) / intervalInSeconds));
             this.failureRate.update((long)(100d * (failureSnapshot - lastRecordedFailureCount) / intervalInSeconds));
 
             Snapshot latencySnapshot = latencyTimer.getSnapshot();
