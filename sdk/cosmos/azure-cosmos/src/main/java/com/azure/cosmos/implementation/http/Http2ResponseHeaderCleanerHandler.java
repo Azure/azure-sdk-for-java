@@ -10,6 +10,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http2.Http2Headers;
 import io.netty.handler.codec.http2.Http2HeadersFrame;
 import io.netty.handler.codec.http2.Http2SettingsAckFrame;
+import io.netty.handler.codec.http2.Http2SettingsFrame;
 import io.netty.util.ReferenceCountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,10 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
             super.channelRead(ctx, msg);
         } else if (msg instanceof Http2SettingsAckFrame) {
             ReferenceCountUtil.release(msg);
+        } else if (msg instanceof Http2SettingsFrame) {
+            Http2SettingsFrame settingsFrame = (Http2SettingsFrame)msg;
+            logger.info("SETTINGS retrieved - {}", settingsFrame.settings().toString());
+            super.channelRead(ctx, msg);
         } else {
             // Pass the message to the next handler in the pipeline
             ctx.fireChannelRead(msg);

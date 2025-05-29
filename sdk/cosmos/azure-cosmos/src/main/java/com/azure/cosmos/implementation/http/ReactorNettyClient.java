@@ -160,6 +160,11 @@ public class ReactorNettyClient implements HttpClient {
                             true
                         )))
                 .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
+                .http2Settings(settings -> settings
+                    .initialWindowSize(1024 * 1024) // 1MB initial window size
+                    .maxFrameSize(64 * 1024)        // 64KB max frame size
+                    .maxConcurrentStreams(http2Cfg.getMaxConcurrentStreams())  // Increased from default 30
+                )
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:
                     // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
@@ -171,6 +176,11 @@ public class ReactorNettyClient implements HttpClient {
                             "customHeaderCleaner",
                             new Http2ResponseHeaderCleanerHandler());
                     }
+
+                    // Optimize socket settings for HTTP/2
+                    connection.channel().config().setOption(ChannelOption.SO_RCVBUF, 1024 * 1024); // 1MB receive buffer
+                    connection.channel().config().setOption(ChannelOption.SO_SNDBUF, 1024 * 1024); // 1MB send buffer
+                    connection.channel().config().setOption(ChannelOption.TCP_NODELAY, true);
 
                     /*
                     Map<String, ChannelHandler> dummy = channelPipeline.toMap();
