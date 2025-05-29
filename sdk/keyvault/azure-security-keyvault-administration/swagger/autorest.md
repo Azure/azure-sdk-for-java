@@ -40,7 +40,7 @@ autorest --tag=settings
 
 ## Configuration
 ```yaml
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.50'
 output-folder: ../
 java: true
 namespace: com.azure.security.keyvault.administration
