@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.health.insights.radiologyinsights;
 
 import com.azure.core.util.Configuration;
@@ -11,7 +10,6 @@ import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentAuthor
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContent;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContentType;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
-import com.azure.health.insights.radiologyinsights.models.CriticalResultInference;
 import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
 import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
@@ -19,12 +17,15 @@ import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
 import com.azure.health.insights.radiologyinsights.models.FindingOptions;
 import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
+import com.azure.health.insights.radiologyinsights.models.GuidanceOptions;
 import com.azure.health.insights.radiologyinsights.models.OrderedProcedure;
 import com.azure.health.insights.radiologyinsights.models.PatientDetails;
 import com.azure.health.insights.radiologyinsights.models.PatientDocument;
 import com.azure.health.insights.radiologyinsights.models.PatientEncounter;
 import com.azure.health.insights.radiologyinsights.models.PatientRecord;
 import com.azure.health.insights.radiologyinsights.models.PatientSex;
+import com.azure.health.insights.radiologyinsights.models.QualityMeasureOptions;
+import com.azure.health.insights.radiologyinsights.models.QualityMeasureType;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceOptions;
@@ -33,13 +34,15 @@ import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInfer
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsModelConfiguration;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
+import com.azure.health.insights.radiologyinsights.models.ScoringAndAssessmentCategoryType;
+import com.azure.health.insights.radiologyinsights.models.ScoringAndAssessmentInference;
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -51,35 +54,36 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document
+ * The SampleScoringAndAssessmentInferenceAsync class processes a sample radiology document
  * with the Radiology Insights service. It will initialize an asynchronous
- * RadiologyInsightsAsyncClient, build a Radiology Insights job request with the sample document, poll the
- * results and display the Critical Results extracted by the Radiology Insights service.
- *
+ * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the
+ * results and display the Scoring and Assessment  extracted by the Radiology Insights service.
  */
-public class SampleCriticalResultInferenceAsync {
+public class SampleScoringAndAssessmentInferenceAsync {
 
-    private static final String DOC_CONTENT = "CLINICAL HISTORY:   "
-            + "\r\n20-year-old female presenting with abdominal pain. Surgical history significant for appendectomy."
-            + "\r\n "
-            + "\r\nCOMPARISON:   "
-            + "\r\nRight upper quadrant sonographic performed 1 day prior."
-            + "\r\n "
-            + "\r\nTECHNIQUE:   "
-            + "\r\nTransabdominal grayscale pelvic sonography with duplex color Doppler "
-            + "\r\nand spectral waveform analysis of the ovaries."
-            + "\r\n "
-            + "\r\nFINDINGS:   "
-            + "\r\nThe uterus is unremarkable given the transabdominal technique with "
-            + "\r\nendometrial echo complex within physiologic normal limits. The "
-            + "\r\novaries are symmetric in size, measuring 2.5 x 1.2 x 3.0 cm and the "
-            + "\r\nleft measuring 2.8 x 1.5 x 1.9 cm.\n \r\nOn duplex imaging, Doppler signal is symmetric."
-            + "\r\n "
-            + "\r\nIMPRESSION:   "
-            + "\r\n1. Normal pelvic sonography. Findings of testicular torsion."
-            + "\r\n\nA new US pelvis within the next 6 months is recommended."
-            + "\n\nThese results have been discussed with Dr. Jones at 3 PM on November 5 2020.\n "
-            + "\r\n";
+    private static final String DOC_CONTENT = "Exam: US THYROID\r\n"
+        + "\r\n"
+        + "Clinical History: Thyroid nodules. 76 year old patient.\r\n"
+        + "\r\n"
+        + "Comparison: none.\r\n"
+        + "\r\n"
+        + "FINDINGS: \r\n"
+        + "\r\n"
+        + "Right lobe: 4.8 x 1.6 x 1.4 cm\r\n"
+        + "\r\n"
+        + "Left Lobe: 4.1 x 1.3 x 1.3 cm\r\n"
+        + "\r\n"
+        + "Isthmus: 4 mm\r\n"
+        + "\r\n"
+        + "There are multiple cystic and partly cystic sub-5 mm nodules noted within the right lobe (TIRADS 2).\r\n"
+        + "\r\n"
+        + "In the lower pole of the left lobe there is a 9 x 8 x 6 mm predominantly solid isoechoic nodule (TIRADS 3).\r\n"
+        + "\r\n"
+        + "IMPRESSION:\r\n"
+        + "\r\n"
+        + "Multiple bilateral small cystic benign thyroid nodules. A low suspicion 9 mm left lobe thyroid nodule (TI-RADS 3) which, given its small size, does not warrant follow-up.CADRADS 3/4.\r\n";
+
+    private static Mono<RadiologyInsightsInferenceResult> mono = null;
 
     /**
      * The main method is the entry point for the application. It initializes and uses
@@ -88,20 +92,17 @@ public class SampleCriticalResultInferenceAsync {
      * @param args The command-line arguments passed to the program.
      */
     public static void main(final String[] args) throws InterruptedException {
-        // BEGIN: com.azure.health.insights.radiologyinsights.buildasyncclient
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
 
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
-                .endpoint(endpoint)
-                .credential(credential);
+            .endpoint(endpoint)
+            .credential(credential)
+            .serviceVersion(RadiologyInsightsServiceVersion.getLatest());
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
-        // END: com.azure.health.insights.radiologyinsights.buildasyncclient
 
-        // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsights
         PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
-                .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
-        // END: com.azure.health.insights.radiologyinsights.inferradiologyinsights
+            .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
 
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -123,7 +124,7 @@ public class SampleCriticalResultInferenceAsync {
         latch.await();
         mono.subscribe(radiologyInsightsResult -> {
             // Process the result asynchronously
-            displayCriticalResults(radiologyInsightsResult);
+            displayScoringAndAssessmentInference(radiologyInsightsResult);
         }, error -> {
             // Handle any errors
             System.err.println("Error occurred: " + error.getMessage());
@@ -140,35 +141,12 @@ public class SampleCriticalResultInferenceAsync {
     }
 
     /**
-     * Display the critical results of the Radiology Insights job request.
-     *
-     * @param radiologyInsightsResult The response for the Radiology Insights
-     *                                request.
-     */
-    private static void displayCriticalResults(RadiologyInsightsInferenceResult radiologyInsightsResult) {
-        // BEGIN: com.azure.health.insights.radiologyinsights.displayresults
-        List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
-        for (RadiologyInsightsPatientResult patientResult : patientResults) {
-            List<RadiologyInsightsInference> inferences = patientResult.getInferences();
-            for (RadiologyInsightsInference inference : inferences) {
-                if (inference instanceof CriticalResultInference) {
-                    CriticalResultInference criticalResultInference = (CriticalResultInference) inference;
-                    String description = criticalResultInference.getResult().getDescription();
-                    System.out.println("Critical Result Inference found: " + description);
-                }
-            }
-        }
-        // END: com.azure.health.insights.radiologyinsights.displayresults
-    }
-
-    /**
      * Creates a RadiologyInsightsJob object to use in the Radiology Insights job
      * request.
      *
      * @return A RadiologyInsightsJob object with the created patient records and
-     *         model configuration.
+     * model configuration.
      */
-    // BEGIN: com.azure.health.insights.radiologyinsights.createrequest
     private static RadiologyInsightsData createRadiologyInsightsJob() {
         List<PatientRecord> patientRecords = createPatientRecords();
         RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
@@ -189,18 +167,22 @@ public class SampleCriticalResultInferenceAsync {
 
         PatientDetails patientDetails = new PatientDetails();
         patientDetails.setSex(PatientSex.FEMALE);
+        // Define a formatter that matches the input pattern
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
 
-        // Use LocalDate to set Date
-        patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
+        // Parse the string to LocalDateTime
+        LocalDateTime dateTime = LocalDateTime.parse("1939-05-25T19:00:00+00:00", formatter);
+        patientDetails.setBirthDate(dateTime.toLocalDate());
 
         patientRecord.setDetails(patientDetails);
 
         PatientEncounter encounter = new PatientEncounter("encounterid1");
 
         TimePeriod period = new TimePeriod();
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-M-d'T'HH:mm:ssXXX");
 
-        OffsetDateTime startTime = OffsetDateTime.parse("2021-08-28T00:00:00Z");
-        OffsetDateTime endTime = OffsetDateTime.parse("2021-08-28T00:00:00Z");
+        OffsetDateTime startTime = OffsetDateTime.parse("2014-2-20T00:00:00" + "+00:00", formatter2);
+        OffsetDateTime endTime = OffsetDateTime.parse("2021-2-20T00:00:00" + "+00:00", formatter2);
 
         period.setStart(startTime);
         period.setEnd(endTime);
@@ -226,13 +208,13 @@ public class SampleCriticalResultInferenceAsync {
 
         FhirR4CodeableConcept procedureCode = new FhirR4CodeableConcept();
         FhirR4Coding procedureCoding = new FhirR4Coding();
-        procedureCoding.setSystem("Http://hl7.org/fhir/ValueSet/cpt-all");
-        procedureCoding.setCode("USPELVIS");
-        procedureCoding.setDisplay("US PELVIS COMPLETE");
+        procedureCoding.setSystem("http://loinc.org");
+        procedureCoding.setCode("USTHY");
+        procedureCoding.setDisplay("US THYROID");
 
         procedureCode.setCoding(Arrays.asList(procedureCoding));
         orderedProcedure.setCode(procedureCode);
-        orderedProcedure.setDescription("US PELVIS COMPLETE");
+        orderedProcedure.setDescription("US THYROID");
 
         adminMetadata.setOrderedProcedures(Arrays.asList(orderedProcedure));
         adminMetadata.setEncounterId("encounterid1");
@@ -240,9 +222,9 @@ public class SampleCriticalResultInferenceAsync {
         patientDocument.setAdministrativeMetadata(adminMetadata);
 
         // Define a formatter to handle milliseconds
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
-        OffsetDateTime createdDateTime = OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", formatter);
+        OffsetDateTime createdDateTime = OffsetDateTime.parse("2014-02-20T00:00:00.000" + "+00:00", formatter3);
         patientDocument.setCreatedAt(createdDateTime);
 
         patientRecord.setPatientDocuments(Arrays.asList(patientDocument));
@@ -271,40 +253,79 @@ public class SampleCriticalResultInferenceAsync {
         RadiologyInsightsInferenceOptions inferenceOptions = getRadiologyInsightsInferenceOptions();
         configuration.setInferenceOptions(inferenceOptions);
         configuration.setInferenceTypes(Arrays.asList(RadiologyInsightsInferenceType.FINDING,
-                RadiologyInsightsInferenceType.AGE_MISMATCH, RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY,
-                RadiologyInsightsInferenceType.SEX_MISMATCH, RadiologyInsightsInferenceType.COMPLETE_ORDER_DISCREPANCY,
-                RadiologyInsightsInferenceType.LIMITED_ORDER_DISCREPANCY,
-                RadiologyInsightsInferenceType.CRITICAL_RESULT, RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION,
-                RadiologyInsightsInferenceType.FOLLOWUP_COMMUNICATION,
-                RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE));
+            RadiologyInsightsInferenceType.AGE_MISMATCH, RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY,
+            RadiologyInsightsInferenceType.SEX_MISMATCH, RadiologyInsightsInferenceType.COMPLETE_ORDER_DISCREPANCY,
+            RadiologyInsightsInferenceType.LIMITED_ORDER_DISCREPANCY,
+            RadiologyInsightsInferenceType.CRITICAL_RESULT, RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION,
+            RadiologyInsightsInferenceType.FOLLOWUP_COMMUNICATION,
+            RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE, RadiologyInsightsInferenceType.GUIDANCE,
+            RadiologyInsightsInferenceType.QUALITY_MEASURE, RadiologyInsightsInferenceType.SCORING_AND_ASSESSMENT));
         configuration.setLocale("en-US");
         configuration.setVerbose(false);
         configuration.setIncludeEvidence(true);
         return configuration;
     }
 
-    private static Mono<RadiologyInsightsInferenceResult> mono = null;
-
     /**
      * Retrieves the RadiologyInsightsInferenceOptions object with the specified
      * options.
      *
      * @return The RadiologyInsightsInferenceOptions object with the specified
-     *         options.
+     * options.
      */
     private static RadiologyInsightsInferenceOptions getRadiologyInsightsInferenceOptions() {
         RadiologyInsightsInferenceOptions inferenceOptions = new RadiologyInsightsInferenceOptions();
         FollowupRecommendationOptions followupOptions = new FollowupRecommendationOptions();
         FindingOptions findingOptions = new FindingOptions();
+        GuidanceOptions guidanceOptions = new GuidanceOptions(true);
+        QualityMeasureOptions qualityMeasureOptions = new QualityMeasureOptions(Arrays.asList(QualityMeasureType.MIPS_364));
         followupOptions.setIncludeRecommendationsWithNoSpecifiedModality(true);
         followupOptions.setIncludeRecommendationsInReferences(true);
         followupOptions.setProvideFocusedSentenceEvidence(true);
         findingOptions.setProvideFocusedSentenceEvidence(true);
         inferenceOptions.setFollowupRecommendationOptions(followupOptions);
         inferenceOptions.setFindingOptions(findingOptions);
+        inferenceOptions.setGuidanceOptions(guidanceOptions);
+        inferenceOptions.setQualityMeasureOptions(qualityMeasureOptions);
         return inferenceOptions;
     }
-    // END: com.azure.health.insights.radiologyinsights.createrequest
+
+    /**
+     * Display the scoring and assessments of the Radiology Insights request.
+     *
+     * @param radiologyInsightsResult The response for the Radiology Insights
+     *                                request.
+     */
+    // BEGIN: com.azure.health.insights.radiologyinsights.displayresults.scoringandassessment
+    private static void displayScoringAndAssessmentInference(RadiologyInsightsInferenceResult radiologyInsightsResult) {
+        List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
+        for (RadiologyInsightsPatientResult patientResult : patientResults) {
+            List<RadiologyInsightsInference> inferences = patientResult.getInferences();
+            for (RadiologyInsightsInference inference : inferences) {
+                if (inference instanceof ScoringAndAssessmentInference) {
+                    ScoringAndAssessmentInference scoringAndAssessmentInference = (ScoringAndAssessmentInference) inference;
+                    System.out.println("Scoring and Assessment Inference found");
+                    // Extract scoringAndAssessmentCategory
+                    ScoringAndAssessmentCategoryType scoringAndAssessmentCategoryType = scoringAndAssessmentInference.getCategory();
+                    System.out.println("Scoring And Assessment Category: " + scoringAndAssessmentCategoryType.getValue());
+                    // Extract scoringAndAssessmentCategoryDescription
+                    String scoringAndAssessmentCategoryDescription = scoringAndAssessmentInference.getCategoryDescription();
+                    System.out.println("Scoring And Assessment Category Description: " + scoringAndAssessmentCategoryDescription);
+                    // Extract scoringAndAssessment singleValue
+                    if (scoringAndAssessmentInference.getSingleValue() != null) {
+                        System.out.println("Single Value: " + scoringAndAssessmentInference.getSingleValue());
+                    }
+                    // Extract scoringAndAssessment rangeValue
+                    if (scoringAndAssessmentInference.getRangeValue() != null) {
+                        System.out.println("Min Value: " + scoringAndAssessmentInference.getRangeValue().getMinimum());
+                        System.out.println("Max Value: " + scoringAndAssessmentInference.getRangeValue().getMaximum());
+                    }
+                }
+            }
+
+        }
+    }
+    // END: com.azure.health.insights.radiologyinsights.displayresults.scoringandassessment
 
     private static Predicate<AsyncPollResponse<RadiologyInsightsJob, RadiologyInsightsInferenceResult>> isComplete = response -> {
         return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
