@@ -186,6 +186,8 @@ public class ReactorNettyClient implements HttpClient {
                         logger.info("====================================================================================");
                     }));
             } else {
+                this.httpClient.configuration().decoder().validateHeaders(false);
+
                 this.httpClient = this.httpClient
                     .secure(sslContextSpec ->
                         sslContextSpec.sslContext(
@@ -195,8 +197,6 @@ public class ReactorNettyClient implements HttpClient {
                             )))
                     .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
                     .metrics(true, tag -> tag);
-
-                this.httpClient.configuration().decoder().validateHeaders(false);
             }
         }
     }
