@@ -156,7 +156,7 @@ public class ReactorNettyClient implements HttpClient {
             ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
         if (http2CfgAccessor.isEffectivelyEnabled(http2Cfg)) {
-            if (Configs.shouldDisableCustomHttp2HeaderCleaner()) {
+            if (!Configs.shouldDisableCustomHttp2HeaderCleaner()) {
                 this.httpClient = this.httpClient
                     .secure(sslContextSpec ->
                         sslContextSpec.sslContext(
@@ -195,6 +195,8 @@ public class ReactorNettyClient implements HttpClient {
                             )))
                     .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
                     .metrics(true, tag -> tag);
+
+                this.httpClient.configuration().decoder().validateHeaders(false);
             }
         }
     }
