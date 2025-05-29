@@ -114,13 +114,13 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
         doc.put("BranchName", this.branchName);
         doc.put("CommitId", this.commitId);
         doc.put("Concurrency", this.concurrency);
-        doc.put("CpuUsage", (cpuUsageSnapshot.get75thPercentile()));
+        doc.put("CpuUsage", (cpuUsageSnapshot.get75thPercentile())/100d);
         doc.put("SuccessRate", ((long)successSnapshot.get75thPercentile())/100d);
         doc.put("FailureRate", ((long)failureSnapshot.get75thPercentile())/100d);
-        double p99 = new BigDecimal(Double.toString(p99LatencySnapshot.get75thPercentile()/1000000))
+        double p99 = new BigDecimal(Double.toString(p99LatencySnapshot.get75thPercentile()/100000000d))
             .setScale(2, RoundingMode.HALF_UP)
             .doubleValue();
-        double median = new BigDecimal(Double.toString(medianLatencySnapshot.get75thPercentile()/1000000))
+        double median = new BigDecimal(Double.toString(medianLatencySnapshot.get75thPercentile()/100000000d))
             .setScale(2, RoundingMode.HALF_UP)
             .doubleValue();
 
@@ -153,8 +153,6 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
 
             long successSnapshot = successMeter.getCount();
             long failureSnapshot = failureMeter.getCount();
-            lastRecordedSuccessCount = successSnapshot;
-            lastRecordedFailureCount = failureSnapshot;
             lastRecorded = nowSnapshot;
 
             if (successSnapshot == 0 && failureSnapshot == 0) {
@@ -163,14 +161,17 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
 
             this.successRate.update((long)(100d * (successSnapshot - lastRecordedSuccessCount) / intervalInSeconds));
             this.failureRate.update((long)(100d * (failureSnapshot - lastRecordedFailureCount) / intervalInSeconds));
+            lastRecordedSuccessCount = successSnapshot;
+            lastRecordedFailureCount = failureSnapshot;
 
             Snapshot latencySnapshot = latencyTimer.getSnapshot();
-            if (latencySnapshot.getMedian() == 0d) {
+            long medianSnapshot = (long) (100d * latencySnapshot.getMedian());
+            if (medianSnapshot == 0L) {
                 return;
             }
 
-            this.medianLatency.update((long) (latencySnapshot.getMedian()));
-            this.p99Latency.update((long) (latencySnapshot.get99thPercentile()));
+            this.medianLatency.update(medianSnapshot);
+            this.p99Latency.update((long) (100d * latencySnapshot.get99thPercentile()));
         }
     }
 
