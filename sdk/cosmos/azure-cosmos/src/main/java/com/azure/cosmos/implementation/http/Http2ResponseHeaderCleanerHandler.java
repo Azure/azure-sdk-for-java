@@ -16,6 +16,10 @@ public class Http2ResponseHeaderCleanerHandler extends SimpleChannelInboundHandl
 
     private static final Logger logger = LoggerFactory.getLogger(Http2ResponseHeaderCleanerHandler.class);
 
+    public Http2ResponseHeaderCleanerHandler() {
+        super(Http2HeadersFrame.class, true);
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Http2HeadersFrame headersFrame) throws Exception {
         Http2Headers headers = headersFrame.headers();
