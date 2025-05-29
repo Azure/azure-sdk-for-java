@@ -7,10 +7,13 @@ import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
+import com.azure.ai.openai.responses.models.ResponsesAssistantMessage;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesStreamEventCompleted;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
+import com.azure.ai.openai.responses.models.ResponsesOutputContentText;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import org.junit.jupiter.api.Disabled;
@@ -20,8 +23,12 @@ import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 
+import static com.azure.ai.openai.responses.ChatbotResponsesSample.createJokesRequest;
+import static com.azure.ai.openai.responses.SummarizeTextResponsesSample.createSummarizationRequest;
+import static com.azure.ai.openai.responses.SummarizeTextResponsesSample.getSummarizationPrompt;
 import static com.azure.ai.openai.responses.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -203,6 +210,74 @@ public class AzureResponsesAsyncTest extends AzureResponsesTestBase {
             StepVerifier.create(client.createResponse(request))
                 .assertNext(AzureResponsesTestBase::assertResponsesResponse)
                 .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
+    public void testSummarizeTextResponsesSuccess(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
+
+        String summarizationPrompt = getSummarizationPrompt();
+        CreateResponsesRequest request = createSummarizationRequest(summarizationPrompt);
+
+        StepVerifier.create(client.createResponse(request)).assertNext(response -> {
+            ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+            ResponsesOutputContentText outputContent
+                = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
+
+            assertNotNull(assistantMessage);
+            assertNotNull(outputContent);
+            assertNotNull(outputContent.getText());
+        }).verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
+    public void testSummarizeTextResponsesFailure(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
+
+        CreateResponsesRequest request = createSummarizationRequest(null);
+
+        StepVerifier.create(client.createResponse(request)).verifyErrorSatisfies(error -> {
+            assertInstanceOf(HttpResponseException.class, error);
+            HttpResponseException httpResponseException = (HttpResponseException) error;
+            assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            assertTrue(httpResponseException.getMessage().contains("Missing required parameter"));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
+    public void testChatbotResponsesSuccess(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
+
+        String prompt = "Tell me 3 jokes about trains";
+        CreateResponsesRequest request = createJokesRequest(prompt);
+
+        StepVerifier.create(client.createResponse(request)).assertNext(response -> {
+            ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+            ResponsesOutputContentText outputContent
+                = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
+
+            assertNotNull(assistantMessage);
+            assertNotNull(outputContent);
+            assertNotNull(outputContent.getText());
+        }).verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
+    public void testChatbotResponsesFailure(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesAsyncClient client = getAzureResponseAsyncClient(httpClient, serviceVersion);
+
+        CreateResponsesRequest request = createJokesRequest(null);
+
+        StepVerifier.create(client.createResponse(request)).verifyErrorSatisfies(error -> {
+            assertInstanceOf(HttpResponseException.class, error);
+            HttpResponseException httpResponseException = (HttpResponseException) error;
+            assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            assertTrue(httpResponseException.getMessage().contains("Missing required parameter"));
         });
     }
 }

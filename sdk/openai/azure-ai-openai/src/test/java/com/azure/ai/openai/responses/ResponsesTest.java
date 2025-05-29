@@ -8,12 +8,15 @@ import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
 import com.azure.ai.openai.responses.models.DeleteResponseResponse;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
+import com.azure.ai.openai.responses.models.ResponsesAssistantMessage;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
+import com.azure.ai.openai.responses.models.ResponsesOutputContentText;
 import com.azure.ai.openai.responses.models.ResponsesItem;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
 import com.azure.ai.openai.responses.models.ResponsesStreamEventCompleted;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
@@ -23,10 +26,14 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 
+import static com.azure.ai.openai.responses.ChatbotResponsesSample.createJokesRequest;
+import static com.azure.ai.openai.responses.SummarizeTextResponsesSample.createSummarizationRequest;
+import static com.azure.ai.openai.responses.SummarizeTextResponsesSample.getSummarizationPrompt;
 import static com.azure.ai.openai.responses.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ResponsesTest extends AzureResponsesTestBase {
 
@@ -210,5 +217,67 @@ public class ResponsesTest extends AzureResponsesTestBase {
             ResponsesResponse response = client.createResponse(request);
             assertResponsesResponse(response);
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
+    public void testSummarizeTextResponsesSuccess(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesClient client = getResponseClient(httpClient);
+
+        String summarizationPrompt = getSummarizationPrompt();
+        CreateResponsesRequest request = createSummarizationRequest(summarizationPrompt);
+
+        ResponsesResponse response = client.createResponse(request);
+        ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+        ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
+
+        assertNotNull(assistantMessage);
+        assertNotNull(outputContent);
+        assertNotNull(outputContent.getText());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
+    public void testSummarizeTextResponsesFailure(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesClient client = getResponseClient(httpClient);
+
+        CreateResponsesRequest request = createSummarizationRequest(null);
+
+        HttpResponseException exception
+                = assertThrows(HttpResponseException.class, () -> client.createResponse(request));
+
+        assertEquals(400, exception.getResponse().getStatusCode());
+        assertTrue(exception.getMessage().contains("Missing required parameter"));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
+    public void testChatbotResponsesSuccess(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesClient client = getResponseClient(httpClient);
+
+        String prompt = "Tell me 3 jokes about trains";
+        CreateResponsesRequest request = createJokesRequest(prompt);
+
+        ResponsesResponse response = client.createResponse(request);
+        ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+        ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
+
+        assertNotNull(assistantMessage);
+        assertNotNull(outputContent);
+        assertNotNull(outputContent.getText());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
+    public void testChatbotResponsesFailure(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesClient client = getResponseClient(httpClient);
+
+        CreateResponsesRequest request = createJokesRequest(null);
+
+        HttpResponseException exception
+                = assertThrows(HttpResponseException.class, () -> client.createResponse(request));
+
+        assertEquals(400, exception.getResponse().getStatusCode());
+        assertTrue(exception.getMessage().contains("Missing required parameter"));
     }
 }
