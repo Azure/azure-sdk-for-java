@@ -165,6 +165,18 @@ public class ReactorNettyClient implements HttpClient {
                         )))
                 .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
                 .metrics(true, tag -> tag)
+                .doOnDisconnected(connection -> {
+                    // The response header clean up pipeline is being added due to an error getting when calling gateway:
+                    // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
+                    // validateHeaders(false) does not work for http2
+                    ChannelPipeline channelPipeline = connection.channel().pipeline();
+                    Map<String, ChannelHandler> dummy = channelPipeline.toMap();
+                    logger.info("====================================================================================");
+                    logger.info("DISCONNECT HTTP HANDLERS: {}", this);
+                    logger.info("====================================================================================");
+                    dummy.entrySet().forEach(entry -> logger.info("Http2Handler {}: {}", entry.getKey(), entry.getValue()));
+                    logger.info("====================================================================================");
+                })
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:
                     // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
@@ -179,7 +191,7 @@ public class ReactorNettyClient implements HttpClient {
 
                     Map<String, ChannelHandler> dummy = channelPipeline.toMap();
                     logger.info("====================================================================================");
-                    logger.info("HTTP HANDLERS: {}", this);
+                    logger.info("CONNECT HTTP HANDLERS: {}", this);
                     logger.info("====================================================================================");
                     dummy.entrySet().forEach(entry -> logger.info("Http2Handler {}: {}", entry.getKey(), entry.getValue()));
                     logger.info("====================================================================================");
