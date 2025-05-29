@@ -149,8 +149,13 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
 
         double intervalInSeconds = Duration.between(lastRecorded, nowSnapshot).toMillis() / 1000;
         if (intervalInSeconds > 0) {
+            this.cpuUsage.update((long)(100d * cpuReader.getSystemWideCpuUsage()));
+
             long successSnapshot = successMeter.getCount();
             long failureSnapshot = failureMeter.getCount();
+            lastRecordedSuccessCount = successSnapshot;
+            lastRecordedFailureCount = failureSnapshot;
+            lastRecorded = nowSnapshot;
 
             if (successSnapshot == 0 && failureSnapshot == 0) {
                 return;
@@ -160,14 +165,12 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
             this.failureRate.update((long)(100d * (failureSnapshot - lastRecordedFailureCount) / intervalInSeconds));
 
             Snapshot latencySnapshot = latencyTimer.getSnapshot();
+            if (latencySnapshot.getMedian() == 0d) {
+                return;
+            }
 
             this.medianLatency.update((long) (latencySnapshot.getMedian()));
             this.p99Latency.update((long) (latencySnapshot.get99thPercentile()));
-            this.cpuUsage.update((long)(100d * cpuReader.getSystemWideCpuUsage()));
-
-            lastRecordedSuccessCount = successSnapshot;
-            lastRecordedFailureCount = failureSnapshot;
-            lastRecorded = nowSnapshot;
         }
     }
 
