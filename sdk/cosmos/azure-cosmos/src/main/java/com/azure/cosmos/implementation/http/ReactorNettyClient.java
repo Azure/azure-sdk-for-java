@@ -6,6 +6,7 @@ import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
+import reactor.netty.ChannelPipelineConfigurer;
 import reactor.netty.Connection;
 import reactor.netty.ConnectionObserver;
 import reactor.netty.NettyOutbound;
@@ -26,14 +28,17 @@ import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.netty.http.client.HttpClientState;
+import reactor.netty.http.logging.ReactorNettyHttpMessageLogFactory;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.transport.ProxyProvider;
+import reactor.netty.transport.logging.AdvancedByteBufFormat;
 import reactor.util.context.Context;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.invoke.WrongMethodTypeException;
+import java.net.SocketAddress;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
@@ -166,6 +171,34 @@ public class ReactorNettyClient implements HttpClient {
                     .maxFrameSize(64 * 1024)        // 64KB max frame size
                     .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
                 )
+                .doOnChannelInit(new ChannelPipelineConfigurer() {
+                    @Override
+                    public void onChannelInit(ConnectionObserver connectionObserver, Channel channel, SocketAddress socketAddress) {
+                        ChannelPipeline channelPipeline = channel.pipeline();
+
+                        Map<String, ChannelHandler> dummy = channelPipeline.toMap();
+                        logger.info("====================================================================================");
+                        logger.info("CHANNEL INIT PIPELINE (BEFORE): {} - {}", this, channel.parent());
+                        logger.info("====================================================================================");
+                        dummy.entrySet().forEach(
+                            entry -> {
+                                logger.info("Http2Handler {}: {}", entry.getKey(), entry.getValue());
+                            });
+                        logger.info("====================================================================================");
+
+                        ChannelHandler loggingHandlerCandidate = channelPipeline.get("reactor.left.loggingHandler");
+                        ChannelHandler sslHandlerCandidate = channelPipeline.get("reactor.left.sslHandler");
+                        if (loggingHandlerCandidate == null && sslHandlerCandidate != null) {
+                            channelPipeline.addAfter(
+                                "reactor.left.sslHandler",
+                                "reactor.left.loggingHandler",
+                                AdvancedByteBufFormat.HEX_DUMP.toLoggingHandler(
+                                    reactorNetworkLogCategory,
+                                    LogLevel.TRACE,
+                                    null));
+                        }
+                    }
+                })
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:
                     // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
@@ -175,11 +208,6 @@ public class ReactorNettyClient implements HttpClient {
                         // Add frame logging for debugging if trace is enabled
                         channelPipeline.addAfter(
                             "reactor.left.httpCodec",
-                            "http2FrameLogger",
-                            new Http2FrameLogger(LogLevel.INFO, "HTTP2"));
-
-                        channelPipeline.addAfter(
-                            "http2FrameLogger",
                             "customHeaderCleaner",
                             new Http2ResponseHeaderCleanerHandler());
                     }
@@ -191,7 +219,7 @@ public class ReactorNettyClient implements HttpClient {
 
                     Map<String, ChannelHandler> dummy = channelPipeline.toMap();
                     logger.info("====================================================================================");
-                    logger.info("CONNECT HTTP HANDLERS: {}", this);
+                    logger.info("CONNECTED PIPELINE: {}", this);
                     logger.info("====================================================================================");
                     dummy.entrySet().forEach(
                         entry -> {
