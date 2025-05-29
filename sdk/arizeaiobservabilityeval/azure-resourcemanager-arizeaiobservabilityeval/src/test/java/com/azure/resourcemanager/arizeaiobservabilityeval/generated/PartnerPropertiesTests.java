@@ -12,14 +12,14 @@ public final class PartnerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerProperties model
-            = BinaryData.fromString("{\"description\":\"uqktap\"}").toObject(PartnerProperties.class);
-        Assertions.assertEquals("uqktap", model.description());
+            = BinaryData.fromString("{\"description\":\"phejkotynqgoulz\"}").toObject(PartnerProperties.class);
+        Assertions.assertEquals("phejkotynqgoulz", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerProperties model = new PartnerProperties().withDescription("uqktap");
+        PartnerProperties model = new PartnerProperties().withDescription("phejkotynqgoulz");
         model = BinaryData.fromObject(model).toObject(PartnerProperties.class);
-        Assertions.assertEquals("uqktap", model.description());
+        Assertions.assertEquals("phejkotynqgoulz", model.description());
     }
 }

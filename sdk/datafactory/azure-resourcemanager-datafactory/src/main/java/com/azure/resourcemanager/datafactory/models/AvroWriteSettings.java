@@ -164,8 +164,12 @@ public final class AvroWriteSettings extends FormatWriteSettings {
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("recordName", this.recordName);
         jsonWriter.writeStringField("recordNamespace", this.recordNamespace);
-        jsonWriter.writeUntypedField("maxRowsPerFile", this.maxRowsPerFile);
-        jsonWriter.writeUntypedField("fileNamePrefix", this.fileNamePrefix);
+        if (this.maxRowsPerFile != null) {
+            jsonWriter.writeUntypedField("maxRowsPerFile", this.maxRowsPerFile);
+        }
+        if (this.fileNamePrefix != null) {
+            jsonWriter.writeUntypedField("fileNamePrefix", this.fileNamePrefix);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

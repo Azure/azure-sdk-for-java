@@ -22,16 +22,13 @@ public final class AcsRecordingStorageInfoProperties implements JsonSerializable
      * List of details of recording chunks information
      */
     @Generated
-    private final List<AcsRecordingChunkInfoProperties> recordingChunks;
+    private List<AcsRecordingChunkInfoProperties> recordingChunks;
 
     /**
      * Creates an instance of AcsRecordingStorageInfoProperties class.
-     * 
-     * @param recordingChunks the recordingChunks value to set.
      */
     @Generated
-    private AcsRecordingStorageInfoProperties(List<AcsRecordingChunkInfoProperties> recordingChunks) {
-        this.recordingChunks = recordingChunks;
+    private AcsRecordingStorageInfoProperties() {
     }
 
     /**
@@ -51,8 +48,6 @@ public final class AcsRecordingStorageInfoProperties implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("recordingChunks", this.recordingChunks,
-            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -68,18 +63,22 @@ public final class AcsRecordingStorageInfoProperties implements JsonSerializable
     @Generated
     public static AcsRecordingStorageInfoProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<AcsRecordingChunkInfoProperties> recordingChunks = null;
+            AcsRecordingStorageInfoProperties deserializedAcsRecordingStorageInfoProperties
+                = new AcsRecordingStorageInfoProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("recordingChunks".equals(fieldName)) {
-                    recordingChunks = reader.readArray(reader1 -> AcsRecordingChunkInfoProperties.fromJson(reader1));
+                    List<AcsRecordingChunkInfoProperties> recordingChunks
+                        = reader.readArray(reader1 -> AcsRecordingChunkInfoProperties.fromJson(reader1));
+                    deserializedAcsRecordingStorageInfoProperties.recordingChunks = recordingChunks;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new AcsRecordingStorageInfoProperties(recordingChunks);
+
+            return deserializedAcsRecordingStorageInfoProperties;
         });
     }
 }

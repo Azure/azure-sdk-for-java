@@ -20,7 +20,7 @@ public final class IntegrationRuntimesStartMockTests {
     @Test
     public void testStart() throws Exception {
         String responseStr
-            = "{\"name\":\"mn\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"qaqt\",\"state\":\"Online\",\"\":{\"chzoboeeiakwdtu\":\"datawdhjbvhfl\"}}}";
+            = "{\"name\":\"mn\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"qaqt\",\"state\":\"Online\",\"chzoboeeiakwdtu\":\"datawdhjbvhfl\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

@@ -22,7 +22,7 @@ public final class ManagedVirtualNetworksListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"vNetId\":\"jpkojykyt\",\"alias\":\"irctdaojhukwykik\",\"\":{\"obhaomaowpm\":\"datamlhszipihenvhlp\",\"ogboaimwxswfytn\":\"datajsvuz\",\"gtgc\":\"datacjhjrwn\"}},\"name\":\"p\",\"type\":\"rhxfgswyafdlfky\",\"etag\":\"j\",\"id\":\"wrqivibzoqgu\"}]}";
+            = "{\"value\":[{\"properties\":{\"vNetId\":\"jpkojykyt\",\"alias\":\"irctdaojhukwykik\",\"obhaomaowpm\":\"datamlhszipihenvhlp\",\"ogboaimwxswfytn\":\"datajsvuz\",\"gtgc\":\"datacjhjrwn\"},\"name\":\"p\",\"type\":\"rhxfgswyafdlfky\",\"etag\":\"j\",\"id\":\"wrqivibzoqgu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

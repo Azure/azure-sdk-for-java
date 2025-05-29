@@ -336,9 +336,15 @@ public final class AmazonMwsLinkedServiceTypeProperties
         jsonWriter.writeUntypedField("accessKeyId", this.accessKeyId);
         jsonWriter.writeJsonField("mwsAuthToken", this.mwsAuthToken);
         jsonWriter.writeJsonField("secretKey", this.secretKey);
-        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
-        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
-        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        if (this.useEncryptedEndpoints != null) {
+            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        }
+        if (this.useHostVerification != null) {
+            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        }
+        if (this.usePeerVerification != null) {
+            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

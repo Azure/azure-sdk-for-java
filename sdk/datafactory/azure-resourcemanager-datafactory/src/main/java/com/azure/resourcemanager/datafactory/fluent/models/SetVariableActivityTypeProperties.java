@@ -112,7 +112,9 @@ public final class SetVariableActivityTypeProperties implements JsonSerializable
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("variableName", this.variableName);
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         jsonWriter.writeBooleanField("setSystemVariable", this.setSystemVariable);
         return jsonWriter.writeEndObject();
     }

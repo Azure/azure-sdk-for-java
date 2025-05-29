@@ -59,7 +59,7 @@ public class XmlSerializer implements ObjectSerializer {
         try (XmlReader xmlReader = XmlReader.fromBytes(bytes)) {
             return deserializeShared(xmlReader, type);
         } catch (XMLStreamException ex) {
-            throw LOGGER.logThrowableAsError(new IOException(ex));
+            throw LOGGER.throwableAtError().log(ex, IOException::new);
         }
     }
 
@@ -77,7 +77,7 @@ public class XmlSerializer implements ObjectSerializer {
         try (XmlReader xmlReader = XmlReader.fromStream(stream)) {
             return deserializeShared(xmlReader, type);
         } catch (XMLStreamException ex) {
-            throw LOGGER.logThrowableAsError(new IOException(ex));
+            throw LOGGER.throwableAtError().log(ex, IOException::new);
         }
     }
 
@@ -90,11 +90,13 @@ public class XmlSerializer implements ObjectSerializer {
                 return (T) clazz.getMethod("fromXml", XmlReader.class).invoke(null, xmlReader);
             } else {
                 // TODO (alzimmer): XML needs untyped support.
-                throw LOGGER.logThrowableAsError(new UnsupportedOperationException(
-                    "XmlSerializer does not have support for untyped deserialization."));
+
+                throw LOGGER.throwableAtError()
+                    .log("XmlSerializer does not have support for untyped deserialization.",
+                        UnsupportedOperationException::new);
             }
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
     }
 
@@ -119,7 +121,7 @@ public class XmlSerializer implements ObjectSerializer {
 
             return byteArrayOutputStream.toByteArray();
         } catch (XMLStreamException ex) {
-            throw LOGGER.logThrowableAsError(new IOException(ex));
+            throw LOGGER.throwableAtError().log(ex, IOException::new);
         }
     }
 
@@ -141,7 +143,7 @@ public class XmlSerializer implements ObjectSerializer {
         try (XmlWriter xmlWriter = XmlWriter.toStream(stream)) {
             serializeShared(xmlWriter, value);
         } catch (XMLStreamException ex) {
-            throw LOGGER.logThrowableAsError(new IOException(ex));
+            throw LOGGER.throwableAtError().log(ex, IOException::new);
         }
     }
 
@@ -152,11 +154,12 @@ public class XmlSerializer implements ObjectSerializer {
                 ((XmlSerializable<?>) value).toXml(xmlWriter).flush();
             } else {
                 // TODO (alzimmer): XML needs untyped support.
-                throw LOGGER.logThrowableAsError(new UnsupportedOperationException(
-                    "XmlSerializer does not have support for untyped serialization."));
+                throw LOGGER.throwableAtError()
+                    .log("XmlSerializer does not have support for untyped serialization.",
+                        UnsupportedOperationException::new);
             }
         } catch (XMLStreamException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
     }
 

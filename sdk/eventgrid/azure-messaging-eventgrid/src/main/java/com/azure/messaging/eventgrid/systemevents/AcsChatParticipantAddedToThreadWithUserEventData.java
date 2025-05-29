@@ -160,10 +160,10 @@ public final class AcsChatParticipantAddedToThreadWithUserEventData extends AcsC
         jsonWriter.writeStringField("createTime",
             getCreateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreateTime()));
         jsonWriter.writeNumberField("version", getVersion());
-        jsonWriter.writeStringField("time",
-            this.time == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.time));
         jsonWriter.writeJsonField("addedByCommunicationIdentifier", this.addedByCommunicationIdentifier);
         jsonWriter.writeJsonField("participantAdded", this.participantAdded);
+        jsonWriter.writeStringField("time",
+            this.time == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.time));
         return jsonWriter.writeEndObject();
     }
 
@@ -173,6 +173,7 @@ public final class AcsChatParticipantAddedToThreadWithUserEventData extends AcsC
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatParticipantAddedToThreadWithUserEventData if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatParticipantAddedToThreadWithUserEventData.
      */
     public static AcsChatParticipantAddedToThreadWithUserEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -196,15 +197,15 @@ public final class AcsChatParticipantAddedToThreadWithUserEventData extends AcsC
                 } else if ("version".equals(fieldName)) {
                     deserializedAcsChatParticipantAddedToThreadWithUserEventData
                         .setVersion(reader.getNullable(JsonReader::getLong));
-                } else if ("time".equals(fieldName)) {
-                    deserializedAcsChatParticipantAddedToThreadWithUserEventData.time = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("addedByCommunicationIdentifier".equals(fieldName)) {
                     deserializedAcsChatParticipantAddedToThreadWithUserEventData.addedByCommunicationIdentifier
                         = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("participantAdded".equals(fieldName)) {
                     deserializedAcsChatParticipantAddedToThreadWithUserEventData.participantAdded
                         = AcsChatThreadParticipantProperties.fromJson(reader);
+                } else if ("time".equals(fieldName)) {
+                    deserializedAcsChatParticipantAddedToThreadWithUserEventData.time = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

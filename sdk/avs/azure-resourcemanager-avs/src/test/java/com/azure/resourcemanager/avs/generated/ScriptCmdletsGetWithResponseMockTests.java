@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.ScriptCmdlet;
@@ -20,17 +20,17 @@ public final class ScriptCmdletsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"swokm\",\"timeout\":\"hl\",\"audience\":\"Any\",\"parameters\":[{\"type\":\"Bool\",\"name\":\"qkzszuwiwtglxxh\",\"description\":\"fpgpicrmnzhrgm\",\"visibility\":\"Visible\",\"optional\":\"Optional\"},{\"type\":\"Int\",\"name\":\"cbfrm\",\"description\":\"dths\",\"visibility\":\"Hidden\",\"optional\":\"Required\"},{\"type\":\"Bool\",\"name\":\"a\",\"description\":\"lacjfrnxo\",\"visibility\":\"Hidden\",\"optional\":\"Required\"}]},\"id\":\"lwvsgm\",\"name\":\"ohqfzizv\",\"type\":\"xmmkjs\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"glrrczez\",\"timeout\":\"hltnjadhqoawjq\",\"audience\":\"Any\",\"parameters\":[{\"type\":\"String\",\"name\":\"pcmsplbyrrueqth\",\"description\":\"gnmbscbbxigdhx\",\"visibility\":\"Visible\",\"optional\":\"Required\"},{\"type\":\"Float\",\"name\":\"bwdpyqyyb\",\"description\":\"bmdnafcbqwre\",\"visibility\":\"Visible\",\"optional\":\"Required\"}]},\"id\":\"acigel\",\"name\":\"ohdbvqvwzkj\",\"type\":\"pwbeonr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ScriptCmdlet response = manager.scriptCmdlets()
-            .getWithResponse("r", "govfgpikqmhhaow", "rmzvupo", "qzdfuydzvkfvxcn", com.azure.core.util.Context.NONE)
+            .getWithResponse("wxihs", "nxw", "agnepzwaklsb", "bqqqagwwrxa", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

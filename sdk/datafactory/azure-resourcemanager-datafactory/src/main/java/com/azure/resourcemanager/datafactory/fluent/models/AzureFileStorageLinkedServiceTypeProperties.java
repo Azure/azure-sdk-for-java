@@ -369,17 +369,31 @@ public final class AzureFileStorageLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("host", this.host);
-        jsonWriter.writeUntypedField("userId", this.userId);
+        if (this.host != null) {
+            jsonWriter.writeUntypedField("host", this.host);
+        }
+        if (this.userId != null) {
+            jsonWriter.writeUntypedField("userId", this.userId);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
         jsonWriter.writeJsonField("accountKey", this.accountKey);
-        jsonWriter.writeUntypedField("sasUri", this.sasUri);
+        if (this.sasUri != null) {
+            jsonWriter.writeUntypedField("sasUri", this.sasUri);
+        }
         jsonWriter.writeJsonField("sasToken", this.sasToken);
-        jsonWriter.writeUntypedField("fileShare", this.fileShare);
-        jsonWriter.writeUntypedField("snapshot", this.snapshot);
+        if (this.fileShare != null) {
+            jsonWriter.writeUntypedField("fileShare", this.fileShare);
+        }
+        if (this.snapshot != null) {
+            jsonWriter.writeUntypedField("snapshot", this.snapshot);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
-        jsonWriter.writeUntypedField("serviceEndpoint", this.serviceEndpoint);
+        if (this.serviceEndpoint != null) {
+            jsonWriter.writeUntypedField("serviceEndpoint", this.serviceEndpoint);
+        }
         jsonWriter.writeJsonField("credential", this.credential);
         return jsonWriter.writeEndObject();
     }

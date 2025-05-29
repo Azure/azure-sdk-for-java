@@ -19,6 +19,7 @@ import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionMode;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionStatus;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionTunnelProperties;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
 import java.io.IOException;
 import java.util.List;
@@ -391,6 +392,30 @@ public final class VirtualNetworkGatewayConnectionInner extends Resource {
             this.innerProperties = new VirtualNetworkGatewayConnectionPropertiesFormatInner();
         }
         this.innerProperties().withConnectionMode(connectionMode);
+        return this;
+    }
+
+    /**
+     * Get the tunnelProperties property: Tunnel properties for virtual network gateway connection.
+     * 
+     * @return the tunnelProperties value.
+     */
+    public List<VirtualNetworkGatewayConnectionTunnelProperties> tunnelProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().tunnelProperties();
+    }
+
+    /**
+     * Set the tunnelProperties property: Tunnel properties for virtual network gateway connection.
+     * 
+     * @param tunnelProperties the tunnelProperties value to set.
+     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionInner
+        withTunnelProperties(List<VirtualNetworkGatewayConnectionTunnelProperties> tunnelProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayConnectionPropertiesFormatInner();
+        }
+        this.innerProperties().withTunnelProperties(tunnelProperties);
         return this;
     }
 

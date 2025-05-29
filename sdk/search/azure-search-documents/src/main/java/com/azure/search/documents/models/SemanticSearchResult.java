@@ -20,7 +20,15 @@ public final class SemanticSearchResult {
      */
     private final List<QueryCaptionResult> queryCaptions;
 
-    SemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> queryCaptions) {
+    /*
+     * The relevance score computed by boosting the Reranker Score. Search results are sorted by the
+     * RerankerScore/RerankerBoostedScore based on useScoringProfileBoostedRanking in the Semantic Config.
+     * RerankerBoostedScore is only returned for queries of type 'semantic'
+     */
+    private final Double rerankerBoostedScore;
+
+    SemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> queryCaptions, Double rerankerBoostedScore) {
+        this.rerankerBoostedScore = rerankerBoostedScore;
         this.rerankerScore = rerankerScore;
         this.queryCaptions = queryCaptions;
     }
@@ -46,4 +54,16 @@ public final class SemanticSearchResult {
     public List<QueryCaptionResult> getQueryCaptions() {
         return this.queryCaptions;
     }
+
+    /**
+     * Get the rerankerBoostedScore property: The relevance score computed by boosting the Reranker Score. Search
+     * results are sorted by the RerankerScore/RerankerBoostedScore based on useScoringProfileBoostedRanking in the
+     * Semantic Config. RerankerBoostedScore is only returned for queries of type 'semantic'.
+     *
+     * @return the rerankerBoostedScore value.
+     */
+    public Double getRerankerBoostedScore() {
+        return this.rerankerBoostedScore;
+    }
+
 }

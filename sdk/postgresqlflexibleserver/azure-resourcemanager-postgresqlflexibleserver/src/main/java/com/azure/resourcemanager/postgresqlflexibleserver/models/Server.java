@@ -227,6 +227,13 @@ public interface Server {
     List<PrivateEndpointConnection> privateEndpointConnections();
 
     /**
+     * Gets the cluster property: Cluster properties of a server.
+     * 
+     * @return the cluster value.
+     */
+    Cluster cluster();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -315,7 +322,7 @@ public interface Server {
             DefinitionStages.WithDataEncryption, DefinitionStages.WithBackup, DefinitionStages.WithNetwork,
             DefinitionStages.WithHighAvailability, DefinitionStages.WithSourceServerResourceId,
             DefinitionStages.WithPointInTimeUtc, DefinitionStages.WithAvailabilityZone,
-            DefinitionStages.WithReplicationRole, DefinitionStages.WithCreateMode {
+            DefinitionStages.WithReplicationRole, DefinitionStages.WithCreateMode, DefinitionStages.WithCluster {
             /**
              * Executes the create request.
              * 
@@ -564,6 +571,19 @@ public interface Server {
              */
             WithCreate withCreateMode(CreateMode createMode);
         }
+
+        /**
+         * The stage of the Server definition allowing to specify cluster.
+         */
+        interface WithCluster {
+            /**
+             * Specifies the cluster property: Cluster properties of a server..
+             * 
+             * @param cluster Cluster properties of a server.
+             * @return the next definition stage.
+             */
+            WithCreate withCluster(Cluster cluster);
+        }
     }
 
     /**
@@ -581,7 +601,7 @@ public interface Server {
         UpdateStages.WithStorage, UpdateStages.WithBackup, UpdateStages.WithHighAvailability,
         UpdateStages.WithMaintenanceWindow, UpdateStages.WithAuthConfig, UpdateStages.WithDataEncryption,
         UpdateStages.WithCreateMode, UpdateStages.WithReplicationRole, UpdateStages.WithReplica,
-        UpdateStages.WithNetwork {
+        UpdateStages.WithNetwork, UpdateStages.WithCluster {
         /**
          * Executes the update request.
          * 
@@ -675,10 +695,10 @@ public interface Server {
          */
         interface WithVersion {
             /**
-             * Specifies the version property: PostgreSQL Server version. Version 16 is currently not supported for
+             * Specifies the version property: PostgreSQL Server version. Version 17 is currently not supported for
              * MVU..
              * 
-             * @param version PostgreSQL Server version. Version 16 is currently not supported for MVU.
+             * @param version PostgreSQL Server version. Version 17 is currently not supported for MVU.
              * @return the next definition stage.
              */
             Update withVersion(ServerVersion version);
@@ -816,6 +836,19 @@ public interface Server {
              * @return the next definition stage.
              */
             Update withNetwork(Network network);
+        }
+
+        /**
+         * The stage of the Server update allowing to specify cluster.
+         */
+        interface WithCluster {
+            /**
+             * Specifies the cluster property: Cluster properties of a server..
+             * 
+             * @param cluster Cluster properties of a server.
+             * @return the next definition stage.
+             */
+            Update withCluster(Cluster cluster);
         }
     }
 

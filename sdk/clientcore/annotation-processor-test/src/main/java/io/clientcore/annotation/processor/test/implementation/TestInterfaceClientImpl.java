@@ -6,6 +6,8 @@ package io.clientcore.annotation.processor.test.implementation;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.annotation.processor.test.implementation.models.FooListResult;
 import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
+import io.clientcore.annotation.processor.test.implementation.models.ServiceError;
+import io.clientcore.annotation.processor.test.implementation.models.OperationError;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
@@ -14,6 +16,7 @@ import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
+import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetails;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
@@ -65,7 +68,11 @@ public final class TestInterfaceClientImpl {
         Void testMethodReturnsVoid(@HostParam("uri") String uri);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "kv/{key}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
+        @UnexpectedResponseExceptionDetails({
+            @UnexpectedResponseExceptionDetail(statusCode = { 400 }),
+            @UnexpectedResponseExceptionDetail(statusCode = { 403 }, exceptionBodyClass = OperationError.class),
+            @UnexpectedResponseExceptionDetail(exceptionBodyClass = ServiceError.class)
+        })
         Response<Foo> getFoo(@PathParam("key") String key, @QueryParam("label") String label,
             @HeaderParam("Sync-Token") String syncToken);
 
@@ -302,25 +309,36 @@ public final class TestInterfaceClientImpl {
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(exceptionBodyClass = ServiceError.class)
         HttpBinJSON putWithUnexpectedResponseAndExceptionType(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
-        @UnexpectedResponseExceptionDetail(statusCode = { 200 }, exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(statusCode = { 200 }, exceptionBodyClass = ServiceError.class)
         HttpBinJSON putWithUnexpectedResponseAndDeterminedExceptionType(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
-        @UnexpectedResponseExceptionDetail(statusCode = { 400 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = HttpBinJSON.class)
-        HttpBinJSON putWithUnexpectedResponseAndFallthroughExceptionType(@HostParam("uri") String uri,
+        @UnexpectedResponseExceptionDetails({
+            @UnexpectedResponseExceptionDetail(statusCode = { 400 }),
+            @UnexpectedResponseExceptionDetail(statusCode = { 403 }, exceptionBodyClass = ServiceError.class)
+        })HttpBinJSON putWithUnexpectedResponseAndFallthroughExceptionType(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
-        @UnexpectedResponseExceptionDetail(statusCode = { 400 }, exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(statusCode = { 400 }, exceptionBodyClass = ServiceError.class)
         HttpBinJSON putWithUnexpectedResponseAndNoFallthroughExceptionType(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
+        @UnexpectedResponseExceptionDetails({
+            @UnexpectedResponseExceptionDetail(statusCode = { 400 }, exceptionBodyClass = ServiceError.class),
+            @UnexpectedResponseExceptionDetail(statusCode = { 403 }, exceptionBodyClass = OperationError.class)
+        })
+        HttpBinJSON unexpectedResponseWithStatusCodeAndExceptionType(
+            @HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody
+        );
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "post", expectedStatusCodes = { 200 })
         HttpBinJSON post(@HostParam("uri") String uri,

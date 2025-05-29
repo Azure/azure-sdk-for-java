@@ -127,7 +127,9 @@ public final class LogSettings implements JsonSerializable<LogSettings> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("logLocationSettings", this.logLocationSettings);
-        jsonWriter.writeUntypedField("enableCopyActivityLog", this.enableCopyActivityLog);
+        if (this.enableCopyActivityLog != null) {
+            jsonWriter.writeUntypedField("enableCopyActivityLog", this.enableCopyActivityLog);
+        }
         jsonWriter.writeJsonField("copyActivityLogSettings", this.copyActivityLogSettings);
         return jsonWriter.writeEndObject();
     }

@@ -214,10 +214,10 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
         jsonWriter.writeStringField("threadId", getThreadId());
         jsonWriter.writeStringField("messageId", this.messageId);
         jsonWriter.writeJsonField("senderCommunicationIdentifier", this.senderCommunicationIdentifier);
+        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("senderDisplayName", this.senderDisplayName);
         jsonWriter.writeStringField("composeTime",
             this.composeTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.composeTime));
-        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeNumberField("version", this.version);
         return jsonWriter.writeEndObject();
     }
@@ -228,6 +228,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatMessageEventBaseProperties if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatMessageEventBaseProperties.
      */
     public static AcsChatMessageEventBaseProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -250,13 +251,13 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
                 } else if ("senderCommunicationIdentifier".equals(fieldName)) {
                     deserializedAcsChatMessageEventBaseProperties.senderCommunicationIdentifier
                         = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedAcsChatMessageEventBaseProperties.type = reader.getString();
                 } else if ("senderDisplayName".equals(fieldName)) {
                     deserializedAcsChatMessageEventBaseProperties.senderDisplayName = reader.getString();
                 } else if ("composeTime".equals(fieldName)) {
                     deserializedAcsChatMessageEventBaseProperties.composeTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("type".equals(fieldName)) {
-                    deserializedAcsChatMessageEventBaseProperties.type = reader.getString();
                 } else if ("version".equals(fieldName)) {
                     deserializedAcsChatMessageEventBaseProperties.version = reader.getNullable(JsonReader::getLong);
                 } else {

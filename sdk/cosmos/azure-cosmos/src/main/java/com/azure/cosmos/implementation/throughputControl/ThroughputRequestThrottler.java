@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -46,7 +47,7 @@ public class ThroughputRequestThrottler {
         this.throughputReadLock = throughputReadWriteLock.readLock();
 
         this.trackingDictionary = new ConcurrentHashMap<>();
-        this.cycleId = UUID.randomUUID().toString();
+        this.cycleId = UUIDs.nonBlockingRandomUUID().toString();
         this.pkRangeId = pkRangeId;
     }
 
@@ -63,7 +64,7 @@ public class ThroughputRequestThrottler {
                     this.cycleId, this.pkRangeId, throughputUsagePercentage);
             }
 
-            String newCycleId = UUID.randomUUID().toString();
+            String newCycleId = UUIDs.nonBlockingRandomUUID().toString();
             for (ThroughputControlTrackingUnit trackingUnit : this.trackingDictionary.values()) {
                 trackingUnit.reset(newCycleId);
             }

@@ -64,7 +64,9 @@ public final class AzureDataExplorerDatasetTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("table", this.table);
+        if (this.table != null) {
+            jsonWriter.writeUntypedField("table", this.table);
+        }
         return jsonWriter.writeEndObject();
     }
 

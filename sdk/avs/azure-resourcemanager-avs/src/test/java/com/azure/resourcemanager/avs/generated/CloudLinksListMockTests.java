@@ -7,8 +7,8 @@ package com.azure.resourcemanager.avs.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.CloudLink;
@@ -22,17 +22,17 @@ public final class CloudLinksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"status\":\"Active\",\"linkedCloud\":\"hmfdnbzydvfvfcj\"},\"id\":\"eoisrvhmgor\",\"name\":\"fukiscvwmzhw\",\"type\":\"lefaxvxilcbtgn\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Disconnected\",\"linkedCloud\":\"d\"},\"id\":\"zmqpnodawopqhewj\",\"name\":\"tmcg\",\"type\":\"bostzel\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<CloudLink> response = manager.cloudLinks().list("xg", "moy", com.azure.core.util.Context.NONE);
+        PagedIterable<CloudLink> response = manager.cloudLinks().list("q", "bkwvzg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hmfdnbzydvfvfcj", response.iterator().next().linkedCloud());
+        Assertions.assertEquals("d", response.iterator().next().linkedCloud());
     }
 }

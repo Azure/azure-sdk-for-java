@@ -5,25 +5,30 @@ package com.azure.cosmos.util;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.FeedResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 final class CosmosPagedFluxStaticListImpl<T> extends CosmosPagedFlux<T> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosPagedFluxStaticListImpl.class);
     private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseHlp =
         ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
 
     private static final int DEFAULT_PAGE_SIZE = 100;
 
-    private final Consumer<FeedResponse<T>> feedResponseConsumer;
+    private final AtomicReference<Consumer<FeedResponse<T>>> feedResponseConsumer;
 
     private final List<T> items;
     private final boolean isChangeFeed;
-    private final int defaultPageSize;
+    private final AtomicInteger defaultPageSize;
 
     CosmosPagedFluxStaticListImpl(List<T> items, boolean isChangeFeed) {
         this(items, isChangeFeed, null, DEFAULT_PAGE_SIZE);
@@ -40,8 +45,8 @@ final class CosmosPagedFluxStaticListImpl<T> extends CosmosPagedFlux<T> {
         checkNotNull(items, "Argument 'items' must not be null.");
         this.items = items;
         this.isChangeFeed = isChangeFeed;
-        this.feedResponseConsumer = feedResponseConsumer;
-        this.defaultPageSize = defaultPageSize;
+        this.feedResponseConsumer = new AtomicReference<>(feedResponseConsumer);
+        this.defaultPageSize = new AtomicInteger(defaultPageSize);
     }
 
     @Override
@@ -110,23 +115,38 @@ final class CosmosPagedFluxStaticListImpl<T> extends CosmosPagedFlux<T> {
 
     @Override
     public CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> newFeedResponseConsumer) {
-        if (this.feedResponseConsumer != null) {
-            return new CosmosPagedFluxStaticListImpl<>(
-                this.items,
-                this.isChangeFeed,
-                this.feedResponseConsumer.andThen(newFeedResponseConsumer),
-                this.defaultPageSize);
-        } else {
-            return new CosmosPagedFluxStaticListImpl<>(
-                this.items,
-                this.isChangeFeed,
-                newFeedResponseConsumer,
-                this.defaultPageSize);
+        int i = 0;
+        while (true) {
+            i++;
+            Consumer<FeedResponse<T>> feedResponseConsumerSnapshot = this.feedResponseConsumer.get();
+            if (feedResponseConsumerSnapshot != null) {
+
+                if (this.feedResponseConsumer.compareAndSet(
+                    feedResponseConsumerSnapshot, feedResponseConsumerSnapshot.andThen(newFeedResponseConsumer))) {
+
+                    break;
+                }
+            } else {
+                if (this.feedResponseConsumer.compareAndSet(
+                    null,
+                    newFeedResponseConsumer)) {
+
+                    break;
+                }
+            }
+
+            if (i > 10) {
+                LOGGER.warn("Highly concurrent calls to CosmosPagedFlux.handle "
+                    + "are not expected and can result in perf regressions. Avoid this by reducing concurrency.");
+            }
         }
+
+        return this;
     }
 
     @Override
     CosmosPagedFlux<T> withDefaultPageSize(int pageSize) {
-        return new CosmosPagedFluxStaticListImpl<>(this.items, this.isChangeFeed, this.feedResponseConsumer, pageSize);
+        this.defaultPageSize.set(pageSize);
+        return this;
     }
 }

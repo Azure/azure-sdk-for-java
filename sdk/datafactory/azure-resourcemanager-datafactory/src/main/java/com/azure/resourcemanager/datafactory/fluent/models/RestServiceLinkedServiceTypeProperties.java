@@ -653,23 +653,47 @@ public final class RestServiceLinkedServiceTypeProperties
         jsonWriter.writeUntypedField("url", this.url);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("enableServerCertificateValidation", this.enableServerCertificateValidation);
-        jsonWriter.writeUntypedField("userName", this.username);
+        if (this.enableServerCertificateValidation != null) {
+            jsonWriter.writeUntypedField("enableServerCertificateValidation", this.enableServerCertificateValidation);
+        }
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("userName", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("authHeaders", this.authHeaders);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.authHeaders != null) {
+            jsonWriter.writeUntypedField("authHeaders", this.authHeaders);
+        }
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-        jsonWriter.writeUntypedField("tenant", this.tenant);
-        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
-        jsonWriter.writeUntypedField("aadResourceId", this.aadResourceId);
+        if (this.tenant != null) {
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+        }
+        if (this.azureCloudType != null) {
+            jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        }
+        if (this.aadResourceId != null) {
+            jsonWriter.writeUntypedField("aadResourceId", this.aadResourceId);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         jsonWriter.writeJsonField("credential", this.credential);
-        jsonWriter.writeUntypedField("clientId", this.clientId);
+        if (this.clientId != null) {
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+        }
         jsonWriter.writeJsonField("clientSecret", this.clientSecret);
-        jsonWriter.writeUntypedField("tokenEndpoint", this.tokenEndpoint);
-        jsonWriter.writeUntypedField("resource", this.resource);
-        jsonWriter.writeUntypedField("scope", this.scope);
-        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        if (this.tokenEndpoint != null) {
+            jsonWriter.writeUntypedField("tokenEndpoint", this.tokenEndpoint);
+        }
+        if (this.resource != null) {
+            jsonWriter.writeUntypedField("resource", this.resource);
+        }
+        if (this.scope != null) {
+            jsonWriter.writeUntypedField("scope", this.scope);
+        }
+        if (this.servicePrincipalCredentialType != null) {
+            jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        }
         jsonWriter.writeJsonField("servicePrincipalEmbeddedCert", this.servicePrincipalEmbeddedCert);
         jsonWriter.writeJsonField("servicePrincipalEmbeddedCertPassword", this.servicePrincipalEmbeddedCertPassword);
         return jsonWriter.writeEndObject();

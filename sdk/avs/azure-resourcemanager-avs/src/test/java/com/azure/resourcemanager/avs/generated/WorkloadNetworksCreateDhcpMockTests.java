@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcp;
@@ -22,23 +22,23 @@ public final class WorkloadNetworksCreateDhcpMockTests {
     @Test
     public void testCreateDhcp() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"zlanrupdwvnph\",\"segments\":[\"q\",\"pjhmqrhvthl\"],\"provisioningState\":\"Succeeded\",\"revision\":1106480050332233961},\"id\":\"mlzzhzdtxetlgyd\",\"name\":\"hqvlnnpxybafiqg\",\"type\":\"aarbgjekg\"}";
+            = "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"atvfuzkaftj\",\"segments\":[\"uxwigsyeipqdsm\"],\"provisioningState\":\"Succeeded\",\"revision\":2399148659179052},\"id\":\"gkkileplkcsmkn\",\"name\":\"wtbbaedorvvmqf\",\"type\":\"oygbdgwumgxd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkDhcp response = manager.workloadNetworks()
-            .defineDhcp("dxfzzzwyjaf")
-            .withExistingPrivateCloud("pcrrk", "lawjmjsmwrok")
+            .defineDhcp("tekva")
+            .withExistingPrivateCloud("hhkuuip", "dqq")
             .withProperties(
-                new WorkloadNetworkDhcpEntity().withDisplayName("hguynuchlgmltxdw").withRevision(3582867417304549284L))
+                new WorkloadNetworkDhcpEntity().withDisplayName("htjqvqyvw").withRevision(2344293302529256151L))
             .create();
 
-        Assertions.assertEquals("zlanrupdwvnph", response.properties().displayName());
-        Assertions.assertEquals(1106480050332233961L, response.properties().revision());
+        Assertions.assertEquals("atvfuzkaftj", response.properties().displayName());
+        Assertions.assertEquals(2399148659179052L, response.properties().revision());
     }
 }

@@ -49,7 +49,7 @@ final class GeoArray<T> extends AbstractList<T> {
         } else if (container instanceof GeoPolygonCollection) {
             return (T) ((GeoPolygonCollection) container).getPolygons().get(index).getCoordinates();
         } else {
-            throw LOGGER.logThrowableAsError(new IllegalStateException());
+            throw LOGGER.throwableAtError().log(IllegalStateException::new);
         }
     }
 
@@ -66,7 +66,7 @@ final class GeoArray<T> extends AbstractList<T> {
         } else if (container instanceof GeoPolygonCollection) {
             return ((GeoPolygonCollection) container).getPolygons().size();
         } else {
-            throw LOGGER.logThrowableAsError(new IllegalStateException());
+            throw LOGGER.throwableAtError().log(IllegalStateException::new);
         }
     }
 
@@ -79,7 +79,7 @@ final class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public boolean remove(Object o) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
+        throw LOGGER.throwableAtError().log(NO_MUTATION_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -91,7 +91,7 @@ final class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public boolean removeAll(Collection<?> c) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
+        throw LOGGER.throwableAtError().log(NO_MUTATION_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -103,7 +103,7 @@ final class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public boolean retainAll(Collection<?> c) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
+        throw LOGGER.throwableAtError().log(NO_MUTATION_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -114,7 +114,7 @@ final class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public void replaceAll(UnaryOperator<T> operator) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
+        throw LOGGER.throwableAtError().log(NO_MUTATION_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -125,7 +125,7 @@ final class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public void sort(Comparator<? super T> c) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
+        throw LOGGER.throwableAtError().log(NO_MUTATION_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -137,7 +137,7 @@ final class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public boolean removeIf(Predicate<? super T> filter) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException(NO_MUTATION_MESSAGE));
+        throw LOGGER.throwableAtError().log(NO_MUTATION_MESSAGE, UnsupportedOperationException::new);
     }
 
     /**
@@ -150,7 +150,7 @@ final class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        throw LOGGER.logThrowableAsError(new UnsupportedOperationException("GeoArray does not support sub lists."));
+        throw LOGGER.throwableAtError().log("GeoArray does not support sub lists.", UnsupportedOperationException::new);
     }
 
     @Override

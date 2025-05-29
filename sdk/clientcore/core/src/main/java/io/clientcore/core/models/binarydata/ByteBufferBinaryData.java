@@ -63,7 +63,7 @@ final class ByteBufferBinaryData extends BinaryData {
         try {
             return serializer.deserializeFromBytes(toBytes(), type);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -83,7 +83,7 @@ final class ByteBufferBinaryData extends BinaryData {
         try {
             ImplUtils.writeByteBufferToStream(buffer, outputStream);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -94,7 +94,7 @@ final class ByteBufferBinaryData extends BinaryData {
         try {
             jsonWriter.writeBinary(toBytes());
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 

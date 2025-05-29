@@ -29,13 +29,13 @@ public final class AcsRouterWorkerRegisteredEventData implements JsonSerializabl
      * Router Worker Registered Queue Info
      */
     @Generated
-    private final List<AcsRouterQueueDetails> queueAssignments;
+    private List<AcsRouterQueueDetails> queueAssignments;
 
     /*
      * Router Worker Registered Channel Configuration
      */
     @Generated
-    private final List<AcsRouterChannelConfiguration> channelConfigurations;
+    private List<AcsRouterChannelConfiguration> channelConfigurations;
 
     /*
      * Router Worker Register Total Capacity
@@ -58,17 +58,11 @@ public final class AcsRouterWorkerRegisteredEventData implements JsonSerializabl
     /**
      * Creates an instance of AcsRouterWorkerRegisteredEventData class.
      * 
-     * @param queueAssignments the queueAssignments value to set.
-     * @param channelConfigurations the channelConfigurations value to set.
      * @param labels the labels value to set.
      * @param tags the tags value to set.
      */
     @Generated
-    private AcsRouterWorkerRegisteredEventData(List<AcsRouterQueueDetails> queueAssignments,
-        List<AcsRouterChannelConfiguration> channelConfigurations, Map<String, String> labels,
-        Map<String, String> tags) {
-        this.queueAssignments = queueAssignments;
-        this.channelConfigurations = channelConfigurations;
+    private AcsRouterWorkerRegisteredEventData(Map<String, String> labels, Map<String, String> tags) {
         this.labels = labels;
         this.tags = tags;
     }
@@ -140,10 +134,6 @@ public final class AcsRouterWorkerRegisteredEventData implements JsonSerializabl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("queueAssignments", this.queueAssignments,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("channelConfigurations", this.channelConfigurations,
-            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("workerId", this.workerId);
@@ -191,7 +181,9 @@ public final class AcsRouterWorkerRegisteredEventData implements JsonSerializabl
                 }
             }
             AcsRouterWorkerRegisteredEventData deserializedAcsRouterWorkerRegisteredEventData
-                = new AcsRouterWorkerRegisteredEventData(queueAssignments, channelConfigurations, labels, tags);
+                = new AcsRouterWorkerRegisteredEventData(labels, tags);
+            deserializedAcsRouterWorkerRegisteredEventData.queueAssignments = queueAssignments;
+            deserializedAcsRouterWorkerRegisteredEventData.channelConfigurations = channelConfigurations;
             deserializedAcsRouterWorkerRegisteredEventData.workerId = workerId;
             deserializedAcsRouterWorkerRegisteredEventData.totalCapacity = totalCapacity;
 

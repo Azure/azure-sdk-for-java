@@ -97,6 +97,11 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
      */
     private ZoneRedundancy zoneRedundancy;
 
+    /*
+     * Enables registry-wide pull from unauthenticated clients.
+     */
+    private Boolean anonymousPullEnabled;
+
     /**
      * Creates an instance of RegistryProperties class.
      */
@@ -321,6 +326,26 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
     }
 
     /**
+     * Get the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     * 
+     * @return the anonymousPullEnabled value.
+     */
+    public Boolean anonymousPullEnabled() {
+        return this.anonymousPullEnabled;
+    }
+
+    /**
+     * Set the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     * 
+     * @param anonymousPullEnabled the anonymousPullEnabled value to set.
+     * @return the RegistryProperties object itself.
+     */
+    public RegistryProperties withAnonymousPullEnabled(Boolean anonymousPullEnabled) {
+        this.anonymousPullEnabled = anonymousPullEnabled;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -360,6 +385,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
             this.networkRuleBypassOptions == null ? null : this.networkRuleBypassOptions.toString());
         jsonWriter.writeStringField("zoneRedundancy",
             this.zoneRedundancy == null ? null : this.zoneRedundancy.toString());
+        jsonWriter.writeBooleanField("anonymousPullEnabled", this.anonymousPullEnabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -412,6 +438,8 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
                         = NetworkRuleBypassOptions.fromString(reader.getString());
                 } else if ("zoneRedundancy".equals(fieldName)) {
                     deserializedRegistryProperties.zoneRedundancy = ZoneRedundancy.fromString(reader.getString());
+                } else if ("anonymousPullEnabled".equals(fieldName)) {
+                    deserializedRegistryProperties.anonymousPullEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

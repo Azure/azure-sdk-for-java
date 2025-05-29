@@ -156,7 +156,11 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
         } else {
             user().validate();
         }
-        if (partnerProperties() != null) {
+        if (partnerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property partnerProperties in model OrganizationProperties"));
+        } else {
             partnerProperties().validate();
         }
         if (singleSignOnProperties() != null) {
@@ -199,11 +203,11 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
                     deserializedOrganizationProperties.marketplace = MarketplaceDetails.fromJson(reader);
                 } else if ("user".equals(fieldName)) {
                     deserializedOrganizationProperties.user = UserDetails.fromJson(reader);
+                } else if ("partnerProperties".equals(fieldName)) {
+                    deserializedOrganizationProperties.partnerProperties = PartnerProperties.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedOrganizationProperties.provisioningState
                         = ResourceProvisioningState.fromString(reader.getString());
-                } else if ("partnerProperties".equals(fieldName)) {
-                    deserializedOrganizationProperties.partnerProperties = PartnerProperties.fromJson(reader);
                 } else if ("singleSignOnProperties".equals(fieldName)) {
                     deserializedOrganizationProperties.singleSignOnProperties
                         = SingleSignOnPropertiesV2.fromJson(reader);

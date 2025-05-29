@@ -448,13 +448,25 @@ public final class ODataLinkedServiceTypeProperties implements JsonSerializable<
         jsonWriter.writeUntypedField("url", this.url);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("userName", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("userName", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("authHeaders", this.authHeaders);
-        jsonWriter.writeUntypedField("tenant", this.tenant);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
-        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
-        jsonWriter.writeUntypedField("aadResourceId", this.aadResourceId);
+        if (this.authHeaders != null) {
+            jsonWriter.writeUntypedField("authHeaders", this.authHeaders);
+        }
+        if (this.tenant != null) {
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+        }
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
+        if (this.azureCloudType != null) {
+            jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        }
+        if (this.aadResourceId != null) {
+            jsonWriter.writeUntypedField("aadResourceId", this.aadResourceId);
+        }
         jsonWriter.writeStringField("aadServicePrincipalCredentialType",
             this.aadServicePrincipalCredentialType == null ? null : this.aadServicePrincipalCredentialType.toString());
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);

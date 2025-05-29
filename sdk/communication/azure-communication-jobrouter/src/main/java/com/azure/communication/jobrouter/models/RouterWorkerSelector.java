@@ -230,7 +230,9 @@ public final class RouterWorkerSelector implements JsonSerializable<RouterWorker
             jsonWriter.writeStringField("key", this.key);
             jsonWriter.writeStringField("labelOperator",
                 this.labelOperator == null ? null : this.labelOperator.toString());
-            jsonWriter.writeJsonField("value", this.value);
+            if (this.value != null) {
+                jsonWriter.writeJsonField("value", this.value);
+            }
             CustomizationHelper.serializeDurationToSeconds(jsonWriter, "expiresAfterSeconds", this.expiresAfterSeconds);
             jsonWriter.writeBooleanField("expedite", this.expedite);
             return jsonWriter.writeEndObject();

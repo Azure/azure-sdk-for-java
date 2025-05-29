@@ -10,7 +10,7 @@ package com.azure.resourcemanager.avs.generated;
 public final class ClustersGetSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Clusters_Get.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/Clusters_Get.json
      */
     /**
      * Sample code: Clusters_Get.

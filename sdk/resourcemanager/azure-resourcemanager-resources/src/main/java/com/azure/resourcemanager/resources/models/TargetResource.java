@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class TargetResource implements JsonSerializable<TargetResource> {
     /*
-     * The ID of the resource.
+     * The Azure resource ID of the resource.
      */
     private String id;
 
@@ -31,6 +31,26 @@ public final class TargetResource implements JsonSerializable<TargetResource> {
      */
     private String resourceType;
 
+    /*
+     * The extension the resource was deployed with.
+     */
+    private DeploymentExtensionDefinition extension;
+
+    /*
+     * The extensible resource identifiers.
+     */
+    private Object identifiers;
+
+    /*
+     * The API version the resource was deployed with.
+     */
+    private String apiVersion;
+
+    /*
+     * The symbolic name of the resource as defined in the deployment template.
+     */
+    private String symbolicName;
+
     /**
      * Creates an instance of TargetResource class.
      */
@@ -38,7 +58,7 @@ public final class TargetResource implements JsonSerializable<TargetResource> {
     }
 
     /**
-     * Get the id property: The ID of the resource.
+     * Get the id property: The Azure resource ID of the resource.
      * 
      * @return the id value.
      */
@@ -47,7 +67,7 @@ public final class TargetResource implements JsonSerializable<TargetResource> {
     }
 
     /**
-     * Set the id property: The ID of the resource.
+     * Set the id property: The Azure resource ID of the resource.
      * 
      * @param id the id value to set.
      * @return the TargetResource object itself.
@@ -98,11 +118,94 @@ public final class TargetResource implements JsonSerializable<TargetResource> {
     }
 
     /**
+     * Get the extension property: The extension the resource was deployed with.
+     * 
+     * @return the extension value.
+     */
+    public DeploymentExtensionDefinition extension() {
+        return this.extension;
+    }
+
+    /**
+     * Set the extension property: The extension the resource was deployed with.
+     * 
+     * @param extension the extension value to set.
+     * @return the TargetResource object itself.
+     */
+    public TargetResource withExtension(DeploymentExtensionDefinition extension) {
+        this.extension = extension;
+        return this;
+    }
+
+    /**
+     * Get the identifiers property: The extensible resource identifiers.
+     * 
+     * @return the identifiers value.
+     */
+    public Object identifiers() {
+        return this.identifiers;
+    }
+
+    /**
+     * Set the identifiers property: The extensible resource identifiers.
+     * 
+     * @param identifiers the identifiers value to set.
+     * @return the TargetResource object itself.
+     */
+    public TargetResource withIdentifiers(Object identifiers) {
+        this.identifiers = identifiers;
+        return this;
+    }
+
+    /**
+     * Get the apiVersion property: The API version the resource was deployed with.
+     * 
+     * @return the apiVersion value.
+     */
+    public String apiVersion() {
+        return this.apiVersion;
+    }
+
+    /**
+     * Set the apiVersion property: The API version the resource was deployed with.
+     * 
+     * @param apiVersion the apiVersion value to set.
+     * @return the TargetResource object itself.
+     */
+    public TargetResource withApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /**
+     * Get the symbolicName property: The symbolic name of the resource as defined in the deployment template.
+     * 
+     * @return the symbolicName value.
+     */
+    public String symbolicName() {
+        return this.symbolicName;
+    }
+
+    /**
+     * Set the symbolicName property: The symbolic name of the resource as defined in the deployment template.
+     * 
+     * @param symbolicName the symbolicName value to set.
+     * @return the TargetResource object itself.
+     */
+    public TargetResource withSymbolicName(String symbolicName) {
+        this.symbolicName = symbolicName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extension() != null) {
+            extension().validate();
+        }
     }
 
     /**
@@ -114,6 +217,12 @@ public final class TargetResource implements JsonSerializable<TargetResource> {
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("resourceName", this.resourceName);
         jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeJsonField("extension", this.extension);
+        if (this.identifiers != null) {
+            jsonWriter.writeUntypedField("identifiers", this.identifiers);
+        }
+        jsonWriter.writeStringField("apiVersion", this.apiVersion);
+        jsonWriter.writeStringField("symbolicName", this.symbolicName);
         return jsonWriter.writeEndObject();
     }
 
@@ -138,6 +247,14 @@ public final class TargetResource implements JsonSerializable<TargetResource> {
                     deserializedTargetResource.resourceName = reader.getString();
                 } else if ("resourceType".equals(fieldName)) {
                     deserializedTargetResource.resourceType = reader.getString();
+                } else if ("extension".equals(fieldName)) {
+                    deserializedTargetResource.extension = DeploymentExtensionDefinition.fromJson(reader);
+                } else if ("identifiers".equals(fieldName)) {
+                    deserializedTargetResource.identifiers = reader.readUntyped();
+                } else if ("apiVersion".equals(fieldName)) {
+                    deserializedTargetResource.apiVersion = reader.getString();
+                } else if ("symbolicName".equals(fieldName)) {
+                    deserializedTargetResource.symbolicName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

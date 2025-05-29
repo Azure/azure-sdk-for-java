@@ -66,7 +66,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.fail;
 @SuppressWarnings("SameParameterValue")
 public class MaxRetryCountTests extends TestSuiteBase {
     private static final int PHYSICAL_PARTITION_COUNT = 3;
-    private final static Logger logger = LoggerFactory.getLogger(FaultInjectionWithAvailabilityStrategyTests.class);
+    private final static Logger logger = LoggerFactory.getLogger(MaxRetryCountTests.class);
 
     private final static String sameDocumentIdJustCreated = null;
 

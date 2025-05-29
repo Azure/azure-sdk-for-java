@@ -96,8 +96,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName, @PathParam("poolName") String poolName,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") IpamPoolInner body,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") IpamPoolInner body, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}")
@@ -107,8 +107,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName, @PathParam("poolName") String poolName,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") IpamPoolUpdate body,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") IpamPoolUpdate body, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}")
@@ -128,7 +128,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName, @PathParam("poolName") String poolName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}/getPoolUsage")
@@ -201,7 +202,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -248,7 +249,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -377,6 +378,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param networkManagerName The name of the network manager.
      * @param poolName IP Address Manager Pool resource name.
      * @param body Pool resource object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -384,7 +387,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkManagerName,
-        String poolName, IpamPoolInner body) {
+        String poolName, IpamPoolInner body, String ifMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -409,11 +412,11 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         } else {
             body.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, networkManagerName, poolName, apiVersion, body, accept, context))
+                resourceGroupName, networkManagerName, poolName, apiVersion, ifMatch, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -424,6 +427,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param networkManagerName The name of the network manager.
      * @param poolName IP Address Manager Pool resource name.
      * @param body Pool resource object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -432,7 +437,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
-        String networkManagerName, String poolName, IpamPoolInner body, Context context) {
+        String networkManagerName, String poolName, IpamPoolInner body, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -457,11 +462,34 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         } else {
             body.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            networkManagerName, poolName, apiVersion, body, accept, context);
+            networkManagerName, poolName, apiVersion, ifMatch, body, accept, context);
+    }
+
+    /**
+     * Creates/Updates the Pool resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param poolName IP Address Manager Pool resource name.
+     * @param body Pool resource object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of instance of Pool resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<IpamPoolInner>, IpamPoolInner> beginCreateAsync(String resourceGroupName,
+        String networkManagerName, String poolName, IpamPoolInner body, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, networkManagerName, poolName, body, ifMatch);
+        return this.client.<IpamPoolInner, IpamPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            IpamPoolInner.class, IpamPoolInner.class, this.client.getContext());
     }
 
     /**
@@ -479,8 +507,9 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<IpamPoolInner>, IpamPoolInner> beginCreateAsync(String resourceGroupName,
         String networkManagerName, String poolName, IpamPoolInner body) {
+        final String ifMatch = null;
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceGroupName, networkManagerName, poolName, body);
+            = createWithResponseAsync(resourceGroupName, networkManagerName, poolName, body, ifMatch);
         return this.client.<IpamPoolInner, IpamPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
             IpamPoolInner.class, IpamPoolInner.class, this.client.getContext());
     }
@@ -492,6 +521,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param networkManagerName The name of the network manager.
      * @param poolName IP Address Manager Pool resource name.
      * @param body Pool resource object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -500,10 +531,10 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IpamPoolInner>, IpamPoolInner> beginCreateAsync(String resourceGroupName,
-        String networkManagerName, String poolName, IpamPoolInner body, Context context) {
+        String networkManagerName, String poolName, IpamPoolInner body, String ifMatch, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceGroupName, networkManagerName, poolName, body, context);
+            = createWithResponseAsync(resourceGroupName, networkManagerName, poolName, body, ifMatch, context);
         return this.client.<IpamPoolInner, IpamPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
             IpamPoolInner.class, IpamPoolInner.class, context);
     }
@@ -523,7 +554,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpamPoolInner>, IpamPoolInner> beginCreate(String resourceGroupName,
         String networkManagerName, String poolName, IpamPoolInner body) {
-        return this.beginCreateAsync(resourceGroupName, networkManagerName, poolName, body).getSyncPoller();
+        final String ifMatch = null;
+        return this.beginCreateAsync(resourceGroupName, networkManagerName, poolName, body, ifMatch).getSyncPoller();
     }
 
     /**
@@ -533,6 +565,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param networkManagerName The name of the network manager.
      * @param poolName IP Address Manager Pool resource name.
      * @param body Pool resource object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -541,8 +575,30 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpamPoolInner>, IpamPoolInner> beginCreate(String resourceGroupName,
-        String networkManagerName, String poolName, IpamPoolInner body, Context context) {
-        return this.beginCreateAsync(resourceGroupName, networkManagerName, poolName, body, context).getSyncPoller();
+        String networkManagerName, String poolName, IpamPoolInner body, String ifMatch, Context context) {
+        return this.beginCreateAsync(resourceGroupName, networkManagerName, poolName, body, ifMatch, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates/Updates the Pool resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param poolName IP Address Manager Pool resource name.
+     * @param body Pool resource object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return instance of Pool resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<IpamPoolInner> createAsync(String resourceGroupName, String networkManagerName, String poolName,
+        IpamPoolInner body, String ifMatch) {
+        return beginCreateAsync(resourceGroupName, networkManagerName, poolName, body, ifMatch).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -560,7 +616,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IpamPoolInner> createAsync(String resourceGroupName, String networkManagerName, String poolName,
         IpamPoolInner body) {
-        return beginCreateAsync(resourceGroupName, networkManagerName, poolName, body).last()
+        final String ifMatch = null;
+        return beginCreateAsync(resourceGroupName, networkManagerName, poolName, body, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -571,6 +628,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param networkManagerName The name of the network manager.
      * @param poolName IP Address Manager Pool resource name.
      * @param body Pool resource object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -579,8 +638,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IpamPoolInner> createAsync(String resourceGroupName, String networkManagerName, String poolName,
-        IpamPoolInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, networkManagerName, poolName, body, context).last()
+        IpamPoolInner body, String ifMatch, Context context) {
+        return beginCreateAsync(resourceGroupName, networkManagerName, poolName, body, ifMatch, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -599,7 +658,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpamPoolInner create(String resourceGroupName, String networkManagerName, String poolName,
         IpamPoolInner body) {
-        return createAsync(resourceGroupName, networkManagerName, poolName, body).block();
+        final String ifMatch = null;
+        return createAsync(resourceGroupName, networkManagerName, poolName, body, ifMatch).block();
     }
 
     /**
@@ -609,6 +669,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param networkManagerName The name of the network manager.
      * @param poolName IP Address Manager Pool resource name.
      * @param body Pool resource object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -617,8 +679,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpamPoolInner create(String resourceGroupName, String networkManagerName, String poolName,
-        IpamPoolInner body, Context context) {
-        return createAsync(resourceGroupName, networkManagerName, poolName, body, context).block();
+        IpamPoolInner body, String ifMatch, Context context) {
+        return createAsync(resourceGroupName, networkManagerName, poolName, body, ifMatch, context).block();
     }
 
     /**
@@ -627,6 +689,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param poolName IP Address Manager Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param body Pool resource object to update partially.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -635,7 +699,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IpamPoolInner>> updateWithResponseAsync(String resourceGroupName, String networkManagerName,
-        String poolName, IpamPoolUpdate body) {
+        String poolName, String ifMatch, IpamPoolUpdate body) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -658,11 +722,11 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, networkManagerName, poolName, apiVersion, body, accept, context))
+                resourceGroupName, networkManagerName, poolName, apiVersion, ifMatch, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -672,6 +736,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param poolName IP Address Manager Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param body Pool resource object to update partially.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -681,7 +747,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IpamPoolInner>> updateWithResponseAsync(String resourceGroupName, String networkManagerName,
-        String poolName, IpamPoolUpdate body, Context context) {
+        String poolName, String ifMatch, IpamPoolUpdate body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -704,11 +770,11 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            networkManagerName, poolName, apiVersion, body, accept, context);
+            networkManagerName, poolName, apiVersion, ifMatch, body, accept, context);
     }
 
     /**
@@ -724,8 +790,9 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IpamPoolInner> updateAsync(String resourceGroupName, String networkManagerName, String poolName) {
+        final String ifMatch = null;
         final IpamPoolUpdate body = null;
-        return updateWithResponseAsync(resourceGroupName, networkManagerName, poolName, body)
+        return updateWithResponseAsync(resourceGroupName, networkManagerName, poolName, ifMatch, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -735,6 +802,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param poolName IP Address Manager Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param body Pool resource object to update partially.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -744,8 +813,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IpamPoolInner> updateWithResponse(String resourceGroupName, String networkManagerName,
-        String poolName, IpamPoolUpdate body, Context context) {
-        return updateWithResponseAsync(resourceGroupName, networkManagerName, poolName, body, context).block();
+        String poolName, String ifMatch, IpamPoolUpdate body, Context context) {
+        return updateWithResponseAsync(resourceGroupName, networkManagerName, poolName, ifMatch, body, context).block();
     }
 
     /**
@@ -761,8 +830,10 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpamPoolInner update(String resourceGroupName, String networkManagerName, String poolName) {
+        final String ifMatch = null;
         final IpamPoolUpdate body = null;
-        return updateWithResponse(resourceGroupName, networkManagerName, poolName, body, Context.NONE).getValue();
+        return updateWithResponse(resourceGroupName, networkManagerName, poolName, ifMatch, body, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -798,7 +869,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -840,7 +911,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -904,6 +975,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param poolName Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -911,7 +984,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
-        String poolName) {
+        String poolName, String ifMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -931,11 +1004,11 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, networkManagerName, poolName, apiVersion, accept, context))
+                resourceGroupName, networkManagerName, poolName, apiVersion, ifMatch, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -945,6 +1018,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param poolName Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -953,7 +1028,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String networkManagerName, String poolName, Context context) {
+        String networkManagerName, String poolName, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -973,11 +1048,33 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            networkManagerName, poolName, apiVersion, accept, context);
+            networkManagerName, poolName, apiVersion, ifMatch, accept, context);
+    }
+
+    /**
+     * Delete the Pool resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param poolName Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
+        String poolName, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, networkManagerName, poolName, ifMatch);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -994,8 +1091,9 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String poolName) {
+        final String ifMatch = null;
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, networkManagerName, poolName);
+            = deleteWithResponseAsync(resourceGroupName, networkManagerName, poolName, ifMatch);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -1006,6 +1104,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param poolName Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1014,10 +1114,10 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
-        String poolName, Context context) {
+        String poolName, String ifMatch, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, networkManagerName, poolName, context);
+            = deleteWithResponseAsync(resourceGroupName, networkManagerName, poolName, ifMatch, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -1036,7 +1136,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String poolName) {
-        return this.beginDeleteAsync(resourceGroupName, networkManagerName, poolName).getSyncPoller();
+        final String ifMatch = null;
+        return this.beginDeleteAsync(resourceGroupName, networkManagerName, poolName, ifMatch).getSyncPoller();
     }
 
     /**
@@ -1045,6 +1146,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param poolName Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1053,8 +1156,28 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
-        String poolName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, networkManagerName, poolName, context).getSyncPoller();
+        String poolName, String ifMatch, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, networkManagerName, poolName, ifMatch, context).getSyncPoller();
+    }
+
+    /**
+     * Delete the Pool resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param poolName Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String poolName,
+        String ifMatch) {
+        return beginDeleteAsync(resourceGroupName, networkManagerName, poolName, ifMatch).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1070,7 +1193,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String poolName) {
-        return beginDeleteAsync(resourceGroupName, networkManagerName, poolName).last()
+        final String ifMatch = null;
+        return beginDeleteAsync(resourceGroupName, networkManagerName, poolName, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1080,6 +1204,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param poolName Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1087,9 +1213,9 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String poolName,
+    private Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String poolName, String ifMatch,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, networkManagerName, poolName, context).last()
+        return beginDeleteAsync(resourceGroupName, networkManagerName, poolName, ifMatch, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1105,7 +1231,8 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String poolName) {
-        deleteAsync(resourceGroupName, networkManagerName, poolName).block();
+        final String ifMatch = null;
+        deleteAsync(resourceGroupName, networkManagerName, poolName, ifMatch).block();
     }
 
     /**
@@ -1114,14 +1241,17 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param poolName Pool resource name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String networkManagerName, String poolName, Context context) {
-        deleteAsync(resourceGroupName, networkManagerName, poolName, context).block();
+    public void delete(String resourceGroupName, String networkManagerName, String poolName, String ifMatch,
+        Context context) {
+        deleteAsync(resourceGroupName, networkManagerName, poolName, ifMatch, context).block();
     }
 
     /**
@@ -1157,7 +1287,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPoolUsage(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1199,7 +1329,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getPoolUsage(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -1291,7 +1421,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1336,7 +1466,7 @@ public final class IpamPoolsClientImpl implements IpamPoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

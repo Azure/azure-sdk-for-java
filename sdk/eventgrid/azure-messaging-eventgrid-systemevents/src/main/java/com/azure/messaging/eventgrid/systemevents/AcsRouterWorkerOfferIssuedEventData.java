@@ -92,15 +92,10 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
     @Generated
     private String channelReference;
 
-    /*
-     * Router Event Job ID
-     */
-    @Generated
-    private String jobId;
-
     /**
      * Creates an instance of AcsRouterWorkerOfferIssuedEventData class.
      * 
+     * @param jobId the jobId value to set.
      * @param workerLabels the workerLabels value to set.
      * @param offeredOn the offeredOn value to set.
      * @param expiresOn the expiresOn value to set.
@@ -109,9 +104,10 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
      * @param jobTags the jobTags value to set.
      */
     @Generated
-    private AcsRouterWorkerOfferIssuedEventData(Map<String, String> workerLabels, OffsetDateTime offeredOn,
-        OffsetDateTime expiresOn, Map<String, String> workerTags, Map<String, String> jobLabels,
-        Map<String, String> jobTags) {
+    private AcsRouterWorkerOfferIssuedEventData(String jobId, Map<String, String> workerLabels,
+        OffsetDateTime offeredOn, OffsetDateTime expiresOn, Map<String, String> workerTags,
+        Map<String, String> jobLabels, Map<String, String> jobTags) {
+        super(jobId);
         this.workerLabels = workerLabels;
         this.offeredOn = offeredOn;
         this.expiresOn = expiresOn;
@@ -244,17 +240,6 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
     }
 
     /**
-     * Get the jobId property: Router Event Job ID.
-     * 
-     * @return the jobId value.
-     */
-    @Generated
-    @Override
-    public String getJobId() {
-        return this.jobId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -341,9 +326,8 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
                 }
             }
             AcsRouterWorkerOfferIssuedEventData deserializedAcsRouterWorkerOfferIssuedEventData
-                = new AcsRouterWorkerOfferIssuedEventData(workerLabels, offeredOn, expiresOn, workerTags, jobLabels,
-                    jobTags);
-            deserializedAcsRouterWorkerOfferIssuedEventData.jobId = jobId;
+                = new AcsRouterWorkerOfferIssuedEventData(jobId, workerLabels, offeredOn, expiresOn, workerTags,
+                    jobLabels, jobTags);
             deserializedAcsRouterWorkerOfferIssuedEventData.channelReference = channelReference;
             deserializedAcsRouterWorkerOfferIssuedEventData.channelId = channelId;
             deserializedAcsRouterWorkerOfferIssuedEventData.workerId = workerId;

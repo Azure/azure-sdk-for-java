@@ -9,6 +9,10 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.confidentialledger.fluent.models.ConfidentialLedgerInner;
 import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedger;
+import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedgerBackup;
+import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedgerBackupResponse;
+import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedgerRestore;
+import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedgerRestoreResponse;
 import com.azure.resourcemanager.confidentialledger.models.LedgerProperties;
 import java.util.Collections;
 import java.util.Map;
@@ -31,14 +35,6 @@ public final class ConfidentialLedgerImpl
         return this.innerModel().type();
     }
 
-    public LedgerProperties properties() {
-        return this.innerModel().properties();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public String location() {
         return this.innerModel().location();
     }
@@ -50,6 +46,14 @@ public final class ConfidentialLedgerImpl
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public LedgerProperties properties() {
+        return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Region region() {
@@ -142,6 +146,22 @@ public final class ConfidentialLedgerImpl
             .getByResourceGroupWithResponse(resourceGroupName, ledgerName, context)
             .getValue();
         return this;
+    }
+
+    public ConfidentialLedgerBackupResponse backup(ConfidentialLedgerBackup confidentialLedger) {
+        return serviceManager.ledgers().backup(resourceGroupName, ledgerName, confidentialLedger);
+    }
+
+    public ConfidentialLedgerBackupResponse backup(ConfidentialLedgerBackup confidentialLedger, Context context) {
+        return serviceManager.ledgers().backup(resourceGroupName, ledgerName, confidentialLedger, context);
+    }
+
+    public ConfidentialLedgerRestoreResponse restore(ConfidentialLedgerRestore confidentialLedger) {
+        return serviceManager.ledgers().restore(resourceGroupName, ledgerName, confidentialLedger);
+    }
+
+    public ConfidentialLedgerRestoreResponse restore(ConfidentialLedgerRestore confidentialLedger, Context context) {
+        return serviceManager.ledgers().restore(resourceGroupName, ledgerName, confidentialLedger, context);
     }
 
     public ConfidentialLedgerImpl withRegion(Region location) {

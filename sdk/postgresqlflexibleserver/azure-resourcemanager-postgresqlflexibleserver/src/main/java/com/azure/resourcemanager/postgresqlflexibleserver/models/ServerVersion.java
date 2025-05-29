@@ -12,6 +12,11 @@ import java.util.Collection;
  */
 public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
     /**
+     * Static value 17 for ServerVersion.
+     */
+    public static final ServerVersion ONE_SEVEN = fromString("17");
+
+    /**
      * Static value 16 for ServerVersion.
      */
     public static final ServerVersion ONE_SIX = fromString("16");

@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -547,7 +548,7 @@ public class CosmosAsyncContainer {
         effectiveOptions.setEffectiveItemSerializer(this.database.getClient().getEffectiveItemSerializer(effectiveOptions.getEffectiveItemSerializer()));
 
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
-            trackingId = UUID.randomUUID().toString();
+            trackingId = UUIDs.nonBlockingRandomUUID().toString();
             responseMono = createItemWithTrackingId(item, effectiveOptions, trackingId);
         } else {
             responseMono = createItemInternalCore(item, effectiveOptions, null);
@@ -585,6 +586,7 @@ public class CosmosAsyncContainer {
             operationType,
             null,
             clientAccessor.getEffectiveConsistencyLevel(client, operationType, requestOptions.getConsistencyLevel()),
+            clientAccessor.getEffectiveReadConsistencyStrategy(client, resourceType, operationType, requestOptions.getReadConsistencyStrategy()),
             null,
             thresholds,
             null,
@@ -2281,7 +2283,7 @@ public class CosmosAsyncContainer {
         Mono<CosmosItemResponse<T>> responseMono;
         String trackingId = null;
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
-            trackingId = UUID.randomUUID().toString();
+            trackingId = UUIDs.nonBlockingRandomUUID().toString();
             responseMono = this.replaceItemWithTrackingId(itemType, itemId, doc, requestOptions, trackingId);
         } else {
             responseMono = this.replaceItemInternalCore(itemType, itemId, doc, requestOptions, null);

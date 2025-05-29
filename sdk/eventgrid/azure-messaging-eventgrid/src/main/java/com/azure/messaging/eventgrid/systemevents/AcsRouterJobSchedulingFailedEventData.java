@@ -213,12 +213,12 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeNumberField("priority", this.priority);
         jsonWriter.writeArrayField("expiredAttachedWorkerSelectors", this.expiredAttachedWorkerSelectors,
             (writer, element) -> writer.writeJson(element));
@@ -236,6 +236,7 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsRouterJobSchedulingFailedEventData if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterJobSchedulingFailedEventData.
      */
     public static AcsRouterJobSchedulingFailedEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -246,7 +247,13 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("jobId".equals(fieldName)) {
+                if ("labels".equals(fieldName)) {
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobSchedulingFailedEventData.setLabels(labels);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobSchedulingFailedEventData.setTags(tags);
+                } else if ("jobId".equals(fieldName)) {
                     deserializedAcsRouterJobSchedulingFailedEventData.setJobId(reader.getString());
                 } else if ("channelReference".equals(fieldName)) {
                     deserializedAcsRouterJobSchedulingFailedEventData.setChannelReference(reader.getString());
@@ -254,12 +261,6 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
                     deserializedAcsRouterJobSchedulingFailedEventData.setChannelId(reader.getString());
                 } else if ("queueId".equals(fieldName)) {
                     deserializedAcsRouterJobSchedulingFailedEventData.setQueueId(reader.getString());
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobSchedulingFailedEventData.setLabels(labels);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobSchedulingFailedEventData.setTags(tags);
                 } else if ("priority".equals(fieldName)) {
                     deserializedAcsRouterJobSchedulingFailedEventData.priority = reader.getNullable(JsonReader::getInt);
                 } else if ("expiredAttachedWorkerSelectors".equals(fieldName)) {

@@ -21,25 +21,32 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
      * The identity of the SMS message
      */
     @Generated
-    private String messageId;
+    private final String messageId;
 
     /*
      * The identity of SMS message sender
      */
     @Generated
-    private String from;
+    private final String from;
 
     /*
      * The identity of SMS message receiver
      */
     @Generated
-    private String to;
+    private final String to;
 
     /**
      * Creates an instance of AcsSmsEventBaseProperties class.
+     * 
+     * @param messageId the messageId value to set.
+     * @param from the from value to set.
+     * @param to the to value to set.
      */
     @Generated
-    protected AcsSmsEventBaseProperties() {
+    protected AcsSmsEventBaseProperties(String messageId, String from, String to) {
+        this.messageId = messageId;
+        this.from = from;
+        this.to = to;
     }
 
     /**
@@ -53,18 +60,6 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
     }
 
     /**
-     * Set the messageId property: The identity of the SMS message.
-     * 
-     * @param messageId the messageId value to set.
-     * @return the AcsSmsEventBaseProperties object itself.
-     */
-    @Generated
-    AcsSmsEventBaseProperties setMessageId(String messageId) {
-        this.messageId = messageId;
-        return this;
-    }
-
-    /**
      * Get the from property: The identity of SMS message sender.
      * 
      * @return the from value.
@@ -75,18 +70,6 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
     }
 
     /**
-     * Set the from property: The identity of SMS message sender.
-     * 
-     * @param from the from value to set.
-     * @return the AcsSmsEventBaseProperties object itself.
-     */
-    @Generated
-    AcsSmsEventBaseProperties setFrom(String from) {
-        this.from = from;
-        return this;
-    }
-
-    /**
      * Get the to property: The identity of SMS message receiver.
      * 
      * @return the to value.
@@ -94,18 +77,6 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
     @Generated
     public String getTo() {
         return this.to;
-    }
-
-    /**
-     * Set the to property: The identity of SMS message receiver.
-     * 
-     * @param to the to value to set.
-     * @return the AcsSmsEventBaseProperties object itself.
-     */
-    @Generated
-    AcsSmsEventBaseProperties setTo(String to) {
-        this.to = to;
-        return this;
     }
 
     /**
@@ -127,28 +98,30 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsSmsEventBaseProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsSmsEventBaseProperties.
      */
     @Generated
     public static AcsSmsEventBaseProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsSmsEventBaseProperties deserializedAcsSmsEventBaseProperties = new AcsSmsEventBaseProperties();
+            String messageId = null;
+            String from = null;
+            String to = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("messageId".equals(fieldName)) {
-                    deserializedAcsSmsEventBaseProperties.messageId = reader.getString();
+                    messageId = reader.getString();
                 } else if ("from".equals(fieldName)) {
-                    deserializedAcsSmsEventBaseProperties.from = reader.getString();
+                    from = reader.getString();
                 } else if ("to".equals(fieldName)) {
-                    deserializedAcsSmsEventBaseProperties.to = reader.getString();
+                    to = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedAcsSmsEventBaseProperties;
+            return new AcsSmsEventBaseProperties(messageId, from, to);
         });
     }
 }

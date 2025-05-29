@@ -198,7 +198,7 @@ class NettyHttpClient implements HttpClient {
             latch.await();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw LOGGER.logThrowableAsError(CoreException.from("Request interrupted", e));
+            throw LOGGER.throwableAtError().log("Request interrupted.", e, CoreException::from);
         }
 
         Response<BinaryData> response = responseReference.get();
@@ -229,10 +229,10 @@ class NettyHttpClient implements HttpClient {
                     response = new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                         createBodyFromServerSentResult(serverSentResult));
                 } catch (IOException ex) {
-                    throw LOGGER.logThrowableAsError(CoreException.from(ex));
+                    throw LOGGER.throwableAtError().log(ex, CoreException::from);
                 }
             } else {
-                throw LOGGER.logThrowableAsError(new IllegalStateException(NO_LISTENER_ERROR_MESSAGE));
+                throw LOGGER.throwableAtError().log(NO_LISTENER_ERROR_MESSAGE, IllegalStateException::new);
             }
         }
 

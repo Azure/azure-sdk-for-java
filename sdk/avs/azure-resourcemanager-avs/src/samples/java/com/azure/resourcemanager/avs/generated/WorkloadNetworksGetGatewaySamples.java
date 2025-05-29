@@ -10,7 +10,7 @@ package com.azure.resourcemanager.avs.generated;
 public final class WorkloadNetworksGetGatewaySamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetGateway.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/WorkloadNetworks_GetGateway.json
      */
     /**
      * Sample code: WorkloadNetworks_GetGateway.

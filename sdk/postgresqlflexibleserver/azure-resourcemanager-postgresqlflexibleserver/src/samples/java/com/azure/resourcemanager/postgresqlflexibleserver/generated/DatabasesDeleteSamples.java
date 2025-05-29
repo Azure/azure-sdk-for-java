@@ -10,8 +10,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class DatabasesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/DatabaseDelete.
-     * json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * DatabaseDelete.json
      */
     /**
      * Sample code: Delete a database.

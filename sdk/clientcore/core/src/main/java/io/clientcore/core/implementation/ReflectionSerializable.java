@@ -114,7 +114,7 @@ public final class ReflectionSerializable {
                 return ReflectionUtils.getMethodInvoker(clazz,
                     jsonSerializable.getDeclaredMethod("fromJson", JsonReader.class));
             } catch (Exception e) {
-                throw LOGGER.logThrowableAsError(new IllegalStateException(e));
+                throw LOGGER.throwableAtError().log(e, IllegalStateException::new);
             }
         });
 

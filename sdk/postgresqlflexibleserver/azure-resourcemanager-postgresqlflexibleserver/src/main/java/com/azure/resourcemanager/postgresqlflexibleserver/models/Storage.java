@@ -32,18 +32,18 @@ public final class Storage implements JsonSerializable<Storage> {
     private AzureManagedDiskPerformanceTiers tier;
 
     /*
-     * Storage tier IOPS quantity. This property is required to be set for storage Type PremiumV2_LRS
+     * Storage IOPS quantity. This property is required to be set for storage Type PremiumV2_LRS and UltraSSD_LRS.
      */
     private Integer iops;
 
     /*
-     * Storage throughput for the server. This is required to be set for storage Type PremiumV2_LRS
+     * Storage throughput for the server. This is required to be set for storage Type PremiumV2_LRS and UltraSSD_LRS.
      */
     private Integer throughput;
 
     /*
-     * Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default is Premium_LRS if not
-     * specified
+     * Storage type for the server. Allowed values are Premium_LRS, PremiumV2_LRS, and UltraSSD_LRS. Default is
+     * Premium_LRS if not specified
      */
     private StorageType type;
 
@@ -114,8 +114,8 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
-     * Get the iops property: Storage tier IOPS quantity. This property is required to be set for storage Type
-     * PremiumV2_LRS.
+     * Get the iops property: Storage IOPS quantity. This property is required to be set for storage Type PremiumV2_LRS
+     * and UltraSSD_LRS.
      * 
      * @return the iops value.
      */
@@ -124,8 +124,8 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
-     * Set the iops property: Storage tier IOPS quantity. This property is required to be set for storage Type
-     * PremiumV2_LRS.
+     * Set the iops property: Storage IOPS quantity. This property is required to be set for storage Type PremiumV2_LRS
+     * and UltraSSD_LRS.
      * 
      * @param iops the iops value to set.
      * @return the Storage object itself.
@@ -137,7 +137,7 @@ public final class Storage implements JsonSerializable<Storage> {
 
     /**
      * Get the throughput property: Storage throughput for the server. This is required to be set for storage Type
-     * PremiumV2_LRS.
+     * PremiumV2_LRS and UltraSSD_LRS.
      * 
      * @return the throughput value.
      */
@@ -147,7 +147,7 @@ public final class Storage implements JsonSerializable<Storage> {
 
     /**
      * Set the throughput property: Storage throughput for the server. This is required to be set for storage Type
-     * PremiumV2_LRS.
+     * PremiumV2_LRS and UltraSSD_LRS.
      * 
      * @param throughput the throughput value to set.
      * @return the Storage object itself.
@@ -158,8 +158,8 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
-     * Get the type property: Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default
-     * is Premium_LRS if not specified.
+     * Get the type property: Storage type for the server. Allowed values are Premium_LRS, PremiumV2_LRS, and
+     * UltraSSD_LRS. Default is Premium_LRS if not specified.
      * 
      * @return the type value.
      */
@@ -168,8 +168,8 @@ public final class Storage implements JsonSerializable<Storage> {
     }
 
     /**
-     * Set the type property: Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default
-     * is Premium_LRS if not specified.
+     * Set the type property: Storage type for the server. Allowed values are Premium_LRS, PremiumV2_LRS, and
+     * UltraSSD_LRS. Default is Premium_LRS if not specified.
      * 
      * @param type the type value to set.
      * @return the Storage object itself.

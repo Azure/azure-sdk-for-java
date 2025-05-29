@@ -85,13 +85,13 @@ public class OAuthTokenRequestContext {
         Objects.requireNonNull(scopes, "'scopes' cannot be null.");
 
         if (scopes.length == 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("At least one scope must be provided."));
+            throw LOGGER.throwableAtError().log("At least one scope must be provided.", IllegalArgumentException::new);
         }
 
         for (String scope : scopes) {
             if (CoreUtils.isNullOrEmpty(scope)) {
-                throw LOGGER
-                    .logThrowableAsError(new IllegalArgumentException("Scopes cannot contain null or empty values."));
+                throw LOGGER.throwableAtError()
+                    .log("Scopes cannot contain null or empty values.", IllegalArgumentException::new);
             }
         }
 
@@ -136,11 +136,13 @@ public class OAuthTokenRequestContext {
      */
     public OAuthTokenRequestContext setParam(String key, String value) {
         if (CoreUtils.isNullOrEmpty(key)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Parameter 'key' cannot be null or empty"));
+            throw LOGGER.throwableAtError()
+                .log("Parameter 'key' cannot be null or empty.", IllegalArgumentException::new);
         }
 
         if (CoreUtils.isNullOrEmpty(value)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Parameter 'value' cannot be null or empty"));
+            throw LOGGER.throwableAtError()
+                .log("Parameter 'value' cannot be null or empty.", IllegalArgumentException::new);
         }
 
         if (this.params == null) {

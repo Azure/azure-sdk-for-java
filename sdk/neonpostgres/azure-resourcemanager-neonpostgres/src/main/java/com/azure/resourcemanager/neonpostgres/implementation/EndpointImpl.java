@@ -5,15 +5,19 @@
 package com.azure.resourcemanager.neonpostgres.implementation;
 
 import com.azure.core.management.SystemData;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.neonpostgres.fluent.models.EndpointInner;
 import com.azure.resourcemanager.neonpostgres.models.Endpoint;
 import com.azure.resourcemanager.neonpostgres.models.EndpointProperties;
 
-public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoint.Update {
+public final class EndpointImpl implements Endpoint {
     private EndpointInner innerObject;
 
     private final com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager;
+
+    EndpointImpl(EndpointInner innerObject, com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+    }
 
     public String id() {
         return this.innerModel().id();
@@ -35,107 +39,11 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
         return this.innerModel().systemData();
     }
 
-    public String resourceGroupName() {
-        return resourceGroupName;
-    }
-
     public EndpointInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager() {
         return this.serviceManager;
-    }
-
-    private String resourceGroupName;
-
-    private String organizationName;
-
-    private String projectName;
-
-    private String branchName;
-
-    private String endpointName;
-
-    public EndpointImpl withExistingBranche(String resourceGroupName, String organizationName, String projectName,
-        String branchName) {
-        this.resourceGroupName = resourceGroupName;
-        this.organizationName = organizationName;
-        this.projectName = projectName;
-        this.branchName = branchName;
-        return this;
-    }
-
-    public Endpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, endpointName,
-                this.innerModel(), Context.NONE);
-        return this;
-    }
-
-    public Endpoint create(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, endpointName,
-                this.innerModel(), context);
-        return this;
-    }
-
-    EndpointImpl(String name, com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
-        this.innerObject = new EndpointInner();
-        this.serviceManager = serviceManager;
-        this.endpointName = name;
-    }
-
-    public EndpointImpl update() {
-        return this;
-    }
-
-    public Endpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .update(resourceGroupName, organizationName, projectName, branchName, endpointName, this.innerModel(),
-                Context.NONE);
-        return this;
-    }
-
-    public Endpoint apply(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .update(resourceGroupName, organizationName, projectName, branchName, endpointName, this.innerModel(),
-                context);
-        return this;
-    }
-
-    EndpointImpl(EndpointInner innerObject, com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.organizationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "organizations");
-        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
-        this.branchName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "branches");
-        this.endpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "endpoints");
-    }
-
-    public Endpoint refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .getWithResponse(resourceGroupName, organizationName, projectName, branchName, endpointName, Context.NONE)
-            .getValue();
-        return this;
-    }
-
-    public Endpoint refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .getWithResponse(resourceGroupName, organizationName, projectName, branchName, endpointName, context)
-            .getValue();
-        return this;
-    }
-
-    public EndpointImpl withProperties(EndpointProperties properties) {
-        this.innerModel().withProperties(properties);
-        return this;
     }
 }

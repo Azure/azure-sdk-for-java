@@ -15,6 +15,7 @@ import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.PermissionFilter;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.VectorEncodingFormat;
@@ -276,6 +277,7 @@ public final class FieldBuilder {
         boolean filterable;
         boolean sortable;
         boolean facetable;
+        String permissionFilter = null;
         boolean stored;
         boolean searchable = searchableField != null;
         String analyzerName = null;
@@ -293,6 +295,7 @@ public final class FieldBuilder {
             filterable = simpleField.isFilterable();
             sortable = simpleField.isSortable();
             facetable = simpleField.isFacetable();
+            permissionFilter = simpleField.permissionFilter();
         } else {
             key = searchableField.isKey();
             hidden = searchableField.isHidden();
@@ -300,6 +303,7 @@ public final class FieldBuilder {
             filterable = searchableField.isFilterable();
             sortable = searchableField.isSortable();
             facetable = searchableField.isFacetable();
+            permissionFilter = searchableField.permissionFilter();
             analyzerName = searchableField.analyzerName();
             searchAnalyzerName = searchableField.searchAnalyzerName();
             indexAnalyzerName = searchableField.indexAnalyzerName();
@@ -371,6 +375,10 @@ public final class FieldBuilder {
 
         if (hasVectorEncodingFormat) {
             searchField.setVectorEncodingFormat(VectorEncodingFormat.fromString(vectorEncodingFormat));
+        }
+
+        if (!CoreUtils.isNullOrEmpty(permissionFilter)) {
+            searchField.setPermissionFilter(PermissionFilter.fromString(permissionFilter));
         }
 
         if (!CoreUtils.isNullOrEmpty(synonymMapNames)) {

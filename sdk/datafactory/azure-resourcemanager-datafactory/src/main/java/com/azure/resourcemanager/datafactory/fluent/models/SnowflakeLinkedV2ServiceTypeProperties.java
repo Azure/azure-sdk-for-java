@@ -493,19 +493,33 @@ public final class SnowflakeLinkedV2ServiceTypeProperties
         jsonWriter.writeUntypedField("accountIdentifier", this.accountIdentifier);
         jsonWriter.writeUntypedField("database", this.database);
         jsonWriter.writeUntypedField("warehouse", this.warehouse);
-        jsonWriter.writeUntypedField("user", this.user);
+        if (this.user != null) {
+            jsonWriter.writeUntypedField("user", this.user);
+        }
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("clientId", this.clientId);
+        if (this.clientId != null) {
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+        }
         jsonWriter.writeJsonField("clientSecret", this.clientSecret);
-        jsonWriter.writeUntypedField("tenantId", this.tenantId);
-        jsonWriter.writeUntypedField("scope", this.scope);
+        if (this.tenantId != null) {
+            jsonWriter.writeUntypedField("tenantId", this.tenantId);
+        }
+        if (this.scope != null) {
+            jsonWriter.writeUntypedField("scope", this.scope);
+        }
         jsonWriter.writeJsonField("privateKey", this.privateKey);
         jsonWriter.writeJsonField("privateKeyPassphrase", this.privateKeyPassphrase);
-        jsonWriter.writeUntypedField("role", this.role);
-        jsonWriter.writeUntypedField("host", this.host);
-        jsonWriter.writeUntypedField("schema", this.schema);
+        if (this.role != null) {
+            jsonWriter.writeUntypedField("role", this.role);
+        }
+        if (this.host != null) {
+            jsonWriter.writeUntypedField("host", this.host);
+        }
+        if (this.schema != null) {
+            jsonWriter.writeUntypedField("schema", this.schema);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

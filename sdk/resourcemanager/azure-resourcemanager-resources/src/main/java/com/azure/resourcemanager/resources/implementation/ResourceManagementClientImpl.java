@@ -239,7 +239,7 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-11-01";
+        this.apiVersion = "2025-03-01";
         this.operations = new OperationsClientImpl(this);
         this.deployments = new DeploymentsClientImpl(this);
         this.providers = new ProvidersClientImpl(this);

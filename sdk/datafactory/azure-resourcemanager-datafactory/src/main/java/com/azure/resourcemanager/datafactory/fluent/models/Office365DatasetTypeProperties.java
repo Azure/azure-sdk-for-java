@@ -100,7 +100,9 @@ public final class Office365DatasetTypeProperties implements JsonSerializable<Of
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("tableName", this.tableName);
-        jsonWriter.writeUntypedField("predicate", this.predicate);
+        if (this.predicate != null) {
+            jsonWriter.writeUntypedField("predicate", this.predicate);
+        }
         return jsonWriter.writeEndObject();
     }
 

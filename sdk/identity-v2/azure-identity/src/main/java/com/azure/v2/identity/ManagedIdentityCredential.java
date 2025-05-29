@@ -16,6 +16,8 @@ import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.CoreUtils;
 
+import static com.azure.v2.identity.implementation.util.LoggingUtil.logAndThrowTokenError;
+
 /**
  * <p><a href="https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/">Azure
  * Managed Identity</a> is a feature in
@@ -97,11 +99,11 @@ public final class ManagedIdentityCredential implements TokenCredential {
             ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
             if (ManagedIdentitySourceType.CLOUD_SHELL.equals(managedIdentitySourceType)
                 || ManagedIdentitySourceType.AZURE_ARC.equals(managedIdentitySourceType)) {
-                LoggingUtil.logCredentialUnavailableException(LOGGER,
-                    new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
+                throw LOGGER.throwableAtError()
+                    .log("ManagedIdentityCredential authentication unavailable. "
                         + "User-assigned managed identity is not supported in " + managedIdentitySourceType
                         + ". To use system-assigned managed identity, remove the configured client ID on "
-                        + "the ManagedIdentityCredentialBuilder."));
+                        + "the ManagedIdentityCredentialBuilder.", CredentialUnavailableException::new);
             }
         }
 
@@ -109,15 +111,11 @@ public final class ManagedIdentityCredential implements TokenCredential {
             AccessToken token = managedIdentityClient.authenticate(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return token;
-        } catch (Exception e) {
-            LoggingUtil.logTokenError(LOGGER, request, e);
-            if (clientOptions.isChained()) {
-                throw LOGGER.logThrowableAsError(
-                    new CredentialUnavailableException("Managed Identity authentication is not available.", e));
-            } else {
-                throw LOGGER.logThrowableAsError(
-                    new CredentialAuthenticationException("Managed Identity authentication is not available.", e));
-            }
+        } catch (RuntimeException e) {
+            throw logAndThrowTokenError(LOGGER, "Managed Identity authentication is not available.", request, e,
+                clientOptions.isChained()
+                    ? CredentialUnavailableException::new
+                    : CredentialAuthenticationException::new);
         }
     }
 

@@ -31,7 +31,7 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
      * Router Job Classification Failed Errors
      */
     @Generated
-    private final List<AcsRouterCommunicationError> errors;
+    private List<AcsRouterCommunicationError> errors;
 
     /*
      * Router Job events Queue Id
@@ -51,24 +51,17 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
     @Generated
     private String channelReference;
 
-    /*
-     * Router Event Job ID
-     */
-    @Generated
-    private String jobId;
-
     /**
      * Creates an instance of AcsRouterJobClassificationFailedEventData class.
      *
+     * @param jobId the jobId value to set.
      * @param labels the labels value to set.
      * @param tags the tags value to set.
-     * @param errors the errors value to set.
      */
     @Generated
-    private AcsRouterJobClassificationFailedEventData(Map<String, String> labels, Map<String, String> tags,
-        List<AcsRouterCommunicationError> errors) {
-        super(labels, tags);
-        this.errors = errors;
+    private AcsRouterJobClassificationFailedEventData(String jobId, Map<String, String> labels,
+        Map<String, String> tags) {
+        super(jobId, labels, tags);
     }
 
     /**
@@ -127,30 +120,18 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
     }
 
     /**
-     * Get the jobId property: Router Event Job ID.
-     *
-     * @return the jobId value.
-     */
-    @Generated
-    @Override
-    public String getJobId() {
-        return this.jobId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
-        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("classificationPolicyId", this.classificationPolicyId);
         return jsonWriter.writeEndObject();
     }
@@ -167,9 +148,9 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
     @Generated
     public static AcsRouterJobClassificationFailedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String jobId = null;
             Map<String, String> labels = null;
             Map<String, String> tags = null;
-            String jobId = null;
             String channelReference = null;
             String channelId = null;
             String queueId = null;
@@ -178,12 +159,12 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("labels".equals(fieldName)) {
+                if ("jobId".equals(fieldName)) {
+                    jobId = reader.getString();
+                } else if ("labels".equals(fieldName)) {
                     labels = reader.readMap(reader1 -> reader1.getString());
                 } else if ("tags".equals(fieldName)) {
                     tags = reader.readMap(reader1 -> reader1.getString());
-                } else if ("jobId".equals(fieldName)) {
-                    jobId = reader.getString();
                 } else if ("channelReference".equals(fieldName)) {
                     channelReference = reader.getString();
                 } else if ("channelId".equals(fieldName)) {
@@ -199,11 +180,11 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
                 }
             }
             AcsRouterJobClassificationFailedEventData deserializedAcsRouterJobClassificationFailedEventData
-                = new AcsRouterJobClassificationFailedEventData(labels, tags, errors);
-            deserializedAcsRouterJobClassificationFailedEventData.jobId = jobId;
+                = new AcsRouterJobClassificationFailedEventData(jobId, labels, tags);
             deserializedAcsRouterJobClassificationFailedEventData.channelReference = channelReference;
             deserializedAcsRouterJobClassificationFailedEventData.channelId = channelId;
             deserializedAcsRouterJobClassificationFailedEventData.queueId = queueId;
+            deserializedAcsRouterJobClassificationFailedEventData.errors = errors;
             deserializedAcsRouterJobClassificationFailedEventData.classificationPolicyId = classificationPolicyId;
             return deserializedAcsRouterJobClassificationFailedEventData;
         });

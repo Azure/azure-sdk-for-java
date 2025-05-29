@@ -371,7 +371,7 @@ public abstract class HttpClientTests {
         try {
             return UriBuilder.parse(getServerUri(isSecure()) + "/" + requestPath).toUri();
         } catch (URISyntaxException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, RuntimeException::new);
         }
     }
 

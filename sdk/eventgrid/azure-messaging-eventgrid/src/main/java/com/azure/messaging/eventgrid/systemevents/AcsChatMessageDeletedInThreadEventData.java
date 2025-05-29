@@ -132,10 +132,10 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
         jsonWriter.writeStringField("threadId", getThreadId());
         jsonWriter.writeStringField("messageId", getMessageId());
         jsonWriter.writeJsonField("senderCommunicationIdentifier", getSenderCommunicationIdentifier());
+        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeStringField("senderDisplayName", getSenderDisplayName());
         jsonWriter.writeStringField("composeTime",
             getComposeTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getComposeTime()));
-        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeNumberField("version", getVersion());
         jsonWriter.writeStringField("deleteTime",
             this.deleteTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deleteTime));
@@ -148,6 +148,7 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatMessageDeletedInThreadEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatMessageDeletedInThreadEventData.
      */
     public static AcsChatMessageDeletedInThreadEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -167,13 +168,13 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
                 } else if ("senderCommunicationIdentifier".equals(fieldName)) {
                     deserializedAcsChatMessageDeletedInThreadEventData
                         .setSenderCommunicationIdentifier(CommunicationIdentifierModel.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAcsChatMessageDeletedInThreadEventData.setType(reader.getString());
                 } else if ("senderDisplayName".equals(fieldName)) {
                     deserializedAcsChatMessageDeletedInThreadEventData.setSenderDisplayName(reader.getString());
                 } else if ("composeTime".equals(fieldName)) {
                     deserializedAcsChatMessageDeletedInThreadEventData.setComposeTime(reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
-                } else if ("type".equals(fieldName)) {
-                    deserializedAcsChatMessageDeletedInThreadEventData.setType(reader.getString());
                 } else if ("version".equals(fieldName)) {
                     deserializedAcsChatMessageDeletedInThreadEventData
                         .setVersion(reader.getNullable(JsonReader::getLong));

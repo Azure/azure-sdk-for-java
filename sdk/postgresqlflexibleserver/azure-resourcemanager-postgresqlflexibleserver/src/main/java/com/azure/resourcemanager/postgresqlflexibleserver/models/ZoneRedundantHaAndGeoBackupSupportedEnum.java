@@ -10,6 +10,7 @@ import java.util.Collection;
 /**
  * A value indicating whether Zone Redundant HA and Geo-backup is supported in this region. "Enabled" means zone
  * redundant HA and geo-backup is supported. "Disabled" stands for zone redundant HA and geo-backup is not supported.
+ * Will be deprecated in future, please look to Supported Features for "ZoneRedundantHaAndGeoBackup".
  */
 public final class ZoneRedundantHaAndGeoBackupSupportedEnum
     extends ExpandableStringEnum<ZoneRedundantHaAndGeoBackupSupportedEnum> {

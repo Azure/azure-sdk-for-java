@@ -35,6 +35,11 @@ public final class QueryDebugMode extends ExpandableStringEnum<QueryDebugMode> {
     public static final QueryDebugMode QUERY_REWRITES = fromString("queryRewrites");
 
     /**
+     * Allows the user to retrieve scoring information regarding vectors matched within a collection of complex types.
+     */
+    public static final QueryDebugMode INNER_HITS = fromString("innerHits");
+
+    /**
      * Turn on all debug options.
      */
     public static final QueryDebugMode ALL = fromString("all");

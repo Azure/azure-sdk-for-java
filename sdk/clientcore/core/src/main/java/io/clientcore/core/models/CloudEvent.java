@@ -273,8 +273,8 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
                         this.data = jsonReader.getString();
                     }
                 } catch (IOException e) {
-                    throw LOGGER
-                        .logThrowableAsError(new IllegalArgumentException("'data' isn't in valid Json format", e));
+                    throw LOGGER.throwableAtError()
+                        .log("'data' isn't in valid Json format", e, IllegalArgumentException::new);
                 }
             }
         }
@@ -347,12 +347,13 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
             } else if (arrayOrObjectCheckToken == JsonToken.NULL) {
                 return null;
             } else {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException("JSON string started at an invalid state "
-                    + "for reading a single instance or an array of CloudEvents. Starting token was: "
-                    + arrayOrObjectCheckToken));
+                throw LOGGER.throwableAtError()
+                    .log("JSON string started at an invalid state "
+                        + "for reading a single instance or an array of CloudEvents. Starting token was: "
+                        + arrayOrObjectCheckToken, IllegalArgumentException::new);
             }
         } catch (IOException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(ex));
+            throw LOGGER.throwableAtError().log(ex, CoreException::from);
         }
 
         if (skipValidation || cloudEvents == null) {
@@ -372,11 +373,15 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
                 if (event.getType() == null) {
                     nullAttributes.add("'type'");
                 }
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException("'id', 'source' and 'type' are mandatory "
-                    + "attributes for a CloudEvent according to the spec. This JSON string doesn't have "
-                    + String.join(", ", nullAttributes) + " for the object at index " + i + ". Please make "
-                    + "sure the input Json string has the required attributes or use "
-                    + "CloudEvent.fromString(cloudEventsJson, true) to skip the null check."));
+
+                throw LOGGER.throwableAtError()
+                    .log(
+                        "'id', 'source' and 'type' are mandatory "
+                            + "attributes for a CloudEvent according to the spec. This JSON string doesn't have "
+                            + String.join(", ", nullAttributes) + " for the object at index " + i + ". Please make "
+                            + "sure the input Json string has the required attributes or use "
+                            + "CloudEvent.fromString(cloudEventsJson, true) to skip the null check.",
+                        IllegalArgumentException::new);
             }
         }
 
@@ -403,7 +408,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
     public CloudEvent setId(String id) {
         Objects.requireNonNull(id, "'id' cannot be null");
         if (id.isEmpty()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'id' cannot be empty"));
+            throw LOGGER.throwableAtError().log("'id' cannot be empty", IllegalArgumentException::new);
         }
         this.id = id;
         return this;
@@ -543,7 +548,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(value, "'value' cannot be null.");
         if (!validateAttributeName(name)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(ILLEGAL_ATTRIBUTE_NAME_MESSAGE));
+            throw LOGGER.throwableAtError().log(ILLEGAL_ATTRIBUTE_NAME_MESSAGE, IllegalArgumentException::new);
         }
         if (this.extensionAttributes == null) {
             this.extensionAttributes = new HashMap<>();

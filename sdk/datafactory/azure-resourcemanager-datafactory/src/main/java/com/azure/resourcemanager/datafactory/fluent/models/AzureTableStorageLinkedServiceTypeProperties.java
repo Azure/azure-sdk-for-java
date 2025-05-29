@@ -145,12 +145,18 @@ public final class AzureTableStorageLinkedServiceTypeProperties extends AzureSto
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", connectionString());
+        if (connectionString() != null) {
+            jsonWriter.writeUntypedField("connectionString", connectionString());
+        }
         jsonWriter.writeJsonField("accountKey", accountKey());
-        jsonWriter.writeUntypedField("sasUri", sasUri());
+        if (sasUri() != null) {
+            jsonWriter.writeUntypedField("sasUri", sasUri());
+        }
         jsonWriter.writeJsonField("sasToken", sasToken());
         jsonWriter.writeStringField("encryptedCredential", encryptedCredential());
-        jsonWriter.writeUntypedField("serviceEndpoint", this.serviceEndpoint);
+        if (this.serviceEndpoint != null) {
+            jsonWriter.writeUntypedField("serviceEndpoint", this.serviceEndpoint);
+        }
         jsonWriter.writeJsonField("credential", this.credential);
         return jsonWriter.writeEndObject();
     }

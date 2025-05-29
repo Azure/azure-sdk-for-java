@@ -15,35 +15,34 @@ public final class OrganizationResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OrganizationResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"marketplace\":{\"subscriptionId\":\"gmaajrm\",\"subscriptionStatus\":\"Subscribed\",\"offerDetails\":{\"publisherId\":\"wzrlovmclwhij\",\"offerId\":\"oejctbzaqsqsy\",\"planId\":\"bkbfkgukdkex\",\"planName\":\"pofm\",\"termUnit\":\"x\",\"termId\":\"jpgd\"}},\"user\":{\"firstName\":\"ocjjxhvpmouexh\",\"lastName\":\"xibqeojnx\",\"emailAddress\":\"zvddntwndeicbtwn\",\"upn\":\"aoqvuh\",\"phoneNumber\":\"cffcyddglmj\"},\"provisioningState\":\"Succeeded\",\"partnerProperties\":{\"description\":\"kw\"},\"singleSignOnProperties\":{\"type\":\"OpenId\",\"state\":\"Disable\",\"enterpriseAppId\":\"mqc\",\"url\":\"q\",\"aadDomains\":[\"hix\",\"igdtopbob\",\"og\",\"m\"]}},\"identity\":{\"principalId\":\"a\",\"tenantId\":\"uhrzayvvt\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"thz\":{\"clientId\":\"giotkftutqxlngx\",\"principalId\":\"fgugnxkrxdqmid\"},\"yktz\":{\"clientId\":\"qdrabhjybigehoqf\",\"principalId\":\"wska\"}}},\"location\":\"u\",\"tags\":{\"nhzgpphrcgyn\":\"gqywgndrv\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\"},\"id\":\"c\",\"name\":\"pmivkwlzu\",\"type\":\"ccfwnfnbacfion\"}],\"nextLink\":\"bxetqgtzxdpn\"}")
+            "{\"value\":[{\"properties\":{\"marketplace\":{\"subscriptionId\":\"dfvzwdzuhty\",\"subscriptionStatus\":\"Unsubscribed\",\"offerDetails\":{\"publisherId\":\"sdkf\",\"offerId\":\"hwxmnteiwa\",\"planId\":\"pvkmijcmmxdcuf\",\"planName\":\"srp\",\"termUnit\":\"zidnsezcxtbzsgfy\",\"termId\":\"sne\"}},\"user\":{\"firstName\":\"dwzjeiach\",\"lastName\":\"osfln\",\"emailAddress\":\"sfqpteehz\",\"upn\":\"ypyqrimzinp\",\"phoneNumber\":\"wjdk\"},\"provisioningState\":\"Failed\",\"partnerProperties\":{\"description\":\"oodqxhcrm\"},\"singleSignOnProperties\":{\"type\":\"Saml\",\"state\":\"Enable\",\"enterpriseAppId\":\"kwh\",\"url\":\"oifiyipjxsqwpgr\",\"aadDomains\":[\"norcjxvsnbyxqab\",\"mocpc\"]}},\"identity\":{\"principalId\":\"urzafb\",\"tenantId\":\"j\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ulpkudjkrl\":{\"principalId\":\"qcjm\",\"clientId\":\"javbqidtqajz\"},\"scpai\":{\"principalId\":\"bzhfepgzgqexz\",\"clientId\":\"c\"},\"onpimexgstxg\":{\"principalId\":\"hhbcsglummajtjao\",\"clientId\":\"obnbdxkqpxokaj\"}}},\"location\":\"odgmaajrmvdjwz\",\"tags\":{\"ijcoejctb\":\"vmclw\",\"ukdkexxppofmxa\":\"aqsqsycbkbfk\",\"jpgd\":\"c\",\"j\":\"toc\"},\"id\":\"hvpmoue\",\"name\":\"hd\",\"type\":\"xibqeojnx\"},{\"properties\":{\"marketplace\":{\"subscriptionId\":\"vddntwn\",\"subscriptionStatus\":\"Suspended\",\"offerDetails\":{\"publisherId\":\"cbtwnpzaoqvuh\",\"offerId\":\"hcffcyddglmjthjq\",\"planId\":\"wpyeicxmqciwqvh\",\"planName\":\"ixuigdtopbobj\",\"termUnit\":\"hm\",\"termId\":\"u\"}},\"user\":{\"firstName\":\"a\",\"lastName\":\"rzayv\",\"emailAddress\":\"pgvdf\",\"upn\":\"otkftutqxlngx\",\"phoneNumber\":\"fgugnxkrxdqmid\"},\"provisioningState\":\"Canceled\",\"partnerProperties\":{\"description\":\"zrvqdr\"},\"singleSignOnProperties\":{\"type\":\"OpenId\",\"state\":\"Initial\",\"enterpriseAppId\":\"igeho\",\"url\":\"bowsk\",\"aadDomains\":[\"ktzlcuiywg\"]}},\"identity\":{\"principalId\":\"gndrvynh\",\"tenantId\":\"pphrcgynco\",\"type\":\"None\",\"userAssignedIdentities\":{\"qjqabcypmivkwl\":{\"principalId\":\"vmmcoofs\",\"clientId\":\"zevgb\"},\"nlebxetqgtzxd\":{\"principalId\":\"vccfw\",\"clientId\":\"nbacfi\"}}},\"location\":\"qbqqwxr\",\"tags\":{\"nwsubisnj\":\"al\",\"hcbonqvpkvlr\":\"mpmngnzscxaqwoo\",\"y\":\"njeaseipheofloke\",\"jp\":\"enjbdlwtgrhp\"},\"id\":\"umasxazjpq\",\"name\":\"e\",\"type\":\"ualhbxxhejj\"},{\"properties\":{\"marketplace\":{\"subscriptionId\":\"dudgwdslfhot\",\"subscriptionStatus\":\"Suspended\",\"offerDetails\":{\"publisherId\":\"ynpwlbj\",\"offerId\":\"pgacftadehxnlty\",\"planId\":\"sop\",\"planName\":\"suesnzw\",\"termUnit\":\"jbavorxzdm\",\"termId\":\"ctbqvudwx\"}},\"user\":{\"firstName\":\"dnvowg\",\"lastName\":\"jugwdkcglhsl\",\"emailAddress\":\"jdyggdtji\",\"upn\":\"b\",\"phoneNumber\":\"ofqweykhmenevfye\"},\"provisioningState\":\"Canceled\",\"partnerProperties\":{\"description\":\"hybcibv\"},\"singleSignOnProperties\":{\"type\":\"Saml\",\"state\":\"Enable\",\"enterpriseAppId\":\"tynnaamdectehfi\",\"url\":\"cj\",\"aadDomains\":[\"vhezrkgqhcj\",\"efovgmk\"]}},\"identity\":{\"principalId\":\"eyyvxyqjpkcat\",\"tenantId\":\"ngj\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"eupfhyhltrpm\":{\"principalId\":\"sqpjhvmdajvn\",\"clientId\":\"ounqecano\"},\"odpuozmyzydag\":{\"principalId\":\"jmcmatuokthfu\",\"clientId\":\"aodsfcpkv\"},\"surex\":{\"principalId\":\"axbezyiuo\",\"clientId\":\"twhrdxwzywqsm\"}}},\"location\":\"o\",\"tags\":{\"s\":\"cfsf\"},\"id\":\"mddystkiiux\",\"name\":\"qyud\",\"type\":\"o\"}],\"nextLink\":\"qn\"}")
             .toObject(OrganizationResourceListResult.class);
-        Assertions.assertEquals("u", model.value().get(0).location());
-        Assertions.assertEquals("gqywgndrv", model.value().get(0).tags().get("nhzgpphrcgyn"));
-        Assertions.assertEquals("gmaajrm", model.value().get(0).properties().marketplace().subscriptionId());
-        Assertions.assertEquals("wzrlovmclwhij",
-            model.value().get(0).properties().marketplace().offerDetails().publisherId());
-        Assertions.assertEquals("oejctbzaqsqsy",
-            model.value().get(0).properties().marketplace().offerDetails().offerId());
-        Assertions.assertEquals("bkbfkgukdkex",
+        Assertions.assertEquals("odgmaajrmvdjwz", model.value().get(0).location());
+        Assertions.assertEquals("vmclw", model.value().get(0).tags().get("ijcoejctb"));
+        Assertions.assertEquals("dfvzwdzuhty", model.value().get(0).properties().marketplace().subscriptionId());
+        Assertions.assertEquals("sdkf", model.value().get(0).properties().marketplace().offerDetails().publisherId());
+        Assertions.assertEquals("hwxmnteiwa", model.value().get(0).properties().marketplace().offerDetails().offerId());
+        Assertions.assertEquals("pvkmijcmmxdcuf",
             model.value().get(0).properties().marketplace().offerDetails().planId());
-        Assertions.assertEquals("pofm", model.value().get(0).properties().marketplace().offerDetails().planName());
-        Assertions.assertEquals("x", model.value().get(0).properties().marketplace().offerDetails().termUnit());
-        Assertions.assertEquals("jpgd", model.value().get(0).properties().marketplace().offerDetails().termId());
-        Assertions.assertEquals("ocjjxhvpmouexh", model.value().get(0).properties().user().firstName());
-        Assertions.assertEquals("xibqeojnx", model.value().get(0).properties().user().lastName());
-        Assertions.assertEquals("zvddntwndeicbtwn", model.value().get(0).properties().user().emailAddress());
-        Assertions.assertEquals("aoqvuh", model.value().get(0).properties().user().upn());
-        Assertions.assertEquals("cffcyddglmj", model.value().get(0).properties().user().phoneNumber());
-        Assertions.assertEquals("kw", model.value().get(0).properties().partnerProperties().description());
-        Assertions.assertEquals(SingleSignOnType.OPEN_ID,
+        Assertions.assertEquals("srp", model.value().get(0).properties().marketplace().offerDetails().planName());
+        Assertions.assertEquals("zidnsezcxtbzsgfy",
+            model.value().get(0).properties().marketplace().offerDetails().termUnit());
+        Assertions.assertEquals("sne", model.value().get(0).properties().marketplace().offerDetails().termId());
+        Assertions.assertEquals("dwzjeiach", model.value().get(0).properties().user().firstName());
+        Assertions.assertEquals("osfln", model.value().get(0).properties().user().lastName());
+        Assertions.assertEquals("sfqpteehz", model.value().get(0).properties().user().emailAddress());
+        Assertions.assertEquals("ypyqrimzinp", model.value().get(0).properties().user().upn());
+        Assertions.assertEquals("wjdk", model.value().get(0).properties().user().phoneNumber());
+        Assertions.assertEquals("oodqxhcrm", model.value().get(0).properties().partnerProperties().description());
+        Assertions.assertEquals(SingleSignOnType.SAML,
             model.value().get(0).properties().singleSignOnProperties().type());
-        Assertions.assertEquals(SingleSignOnStates.DISABLE,
+        Assertions.assertEquals(SingleSignOnStates.ENABLE,
             model.value().get(0).properties().singleSignOnProperties().state());
-        Assertions.assertEquals("mqc", model.value().get(0).properties().singleSignOnProperties().enterpriseAppId());
-        Assertions.assertEquals("q", model.value().get(0).properties().singleSignOnProperties().url());
-        Assertions.assertEquals("hix", model.value().get(0).properties().singleSignOnProperties().aadDomains().get(0));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
-            model.value().get(0).identity().type());
-        Assertions.assertEquals("bxetqgtzxdpn", model.nextLink());
+        Assertions.assertEquals("kwh", model.value().get(0).properties().singleSignOnProperties().enterpriseAppId());
+        Assertions.assertEquals("oifiyipjxsqwpgr", model.value().get(0).properties().singleSignOnProperties().url());
+        Assertions.assertEquals("norcjxvsnbyxqab",
+            model.value().get(0).properties().singleSignOnProperties().aadDomains().get(0));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("qn", model.nextLink());
     }
 }

@@ -4,6 +4,8 @@ package com.azure.core.implementation;
 
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
@@ -22,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SuppressWarnings("removal")
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated("Mutates the global SecurityManager")
+@EnabledForJreRange(min = JRE.JAVA_8, max = JRE.JAVA_23, disabledReason = "Security manager was removed in Java 24")
 public class ImplUtilsSecurityIT {
     private static final Duration SHUTDOWN_TIMEOUT = Duration.ofSeconds(5);
 

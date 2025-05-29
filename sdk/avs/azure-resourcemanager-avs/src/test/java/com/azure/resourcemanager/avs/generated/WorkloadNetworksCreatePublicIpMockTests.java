@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPublicIp;
@@ -21,23 +21,23 @@ public final class WorkloadNetworksCreatePublicIpMockTests {
     @Test
     public void testCreatePublicIp() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"leeyaswl\",\"numberOfPublicIPs\":6834415054376102740,\"publicIPBlock\":\"rmfjlrxw\",\"provisioningState\":\"Succeeded\"},\"id\":\"khfkvcisi\",\"name\":\"moaedsxj\",\"type\":\"uivedwcgyeewxeiq\"}";
+            = "{\"properties\":{\"displayName\":\"alwvskbu\",\"numberOfPublicIPs\":5090690227140702601,\"publicIPBlock\":\"qtyltcoqcujp\",\"provisioningState\":\"Succeeded\"},\"id\":\"akuejk\",\"name\":\"vbiztjofqcv\",\"type\":\"vjufycsjmlbe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkPublicIp response = manager.workloadNetworks()
-            .definePublicIp("nssqyzqed")
-            .withExistingPrivateCloud("rbqgvgov", "bbttefjo")
-            .withDisplayName("frdbiqmrjgeihf")
-            .withNumberOfPublicIPs(7863102201954371556L)
+            .definePublicIp("jujcngoad")
+            .withExistingPrivateCloud("ykgsangpszng", "fpgylkve")
+            .withDisplayName("mzr")
+            .withNumberOfPublicIPs(2864882512148868203L)
             .create();
 
-        Assertions.assertEquals("leeyaswl", response.displayName());
-        Assertions.assertEquals(6834415054376102740L, response.numberOfPublicIPs());
+        Assertions.assertEquals("alwvskbu", response.displayName());
+        Assertions.assertEquals(5090690227140702601L, response.numberOfPublicIPs());
     }
 }

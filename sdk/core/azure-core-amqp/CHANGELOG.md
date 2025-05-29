@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added an `AmqpRetryOptions` constant in `MessageFlux` to configure retries on terminal completion events but propagates terminal errors. ([45400](https://github.com/Azure/azure-sdk-for-java/pull/45400))
+
 ### Breaking Changes
 
 ### Bugs Fixed

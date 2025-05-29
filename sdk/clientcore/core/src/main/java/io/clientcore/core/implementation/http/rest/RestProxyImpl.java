@@ -18,6 +18,7 @@ import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.MalformedValueException;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
@@ -93,9 +94,9 @@ public class RestProxyImpl {
 
             return handleRestReturnType(response, methodParser, methodParser.getReturnType(), serializer);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         } catch (URISyntaxException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.throwableAtError().log(e, (msg, cause) -> CoreException.from(msg, cause, false));
         }
     }
 

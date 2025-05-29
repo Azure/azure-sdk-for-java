@@ -112,7 +112,9 @@ public final class ResourceGroupExportResultInner implements JsonSerializable<Re
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("template", this.template);
+        if (this.template != null) {
+            jsonWriter.writeUntypedField("template", this.template);
+        }
         jsonWriter.writeStringField("output", this.output);
         jsonWriter.writeJsonField("error", this.error);
         return jsonWriter.writeEndObject();

@@ -15,9 +15,9 @@ public class ReturnsTheStatusOfASingleDocumentInABatchTranslationRequest {
             = new DocumentTranslationClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.ai.translation.document.generated.getdocumentstatus.returnsthestatusofasingledocumentinabatchtranslationrequest
+        // BEGIN:com.azure.ai.translation.document.generated.get-document-status.returns-the-status-of-a-single-document-in-a-batch-translation-request
         DocumentStatusResult response = documentTranslationClient
             .getDocumentStatus("727BF148-F327-47A0-9481-ABAE6362F11E", "727BF148-F327-47A0-9481-ABAE6362F12F");
-        // END:com.azure.ai.translation.document.generated.getdocumentstatus.returnsthestatusofasingledocumentinabatchtranslationrequest
+        // END:com.azure.ai.translation.document.generated.get-document-status.returns-the-status-of-a-single-document-in-a-batch-translation-request
     }
 }

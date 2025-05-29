@@ -472,17 +472,37 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
         jsonWriter.writeUntypedField("catalog", this.catalog);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("serverVersion", this.serverVersion);
-        jsonWriter.writeUntypedField("port", this.port);
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.serverVersion != null) {
+            jsonWriter.writeUntypedField("serverVersion", this.serverVersion);
+        }
+        if (this.port != null) {
+            jsonWriter.writeUntypedField("port", this.port);
+        }
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
-        jsonWriter.writeUntypedField("enableServerCertificateValidation", this.enableServerCertificateValidation);
-        jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
-        jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
-        jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostnameCNMismatch);
-        jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
-        jsonWriter.writeUntypedField("timeZoneID", this.timeZoneId);
+        if (this.enableSsl != null) {
+            jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+        }
+        if (this.enableServerCertificateValidation != null) {
+            jsonWriter.writeUntypedField("enableServerCertificateValidation", this.enableServerCertificateValidation);
+        }
+        if (this.trustedCertPath != null) {
+            jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
+        }
+        if (this.useSystemTrustStore != null) {
+            jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+        }
+        if (this.allowHostnameCNMismatch != null) {
+            jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostnameCNMismatch);
+        }
+        if (this.allowSelfSignedServerCert != null) {
+            jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+        }
+        if (this.timeZoneId != null) {
+            jsonWriter.writeUntypedField("timeZoneID", this.timeZoneId);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

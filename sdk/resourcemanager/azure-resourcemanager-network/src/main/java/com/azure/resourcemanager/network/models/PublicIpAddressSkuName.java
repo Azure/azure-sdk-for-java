@@ -22,6 +22,11 @@ public final class PublicIpAddressSkuName extends ExpandableStringEnum<PublicIpA
     public static final PublicIpAddressSkuName STANDARD = fromString("Standard");
 
     /**
+     * Static value StandardV2 for PublicIpAddressSkuName.
+     */
+    public static final PublicIpAddressSkuName STANDARD_V2 = fromString("StandardV2");
+
+    /**
      * Creates a new instance of PublicIpAddressSkuName value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

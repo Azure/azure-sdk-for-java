@@ -329,13 +329,25 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("dataLakeStoreUri", this.dataLakeStoreUri);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-        jsonWriter.writeUntypedField("tenant", this.tenant);
-        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
-        jsonWriter.writeUntypedField("accountName", this.accountName);
-        jsonWriter.writeUntypedField("subscriptionId", this.subscriptionId);
-        jsonWriter.writeUntypedField("resourceGroupName", this.resourceGroupName);
+        if (this.tenant != null) {
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+        }
+        if (this.azureCloudType != null) {
+            jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        }
+        if (this.accountName != null) {
+            jsonWriter.writeUntypedField("accountName", this.accountName);
+        }
+        if (this.subscriptionId != null) {
+            jsonWriter.writeUntypedField("subscriptionId", this.subscriptionId);
+        }
+        if (this.resourceGroupName != null) {
+            jsonWriter.writeUntypedField("resourceGroupName", this.resourceGroupName);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         jsonWriter.writeJsonField("credential", this.credential);
         return jsonWriter.writeEndObject();

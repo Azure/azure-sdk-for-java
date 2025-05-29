@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.ScriptExecution;
@@ -25,37 +25,38 @@ public final class ScriptExecutionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"scriptCmdletId\":\"hndvnoamldsehao\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"hhflzo\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"xcoxpelnjet\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"gltsxoat\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"tgzpnpb\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"e\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"loccsrmozihm\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"pgawtxxpkyjcxcjx\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"rytfmpcycil\"}],\"failureReason\":\"caykggnoxuz\",\"timeout\":\"rksxwpndfc\",\"retention\":\"nznthjtw\",\"submittedAt\":\"2021-04-10T21:21:13Z\",\"startedAt\":\"2021-06-06T01:38:06Z\",\"finishedAt\":\"2021-07-22T12:28:11Z\",\"provisioningState\":\"Succeeded\",\"output\":[\"amktcqiosmgbzah\",\"xqdlyrtltlapr\"],\"namedOutputs\":{\"nnbsoqeqa\":\"datakatbhjm\",\"febwlnbmhyreeudz\":\"dataarvlagunbt\"},\"information\":[\"bpdqmjxlyy\",\"glgou\",\"tlmj\",\"yuojqtobaxk\"],\"warnings\":[\"tu\",\"lbfjkwr\",\"snkq\"],\"errors\":[\"y\"]},\"id\":\"unjqh\",\"name\":\"enx\",\"type\":\"ulkpakd\"}";
+            = "{\"properties\":{\"scriptCmdletId\":\"oe\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"ankltytm\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"droznn\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"drlktg\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"csgguxhemlw\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"eeczgfbu\"}],\"failureReason\":\"lelssxblycsxzujk\",\"timeout\":\"rlsmdesqplpvmjc\",\"retention\":\"ewbidyvteowxv\",\"submittedAt\":\"2021-09-28T17:23:11Z\",\"startedAt\":\"2021-10-23T07:47:56Z\",\"finishedAt\":\"2021-04-22T21:22:18Z\",\"provisioningState\":\"Succeeded\",\"output\":[\"zec\",\"axwk\",\"fykhvuhxepmru\",\"znabaobns\"],\"namedOutputs\":{\"guihywar\":\"datadjltymkm\",\"xkykxdssjp\":\"dataspphk\",\"xhikkflrmymyin\":\"datammuc\",\"sl\":\"dataqlhris\"},\"information\":[\"iov\",\"qcgxuug\",\"kctotiowlxteq\"],\"warnings\":[\"jgwdtgukranbl\",\"phqlkccuz\",\"ygqwahoiu\"],\"errors\":[\"niiprglvaw\",\"wzdufypivlsbb\",\"pmcubkmifoxxkub\"]},\"id\":\"havpmhbrbqgvg\",\"name\":\"vpbbt\",\"type\":\"efjokn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ScriptExecution response = manager.scriptExecutions()
-            .define("elfwy")
-            .withExistingPrivateCloud("fy", "sgcrpfbcunezzce")
-            .withScriptCmdletId("wx")
-            .withParameters(Arrays.asList(new ScriptExecutionParameter().withName("tnpsihclaf"),
-                new ScriptExecutionParameter().withName("va"), new ScriptExecutionParameter().withName("lpt")))
-            .withHiddenParameters(Arrays.asList(new ScriptExecutionParameter().withName("qwztcmwqkc"),
-                new ScriptExecutionParameter().withName("cxwaxfewz")))
-            .withFailureReason("jexfdeqvhp")
-            .withTimeout("ylkkshkbffmbm")
-            .withRetention("jrgywwpgjxsn")
-            .withOutput(Arrays.asList("o", "pttaqutd", "wemxswvruunzz", "gehkfkimrtixokff"))
-            .withNamedOutputs(mapOf("shiy", "datanljqepqwhixmons", "du", "datagvelfc", "rds", "datacb", "b", "datauwc"))
+            .define("plkeuachtomflryt")
+            .withExistingPrivateCloud("zhzmtksjci", "digsxcdgl")
+            .withScriptCmdletId("pfmdgycx")
+            .withParameters(Arrays.asList(new ScriptExecutionParameter().withName("kwhqj")))
+            .withHiddenParameters(Arrays.asList(new ScriptExecutionParameter().withName("lurlpshhkvp"),
+                new ScriptExecutionParameter().withName("dwqslsrhmpqvw"),
+                new ScriptExecutionParameter().withName("skondcbrwimu"),
+                new ScriptExecutionParameter().withName("qejo")))
+            .withFailureReason("vyrrleaesinuq")
+            .withTimeout("ljqobbpihehcecyb")
+            .withRetention("qbr")
+            .withOutput(Arrays.asList("frexcrseqw", "ksghudgzhxogjgg", "voujkxibdafhrk", "dyomkxfbv"))
+            .withNamedOutputs(mapOf("rhpw", "datady"))
             .create();
 
-        Assertions.assertEquals("hndvnoamldsehao", response.scriptCmdletId());
-        Assertions.assertEquals("hhflzo", response.parameters().get(0).name());
-        Assertions.assertEquals("e", response.hiddenParameters().get(0).name());
-        Assertions.assertEquals("caykggnoxuz", response.failureReason());
-        Assertions.assertEquals("rksxwpndfc", response.timeout());
-        Assertions.assertEquals("nznthjtw", response.retention());
-        Assertions.assertEquals("amktcqiosmgbzah", response.output().get(0));
+        Assertions.assertEquals("oe", response.scriptCmdletId());
+        Assertions.assertEquals("ankltytm", response.parameters().get(0).name());
+        Assertions.assertEquals("eeczgfbu", response.hiddenParameters().get(0).name());
+        Assertions.assertEquals("lelssxblycsxzujk", response.failureReason());
+        Assertions.assertEquals("rlsmdesqplpvmjc", response.timeout());
+        Assertions.assertEquals("ewbidyvteowxv", response.retention());
+        Assertions.assertEquals("zec", response.output().get(0));
     }
 
     // Use "Map.of" if available

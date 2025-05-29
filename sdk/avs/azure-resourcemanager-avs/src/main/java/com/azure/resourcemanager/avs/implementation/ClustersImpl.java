@@ -13,8 +13,8 @@ import com.azure.resourcemanager.avs.fluent.ClustersClient;
 import com.azure.resourcemanager.avs.fluent.models.ClusterInner;
 import com.azure.resourcemanager.avs.fluent.models.ClusterZoneListInner;
 import com.azure.resourcemanager.avs.models.Cluster;
-import com.azure.resourcemanager.avs.models.Clusters;
 import com.azure.resourcemanager.avs.models.ClusterZoneList;
+import com.azure.resourcemanager.avs.models.Clusters;
 
 public final class ClustersImpl implements Clusters {
     private static final ClientLogger LOGGER = new ClientLogger(ClustersImpl.class);

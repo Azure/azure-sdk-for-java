@@ -155,9 +155,13 @@ public final class GoogleCloudStorageLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("accessKeyId", this.accessKeyId);
+        if (this.accessKeyId != null) {
+            jsonWriter.writeUntypedField("accessKeyId", this.accessKeyId);
+        }
         jsonWriter.writeJsonField("secretAccessKey", this.secretAccessKey);
-        jsonWriter.writeUntypedField("serviceUrl", this.serviceUrl);
+        if (this.serviceUrl != null) {
+            jsonWriter.writeUntypedField("serviceUrl", this.serviceUrl);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

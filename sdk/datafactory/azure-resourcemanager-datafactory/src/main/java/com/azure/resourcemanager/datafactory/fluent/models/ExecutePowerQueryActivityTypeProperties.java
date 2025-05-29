@@ -217,10 +217,18 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
         jsonWriter.writeJsonField("integrationRuntime", integrationRuntime());
         jsonWriter.writeJsonField("continuationSettings", continuationSettings());
         jsonWriter.writeJsonField("compute", compute());
-        jsonWriter.writeUntypedField("traceLevel", traceLevel());
-        jsonWriter.writeUntypedField("continueOnError", continueOnError());
-        jsonWriter.writeUntypedField("runConcurrently", runConcurrently());
-        jsonWriter.writeUntypedField("sourceStagingConcurrency", sourceStagingConcurrency());
+        if (traceLevel() != null) {
+            jsonWriter.writeUntypedField("traceLevel", traceLevel());
+        }
+        if (continueOnError() != null) {
+            jsonWriter.writeUntypedField("continueOnError", continueOnError());
+        }
+        if (runConcurrently() != null) {
+            jsonWriter.writeUntypedField("runConcurrently", runConcurrently());
+        }
+        if (sourceStagingConcurrency() != null) {
+            jsonWriter.writeUntypedField("sourceStagingConcurrency", sourceStagingConcurrency());
+        }
         jsonWriter.writeMapField("sinks", this.sinks, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("queries", this.queries, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();

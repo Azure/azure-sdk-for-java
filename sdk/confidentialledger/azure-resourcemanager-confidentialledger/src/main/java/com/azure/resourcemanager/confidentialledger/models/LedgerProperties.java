@@ -40,6 +40,11 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
     private String ledgerInternalNamespace;
 
     /*
+     * Object representing RunningState for Ledger.
+     */
+    private RunningState runningState;
+
+    /*
      * Type of Confidential Ledger
      */
     private LedgerType ledgerType;
@@ -50,6 +55,11 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
     private ProvisioningState provisioningState;
 
     /*
+     * SKU associated with the ledger
+     */
+    private LedgerSku ledgerSku;
+
+    /*
      * Array of all AAD based Security Principals.
      */
     private List<AadBasedSecurityPrincipal> aadBasedSecurityPrincipals;
@@ -58,6 +68,46 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
      * Array of all cert based Security Principals.
      */
     private List<CertBasedSecurityPrincipal> certBasedSecurityPrincipals;
+
+    /*
+     * CCF Property for the logging level for the untrusted host: Trace, Debug, Info, Fail, Fatal.
+     */
+    private String hostLevel;
+
+    /*
+     * CCF Property for the maximum size of the http request body: 1MB, 5MB, 10MB.
+     */
+    private Integer maxBodySizeInMb;
+
+    /*
+     * CCF Property for the subject name to include in the node certificate. Default: CN=CCF Node.
+     */
+    private String subjectName;
+
+    /*
+     * Number of CCF nodes in the ACC Ledger.
+     */
+    private Integer nodeCount;
+
+    /*
+     * Prefix for the write load balancer. Example: write
+     */
+    private String writeLBAddressPrefix;
+
+    /*
+     * Number of additional threads processing incoming client requests in the enclave (modify with care!)
+     */
+    private Integer workerThreads;
+
+    /*
+     * Enclave platform of the Confidential Ledger.
+     */
+    private EnclavePlatform enclavePlatform;
+
+    /*
+     * Application type of the Confidential Ledger.
+     */
+    private ApplicationType applicationType;
 
     /**
      * Creates an instance of LedgerProperties class.
@@ -102,6 +152,26 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
     }
 
     /**
+     * Get the runningState property: Object representing RunningState for Ledger.
+     * 
+     * @return the runningState value.
+     */
+    public RunningState runningState() {
+        return this.runningState;
+    }
+
+    /**
+     * Set the runningState property: Object representing RunningState for Ledger.
+     * 
+     * @param runningState the runningState value to set.
+     * @return the LedgerProperties object itself.
+     */
+    public LedgerProperties withRunningState(RunningState runningState) {
+        this.runningState = runningState;
+        return this;
+    }
+
+    /**
      * Get the ledgerType property: Type of Confidential Ledger.
      * 
      * @return the ledgerType value.
@@ -128,6 +198,26 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the ledgerSku property: SKU associated with the ledger.
+     * 
+     * @return the ledgerSku value.
+     */
+    public LedgerSku ledgerSku() {
+        return this.ledgerSku;
+    }
+
+    /**
+     * Set the ledgerSku property: SKU associated with the ledger.
+     * 
+     * @param ledgerSku the ledgerSku value to set.
+     * @return the LedgerProperties object itself.
+     */
+    public LedgerProperties withLedgerSku(LedgerSku ledgerSku) {
+        this.ledgerSku = ledgerSku;
+        return this;
     }
 
     /**
@@ -172,6 +262,172 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
     }
 
     /**
+     * Get the hostLevel property: CCF Property for the logging level for the untrusted host: Trace, Debug, Info, Fail,
+     * Fatal.
+     * 
+     * @return the hostLevel value.
+     */
+    public String hostLevel() {
+        return this.hostLevel;
+    }
+
+    /**
+     * Set the hostLevel property: CCF Property for the logging level for the untrusted host: Trace, Debug, Info, Fail,
+     * Fatal.
+     * 
+     * @param hostLevel the hostLevel value to set.
+     * @return the LedgerProperties object itself.
+     */
+    public LedgerProperties withHostLevel(String hostLevel) {
+        this.hostLevel = hostLevel;
+        return this;
+    }
+
+    /**
+     * Get the maxBodySizeInMb property: CCF Property for the maximum size of the http request body: 1MB, 5MB, 10MB.
+     * 
+     * @return the maxBodySizeInMb value.
+     */
+    public Integer maxBodySizeInMb() {
+        return this.maxBodySizeInMb;
+    }
+
+    /**
+     * Set the maxBodySizeInMb property: CCF Property for the maximum size of the http request body: 1MB, 5MB, 10MB.
+     * 
+     * @param maxBodySizeInMb the maxBodySizeInMb value to set.
+     * @return the LedgerProperties object itself.
+     */
+    public LedgerProperties withMaxBodySizeInMb(Integer maxBodySizeInMb) {
+        this.maxBodySizeInMb = maxBodySizeInMb;
+        return this;
+    }
+
+    /**
+     * Get the subjectName property: CCF Property for the subject name to include in the node certificate. Default:
+     * CN=CCF Node.
+     * 
+     * @return the subjectName value.
+     */
+    public String subjectName() {
+        return this.subjectName;
+    }
+
+    /**
+     * Set the subjectName property: CCF Property for the subject name to include in the node certificate. Default:
+     * CN=CCF Node.
+     * 
+     * @param subjectName the subjectName value to set.
+     * @return the LedgerProperties object itself.
+     */
+    public LedgerProperties withSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+        return this;
+    }
+
+    /**
+     * Get the nodeCount property: Number of CCF nodes in the ACC Ledger.
+     * 
+     * @return the nodeCount value.
+     */
+    public Integer nodeCount() {
+        return this.nodeCount;
+    }
+
+    /**
+     * Set the nodeCount property: Number of CCF nodes in the ACC Ledger.
+     * 
+     * @param nodeCount the nodeCount value to set.
+     * @return the LedgerProperties object itself.
+     */
+    public LedgerProperties withNodeCount(Integer nodeCount) {
+        this.nodeCount = nodeCount;
+        return this;
+    }
+
+    /**
+     * Get the writeLBAddressPrefix property: Prefix for the write load balancer. Example: write.
+     * 
+     * @return the writeLBAddressPrefix value.
+     */
+    public String writeLBAddressPrefix() {
+        return this.writeLBAddressPrefix;
+    }
+
+    /**
+     * Set the writeLBAddressPrefix property: Prefix for the write load balancer. Example: write.
+     * 
+     * @param writeLBAddressPrefix the writeLBAddressPrefix value to set.
+     * @return the LedgerProperties object itself.
+     */
+    public LedgerProperties withWriteLBAddressPrefix(String writeLBAddressPrefix) {
+        this.writeLBAddressPrefix = writeLBAddressPrefix;
+        return this;
+    }
+
+    /**
+     * Get the workerThreads property: Number of additional threads processing incoming client requests in the enclave
+     * (modify with care!).
+     * 
+     * @return the workerThreads value.
+     */
+    public Integer workerThreads() {
+        return this.workerThreads;
+    }
+
+    /**
+     * Set the workerThreads property: Number of additional threads processing incoming client requests in the enclave
+     * (modify with care!).
+     * 
+     * @param workerThreads the workerThreads value to set.
+     * @return the LedgerProperties object itself.
+     */
+    public LedgerProperties withWorkerThreads(Integer workerThreads) {
+        this.workerThreads = workerThreads;
+        return this;
+    }
+
+    /**
+     * Get the enclavePlatform property: Enclave platform of the Confidential Ledger.
+     * 
+     * @return the enclavePlatform value.
+     */
+    public EnclavePlatform enclavePlatform() {
+        return this.enclavePlatform;
+    }
+
+    /**
+     * Set the enclavePlatform property: Enclave platform of the Confidential Ledger.
+     * 
+     * @param enclavePlatform the enclavePlatform value to set.
+     * @return the LedgerProperties object itself.
+     */
+    public LedgerProperties withEnclavePlatform(EnclavePlatform enclavePlatform) {
+        this.enclavePlatform = enclavePlatform;
+        return this;
+    }
+
+    /**
+     * Get the applicationType property: Application type of the Confidential Ledger.
+     * 
+     * @return the applicationType value.
+     */
+    public ApplicationType applicationType() {
+        return this.applicationType;
+    }
+
+    /**
+     * Set the applicationType property: Application type of the Confidential Ledger.
+     * 
+     * @param applicationType the applicationType value to set.
+     * @return the LedgerProperties object itself.
+     */
+    public LedgerProperties withApplicationType(ApplicationType applicationType) {
+        this.applicationType = applicationType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -191,11 +447,23 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("runningState", this.runningState == null ? null : this.runningState.toString());
         jsonWriter.writeStringField("ledgerType", this.ledgerType == null ? null : this.ledgerType.toString());
+        jsonWriter.writeStringField("ledgerSku", this.ledgerSku == null ? null : this.ledgerSku.toString());
         jsonWriter.writeArrayField("aadBasedSecurityPrincipals", this.aadBasedSecurityPrincipals,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("certBasedSecurityPrincipals", this.certBasedSecurityPrincipals,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("hostLevel", this.hostLevel);
+        jsonWriter.writeNumberField("maxBodySizeInMb", this.maxBodySizeInMb);
+        jsonWriter.writeStringField("subjectName", this.subjectName);
+        jsonWriter.writeNumberField("nodeCount", this.nodeCount);
+        jsonWriter.writeStringField("writeLBAddressPrefix", this.writeLBAddressPrefix);
+        jsonWriter.writeNumberField("workerThreads", this.workerThreads);
+        jsonWriter.writeStringField("enclavePlatform",
+            this.enclavePlatform == null ? null : this.enclavePlatform.toString());
+        jsonWriter.writeStringField("applicationType",
+            this.applicationType == null ? null : this.applicationType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -222,10 +490,14 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
                     deserializedLedgerProperties.identityServiceUri = reader.getString();
                 } else if ("ledgerInternalNamespace".equals(fieldName)) {
                     deserializedLedgerProperties.ledgerInternalNamespace = reader.getString();
+                } else if ("runningState".equals(fieldName)) {
+                    deserializedLedgerProperties.runningState = RunningState.fromString(reader.getString());
                 } else if ("ledgerType".equals(fieldName)) {
                     deserializedLedgerProperties.ledgerType = LedgerType.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedLedgerProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("ledgerSku".equals(fieldName)) {
+                    deserializedLedgerProperties.ledgerSku = LedgerSku.fromString(reader.getString());
                 } else if ("aadBasedSecurityPrincipals".equals(fieldName)) {
                     List<AadBasedSecurityPrincipal> aadBasedSecurityPrincipals
                         = reader.readArray(reader1 -> AadBasedSecurityPrincipal.fromJson(reader1));
@@ -234,6 +506,22 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
                     List<CertBasedSecurityPrincipal> certBasedSecurityPrincipals
                         = reader.readArray(reader1 -> CertBasedSecurityPrincipal.fromJson(reader1));
                     deserializedLedgerProperties.certBasedSecurityPrincipals = certBasedSecurityPrincipals;
+                } else if ("hostLevel".equals(fieldName)) {
+                    deserializedLedgerProperties.hostLevel = reader.getString();
+                } else if ("maxBodySizeInMb".equals(fieldName)) {
+                    deserializedLedgerProperties.maxBodySizeInMb = reader.getNullable(JsonReader::getInt);
+                } else if ("subjectName".equals(fieldName)) {
+                    deserializedLedgerProperties.subjectName = reader.getString();
+                } else if ("nodeCount".equals(fieldName)) {
+                    deserializedLedgerProperties.nodeCount = reader.getNullable(JsonReader::getInt);
+                } else if ("writeLBAddressPrefix".equals(fieldName)) {
+                    deserializedLedgerProperties.writeLBAddressPrefix = reader.getString();
+                } else if ("workerThreads".equals(fieldName)) {
+                    deserializedLedgerProperties.workerThreads = reader.getNullable(JsonReader::getInt);
+                } else if ("enclavePlatform".equals(fieldName)) {
+                    deserializedLedgerProperties.enclavePlatform = EnclavePlatform.fromString(reader.getString());
+                } else if ("applicationType".equals(fieldName)) {
+                    deserializedLedgerProperties.applicationType = ApplicationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

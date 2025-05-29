@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  *
  * <ul>
  *     <li>ExternalDependencyExposed checks in implementation code</li>
- *     <li>Missing Javadoc comments in sample and test code</li>
+ *     <li>Missing Javadoc comments in implementation, sample, and test code</li>
  *     <li>Star imports in test code</li>
  *     <li>Nested blocks in test code</li>
  *     <li>Azure SDK Checkstyle checks in sample and test code</li>
@@ -93,6 +93,7 @@ public class AzureSdkFilter implements Filter {
 
         String violation = event.getViolation().getSourceName();
 
-        return violation.startsWith(EXTERNAL_DEPENDENCY_EXPOSED);
+        return violation.startsWith(EXTERNAL_DEPENDENCY_EXPOSED)
+            || violation.contains("Javadoc");
     }
 }

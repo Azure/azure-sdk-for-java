@@ -200,8 +200,8 @@ public final class SharedExecutorService implements ScheduledExecutorService {
         // allowing Client Core or Jackson to perform deep reflection on classes that are not normally allowed.
         Objects.requireNonNull(executorService, "'executorService' cannot be null.");
         if (executorService.isShutdown() || executorService.isTerminated()) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException("The passed executor service is shutdown or terminated."));
+            throw LOGGER.throwableAtError()
+                .log("The passed executor service is shutdown or terminated.", IllegalStateException::new);
         }
 
         ExecutorService existing = EXECUTOR_UPDATER.getAndSet(this, executorService);
@@ -236,8 +236,8 @@ public final class SharedExecutorService implements ScheduledExecutorService {
     @Override
     public void shutdown() {
         // This doesn't do anything as this is meant to be shared and shouldn't be shut down by one consumer.
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("This executor service is shared and cannot be shut down."));
+        throw LOGGER.throwableAtError()
+            .log("This executor service is shared and cannot be shut down.", UnsupportedOperationException::new);
     }
 
     /**
@@ -250,8 +250,8 @@ public final class SharedExecutorService implements ScheduledExecutorService {
      */
     @Override
     public List<Runnable> shutdownNow() {
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("This executor service is shared and cannot be shut down."));
+        throw LOGGER.throwableAtError()
+            .log("This executor service is shared and cannot be shut down.", UnsupportedOperationException::new);
     }
 
     /**
@@ -290,8 +290,8 @@ public final class SharedExecutorService implements ScheduledExecutorService {
      */
     @Override
     public boolean awaitTermination(long timeout, TimeUnit unit) {
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("This executor service is shared and cannot be terminated."));
+        throw LOGGER.throwableAtError()
+            .log("This executor service is shared and cannot be terminated.", UnsupportedOperationException::new);
     }
 
     @Override

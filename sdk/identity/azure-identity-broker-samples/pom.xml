@@ -36,12 +36,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+      <version>1.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-broker</artifactId>
-      <version>1.1.14</version> <!-- {x-version-update;com.azure:azure-identity-broker;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-broker;current} -->
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
@@ -110,7 +110,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.13</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>

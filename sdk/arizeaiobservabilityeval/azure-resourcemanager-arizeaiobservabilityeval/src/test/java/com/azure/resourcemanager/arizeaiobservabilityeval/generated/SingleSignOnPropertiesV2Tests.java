@@ -15,27 +15,27 @@ public final class SingleSignOnPropertiesV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SingleSignOnPropertiesV2 model = BinaryData.fromString(
-            "{\"type\":\"OpenId\",\"state\":\"Disable\",\"enterpriseAppId\":\"uertumk\",\"url\":\"svqwhbmdgbbjfd\",\"aadDomains\":[\"bmbexppbhtqqro\",\"fpfpsalgbquxigj\",\"jgzjaoyfhrtx\"]}")
+            "{\"type\":\"OpenId\",\"state\":\"Initial\",\"enterpriseAppId\":\"wyqkgfgibm\",\"url\":\"gakeqsr\",\"aadDomains\":[\"zqqedq\",\"tbciqfouflmm\",\"kzsmodm\",\"lougpbkw\"]}")
             .toObject(SingleSignOnPropertiesV2.class);
         Assertions.assertEquals(SingleSignOnType.OPEN_ID, model.type());
-        Assertions.assertEquals(SingleSignOnStates.DISABLE, model.state());
-        Assertions.assertEquals("uertumk", model.enterpriseAppId());
-        Assertions.assertEquals("svqwhbmdgbbjfd", model.url());
-        Assertions.assertEquals("bmbexppbhtqqro", model.aadDomains().get(0));
+        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.state());
+        Assertions.assertEquals("wyqkgfgibm", model.enterpriseAppId());
+        Assertions.assertEquals("gakeqsr", model.url());
+        Assertions.assertEquals("zqqedq", model.aadDomains().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SingleSignOnPropertiesV2 model = new SingleSignOnPropertiesV2().withType(SingleSignOnType.OPEN_ID)
-            .withState(SingleSignOnStates.DISABLE)
-            .withEnterpriseAppId("uertumk")
-            .withUrl("svqwhbmdgbbjfd")
-            .withAadDomains(Arrays.asList("bmbexppbhtqqro", "fpfpsalgbquxigj", "jgzjaoyfhrtx"));
+            .withState(SingleSignOnStates.INITIAL)
+            .withEnterpriseAppId("wyqkgfgibm")
+            .withUrl("gakeqsr")
+            .withAadDomains(Arrays.asList("zqqedq", "tbciqfouflmm", "kzsmodm", "lougpbkw"));
         model = BinaryData.fromObject(model).toObject(SingleSignOnPropertiesV2.class);
         Assertions.assertEquals(SingleSignOnType.OPEN_ID, model.type());
-        Assertions.assertEquals(SingleSignOnStates.DISABLE, model.state());
-        Assertions.assertEquals("uertumk", model.enterpriseAppId());
-        Assertions.assertEquals("svqwhbmdgbbjfd", model.url());
-        Assertions.assertEquals("bmbexppbhtqqro", model.aadDomains().get(0));
+        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.state());
+        Assertions.assertEquals("wyqkgfgibm", model.enterpriseAppId());
+        Assertions.assertEquals("gakeqsr", model.url());
+        Assertions.assertEquals("zqqedq", model.aadDomains().get(0));
     }
 }

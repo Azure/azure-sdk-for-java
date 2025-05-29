@@ -168,7 +168,17 @@ class PartitionControllerImpl implements PartitionController {
     }
 
     private Mono<Void> handleSplit(Lease lease, String lastContinuationToken) {
-        lease.setContinuationToken(lastContinuationToken);
+        if (lastContinuationToken != null) {
+            logger.warn("Partition {}, with owner: {}, updated with last continuation token: {}",
+                lease.getLeaseToken(),
+                lease.getOwner(),
+                lastContinuationToken);
+            lease.setContinuationToken(lastContinuationToken);
+        } else {
+            logger.warn("Continuation token not found for split for partition: {}, with owner: {}",
+                lease.getLeaseToken(),
+                lease.getOwner());
+        }
         return this.synchronizer.splitPartition(lease)
             .flatMap(l -> {
                 if (this.shouldSkipDirectLeaseAssignment) {

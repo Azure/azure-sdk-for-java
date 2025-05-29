@@ -162,7 +162,17 @@ class PartitionControllerImpl implements PartitionController {
     }
 
     private Mono<Void> handleFeedRangeGone(Lease lease, String lastContinuationToken) {
-        lease.setContinuationToken(lastContinuationToken);
+        if (lastContinuationToken != null) {
+            logger.warn("Lease with token {}: with owner {}: updated with last continuation token {}",
+                lease.getLeaseToken(),
+                lease.getOwner(),
+                lastContinuationToken);
+            lease.setContinuationToken(lastContinuationToken);
+        } else {
+            logger.warn("Continuation token not found for split for lease with token {}: with owner {}",
+                lease.getLeaseToken(),
+                lease.getOwner());
+        }
 
         return this.synchronizer.getFeedRangeGoneHandler(lease)
                 .flatMap(partitionGoneHandler -> {

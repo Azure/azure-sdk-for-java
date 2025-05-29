@@ -19,6 +19,7 @@ import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ResiliencyModel;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayAutoScaleConfiguration;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayMigrationStatus;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayPolicyGroup;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
@@ -359,6 +360,32 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
+     * Get the virtualNetworkGatewayMigrationStatus property: The reference to the VirtualNetworkGatewayMigrationStatus
+     * which represents the status of migration.
+     * 
+     * @return the virtualNetworkGatewayMigrationStatus value.
+     */
+    public VirtualNetworkGatewayMigrationStatus virtualNetworkGatewayMigrationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkGatewayMigrationStatus();
+    }
+
+    /**
+     * Set the virtualNetworkGatewayMigrationStatus property: The reference to the VirtualNetworkGatewayMigrationStatus
+     * which represents the status of migration.
+     * 
+     * @param virtualNetworkGatewayMigrationStatus the virtualNetworkGatewayMigrationStatus value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withVirtualNetworkGatewayMigrationStatus(
+        VirtualNetworkGatewayMigrationStatus virtualNetworkGatewayMigrationStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withVirtualNetworkGatewayMigrationStatus(virtualNetworkGatewayMigrationStatus);
+        return this;
+    }
+
+    /**
      * Get the active property: ActiveActive flag.
      * 
      * @return the active value.
@@ -378,6 +405,29 @@ public final class VirtualNetworkGatewayInner extends Resource {
             this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
         }
         this.innerProperties().withActive(active);
+        return this;
+    }
+
+    /**
+     * Get the enableHighBandwidthVpnGateway property: To enable Advanced Connectivity feature for VPN gateway.
+     * 
+     * @return the enableHighBandwidthVpnGateway value.
+     */
+    public Boolean enableHighBandwidthVpnGateway() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableHighBandwidthVpnGateway();
+    }
+
+    /**
+     * Set the enableHighBandwidthVpnGateway property: To enable Advanced Connectivity feature for VPN gateway.
+     * 
+     * @param enableHighBandwidthVpnGateway the enableHighBandwidthVpnGateway value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withEnableHighBandwidthVpnGateway(Boolean enableHighBandwidthVpnGateway) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withEnableHighBandwidthVpnGateway(enableHighBandwidthVpnGateway);
         return this;
     }
 

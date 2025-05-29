@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/appconfiguration-v2/ci.yml
+      - sdk/appconfiguration-v2/azure-data-appconfiguration/
+    exclude:
+      - sdk/appconfiguration-v2/pom.xml
+      - sdk/appconfiguration-v2/azure-data-appconfiguration/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/appconfiguration-v2/ci.yml
+      - sdk/appconfiguration-v2/azure-data-appconfiguration/
+    exclude:
+      - sdk/appconfiguration-v2/pom.xml
+      - sdk/appconfiguration-v2/azure-data-appconfiguration/pom.xml
+
+parameters:
+  - name: release_azuredataappconfiguration
+    displayName: "azure-data-appconfiguration"
+    type: boolean
+    default: true
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: appconfiguration-v2
+    Artifacts:
+      - name: azure-data-appconfiguration
+        groupId: com.azure.v2
+        safeName: azuredataappconfiguration
+        releaseInBatch: ${{ parameters.release_azuredataappconfiguration }}

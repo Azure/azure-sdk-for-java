@@ -44,12 +44,6 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
     private Long version;
 
     /*
-     * The chat thread id
-     */
-    @Generated
-    private String threadId;
-
-    /*
      * The transaction id will be used as co-relation vector
      */
     @Generated
@@ -58,14 +52,16 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
     /**
      * Creates an instance of AcsChatParticipantAddedToThreadEventData class.
      * 
+     * @param threadId the threadId value to set.
      * @param time the time value to set.
      * @param addedByCommunicationIdentifier the addedByCommunicationIdentifier value to set.
      * @param participantAdded the participantAdded value to set.
      */
     @Generated
-    private AcsChatParticipantAddedToThreadEventData(OffsetDateTime time,
+    private AcsChatParticipantAddedToThreadEventData(String threadId, OffsetDateTime time,
         CommunicationIdentifierModel addedByCommunicationIdentifier,
         AcsChatThreadParticipantProperties participantAdded) {
+        super(threadId);
         this.time = time;
         this.addedByCommunicationIdentifier = addedByCommunicationIdentifier;
         this.participantAdded = participantAdded;
@@ -112,17 +108,6 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
     }
 
     /**
-     * Get the threadId property: The chat thread id.
-     * 
-     * @return the threadId value.
-     */
-    @Generated
-    @Override
-    public String getThreadId() {
-        return this.threadId;
-    }
-
-    /**
      * Get the transactionId property: The transaction id will be used as co-relation vector.
      * 
      * @return the transactionId value.
@@ -140,8 +125,8 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeStringField("threadId", getThreadId());
+        jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeStringField("time",
             this.time == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.time));
         jsonWriter.writeJsonField("addedByCommunicationIdentifier", this.addedByCommunicationIdentifier);
@@ -162,8 +147,8 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
     @Generated
     public static AcsChatParticipantAddedToThreadEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String transactionId = null;
             String threadId = null;
+            String transactionId = null;
             OffsetDateTime time = null;
             CommunicationIdentifierModel addedByCommunicationIdentifier = null;
             AcsChatThreadParticipantProperties participantAdded = null;
@@ -172,10 +157,10 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("transactionId".equals(fieldName)) {
-                    transactionId = reader.getString();
-                } else if ("threadId".equals(fieldName)) {
+                if ("threadId".equals(fieldName)) {
                     threadId = reader.getString();
+                } else if ("transactionId".equals(fieldName)) {
+                    transactionId = reader.getString();
                 } else if ("time".equals(fieldName)) {
                     time = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -190,9 +175,9 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
                 }
             }
             AcsChatParticipantAddedToThreadEventData deserializedAcsChatParticipantAddedToThreadEventData
-                = new AcsChatParticipantAddedToThreadEventData(time, addedByCommunicationIdentifier, participantAdded);
+                = new AcsChatParticipantAddedToThreadEventData(threadId, time, addedByCommunicationIdentifier,
+                    participantAdded);
             deserializedAcsChatParticipantAddedToThreadEventData.transactionId = transactionId;
-            deserializedAcsChatParticipantAddedToThreadEventData.threadId = threadId;
             deserializedAcsChatParticipantAddedToThreadEventData.version = version;
 
             return deserializedAcsChatParticipantAddedToThreadEventData;

@@ -154,6 +154,8 @@ public interface VerifierWorkspacesClient {
      * @param networkManagerName The name of the network manager.
      * @param workspaceName Workspace name.
      * @param body Verifier Workspace object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -161,7 +163,7 @@ public interface VerifierWorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VerifierWorkspaceInner>> createWithResponseAsync(String resourceGroupName, String networkManagerName,
-        String workspaceName, VerifierWorkspaceInner body);
+        String workspaceName, VerifierWorkspaceInner body, String ifMatch);
 
     /**
      * Creates Verifier Workspace.
@@ -186,6 +188,8 @@ public interface VerifierWorkspacesClient {
      * @param networkManagerName The name of the network manager.
      * @param workspaceName Workspace name.
      * @param body Verifier Workspace object to create/update.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -194,7 +198,7 @@ public interface VerifierWorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VerifierWorkspaceInner> createWithResponse(String resourceGroupName, String networkManagerName,
-        String workspaceName, VerifierWorkspaceInner body, Context context);
+        String workspaceName, VerifierWorkspaceInner body, String ifMatch, Context context);
 
     /**
      * Creates Verifier Workspace.
@@ -218,6 +222,8 @@ public interface VerifierWorkspacesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param workspaceName Workspace name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param body Verifier Workspace object to create/update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -226,7 +232,7 @@ public interface VerifierWorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VerifierWorkspaceInner>> updateWithResponseAsync(String resourceGroupName, String networkManagerName,
-        String workspaceName, VerifierWorkspaceUpdate body);
+        String workspaceName, String ifMatch, VerifierWorkspaceUpdate body);
 
     /**
      * Updates Verifier Workspace.
@@ -248,6 +254,8 @@ public interface VerifierWorkspacesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param workspaceName Workspace name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param body Verifier Workspace object to create/update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,7 +265,7 @@ public interface VerifierWorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VerifierWorkspaceInner> updateWithResponse(String resourceGroupName, String networkManagerName,
-        String workspaceName, VerifierWorkspaceUpdate body, Context context);
+        String workspaceName, String ifMatch, VerifierWorkspaceUpdate body, Context context);
 
     /**
      * Updates Verifier Workspace.
@@ -279,6 +287,8 @@ public interface VerifierWorkspacesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param workspaceName Workspace name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -286,7 +296,24 @@ public interface VerifierWorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
-        String workspaceName);
+        String workspaceName, String ifMatch);
+
+    /**
+     * Deletes Verifier Workspace.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param workspaceName Workspace name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
+        String workspaceName, String ifMatch);
 
     /**
      * Deletes Verifier Workspace.
@@ -324,6 +351,8 @@ public interface VerifierWorkspacesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param workspaceName Workspace name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -332,7 +361,23 @@ public interface VerifierWorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
-        String workspaceName, Context context);
+        String workspaceName, String ifMatch, Context context);
+
+    /**
+     * Deletes Verifier Workspace.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param workspaceName Workspace name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String workspaceName, String ifMatch);
 
     /**
      * Deletes Verifier Workspace.
@@ -367,11 +412,14 @@ public interface VerifierWorkspacesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param workspaceName Workspace name.
+     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String networkManagerName, String workspaceName, Context context);
+    void delete(String resourceGroupName, String networkManagerName, String workspaceName, String ifMatch,
+        Context context);
 }

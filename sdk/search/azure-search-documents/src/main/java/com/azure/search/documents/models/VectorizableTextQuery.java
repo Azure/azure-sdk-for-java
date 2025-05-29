@@ -149,6 +149,15 @@ public final class VectorizableTextQuery extends VectorQuery {
      * {@inheritDoc}
      */
     @Override
+    public VectorizableTextQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
+        super.setPerDocumentVectorLimit(perDocumentVectorLimit);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
@@ -158,6 +167,7 @@ public final class VectorizableTextQuery extends VectorQuery {
         jsonWriter.writeNumberField("weight", getWeight());
         jsonWriter.writeJsonField("threshold", getThreshold());
         jsonWriter.writeStringField("filterOverride", getFilterOverride());
+        jsonWriter.writeNumberField("perDocumentVectorLimit", getPerDocumentVectorLimit());
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("queryRewrites", this.queryRewrites == null ? null : this.queryRewrites.toString());
@@ -182,6 +192,7 @@ public final class VectorizableTextQuery extends VectorQuery {
             Float weight = null;
             VectorThreshold threshold = null;
             String filterOverride = null;
+            Integer perDocumentVectorLimit = null;
             boolean textFound = false;
             String text = null;
             VectorQueryKind kind = VectorQueryKind.TEXT;
@@ -203,6 +214,8 @@ public final class VectorizableTextQuery extends VectorQuery {
                     threshold = VectorThreshold.fromJson(reader);
                 } else if ("filterOverride".equals(fieldName)) {
                     filterOverride = reader.getString();
+                } else if ("perDocumentVectorLimit".equals(fieldName)) {
+                    perDocumentVectorLimit = reader.getNullable(JsonReader::getInt);
                 } else if ("text".equals(fieldName)) {
                     text = reader.getString();
                     textFound = true;
@@ -223,6 +236,7 @@ public final class VectorizableTextQuery extends VectorQuery {
                 deserializedVectorizableTextQuery.setWeight(weight);
                 deserializedVectorizableTextQuery.setThreshold(threshold);
                 deserializedVectorizableTextQuery.setFilterOverride(filterOverride);
+                deserializedVectorizableTextQuery.setPerDocumentVectorLimit(perDocumentVectorLimit);
                 deserializedVectorizableTextQuery.kind = kind;
                 deserializedVectorizableTextQuery.queryRewrites = queryRewrites;
                 return deserializedVectorizableTextQuery;

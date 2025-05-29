@@ -6,6 +6,7 @@
 
 from enum import Enum
 import re
+from typing import Dict
 from subprocess import check_call, CalledProcessError
 
 include_update_marker = re.compile(r'\{x-include-update;([^;]+);([^}]+)\}')
@@ -65,6 +66,17 @@ class BuildType(Enum):
         return self.value
 
 class CodeModule:
+    name: str
+    group_id: str
+    artifact_id: str
+    dependency: str
+    current: str = None # current version is optional, only for library versions
+    external_dependency: str = None # external dependency version is optional, only for external dependencies
+    update_type: UpdateType
+    is_beta: bool = False # beta_ is a prefix for unreleased dependencies, may not exist
+    is_unreleased: bool = False # unreleased_ is a prefix for unreleased dependencies, may not exist
+    replace_unreleased_dependency: bool = False # used to indicate that the unreleased dependency should be replaced with the dependency version
+
     def __init__(self, module_str):
         # For library versions there will be up to 3 items resulting from the split
         # which will be module name, dependency version and current version. For
@@ -77,7 +89,9 @@ class CodeModule:
         self.artifact_id = items[0].split(':')[1]
 
         if len(items) == 2:
-            if self.group_id.startswith('unreleased_') or self.group_id.startswith('beta_'):
+            self.is_beta = self.group_id.startswith('beta_')
+            self.is_unreleased = self.group_id.startswith('unreleased_')
+            if self.is_beta or self.is_unreleased:
                 self.dependency = items[1].strip()
                 self.update_type = UpdateType.library
             else:
@@ -95,18 +109,18 @@ class CodeModule:
     # overridden string primarily used for error reporting
     def __str__(self):
         # current may or may not exist
-        if hasattr(self, 'external_dependency'):
+        if self.external_dependency != None:
             return self.name + ': External Dependency version=' + self.external_dependency
-        try:
+        if self.current != None:
             return self.name + ': Dependency version=' + self.dependency + ': Current version=' + self.current
-        except AttributeError:
+        else:
             return self.name + ': Dependency version=' + self.dependency
 
     # return the CodeModule string formatted for a version file
     def string_for_version_file(self):
-        try:
+        if self.current != None:
             return self.name + ';' + self.dependency + ';' + self.current + '\n'
-        except AttributeError:
+        else:
             return self.name + ';' + self.dependency + '\n'
 
     # return the CodeModule string formatted for a allowlist include entry
@@ -115,7 +129,7 @@ class CodeModule:
     # would be treated as that version and above. For example:
     # <groupId>:<artifactId>:1.2 would be treated as 1.2 and above or equivalent to [1.2,)
     def string_for_allowlist_include(self):
-        if hasattr(self, 'external_dependency'):
+        if self.external_dependency != None:
             temp = self.name
             # This is necessary to deal with the fact that external_dependencies can have
             # '_' in them if they're an external dependency exception. Since the allowlist
@@ -159,25 +173,57 @@ def run_check_call(
                 return err
 
 
-def load_version_map_from_file(the_file, version_map):
+def load_version_map_from_file(the_file, version_map: Dict[str, CodeModule], auto_increment_version=False, dev_version=False):
+    newlines = []
+    file_changed = False
     with open(the_file) as f:
         for raw_line in f:
             stripped_line = raw_line.strip()
             if not stripped_line or stripped_line.startswith('#'):
+                newlines.append(raw_line)
                 continue
             module = CodeModule(stripped_line)
             # verify no duplicate entries
             if (module.name in version_map):
                 raise ValueError('Version file: {0} contains a duplicate entry: {1}'.format(the_file, module.name))
             # verify that if the module is beta_ or unreleased_ that there's a matching non-beta_ or non-unreleased_ entry
-            if (module.name.startswith('beta_') or module.name.startswith('unreleased_')):
+            is_beta = module.name.startswith('beta_')
+            is_unreleased = module.name.startswith('unreleased_')
+            if (is_beta or is_unreleased):
                 tempName = module.name
-                if tempName.startswith('beta_'):
+                if is_beta:
                     tempName = module.name[len('beta_'):]
                 else:
                     tempName = module.name[len('unreleased_'):]
                 # if there isn't a non beta or unreleased entry then raise an issue
                 if tempName not in version_map:
                     raise ValueError('Version file: {0} does not contain a non-beta or non-unreleased entry for beta_/unreleased_ library: {1}'.format(the_file, module.name))
+                
+                # Unreleased dependencies have a few additional checks.
+                # 1. If 'auto_increment_version' is true, check if the version matches the non-unreleased dependency
+                #    version of the library and that the dependency version doesn't the current version.
+                #    If that check passes, flag the unreleased dependency for replacement.
+                #    This is to allow the update script to replace the 'unreleased_*' tag with just '*', ex 'unreleased_core' -> 'core'.
+                #    When the non-unreleased dependency versions match this is an indication that the library has never
+                #    been released and there is a library outside the /sdk/<group> directory that has a development
+                #    on it.
+                # 2. Check to see that the version matches the current version of the library, , only if we're not setting the nightly dev version.
+                #    If it isn't raise an error as unreleased dependencies should match the current version of the library.
+                if is_unreleased:
+                    non_unreleased_module = version_map[tempName]
+                    if auto_increment_version and module.dependency == non_unreleased_module.dependency and non_unreleased_module.current != non_unreleased_module.dependency:
+                        module.replace_unreleased_dependency = True
+                        file_changed = True
+                    elif not dev_version and module.dependency != non_unreleased_module.current:
+                        raise ValueError('Version file: {0} contains an unreleased dependency: {1} with a dependency version of {2} which does not match the current version of the library it represents: {3}'.format(the_file, module.name, module.dependency, version_map[tempName].current))
+            
+            if not module.replace_unreleased_dependency:
+                newlines.append(raw_line)
+
             version_map[module.name] = module
+
+    if file_changed:
+        with open(the_file, 'w', encoding='utf-8') as f:
+            for line in newlines:
+                f.write(line)
                 

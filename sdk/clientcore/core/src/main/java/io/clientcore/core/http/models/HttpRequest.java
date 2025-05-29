@@ -107,7 +107,7 @@ public class HttpRequest {
         try {
             this.uri = new URI(Objects.requireNonNull(uri, "'uri' cannot be null"));
         } catch (URISyntaxException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'uri' must be a valid URI.", ex));
+            throw LOGGER.throwableAtError().log("'uri' must be a valid URI.", ex, IllegalArgumentException::new);
         }
 
         return this;

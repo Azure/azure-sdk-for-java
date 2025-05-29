@@ -195,6 +195,27 @@ public final class UriBuilder {
     }
 
     /**
+     * Append the provided query parameter name and encoded values to query string for the final URI.
+     *
+     * @param queryParameterName The name of the query parameter.
+     * @param queryParameterEncodedValues The encoded values of the query parameter.
+     * @return The provided query parameter name and encoded values to query string for the final URI.
+     * @throws NullPointerException if {@code queryParameterName} or {@code queryParameterEncodedValues} are null.
+     */
+    public UriBuilder addQueryParameterValues(String queryParameterName, List<String> queryParameterEncodedValues) {
+        initializeQuery();
+
+        query.compute(queryParameterName, (key, value) -> {
+            if (value == null) {
+                return new QueryParameter(queryParameterName, queryParameterEncodedValues);
+            }
+            value.addValues(queryParameterEncodedValues);
+            return value;
+        });
+        return this;
+    }
+
+    /**
      * Set the query that will be used to build the final URI.
      *
      * @param query The query that will be used to build the final URI.

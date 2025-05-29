@@ -66,6 +66,15 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         return this.innerModel().identity();
     }
 
+    public List<String> zones() {
+        List<String> inner = this.innerModel().zones();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -329,6 +338,11 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
             this.updatePrivateCloudUpdate.withIdentity(identity);
             return this;
         }
+    }
+
+    public PrivateCloudImpl withZones(List<String> zones) {
+        this.innerModel().withZones(zones);
+        return this;
     }
 
     public PrivateCloudImpl withManagementCluster(ManagementCluster managementCluster) {

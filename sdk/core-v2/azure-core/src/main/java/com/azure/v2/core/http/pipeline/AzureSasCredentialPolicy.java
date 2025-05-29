@@ -74,9 +74,9 @@ public final class AzureSasCredentialPolicy extends HttpCredentialPolicy {
     public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
 
         if (requireHttps && !"https".equals(httpRequest.getUri().getScheme())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException("Shared access signature credentials require HTTPS to prevent leaking"
-                    + " the shared access signature."));
+            throw LOGGER.throwableAtError()
+                .log("Shared access signature credentials require HTTPS to prevent leaking"
+                    + " the shared access signature.", IllegalStateException::new);
         }
 
         String signature = credential.getSignature();

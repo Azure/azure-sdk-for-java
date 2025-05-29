@@ -90,19 +90,21 @@ public final class Union {
 
     private Union(Type... types) {
         if (types == null || types.length == 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("types cannot be null or empty"));
+            throw LOGGER.throwableAtError().log("types cannot be null or empty", IllegalArgumentException::new);
         }
 
         ArrayList<Type> typeCopy = new ArrayList<>(types.length);
         for (int i = 0; i < types.length; i++) {
             final Type currentType = types[i];
             if (currentType == null) {
-                throw LOGGER.logThrowableAsError(
-                    new IllegalArgumentException("types cannot contain null values: null value in index " + i));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("index", i)
+                    .log("Types cannot contain null values.", IllegalArgumentException::new);
             } else if (!(currentType instanceof Class<?> || currentType instanceof ParameterizedType)) {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                    String.format("types must be of type Class or ParameterizedType: type name is %s in index %d.",
-                        currentType.getTypeName(), i)));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("index", i)
+                    .addKeyValue("type", currentType.getTypeName())
+                    .log("Types must be of type Class or ParameterizedType.", IllegalArgumentException::new);
             }
 
             typeCopy.add(types[i]);
@@ -156,7 +158,9 @@ public final class Union {
             }
         }
 
-        throw LOGGER.logThrowableAsError(new IllegalArgumentException("Invalid type: " + value.getClass().getName()));
+        throw LOGGER.throwableAtError()
+            .addKeyValue("type", value.getClass().getCanonicalName())
+            .log("Invalid type ", IllegalArgumentException::new);
     }
 
     /**
@@ -207,7 +211,10 @@ public final class Union {
         if (isPrimitiveTypeMatch(value, clazz)) {
             return (T) value;
         }
-        throw LOGGER.logThrowableAsError(new IllegalArgumentException("Value is not of type: " + clazz.getName()));
+        throw LOGGER.throwableAtError()
+            .addKeyValue("actualType", value == null ? null : value.getClass().getCanonicalName())
+            .addKeyValue("expectedType", clazz.getCanonicalName())
+            .log("Value is not of expected type.", IllegalArgumentException::new);
     }
 
     /**
@@ -240,7 +247,10 @@ public final class Union {
         if (isInstanceOfType(value, type)) {
             return (T) value;
         }
-        throw LOGGER.logThrowableAsError(new IllegalArgumentException("Value is not of type: " + type.getTypeName()));
+        throw LOGGER.throwableAtError()
+            .addKeyValue("actualType", value == null ? null : value.getClass().getCanonicalName())
+            .addKeyValue("expectedType", type.getTypeName())
+            .log("Value is not of expected type.", IllegalArgumentException::new);
     }
 
     /**

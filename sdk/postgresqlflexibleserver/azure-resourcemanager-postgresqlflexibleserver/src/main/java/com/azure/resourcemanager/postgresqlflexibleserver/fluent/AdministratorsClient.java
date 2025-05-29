@@ -29,11 +29,11 @@ public interface AdministratorsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
-     * @param parameters The required parameters for adding an active directory administrator for a server.
+     * @param parameters The required parameters for adding an Microsoft Entra Administrator for a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Active Directory administrator along with {@link Response} on successful completion of
+     * @return represents an Microsoft Entra Administrator along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -46,11 +46,11 @@ public interface AdministratorsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
-     * @param parameters The required parameters for adding an active directory administrator for a server.
+     * @param parameters The required parameters for adding an Microsoft Entra Administrator for a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents an Active Directory administrator.
+     * @return the {@link PollerFlux} for polling of represents an Microsoft Entra Administrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ActiveDirectoryAdministratorInner>, ActiveDirectoryAdministratorInner> beginCreateAsync(
@@ -62,11 +62,11 @@ public interface AdministratorsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
-     * @param parameters The required parameters for adding an active directory administrator for a server.
+     * @param parameters The required parameters for adding an Microsoft Entra Administrator for a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents an Active Directory administrator.
+     * @return the {@link SyncPoller} for polling of represents an Microsoft Entra Administrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ActiveDirectoryAdministratorInner>, ActiveDirectoryAdministratorInner> beginCreate(
@@ -78,12 +78,12 @@ public interface AdministratorsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
-     * @param parameters The required parameters for adding an active directory administrator for a server.
+     * @param parameters The required parameters for adding an Microsoft Entra Administrator for a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents an Active Directory administrator.
+     * @return the {@link SyncPoller} for polling of represents an Microsoft Entra Administrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ActiveDirectoryAdministratorInner>, ActiveDirectoryAdministratorInner> beginCreate(
@@ -96,11 +96,11 @@ public interface AdministratorsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
-     * @param parameters The required parameters for adding an active directory administrator for a server.
+     * @param parameters The required parameters for adding an Microsoft Entra Administrator for a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Active Directory administrator on successful completion of {@link Mono}.
+     * @return represents an Microsoft Entra Administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ActiveDirectoryAdministratorInner> createAsync(String resourceGroupName, String serverName, String objectId,
@@ -112,11 +112,11 @@ public interface AdministratorsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
-     * @param parameters The required parameters for adding an active directory administrator for a server.
+     * @param parameters The required parameters for adding an Microsoft Entra Administrator for a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Active Directory administrator.
+     * @return represents an Microsoft Entra Administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ActiveDirectoryAdministratorInner create(String resourceGroupName, String serverName, String objectId,
@@ -128,19 +128,19 @@ public interface AdministratorsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
-     * @param parameters The required parameters for adding an active directory administrator for a server.
+     * @param parameters The required parameters for adding an Microsoft Entra Administrator for a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Active Directory administrator.
+     * @return represents an Microsoft Entra Administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ActiveDirectoryAdministratorInner create(String resourceGroupName, String serverName, String objectId,
         ActiveDirectoryAdministratorAdd parameters, Context context);
 
     /**
-     * Deletes an Active Directory Administrator associated with the server.
+     * Deletes an Microsoft Entra Administrator associated with the server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -155,7 +155,7 @@ public interface AdministratorsClient {
         String objectId);
 
     /**
-     * Deletes an Active Directory Administrator associated with the server.
+     * Deletes an Microsoft Entra Administrator associated with the server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -169,7 +169,7 @@ public interface AdministratorsClient {
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName, String objectId);
 
     /**
-     * Deletes an Active Directory Administrator associated with the server.
+     * Deletes an Microsoft Entra Administrator associated with the server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -183,7 +183,7 @@ public interface AdministratorsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String objectId);
 
     /**
-     * Deletes an Active Directory Administrator associated with the server.
+     * Deletes an Microsoft Entra Administrator associated with the server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -199,7 +199,7 @@ public interface AdministratorsClient {
         Context context);
 
     /**
-     * Deletes an Active Directory Administrator associated with the server.
+     * Deletes an Microsoft Entra Administrator associated with the server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -213,7 +213,7 @@ public interface AdministratorsClient {
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, String objectId);
 
     /**
-     * Deletes an Active Directory Administrator associated with the server.
+     * Deletes an Microsoft Entra Administrator associated with the server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -226,7 +226,7 @@ public interface AdministratorsClient {
     void delete(String resourceGroupName, String serverName, String objectId);
 
     /**
-     * Deletes an Active Directory Administrator associated with the server.
+     * Deletes an Microsoft Entra Administrator associated with the server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -306,7 +306,7 @@ public interface AdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active directory administrators as paginated response with {@link PagedFlux}.
+     * @return a list of Microsoft Entra Administrators as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ActiveDirectoryAdministratorInner> listByServerAsync(String resourceGroupName, String serverName);
@@ -319,7 +319,7 @@ public interface AdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active directory administrators as paginated response with {@link PagedIterable}.
+     * @return a list of Microsoft Entra Administrators as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ActiveDirectoryAdministratorInner> listByServer(String resourceGroupName, String serverName);
@@ -333,7 +333,7 @@ public interface AdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active directory administrators as paginated response with {@link PagedIterable}.
+     * @return a list of Microsoft Entra Administrators as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ActiveDirectoryAdministratorInner> listByServer(String resourceGroupName, String serverName,

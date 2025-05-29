@@ -48,15 +48,15 @@ public final class StreamUtil {
         int initialBufferSize, int maxBufferSize) throws IOException {
         Objects.requireNonNull(inputStream, "'inputStream' must not be null");
         if (initialBufferSize <= 0) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'initialBufferSize' must be positive integer"));
+            throw LOGGER.throwableAtError()
+                .log("'initialBufferSize' must be positive integer", IllegalArgumentException::new);
         }
         if (maxBufferSize < initialBufferSize) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("'maxBufferSize' must not be smaller than 'maxBufferSize'"));
+            throw LOGGER.throwableAtError()
+                .log("'maxBufferSize' must not be smaller than 'maxBufferSize'", IllegalArgumentException::new);
         }
         if (lengthHint != null && lengthHint < 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'length' must not be negative"));
+            throw LOGGER.throwableAtError().log("'length' must not be negative", IllegalArgumentException::new);
         }
 
         // Start small.

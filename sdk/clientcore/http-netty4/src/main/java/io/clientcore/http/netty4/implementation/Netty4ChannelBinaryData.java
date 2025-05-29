@@ -49,7 +49,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
     @Override
     public byte[] toBytes() {
         if (length != null && length > MAX_ARRAY_SIZE) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+            throw LOGGER.throwableAtError().log(TOO_LARGE_FOR_BYTE_ARRAY + length, IllegalStateException::new);
         }
 
         if (bytes == null) {
@@ -83,7 +83,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
         try {
             return serializer.deserializeFromBytes(toBytes(), type);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -103,7 +103,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
         try {
             jsonWriter.writeBinary(toBytes());
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -133,7 +133,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
                 outputStream.write(bytes);
             }
         } catch (IOException ex) {
-            throw LOGGER.logThrowableAsError(CoreException.from(ex));
+            throw LOGGER.throwableAtError().log(ex, CoreException::from);
         }
     }
 

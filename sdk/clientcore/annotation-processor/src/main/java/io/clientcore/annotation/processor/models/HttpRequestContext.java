@@ -5,9 +5,6 @@ package io.clientcore.annotation.processor.models;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.utils.CoreUtils;
-
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,6 +14,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 
 /**
  * Represents the context of an HTTP request, including its configuration, parameters, headers, and other details.
@@ -55,6 +54,9 @@ public final class HttpRequestContext {
     private final Map<String, Substitution> substitutions;
 
     private int[] expectedStatusCodes;
+    private TypeMirror defaultExceptionBodyType;
+    private boolean isUriNextLink;
+    private TypeMirror returnValueWireType;
 
     /**
      * Constructs a new HttpRequestContext with default values.
@@ -67,6 +69,7 @@ public final class HttpRequestContext {
     }
 
     private Body body;
+    private final Map<Integer, ExceptionBodyTypeInfo> exceptionBodyMappings = new HashMap<>();
 
     /**
      * Gets the method name.
@@ -248,17 +251,16 @@ public final class HttpRequestContext {
      *
      * @param key the query parameter key.
      * @param value the query parameter value.
-     * @param isMultiple boolean indicating whether this query parameter list values should be sent as individual query
-     * params or as a single Json
-     * @param shouldEncode boolean indicating whether the query parameter value is URL encoded.
-     *
+     * @param isMultiple Whether this query parameter list values should be sent as individual query param.
+     * @param shouldEncode Whether the query parameter value is URL encoded.
+     * @param isStatic Whether the query parameter is a static value.
      */
-    public void addQueryParam(String key, String value, boolean isMultiple, boolean shouldEncode) {
+    public void addQueryParam(String key, String value, boolean isMultiple, boolean shouldEncode, boolean isStatic) {
         QueryParameter existing = queryParams.get(key);
         if (existing != null) {
             existing.addValue(value);
         } else {
-            queryParams.put(key, new QueryParameter(value, isMultiple, shouldEncode));
+            queryParams.put(key, new QueryParameter(value, isMultiple, shouldEncode, isStatic));
         }
     }
 
@@ -380,8 +382,81 @@ public final class HttpRequestContext {
             String[] parts = queryParam.split("=", 2);
             String key = parts[0].trim();
             String value = parts.length > 1 ? parts[1].trim() : null;
-            addQueryParam(key, value, true, false);
+            addQueryParam(key, value, true, false, true);
         }
+    }
+
+    /**
+     * Adds an exception body mapping.
+     *
+     * @param statusCode the status code.
+     * @param exceptionBodyClassName the exception body class name.
+     */
+    public void addExceptionBodyMapping(int statusCode, ExceptionBodyTypeInfo exceptionBodyClassName) {
+        exceptionBodyMappings.put(statusCode, exceptionBodyClassName);
+    }
+
+    /**
+     * Gets the exception body mappings.
+     *
+     * @return the exception body mappings.
+     */
+    public Map<Integer, ExceptionBodyTypeInfo> getExceptionBodyMappings() {
+        return exceptionBodyMappings;
+    }
+
+    /**
+     * Sets the default exception body type.
+     *
+     * @param type the default exception body type to set.
+     */
+    public void setDefaultExceptionBodyType(TypeMirror type) {
+        this.defaultExceptionBodyType = type;
+    }
+
+    /**
+     * Gets the default exception body type.
+     *
+     * @return the default exception body type.
+     */
+    public TypeMirror getDefaultExceptionBodyType() {
+        return defaultExceptionBodyType;
+    }
+
+    /**
+     * Sets whether the URI is a {nextlink}.
+     *
+     * @param isUriNextLink true if it is a {nextlink}, false otherwise.
+     */
+    public void setIsUriNextLink(boolean isUriNextLink) {
+        this.isUriNextLink = isUriNextLink;
+    }
+
+    /**
+     * Checks if the URI is a {nextlink}.
+     *
+     * @return true if it is a {nextlink}, false otherwise.
+     */
+    public boolean isUriNextLink() {
+        return isUriNextLink;
+    }
+
+    /**
+     * Sets the return value wire type.
+     *
+     * @param returnValueWireType the return value wire type to set.
+     */
+    public void setReturnValueWireType(TypeMirror returnValueWireType) {
+        this.returnValueWireType = returnValueWireType;
+    }
+
+    /**
+     * Gets the return value wire type.
+     *
+     * @return the return value wire type.
+     */
+    public TypeMirror getReturnValueWireType() {
+        return returnValueWireType;
     }
 
     /**
@@ -510,6 +585,7 @@ public final class HttpRequestContext {
         private final List<String> values;
         private final boolean isMultiple;
         private final boolean shouldEncode;
+        private final boolean isStatic;
 
         /**
          * Constructs a new QueryParameter.
@@ -517,12 +593,14 @@ public final class HttpRequestContext {
          * @param value the value of the query parameter.
          * @param isMultiple whether the parameter can accept multiple values.
          * @param shouldEncode whether the parameter and value is encoded
+         * @param isStatic Whether the query parameter is a static value.
          */
-        public QueryParameter(String value, boolean isMultiple, boolean shouldEncode) {
+        public QueryParameter(String value, boolean isMultiple, boolean shouldEncode, boolean isStatic) {
             this.values = new ArrayList<>();
             this.values.add(value);
             this.isMultiple = isMultiple;
             this.shouldEncode = shouldEncode;
+            this.isStatic = isStatic;
         }
 
         /**
@@ -531,11 +609,13 @@ public final class HttpRequestContext {
          * @param values the values of the query parameter.
          * @param isMultiple whether the parameter can accept multiple values.
          * @param shouldEncode whether the parameter and value is encoded
+         * @param isStatic Whether the query parameter is a static value.
          */
-        public QueryParameter(List<String> values, boolean isMultiple, boolean shouldEncode) {
+        public QueryParameter(List<String> values, boolean isMultiple, boolean shouldEncode, boolean isStatic) {
             this.values = new ArrayList<>(values);
             this.isMultiple = isMultiple;
             this.shouldEncode = shouldEncode;
+            this.isStatic = isStatic;
         }
 
         /**
@@ -572,6 +652,56 @@ public final class HttpRequestContext {
          */
         public boolean shouldEncode() {
             return shouldEncode;
+        }
+
+        /**
+         * Whether the query parameter is a static value.
+         *
+         * @return Whether the query parameter is a static value.
+         */
+        public boolean isStatic() {
+            return isStatic;
+        }
+    }
+
+    /**
+     * Represents information about the exception body type used in the HTTP request context.
+     * <p>
+     * This class encapsulates the {@link TypeMirror} of the exception body and a flag indicating
+     * whether the type is the default Object.class.
+     * </p>
+     */
+    public static class ExceptionBodyTypeInfo {
+        private final TypeMirror typeMirror;
+        private final boolean isDefaultObject;
+
+        /**
+         * Constructs a new ExceptionBodyTypeInfo.
+         *
+         * @param typeMirror the type mirror of the exception body.
+         * @param isDefaultObject whether the type is the default object.
+         */
+        public ExceptionBodyTypeInfo(TypeMirror typeMirror, boolean isDefaultObject) {
+            this.typeMirror = typeMirror;
+            this.isDefaultObject = isDefaultObject;
+        }
+
+        /**
+         * Gets the type mirror of the exception body.
+         *
+         * @return the type mirror.
+         */
+        public TypeMirror getTypeMirror() {
+            return typeMirror;
+        }
+
+        /**
+         * Checks if the type is the default object.
+         *
+         * @return true if it is the default object, false otherwise.
+         */
+        public boolean isDefaultObject() {
+            return isDefaultObject;
         }
     }
 }

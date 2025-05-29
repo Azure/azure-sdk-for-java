@@ -3,15 +3,19 @@
 package io.clientcore.annotation.processor.test.implementation;
 
 import io.clientcore.core.annotations.ServiceInterface;
+import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
 import io.clientcore.core.http.annotations.HttpRequestInformation;
+import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.models.binarydata.BinaryData;
-
+import io.clientcore.core.utils.Base64Uri;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  * Service that tests special return bodies for methods.
@@ -100,4 +104,28 @@ public interface SpecialReturnBodiesService {
      */
     @HttpRequestInformation(method = HttpMethod.GET, path = "bytes", expectedStatusCodes = { 200 })
     Response<InputStream> getInputStreamWithResponse(@HostParam("url") String url);
+
+    /**
+     * Gets a binary payload from the specified URL.
+     *
+     * @param endpoint The URL.
+     * @return A response containing the list of binary data.
+     */
+    @HttpRequestInformation(method = HttpMethod.GET, path = "/type/array/unknown", expectedStatusCodes = { 200 })
+    @UnexpectedResponseExceptionDetail
+    Response<List<BinaryData>> getListOfBinaryData(@HostParam("url") String endpoint);
+
+
+    /**
+     * Gets Base64 encoded binary data from the specified URL.
+     * @param endpoint The URL.
+     * @return A response containing the Base64 encoded binary data.
+     */
+    @HttpRequestInformation(
+        method = HttpMethod.GET,
+        path = "/encode/bytes/body/response/base64url",
+        expectedStatusCodes = { 200 },
+        returnValueWireType = Base64Uri.class)
+    @UnexpectedResponseExceptionDetail
+    Response<byte[]> base64url(@HostParam("url") String endpoint);
 }

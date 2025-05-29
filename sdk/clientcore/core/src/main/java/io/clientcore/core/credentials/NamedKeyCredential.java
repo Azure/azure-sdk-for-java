@@ -93,10 +93,10 @@ public final class NamedKeyCredential {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(key, "'key' cannot be null.");
         if (name.isEmpty()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be empty."));
+            throw LOGGER.throwableAtError().log("'name' cannot be empty.", IllegalArgumentException::new);
         }
         if (key.isEmpty()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'key' cannot be empty."));
+            throw LOGGER.throwableAtError().log("'key' cannot be empty.", IllegalArgumentException::new);
         }
     }
 }

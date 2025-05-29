@@ -73,7 +73,6 @@ public final class AvsScriptExecutionFinishedEventData extends AvsScriptExecutio
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operationId", getOperationId());
         jsonWriter.writeStringField("cmdletId", getCmdletId());
-        jsonWriter.writeArrayField("output", getOutput(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("namedOutputs", this.namedOutputs, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }

@@ -279,7 +279,6 @@ public final class EncodedTaskRunRequest extends RunRequest {
      */
     @Override
     public void validate() {
-        super.validate();
         if (encodedTaskContent() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

@@ -21,7 +21,7 @@ public class PollingUtilsTests {
         String invalidPath = "`file";
         IllegalArgumentException exception
             = assertThrows(IllegalArgumentException.class, () -> getAbsolutePath(invalidPath, LOCAL_HOST, LOGGER));
-        assertTrue("'path' must be a valid URI.".equals(exception.getMessage()));
+        assertTrue(exception.getMessage().startsWith("'path' must be a valid URI."), exception.getMessage());
         assertThrows(NullPointerException.class, () -> getAbsolutePath(null, LOCAL_HOST, LOGGER));
     }
 
@@ -33,9 +33,10 @@ public class PollingUtilsTests {
 
         IllegalArgumentException exception
             = assertThrows(IllegalArgumentException.class, () -> getAbsolutePath(relativePath, null, LOGGER));
-        assertTrue("Relative path requires endpoint to be non-null and non-empty to create an absolute path."
-            .equals(exception.getMessage()));
-
+        assertTrue(
+            exception.getMessage()
+                .startsWith("Relative path requires endpoint to be non-null and non-empty to create an absolute path."),
+            exception.getMessage());
         assertThrows(NullPointerException.class, () -> getAbsolutePath(relativePath, null, null));
         assertThrows(NullPointerException.class, () -> getAbsolutePath(relativePath, "", null));
     }

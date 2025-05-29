@@ -22,7 +22,7 @@ public final class DataFlowDebugSessionsQueryByFactoryMockTests {
     @Test
     public void testQueryByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"dataFlowName\":\"lxqjshyyrc\",\"computeType\":\"wzqsfaurmqpkgwfb\",\"coreCount\":570698010,\"nodeCount\":1408597782,\"integrationRuntimeName\":\"rhhxlibdn\",\"sessionId\":\"amslvpxsy\",\"startTime\":\"ifv\",\"timeToLiveInMinutes\":1795872243,\"lastActivityTime\":\"aauls\",\"\":{\"gx\":\"datahvcvveb\",\"bhkyas\":\"datarpho\"}}]}";
+            = "{\"value\":[{\"dataFlowName\":\"lxqjshyyrc\",\"computeType\":\"wzqsfaurmqpkgwfb\",\"coreCount\":570698010,\"nodeCount\":1408597782,\"integrationRuntimeName\":\"rhhxlibdn\",\"sessionId\":\"amslvpxsy\",\"startTime\":\"ifv\",\"timeToLiveInMinutes\":1795872243,\"lastActivityTime\":\"aauls\",\"gx\":\"datahvcvveb\",\"bhkyas\":\"datarpho\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

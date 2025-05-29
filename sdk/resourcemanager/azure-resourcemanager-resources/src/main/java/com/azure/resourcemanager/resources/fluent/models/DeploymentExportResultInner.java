@@ -61,7 +61,9 @@ public final class DeploymentExportResultInner implements JsonSerializable<Deplo
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("template", this.template);
+        if (this.template != null) {
+            jsonWriter.writeUntypedField("template", this.template);
+        }
         return jsonWriter.writeEndObject();
     }
 

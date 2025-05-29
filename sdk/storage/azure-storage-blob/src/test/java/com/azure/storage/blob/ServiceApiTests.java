@@ -1021,8 +1021,8 @@ public class ServiceApiTests extends BlobTestBase {
         sleepIfRunningAgainstService(30000);
 
         Response<BlobContainerClient> response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()),
-            Duration.ofMinutes(1), Context.NONE);
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()), null,
+            Context.NONE);
         BlobContainerClient restoredContainerClient = response.getValue();
 
         assertNotNull(response);

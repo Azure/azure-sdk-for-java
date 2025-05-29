@@ -41,7 +41,7 @@ public final class CosmosPagedIterable<T> extends ContinuablePagedIterable<Strin
      * @param pageSize the preferred pageSize to be used when pulling data from the service
      */
     public CosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux, int pageSize) {
-        this(null, cosmosPagedFlux, pageSize, 1);
+        this(null, cosmosPagedFlux.withDefaultPageSize(pageSize), 1);
     }
 
     /**
@@ -54,17 +54,16 @@ public final class CosmosPagedIterable<T> extends ContinuablePagedIterable<Strin
      * `reactor.util.concurrent.Queues.get(int)` for more details
      */
     public CosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux, int pageSize, int pagePrefetchCount) {
-        this(null, cosmosPagedFlux, pageSize, pagePrefetchCount);
+        this(null, cosmosPagedFlux.withDefaultPageSize(pageSize), pagePrefetchCount);
     }
 
     private CosmosPagedIterable(
         @SuppressWarnings("unused") Object dummy,
-        CosmosPagedFlux<T> cosmosPagedFlux,
-        int pageSize,
+        CosmosPagedFlux<T> cosmosPagedFluxWithDefaultPageSize,
         int pagePrefetchCount) {
 
-        super(cosmosPagedFlux.withDefaultPageSize(pageSize), pagePrefetchCount);
-        this.cosmosPagedFlux = cosmosPagedFlux;
+        super(cosmosPagedFluxWithDefaultPageSize, pagePrefetchCount);
+        this.cosmosPagedFlux = cosmosPagedFluxWithDefaultPageSize;
     }
 
     /**

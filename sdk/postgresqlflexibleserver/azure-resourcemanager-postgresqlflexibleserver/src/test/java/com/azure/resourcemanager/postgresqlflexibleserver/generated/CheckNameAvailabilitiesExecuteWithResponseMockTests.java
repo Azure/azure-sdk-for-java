@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityReason;
@@ -23,22 +23,23 @@ public final class CheckNameAvailabilitiesExecuteWithResponseMockTests {
     @Test
     public void testExecuteWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"oqbeitpkxzt\",\"type\":\"ob\",\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"gfcwqmpimaqxzhem\"}";
+            = "{\"name\":\"t\",\"type\":\"sxwpndfcpfnznthj\",\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"srxuzvoam\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NameAvailability response = manager.checkNameAvailabilities()
-            .executeWithResponse(new CheckNameAvailabilityRequest().withName("vvib").withType("jj"),
+            .executeWithResponse(
+                new CheckNameAvailabilityRequest().withName("pkyjcxcjxgrytfm").withType("ycilrmcaykggnox"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
+        Assertions.assertTrue(response.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, response.reason());
-        Assertions.assertEquals("gfcwqmpimaqxzhem", response.message());
+        Assertions.assertEquals("srxuzvoam", response.message());
     }
 }

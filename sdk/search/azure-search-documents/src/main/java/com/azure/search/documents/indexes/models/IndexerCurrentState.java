@@ -27,22 +27,22 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
     /*
      * Change tracking state used when indexing starts on all documents in the datasource.
      */
-    private String allDocsInitialChangeTrackingState;
+    private String allDocsInitialTrackingState;
 
     /*
      * Change tracking state value when indexing finishes on all documents in the datasource.
      */
-    private String allDocsFinalChangeTrackingState;
+    private String allDocsFinalTrackingState;
 
     /*
      * Change tracking state used when indexing starts on select, reset documents in the datasource.
      */
-    private String resetDocsInitialChangeTrackingState;
+    private String resetDocsInitialTrackingState;
 
     /*
      * Change tracking state value when indexing finishes on select, reset documents in the datasource.
      */
-    private String resetDocsFinalChangeTrackingState;
+    private String resetDocsFinalTrackingState;
 
     /*
      * The list of document keys that have been reset. The document key is the document's unique identifier for the data
@@ -55,6 +55,16 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
      * the data in the datasource. The indexer will prioritize selectively re-ingesting these ids.
      */
     private List<String> resetDatasourceDocumentIds;
+
+    /*
+     * Change tracking state used when indexing starts on selective options from the datasource.
+     */
+    private String resyncInitialTrackingState;
+
+    /*
+     * Change tracking state value when indexing finishes on selective options from the datasource.
+     */
+    private String resyncFinalTrackingState;
 
     /**
      * Creates an instance of IndexerCurrentState class.
@@ -72,43 +82,43 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
     }
 
     /**
-     * Get the allDocsInitialChangeTrackingState property: Change tracking state used when indexing starts on all
+     * Get the allDocsInitialTrackingState property: Change tracking state used when indexing starts on all documents in
+     * the datasource.
+     * 
+     * @return the allDocsInitialTrackingState value.
+     */
+    public String getAllDocsInitialTrackingState() {
+        return this.allDocsInitialTrackingState;
+    }
+
+    /**
+     * Get the allDocsFinalTrackingState property: Change tracking state value when indexing finishes on all documents
+     * in the datasource.
+     * 
+     * @return the allDocsFinalTrackingState value.
+     */
+    public String getAllDocsFinalTrackingState() {
+        return this.allDocsFinalTrackingState;
+    }
+
+    /**
+     * Get the resetDocsInitialTrackingState property: Change tracking state used when indexing starts on select, reset
      * documents in the datasource.
      * 
-     * @return the allDocsInitialChangeTrackingState value.
+     * @return the resetDocsInitialTrackingState value.
      */
-    public String getAllDocsInitialChangeTrackingState() {
-        return this.allDocsInitialChangeTrackingState;
+    public String getResetDocsInitialTrackingState() {
+        return this.resetDocsInitialTrackingState;
     }
 
     /**
-     * Get the allDocsFinalChangeTrackingState property: Change tracking state value when indexing finishes on all
+     * Get the resetDocsFinalTrackingState property: Change tracking state value when indexing finishes on select, reset
      * documents in the datasource.
      * 
-     * @return the allDocsFinalChangeTrackingState value.
+     * @return the resetDocsFinalTrackingState value.
      */
-    public String getAllDocsFinalChangeTrackingState() {
-        return this.allDocsFinalChangeTrackingState;
-    }
-
-    /**
-     * Get the resetDocsInitialChangeTrackingState property: Change tracking state used when indexing starts on select,
-     * reset documents in the datasource.
-     * 
-     * @return the resetDocsInitialChangeTrackingState value.
-     */
-    public String getResetDocsInitialChangeTrackingState() {
-        return this.resetDocsInitialChangeTrackingState;
-    }
-
-    /**
-     * Get the resetDocsFinalChangeTrackingState property: Change tracking state value when indexing finishes on select,
-     * reset documents in the datasource.
-     * 
-     * @return the resetDocsFinalChangeTrackingState value.
-     */
-    public String getResetDocsFinalChangeTrackingState() {
-        return this.resetDocsFinalChangeTrackingState;
+    public String getResetDocsFinalTrackingState() {
+        return this.resetDocsFinalTrackingState;
     }
 
     /**
@@ -131,6 +141,26 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
      */
     public List<String> getResetDatasourceDocumentIds() {
         return this.resetDatasourceDocumentIds;
+    }
+
+    /**
+     * Get the resyncInitialTrackingState property: Change tracking state used when indexing starts on selective options
+     * from the datasource.
+     * 
+     * @return the resyncInitialTrackingState value.
+     */
+    public String getResyncInitialTrackingState() {
+        return this.resyncInitialTrackingState;
+    }
+
+    /**
+     * Get the resyncFinalTrackingState property: Change tracking state value when indexing finishes on selective
+     * options from the datasource.
+     * 
+     * @return the resyncFinalTrackingState value.
+     */
+    public String getResyncFinalTrackingState() {
+        return this.resyncFinalTrackingState;
     }
 
     /**
@@ -159,20 +189,24 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
 
                 if ("mode".equals(fieldName)) {
                     deserializedIndexerCurrentState.mode = IndexingMode.fromString(reader.getString());
-                } else if ("allDocsInitialChangeTrackingState".equals(fieldName)) {
-                    deserializedIndexerCurrentState.allDocsInitialChangeTrackingState = reader.getString();
-                } else if ("allDocsFinalChangeTrackingState".equals(fieldName)) {
-                    deserializedIndexerCurrentState.allDocsFinalChangeTrackingState = reader.getString();
-                } else if ("resetDocsInitialChangeTrackingState".equals(fieldName)) {
-                    deserializedIndexerCurrentState.resetDocsInitialChangeTrackingState = reader.getString();
-                } else if ("resetDocsFinalChangeTrackingState".equals(fieldName)) {
-                    deserializedIndexerCurrentState.resetDocsFinalChangeTrackingState = reader.getString();
+                } else if ("allDocsInitialTrackingState".equals(fieldName)) {
+                    deserializedIndexerCurrentState.allDocsInitialTrackingState = reader.getString();
+                } else if ("allDocsFinalTrackingState".equals(fieldName)) {
+                    deserializedIndexerCurrentState.allDocsFinalTrackingState = reader.getString();
+                } else if ("resetDocsInitialTrackingState".equals(fieldName)) {
+                    deserializedIndexerCurrentState.resetDocsInitialTrackingState = reader.getString();
+                } else if ("resetDocsFinalTrackingState".equals(fieldName)) {
+                    deserializedIndexerCurrentState.resetDocsFinalTrackingState = reader.getString();
                 } else if ("resetDocumentKeys".equals(fieldName)) {
                     List<String> resetDocumentKeys = reader.readArray(reader1 -> reader1.getString());
                     deserializedIndexerCurrentState.resetDocumentKeys = resetDocumentKeys;
                 } else if ("resetDatasourceDocumentIds".equals(fieldName)) {
                     List<String> resetDatasourceDocumentIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedIndexerCurrentState.resetDatasourceDocumentIds = resetDatasourceDocumentIds;
+                } else if ("resyncInitialTrackingState".equals(fieldName)) {
+                    deserializedIndexerCurrentState.resyncInitialTrackingState = reader.getString();
+                } else if ("resyncFinalTrackingState".equals(fieldName)) {
+                    deserializedIndexerCurrentState.resyncFinalTrackingState = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

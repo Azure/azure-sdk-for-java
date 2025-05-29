@@ -6,7 +6,6 @@ package com.azure.v2.core.http.polling;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonSerializer;
 
 import java.lang.reflect.Type;
@@ -106,12 +105,12 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
     }
 
     @Override
-    public boolean canPoll(Response<BinaryData> initialResponse) {
+    public boolean canPoll(Response<T> initialResponse) {
         return chainedPollingStrategy.canPoll(initialResponse);
     }
 
     @Override
-    public PollResponse<T> onInitialResponse(Response<BinaryData> response, PollingContext<T> pollingContext,
+    public PollResponse<T> onInitialResponse(Response<T> response, PollingContext<T> pollingContext,
         Type pollResponseType) {
         return chainedPollingStrategy.onInitialResponse(response, pollingContext, pollResponseType);
     }

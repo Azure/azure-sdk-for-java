@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegment;
@@ -21,24 +21,24 @@ public final class WorkloadNetworksGetSegmentWithResponseMockTests {
     @Test
     public void testGetSegmentWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"stmhqykizmd\",\"connectedGateway\":\"aoaf\",\"subnet\":{\"dhcpRanges\":[\"v\",\"xmycjimryvwgcw\"],\"gatewayAddress\":\"bmzgwes\"},\"portVif\":[{\"portName\":\"wefohecbvo\"},{\"portName\":\"ndyqleal\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":5841187732800294671},\"id\":\"wkxxpvbrdfjmzs\",\"name\":\"zfhotlh\",\"type\":\"k\"}";
+            = "{\"properties\":{\"displayName\":\"emeluclv\",\"connectedGateway\":\"jukyrdn\",\"subnet\":{\"dhcpRanges\":[\"ahhxhqfaqnvzoqg\",\"ipemchgavscz\",\"ejdtxptl\",\"h\"],\"gatewayAddress\":\"homewjjstliu\"},\"portVif\":[{\"portName\":\"moaiancz\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":6751565524667893953},\"id\":\"lxydkxrxv\",\"name\":\"bxiwkgfbqljn\",\"type\":\"khychocokulehur\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkSegment response = manager.workloadNetworks()
-            .getSegmentWithResponse("aabeolhbhlvbmxuq", "bsxtkcudfbsfarfs", "owlkjxnqpv",
+            .getSegmentWithResponse("nbbklqpxzucafed", "wwnlzafwxudgnh", "ookrtalvnbw",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("stmhqykizmd", response.displayName());
-        Assertions.assertEquals("aoaf", response.connectedGateway());
-        Assertions.assertEquals("v", response.subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("bmzgwes", response.subnet().gatewayAddress());
-        Assertions.assertEquals(5841187732800294671L, response.revision());
+        Assertions.assertEquals("emeluclv", response.displayName());
+        Assertions.assertEquals("jukyrdn", response.connectedGateway());
+        Assertions.assertEquals("ahhxhqfaqnvzoqg", response.subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("homewjjstliu", response.subnet().gatewayAddress());
+        Assertions.assertEquals(6751565524667893953L, response.revision());
     }
 }

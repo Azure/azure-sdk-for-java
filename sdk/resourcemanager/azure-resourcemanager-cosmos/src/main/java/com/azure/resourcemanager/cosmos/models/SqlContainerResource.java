@@ -80,6 +80,11 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
      */
     private VectorEmbeddingPolicy vectorEmbeddingPolicy;
 
+    /*
+     * The FullText policy for the container.
+     */
+    private FullTextPolicy fullTextPolicy;
+
     /**
      * Creates an instance of SqlContainerResource class.
      */
@@ -333,6 +338,26 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
     }
 
     /**
+     * Get the fullTextPolicy property: The FullText policy for the container.
+     * 
+     * @return the fullTextPolicy value.
+     */
+    public FullTextPolicy fullTextPolicy() {
+        return this.fullTextPolicy;
+    }
+
+    /**
+     * Set the fullTextPolicy property: The FullText policy for the container.
+     * 
+     * @param fullTextPolicy the fullTextPolicy value to set.
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withFullTextPolicy(FullTextPolicy fullTextPolicy) {
+        this.fullTextPolicy = fullTextPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -366,6 +391,9 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
         if (vectorEmbeddingPolicy() != null) {
             vectorEmbeddingPolicy().validate();
         }
+        if (fullTextPolicy() != null) {
+            fullTextPolicy().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlContainerResource.class);
@@ -389,6 +417,7 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
         jsonWriter.writeArrayField("computedProperties", this.computedProperties,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("vectorEmbeddingPolicy", this.vectorEmbeddingPolicy);
+        jsonWriter.writeJsonField("fullTextPolicy", this.fullTextPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -435,6 +464,8 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
                     deserializedSqlContainerResource.computedProperties = computedProperties;
                 } else if ("vectorEmbeddingPolicy".equals(fieldName)) {
                     deserializedSqlContainerResource.vectorEmbeddingPolicy = VectorEmbeddingPolicy.fromJson(reader);
+                } else if ("fullTextPolicy".equals(fieldName)) {
+                    deserializedSqlContainerResource.fullTextPolicy = FullTextPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

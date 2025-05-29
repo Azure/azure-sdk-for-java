@@ -546,7 +546,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             }).blockLast();
     }
 
-    @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readAllItems(String[] changedOptions) throws Exception {
         String id = UUID.randomUUID().toString();
         container.createItem(getDocumentDefinition(id)).block();

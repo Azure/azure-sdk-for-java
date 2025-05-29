@@ -61,7 +61,7 @@ public final class StringBinaryData extends BinaryData {
         try {
             return serializer.deserializeFromBytes(toBytes(), type);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -82,7 +82,7 @@ public final class StringBinaryData extends BinaryData {
         try {
             jsonWriter.writeString(toString());
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 

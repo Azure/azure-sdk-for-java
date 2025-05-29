@@ -59,8 +59,8 @@ public final class AuthenticateChallenge {
     }
 
     AuthenticateChallenge(String scheme, Map<String, String> parameters, String token68) {
-        if (scheme == null || scheme.isEmpty()) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("scheme cannot be null or empty."));
+        if (CoreUtils.isNullOrEmpty(scheme)) {
+            throw LOGGER.throwableAtError().log("scheme cannot be null or empty.", IllegalArgumentException::new);
         }
 
         this.scheme = scheme;

@@ -13,8 +13,7 @@ import io.clientcore.core.utils.configuration.Configuration;
 public abstract class HttpClientProvider {
     static final String NO_DEFAULT_PROVIDER_MESSAGE = "A request was made to load the default HttpClient provider but "
         + "one could not be found on the classpath. If you are using a dependency manager, consider including a "
-        + "dependency on io.clientcore:http-okhttp3. Additionally, refer to "
-        + "https://aka.ms/azsdk/java/docs/custom-httpclient to learn about writing your own implementation.";
+        + "dependency on supported implementations of HTTP clients. Please refer to https://aka.ms/java/docs/httpclients for more information.";
 
     private static Providers<HttpClientProvider, HttpClient> providers;
 

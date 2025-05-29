@@ -123,6 +123,15 @@ public final class VectorizedQuery extends VectorQuery {
      * {@inheritDoc}
      */
     @Override
+    public VectorizedQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
+        super.setPerDocumentVectorLimit(perDocumentVectorLimit);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
@@ -132,6 +141,7 @@ public final class VectorizedQuery extends VectorQuery {
         jsonWriter.writeNumberField("weight", getWeight());
         jsonWriter.writeJsonField("threshold", getThreshold());
         jsonWriter.writeStringField("filterOverride", getFilterOverride());
+        jsonWriter.writeNumberField("perDocumentVectorLimit", getPerDocumentVectorLimit());
         jsonWriter.writeArrayField("vector", this.vector, (writer, element) -> writer.writeFloat(element));
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
@@ -155,6 +165,7 @@ public final class VectorizedQuery extends VectorQuery {
             Float weight = null;
             VectorThreshold threshold = null;
             String filterOverride = null;
+            Integer perDocumentVectorLimit = null;
             boolean vectorFound = false;
             List<Float> vector = null;
             VectorQueryKind kind = VectorQueryKind.VECTOR;
@@ -175,6 +186,8 @@ public final class VectorizedQuery extends VectorQuery {
                     threshold = VectorThreshold.fromJson(reader);
                 } else if ("filterOverride".equals(fieldName)) {
                     filterOverride = reader.getString();
+                } else if ("perDocumentVectorLimit".equals(fieldName)) {
+                    perDocumentVectorLimit = reader.getNullable(JsonReader::getInt);
                 } else if ("vector".equals(fieldName)) {
                     vector = reader.readArray(reader1 -> reader1.getFloat());
                     vectorFound = true;
@@ -193,6 +206,7 @@ public final class VectorizedQuery extends VectorQuery {
                 deserializedVectorizedQuery.setWeight(weight);
                 deserializedVectorizedQuery.setThreshold(threshold);
                 deserializedVectorizedQuery.setFilterOverride(filterOverride);
+                deserializedVectorizedQuery.setPerDocumentVectorLimit(perDocumentVectorLimit);
                 deserializedVectorizedQuery.kind = kind;
                 return deserializedVectorizedQuery;
             }

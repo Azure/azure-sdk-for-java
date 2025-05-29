@@ -20,8 +20,10 @@ import com.azure.communication.callautomation.models.events.CallDisconnected;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
+import com.azure.communication.callautomation.models.FileSource;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.core.http.HttpClient;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -216,7 +218,6 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
         }
     }
 
-    @Disabled("This test is failing in the pipeline, needs to be fixed.")
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createACSCallAndStartRecordingWithCallConnectionIdTest(HttpClient httpClient) {
@@ -279,17 +280,72 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
                 = createCallResult.getCallConnection().getCallProperties();
             assertEquals(CallConnectionState.CONNECTED, callConnectionProperties.getCallConnectionState());
 
-            // start recording
-            RecordingStateResult recordingStateResult = callerClient.getCallRecording()
-                .start(new StartRecordingOptions(callConnectionId).setRecordingChannel(RecordingChannel.UNMIXED)
-                    .setRecordingContent(RecordingContent.AUDIO)
-                    .setRecordingFormat(RecordingFormat.WAV)
-                    .setRecordingStateCallbackUrl(DISPATCHER_CALLBACK));
+            // start recording - handle 202 status as expected behavior
+            RecordingStateResult recordingStateResult = null;
+            String recordingId = null;
+            boolean is202Response = false;
 
-            assertNotNull(recordingStateResult.getRecordingId());
+            try {
+                recordingStateResult = callerClient.getCallRecording()
+                    .start(new StartRecordingOptions(callConnectionId).setRecordingChannel(RecordingChannel.UNMIXED)
+                        .setRecordingContent(RecordingContent.AUDIO)
+                        .setRecordingFormat(RecordingFormat.WAV)
+                        .setRecordingStateCallbackUrl(DISPATCHER_CALLBACK));
+                recordingId = recordingStateResult.getRecordingId();
+            } catch (HttpResponseException ex) {
+                if (ex.getResponse().getStatusCode() == 202) {
+                    String responseBody = ex.getResponse().getBodyAsString().block();
+                    if (responseBody != null && responseBody.contains("recordingId")) {
+                        com.fasterxml.jackson.databind.ObjectMapper mapper
+                            = new com.fasterxml.jackson.databind.ObjectMapper();
+                        com.fasterxml.jackson.databind.JsonNode jsonNode = mapper.readTree(responseBody);
+                        recordingId = jsonNode.get("recordingId").asText();
+                        is202Response = true;
+                    }
+                } else {
+                    throw ex; // Re-throw if it's not a 202 error
+                }
+            }
+
+            Thread.sleep(5000); // 5 seconds delay
+
+            assertNotNull(recordingId, "Recording ID should not be null");
+
+            // Play audio to ensure call is fully established (similar to .NET workaround)
+            CallMedia callMedia = createCallResult.getCallConnection().getCallMedia();
+            FileSource playSource = new FileSource().setUrl(MEDIA_SOURCE);
+            callMedia.playToAll(playSource);
+
+            // If we got a 202 response, wait for recording to become ACTIVE
+            if (is202Response) {
+                long startTime = System.currentTimeMillis();
+                long timeout = 30000; // 30 seconds timeout
+                boolean isActive = false;
+
+                while (System.currentTimeMillis() - startTime < timeout) {
+                    Thread.sleep(1000); // Wait 1 second between polls
+                    RecordingStateResult currentState = callerClient.getCallRecording().getState(recordingId);
+                    if (currentState.getRecordingState() == RecordingState.ACTIVE) {
+                        recordingStateResult = currentState;
+                        isActive = true;
+                        break;
+                    }
+                }
+
+                // Verify recording is now active
+                if (!isActive) {
+                    fail("Recording did not become ACTIVE within timeout period");
+                }
+            }
+
+            // Add delay before stopping recording (similar to .NET)
+            Thread.sleep(5000); // 5 seconds delay
 
             // stop recording
-            callerClient.getCallRecording().stop(recordingStateResult.getRecordingId());
+            callerClient.getCallRecording().stop(recordingId);
+
+            // Add delay after stopping recording
+            Thread.sleep(5000); // 5 seconds delay
 
             // hangup
             if (!callConnectionId.isEmpty()) {

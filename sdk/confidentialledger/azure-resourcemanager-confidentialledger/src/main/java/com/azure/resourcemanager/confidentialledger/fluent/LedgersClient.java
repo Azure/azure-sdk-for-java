@@ -11,7 +11,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ConfidentialLedgerBackupResponseInner;
 import com.azure.resourcemanager.confidentialledger.fluent.models.ConfidentialLedgerInner;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ConfidentialLedgerRestoreResponseInner;
+import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedgerBackup;
+import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedgerRestore;
 
 /**
  * An instance of this class provides access to all the operations defined in LedgersClient.
@@ -22,7 +26,7 @@ public interface LedgersClient {
      * 
      * Retrieves the properties of a Confidential Ledger.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -39,7 +43,7 @@ public interface LedgersClient {
      * 
      * Retrieves the properties of a Confidential Ledger.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,7 +58,7 @@ public interface LedgersClient {
      * 
      * Deletes an existing Confidential Ledger.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,7 +73,7 @@ public interface LedgersClient {
      * 
      * Deletes an existing Confidential Ledger.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -85,7 +89,7 @@ public interface LedgersClient {
      * 
      * Deletes an existing Confidential Ledger.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -99,7 +103,7 @@ public interface LedgersClient {
      * 
      * Deletes an existing Confidential Ledger.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +118,7 @@ public interface LedgersClient {
      * 
      * Creates a Confidential Ledger with the specified ledger parameters.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,7 +135,7 @@ public interface LedgersClient {
      * 
      * Creates a Confidential Ledger with the specified ledger parameters.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @param context The context to associate with this operation.
@@ -149,7 +153,7 @@ public interface LedgersClient {
      * 
      * Creates a Confidential Ledger with the specified ledger parameters.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,7 +170,7 @@ public interface LedgersClient {
      * 
      * Creates a Confidential Ledger with the specified ledger parameters.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @param context The context to associate with this operation.
@@ -184,7 +188,7 @@ public interface LedgersClient {
      * 
      * Updates properties of Confidential Ledger.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,7 +205,7 @@ public interface LedgersClient {
      * 
      * Updates properties of Confidential Ledger.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @param context The context to associate with this operation.
@@ -219,7 +223,7 @@ public interface LedgersClient {
      * 
      * Updates properties of Confidential Ledger.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +240,7 @@ public interface LedgersClient {
      * 
      * Updates properties of Confidential Ledger.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @param context The context to associate with this operation.
@@ -254,7 +258,7 @@ public interface LedgersClient {
      * 
      * Retrieves the properties of all Confidential Ledgers.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -269,7 +273,7 @@ public interface LedgersClient {
      * 
      * Retrieves the properties of all Confidential Ledgers.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -310,4 +314,148 @@ public interface LedgersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfidentialLedgerInner> list(String filter, Context context);
+
+    /**
+     * Performs the backup operation on a Confidential Ledger Resource.
+     * 
+     * Backs up a Confidential Ledger Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ledgerName Name of the Confidential Ledger.
+     * @param confidentialLedger Confidential Ledger Backup Request Body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of object representing the backup response of a Confidential Ledger
+     * Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ConfidentialLedgerBackupResponseInner>, ConfidentialLedgerBackupResponseInner>
+        beginBackup(String resourceGroupName, String ledgerName, ConfidentialLedgerBackup confidentialLedger);
+
+    /**
+     * Performs the backup operation on a Confidential Ledger Resource.
+     * 
+     * Backs up a Confidential Ledger Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ledgerName Name of the Confidential Ledger.
+     * @param confidentialLedger Confidential Ledger Backup Request Body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of object representing the backup response of a Confidential Ledger
+     * Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ConfidentialLedgerBackupResponseInner>, ConfidentialLedgerBackupResponseInner> beginBackup(
+        String resourceGroupName, String ledgerName, ConfidentialLedgerBackup confidentialLedger, Context context);
+
+    /**
+     * Performs the backup operation on a Confidential Ledger Resource.
+     * 
+     * Backs up a Confidential Ledger Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ledgerName Name of the Confidential Ledger.
+     * @param confidentialLedger Confidential Ledger Backup Request Body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object representing the backup response of a Confidential Ledger Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConfidentialLedgerBackupResponseInner backup(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerBackup confidentialLedger);
+
+    /**
+     * Performs the backup operation on a Confidential Ledger Resource.
+     * 
+     * Backs up a Confidential Ledger Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ledgerName Name of the Confidential Ledger.
+     * @param confidentialLedger Confidential Ledger Backup Request Body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object representing the backup response of a Confidential Ledger Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConfidentialLedgerBackupResponseInner backup(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerBackup confidentialLedger, Context context);
+
+    /**
+     * Performs the restore operation to spin up a newly restored Confidential Ledger Resource.
+     * 
+     * Restores a Confidential Ledger Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ledgerName Name of the Confidential Ledger.
+     * @param confidentialLedger Confidential Ledger Restore Request Body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of object representing the restore response of a Confidential Ledger
+     * Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ConfidentialLedgerRestoreResponseInner>, ConfidentialLedgerRestoreResponseInner>
+        beginRestore(String resourceGroupName, String ledgerName, ConfidentialLedgerRestore confidentialLedger);
+
+    /**
+     * Performs the restore operation to spin up a newly restored Confidential Ledger Resource.
+     * 
+     * Restores a Confidential Ledger Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ledgerName Name of the Confidential Ledger.
+     * @param confidentialLedger Confidential Ledger Restore Request Body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of object representing the restore response of a Confidential Ledger
+     * Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ConfidentialLedgerRestoreResponseInner>, ConfidentialLedgerRestoreResponseInner> beginRestore(
+        String resourceGroupName, String ledgerName, ConfidentialLedgerRestore confidentialLedger, Context context);
+
+    /**
+     * Performs the restore operation to spin up a newly restored Confidential Ledger Resource.
+     * 
+     * Restores a Confidential Ledger Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ledgerName Name of the Confidential Ledger.
+     * @param confidentialLedger Confidential Ledger Restore Request Body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object representing the restore response of a Confidential Ledger Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConfidentialLedgerRestoreResponseInner restore(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerRestore confidentialLedger);
+
+    /**
+     * Performs the restore operation to spin up a newly restored Confidential Ledger Resource.
+     * 
+     * Restores a Confidential Ledger Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ledgerName Name of the Confidential Ledger.
+     * @param confidentialLedger Confidential Ledger Restore Request Body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object representing the restore response of a Confidential Ledger Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConfidentialLedgerRestoreResponseInner restore(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerRestore confidentialLedger, Context context);
 }

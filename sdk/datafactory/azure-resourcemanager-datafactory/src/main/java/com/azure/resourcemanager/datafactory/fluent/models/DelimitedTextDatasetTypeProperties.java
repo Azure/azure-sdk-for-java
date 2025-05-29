@@ -314,15 +314,33 @@ public final class DelimitedTextDatasetTypeProperties implements JsonSerializabl
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("location", this.location);
-        jsonWriter.writeUntypedField("columnDelimiter", this.columnDelimiter);
-        jsonWriter.writeUntypedField("rowDelimiter", this.rowDelimiter);
-        jsonWriter.writeUntypedField("encodingName", this.encodingName);
-        jsonWriter.writeUntypedField("compressionCodec", this.compressionCodec);
-        jsonWriter.writeUntypedField("compressionLevel", this.compressionLevel);
-        jsonWriter.writeUntypedField("quoteChar", this.quoteChar);
-        jsonWriter.writeUntypedField("escapeChar", this.escapeChar);
-        jsonWriter.writeUntypedField("firstRowAsHeader", this.firstRowAsHeader);
-        jsonWriter.writeUntypedField("nullValue", this.nullValue);
+        if (this.columnDelimiter != null) {
+            jsonWriter.writeUntypedField("columnDelimiter", this.columnDelimiter);
+        }
+        if (this.rowDelimiter != null) {
+            jsonWriter.writeUntypedField("rowDelimiter", this.rowDelimiter);
+        }
+        if (this.encodingName != null) {
+            jsonWriter.writeUntypedField("encodingName", this.encodingName);
+        }
+        if (this.compressionCodec != null) {
+            jsonWriter.writeUntypedField("compressionCodec", this.compressionCodec);
+        }
+        if (this.compressionLevel != null) {
+            jsonWriter.writeUntypedField("compressionLevel", this.compressionLevel);
+        }
+        if (this.quoteChar != null) {
+            jsonWriter.writeUntypedField("quoteChar", this.quoteChar);
+        }
+        if (this.escapeChar != null) {
+            jsonWriter.writeUntypedField("escapeChar", this.escapeChar);
+        }
+        if (this.firstRowAsHeader != null) {
+            jsonWriter.writeUntypedField("firstRowAsHeader", this.firstRowAsHeader);
+        }
+        if (this.nullValue != null) {
+            jsonWriter.writeUntypedField("nullValue", this.nullValue);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -89,7 +89,9 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         jsonWriter.writeJsonField("reference", this.reference);
         return jsonWriter.writeEndObject();
     }

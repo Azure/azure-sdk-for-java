@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SuppressWarnings("removal")
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated("Mutates the global SecurityManager")
+@EnabledForJreRange(min = JRE.JAVA_8, max = JRE.JAVA_23, disabledReason = "Security manager was removed in Java 24")
 public class JacksonAdapterSecurityIT {
     private static final String A_PROPERTY_JSON = "{\"aProperty\":\"aValue\"}";
     private static final SimplePojo EXPECTED_SIMPLE_POJO = new SimplePojo("aValue");

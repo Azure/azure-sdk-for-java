@@ -12,15 +12,15 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.PrincipalType;
 public final class AdministratorsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/AdministratorAdd.
-     * json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * AdministratorAdd.json
      */
     /**
-     * Sample code: Adds an Active DIrectory Administrator for the server.
+     * Sample code: Adds an Microsoft Entra Administrator for the server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void addsAnActiveDIrectoryAdministratorForTheServer(
+    public static void addsAnMicrosoftEntraAdministratorForTheServer(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.administrators()
             .define("oooooooo-oooo-oooo-oooo-oooooooooooo")

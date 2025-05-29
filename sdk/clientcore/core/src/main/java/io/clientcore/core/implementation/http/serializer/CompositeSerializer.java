@@ -57,8 +57,9 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
+        throw LOGGER.throwableAtError()
+            .addKeyValue("format", format.name())
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 
     /**
@@ -79,8 +80,9 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
+        throw LOGGER.throwableAtError()
+            .addKeyValue("format", format.name())
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 
     /**
@@ -99,8 +101,9 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
+        throw LOGGER.throwableAtError()
+            .addKeyValue("format", format.name())
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 
     /**
@@ -120,8 +123,9 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
+        throw LOGGER.throwableAtError()
+            .addKeyValue("format", format.name())
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 
     /**
@@ -138,7 +142,8 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.logThrowableAsError(
-            new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
+        throw LOGGER.throwableAtError()
+            .addKeyValue("format", format.name())
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 }

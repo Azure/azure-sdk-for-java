@@ -30,22 +30,26 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
      * Number of segments that were successfully delivered
      */
     @Generated
-    private Integer segmentsSucceeded;
+    private final int segmentsSucceeded;
 
     /*
      * Number of segments whose delivery failed
      */
     @Generated
-    private Integer segmentsFailed;
+    private final int segmentsFailed;
 
     /**
      * Creates an instance of AcsSmsDeliveryAttemptProperties class.
      * 
      * @param timestamp the timestamp value to set.
+     * @param segmentsSucceeded the segmentsSucceeded value to set.
+     * @param segmentsFailed the segmentsFailed value to set.
      */
     @Generated
-    private AcsSmsDeliveryAttemptProperties(OffsetDateTime timestamp) {
+    private AcsSmsDeliveryAttemptProperties(OffsetDateTime timestamp, int segmentsSucceeded, int segmentsFailed) {
         this.timestamp = timestamp;
+        this.segmentsSucceeded = segmentsSucceeded;
+        this.segmentsFailed = segmentsFailed;
     }
 
     /**
@@ -64,7 +68,7 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
      * @return the segmentsSucceeded value.
      */
     @Generated
-    public Integer getSegmentsSucceeded() {
+    public int getSegmentsSucceeded() {
         return this.segmentsSucceeded;
     }
 
@@ -74,7 +78,7 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
      * @return the segmentsFailed value.
      */
     @Generated
-    public Integer getSegmentsFailed() {
+    public int getSegmentsFailed() {
         return this.segmentsFailed;
     }
 
@@ -87,8 +91,8 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("timestamp",
             this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
-        jsonWriter.writeNumberField("segmentsSucceeded", this.segmentsSucceeded);
-        jsonWriter.writeNumberField("segmentsFailed", this.segmentsFailed);
+        jsonWriter.writeIntField("segmentsSucceeded", this.segmentsSucceeded);
+        jsonWriter.writeIntField("segmentsFailed", this.segmentsFailed);
         return jsonWriter.writeEndObject();
     }
 
@@ -105,8 +109,8 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
     public static AcsSmsDeliveryAttemptProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OffsetDateTime timestamp = null;
-            Integer segmentsSucceeded = null;
-            Integer segmentsFailed = null;
+            int segmentsSucceeded = 0;
+            int segmentsFailed = 0;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -115,19 +119,14 @@ public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<A
                     timestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("segmentsSucceeded".equals(fieldName)) {
-                    segmentsSucceeded = reader.getNullable(JsonReader::getInt);
+                    segmentsSucceeded = reader.getInt();
                 } else if ("segmentsFailed".equals(fieldName)) {
-                    segmentsFailed = reader.getNullable(JsonReader::getInt);
+                    segmentsFailed = reader.getInt();
                 } else {
                     reader.skipChildren();
                 }
             }
-            AcsSmsDeliveryAttemptProperties deserializedAcsSmsDeliveryAttemptProperties
-                = new AcsSmsDeliveryAttemptProperties(timestamp);
-            deserializedAcsSmsDeliveryAttemptProperties.segmentsSucceeded = segmentsSucceeded;
-            deserializedAcsSmsDeliveryAttemptProperties.segmentsFailed = segmentsFailed;
-
-            return deserializedAcsSmsDeliveryAttemptProperties;
+            return new AcsSmsDeliveryAttemptProperties(timestamp, segmentsSucceeded, segmentsFailed);
         });
     }
 }

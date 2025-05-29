@@ -135,12 +135,12 @@ public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouter
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("expiredRequestedWorkerSelectors", this.expiredRequestedWorkerSelectors,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("expiredAttachedWorkerSelectors", this.expiredAttachedWorkerSelectors,
@@ -154,6 +154,7 @@ public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouter
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsRouterJobWorkerSelectorsExpiredEventData if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterJobWorkerSelectorsExpiredEventData.
      */
     public static AcsRouterJobWorkerSelectorsExpiredEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -164,7 +165,13 @@ public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouter
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("jobId".equals(fieldName)) {
+                if ("labels".equals(fieldName)) {
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobWorkerSelectorsExpiredEventData.setLabels(labels);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobWorkerSelectorsExpiredEventData.setTags(tags);
+                } else if ("jobId".equals(fieldName)) {
                     deserializedAcsRouterJobWorkerSelectorsExpiredEventData.setJobId(reader.getString());
                 } else if ("channelReference".equals(fieldName)) {
                     deserializedAcsRouterJobWorkerSelectorsExpiredEventData.setChannelReference(reader.getString());
@@ -172,12 +179,6 @@ public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouter
                     deserializedAcsRouterJobWorkerSelectorsExpiredEventData.setChannelId(reader.getString());
                 } else if ("queueId".equals(fieldName)) {
                     deserializedAcsRouterJobWorkerSelectorsExpiredEventData.setQueueId(reader.getString());
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobWorkerSelectorsExpiredEventData.setLabels(labels);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobWorkerSelectorsExpiredEventData.setTags(tags);
                 } else if ("expiredRequestedWorkerSelectors".equals(fieldName)) {
                     List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors
                         = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));

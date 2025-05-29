@@ -281,12 +281,6 @@ extends:
                 }
               displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
 
-            - template: /eng/common/pipelines/templates/steps/verify-readme.yml
-              parameters:
-                # For the moment, ServiceDirectories is JSON which may change to a comma delimited list instead of what's
-                # going on below
-                ScanPaths: $(ServiceDirectoriesFullPath)
-
             - template: /eng/common/pipelines/templates/steps/verify-samples.yml
               parameters:
                 ServiceDirectories: $(ServiceDirectories)

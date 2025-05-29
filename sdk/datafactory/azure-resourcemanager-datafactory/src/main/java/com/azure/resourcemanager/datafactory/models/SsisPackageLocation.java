@@ -293,7 +293,9 @@ public final class SsisPackageLocation implements JsonSerializable<SsisPackageLo
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("packagePath", this.packagePath);
+        if (this.packagePath != null) {
+            jsonWriter.writeUntypedField("packagePath", this.packagePath);
+        }
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
         return jsonWriter.writeEndObject();

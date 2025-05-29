@@ -176,9 +176,15 @@ public final class DelimitedTextWriteSettings extends FormatWriteSettings {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("fileExtension", this.fileExtension);
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("quoteAllText", this.quoteAllText);
-        jsonWriter.writeUntypedField("maxRowsPerFile", this.maxRowsPerFile);
-        jsonWriter.writeUntypedField("fileNamePrefix", this.fileNamePrefix);
+        if (this.quoteAllText != null) {
+            jsonWriter.writeUntypedField("quoteAllText", this.quoteAllText);
+        }
+        if (this.maxRowsPerFile != null) {
+            jsonWriter.writeUntypedField("maxRowsPerFile", this.maxRowsPerFile);
+        }
+        if (this.fileNamePrefix != null) {
+            jsonWriter.writeUntypedField("fileNamePrefix", this.fileNamePrefix);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.NetworkSecurityPerimeterConfiguration;
@@ -21,35 +21,35 @@ public final class NetworkSecurityPerimeterConfigurationsReconcileMockTests {
     @Test
     public void testReconcile() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"provisioningIssues\":[{\"name\":\"dfwakwseivmak\",\"properties\":{\"issueType\":\"so\",\"severity\":\"juxlkbectvtfjm\",\"description\":\"dchmaiubavlz\",\"suggestedResourceIds\":[\"gmfalkzazmgoked\",\"jqafkmkro\",\"zrthqet\",\"pqrtvaoznqni\"],\"suggestedAccessRules\":[{},{},{},{}]}},{\"name\":\"eagmceituug\",\"properties\":{\"issueType\":\"fpjstlzmb\",\"severity\":\"yjdeolctaebfs\",\"description\":\"ledjcustbvtqigd\",\"suggestedResourceIds\":[\"sgeafgfosehx\",\"zsxezppkkwaae\"],\"suggestedAccessRules\":[{},{},{}]}},{\"name\":\"jlpzeqtoyrp\",\"properties\":{\"issueType\":\"lajmllp\",\"severity\":\"evhamfowg\",\"description\":\"tmk\",\"suggestedResourceIds\":[\"pkzwa\"],\"suggestedAccessRules\":[{},{},{},{}]}}],\"networkSecurityPerimeter\":{\"id\":\"ovchiqbplvfid\",\"perimeterGuid\":\"ztekxbyjgmsfep\",\"location\":\"ihpq\"},\"resourceAssociation\":{\"name\":\"grhrdic\",\"accessMode\":\"wyjfowxwyovcxjs\"},\"profile\":{\"name\":\"pcukd\",\"accessRulesVersion\":6478476939633501020,\"accessRules\":[{\"name\":\"oduchvlscr\",\"properties\":{}},{\"name\":\"bfdyjduss\",\"properties\":{}},{\"name\":\"zekbhwlkaagg\",\"properties\":{}},{\"name\":\"hbfrnuybfflj\",\"properties\":{}}],\"diagnosticSettingsVersion\":3504021996381944964,\"enabledLogCategories\":[\"agsqta\"]}},\"id\":\"dusr\",\"name\":\"xxfavsqwudohzilf\",\"type\":\"nl\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"provisioningIssues\":[{\"name\":\"uagfqwtltngv\",\"properties\":{\"issueType\":\"uptrklz\",\"severity\":\"jajwolxfsvag\",\"description\":\"pynwlslrcigtzjcv\",\"suggestedResourceIds\":[\"lapsnsso\",\"yxpavidnie\",\"wffcvvye\"],\"suggestedAccessRules\":[{},{},{},{}]}},{\"name\":\"uxgcbdsvalpnp\",\"properties\":{\"issueType\":\"rkxgpazwugxyqvnj\",\"severity\":\"felhldiuhzzgqlm\",\"description\":\"ewzgiud\",\"suggestedResourceIds\":[\"pqht\"],\"suggestedAccessRules\":[{},{},{},{}]}},{\"name\":\"mhk\",\"properties\":{\"issueType\":\"sdsu\",\"severity\":\"eqdgcruxsp\",\"description\":\"ymmqgwokmikp\",\"suggestedResourceIds\":[\"bmjxuvjipf\",\"vhax\",\"vwzaehp\"],\"suggestedAccessRules\":[{}]}}],\"networkSecurityPerimeter\":{\"id\":\"kl\",\"perimeterGuid\":\"etatlakf\",\"location\":\"ixwgiksbbvtooxrp\"},\"resourceAssociation\":{\"name\":\"phchgjtnhtukfaci\",\"accessMode\":\"bfntumeezbxvq\"},\"profile\":{\"name\":\"uvwc\",\"accessRulesVersion\":8428155377091384668,\"accessRules\":[{\"name\":\"mjzwx\",\"properties\":{}},{\"name\":\"ovsxp\",\"properties\":{}}],\"diagnosticSettingsVersion\":722473161473276598,\"enabledLogCategories\":[\"kkhtgfredmlscgrl\",\"ccnaov\",\"owazhpabacom\"]}},\"id\":\"yotgkwsxnsrqorc\",\"name\":\"enmvcebxeetq\",\"type\":\"jxcxxq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkSecurityPerimeterConfiguration response = manager.networkSecurityPerimeterConfigurations()
-            .reconcile("pbqhvfdqqjwkr", "wzdanojisgglmvo", "atuztjct", com.azure.core.util.Context.NONE);
+            .reconcile("zwjcaye", "zrransyb", "lpolwzrghsrle", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dfwakwseivmak", response.properties().provisioningIssues().get(0).name());
-        Assertions.assertEquals("so", response.properties().provisioningIssues().get(0).properties().issueType());
-        Assertions.assertEquals("juxlkbectvtfjm",
+        Assertions.assertEquals("uagfqwtltngv", response.properties().provisioningIssues().get(0).name());
+        Assertions.assertEquals("uptrklz", response.properties().provisioningIssues().get(0).properties().issueType());
+        Assertions.assertEquals("jajwolxfsvag",
             response.properties().provisioningIssues().get(0).properties().severity());
-        Assertions.assertEquals("dchmaiubavlz",
+        Assertions.assertEquals("pynwlslrcigtzjcv",
             response.properties().provisioningIssues().get(0).properties().description());
-        Assertions.assertEquals("gmfalkzazmgoked",
+        Assertions.assertEquals("lapsnsso",
             response.properties().provisioningIssues().get(0).properties().suggestedResourceIds().get(0));
-        Assertions.assertEquals("ovchiqbplvfid", response.properties().networkSecurityPerimeter().id());
-        Assertions.assertEquals("ztekxbyjgmsfep", response.properties().networkSecurityPerimeter().perimeterGuid());
-        Assertions.assertEquals("ihpq", response.properties().networkSecurityPerimeter().location());
-        Assertions.assertEquals("grhrdic", response.properties().resourceAssociation().name());
-        Assertions.assertEquals("wyjfowxwyovcxjs", response.properties().resourceAssociation().accessMode());
-        Assertions.assertEquals("pcukd", response.properties().profile().name());
-        Assertions.assertEquals(6478476939633501020L, response.properties().profile().accessRulesVersion());
-        Assertions.assertEquals("oduchvlscr", response.properties().profile().accessRules().get(0).name());
-        Assertions.assertEquals(3504021996381944964L, response.properties().profile().diagnosticSettingsVersion());
-        Assertions.assertEquals("agsqta", response.properties().profile().enabledLogCategories().get(0));
+        Assertions.assertEquals("kl", response.properties().networkSecurityPerimeter().id());
+        Assertions.assertEquals("etatlakf", response.properties().networkSecurityPerimeter().perimeterGuid());
+        Assertions.assertEquals("ixwgiksbbvtooxrp", response.properties().networkSecurityPerimeter().location());
+        Assertions.assertEquals("phchgjtnhtukfaci", response.properties().resourceAssociation().name());
+        Assertions.assertEquals("bfntumeezbxvq", response.properties().resourceAssociation().accessMode());
+        Assertions.assertEquals("uvwc", response.properties().profile().name());
+        Assertions.assertEquals(8428155377091384668L, response.properties().profile().accessRulesVersion());
+        Assertions.assertEquals("mjzwx", response.properties().profile().accessRules().get(0).name());
+        Assertions.assertEquals(722473161473276598L, response.properties().profile().diagnosticSettingsVersion());
+        Assertions.assertEquals("kkhtgfredmlscgrl", response.properties().profile().enabledLogCategories().get(0));
     }
 }

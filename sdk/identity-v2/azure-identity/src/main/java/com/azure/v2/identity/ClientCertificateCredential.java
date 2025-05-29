@@ -15,6 +15,8 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.io.ByteArrayInputStream;
 import java.util.Objects;
 
+import static com.azure.v2.identity.implementation.util.LoggingUtil.logAndThrowTokenError;
+
 /**
  * <p>The ClientCertificateCredential acquires a token via service principal authentication. It is a type of
  * authentication in Azure that enables a non-interactive login to
@@ -101,16 +103,15 @@ public class ClientCertificateCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
         }
 
         try {
             AccessToken token = confidentialClient.authenticate(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return token;
-        } catch (Exception e) {
-            LoggingUtil.logTokenError(LOGGER, request, e);
-            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
+        } catch (RuntimeException e) {
+            throw logAndThrowTokenError(LOGGER, request, e, CredentialAuthenticationException::new);
         }
     }
 }

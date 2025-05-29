@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.fluent.models.IscsiPathInner;
@@ -22,19 +22,19 @@ public final class IscsiPathsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"networkBlock\":\"vlgo\"},\"id\":\"mftpmdtz\",\"name\":\"jltfvnzcyjtotpv\",\"type\":\"pvpbdbzqgqqiheds\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"networkBlock\":\"xpunjqi\"},\"id\":\"zvvitacgxmfcs\",\"name\":\"er\",\"type\":\"htvs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IscsiPath response = manager.iscsiPaths()
-            .createOrUpdate("prlpy", "nuciqdsmexiit", new IscsiPathInner().withNetworkBlock("tyasiibmiybnnust"),
+            .createOrUpdate("t", "iqxf", new IscsiPathInner().withNetworkBlock("ttvwkpqh"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vlgo", response.networkBlock());
+        Assertions.assertEquals("xpunjqi", response.networkBlock());
     }
 }

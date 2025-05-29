@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.implementation.models.DataSourceCredentials;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Represents a datasource definition, which can be used to configure an indexer.
@@ -50,6 +51,11 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * is specified, the value of this property is cleared.
      */
     private SearchIndexerDataIdentity identity;
+
+    /*
+     * Ingestion options with various types of permission data.
+     */
+    private List<IndexerPermissionOption> indexerPermissionOptions;
 
     /*
      * The data change detection policy for the datasource.
@@ -180,6 +186,27 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     }
 
     /**
+     * Get the indexerPermissionOptions property: Ingestion options with various types of permission data.
+     *
+     * @return the indexerPermissionOptions value.
+     */
+    public List<IndexerPermissionOption> getIndexerPermissionOptions() {
+        return this.indexerPermissionOptions;
+    }
+
+    /**
+     * Set the indexerPermissionOptions property: Ingestion options with various types of permission data.
+     *
+     * @param indexerPermissionOptions the indexerPermissionOptions value to set.
+     * @return the SearchIndexerDataSourceConnection object itself.
+     */
+    public SearchIndexerDataSourceConnection
+        setIndexerPermissionOptions(List<IndexerPermissionOption> indexerPermissionOptions) {
+        this.indexerPermissionOptions = indexerPermissionOptions;
+        return this;
+    }
+
+    /**
      * Get the dataChangeDetectionPolicy property: The data change detection policy for the datasource.
      *
      * @return the dataChangeDetectionPolicy value.
@@ -285,6 +312,8 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
         jsonWriter.writeJsonField("credentials", this.credentials);
         jsonWriter.writeJsonField("container", this.container);
         jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeArrayField("indexerPermissionOptions", this.indexerPermissionOptions,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("dataChangeDetectionPolicy", this.dataChangeDetectionPolicy);
         jsonWriter.writeJsonField("dataDeletionDetectionPolicy", this.dataDeletionDetectionPolicy);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
@@ -310,6 +339,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
             DataSourceCredentials credentials = null;
             SearchIndexerDataContainer container = null;
             SearchIndexerDataIdentity identity = null;
+            List<IndexerPermissionOption> indexerPermissionOptions = null;
             DataChangeDetectionPolicy dataChangeDetectionPolicy = null;
             DataDeletionDetectionPolicy dataDeletionDetectionPolicy = null;
             String eTag = null;
@@ -330,6 +360,9 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
                     container = SearchIndexerDataContainer.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     identity = SearchIndexerDataIdentity.fromJson(reader);
+                } else if ("indexerPermissionOptions".equals(fieldName)) {
+                    indexerPermissionOptions
+                        = reader.readArray(reader1 -> IndexerPermissionOption.fromString(reader1.getString()));
                 } else if ("dataChangeDetectionPolicy".equals(fieldName)) {
                     dataChangeDetectionPolicy = DataChangeDetectionPolicy.fromJson(reader);
                 } else if ("dataDeletionDetectionPolicy".equals(fieldName)) {
@@ -350,6 +383,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
                 deserializedSearchIndexerDataSourceConnection.credentials = credentials;
                 deserializedSearchIndexerDataSourceConnection.container = container;
                 deserializedSearchIndexerDataSourceConnection.identity = identity;
+                deserializedSearchIndexerDataSourceConnection.indexerPermissionOptions = indexerPermissionOptions;
                 deserializedSearchIndexerDataSourceConnection.dataChangeDetectionPolicy = dataChangeDetectionPolicy;
                 deserializedSearchIndexerDataSourceConnection.dataDeletionDetectionPolicy = dataDeletionDetectionPolicy;
                 deserializedSearchIndexerDataSourceConnection.eTag = eTag;

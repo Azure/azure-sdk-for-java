@@ -127,6 +127,16 @@ public final class AttributeKeys {
 
     // Custom attribute names, use with caution
     /**
+     * Key representing the exception cause type
+     */
+    public static final String CAUSE_TYPE_KEY = "cause.type";
+
+    /**
+     * Key representing the exception cause message
+     */
+    public static final String CAUSE_MESSAGE_KEY = "cause.message";
+
+    /**
      * Key representing duration of call in milliseconds, the value should be a number.
      */
     public static final String HTTP_REQUEST_TIME_TO_RESPONSE_KEY = "http.request.time_to_response";

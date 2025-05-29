@@ -175,6 +175,22 @@ public final class P2SConnectionConfiguration extends SubResource {
     }
 
     /**
+     * Set the configurationPolicyGroupAssociations property: List of Configuration Policy Groups that this
+     * P2SConnectionConfiguration is attached to.
+     * 
+     * @param configurationPolicyGroupAssociations the configurationPolicyGroupAssociations value to set.
+     * @return the P2SConnectionConfiguration object itself.
+     */
+    public P2SConnectionConfiguration
+        withConfigurationPolicyGroupAssociations(List<SubResource> configurationPolicyGroupAssociations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new P2SConnectionConfigurationProperties();
+        }
+        this.innerProperties().withConfigurationPolicyGroupAssociations(configurationPolicyGroupAssociations);
+        return this;
+    }
+
+    /**
      * Get the previousConfigurationPolicyGroupAssociations property: List of previous Configuration Policy Groups that
      * this P2SConnectionConfiguration was attached to.
      * 

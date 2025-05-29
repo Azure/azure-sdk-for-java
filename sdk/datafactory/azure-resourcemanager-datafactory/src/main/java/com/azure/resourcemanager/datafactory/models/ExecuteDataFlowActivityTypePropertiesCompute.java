@@ -93,8 +93,12 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("computeType", this.computeType);
-        jsonWriter.writeUntypedField("coreCount", this.coreCount);
+        if (this.computeType != null) {
+            jsonWriter.writeUntypedField("computeType", this.computeType);
+        }
+        if (this.coreCount != null) {
+            jsonWriter.writeUntypedField("coreCount", this.coreCount);
+        }
         return jsonWriter.writeEndObject();
     }
 

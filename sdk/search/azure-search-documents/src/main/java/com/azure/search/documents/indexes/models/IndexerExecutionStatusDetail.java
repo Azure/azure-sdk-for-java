@@ -19,6 +19,11 @@ public final class IndexerExecutionStatusDetail extends ExpandableStringEnum<Ind
     public static final IndexerExecutionStatusDetail RESET_DOCS = fromString("resetDocs");
 
     /**
+     * Indicates to selectively resync based on option(s) from data source.
+     */
+    public static final IndexerExecutionStatusDetail RESYNC = fromString("resync");
+
+    /**
      * Creates a new instance of IndexerExecutionStatusDetail value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

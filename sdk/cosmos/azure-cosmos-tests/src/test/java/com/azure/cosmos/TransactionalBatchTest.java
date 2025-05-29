@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchItemRequestOptions;
@@ -131,7 +132,8 @@ public class TransactionalBatchTest extends BatchTestBase {
             BatchTestBase.TestDoc testDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingA);
             testDocToReplace.setCost(testDocToReplace.getCost() + 1);
 
-            CosmosItemResponse<TestDoc> response = container.readItem(
+            CosmosItemResponse<TestDoc> response = verifyExists(
+                container,
                 this.TestDocPk1ExistingA.getId(),
                 this.getPartitionKey(this.partitionKey1),
                 TestDoc.class);

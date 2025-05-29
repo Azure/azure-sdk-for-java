@@ -12,12 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The Private Endpoint resource.
+ * The private endpoint resource.
  */
 @Immutable
 public final class PrivateEndpoint implements JsonSerializable<PrivateEndpoint> {
     /*
-     * The resource identifier for private endpoint
+     * The resource identifier of the private endpoint
      */
     private String id;
 
@@ -28,7 +28,7 @@ public final class PrivateEndpoint implements JsonSerializable<PrivateEndpoint> 
     }
 
     /**
-     * Get the id property: The resource identifier for private endpoint.
+     * Get the id property: The resource identifier of the private endpoint.
      * 
      * @return the id value.
      */
