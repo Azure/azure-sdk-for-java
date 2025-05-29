@@ -316,12 +316,6 @@ public class Configs {
     private static final String COSMOS_DISABLE_IMDS_ACCESS_VARIABLE = "COSMOS_DISABLE_IMDS_ACCESS";
     private static final boolean COSMOS_DISABLE_IMDS_ACCESS_DEFAULT = false;
 
-
-    private static final String COSMOS_DISABLE_CUSTOMER_HEADER_CLEANER = "COSMOS.DISABLE_CUSTOMER_HEADER_CLEANER";
-    private static final String COSMOS_DISABLE_CUSTOMER_HEADER_CLEANER_VARIABLE = "COSMOS_DISABLE_CUSTOMER_HEADER_CLEANER";
-    private static final boolean COSMOS_DISABLE_CUSTOMER_HEADER_CLEANER_DEFAULT = false;
-
-
     // Config to indicate whether allow http connections
     // Please note that this config should only during development or test, please do not use in prod env
     private static final boolean DEFAULT_HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = false;
@@ -1112,17 +1106,6 @@ public class Configs {
                     String.valueOf(COSMOS_DISABLE_IMDS_ACCESS_DEFAULT)));
 
         return Boolean.parseBoolean(shouldDisableIMDSAccess);
-    }
-
-    public static boolean shouldDisableCustomHttp2HeaderCleaner() {
-        String shouldDisableCustomHeaderCleaner =
-            System.getProperty(
-                COSMOS_DISABLE_CUSTOMER_HEADER_CLEANER,
-                firstNonNull(
-                    emptyToNull(System.getenv().get(COSMOS_DISABLE_CUSTOMER_HEADER_CLEANER_VARIABLE)),
-                    String.valueOf(COSMOS_DISABLE_CUSTOMER_HEADER_CLEANER_DEFAULT)));
-
-        return Boolean.parseBoolean(shouldDisableCustomHeaderCleaner);
     }
 
     public static boolean isHttpConnectionWithoutTLSAllowed() {
