@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus.administration.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
-import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetailsImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -43,7 +43,7 @@ public final class TopicRuntimeProperties {
         this.accessedAt = topicProperties.getAccessedAt();
         this.createdAt = topicProperties.getCreatedAt();
         this.updatedAt = topicProperties.getUpdatedAt();
-        final MessageCountDetailsImpl details = topicProperties.getMessageCountDetails();
+        final MessageCountDetails details = topicProperties.getMessageCountDetails();
         this.scheduledMessageCount = details != null ? details.getScheduledMessageCount() : 0;
     }
 

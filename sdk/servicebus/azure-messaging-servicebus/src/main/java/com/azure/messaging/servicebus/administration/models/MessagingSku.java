@@ -4,6 +4,7 @@
 
 package com.azure.messaging.servicebus.administration.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class MessagingSku extends ExpandableStringEnum<MessagingSku> {
     /**
      * Static value Basic for MessagingSku.
      */
+    @Generated
     public static final MessagingSku BASIC = fromString("Basic");
 
     /**
      * Static value Standard for MessagingSku.
      */
+    @Generated
     public static final MessagingSku STANDARD = fromString("Standard");
 
     /**
      * Static value Premium for MessagingSku.
      */
+    @Generated
     public static final MessagingSku PREMIUM = fromString("Premium");
 
     /**
@@ -31,6 +35,7 @@ public final class MessagingSku extends ExpandableStringEnum<MessagingSku> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MessagingSku() {
     }
@@ -41,6 +46,7 @@ public final class MessagingSku extends ExpandableStringEnum<MessagingSku> {
      * @param name a name to look for.
      * @return the corresponding MessagingSku.
      */
+    @Generated
     public static MessagingSku fromString(String name) {
         return fromString(name, MessagingSku.class);
     }
@@ -50,6 +56,7 @@ public final class MessagingSku extends ExpandableStringEnum<MessagingSku> {
      * 
      * @return known MessagingSku values.
      */
+    @Generated
     public static Collection<MessagingSku> values() {
         return values(MessagingSku.class);
     }

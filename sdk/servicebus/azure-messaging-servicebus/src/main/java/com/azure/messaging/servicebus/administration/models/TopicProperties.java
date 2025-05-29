@@ -8,10 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.EntityAvailabilityStatusImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetailsImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.EntityAvailabilityStatus;
+import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescription;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -35,7 +34,7 @@ public final class TopicProperties {
     private final boolean enableBatchedOperations;
     private boolean enableExpress;
     private Boolean enableSubscriptionPartitioning;
-    private final EntityAvailabilityStatusImpl entityAvailabilityStatus;
+    private final EntityAvailabilityStatus entityAvailabilityStatus;
     private boolean filteringMessagesBeforePublishing;
     private Boolean isAnonymousAccessible;
     private final List<AuthorizationRule> authorizationRules;
@@ -45,7 +44,7 @@ public final class TopicProperties {
     private final OffsetDateTime accessedAt;
     private long maxSizeInMegabytes;
     private long maxMessageSizeInKilobytes;
-    private final MessageCountDetailsImpl messageCountDetails;
+    private final MessageCountDetails messageCountDetails;
     private boolean requiresDuplicateDetection;
     private final long sizeInBytes;
     private final int subscriptionCount;
@@ -59,13 +58,14 @@ public final class TopicProperties {
         // This is used by classes in different packages to get access to private and package-private methods.
         EntityHelper.setTopicAccessor(new EntityHelper.TopicAccessor() {
             @Override
-            public TopicProperties toModel(TopicDescriptionImpl options) {
+            public TopicProperties toModel(TopicDescription options) {
                 return new TopicProperties(options);
             }
 
             @Override
-            public TopicDescriptionImpl toImplementation(TopicProperties topic, List<AuthorizationRuleImpl> rules) {
-                final TopicDescriptionImpl description = new TopicDescriptionImpl().setAccessedAt(topic.getAccessedAt())
+            public TopicDescription toImplementation(TopicProperties topic,
+                List<com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRule> rules) {
+                final TopicDescription description = new TopicDescription().setAccessedAt(topic.getAccessedAt())
                     .setAutoDeleteOnIdle(topic.getAutoDeleteOnIdle())
                     .setCreatedAt(topic.getCreatedAt())
                     .setDefaultMessageTimeToLive(topic.getDefaultMessageTimeToLive())
@@ -110,7 +110,7 @@ public final class TopicProperties {
      *
      * @param topic Options to set on the topic.
      */
-    TopicProperties(TopicDescriptionImpl topic) {
+    TopicProperties(TopicDescription topic) {
         Objects.requireNonNull(topic, "'options' cannot be null.");
         this.accessedAt = topic.getAccessedAt();
         this.authorizationRules = topic.getAuthorizationRules()
@@ -441,7 +441,7 @@ public final class TopicProperties {
      *
      * @return the messageCountDetails value.
      */
-    MessageCountDetailsImpl getMessageCountDetails() {
+    MessageCountDetails getMessageCountDetails() {
         return this.messageCountDetails;
     }
 
@@ -459,7 +459,7 @@ public final class TopicProperties {
      *
      * @return the entityAvailabilityStatus value.
      */
-    EntityAvailabilityStatusImpl getEntityAvailabilityStatus() {
+    EntityAvailabilityStatus getEntityAvailabilityStatus() {
         return this.entityAvailabilityStatus;
     }
 
