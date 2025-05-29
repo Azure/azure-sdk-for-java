@@ -4,6 +4,7 @@
 
 package com.azure.maps.search.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class ResolutionEnum extends ExpandableStringEnum<ResolutionEnum> {
     /**
      * Return the boundary geometry with the least amount of points.
      */
+    @Generated
     public static final ResolutionEnum SMALL = fromString("small");
 
     /**
      * Return the boundary geometry with more or the same amount of points as small.
      */
+    @Generated
     public static final ResolutionEnum MEDIUM = fromString("medium");
 
     /**
      * Return the boundary geometry with more or the same amount of points as medium.
      */
+    @Generated
     public static final ResolutionEnum LARGE = fromString("large");
 
     /**
      * Return the boundary geometry with more or the same amount of points as large.
      */
+    @Generated
     public static final ResolutionEnum HUGE = fromString("huge");
 
     /**
@@ -36,6 +41,7 @@ public final class ResolutionEnum extends ExpandableStringEnum<ResolutionEnum> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ResolutionEnum() {
     }
@@ -46,6 +52,7 @@ public final class ResolutionEnum extends ExpandableStringEnum<ResolutionEnum> {
      * @param name a name to look for.
      * @return the corresponding ResolutionEnum.
      */
+    @Generated
     public static ResolutionEnum fromString(String name) {
         return fromString(name, ResolutionEnum.class);
     }
@@ -55,6 +62,7 @@ public final class ResolutionEnum extends ExpandableStringEnum<ResolutionEnum> {
      * 
      * @return known ResolutionEnum values.
      */
+    @Generated
     public static Collection<ResolutionEnum> values() {
         return values(ResolutionEnum.class);
     }

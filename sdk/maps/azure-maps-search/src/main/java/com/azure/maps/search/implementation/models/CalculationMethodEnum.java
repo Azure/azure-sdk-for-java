@@ -4,6 +4,7 @@
 
 package com.azure.maps.search.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,22 +15,26 @@ public final class CalculationMethodEnum extends ExpandableStringEnum<Calculatio
     /**
      * The geocode point was matched to a point on a road using interpolation.
      */
+    @Generated
     public static final CalculationMethodEnum INTERPOLATION = fromString("Interpolation");
 
     /**
      * The geocode point was matched to a point on a road using interpolation with an additional offset to shift the
      * point to the side of the street.
      */
+    @Generated
     public static final CalculationMethodEnum INTERPOLATION_OFFSET = fromString("InterpolationOffset");
 
     /**
      * The geocode point was matched to the center of a parcel.
      */
+    @Generated
     public static final CalculationMethodEnum PARCEL = fromString("Parcel");
 
     /**
      * The geocode point was matched to the rooftop of a building.
      */
+    @Generated
     public static final CalculationMethodEnum ROOFTOP = fromString("Rooftop");
 
     /**
@@ -37,6 +42,7 @@ public final class CalculationMethodEnum extends ExpandableStringEnum<Calculatio
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CalculationMethodEnum() {
     }
@@ -47,6 +53,7 @@ public final class CalculationMethodEnum extends ExpandableStringEnum<Calculatio
      * @param name a name to look for.
      * @return the corresponding CalculationMethodEnum.
      */
+    @Generated
     public static CalculationMethodEnum fromString(String name) {
         return fromString(name, CalculationMethodEnum.class);
     }
@@ -56,6 +63,7 @@ public final class CalculationMethodEnum extends ExpandableStringEnum<Calculatio
      * 
      * @return known CalculationMethodEnum values.
      */
+    @Generated
     public static Collection<CalculationMethodEnum> values() {
         return values(CalculationMethodEnum.class);
     }
