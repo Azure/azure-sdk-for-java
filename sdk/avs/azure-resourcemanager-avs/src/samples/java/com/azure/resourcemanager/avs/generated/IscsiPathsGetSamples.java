@@ -10,7 +10,7 @@ package com.azure.resourcemanager.avs.generated;
 public final class IscsiPathsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/IscsiPaths_Get.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/IscsiPaths_Get.json
      */
     /**
      * Sample code: IscsiPaths_Get.

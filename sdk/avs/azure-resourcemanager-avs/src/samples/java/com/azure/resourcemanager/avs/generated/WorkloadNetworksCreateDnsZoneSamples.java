@@ -12,7 +12,7 @@ import java.util.Arrays;
 public final class WorkloadNetworksCreateDnsZoneSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateDnsZone.
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/WorkloadNetworks_CreateDnsZone.
      * json
      */
     /**

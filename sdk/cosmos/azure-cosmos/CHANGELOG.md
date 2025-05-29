@@ -3,6 +3,7 @@
 ### 4.71.0-beta.2 (Unreleased)
 
 #### Features Added
+* Added `GetEffectiveReadConsistencyLevel` method on the `CosmosDiagnosticsContext`. - [PR 45414](https://github.com/Azure/azure-sdk-for-java/pull/45414)
 
 #### Breaking Changes
 

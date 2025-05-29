@@ -7,8 +7,8 @@ package com.azure.resourcemanager.avs.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.Cluster;
@@ -23,25 +23,25 @@ public final class ClustersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"clusterSize\":602518095,\"provisioningState\":\"Canceled\",\"clusterId\":982758961,\"hosts\":[\"qibrtalme\",\"ttwgdsl\",\"xih\",\"rmooizqse\"],\"vsanDatastoreName\":\"xiutcx\"},\"sku\":{\"name\":\"pzhyr\",\"tier\":\"Standard\",\"size\":\"g\",\"family\":\"joxslhvnhla\",\"capacity\":107871538},\"id\":\"kkzjcjbtrga\",\"name\":\"hvv\",\"type\":\"brxjjsto\"}]}";
+            = "{\"value\":[{\"properties\":{\"clusterSize\":356071455,\"provisioningState\":\"Failed\",\"clusterId\":752629993,\"hosts\":[\"xznptgoeiyb\",\"abpfhvfs\",\"kvntjlrigjkskyri\"],\"vsanDatastoreName\":\"vzidsxwaab\"},\"sku\":{\"name\":\"mifrygznmma\",\"tier\":\"Basic\",\"size\":\"kzobgopxlhsln\",\"family\":\"xieixynllxec\",\"capacity\":2059770888},\"id\":\"jphslhcaw\",\"name\":\"u\",\"type\":\"i\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Cluster> response
-            = manager.clusters().list("uagrttikteusqc", "kvyklxubyjaffmm", com.azure.core.util.Context.NONE);
+            = manager.clusters().list("jqg", "cfhmlrqryxyn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pzhyr", response.iterator().next().sku().name());
-        Assertions.assertEquals(SkuTier.STANDARD, response.iterator().next().sku().tier());
-        Assertions.assertEquals("g", response.iterator().next().sku().size());
-        Assertions.assertEquals("joxslhvnhla", response.iterator().next().sku().family());
-        Assertions.assertEquals(107871538, response.iterator().next().sku().capacity());
-        Assertions.assertEquals(602518095, response.iterator().next().clusterSize());
-        Assertions.assertEquals("qibrtalme", response.iterator().next().hosts().get(0));
-        Assertions.assertEquals("xiutcx", response.iterator().next().vsanDatastoreName());
+        Assertions.assertEquals("mifrygznmma", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, response.iterator().next().sku().tier());
+        Assertions.assertEquals("kzobgopxlhsln", response.iterator().next().sku().size());
+        Assertions.assertEquals("xieixynllxec", response.iterator().next().sku().family());
+        Assertions.assertEquals(2059770888, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(356071455, response.iterator().next().clusterSize());
+        Assertions.assertEquals("xznptgoeiyb", response.iterator().next().hosts().get(0));
+        Assertions.assertEquals("vzidsxwaab", response.iterator().next().vsanDatastoreName());
     }
 }

@@ -586,6 +586,7 @@ public class CosmosAsyncContainer {
             operationType,
             null,
             clientAccessor.getEffectiveConsistencyLevel(client, operationType, requestOptions.getConsistencyLevel()),
+            clientAccessor.getEffectiveReadConsistencyStrategy(client, resourceType, operationType, requestOptions.getReadConsistencyStrategy()),
             null,
             thresholds,
             null,

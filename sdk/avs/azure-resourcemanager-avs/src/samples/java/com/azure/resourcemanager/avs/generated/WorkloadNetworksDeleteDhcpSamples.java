@@ -10,7 +10,7 @@ package com.azure.resourcemanager.avs.generated;
 public final class WorkloadNetworksDeleteDhcpSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_DeleteDhcp.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/WorkloadNetworks_DeleteDhcp.json
      */
     /**
      * Sample code: WorkloadNetworks_DeleteDhcp.
