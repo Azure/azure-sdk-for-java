@@ -690,7 +690,9 @@ abstract class AsyncBenchmark<T> {
             executor = Executors.newSingleThreadScheduledExecutor(new CosmosDaemonThreadFactory("AsyncBenchmark_logSampling"));
             executor.scheduleAtFixedRate(() -> {
                     int snapshot = this.logCountInSamplingInterval.getAndSet(0);
-                    logger.info("Resetting number of logs ({}-0)...", snapshot);
+                    if (snapshot != 0) {
+                        logger.info("Resetting number of logs ({}-0)...", snapshot);
+                    }
                 },
                 samplingIntervalInMs,
                 samplingIntervalInMs,
