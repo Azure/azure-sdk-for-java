@@ -275,7 +275,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             Mono<HttpResponse> httpResponseMono = this
                 .httpClient
                 .send(httpRequest, request.getResponseTimeout())
-                .subscribeOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
+                .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
 
             if (this.gatewayServerErrorInjector != null) {
                 httpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(request.getResponseTimeout(),
