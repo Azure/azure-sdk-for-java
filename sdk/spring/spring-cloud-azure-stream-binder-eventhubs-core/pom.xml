@@ -32,6 +32,13 @@
     <system>GitHub</system>
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
+  <repositories>
+    <repository>
+      <id>repository.springframework.maven.milestone</id>
+      <name>Spring Framework Maven Milestone Repository</name>
+      <url>https://repo.spring.io/milestone/</url>
+    </repository>
+  </repositories>
   <properties>
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
