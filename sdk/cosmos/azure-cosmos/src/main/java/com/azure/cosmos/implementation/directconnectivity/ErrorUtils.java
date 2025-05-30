@@ -18,7 +18,7 @@ public class ErrorUtils {
     private static final Logger logger = LoggerFactory.getLogger(ErrorUtils.class);
 
     static Mono<String> getErrorResponseAsync(HttpResponse responseMessage, HttpRequest request) {
-        return responseMessage.bodyAsString().switchIfEmpty(Mono.just(StringUtils.EMPTY)).publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
+        return responseMessage.bodyAsString().switchIfEmpty(Mono.just(StringUtils.EMPTY));
     }
 
     static void logGoneException(URI physicalAddress, String activityId) {

@@ -188,7 +188,6 @@ public class ClientTelemetry {
 
         return httpResponseMono
             .flatMap(HttpResponse::bodyAsString)
-            .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC)
             .map(ClientTelemetry::parse)
             .doOnSuccess(metadata -> {
                 azureVmMetaDataSingleton.compareAndSet(null, metadata);

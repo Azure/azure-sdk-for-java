@@ -31,7 +31,6 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
 import reactor.netty.ChannelPipelineConfigurer;
@@ -273,12 +272,10 @@ public class ReactorNettyClient implements HttpClient {
             .uri(request.uri().toASCIIString())
             .send(bodySendDelegate(request))
             .responseConnection((reactorNettyResponse, reactorNettyConnection) -> {
-                return Mono.fromCallable(() -> {
-                    HttpResponse httpResponse = new ReactorNettyHttpResponse(reactorNettyResponse,
-                        reactorNettyConnection).withRequest(request);
-                    responseReference.set((ReactorNettyHttpResponse) httpResponse);
-                    return httpResponse;
-                }).subscribeOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
+                HttpResponse httpResponse = new ReactorNettyHttpResponse(reactorNettyResponse,
+                    reactorNettyConnection).withRequest(request);
+                responseReference.set((ReactorNettyHttpResponse) httpResponse);
+                return Mono.just(httpResponse);
             })
             .contextWrite(Context.of(REACTOR_NETTY_REQUEST_RECORD_KEY, request.reactorNettyRequestRecord()))
             .doOnCancel(() -> {
@@ -308,9 +305,8 @@ public class ReactorNettyClient implements HttpClient {
             for (HttpHeader header : restRequest.headers()) {
                 reactorNettyRequest.header(header.name(), header.value());
             }
-            Flux<byte[]> bodyFlux = restRequest.body();
-            if (bodyFlux != null) {
-                return reactorNettyOutbound.sendByteArray(bodyFlux.publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC));
+            if (restRequest.body() != null) {
+                return reactorNettyOutbound.sendByteArray(restRequest.body());
             } else {
                 return reactorNettyOutbound;
             }

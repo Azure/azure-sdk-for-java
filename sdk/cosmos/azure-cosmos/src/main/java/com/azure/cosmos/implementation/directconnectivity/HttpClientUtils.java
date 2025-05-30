@@ -39,8 +39,7 @@ public class HttpClientUtils {
     private static Mono<CosmosException> createDocumentClientException(RxDocumentServiceRequest request, HttpResponse httpResponse) {
         Mono<String> readStream = httpResponse
             .bodyAsString()
-            .switchIfEmpty(Mono.just(StringUtils.EMPTY))
-            .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
+            .switchIfEmpty(Mono.just(StringUtils.EMPTY));
 
         return readStream.map(body -> {
             CosmosError cosmosError = new CosmosError(body);
