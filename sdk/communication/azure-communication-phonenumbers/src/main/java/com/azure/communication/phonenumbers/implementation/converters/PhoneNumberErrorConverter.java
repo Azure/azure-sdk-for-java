@@ -5,9 +5,9 @@ package com.azure.communication.phonenumbers.implementation.converters;
 
 import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
 import com.azure.communication.phonenumbers.models.PhoneNumberError;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link CommunicationError} and
@@ -35,8 +35,8 @@ public final class PhoneNumberErrorConverter {
             details = new ArrayList<>();
         }
 
-        return new PhoneNumberError(communicationError.getMessage(),
-            communicationError.getCode(), communicationError.getTarget(), details);
+        return new PhoneNumberError(communicationError.getMessage(), communicationError.getCode(),
+            communicationError.getTarget(), details);
     }
 
     private PhoneNumberErrorConverter() {
