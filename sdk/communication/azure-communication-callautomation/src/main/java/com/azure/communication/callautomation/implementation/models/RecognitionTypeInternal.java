@@ -4,6 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,16 +16,19 @@ public final class RecognitionTypeInternal extends ExpandableStringEnum<Recognit
     /**
      * Static value dtmf for RecognitionTypeInternal.
      */
+    @Generated
     public static final RecognitionTypeInternal DTMF = fromString("dtmf");
 
     /**
      * Static value speech for RecognitionTypeInternal.
      */
+    @Generated
     public static final RecognitionTypeInternal SPEECH = fromString("speech");
 
     /**
      * Static value choices for RecognitionTypeInternal.
      */
+    @Generated
     public static final RecognitionTypeInternal CHOICES = fromString("choices");
 
     /**
@@ -32,6 +36,7 @@ public final class RecognitionTypeInternal extends ExpandableStringEnum<Recognit
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RecognitionTypeInternal() {
     }
@@ -42,6 +47,7 @@ public final class RecognitionTypeInternal extends ExpandableStringEnum<Recognit
      * @param name a name to look for.
      * @return the corresponding RecognitionTypeInternal.
      */
+    @Generated
     public static RecognitionTypeInternal fromString(String name) {
         return fromString(name, RecognitionTypeInternal.class);
     }
@@ -51,6 +57,7 @@ public final class RecognitionTypeInternal extends ExpandableStringEnum<Recognit
      * 
      * @return known RecognitionTypeInternal values.
      */
+    @Generated
     public static Collection<RecognitionTypeInternal> values() {
         return values(RecognitionTypeInternal.class);
     }

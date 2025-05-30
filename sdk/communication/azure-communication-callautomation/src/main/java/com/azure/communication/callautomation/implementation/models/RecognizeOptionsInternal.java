@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,46 +21,55 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     /*
      * Determines if we interrupt the prompt and start recognizing.
      */
+    @Generated
     private Boolean interruptPrompt;
 
     /*
      * Time to wait for first input after prompt (if any).
      */
+    @Generated
     private Integer initialSilenceTimeoutInSeconds;
 
     /*
      * Target participant of DTMF tone recognition.
      */
+    @Generated
     private CommunicationIdentifierModel targetParticipant;
 
     /*
      * Speech language to be recognized, If not set default is en-US
      */
+    @Generated
     private String speechLanguage;
 
     /*
      * Endpoint where the custom model was deployed.
      */
+    @Generated
     private String speechRecognitionModelEndpointId;
 
     /*
      * Defines configurations for DTMF.
      */
+    @Generated
     private DtmfOptionsInternal dtmfOptions;
 
     /*
      * Defines Ivr choices for recognize.
      */
+    @Generated
     private List<RecognitionChoiceInternal> choices;
 
     /*
      * Defines continuous speech recognition option.
      */
+    @Generated
     private SpeechOptionsInternal speechOptions;
 
     /**
      * Creates an instance of RecognizeOptionsInternal class.
      */
+    @Generated
     public RecognizeOptionsInternal() {
     }
 
@@ -68,6 +78,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * 
      * @return the interruptPrompt value.
      */
+    @Generated
     public Boolean isInterruptPrompt() {
         return this.interruptPrompt;
     }
@@ -78,6 +89,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * @param interruptPrompt the interruptPrompt value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
+    @Generated
     public RecognizeOptionsInternal setInterruptPrompt(Boolean interruptPrompt) {
         this.interruptPrompt = interruptPrompt;
         return this;
@@ -88,6 +100,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * 
      * @return the initialSilenceTimeoutInSeconds value.
      */
+    @Generated
     public Integer getInitialSilenceTimeoutInSeconds() {
         return this.initialSilenceTimeoutInSeconds;
     }
@@ -98,6 +111,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * @param initialSilenceTimeoutInSeconds the initialSilenceTimeoutInSeconds value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
+    @Generated
     public RecognizeOptionsInternal setInitialSilenceTimeoutInSeconds(Integer initialSilenceTimeoutInSeconds) {
         this.initialSilenceTimeoutInSeconds = initialSilenceTimeoutInSeconds;
         return this;
@@ -108,6 +122,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * 
      * @return the targetParticipant value.
      */
+    @Generated
     public CommunicationIdentifierModel getTargetParticipant() {
         return this.targetParticipant;
     }
@@ -118,6 +133,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * @param targetParticipant the targetParticipant value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
+    @Generated
     public RecognizeOptionsInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
         return this;
@@ -128,6 +144,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * 
      * @return the speechLanguage value.
      */
+    @Generated
     public String getSpeechLanguage() {
         return this.speechLanguage;
     }
@@ -138,6 +155,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * @param speechLanguage the speechLanguage value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
+    @Generated
     public RecognizeOptionsInternal setSpeechLanguage(String speechLanguage) {
         this.speechLanguage = speechLanguage;
         return this;
@@ -148,6 +166,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * 
      * @return the speechRecognitionModelEndpointId value.
      */
+    @Generated
     public String getSpeechRecognitionModelEndpointId() {
         return this.speechRecognitionModelEndpointId;
     }
@@ -158,6 +177,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
+    @Generated
     public RecognizeOptionsInternal setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
         this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
         return this;
@@ -168,6 +188,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * 
      * @return the dtmfOptions value.
      */
+    @Generated
     public DtmfOptionsInternal getDtmfOptions() {
         return this.dtmfOptions;
     }
@@ -178,6 +199,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * @param dtmfOptions the dtmfOptions value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
+    @Generated
     public RecognizeOptionsInternal setDtmfOptions(DtmfOptionsInternal dtmfOptions) {
         this.dtmfOptions = dtmfOptions;
         return this;
@@ -188,6 +210,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * 
      * @return the choices value.
      */
+    @Generated
     public List<RecognitionChoiceInternal> getChoices() {
         return this.choices;
     }
@@ -198,6 +221,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * @param choices the choices value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
+    @Generated
     public RecognizeOptionsInternal setChoices(List<RecognitionChoiceInternal> choices) {
         this.choices = choices;
         return this;
@@ -208,6 +232,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * 
      * @return the speechOptions value.
      */
+    @Generated
     public SpeechOptionsInternal getSpeechOptions() {
         return this.speechOptions;
     }
@@ -218,6 +243,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * @param speechOptions the speechOptions value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
+    @Generated
     public RecognizeOptionsInternal setSpeechOptions(SpeechOptionsInternal speechOptions) {
         this.speechOptions = speechOptions;
         return this;
@@ -226,6 +252,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -249,6 +276,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RecognizeOptionsInternal.
      */
+    @Generated
     public static RecognizeOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RecognizeOptionsInternal deserializedRecognizeOptionsInternal = new RecognizeOptionsInternal();

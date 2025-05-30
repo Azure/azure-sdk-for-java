@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class RecognitionChoiceInternal implements JsonSerializable<Recogni
     /*
      * Identifier for a given choice
      */
+    @Generated
     private String label;
 
     /*
      * List of phrases to recognize
      */
+    @Generated
     private List<String> phrases;
 
     /*
      * The tone property.
      */
+    @Generated
     private DtmfToneInternal tone;
 
     /**
      * Creates an instance of RecognitionChoiceInternal class.
      */
+    @Generated
     public RecognitionChoiceInternal() {
     }
 
@@ -43,6 +48,7 @@ public final class RecognitionChoiceInternal implements JsonSerializable<Recogni
      * 
      * @return the label value.
      */
+    @Generated
     public String getLabel() {
         return this.label;
     }
@@ -53,6 +59,7 @@ public final class RecognitionChoiceInternal implements JsonSerializable<Recogni
      * @param label the label value to set.
      * @return the RecognitionChoiceInternal object itself.
      */
+    @Generated
     public RecognitionChoiceInternal setLabel(String label) {
         this.label = label;
         return this;
@@ -63,6 +70,7 @@ public final class RecognitionChoiceInternal implements JsonSerializable<Recogni
      * 
      * @return the phrases value.
      */
+    @Generated
     public List<String> getPhrases() {
         return this.phrases;
     }
@@ -73,6 +81,7 @@ public final class RecognitionChoiceInternal implements JsonSerializable<Recogni
      * @param phrases the phrases value to set.
      * @return the RecognitionChoiceInternal object itself.
      */
+    @Generated
     public RecognitionChoiceInternal setPhrases(List<String> phrases) {
         this.phrases = phrases;
         return this;
@@ -83,6 +92,7 @@ public final class RecognitionChoiceInternal implements JsonSerializable<Recogni
      * 
      * @return the tone value.
      */
+    @Generated
     public DtmfToneInternal getTone() {
         return this.tone;
     }
@@ -93,6 +103,7 @@ public final class RecognitionChoiceInternal implements JsonSerializable<Recogni
      * @param tone the tone value to set.
      * @return the RecognitionChoiceInternal object itself.
      */
+    @Generated
     public RecognitionChoiceInternal setTone(DtmfToneInternal tone) {
         this.tone = tone;
         return this;
@@ -101,6 +112,7 @@ public final class RecognitionChoiceInternal implements JsonSerializable<Recogni
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,6 +131,7 @@ public final class RecognitionChoiceInternal implements JsonSerializable<Recogni
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RecognitionChoiceInternal.
      */
+    @Generated
     public static RecognitionChoiceInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RecognitionChoiceInternal deserializedRecognitionChoiceInternal = new RecognitionChoiceInternal();

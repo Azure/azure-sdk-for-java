@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,27 +20,32 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     /*
      * Defines new locale for transcription.
      */
+    @Generated
     private String locale;
 
     /*
      * Sets Endpoint id where the custom model was deployed.
      */
+    @Generated
     private String speechRecognitionModelEndpointId;
 
     /*
      * The value to identify context of the operation.
      */
+    @Generated
     private String operationContext;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
+    @Generated
     private String operationCallbackUri;
 
     /**
      * Creates an instance of UpdateTranscriptionRequestInternal class.
      */
+    @Generated
     public UpdateTranscriptionRequestInternal() {
     }
 
@@ -48,6 +54,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
      * 
      * @return the locale value.
      */
+    @Generated
     public String getLocale() {
         return this.locale;
     }
@@ -58,6 +65,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
      * @param locale the locale value to set.
      * @return the UpdateTranscriptionRequestInternal object itself.
      */
+    @Generated
     public UpdateTranscriptionRequestInternal setLocale(String locale) {
         this.locale = locale;
         return this;
@@ -68,6 +76,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
      * 
      * @return the speechRecognitionModelEndpointId value.
      */
+    @Generated
     public String getSpeechRecognitionModelEndpointId() {
         return this.speechRecognitionModelEndpointId;
     }
@@ -78,6 +87,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
      * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
      * @return the UpdateTranscriptionRequestInternal object itself.
      */
+    @Generated
     public UpdateTranscriptionRequestInternal
         setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
         this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
@@ -89,6 +99,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
      * 
      * @return the operationContext value.
      */
+    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -99,6 +110,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
      * @param operationContext the operationContext value to set.
      * @return the UpdateTranscriptionRequestInternal object itself.
      */
+    @Generated
     public UpdateTranscriptionRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -111,6 +123,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
      * 
      * @return the operationCallbackUri value.
      */
+    @Generated
     public String getOperationCallbackUri() {
         return this.operationCallbackUri;
     }
@@ -123,6 +136,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the UpdateTranscriptionRequestInternal object itself.
      */
+    @Generated
     public UpdateTranscriptionRequestInternal setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
@@ -131,6 +145,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -150,6 +165,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the UpdateTranscriptionRequestInternal.
      */
+    @Generated
     public static UpdateTranscriptionRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             UpdateTranscriptionRequestInternal deserializedUpdateTranscriptionRequestInternal

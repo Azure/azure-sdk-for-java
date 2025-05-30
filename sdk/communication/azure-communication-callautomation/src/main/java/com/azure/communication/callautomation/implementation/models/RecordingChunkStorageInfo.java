@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,36 +20,43 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
     /*
      * Chunk document id
      */
+    @Generated
     private String documentId;
 
     /*
      * Chunks order in a multi chunk recording
      */
+    @Generated
     private Integer index;
 
     /*
      * Reason this chunk ended
      */
+    @Generated
     private ChunkEndReason endReason;
 
     /*
      * Location of the chunk
      */
+    @Generated
     private String contentLocation;
 
     /*
      * Location of chunk metadata
      */
+    @Generated
     private String metadataLocation;
 
     /*
      * Callback for deleting chunk
      */
+    @Generated
     private String deleteLocation;
 
     /**
      * Creates an instance of RecordingChunkStorageInfo class.
      */
+    @Generated
     public RecordingChunkStorageInfo() {
     }
 
@@ -57,6 +65,7 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
      * 
      * @return the documentId value.
      */
+    @Generated
     public String getDocumentId() {
         return this.documentId;
     }
@@ -67,6 +76,7 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
      * @param documentId the documentId value to set.
      * @return the RecordingChunkStorageInfo object itself.
      */
+    @Generated
     public RecordingChunkStorageInfo setDocumentId(String documentId) {
         this.documentId = documentId;
         return this;
@@ -77,6 +87,7 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
      * 
      * @return the index value.
      */
+    @Generated
     public Integer getIndex() {
         return this.index;
     }
@@ -87,6 +98,7 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
      * @param index the index value to set.
      * @return the RecordingChunkStorageInfo object itself.
      */
+    @Generated
     public RecordingChunkStorageInfo setIndex(Integer index) {
         this.index = index;
         return this;
@@ -97,6 +109,7 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
      * 
      * @return the endReason value.
      */
+    @Generated
     public ChunkEndReason getEndReason() {
         return this.endReason;
     }
@@ -107,6 +120,7 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
      * @param endReason the endReason value to set.
      * @return the RecordingChunkStorageInfo object itself.
      */
+    @Generated
     public RecordingChunkStorageInfo setEndReason(ChunkEndReason endReason) {
         this.endReason = endReason;
         return this;
@@ -117,6 +131,7 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
      * 
      * @return the contentLocation value.
      */
+    @Generated
     public String getContentLocation() {
         return this.contentLocation;
     }
@@ -127,6 +142,7 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
      * @param contentLocation the contentLocation value to set.
      * @return the RecordingChunkStorageInfo object itself.
      */
+    @Generated
     public RecordingChunkStorageInfo setContentLocation(String contentLocation) {
         this.contentLocation = contentLocation;
         return this;
@@ -137,6 +153,7 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
      * 
      * @return the metadataLocation value.
      */
+    @Generated
     public String getMetadataLocation() {
         return this.metadataLocation;
     }
@@ -147,6 +164,7 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
      * @param metadataLocation the metadataLocation value to set.
      * @return the RecordingChunkStorageInfo object itself.
      */
+    @Generated
     public RecordingChunkStorageInfo setMetadataLocation(String metadataLocation) {
         this.metadataLocation = metadataLocation;
         return this;
@@ -157,6 +175,7 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
      * 
      * @return the deleteLocation value.
      */
+    @Generated
     public String getDeleteLocation() {
         return this.deleteLocation;
     }
@@ -167,6 +186,7 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
      * @param deleteLocation the deleteLocation value to set.
      * @return the RecordingChunkStorageInfo object itself.
      */
+    @Generated
     public RecordingChunkStorageInfo setDeleteLocation(String deleteLocation) {
         this.deleteLocation = deleteLocation;
         return this;
@@ -175,6 +195,7 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -195,6 +216,7 @@ public final class RecordingChunkStorageInfo implements JsonSerializable<Recordi
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RecordingChunkStorageInfo.
      */
+    @Generated
     public static RecordingChunkStorageInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RecordingChunkStorageInfo deserializedRecordingChunkStorageInfo = new RecordingChunkStorageInfo();

@@ -5,6 +5,7 @@
 package com.azure.communication.identity.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class CommunicationIdentityAccessTokenResult
     /*
      * A communication identity.
      */
+    @Generated
     private CommunicationIdentity identity;
 
     /*
      * An access token.
      */
+    @Generated
     private CommunicationIdentityAccessToken accessToken;
 
     /**
      * Creates an instance of CommunicationIdentityAccessTokenResult class.
      */
+    @Generated
     public CommunicationIdentityAccessTokenResult() {
     }
 
@@ -38,6 +42,7 @@ public final class CommunicationIdentityAccessTokenResult
      * 
      * @return the identity value.
      */
+    @Generated
     public CommunicationIdentity getIdentity() {
         return this.identity;
     }
@@ -48,6 +53,7 @@ public final class CommunicationIdentityAccessTokenResult
      * @param identity the identity value to set.
      * @return the CommunicationIdentityAccessTokenResult object itself.
      */
+    @Generated
     public CommunicationIdentityAccessTokenResult setIdentity(CommunicationIdentity identity) {
         this.identity = identity;
         return this;
@@ -58,6 +64,7 @@ public final class CommunicationIdentityAccessTokenResult
      * 
      * @return the accessToken value.
      */
+    @Generated
     public CommunicationIdentityAccessToken getAccessToken() {
         return this.accessToken;
     }
@@ -68,11 +75,16 @@ public final class CommunicationIdentityAccessTokenResult
      * @param accessToken the accessToken value to set.
      * @return the CommunicationIdentityAccessTokenResult object itself.
      */
+    @Generated
     public CommunicationIdentityAccessTokenResult setAccessToken(CommunicationIdentityAccessToken accessToken) {
         this.accessToken = accessToken;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -90,6 +102,7 @@ public final class CommunicationIdentityAccessTokenResult
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CommunicationIdentityAccessTokenResult.
      */
+    @Generated
     public static CommunicationIdentityAccessTokenResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CommunicationIdentityAccessTokenResult deserializedCommunicationIdentityAccessTokenResult

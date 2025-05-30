@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,17 +20,20 @@ public final class StopTranscriptionRequestInternal implements JsonSerializable<
     /*
      * The value to identify context of the operation.
      */
+    @Generated
     private String operationContext;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
+    @Generated
     private String operationCallbackUri;
 
     /**
      * Creates an instance of StopTranscriptionRequestInternal class.
      */
+    @Generated
     public StopTranscriptionRequestInternal() {
     }
 
@@ -38,6 +42,7 @@ public final class StopTranscriptionRequestInternal implements JsonSerializable<
      * 
      * @return the operationContext value.
      */
+    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -48,6 +53,7 @@ public final class StopTranscriptionRequestInternal implements JsonSerializable<
      * @param operationContext the operationContext value to set.
      * @return the StopTranscriptionRequestInternal object itself.
      */
+    @Generated
     public StopTranscriptionRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -60,6 +66,7 @@ public final class StopTranscriptionRequestInternal implements JsonSerializable<
      * 
      * @return the operationCallbackUri value.
      */
+    @Generated
     public String getOperationCallbackUri() {
         return this.operationCallbackUri;
     }
@@ -72,6 +79,7 @@ public final class StopTranscriptionRequestInternal implements JsonSerializable<
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the StopTranscriptionRequestInternal object itself.
      */
+    @Generated
     public StopTranscriptionRequestInternal setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
@@ -80,6 +88,7 @@ public final class StopTranscriptionRequestInternal implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +105,7 @@ public final class StopTranscriptionRequestInternal implements JsonSerializable<
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the StopTranscriptionRequestInternal.
      */
+    @Generated
     public static StopTranscriptionRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StopTranscriptionRequestInternal deserializedStopTranscriptionRequestInternal
