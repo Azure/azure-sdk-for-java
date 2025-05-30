@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 /**
  * Holds a set of connections to an app configuration store with zero to many geo-replications.
  */
-public class ConnectionManager {
+class ConnectionManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionManager.class);
 
@@ -141,13 +140,6 @@ public class ConnectionManager {
         }
 
         return availableClients;
-    }
-
-    List<String> getAllEndpoints() {
-        List<String> endpoints = clients.stream().map(AppConfigurationReplicaClient::getEndpoint)
-            .collect(Collectors.toList());
-        endpoints.addAll(replicaLookUp.getAutoFailoverEndpoints(configStore.getEndpoint()));
-        return endpoints;
     }
 
     /**

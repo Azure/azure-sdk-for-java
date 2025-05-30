@@ -42,15 +42,18 @@ class AppConfigurationWebAutoConfiguration {
         "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",
         "org.springframework.cloud.endpoint.RefreshEndpoint"
     })
+    @Deprecated
     static class AppConfigurationPushRefreshConfiguration {
 
         @Bean
+        @Deprecated
         AppConfigurationRefreshEndpoint appConfigurationRefreshEndpoint(ContextRefresher contextRefresher,
             AppConfigurationProperties appConfiguration) {
             return new AppConfigurationRefreshEndpoint(contextRefresher, appConfiguration);
         }
 
         @Bean
+        @Deprecated
         AppConfigurationRefreshEventListener appConfigurationRefreshEventListener(
             AppConfigurationRefresh appConfigurationRefresh) {
             return new AppConfigurationRefreshEventListener(appConfigurationRefresh);
@@ -63,15 +66,18 @@ class AppConfigurationWebAutoConfiguration {
         "org.springframework.cloud.bus.BusProperties",
         "org.springframework.cloud.bus.event.RefreshRemoteApplicationEvent",
         "org.springframework.cloud.endpoint.RefreshEndpoint" })
+    @Deprecated
     static class AppConfigurationBusConfiguration {
 
         @Bean
+        @Deprecated
         AppConfigurationBusRefreshEndpoint appConfigurationBusRefreshEndpoint(ApplicationContext context,
             BusProperties bus, AppConfigurationProperties appConfiguration, Destination.Factory destinationFactory) {
             return new AppConfigurationBusRefreshEndpoint(context, bus.getId(), destinationFactory, appConfiguration);
         }
 
         @Bean
+        @Deprecated
         AppConfigurationBusRefreshEventListener appConfigurationBusRefreshEventListener(
             AppConfigurationRefresh appConfigurationRefresh) {
             return new AppConfigurationBusRefreshEventListener(appConfigurationRefresh);

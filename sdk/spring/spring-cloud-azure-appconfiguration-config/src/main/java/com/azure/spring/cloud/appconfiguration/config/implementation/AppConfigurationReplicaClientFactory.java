@@ -25,7 +25,7 @@ public class AppConfigurationReplicaClientFactory {
      * @param clientBuilder builder for app configuration replica clients
      * @param configStores configuration info for config stores
      */
-    public AppConfigurationReplicaClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
+    AppConfigurationReplicaClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
         List<ConfigStore> configStores, ReplicaLookUp replicaLookUp) {
         this.configStores = configStores;
         if (CONNECTIONS.size() == 0) {
@@ -97,23 +97,6 @@ public class AppConfigurationReplicaClientFactory {
             }
         }
         return endpoint;
-    }
-
-    /**
-     * Checks if a given endpoint has any configured replicas.
-     * @param endpoint Endpoint to check for replicas
-     * @return true if at least one other unique endpoint connects to the same configuration store
-     */
-    boolean hasReplicas(String endpoint) {
-        String originEndpoint = findOriginForEndpoint(endpoint);
-        for (ConfigStore store : configStores) {
-            if (store.getEndpoint().equals(originEndpoint)) {
-                if (store.getConnectionStrings().size() > 0 || store.getEndpoints().size() > 0) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     /**
