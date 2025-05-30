@@ -20,7 +20,6 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
     private static final Logger logger = LoggerFactory.getLogger(Http2ResponseHeaderCleanerHandler.class);
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-
         if (msg instanceof Http2HeadersFrame) {
             Http2HeadersFrame headersFrame = (Http2HeadersFrame) msg;
             Http2Headers headers = headersFrame.headers();
@@ -48,7 +47,7 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
             ReferenceCountUtil.release(msg);
         } else if (msg instanceof Http2SettingsFrame) {
             Http2SettingsFrame settingsFrame = (Http2SettingsFrame)msg;
-            logger.info("SETTINGS retrieved - {}", settingsFrame.settings().toString());
+            logger.trace("SETTINGS retrieved - {}", settingsFrame.settings());
             super.channelRead(ctx, msg);
         } else {
             // Pass the message to the next handler in the pipeline
@@ -58,9 +57,7 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        logger.error("exceptionCaught {}", cause.getMessage(), cause);
-        logger.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        super.exceptionCaught(ctx, cause);
+        logger.error("Header cleaner failed.", cause);
+        ctx.fireExceptionCaught(cause);
     }
 }
