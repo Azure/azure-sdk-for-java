@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.ObjectUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -256,7 +257,7 @@ public final class DatabaseAccount extends Resource {
      *
      * @return the list of thin client readable locations.
      */
-    public Iterable<DatabaseAccountLocation> getThinClientReadableLocations() {
+    public Collection<DatabaseAccountLocation> getThinClientReadableLocations() {
         return super.getCollection(Constants.Properties.THINCLIENT_READABLE_LOCATIONS, DatabaseAccountLocation.class);
     }
 
@@ -265,7 +266,7 @@ public final class DatabaseAccount extends Resource {
      *
      * @return the list of thin client writable locations.
      */
-    public Iterable<DatabaseAccountLocation> getThinClientWritableLocations() {
+    public Collection<DatabaseAccountLocation> getThinClientWritableLocations() {
         return super.getCollection(Constants.Properties.THINCLIENT_WRITABLE_LOCATIONS, DatabaseAccountLocation.class);
     }
 

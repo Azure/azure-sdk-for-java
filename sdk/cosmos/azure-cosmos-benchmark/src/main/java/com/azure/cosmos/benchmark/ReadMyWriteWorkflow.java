@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Semaphore;
 import java.util.stream.Collectors;
 
 /**
@@ -70,7 +71,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<Document> baseSubscriber, long i) throws Exception {
+    protected void performWorkload(BaseSubscriber<Document> baseSubscriber, long i, Semaphore concurrencyThreshold) throws Exception {
 
         Flux<Document> obs;
         boolean readyMyWrite = RandomUtils.nextBoolean();
@@ -148,13 +149,13 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
             }
         }
 
-        concurrencyControlSemaphore.acquire();
-        logger.debug("concurrencyControlSemaphore: {}", concurrencyControlSemaphore);
+        concurrencyThreshold.acquire();
+        logger.debug("concurrencyControlSemaphore: {}", concurrencyThreshold);
 
         try {
             obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
         } catch (Throwable error) {
-            concurrencyControlSemaphore.release();
+            concurrencyThreshold.release();
             logger.error("subscription failed due to ", error);
             if (error instanceof Error) {
                 throw (Error) error;

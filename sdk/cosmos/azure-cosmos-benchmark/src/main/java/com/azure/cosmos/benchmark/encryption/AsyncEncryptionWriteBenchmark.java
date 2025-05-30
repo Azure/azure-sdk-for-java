@@ -18,6 +18,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.util.UUID;
+import java.util.concurrent.Semaphore;
 
 public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<CosmosItemResponse> {
 
@@ -62,7 +63,7 @@ public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<Cosm
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<CosmosItemResponse> baseSubscriber, long i) throws InterruptedException {
+    protected void performWorkload(BaseSubscriber<CosmosItemResponse> baseSubscriber, long i, Semaphore concurrencyThreshold) throws InterruptedException {
         String id = uuid + i;
         Mono<CosmosItemResponse<PojoizedJson>> obs;
         PojoizedJson newDoc = BenchmarkHelper.generateDocument(id,
@@ -89,7 +90,7 @@ public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<Cosm
                 null);
         }
 
-        concurrencyControlSemaphore.acquire();
+        concurrencyThreshold.acquire();
 
         if (configuration.getOperationType() == Configuration.Operation.WriteThroughput) {
             obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);

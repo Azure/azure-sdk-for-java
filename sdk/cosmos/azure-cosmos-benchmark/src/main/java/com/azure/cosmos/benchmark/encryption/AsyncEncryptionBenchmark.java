@@ -95,6 +95,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
     final Configuration configuration;
     final List<PojoizedJson> docsToRead;
     final Semaphore concurrencyControlSemaphore;
+    final Semaphore concurrencyControlWarmupSemaphore;
     Timer latency;
 
     private static final String SUCCESS_COUNTER_METER_NAME = "#Successful Operations";
@@ -144,6 +145,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
         createEncryptionDatabaseAndContainer();
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
+        concurrencyControlWarmupSemaphore = new Semaphore(Math.max(1, cfg.getConcurrency() / 10));
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
         ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
 
@@ -294,7 +296,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
     protected void onError(Throwable throwable) {
     }
 
-    protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i) throws Exception;
+    protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i, Semaphore concurrencyThreshold) throws Exception;
 
     private void resetMeters() {
         metricsRegistry.remove(SUCCESS_COUNTER_METER_NAME);
@@ -331,6 +333,10 @@ public abstract class AsyncEncryptionBenchmark<T> {
         }
     }
 
+    protected boolean isStillInWarmup(AtomicLong count) {
+        return count.get() >= configuration.getSkipWarmUpOperations();
+    }
+
     public void run() throws Exception {
         initializeMeter();
         if (configuration.getSkipWarmUpOperations() > 0) {
@@ -347,6 +353,10 @@ public abstract class AsyncEncryptionBenchmark<T> {
         long i;
 
         for (i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
+
+            final Semaphore concurrencySemaphoreSnapshot = this.isStillInWarmup(count)
+                ? this.concurrencyControlSemaphore
+                : this.concurrencyControlWarmupSemaphore;
 
             BaseSubscriber<T> baseSubscriber = new BaseSubscriber<T>() {
                 @Override
@@ -368,7 +378,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
                 protected void hookOnComplete() {
                     initializeMetersIfSkippedEnoughOperations(count);
                     successMeter.mark();
-                    concurrencyControlSemaphore.release();
+                    concurrencySemaphoreSnapshot.release();
                     AsyncEncryptionBenchmark.this.onSuccess();
 
                     synchronized (count) {
@@ -384,7 +394,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
                     logger.error("Encountered failure {} on thread {}",
                         throwable.getMessage(), Thread.currentThread().getName(), throwable);
-                    concurrencyControlSemaphore.release();
+                    concurrencySemaphoreSnapshot.release();
                     AsyncEncryptionBenchmark.this.onError(throwable);
 
                     synchronized (count) {
@@ -394,7 +404,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
                 }
             };
 
-            performWorkload(baseSubscriber, i);
+            performWorkload(baseSubscriber, i, concurrencySemaphoreSnapshot);
         }
 
         synchronized (count) {

@@ -16,6 +16,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
 public class AsyncEncryptionQueryBenchmark extends AsyncEncryptionBenchmark<FeedResponse<PojoizedJson>> {
 
@@ -68,7 +69,7 @@ public class AsyncEncryptionQueryBenchmark extends AsyncEncryptionBenchmark<Feed
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i) throws InterruptedException {
+    protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i, Semaphore concurrencyThreshold) throws InterruptedException {
         Flux<FeedResponse<PojoizedJson>> obs;
         Random r = new Random();
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -103,7 +104,7 @@ public class AsyncEncryptionQueryBenchmark extends AsyncEncryptionBenchmark<Feed
             throw new IllegalArgumentException("Unsupported Operation: " + configuration.getOperationType());
         }
 
-        concurrencyControlSemaphore.acquire();
+        concurrencyThreshold.acquire();
         LatencySubscriber<FeedResponse> latencySubscriber = new LatencySubscriber(baseSubscriber);
         latencySubscriber.context = latency.time();
         obs.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);

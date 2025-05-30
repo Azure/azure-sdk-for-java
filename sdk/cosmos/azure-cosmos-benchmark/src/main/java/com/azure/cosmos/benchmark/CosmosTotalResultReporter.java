@@ -114,13 +114,13 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
         doc.put("BranchName", this.branchName);
         doc.put("CommitId", this.commitId);
         doc.put("Concurrency", this.concurrency);
-        doc.put("CpuUsage", (cpuUsageSnapshot.get75thPercentile()));
+        doc.put("CpuUsage", (cpuUsageSnapshot.get75thPercentile())/1000d);
         doc.put("SuccessRate", ((long)successSnapshot.get75thPercentile())/100d);
         doc.put("FailureRate", ((long)failureSnapshot.get75thPercentile())/100d);
-        double p99 = new BigDecimal(Double.toString(p99LatencySnapshot.get75thPercentile()/1000000))
+        double p99 = new BigDecimal(Double.toString(p99LatencySnapshot.get75thPercentile()/100000000d))
             .setScale(2, RoundingMode.HALF_UP)
             .doubleValue();
-        double median = new BigDecimal(Double.toString(medianLatencySnapshot.get75thPercentile()/1000000))
+        double median = new BigDecimal(Double.toString(medianLatencySnapshot.get75thPercentile()/100000000d))
             .setScale(2, RoundingMode.HALF_UP)
             .doubleValue();
 
@@ -149,21 +149,29 @@ public class CosmosTotalResultReporter extends ScheduledReporter {
 
         double intervalInSeconds = Duration.between(lastRecorded, nowSnapshot).toMillis() / 1000;
         if (intervalInSeconds > 0) {
+            this.cpuUsage.update((long)(100000d * cpuReader.getSystemWideCpuUsage()));
+
             long successSnapshot = successMeter.getCount();
-            this.successRate.update((long)(100d * (successSnapshot - lastRecordedSuccessCount) / intervalInSeconds));
-
             long failureSnapshot = failureMeter.getCount();
+            lastRecorded = nowSnapshot;
+
+            if (successSnapshot == 0 && failureSnapshot == 0) {
+                return;
+            }
+
+            this.successRate.update((long)(100d * (successSnapshot - lastRecordedSuccessCount) / intervalInSeconds));
             this.failureRate.update((long)(100d * (failureSnapshot - lastRecordedFailureCount) / intervalInSeconds));
-
-            Snapshot latencySnapshot = latencyTimer.getSnapshot();
-
-            this.medianLatency.update((long) (latencySnapshot.getMedian()));
-            this.p99Latency.update((long) (latencySnapshot.get99thPercentile()));
-            this.cpuUsage.update((long)(100d * cpuReader.getSystemWideCpuUsage()));
-
             lastRecordedSuccessCount = successSnapshot;
             lastRecordedFailureCount = failureSnapshot;
-            lastRecorded = nowSnapshot;
+
+            Snapshot latencySnapshot = latencyTimer.getSnapshot();
+            long medianSnapshot = (long) (100d * latencySnapshot.getMedian());
+            if (medianSnapshot == 0L) {
+                return;
+            }
+
+            this.medianLatency.update(medianSnapshot);
+            this.p99Latency.update((long) (100d * latencySnapshot.get99thPercentile()));
         }
     }
 

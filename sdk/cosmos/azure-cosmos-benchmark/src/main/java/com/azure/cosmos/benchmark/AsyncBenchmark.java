@@ -4,18 +4,21 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.Context;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -55,10 +58,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 abstract class AsyncBenchmark<T> {
 
@@ -84,6 +93,7 @@ abstract class AsyncBenchmark<T> {
     final Configuration configuration;
     final List<PojoizedJson> docsToRead;
     final Semaphore concurrencyControlSemaphore;
+    final Semaphore concurrencyControlWarmupSemaphore;
     Timer latency;
 
     private static final List<String> CONFIGURED_HIGH_AVAILABILITY_SYSTEM_PROPERTIES = Arrays.asList(
@@ -160,7 +170,12 @@ abstract class AsyncBenchmark<T> {
             );
 
         if (configuration.isDefaultLog4jLoggerEnabled()) {
-            telemetryConfig.diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER);
+            logger.info("Diagnostics thresholds Point: {}, Non-Point: {}",
+                cfg.getPointOperationThreshold(),
+                cfg.getNonPointOperationThreshold());
+            telemetryConfig.diagnosticsHandler(
+                new SamplingDiagnosticsLogger(10, 10_000)
+            );
         }
 
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
@@ -258,6 +273,7 @@ abstract class AsyncBenchmark<T> {
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
 
+        concurrencyControlWarmupSemaphore = new Semaphore(Math.max(1, cfg.getConcurrency() / 10));
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
 
         ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
@@ -485,6 +501,10 @@ abstract class AsyncBenchmark<T> {
     protected void onSuccess() {
     }
 
+    protected boolean isStillInWarmup(AtomicLong count) {
+        return count.get() >= configuration.getSkipWarmUpOperations();
+    }
+
     protected void initializeMetersIfSkippedEnoughOperations(AtomicLong count) {
         if (configuration.getSkipWarmUpOperations() > 0) {
             if (count.get() >= configuration.getSkipWarmUpOperations()) {
@@ -498,6 +518,7 @@ abstract class AsyncBenchmark<T> {
                             if (resultReporter != null) {
                                 resultReporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
                             }
+
                             warmupMode.set(false);
                         }
                     }
@@ -509,7 +530,7 @@ abstract class AsyncBenchmark<T> {
     protected void onError(Throwable throwable) {
     }
 
-    protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i) throws Exception;
+    protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i, Semaphore concurrencyThreshold) throws Exception;
 
     private void resetMeters() {
         metricsRegistry.remove(Configuration.SUCCESS_COUNTER_METER_NAME);
@@ -568,6 +589,10 @@ abstract class AsyncBenchmark<T> {
 
         for ( i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
 
+            final Semaphore concurrencySemaphoreSnapshot = this.isStillInWarmup(count)
+                ? this.concurrencyControlSemaphore
+                : this.concurrencyControlWarmupSemaphore;
+
             BaseSubscriber<T> baseSubscriber = new BaseSubscriber<T>() {
                 @Override
                 protected void hookOnSubscribe(Subscription subscription) {
@@ -588,7 +613,7 @@ abstract class AsyncBenchmark<T> {
                 protected void hookOnComplete() {
                     initializeMetersIfSkippedEnoughOperations(count);
                     successMeter.mark();
-                    concurrencyControlSemaphore.release();
+                    concurrencySemaphoreSnapshot.release();
                     AsyncBenchmark.this.onSuccess();
 
                     synchronized (count) {
@@ -604,7 +629,7 @@ abstract class AsyncBenchmark<T> {
 
                     logger.error("Encountered failure {} on thread {}" ,
                         throwable.getMessage(), Thread.currentThread().getName(), throwable);
-                    concurrencyControlSemaphore.release();
+                    concurrencySemaphoreSnapshot.release();
                     AsyncBenchmark.this.onError(throwable);
 
                     synchronized (count) {
@@ -614,7 +639,8 @@ abstract class AsyncBenchmark<T> {
                 }
             };
 
-            performWorkload(baseSubscriber, i);
+
+            performWorkload(baseSubscriber, i, concurrencySemaphoreSnapshot);
         }
 
         synchronized (count) {
@@ -647,5 +673,128 @@ abstract class AsyncBenchmark<T> {
             return Mono.delay(duration);
         }
         else return null;
+    }
+
+    private static class SamplingDiagnosticsLogger implements CosmosDiagnosticsHandler {
+
+        private final int maxLogCount;
+        private final AtomicInteger logCountInSamplingInterval;
+        private final ScheduledExecutorService executor;
+
+        public SamplingDiagnosticsLogger(int maxLogCount, int samplingIntervalInMs) {
+            checkArgument(maxLogCount > 0, "Argument 'maxLogCount must be a positive integer.");
+
+            this.logCountInSamplingInterval = new AtomicInteger(0);
+            this.maxLogCount = maxLogCount;
+            logger.info("MaxLogCount: {}, samplingIntervalInMs: {}", this.maxLogCount, samplingIntervalInMs);
+            executor = Executors.newSingleThreadScheduledExecutor(new CosmosDaemonThreadFactory("AsyncBenchmark_logSampling"));
+            executor.scheduleAtFixedRate(() -> {
+                    int snapshot = this.logCountInSamplingInterval.getAndSet(0);
+                    if (snapshot != 0) {
+                        logger.info("Resetting number of logs ({}-0)...", snapshot);
+                    }
+                },
+                samplingIntervalInMs,
+                samplingIntervalInMs,
+                TimeUnit.MILLISECONDS);
+        }
+
+        private final static Logger logger = LoggerFactory.getLogger(SamplingDiagnosticsLogger.class);
+
+        /**
+         * Decides whether to log diagnostics for an operation and emits the logs when needed
+         *
+         * @param diagnosticsContext the Cosmos DB diagnostic context with metadata for the operation
+         * @param traceContext the Azure trace context
+         */
+        @Override
+        public final void handleDiagnostics(CosmosDiagnosticsContext diagnosticsContext, Context traceContext) {
+            checkNotNull(diagnosticsContext, "Argument 'diagnosticsContext' must not be null.");
+
+            boolean shouldLog = shouldLog(diagnosticsContext);
+            if (shouldLog) {
+                int previousLogCount = this.logCountInSamplingInterval.getAndIncrement();
+
+                if (previousLogCount <= this.maxLogCount) {
+                    logger.info(
+                        "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
+                        diagnosticsContext.getAccountName(),
+                        diagnosticsContext.getDatabaseName(),
+                        diagnosticsContext.getContainerName(),
+                        diagnosticsContext.getStatusCode(),
+                        diagnosticsContext.getSubStatusCode(),
+                        diagnosticsContext.toJson());
+                } else if (previousLogCount == this.maxLogCount + 1) {
+                    logger.info("Already logged {} diagnostics - stopping until sampling interval is reset.", this.maxLogCount);
+                }
+            }
+        }
+
+        /**
+         * Decides whether to log diagnostics for an operation
+         *
+         * @param diagnosticsContext the diagnostics context
+         * @return a flag indicating whether to log the operation or not
+         */
+        protected boolean shouldLog(CosmosDiagnosticsContext diagnosticsContext) {
+
+            if (!diagnosticsContext.isCompleted()) {
+                return false;
+            }
+
+            return diagnosticsContext.isFailure() ||
+                diagnosticsContext.isThresholdViolated() ||
+                logger.isDebugEnabled();
+        }
+
+        /**
+         * Logs the operation. This method can be overridden for example to emit logs to a different target than log4j
+         *
+         * @param ctx the diagnostics context
+         */
+        protected void log(CosmosDiagnosticsContext ctx) {
+            if (ctx.isFailure()) {
+                if (logger.isErrorEnabled()) {
+                    logger.error(
+                        "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
+                        ctx.getAccountName(),
+                        ctx.getDatabaseName(),
+                        ctx.getContainerName(),
+                        ctx.getStatusCode(),
+                        ctx.getSubStatusCode(),
+                        ctx.toJson());
+                }
+            } else if (ctx.isThresholdViolated()) {
+                if (logger.isInfoEnabled()) {
+                    logger.info(
+                        "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
+                        ctx.getAccountName(),
+                        ctx.getDatabaseName(),
+                        ctx.getContainerName(),
+                        ctx.getStatusCode(),
+                        ctx.getSubStatusCode(),
+                        ctx.toJson());
+                }
+            } else if (logger.isTraceEnabled()) {
+                logger.trace(
+                    "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
+                    ctx.getAccountName(),
+                    ctx.getDatabaseName(),
+                    ctx.getContainerName(),
+                    ctx.getStatusCode(),
+                    ctx.getSubStatusCode(),
+                    ctx.toJson());
+            } else if (logger.isDebugEnabled()) {
+                logger.debug(
+                    "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{}, Latency: {}, Request charge: {}",
+                    ctx.getAccountName(),
+                    ctx.getDatabaseName(),
+                    ctx.getContainerName(),
+                    ctx.getStatusCode(),
+                    ctx.getSubStatusCode(),
+                    ctx.getDuration(),
+                    ctx.getTotalRequestCharge());
+            }
+        }
     }
 }

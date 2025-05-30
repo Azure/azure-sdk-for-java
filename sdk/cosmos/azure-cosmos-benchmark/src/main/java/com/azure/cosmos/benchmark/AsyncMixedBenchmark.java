@@ -13,6 +13,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.Semaphore;
 
 class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
 
@@ -28,7 +29,7 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<Object> documentBaseSubscriber, long i) throws InterruptedException {
+    protected void performWorkload(BaseSubscriber<Object> documentBaseSubscriber, long i, Semaphore concurrencyThreshold) throws InterruptedException {
         Flux<? extends Object> obs;
         if (i % 10 == 0 && i % 100 != 0) {
 
@@ -59,7 +60,7 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
                     .flux();
         }
 
-        concurrencyControlSemaphore.acquire();
+        concurrencyThreshold.acquire();
 
         obs.subscribeOn(Schedulers.parallel()).subscribe(documentBaseSubscriber);
     }

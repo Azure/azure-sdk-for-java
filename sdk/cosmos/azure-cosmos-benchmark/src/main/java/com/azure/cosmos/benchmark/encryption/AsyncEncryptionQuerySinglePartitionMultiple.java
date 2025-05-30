@@ -13,6 +13,7 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
+import java.util.concurrent.Semaphore;
 
 public class AsyncEncryptionQuerySinglePartitionMultiple extends AsyncEncryptionBenchmark<FeedResponse<PojoizedJson>> {
 
@@ -38,10 +39,10 @@ public class AsyncEncryptionQuerySinglePartitionMultiple extends AsyncEncryption
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i) throws InterruptedException {
+    protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i, Semaphore concurrencyThreshold) throws InterruptedException {
         CosmosPagedFlux<PojoizedJson> obs = cosmosEncryptionAsyncContainer.queryItems(SQL_QUERY, options, PojoizedJson.class);
 
-        concurrencyControlSemaphore.acquire();
+        concurrencyThreshold.acquire();
 
         obs.byPage(10).subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
     }
