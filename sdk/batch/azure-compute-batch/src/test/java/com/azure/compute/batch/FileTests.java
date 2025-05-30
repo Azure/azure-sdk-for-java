@@ -2,15 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.compute.batch;
 
-import com.azure.compute.batch.models.BatchJobCreateContent;
+import com.azure.compute.batch.models.BatchFileProperties;
+import com.azure.compute.batch.models.BatchJobCreateParameters;
 import com.azure.compute.batch.models.BatchNodeFile;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolInfo;
 import com.azure.compute.batch.models.BatchTask;
-import com.azure.compute.batch.models.BatchTaskCreateContent;
+import com.azure.compute.batch.models.BatchTaskCreateParameters;
 import com.azure.compute.batch.models.FileProperties;
-import com.azure.compute.batch.models.FileResponseHeaderProperties;
-import com.azure.compute.batch.models.ListBatchNodeFilesOptions;
+import com.azure.compute.batch.models.BatchNodeFilesListOptions;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -57,9 +57,10 @@ public class FileTests extends BatchClientTestBase {
             BatchPoolInfo poolInfo = new BatchPoolInfo();
             poolInfo.setPoolId(poolId);
 
-            batchClient.createJob(new BatchJobCreateContent(jobId, poolInfo));
+            batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo));
 
-            BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId, "/bin/bash -c \"echo hello\"");
+            BatchTaskCreateParameters taskToCreate
+                = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
 
             batchClient.createTask(jobId, taskToCreate);
 
@@ -112,15 +113,16 @@ public class FileTests extends BatchClientTestBase {
             BatchPoolInfo poolInfo = new BatchPoolInfo();
             poolInfo.setPoolId(poolId);
 
-            batchClient.createJob(new BatchJobCreateContent(jobId, poolInfo));
-            BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId, "/bin/bash -c \"echo hello\"");
+            batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo));
+            BatchTaskCreateParameters taskToCreate
+                = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
             batchClient.createTask(jobId, taskToCreate);
 
             if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
                 BatchTask task = batchClient.getTask(jobId, taskId);
                 String nodeId = task.getNodeInfo().getNodeId();
 
-                ListBatchNodeFilesOptions options = new ListBatchNodeFilesOptions();
+                BatchNodeFilesListOptions options = new BatchNodeFilesListOptions();
                 options.setRecursive(true);
                 PagedIterable<BatchNodeFile> files = batchClient.listNodeFiles(poolId, nodeId, options);
 
@@ -143,8 +145,7 @@ public class FileTests extends BatchClientTestBase {
                     .getValue();
                 Assertions.assertEquals("hello\n", binaryData.toString());
 
-                FileResponseHeaderProperties fileProperties
-                    = batchClient.getNodeFileProperties(poolId, nodeId, fileName);
+                BatchFileProperties fileProperties = batchClient.getNodeFileProperties(poolId, nodeId, fileName);
                 Assertions.assertEquals(6, fileProperties.getContentLength());
 
             } else {

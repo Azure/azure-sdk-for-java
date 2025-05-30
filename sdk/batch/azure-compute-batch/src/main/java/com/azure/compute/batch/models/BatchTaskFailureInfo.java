@@ -22,7 +22,7 @@ public final class BatchTaskFailureInfo implements JsonSerializable<BatchTaskFai
      * The category of the Task error.
      */
     @Generated
-    private final ErrorCategory category;
+    private final BatchErrorSourceCategory category;
 
     /*
      * An identifier for the Task error. Codes are invariant and are intended to be consumed programmatically.
@@ -43,22 +43,12 @@ public final class BatchTaskFailureInfo implements JsonSerializable<BatchTaskFai
     private List<NameValuePair> details;
 
     /**
-     * Creates an instance of BatchTaskFailureInfo class.
-     *
-     * @param category the category value to set.
-     */
-    @Generated
-    private BatchTaskFailureInfo(ErrorCategory category) {
-        this.category = category;
-    }
-
-    /**
      * Get the category property: The category of the Task error.
      *
      * @return the category value.
      */
     @Generated
-    public ErrorCategory getCategory() {
+    public BatchErrorSourceCategory getCategory() {
         return this.category;
     }
 
@@ -120,7 +110,7 @@ public final class BatchTaskFailureInfo implements JsonSerializable<BatchTaskFai
     @Generated
     public static BatchTaskFailureInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ErrorCategory category = null;
+            BatchErrorSourceCategory category = null;
             String code = null;
             String message = null;
             List<NameValuePair> details = null;
@@ -128,7 +118,7 @@ public final class BatchTaskFailureInfo implements JsonSerializable<BatchTaskFai
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("category".equals(fieldName)) {
-                    category = ErrorCategory.fromString(reader.getString());
+                    category = BatchErrorSourceCategory.fromString(reader.getString());
                 } else if ("code".equals(fieldName)) {
                     code = reader.getString();
                 } else if ("message".equals(fieldName)) {
@@ -145,5 +135,15 @@ public final class BatchTaskFailureInfo implements JsonSerializable<BatchTaskFai
             deserializedBatchTaskFailureInfo.details = details;
             return deserializedBatchTaskFailureInfo;
         });
+    }
+
+    /**
+     * Creates an instance of BatchTaskFailureInfo class.
+     *
+     * @param category the category value to set.
+     */
+    @Generated
+    private BatchTaskFailureInfo(BatchErrorSourceCategory category) {
+        this.category = category;
     }
 }

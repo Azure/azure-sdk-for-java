@@ -13,8 +13,8 @@ public class BatchErrorTests extends BatchClientTestBase {
     public void testResizeErrorCases() {
         try {
 
-            BatchPoolResizeContent resizeContent = new BatchPoolResizeContent();
-            batchClient.resizePool("fakepool", resizeContent);
+            BatchPoolResizeParameters resizeParameters = new BatchPoolResizeParameters();
+            batchClient.resizePool("fakepool", resizeParameters);
         } catch (HttpResponseException err) {
 
             BatchError error = BatchError.fromException(err);
@@ -29,7 +29,7 @@ public class BatchErrorTests extends BatchClientTestBase {
         try {
 
             batchClient.resizePool("fakepool",
-                new BatchPoolResizeContent().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1));
+                new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1));
         } catch (HttpResponseException err) {
 
             BatchError error = BatchError.fromException(err);
