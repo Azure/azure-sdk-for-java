@@ -370,6 +370,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                                                       HttpRequest httpRequest) {
 
         return httpResponseMono.publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC).flatMap(httpResponse -> {
+
             // header key/value pairs
             HttpHeaders httpResponseHeaders = httpResponse.headers();
             int httpResponseStatus = httpResponse.statusCode();
@@ -417,8 +418,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 })
                 .single();
 
-            })
-            .map(rsp -> {
+            }).map(rsp -> {
                 RxDocumentServiceResponse rxDocumentServiceResponse;
                 if (httpRequest.reactorNettyRequestRecord() != null) {
                     rxDocumentServiceResponse =
