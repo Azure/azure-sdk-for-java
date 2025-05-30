@@ -20,7 +20,7 @@ public class RequestContextJavaDocCodeSnippets {
     public RequestContext createInstance() {
         // BEGIN: io.clientcore.core.http.rest.requestcontext.instantiation
         RequestContext context = new RequestContext.Builder()
-            .addHeader(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01")
+            .setHeader(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01")
             .build();
         // END: io.clientcore.core.http.rest.requestcontext.instantiation
         return context;
