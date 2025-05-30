@@ -29,6 +29,9 @@ import com.openai.models.embeddings.CreateEmbeddingResponse;
 import com.openai.models.embeddings.Embedding;
 import com.openai.models.embeddings.EmbeddingCreateParams;
 import com.openai.models.embeddings.EmbeddingModel;
+import com.openai.models.images.Image;
+import com.openai.models.images.ImageGenerateParams;
+import com.openai.models.images.ImageModel;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseRetrieveParams;
@@ -48,6 +51,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.Base64;
 import java.util.Collections;
@@ -702,5 +706,15 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         Embedding embedding = embeddings.get(0);
         assertNotNull(embedding.embedding(), "Embedding vector should not be null");
         assertFalse(embedding.embedding().isEmpty(), "Embedding vector should not be empty");
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiImageClient")
+    public void testImageGeneration(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+        String prompt = "A futuristic city skyline at sunset";
+        ImageGenerateParams params = createImageGenerateParams(testModel, prompt);
+        Optional<List<Image>> images = client.images().generate(params).data();
+        assertImageGeneration(images);
     }
 }
