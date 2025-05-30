@@ -4,6 +4,7 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,41 +15,49 @@ public final class PredicateType extends ExpandableStringEnum<PredicateType> {
     /**
      * Represents an equality predicate.
      */
+    @Generated
     public static final PredicateType EQUAL = fromString("Equal");
 
     /**
      * Represents a not-equal predicate.
      */
+    @Generated
     public static final PredicateType NOT_EQUAL = fromString("NotEqual");
 
     /**
      * Represents a less-than predicate.
      */
+    @Generated
     public static final PredicateType LESS_THAN = fromString("LessThan");
 
     /**
      * Represents a greater-than predicate.
      */
+    @Generated
     public static final PredicateType GREATER_THAN = fromString("GreaterThan");
 
     /**
      * Represents a less-than-or-equal predicate.
      */
+    @Generated
     public static final PredicateType LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
     /**
      * Represents a greater-than-or-equal predicate.
      */
+    @Generated
     public static final PredicateType GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
     /**
      * Represents a contains predicate.
      */
+    @Generated
     public static final PredicateType CONTAINS = fromString("Contains");
 
     /**
      * Represents a does-not-contain predicate.
      */
+    @Generated
     public static final PredicateType DOES_NOT_CONTAIN = fromString("DoesNotContain");
 
     /**
@@ -56,6 +65,7 @@ public final class PredicateType extends ExpandableStringEnum<PredicateType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PredicateType() {
     }
@@ -66,6 +76,7 @@ public final class PredicateType extends ExpandableStringEnum<PredicateType> {
      * @param name a name to look for.
      * @return the corresponding PredicateType.
      */
+    @Generated
     public static PredicateType fromString(String name) {
         return fromString(name, PredicateType.class);
     }
@@ -75,6 +86,7 @@ public final class PredicateType extends ExpandableStringEnum<PredicateType> {
      * 
      * @return known PredicateType values.
      */
+    @Generated
     public static Collection<PredicateType> values() {
         return values(PredicateType.class);
     }

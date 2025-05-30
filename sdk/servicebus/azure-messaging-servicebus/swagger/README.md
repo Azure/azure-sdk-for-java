@@ -27,7 +27,7 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.50'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1d5723dc330e9749d5ded6cb9db5a309b3705fa4/specification/servicebus/data-plane/Microsoft.ServiceBus/stable/2021-05/servicebus.json
 java: true
 output-folder: ..\
@@ -40,6 +40,7 @@ custom-types-subpackage: models
 customization-class: src/main/java/AdministrationClientCustomization.java
 enable-sync-stack: true
 disable-client-builder: true
+use-eclipse-language-server: false
 ```
 
 ### Change Return Types of Subscription REST Methods

@@ -5,6 +5,7 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class TableQueryResponse implements JsonSerializable<TableQueryResp
     /*
      * The metadata response of the table.
      */
+    @Generated
     private String odataMetadata;
 
     /*
      * List of tables.
      */
+    @Generated
     private List<TableResponseProperties> value;
 
     /**
      * Creates an instance of TableQueryResponse class.
      */
+    @Generated
     public TableQueryResponse() {
     }
 
@@ -38,6 +42,7 @@ public final class TableQueryResponse implements JsonSerializable<TableQueryResp
      * 
      * @return the odataMetadata value.
      */
+    @Generated
     public String getOdataMetadata() {
         return this.odataMetadata;
     }
@@ -48,6 +53,7 @@ public final class TableQueryResponse implements JsonSerializable<TableQueryResp
      * @param odataMetadata the odataMetadata value to set.
      * @return the TableQueryResponse object itself.
      */
+    @Generated
     public TableQueryResponse setOdataMetadata(String odataMetadata) {
         this.odataMetadata = odataMetadata;
         return this;
@@ -58,6 +64,7 @@ public final class TableQueryResponse implements JsonSerializable<TableQueryResp
      * 
      * @return the value value.
      */
+    @Generated
     public List<TableResponseProperties> getValue() {
         return this.value;
     }
@@ -68,6 +75,7 @@ public final class TableQueryResponse implements JsonSerializable<TableQueryResp
      * @param value the value value to set.
      * @return the TableQueryResponse object itself.
      */
+    @Generated
     public TableQueryResponse setValue(List<TableResponseProperties> value) {
         this.value = value;
         return this;
@@ -76,6 +84,7 @@ public final class TableQueryResponse implements JsonSerializable<TableQueryResp
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class TableQueryResponse implements JsonSerializable<TableQueryResp
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the TableQueryResponse.
      */
+    @Generated
     public static TableQueryResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TableQueryResponse deserializedTableQueryResponse = new TableQueryResponse();

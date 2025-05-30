@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,26 +24,31 @@ public final class MetadataApplication implements JsonSerializable<MetadataAppli
     /*
      * The ID of the Application Insights app.
      */
+    @Generated
     private final String id;
 
     /*
      * The ARM resource ID of the Application Insights app.
      */
+    @Generated
     private final String resourceId;
 
     /*
      * The name of the Application Insights app.
      */
+    @Generated
     private final String name;
 
     /*
      * The Azure region of the Application Insights app.
      */
+    @Generated
     private final String region;
 
     /*
      * The related metadata items for the Application Insights app.
      */
+    @Generated
     private MetadataApplicationRelated related;
 
     /**
@@ -53,6 +59,7 @@ public final class MetadataApplication implements JsonSerializable<MetadataAppli
      * @param name the name value to set.
      * @param region the region value to set.
      */
+    @Generated
     public MetadataApplication(String id, String resourceId, String name, String region) {
         this.id = id;
         this.resourceId = resourceId;
@@ -65,6 +72,7 @@ public final class MetadataApplication implements JsonSerializable<MetadataAppli
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -74,6 +82,7 @@ public final class MetadataApplication implements JsonSerializable<MetadataAppli
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String getResourceId() {
         return this.resourceId;
     }
@@ -83,6 +92,7 @@ public final class MetadataApplication implements JsonSerializable<MetadataAppli
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -92,6 +102,7 @@ public final class MetadataApplication implements JsonSerializable<MetadataAppli
      * 
      * @return the region value.
      */
+    @Generated
     public String getRegion() {
         return this.region;
     }
@@ -101,6 +112,7 @@ public final class MetadataApplication implements JsonSerializable<MetadataAppli
      * 
      * @return the related value.
      */
+    @Generated
     public MetadataApplicationRelated getRelated() {
         return this.related;
     }
@@ -111,6 +123,7 @@ public final class MetadataApplication implements JsonSerializable<MetadataAppli
      * @param related the related value to set.
      * @return the MetadataApplication object itself.
      */
+    @Generated
     public MetadataApplication setRelated(MetadataApplicationRelated related) {
         this.related = related;
         return this;
@@ -119,6 +132,7 @@ public final class MetadataApplication implements JsonSerializable<MetadataAppli
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -139,6 +153,7 @@ public final class MetadataApplication implements JsonSerializable<MetadataAppli
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetadataApplication.
      */
+    @Generated
     public static MetadataApplication fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

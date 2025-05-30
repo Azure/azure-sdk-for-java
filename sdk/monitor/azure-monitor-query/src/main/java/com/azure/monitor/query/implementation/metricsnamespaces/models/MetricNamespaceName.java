@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.metricsnamespaces.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class MetricNamespaceName implements JsonSerializable<MetricNamespa
     /*
      * The metric namespace name.
      */
+    @Generated
     private String metricNamespaceName;
 
     /**
      * Creates an instance of MetricNamespaceName class.
      */
+    @Generated
     public MetricNamespaceName() {
     }
 
@@ -32,6 +35,7 @@ public final class MetricNamespaceName implements JsonSerializable<MetricNamespa
      * 
      * @return the metricNamespaceName value.
      */
+    @Generated
     public String getMetricNamespaceName() {
         return this.metricNamespaceName;
     }
@@ -42,6 +46,7 @@ public final class MetricNamespaceName implements JsonSerializable<MetricNamespa
      * @param metricNamespaceName the metricNamespaceName value to set.
      * @return the MetricNamespaceName object itself.
      */
+    @Generated
     public MetricNamespaceName setMetricNamespaceName(String metricNamespaceName) {
         this.metricNamespaceName = metricNamespaceName;
         return this;
@@ -50,6 +55,7 @@ public final class MetricNamespaceName implements JsonSerializable<MetricNamespa
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class MetricNamespaceName implements JsonSerializable<MetricNamespa
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetricNamespaceName.
      */
+    @Generated
     public static MetricNamespaceName fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricNamespaceName deserializedMetricNamespaceName = new MetricNamespaceName();

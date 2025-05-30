@@ -5,6 +5,7 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -18,26 +19,31 @@ public final class TablesQueryHeaders {
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-client-request-id property.
      */
+    @Generated
     private String xMsClientRequestId;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The x-ms-continuation-NextTableName property.
      */
+    @Generated
     private String xMsContinuationNextTableName;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -58,6 +64,8 @@ public final class TablesQueryHeaders {
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
         this.xMsContinuationNextTableName = rawHeaders.getValue(X_MS_CONTINUATION_NEXT_TABLE_NAME);
     }
@@ -67,6 +75,7 @@ public final class TablesQueryHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -77,6 +86,7 @@ public final class TablesQueryHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the TablesQueryHeaders object itself.
      */
+    @Generated
     public TablesQueryHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -87,6 +97,7 @@ public final class TablesQueryHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -97,6 +108,7 @@ public final class TablesQueryHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the TablesQueryHeaders object itself.
      */
+    @Generated
     public TablesQueryHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -107,6 +119,7 @@ public final class TablesQueryHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
+    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -117,6 +130,7 @@ public final class TablesQueryHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the TablesQueryHeaders object itself.
      */
+    @Generated
     public TablesQueryHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -127,6 +141,7 @@ public final class TablesQueryHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -140,6 +155,7 @@ public final class TablesQueryHeaders {
      * @param date the date value to set.
      * @return the TablesQueryHeaders object itself.
      */
+    @Generated
     public TablesQueryHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -154,6 +170,7 @@ public final class TablesQueryHeaders {
      * 
      * @return the xMsContinuationNextTableName value.
      */
+    @Generated
     public String getXMsContinuationNextTableName() {
         return this.xMsContinuationNextTableName;
     }
@@ -164,6 +181,7 @@ public final class TablesQueryHeaders {
      * @param xMsContinuationNextTableName the xMsContinuationNextTableName value to set.
      * @return the TablesQueryHeaders object itself.
      */
+    @Generated
     public TablesQueryHeaders setXMsContinuationNextTableName(String xMsContinuationNextTableName) {
         this.xMsContinuationNextTableName = xMsContinuationNextTableName;
         return this;

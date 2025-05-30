@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,16 +20,19 @@ public final class Event extends DocumentIngress {
     /*
      * Telemetry type. Types not defined in enum will get replaced with a 'Unknown' type.
      */
+    @Generated
     private DocumentType documentType = DocumentType.EVENT;
 
     /*
      * Event name.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of Event class.
      */
+    @Generated
     public Event() {
     }
 
@@ -37,6 +41,7 @@ public final class Event extends DocumentIngress {
      * 
      * @return the documentType value.
      */
+    @Generated
     @Override
     public DocumentType getDocumentType() {
         return this.documentType;
@@ -47,6 +52,7 @@ public final class Event extends DocumentIngress {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -57,6 +63,7 @@ public final class Event extends DocumentIngress {
      * @param name the name value to set.
      * @return the Event object itself.
      */
+    @Generated
     public Event setName(String name) {
         this.name = name;
         return this;
@@ -65,6 +72,7 @@ public final class Event extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Event setDocumentStreamIds(List<String> documentStreamIds) {
         super.setDocumentStreamIds(documentStreamIds);
@@ -74,6 +82,7 @@ public final class Event extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Event setProperties(List<KeyValuePairString> properties) {
         super.setProperties(properties);
@@ -83,6 +92,7 @@ public final class Event extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,6 +112,7 @@ public final class Event extends DocumentIngress {
      * JSON null.
      * @throws IOException If an error occurs while reading the Event.
      */
+    @Generated
     public static Event fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Event deserializedEvent = new Event();

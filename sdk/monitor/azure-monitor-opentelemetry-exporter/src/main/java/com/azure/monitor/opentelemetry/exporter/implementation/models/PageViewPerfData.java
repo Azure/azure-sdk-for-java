@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,62 +22,74 @@ public final class PageViewPerfData extends MonitorDomain {
     /*
      * Identifier of a page view instance. Used for correlation between page view and other telemetry items.
      */
+    @Generated
     private String id;
 
     /*
      * Event name. Keep it low cardinality to allow proper grouping and useful metrics.
      */
+    @Generated
     private String name;
 
     /*
      * Request URL with all query string parameters
      */
+    @Generated
     private String url;
 
     /*
      * Request duration in format: DD.HH:MM:SS.MMMMMM. For a page view (PageViewData), this is the duration. For a page
      * view with performance information (PageViewPerfData), this is the page load time. Must be less than 1000 days.
      */
+    @Generated
     private String duration;
 
     /*
      * Performance total in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff
      */
+    @Generated
     private String perfTotal;
 
     /*
      * Network connection time in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff
      */
+    @Generated
     private String networkConnect;
 
     /*
      * Sent request time in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff
      */
+    @Generated
     private String sentRequest;
 
     /*
      * Received response time in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff
      */
+    @Generated
     private String receivedResponse;
 
     /*
      * DOM processing time in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff
      */
+    @Generated
     private String domProcessing;
 
     /*
      * Collection of custom properties.
      */
+    @Generated
     private Map<String, String> properties;
 
     /*
      * Collection of custom measurements.
      */
+    @Generated
     private Map<String, Double> measurements;
 
     /**
      * Creates an instance of PageViewPerfData class.
      */
+    @Generated
     public PageViewPerfData() {
     }
 
@@ -86,6 +99,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -97,6 +111,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * @param id the id value to set.
      * @return the PageViewPerfData object itself.
      */
+    @Generated
     public PageViewPerfData setId(String id) {
         this.id = id;
         return this;
@@ -107,6 +122,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -117,6 +133,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * @param name the name value to set.
      * @return the PageViewPerfData object itself.
      */
+    @Generated
     public PageViewPerfData setName(String name) {
         this.name = name;
         return this;
@@ -127,6 +144,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * 
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -137,6 +155,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * @param url the url value to set.
      * @return the PageViewPerfData object itself.
      */
+    @Generated
     public PageViewPerfData setUrl(String url) {
         this.url = url;
         return this;
@@ -149,6 +168,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * 
      * @return the duration value.
      */
+    @Generated
     public String getDuration() {
         return this.duration;
     }
@@ -161,6 +181,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * @param duration the duration value to set.
      * @return the PageViewPerfData object itself.
      */
+    @Generated
     public PageViewPerfData setDuration(String duration) {
         this.duration = duration;
         return this;
@@ -171,6 +192,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * 
      * @return the perfTotal value.
      */
+    @Generated
     public String getPerfTotal() {
         return this.perfTotal;
     }
@@ -181,6 +203,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * @param perfTotal the perfTotal value to set.
      * @return the PageViewPerfData object itself.
      */
+    @Generated
     public PageViewPerfData setPerfTotal(String perfTotal) {
         this.perfTotal = perfTotal;
         return this;
@@ -192,6 +215,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * 
      * @return the networkConnect value.
      */
+    @Generated
     public String getNetworkConnect() {
         return this.networkConnect;
     }
@@ -203,6 +227,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * @param networkConnect the networkConnect value to set.
      * @return the PageViewPerfData object itself.
      */
+    @Generated
     public PageViewPerfData setNetworkConnect(String networkConnect) {
         this.networkConnect = networkConnect;
         return this;
@@ -213,6 +238,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * 
      * @return the sentRequest value.
      */
+    @Generated
     public String getSentRequest() {
         return this.sentRequest;
     }
@@ -223,6 +249,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * @param sentRequest the sentRequest value to set.
      * @return the PageViewPerfData object itself.
      */
+    @Generated
     public PageViewPerfData setSentRequest(String sentRequest) {
         this.sentRequest = sentRequest;
         return this;
@@ -234,6 +261,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * 
      * @return the receivedResponse value.
      */
+    @Generated
     public String getReceivedResponse() {
         return this.receivedResponse;
     }
@@ -245,6 +273,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * @param receivedResponse the receivedResponse value to set.
      * @return the PageViewPerfData object itself.
      */
+    @Generated
     public PageViewPerfData setReceivedResponse(String receivedResponse) {
         this.receivedResponse = receivedResponse;
         return this;
@@ -255,6 +284,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * 
      * @return the domProcessing value.
      */
+    @Generated
     public String getDomProcessing() {
         return this.domProcessing;
     }
@@ -265,6 +295,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * @param domProcessing the domProcessing value to set.
      * @return the PageViewPerfData object itself.
      */
+    @Generated
     public PageViewPerfData setDomProcessing(String domProcessing) {
         this.domProcessing = domProcessing;
         return this;
@@ -275,6 +306,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * 
      * @return the properties value.
      */
+    @Generated
     public Map<String, String> getProperties() {
         return this.properties;
     }
@@ -285,6 +317,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * @param properties the properties value to set.
      * @return the PageViewPerfData object itself.
      */
+    @Generated
     public PageViewPerfData setProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
@@ -295,6 +328,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * 
      * @return the measurements value.
      */
+    @Generated
     public Map<String, Double> getMeasurements() {
         return this.measurements;
     }
@@ -305,6 +339,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * @param measurements the measurements value to set.
      * @return the PageViewPerfData object itself.
      */
+    @Generated
     public PageViewPerfData setMeasurements(Map<String, Double> measurements) {
         this.measurements = measurements;
         return this;
@@ -313,6 +348,7 @@ public final class PageViewPerfData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PageViewPerfData setVersion(int version) {
         super.setVersion(version);
@@ -322,6 +358,7 @@ public final class PageViewPerfData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -354,6 +391,7 @@ public final class PageViewPerfData extends MonitorDomain {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PageViewPerfData.
      */
+    @Generated
     public static PageViewPerfData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PageViewPerfData deserializedPageViewPerfData = new PageViewPerfData();

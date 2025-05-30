@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,31 +22,37 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
     /*
      * The error's code.
      */
+    @Generated
     private final String code;
 
     /*
      * A human readable error message.
      */
+    @Generated
     private final String message;
 
     /*
      * Indicates which property in the request is responsible for the error.
      */
+    @Generated
     private String target;
 
     /*
      * Indicates which value in 'target' is responsible for the error.
      */
+    @Generated
     private String value;
 
     /*
      * Indicates resources which were responsible for the error.
      */
+    @Generated
     private List<String> resources;
 
     /*
      * Additional properties that can be provided on the error details object
      */
+    @Generated
     private Object additionalProperties;
 
     /**
@@ -54,6 +61,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * @param code the code value to set.
      * @param message the message value to set.
      */
+    @Generated
     public ErrorDetail(String code, String message) {
         this.code = code;
         this.message = message;
@@ -64,6 +72,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * 
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -73,6 +82,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -82,6 +92,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * 
      * @return the target value.
      */
+    @Generated
     public String getTarget() {
         return this.target;
     }
@@ -92,6 +103,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * @param target the target value to set.
      * @return the ErrorDetail object itself.
      */
+    @Generated
     public ErrorDetail setTarget(String target) {
         this.target = target;
         return this;
@@ -102,6 +114,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * 
      * @return the value value.
      */
+    @Generated
     public String getValue() {
         return this.value;
     }
@@ -112,6 +125,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * @param value the value value to set.
      * @return the ErrorDetail object itself.
      */
+    @Generated
     public ErrorDetail setValue(String value) {
         this.value = value;
         return this;
@@ -122,6 +136,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * 
      * @return the resources value.
      */
+    @Generated
     public List<String> getResources() {
         return this.resources;
     }
@@ -132,6 +147,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * @param resources the resources value to set.
      * @return the ErrorDetail object itself.
      */
+    @Generated
     public ErrorDetail setResources(List<String> resources) {
         this.resources = resources;
         return this;
@@ -142,6 +158,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Object getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -152,6 +169,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the ErrorDetail object itself.
      */
+    @Generated
     public ErrorDetail setAdditionalProperties(Object additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -160,6 +178,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -168,7 +187,9 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
         jsonWriter.writeStringField("target", this.target);
         jsonWriter.writeStringField("value", this.value);
         jsonWriter.writeArrayField("resources", this.resources, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeUntypedField("additionalProperties", this.additionalProperties);
+        if (this.additionalProperties != null) {
+            jsonWriter.writeUntypedField("additionalProperties", this.additionalProperties);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -181,6 +202,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ErrorDetail.
      */
+    @Generated
     public static ErrorDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean codeFound = false;
