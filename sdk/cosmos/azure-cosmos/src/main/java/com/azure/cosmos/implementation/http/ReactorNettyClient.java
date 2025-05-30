@@ -131,26 +131,36 @@ public class ReactorNettyClient implements HttpClient {
         }
     }
 
-    private void logChannelPipeline(String name, ChannelPipeline channelPipeline) {
+    private String getChannelPipelineLog(String name, ChannelPipeline channelPipeline) {
+        Map<String, ChannelHandler> handlerMap = channelPipeline.toMap();
+        StringBuilder sb = new StringBuilder();
+        sb.append("====================================================================================");
+        sb.append(System.lineSeparator());
+        sb.append(name + ": " + this);
+        sb.append(System.lineSeparator());
+        sb.append("====================================================================================");
+        sb.append(System.lineSeparator());
+        handlerMap.entrySet().forEach(
+            entry -> {
+                sb.append("Http2Handler " + entry.getKey() + ": " + entry.getValue());
+                sb.append(System.lineSeparator());
+            });
+        sb.append("====================================================================================");
+        sb.append(System.lineSeparator());
+        return sb.toString();
+    }
+    private void logChannelPipelineAsTrace(String name, ChannelPipeline channelPipeline) {
         if (logger.isTraceEnabled()) {
-            Map<String, ChannelHandler> handlerMap = channelPipeline.toMap();
-            StringBuilder sb = new StringBuilder();
-            sb.append("====================================================================================");
-            sb.append(System.lineSeparator());
-            sb.append(name + ": " + this);
-            sb.append(System.lineSeparator());
-            sb.append("====================================================================================");
-            sb.append(System.lineSeparator());
-            handlerMap.entrySet().forEach(
-                entry -> {
-                    sb.append("Http2Handler " + entry.getKey() + ": " + entry.getValue());
-                    sb.append(System.lineSeparator());
-                });
-            sb.append("====================================================================================");
-            sb.append(System.lineSeparator());
-            logger.trace(sb.toString());
+            logger.trace(getChannelPipelineLog(name, channelPipeline));
         }
     }
+
+    private void logChannelPipelineAsDebug(String name, ChannelPipeline channelPipeline) {
+        if (logger.isTraceEnabled()) {
+            logger.trace(getChannelPipelineLog(name, channelPipeline));
+        }
+    }
+
 
     private void configureChannelPipelineHandlers() {
         Configs configs = this.httpClientConfig.getConfigs();
@@ -214,18 +224,22 @@ public class ReactorNettyClient implements HttpClient {
                                               SocketAddress remoteAddress) {
 
                         ChannelPipeline channelPipeline = channel.pipeline();
-                        logChannelPipeline("doOnChannelInit (Before)", channelPipeline);
-
-                        // Reactor netty http does not allow changing certain configs in the underlying
-                        // netty http/2 stack
-                        // we need to allow custom http/2 settings, inject the broken header cleanup and allow
-                        // custom http/2 frame logger (using different log levels depending on the frame type)
-                        channelPipeline.replace(
-                            NettyPipeline.H2OrHttp11Codec,
-                            CosmosNettyPipeline.H2_OR_HTTP11_CODEC,
-                            new CosmosH2OrHttp11Codec(settingsBuilderRef.get().build(), connectionObserver, remoteAddress)
-                        );
-                        logChannelPipeline("doOnChannelInit (After)", channelPipeline);
+                        ChannelHandler codecCandidate = channelPipeline.get(NettyPipeline.H2OrHttp11Codec);
+                        if (codecCandidate == null) {
+                            logChannelPipelineAsDebug("NO CODEC FOUND - doOnChannelInit (Before)", channelPipeline);
+                        } else {
+                            logChannelPipelineAsTrace("doOnChannelInit (Before)", channelPipeline);
+                            // Reactor netty http does not allow changing certain configs in the underlying
+                            // netty http/2 stack
+                            // we need to allow custom http/2 settings, inject the broken header cleanup and allow
+                            // custom http/2 frame logger (using different log levels depending on the frame type)
+                            channelPipeline.replace(
+                                NettyPipeline.H2OrHttp11Codec,
+                                CosmosNettyPipeline.H2_OR_HTTP11_CODEC,
+                                new CosmosH2OrHttp11Codec(settingsBuilderRef.get().build(), connectionObserver, remoteAddress)
+                            );
+                            logChannelPipelineAsTrace("doOnChannelInit (After)", channelPipeline);
+                        }
                     }
                 });
         }
