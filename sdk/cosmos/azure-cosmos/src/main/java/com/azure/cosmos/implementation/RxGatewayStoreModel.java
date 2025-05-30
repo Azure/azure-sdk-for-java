@@ -383,7 +383,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                 Mono<ByteBuf> contentObservable = httpResponse
                     .body()
-                    .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER));
+                    .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER))
+                    .map(bodyByteBuf -> bodyByteBuf.retain());
 
                 return contentObservable
                     .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC)
