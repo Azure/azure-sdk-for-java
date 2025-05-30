@@ -277,10 +277,12 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             if (this.gatewayServerErrorInjector != null) {
                 httpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(request.getResponseTimeout(),
                     httpRequest, request, httpResponseMono);
-                return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
+                return toDocumentServiceResponse(httpResponseMono, request, httpRequest)
+                    .subscribeOn(CosmosSchedulers.CLIENT_TELEMETRY_BOUNDED_ELASTIC);
             }
 
-            return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
+            return toDocumentServiceResponse(httpResponseMono, request, httpRequest)
+                .subscribeOn(CosmosSchedulers.CLIENT_TELEMETRY_BOUNDED_ELASTIC);
         } catch (Exception e) {
             return Mono.error(e);
         }
