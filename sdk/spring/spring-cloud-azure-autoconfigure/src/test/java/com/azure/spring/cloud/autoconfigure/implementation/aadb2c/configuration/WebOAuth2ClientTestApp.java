@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @EnableWebSecurity
+@SuppressWarnings("removal")
 @Import(OAuth2ClientAutoConfiguration.class)
 public class WebOAuth2ClientTestApp {
 
