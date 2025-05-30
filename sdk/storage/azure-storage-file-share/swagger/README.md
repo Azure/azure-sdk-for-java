@@ -437,5 +437,6 @@ directive:
 - from: swagger-document
   where: $.definitions.AccessRight
   transform: >
+    $.xml = {"name": "AccessRight"};
     $["x-ms-enum"].name = "ShareFileHandleAccessRights";
 ```

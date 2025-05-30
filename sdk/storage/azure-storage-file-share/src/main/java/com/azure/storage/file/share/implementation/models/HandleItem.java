@@ -353,8 +353,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
         if (this.accessRightList != null) {
             xmlWriter.writeStartElement("AccessRightList");
             for (ShareFileHandleAccessRights element : this.accessRightList) {
-                xmlWriter.writeStringElement("ShareFileHandleAccessRights",
-                    element == null ? null : element.toString());
+                xmlWriter.writeStringElement("AccessRight", element == null ? null : element.toString());
             }
             xmlWriter.writeEndElement();
         }
@@ -413,7 +412,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
                 } else if ("AccessRightList".equals(elementName.getLocalPart())) {
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         elementName = reader.getElementName();
-                        if ("ShareFileHandleAccessRights".equals(elementName.getLocalPart())) {
+                        if ("AccessRight".equals(elementName.getLocalPart())) {
                             if (deserializedHandleItem.accessRightList == null) {
                                 deserializedHandleItem.accessRightList = new ArrayList<>();
                             }
