@@ -6,6 +6,7 @@ package com.azure.communication.identity.implementation.models;
 
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,17 +22,20 @@ public final class CommunicationIdentityCreateRequest implements JsonSerializabl
     /*
      * Also create access token for the created identity.
      */
+    @Generated
     private List<CommunicationTokenScope> createTokenWithScopes;
 
     /*
      * Optional custom validity period of the token within [60,1440] minutes range. If not provided, the default value
      * of 1440 minutes (24 hours) will be used.
      */
+    @Generated
     private Integer expiresInMinutes;
 
     /**
      * Creates an instance of CommunicationIdentityCreateRequest class.
      */
+    @Generated
     public CommunicationIdentityCreateRequest() {
     }
 
@@ -40,6 +44,7 @@ public final class CommunicationIdentityCreateRequest implements JsonSerializabl
      * 
      * @return the createTokenWithScopes value.
      */
+    @Generated
     public List<CommunicationTokenScope> getCreateTokenWithScopes() {
         return this.createTokenWithScopes;
     }
@@ -50,6 +55,7 @@ public final class CommunicationIdentityCreateRequest implements JsonSerializabl
      * @param createTokenWithScopes the createTokenWithScopes value to set.
      * @return the CommunicationIdentityCreateRequest object itself.
      */
+    @Generated
     public CommunicationIdentityCreateRequest
         setCreateTokenWithScopes(List<CommunicationTokenScope> createTokenWithScopes) {
         this.createTokenWithScopes = createTokenWithScopes;
@@ -62,6 +68,7 @@ public final class CommunicationIdentityCreateRequest implements JsonSerializabl
      * 
      * @return the expiresInMinutes value.
      */
+    @Generated
     public Integer getExpiresInMinutes() {
         return this.expiresInMinutes;
     }
@@ -73,11 +80,16 @@ public final class CommunicationIdentityCreateRequest implements JsonSerializabl
      * @param expiresInMinutes the expiresInMinutes value to set.
      * @return the CommunicationIdentityCreateRequest object itself.
      */
+    @Generated
     public CommunicationIdentityCreateRequest setExpiresInMinutes(Integer expiresInMinutes) {
         this.expiresInMinutes = expiresInMinutes;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,6 +107,7 @@ public final class CommunicationIdentityCreateRequest implements JsonSerializabl
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CommunicationIdentityCreateRequest.
      */
+    @Generated
     public static CommunicationIdentityCreateRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CommunicationIdentityCreateRequest deserializedCommunicationIdentityCreateRequest
