@@ -21,13 +21,26 @@ public class UnexpectedExceptionInformation {
      * @param exceptionType Exception type to be thrown.
      */
     public UnexpectedExceptionInformation(Class<? extends HttpResponseException> exceptionType) {
+        this(exceptionType, Object.class);
+    }
+
+    /**
+     * Creates an UnexpectedExceptionInformation object with the given exception type and expected response body.
+     * @param exceptionType Exception type to be thrown.
+     * @param exceptionBodyType The type of body of the exception.
+     */
+    public UnexpectedExceptionInformation(Class<? extends HttpResponseException> exceptionType,
+        Class<?> exceptionBodyType) {
         this.exceptionType = exceptionType;
 
         // Should always have a value() method. Register Object as a fallback plan.
-        Class<?> exceptionBodyType = Object.class;
         try {
             final Method exceptionBodyMethod = exceptionType.getDeclaredMethod(EXCEPTION_BODY_METHOD);
-            exceptionBodyType = exceptionBodyMethod.getReturnType();
+            Class<?> exceptionBodyReturnType = exceptionBodyMethod.getReturnType();
+            if (!exceptionBodyReturnType.isAssignableFrom(exceptionBodyType)) {
+                // the exceptionBodyType is not valid
+                exceptionBodyType = exceptionBodyReturnType;
+            }
         } catch (NoSuchMethodException ignored) {
             // no-op
         }

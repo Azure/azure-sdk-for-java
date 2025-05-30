@@ -669,7 +669,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         HashMap<Integer, UnexpectedExceptionInformation> exceptionHashMap = new HashMap<>();
 
         for (UnexpectedResponseExceptionType exceptionAnnotation : unexpectedResponseExceptionTypes) {
-            UnexpectedExceptionInformation exception = new UnexpectedExceptionInformation(exceptionAnnotation.value());
+            UnexpectedExceptionInformation exception = new UnexpectedExceptionInformation(exceptionAnnotation.value(),
+                exceptionAnnotation.exceptionBodyClass());
             if (exceptionAnnotation.code().length == 0) {
                 defaultException = exception;
             } else {
