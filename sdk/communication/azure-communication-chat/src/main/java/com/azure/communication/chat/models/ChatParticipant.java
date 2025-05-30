@@ -77,7 +77,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Get the displayName property: Display name for the chat participant.
+     * Display name for the chat participant.
      *
      * @return the displayName value.
      */
@@ -86,7 +86,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Set the displayName property: Display name for the chat participant.
+     * Display name for the chat participant.
      *
      * @param displayName the displayName value to set.
      * @return the ChatParticipant object itself.
@@ -97,7 +97,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Get the shareHistoryTime property: Time from which the chat history is shared with the chat participant.
+     * Time from which the chat history is shared with the chat participant.
      * The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @return the shareHistoryTime value.
@@ -107,7 +107,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Set the shareHistoryTime property: Time from which the chat history is shared with the chat participant.
+     * Time from which the chat history is shared with the chat participant.
      * The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @param shareHistoryTime the shareHistoryTime value to set.
@@ -119,7 +119,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Get the metadata property: Contextual metadata for the chat participant. The metadata consists of name/value
+     * Contextual metadata for the chat participant. The metadata consists of name/value
      * pairs. The total size of all metadata pairs can be up to 1KB in size.
      *
      * @return the metadata value.
@@ -129,7 +129,7 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     }
 
     /**
-     * Set the metadata property: Contextual metadata for the chat participant. The metadata consists of name/value
+     * Contextual metadata for the chat participant. The metadata consists of name/value
      * pairs. The total size of all metadata pairs can be up to 1KB in size.
      *
      * @param metadata the metadata value to set.

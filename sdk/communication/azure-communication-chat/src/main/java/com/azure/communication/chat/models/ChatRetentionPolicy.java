@@ -19,8 +19,7 @@ public class ChatRetentionPolicy implements JsonSerializable<ChatRetentionPolicy
     /*
      * Retention Policy Type
      */
-    private com.azure.communication.chat.models.RetentionPolicyKind kind
-        = com.azure.communication.chat.models.RetentionPolicyKind.fromString("ChatRetentionPolicy");
+    private RetentionPolicyKind kind = RetentionPolicyKind.fromString("ChatRetentionPolicy");
 
     /**
      * Creates an instance of ChatRetentionPolicy class.
@@ -33,7 +32,7 @@ public class ChatRetentionPolicy implements JsonSerializable<ChatRetentionPolicy
      *
      * @return the kind value.
      */
-    public com.azure.communication.chat.models.RetentionPolicyKind getKind() {
+    public RetentionPolicyKind getKind() {
         return this.kind;
     }
 

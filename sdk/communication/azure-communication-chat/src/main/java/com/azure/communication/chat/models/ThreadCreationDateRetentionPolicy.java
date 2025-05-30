@@ -43,7 +43,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
     }
 
     /**
-     * Get the deleteThreadAfterDays property: Indicates how many days after the thread creation the thread will be
+     * Indicates how many days after the thread creation the thread will be
      * deleted.
      *
      * @return the deleteThreadAfterDays value.
@@ -53,7 +53,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
     }
 
     /**
-     * Set the deleteThreadAfterDays property: Indicates how many days after the thread creation the thread will be
+     * Indicates how many days after the thread creation the thread will be
      * deleted.
      *
      * @param deleteThreadAfterDays the deleteThreadAfterDays value to set.

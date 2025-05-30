@@ -131,7 +131,7 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Get the metadata property: Property bag of chat thread metadata key-value pairs.
+     * Property bag of chat thread metadata key-value pairs.
      *
      * @return the metadata map.
      */
@@ -140,7 +140,7 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Set the metadata property: Property bag of chat thread metadata key-value pairs.
+     * Property bag of chat thread metadata key-value pairs.
      *
      * @param metadata the metadata map to set.
      * @return the ChatThreadProperties object itself.
@@ -151,7 +151,7 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Get the retentionPolicy property: Thread retention policy.
+     * Thread retention policy.
      *
      * @return the retentionPolicy value.
      */
@@ -160,7 +160,7 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
-     * Set the retentionPolicy property: Thread retention policy.
+     * Thread retention policy.
      *
      * @param retentionPolicy the retention policy to set.
      * @return the ChatThreadProperties object itself.

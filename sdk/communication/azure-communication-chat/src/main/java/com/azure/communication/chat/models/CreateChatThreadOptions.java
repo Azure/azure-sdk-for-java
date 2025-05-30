@@ -39,7 +39,7 @@ public final class CreateChatThreadOptions {
     private String idempotencyToken;
 
     /**
-     * Get the topic property: The chat thread topic.
+     * The chat thread topic.
      *
      * @return the topic value.
      */
@@ -48,7 +48,7 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Get the participants property: Participants to be added to the chat thread.
+     * Participants to be added to the chat thread.
      *
      * @return the participants value.
      */
@@ -57,7 +57,7 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Set the participants property: Participants to be added to the chat thread.
+     * Participants to be added to the chat thread.
      *
      * @param participants the participants value to set.
      * @return the CreateChatThreadOptions object itself.
@@ -79,7 +79,7 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Get the metadata property: Property bag of chat thread metadata key-value pairs.
+     * Property bag of chat thread metadata key-value pairs.
      *
      * @return the metadata map.
      */
@@ -88,7 +88,7 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Set the metadata property: Property bag of chat thread metadata key-value pairs.
+     * Property bag of chat thread metadata key-value pairs.
      *
      * @param metadata the metadata map to set.
      * @return the CreateChatThreadOptions object itself.
@@ -99,7 +99,7 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Get the retentionPolicy property: Thread retention policy.
+     * Thread retention policy.
      *
      * @return the retentionPolicy value.
      */
@@ -108,7 +108,7 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Set the retentionPolicy property: Thread retention policy.
+     * Thread retention policy.
      *
      * @param retentionPolicy the retention policy to set.
      * @return the CreateChatThreadOptions object itself.
@@ -144,7 +144,7 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Creates a new instance of CreateChatThreadOptions only providing topic parameter.
+     * Creates a new instance of CreateChatThreadOptions.
      * @param topic the topic value to set.
      */
     public CreateChatThreadOptions(String topic) {
