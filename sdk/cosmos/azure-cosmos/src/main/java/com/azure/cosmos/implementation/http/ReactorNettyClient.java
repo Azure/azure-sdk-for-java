@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -272,12 +271,10 @@ public class ReactorNettyClient implements HttpClient {
             .uri(request.uri().toASCIIString())
             .send(bodySendDelegate(request))
             .responseConnection((reactorNettyResponse, reactorNettyConnection) -> {
-                return Mono.fromCallable(() -> {
-                    HttpResponse httpResponse = new ReactorNettyHttpResponse(reactorNettyResponse,
-                        reactorNettyConnection).withRequest(request);
-                    responseReference.set((ReactorNettyHttpResponse) httpResponse);
-                    return httpResponse;
-                }).subscribeOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
+                HttpResponse httpResponse = new ReactorNettyHttpResponse(reactorNettyResponse,
+                    reactorNettyConnection).withRequest(request);
+                responseReference.set((ReactorNettyHttpResponse) httpResponse);
+                return Mono.just(httpResponse);
             })
             .contextWrite(Context.of(REACTOR_NETTY_REQUEST_RECORD_KEY, request.reactorNettyRequestRecord()))
             .doOnCancel(() -> {
