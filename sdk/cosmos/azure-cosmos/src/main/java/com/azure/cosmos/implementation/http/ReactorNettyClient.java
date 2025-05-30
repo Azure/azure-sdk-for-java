@@ -196,6 +196,7 @@ public class ReactorNettyClient implements HttpClient {
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
         if (http2CfgAccessor.isEffectivelyEnabled(http2Cfg)) {
             final AtomicReference<Http2SettingsSpec.Builder> settingsBuilderRef = new AtomicReference<>(null);
+
             this.httpClient = this.httpClient
                 .secure(sslContextSpec ->
                     sslContextSpec.sslContext(
@@ -208,8 +209,6 @@ public class ReactorNettyClient implements HttpClient {
                 .option(ChannelOption.SO_RCVBUF, 1024 * 1024)
                 .option(ChannelOption.SO_SNDBUF, 1024 * 1024)
                 .option(ChannelOption.SO_KEEPALIVE, true)
-                .option(EpollChannelOption.TCP_KEEPINTVL, 1)
-                .option(EpollChannelOption.TCP_KEEPIDLE, 1)
                 .http2Settings(settings -> settingsBuilderRef.set(
                     settings
                         .initialWindowSize(1024 * 1024) // 1MB initial window size
