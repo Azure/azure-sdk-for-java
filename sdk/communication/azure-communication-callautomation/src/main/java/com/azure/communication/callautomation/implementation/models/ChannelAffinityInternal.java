@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,17 +20,20 @@ public final class ChannelAffinityInternal implements JsonSerializable<ChannelAf
     /*
      * Channel number to which bitstream from a particular participant will be written.
      */
+    @Generated
     private Integer channel;
 
     /*
      * The identifier for the participant whose bitstream will be written to the channel
      * represented by the channel number.
      */
+    @Generated
     private CommunicationIdentifierModel participant;
 
     /**
      * Creates an instance of ChannelAffinityInternal class.
      */
+    @Generated
     public ChannelAffinityInternal() {
     }
 
@@ -38,6 +42,7 @@ public final class ChannelAffinityInternal implements JsonSerializable<ChannelAf
      * 
      * @return the channel value.
      */
+    @Generated
     public Integer getChannel() {
         return this.channel;
     }
@@ -48,6 +53,7 @@ public final class ChannelAffinityInternal implements JsonSerializable<ChannelAf
      * @param channel the channel value to set.
      * @return the ChannelAffinityInternal object itself.
      */
+    @Generated
     public ChannelAffinityInternal setChannel(Integer channel) {
         this.channel = channel;
         return this;
@@ -59,6 +65,7 @@ public final class ChannelAffinityInternal implements JsonSerializable<ChannelAf
      * 
      * @return the participant value.
      */
+    @Generated
     public CommunicationIdentifierModel getParticipant() {
         return this.participant;
     }
@@ -70,6 +77,7 @@ public final class ChannelAffinityInternal implements JsonSerializable<ChannelAf
      * @param participant the participant value to set.
      * @return the ChannelAffinityInternal object itself.
      */
+    @Generated
     public ChannelAffinityInternal setParticipant(CommunicationIdentifierModel participant) {
         this.participant = participant;
         return this;
@@ -78,6 +86,7 @@ public final class ChannelAffinityInternal implements JsonSerializable<ChannelAf
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,6 +104,7 @@ public final class ChannelAffinityInternal implements JsonSerializable<ChannelAf
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChannelAffinityInternal.
      */
+    @Generated
     public static ChannelAffinityInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ChannelAffinityInternal deserializedChannelAffinityInternal = new ChannelAffinityInternal();

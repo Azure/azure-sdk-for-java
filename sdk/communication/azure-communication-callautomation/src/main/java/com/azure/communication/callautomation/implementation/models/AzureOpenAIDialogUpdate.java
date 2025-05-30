@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,11 +20,13 @@ public final class AzureOpenAIDialogUpdate extends DialogUpdateBase {
     /*
      * Determines the type of the dialog.
      */
+    @Generated
     private DialogInputType kind = DialogInputType.AZURE_OPEN_AI;
 
     /**
      * Creates an instance of AzureOpenAIDialogUpdate class.
      */
+    @Generated
     public AzureOpenAIDialogUpdate() {
     }
 
@@ -32,6 +35,7 @@ public final class AzureOpenAIDialogUpdate extends DialogUpdateBase {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public DialogInputType getKind() {
         return this.kind;
@@ -40,6 +44,7 @@ public final class AzureOpenAIDialogUpdate extends DialogUpdateBase {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureOpenAIDialogUpdate setContext(Map<String, Object> context) {
         super.setContext(context);
@@ -49,6 +54,7 @@ public final class AzureOpenAIDialogUpdate extends DialogUpdateBase {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class AzureOpenAIDialogUpdate extends DialogUpdateBase {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureOpenAIDialogUpdate.
      */
+    @Generated
     public static AzureOpenAIDialogUpdate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureOpenAIDialogUpdate deserializedAzureOpenAIDialogUpdate = new AzureOpenAIDialogUpdate();

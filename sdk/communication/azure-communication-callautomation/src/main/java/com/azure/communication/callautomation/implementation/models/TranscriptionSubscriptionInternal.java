@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
     /*
      * Subscription Id.
      */
+    @Generated
     private String id;
 
     /*
      * Transcription subscription state.
      */
+    @Generated
     private TranscriptionSubscriptionStateInternal state;
 
     /*
      * Subscribed transcription result types.
      */
+    @Generated
     private List<TranscriptionResultTypeInternal> subscribedResultTypes;
 
     /**
      * Creates an instance of TranscriptionSubscriptionInternal class.
      */
+    @Generated
     public TranscriptionSubscriptionInternal() {
     }
 
@@ -43,6 +48,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -53,6 +59,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      * @param id the id value to set.
      * @return the TranscriptionSubscriptionInternal object itself.
      */
+    @Generated
     public TranscriptionSubscriptionInternal setId(String id) {
         this.id = id;
         return this;
@@ -63,6 +70,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      * 
      * @return the state value.
      */
+    @Generated
     public TranscriptionSubscriptionStateInternal getState() {
         return this.state;
     }
@@ -73,6 +81,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      * @param state the state value to set.
      * @return the TranscriptionSubscriptionInternal object itself.
      */
+    @Generated
     public TranscriptionSubscriptionInternal setState(TranscriptionSubscriptionStateInternal state) {
         this.state = state;
         return this;
@@ -83,6 +92,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      * 
      * @return the subscribedResultTypes value.
      */
+    @Generated
     public List<TranscriptionResultTypeInternal> getSubscribedResultTypes() {
         return this.subscribedResultTypes;
     }
@@ -93,6 +103,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      * @param subscribedResultTypes the subscribedResultTypes value to set.
      * @return the TranscriptionSubscriptionInternal object itself.
      */
+    @Generated
     public TranscriptionSubscriptionInternal
         setSubscribedResultTypes(List<TranscriptionResultTypeInternal> subscribedResultTypes) {
         this.subscribedResultTypes = subscribedResultTypes;
@@ -102,6 +113,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -120,6 +132,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TranscriptionSubscriptionInternal.
      */
+    @Generated
     public static TranscriptionSubscriptionInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TranscriptionSubscriptionInternal deserializedTranscriptionSubscriptionInternal

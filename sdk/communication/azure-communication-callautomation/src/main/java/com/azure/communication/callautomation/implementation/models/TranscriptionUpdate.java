@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
     /*
      * The transcriptionStatus property.
      */
+    @Generated
     private TranscriptionStatus transcriptionStatus;
 
     /*
      * The transcriptionStatusDetails property.
      */
+    @Generated
     private TranscriptionStatusDetails transcriptionStatusDetails;
 
     /**
      * Creates an instance of TranscriptionUpdate class.
      */
+    @Generated
     public TranscriptionUpdate() {
     }
 
@@ -37,6 +41,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
      * 
      * @return the transcriptionStatus value.
      */
+    @Generated
     public TranscriptionStatus getTranscriptionStatus() {
         return this.transcriptionStatus;
     }
@@ -47,6 +52,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
      * @param transcriptionStatus the transcriptionStatus value to set.
      * @return the TranscriptionUpdate object itself.
      */
+    @Generated
     public TranscriptionUpdate setTranscriptionStatus(TranscriptionStatus transcriptionStatus) {
         this.transcriptionStatus = transcriptionStatus;
         return this;
@@ -57,6 +63,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
      * 
      * @return the transcriptionStatusDetails value.
      */
+    @Generated
     public TranscriptionStatusDetails getTranscriptionStatusDetails() {
         return this.transcriptionStatusDetails;
     }
@@ -67,6 +74,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
      * @param transcriptionStatusDetails the transcriptionStatusDetails value to set.
      * @return the TranscriptionUpdate object itself.
      */
+    @Generated
     public TranscriptionUpdate setTranscriptionStatusDetails(TranscriptionStatusDetails transcriptionStatusDetails) {
         this.transcriptionStatusDetails = transcriptionStatusDetails;
         return this;
@@ -75,6 +83,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the TranscriptionUpdate.
      */
+    @Generated
     public static TranscriptionUpdate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TranscriptionUpdate deserializedTranscriptionUpdate = new TranscriptionUpdate();

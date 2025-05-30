@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,41 +20,49 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
     /*
      * Transport URL for media streaming
      */
+    @Generated
     private String transportUrl;
 
     /*
      * The type of transport to be used for media streaming, eg. Websocket
      */
+    @Generated
     private MediaStreamingTransportTypeInternal transportType;
 
     /*
      * Content type to stream, eg. audio
      */
+    @Generated
     private MediaStreamingContentTypeInternal contentType;
 
     /*
      * Audio channel type to stream, eg. unmixed audio, mixed audio
      */
+    @Generated
     private MediaStreamingAudioChannelTypeInternal audioChannelType;
 
     /*
      * Determines if the media streaming should be started immediately after call is answered or not.
      */
+    @Generated
     private Boolean startMediaStreaming;
 
     /*
      * A value indicating whether bidirectional streaming is enabled.
      */
+    @Generated
     private Boolean enableBidirectional;
 
     /*
      * Specifies the audio format used for encoding, including sample rate and channel type.
      */
+    @Generated
     private AudioFormatInternal audioFormat;
 
     /**
      * Creates an instance of MediaStreamingOptionsInternal class.
      */
+    @Generated
     public MediaStreamingOptionsInternal() {
     }
 
@@ -62,6 +71,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * 
      * @return the transportUrl value.
      */
+    @Generated
     public String getTransportUrl() {
         return this.transportUrl;
     }
@@ -72,6 +82,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * @param transportUrl the transportUrl value to set.
      * @return the MediaStreamingOptionsInternal object itself.
      */
+    @Generated
     public MediaStreamingOptionsInternal setTransportUrl(String transportUrl) {
         this.transportUrl = transportUrl;
         return this;
@@ -82,6 +93,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * 
      * @return the transportType value.
      */
+    @Generated
     public MediaStreamingTransportTypeInternal getTransportType() {
         return this.transportType;
     }
@@ -92,6 +104,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * @param transportType the transportType value to set.
      * @return the MediaStreamingOptionsInternal object itself.
      */
+    @Generated
     public MediaStreamingOptionsInternal setTransportType(MediaStreamingTransportTypeInternal transportType) {
         this.transportType = transportType;
         return this;
@@ -102,6 +115,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * 
      * @return the contentType value.
      */
+    @Generated
     public MediaStreamingContentTypeInternal getContentType() {
         return this.contentType;
     }
@@ -112,6 +126,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * @param contentType the contentType value to set.
      * @return the MediaStreamingOptionsInternal object itself.
      */
+    @Generated
     public MediaStreamingOptionsInternal setContentType(MediaStreamingContentTypeInternal contentType) {
         this.contentType = contentType;
         return this;
@@ -122,6 +137,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * 
      * @return the audioChannelType value.
      */
+    @Generated
     public MediaStreamingAudioChannelTypeInternal getAudioChannelType() {
         return this.audioChannelType;
     }
@@ -132,6 +148,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * @param audioChannelType the audioChannelType value to set.
      * @return the MediaStreamingOptionsInternal object itself.
      */
+    @Generated
     public MediaStreamingOptionsInternal setAudioChannelType(MediaStreamingAudioChannelTypeInternal audioChannelType) {
         this.audioChannelType = audioChannelType;
         return this;
@@ -143,6 +160,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * 
      * @return the startMediaStreaming value.
      */
+    @Generated
     public Boolean isStartMediaStreaming() {
         return this.startMediaStreaming;
     }
@@ -154,6 +172,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * @param startMediaStreaming the startMediaStreaming value to set.
      * @return the MediaStreamingOptionsInternal object itself.
      */
+    @Generated
     public MediaStreamingOptionsInternal setStartMediaStreaming(Boolean startMediaStreaming) {
         this.startMediaStreaming = startMediaStreaming;
         return this;
@@ -164,6 +183,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * 
      * @return the enableBidirectional value.
      */
+    @Generated
     public Boolean isEnableBidirectional() {
         return this.enableBidirectional;
     }
@@ -174,6 +194,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * @param enableBidirectional the enableBidirectional value to set.
      * @return the MediaStreamingOptionsInternal object itself.
      */
+    @Generated
     public MediaStreamingOptionsInternal setEnableBidirectional(Boolean enableBidirectional) {
         this.enableBidirectional = enableBidirectional;
         return this;
@@ -185,6 +206,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * 
      * @return the audioFormat value.
      */
+    @Generated
     public AudioFormatInternal getAudioFormat() {
         return this.audioFormat;
     }
@@ -196,6 +218,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * @param audioFormat the audioFormat value to set.
      * @return the MediaStreamingOptionsInternal object itself.
      */
+    @Generated
     public MediaStreamingOptionsInternal setAudioFormat(AudioFormatInternal audioFormat) {
         this.audioFormat = audioFormat;
         return this;
@@ -204,6 +227,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -227,6 +251,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MediaStreamingOptionsInternal.
      */
+    @Generated
     public static MediaStreamingOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MediaStreamingOptionsInternal deserializedMediaStreamingOptionsInternal

@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,23 +18,29 @@ import java.io.IOException;
 @Fluent
 public final class ResultInformation implements JsonSerializable<ResultInformation> {
     /*
-     * Code of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this result was unexpected.
+     * Code of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this result
+     * was unexpected.
      */
+    @Generated
     private Integer code;
 
     /*
-     * Subcode of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this result was unexpected.
+     * Subcode of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this
+     * result was unexpected.
      */
+    @Generated
     private Integer subCode;
 
     /*
      * Detail message that describes the current result.
      */
+    @Generated
     private String message;
 
     /**
      * Creates an instance of ResultInformation class.
      */
+    @Generated
     public ResultInformation() {
     }
 
@@ -43,6 +50,7 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
      * 
      * @return the code value.
      */
+    @Generated
     public Integer getCode() {
         return this.code;
     }
@@ -54,6 +62,7 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
      * @param code the code value to set.
      * @return the ResultInformation object itself.
      */
+    @Generated
     public ResultInformation setCode(Integer code) {
         this.code = code;
         return this;
@@ -65,6 +74,7 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
      * 
      * @return the subCode value.
      */
+    @Generated
     public Integer getSubCode() {
         return this.subCode;
     }
@@ -76,6 +86,7 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
      * @param subCode the subCode value to set.
      * @return the ResultInformation object itself.
      */
+    @Generated
     public ResultInformation setSubCode(Integer subCode) {
         this.subCode = subCode;
         return this;
@@ -86,6 +97,7 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -96,6 +108,7 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
      * @param message the message value to set.
      * @return the ResultInformation object itself.
      */
+    @Generated
     public ResultInformation setMessage(String message) {
         this.message = message;
         return this;
@@ -104,6 +117,7 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -121,6 +135,7 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ResultInformation.
      */
+    @Generated
     public static ResultInformation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ResultInformation deserializedResultInformation = new ResultInformation();

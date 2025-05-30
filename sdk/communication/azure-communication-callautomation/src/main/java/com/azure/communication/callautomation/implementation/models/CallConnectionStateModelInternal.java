@@ -4,6 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class CallConnectionStateModelInternal extends ExpandableStringEnum
     /**
      * Static value unknown for CallConnectionStateModelInternal.
      */
+    @Generated
     public static final CallConnectionStateModelInternal UNKNOWN = fromString("unknown");
 
     /**
      * Static value connecting for CallConnectionStateModelInternal.
      */
+    @Generated
     public static final CallConnectionStateModelInternal CONNECTING = fromString("connecting");
 
     /**
      * Static value connected for CallConnectionStateModelInternal.
      */
+    @Generated
     public static final CallConnectionStateModelInternal CONNECTED = fromString("connected");
 
     /**
      * Static value transferring for CallConnectionStateModelInternal.
      */
+    @Generated
     public static final CallConnectionStateModelInternal TRANSFERRING = fromString("transferring");
 
     /**
      * Static value transferAccepted for CallConnectionStateModelInternal.
      */
+    @Generated
     public static final CallConnectionStateModelInternal TRANSFER_ACCEPTED = fromString("transferAccepted");
 
     /**
      * Static value disconnecting for CallConnectionStateModelInternal.
      */
+    @Generated
     public static final CallConnectionStateModelInternal DISCONNECTING = fromString("disconnecting");
 
     /**
      * Static value disconnected for CallConnectionStateModelInternal.
      */
+    @Generated
     public static final CallConnectionStateModelInternal DISCONNECTED = fromString("disconnected");
 
     /**
@@ -51,6 +59,7 @@ public final class CallConnectionStateModelInternal extends ExpandableStringEnum
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CallConnectionStateModelInternal() {
     }
@@ -61,6 +70,7 @@ public final class CallConnectionStateModelInternal extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding CallConnectionStateModelInternal.
      */
+    @Generated
     public static CallConnectionStateModelInternal fromString(String name) {
         return fromString(name, CallConnectionStateModelInternal.class);
     }
@@ -70,6 +80,7 @@ public final class CallConnectionStateModelInternal extends ExpandableStringEnum
      * 
      * @return known CallConnectionStateModelInternal values.
      */
+    @Generated
     public static Collection<CallConnectionStateModelInternal> values() {
         return values(CallConnectionStateModelInternal.class);
     }

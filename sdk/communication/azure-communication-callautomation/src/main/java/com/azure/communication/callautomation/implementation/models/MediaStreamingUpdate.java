@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
     /*
      * The contentType property.
      */
+    @Generated
     private String contentType;
 
     /*
      * The mediaStreamingStatus property.
      */
+    @Generated
     private MediaStreamingStatus mediaStreamingStatus;
 
     /*
      * The mediaStreamingStatusDetails property.
      */
+    @Generated
     private MediaStreamingStatusDetails mediaStreamingStatusDetails;
 
     /**
      * Creates an instance of MediaStreamingUpdate class.
      */
+    @Generated
     public MediaStreamingUpdate() {
     }
 
@@ -42,6 +47,7 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
      * 
      * @return the contentType value.
      */
+    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -52,6 +58,7 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
      * @param contentType the contentType value to set.
      * @return the MediaStreamingUpdate object itself.
      */
+    @Generated
     public MediaStreamingUpdate setContentType(String contentType) {
         this.contentType = contentType;
         return this;
@@ -62,6 +69,7 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
      * 
      * @return the mediaStreamingStatus value.
      */
+    @Generated
     public MediaStreamingStatus getMediaStreamingStatus() {
         return this.mediaStreamingStatus;
     }
@@ -72,6 +80,7 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
      * @param mediaStreamingStatus the mediaStreamingStatus value to set.
      * @return the MediaStreamingUpdate object itself.
      */
+    @Generated
     public MediaStreamingUpdate setMediaStreamingStatus(MediaStreamingStatus mediaStreamingStatus) {
         this.mediaStreamingStatus = mediaStreamingStatus;
         return this;
@@ -82,6 +91,7 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
      * 
      * @return the mediaStreamingStatusDetails value.
      */
+    @Generated
     public MediaStreamingStatusDetails getMediaStreamingStatusDetails() {
         return this.mediaStreamingStatusDetails;
     }
@@ -92,6 +102,7 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
      * @param mediaStreamingStatusDetails the mediaStreamingStatusDetails value to set.
      * @return the MediaStreamingUpdate object itself.
      */
+    @Generated
     public MediaStreamingUpdate
         setMediaStreamingStatusDetails(MediaStreamingStatusDetails mediaStreamingStatusDetails) {
         this.mediaStreamingStatusDetails = mediaStreamingStatusDetails;
@@ -101,6 +112,7 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -120,6 +132,7 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MediaStreamingUpdate.
      */
+    @Generated
     public static MediaStreamingUpdate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MediaStreamingUpdate deserializedMediaStreamingUpdate = new MediaStreamingUpdate();
