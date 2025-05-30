@@ -174,10 +174,10 @@ public final class ReactorNettyRequestRecord {
         Instant timeCompleted = this.timeCompleted();
         Instant timeCompletedOrNow = timeCompleted == null ? now : timeCompleted;
 
-        if (this.timeConnected() != null) {
+        if (timeConnected != null) {
             return RequestTimeline.of(
                 new RequestTimeline.Event(CONNECTION_CREATED,
-                    timeCreated, timeConnected() == null ? timeCompletedOrNow : timeConnected),
+                    timeCreated, timeConnected),
                 new RequestTimeline.Event(CONNECTION_CONFIGURED,
                     timeConnected, timeConfigured == null ? timeCompletedOrNow : timeConfigured),
                 new RequestTimeline.Event(REQUEST_SENT,
@@ -189,7 +189,7 @@ public final class ReactorNettyRequestRecord {
         } else {
             return RequestTimeline.of(
                 new RequestTimeline.Event(CONNECTION_ACQUIRED,
-                    timeCreated, timeAcquired() == null ? timeCompletedOrNow : timeAcquired),
+                    timeCreated, timeAcquired == null ? timeCompletedOrNow : timeAcquired),
                 new RequestTimeline.Event(CONNECTION_CONFIGURED,
                     timeAcquired, timeConfigured == null ? timeCompletedOrNow : timeConfigured),
                 new RequestTimeline.Event(REQUEST_SENT,

@@ -346,7 +346,17 @@ public class ReactorNettyClient implements HttpClient {
                     }
                     requestRecord.setTimeAcquired(time);
                 }
-            } else if (state.equals(HttpClientState.CONFIGURED) || state.equals(HttpClientState.STREAM_CONFIGURED)) {
+            } else if (state.equals(HttpClientState.STREAM_CONFIGURED)) {
+                if (conn instanceof HttpClientRequest) {
+                    HttpClientRequest httpClientRequest = (HttpClientRequest) conn;
+                    ReactorNettyRequestRecord requestRecord =
+                        httpClientRequest.currentContextView().getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
+                    if (requestRecord == null) {
+                        throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
+                    }
+                    requestRecord.setTimeAcquired(time);
+                }
+            } else if (state.equals(HttpClientState.CONFIGURED) || state.equals(HttpClientState.REQUEST_PREPARED)) {
                 if (conn instanceof HttpClientRequest) {
                     HttpClientRequest httpClientRequest = (HttpClientRequest) conn;
                     ReactorNettyRequestRecord requestRecord =
