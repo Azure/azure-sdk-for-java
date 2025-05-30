@@ -942,6 +942,7 @@
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                          @joshfree @jonathangiles
 /eng/common/pipelines/codeowners-linter.yml                   @alzimmermsft @srnagar @lmolkova
+/eng/pipelines/docindex.yml                                   @danieljurek @hallipr @weshaggard @benbp
 
 # Add Cosmos source owners as the owners of their specialized matrix
 /eng/pipelines/templates/stages/cosmos-emulator-matrix.json   @kirankumarkolli @Azure/azure-cosmos-java-sdk-connectors
