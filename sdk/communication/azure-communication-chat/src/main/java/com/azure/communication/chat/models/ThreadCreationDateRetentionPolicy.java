@@ -18,8 +18,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
     /*
      * Retention Policy Type
      */
-    private final com.azure.communication.chat.models.RetentionPolicyKind kind
-        = com.azure.communication.chat.models.RetentionPolicyKind.THREAD_CREATION_DATE;
+    private final RetentionPolicyKind kind = RetentionPolicyKind.THREAD_CREATION_DATE;
 
     /*
      * Indicates how many days after the thread creation the thread will be deleted.
@@ -33,12 +32,12 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
     }
 
     /**
-     * Get the kind property: Retention Policy Type.
+     * Retention Policy Type.
      *
      * @return the kind value.
      */
     @Override
-    public com.azure.communication.chat.models.RetentionPolicyKind getKind() {
+    public RetentionPolicyKind getKind() {
         return this.kind;
     }
 
@@ -59,7 +58,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
      * @param deleteThreadAfterDays the deleteThreadAfterDays value to set.
      * @return the ThreadCreationDateRetentionPolicy object itself.
      */
-    public com.azure.communication.chat.models.ThreadCreationDateRetentionPolicy
+    public ThreadCreationDateRetentionPolicy
         setDeleteThreadAfterDays(int deleteThreadAfterDays) {
         this.deleteThreadAfterDays = deleteThreadAfterDays;
         return this;

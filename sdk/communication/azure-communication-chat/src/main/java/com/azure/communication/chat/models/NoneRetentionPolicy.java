@@ -18,7 +18,7 @@ public final class NoneRetentionPolicy extends ChatRetentionPolicy {
     /*
      * Retention Policy Type
      */
-    private com.azure.communication.chat.models.RetentionPolicyKind kind = RetentionPolicyKind.NONE;
+    private RetentionPolicyKind kind = RetentionPolicyKind.NONE;
 
     /**
      * Creates an instance of NoneRetentionPolicy class.
@@ -32,7 +32,7 @@ public final class NoneRetentionPolicy extends ChatRetentionPolicy {
      * @return the kind value.
      */
     @Override
-    public com.azure.communication.chat.models.RetentionPolicyKind getKind() {
+    public RetentionPolicyKind getKind() {
         return this.kind;
     }
 
