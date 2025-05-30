@@ -1,14 +1,13 @@
 # Release History
 
-## 1.4.0 (Unreleased)
+## 1.4.0 (2025-06-02)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Real-time transcription support
+- Audio and DTMF streaming capabilities
+- Integration of ConnectAPI for seamless streaming and transcription
+- Improved media streaming with bidirectional functionality, allowing audio formats in both directions, currently supporting sample rates of 24kHz and 16kHz
 
 ## 1.3.3 (2025-03-24)
 

@@ -34,7 +34,7 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
     /*
      * Gets or Sets Locale.
      */
-    private String Locale;
+    private String locale;
 
     /*
      * Gets or Sets the subscribed transcription result types.
@@ -58,7 +58,7 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
         id = null;
         state = null;
         subscribedResultStates = null;
-        this.Locale = null;
+        this.locale = null;
     }
 
     /**
@@ -77,7 +77,7 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
                 .map(resultType -> TranscriptionResultState.fromString(resultType.toString()))
                 .collect(Collectors.toList())
             : null;
-        this.Locale = transcriptionSubscriptionInternal.getLocale() != null
+        this.locale = transcriptionSubscriptionInternal.getLocale() != null
             ? transcriptionSubscriptionInternal.getLocale().toString()
             : null;
     }
@@ -106,7 +106,7 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
      * @return the state value.
      */
     public String getLocale() {
-        return this.Locale;
+        return this.locale;
     }
 
     /**
@@ -125,7 +125,7 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeArrayField("subscribedResultStates", this.subscribedResultStates,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeStringField("locale", this.Locale);
+        jsonWriter.writeStringField("locale", this.locale);
         return jsonWriter.writeEndObject();
     }
 
@@ -154,7 +154,7 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
                         = reader.readArray(reader1 -> TranscriptionResultState.fromString(reader1.getString()));
                     deserializedTranscriptionSubscription.subscribedResultStates = subscribedResultTypes;
                 } else if ("locale".equals(fieldName)) {
-                    deserializedTranscriptionSubscription.Locale = reader.getString();
+                    deserializedTranscriptionSubscription.locale = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
