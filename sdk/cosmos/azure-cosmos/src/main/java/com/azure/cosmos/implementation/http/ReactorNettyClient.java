@@ -364,7 +364,8 @@ public class ReactorNettyClient implements HttpClient {
             } else if (state.equals(HttpClientState.DISCONNECTING)
                 || state.equals(HttpClientState.REQUEST_PREPARED)
                 || state.equals(HttpClientState.RESPONSE_COMPLETED)
-                || state.equals(HttpClientState.RESPONSE_INCOMPLETE)) {
+                || state.equals(HttpClientState.RESPONSE_INCOMPLETE)
+                || state.equals(HttpClientState.RELEASED)) {
 
                 // No-op
             } else {
