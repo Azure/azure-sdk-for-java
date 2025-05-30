@@ -4,7 +4,7 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.communication.callautomation.implementation.models.TranscriptionSubscriptionInternal;
 import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionSubscriptionConstructorProxy;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * Transcription Subscription Object.
  */
-@Fluent
+@Immutable
 public final class TranscriptionSubscription implements JsonSerializable<TranscriptionSubscription> {
     /*
      * Gets or Sets subscription Id.
@@ -32,9 +32,14 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
     private TranscriptionSubscriptionState state;
 
     /*
+     * Gets or Sets Locale.
+     */
+    private String locale;
+
+    /*
      * Gets or Sets the subscribed transcription result types.
      */
-    private List<TranscriptionResultState> subscribedResultTypes;
+    private List<TranscriptionResultState> subscribedResultStates;
 
     static {
         TranscriptionSubscriptionConstructorProxy
@@ -49,10 +54,11 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
     /**
      * Creates an instance of TranscriptionSubscriptionInternal class.
      */
-    public TranscriptionSubscription() {
+    TranscriptionSubscription() {
         id = null;
         state = null;
-        subscribedResultTypes = null;
+        subscribedResultStates = null;
+        this.locale = null;
     }
 
     /**
@@ -65,11 +71,14 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
         this.state = transcriptionSubscriptionInternal.getState() != null
             ? TranscriptionSubscriptionState.fromString(transcriptionSubscriptionInternal.getState().toString())
             : null;
-        this.subscribedResultTypes = transcriptionSubscriptionInternal.getSubscribedResultTypes() != null
+        this.subscribedResultStates = transcriptionSubscriptionInternal.getSubscribedResultTypes() != null
             ? transcriptionSubscriptionInternal.getSubscribedResultTypes()
                 .stream()
                 .map(resultType -> TranscriptionResultState.fromString(resultType.toString()))
                 .collect(Collectors.toList())
+            : null;
+        this.locale = transcriptionSubscriptionInternal.getLocale() != null
+            ? transcriptionSubscriptionInternal.getLocale().toString()
             : null;
     }
 
@@ -92,12 +101,21 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
     }
 
     /**
-     * Get the subscribedResultTypes property: Gets or Sets the subscribed transcription result types.
+     * Get the state property: Gets or Sets transcription subscription state.
      * 
-     * @return the subscribedResultTypes value.
+     * @return the state value.
      */
-    public List<TranscriptionResultState> getSubscribedResultTypes() {
-        return this.subscribedResultTypes;
+    public String getLocale() {
+        return this.locale;
+    }
+
+    /**
+     * Get the subscribedResultStates property: Gets or Sets the subscribed transcription result types.
+     * 
+     * @return the subscribedResultStates value.
+     */
+    public List<TranscriptionResultState> getSubscribedResultStates() {
+        return this.subscribedResultStates;
     }
 
     @Override
@@ -105,8 +123,9 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
-        jsonWriter.writeArrayField("subscribedResultTypes", this.subscribedResultTypes,
+        jsonWriter.writeArrayField("subscribedResultStates", this.subscribedResultStates,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("locale", this.locale);
         return jsonWriter.writeEndObject();
     }
 
@@ -130,10 +149,12 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
                 } else if ("state".equals(fieldName)) {
                     deserializedTranscriptionSubscription.state
                         = TranscriptionSubscriptionState.fromString(reader.getString());
-                } else if ("subscribedResultTypes".equals(fieldName)) {
+                } else if ("subscribedResultStates".equals(fieldName)) {
                     List<TranscriptionResultState> subscribedResultTypes
                         = reader.readArray(reader1 -> TranscriptionResultState.fromString(reader1.getString()));
-                    deserializedTranscriptionSubscription.subscribedResultTypes = subscribedResultTypes;
+                    deserializedTranscriptionSubscription.subscribedResultStates = subscribedResultTypes;
+                } else if ("locale".equals(fieldName)) {
+                    deserializedTranscriptionSubscription.locale = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

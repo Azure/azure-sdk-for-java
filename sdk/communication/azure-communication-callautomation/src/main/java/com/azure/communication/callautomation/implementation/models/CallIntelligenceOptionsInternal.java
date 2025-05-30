@@ -21,11 +21,6 @@ public final class CallIntelligenceOptionsInternal implements JsonSerializable<C
      */
     private String cognitiveServicesEndpoint;
 
-    /*
-     * A backup identifier of the Cognitive Service resource assigned to this call.
-     */
-    private String backupCognitiveServicesEndpoint;
-
     /**
      * Creates an instance of CallIntelligenceOptionsInternal class.
      */
@@ -55,35 +50,12 @@ public final class CallIntelligenceOptionsInternal implements JsonSerializable<C
     }
 
     /**
-     * Get the backupCognitiveServicesEndpoint property: A backup identifier of the Cognitive Service resource assigned
-     * to this call.
-     * 
-     * @return the backupCognitiveServicesEndpoint value.
-     */
-    public String getBackupCognitiveServicesEndpoint() {
-        return this.backupCognitiveServicesEndpoint;
-    }
-
-    /**
-     * Set the backupCognitiveServicesEndpoint property: A backup identifier of the Cognitive Service resource assigned
-     * to this call.
-     * 
-     * @param backupCognitiveServicesEndpoint the backupCognitiveServicesEndpoint value to set.
-     * @return the CallIntelligenceOptionsInternal object itself.
-     */
-    public CallIntelligenceOptionsInternal setBackupCognitiveServicesEndpoint(String backupCognitiveServicesEndpoint) {
-        this.backupCognitiveServicesEndpoint = backupCognitiveServicesEndpoint;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("cognitiveServicesEndpoint", this.cognitiveServicesEndpoint);
-        jsonWriter.writeStringField("backupCognitiveServicesEndpoint", this.backupCognitiveServicesEndpoint);
         return jsonWriter.writeEndObject();
     }
 
@@ -105,8 +77,6 @@ public final class CallIntelligenceOptionsInternal implements JsonSerializable<C
 
                 if ("cognitiveServicesEndpoint".equals(fieldName)) {
                     deserializedCallIntelligenceOptionsInternal.cognitiveServicesEndpoint = reader.getString();
-                } else if ("backupCognitiveServicesEndpoint".equals(fieldName)) {
-                    deserializedCallIntelligenceOptionsInternal.backupCognitiveServicesEndpoint = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

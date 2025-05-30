@@ -6,14 +6,16 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionDataContructorProxy;
 import com.azure.communication.callautomation.implementation.converters.TranscriptionDataConverter;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.List;
 import java.time.Duration;
 
 /**
- * The TranscriptionData model.
+ * The data which contains the transcription data stream information such as DisplayText..
  */
+@Immutable
 public final class TranscriptionData extends StreamingData {
 
     private static final ClientLogger LOGGER = new ClientLogger(TranscriptionData.class);
@@ -76,7 +78,8 @@ public final class TranscriptionData extends StreamingData {
      *
      * @param internalData transcription internal data
      */
-    TranscriptionData(TranscriptionDataConverter internalData) {
+    protected TranscriptionData(TranscriptionDataConverter internalData) {
+        super(StreamingDataKind.TRANSCRIPTION_DATA);
         this.text = internalData.getText();
         this.format = convertToTextFormatEnum(internalData.getFormat());
         this.confidence = internalData.getConfidence();
@@ -90,20 +93,6 @@ public final class TranscriptionData extends StreamingData {
         }
 
         this.resultState = convertToResultStatusEnum(internalData.getResultStatus());
-    }
-
-    /**
-     * Create instance of transcription data
-     */
-    public TranscriptionData() {
-        this.text = null;
-        this.format = null;
-        this.confidence = null;
-        this.offset = null;
-        this.duration = null;
-        this.words = null;
-        this.participant = null;
-        this.resultState = null;
     }
 
     private TranscriptionResultState convertToResultStatusEnum(String resultStatus) {
@@ -126,6 +115,7 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
+     * The display form of the recognized word
      * Get the text property.
      *
      * @return the text value.
@@ -135,7 +125,8 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
-     * Get the format property.
+     * The format of tex
+     *  Get the format property.
      *
      * @return the format value.
      */
@@ -144,6 +135,7 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
+     * Confidence of recognition of the whole phrase, from 0.0 (no confidence) to 1.0 (full confidence)
      * Get the confidence property.
      *
      * @return the confidence value.
@@ -153,6 +145,7 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
+     * The starting position of this payload
      * Get the offset property.
      *
      * @return the offset value.
@@ -162,6 +155,8 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
+     * Duration of this payload in the media
+     * Duration in ticks. 1 tick = 100 nanoseconds.
      * Get the duration property.
      *
      * @return the duration value.
@@ -171,6 +166,7 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
+     * The result for each word of the phrase
      * Get the words property.
      *
      * @return the words value.
@@ -189,6 +185,7 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
+     * Status of the result of transcription
      * Get the resultState property.
      *
      * @return the resultState value.
