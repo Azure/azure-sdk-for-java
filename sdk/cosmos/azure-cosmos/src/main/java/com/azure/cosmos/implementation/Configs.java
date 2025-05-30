@@ -345,7 +345,7 @@ public class Configs {
     private static final String HTTP2_MAX_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_HTTP2_MAX_CONNECTION_POOL_SIZE";
 
     // Config to indicate the minimum number of live connections to keep in the pool for http2
-    private static final int DEFAULT_HTTP2_MIN_CONNECTION_POOL_SIZE = 1;
+    private static final int DEFAULT_HTTP2_MIN_CONNECTION_POOL_SIZE = Math.max(CPU_CNT, 8);
     private static final String HTTP2_MIN_CONNECTION_POOL_SIZE = "COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE";
     private static final String HTTP2_MIN_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_HTTP2_MIN_CONNECTION_POOL_SIZE";
 
