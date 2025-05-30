@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.models.ShareFileHandleAccessRights;
 import com.azure.xml.XmlReader;
@@ -27,56 +27,67 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
     /*
      * XSMB service handle ID
      */
+    @Generated
     private String handleId;
 
     /*
      * The Path property.
      */
+    @Generated
     private StringEncoded path;
 
     /*
      * FileId uniquely identifies the file or directory.
      */
+    @Generated
     private String fileId;
 
     /*
      * ParentId uniquely identifies the parent directory of the object.
      */
+    @Generated
     private String parentId;
 
     /*
      * SMB session ID in context of which the file handle was opened
      */
+    @Generated
     private String sessionId;
 
     /*
      * Client IP that opened the handle
      */
+    @Generated
     private String clientIp;
 
     /*
      * Name of the client machine where the share is being mounted
      */
+    @Generated
     private String clientName;
 
     /*
      * Time when the session that previously opened the handle has last been reconnected. (UTC)
      */
+    @Generated
     private DateTimeRfc1123 openTime;
 
     /*
      * Time handle was last connected to (UTC)
      */
+    @Generated
     private DateTimeRfc1123 lastReconnectTime;
 
     /*
      * The AccessRightList property.
      */
+    @Generated
     private List<ShareFileHandleAccessRights> accessRightList;
 
     /**
      * Creates an instance of HandleItem class.
      */
+    @Generated
     public HandleItem() {
     }
 
@@ -85,6 +96,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * 
      * @return the handleId value.
      */
+    @Generated
     public String getHandleId() {
         return this.handleId;
     }
@@ -95,6 +107,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * @param handleId the handleId value to set.
      * @return the HandleItem object itself.
      */
+    @Generated
     public HandleItem setHandleId(String handleId) {
         this.handleId = handleId;
         return this;
@@ -105,6 +118,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * 
      * @return the path value.
      */
+    @Generated
     public StringEncoded getPath() {
         return this.path;
     }
@@ -115,6 +129,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * @param path the path value to set.
      * @return the HandleItem object itself.
      */
+    @Generated
     public HandleItem setPath(StringEncoded path) {
         this.path = path;
         return this;
@@ -125,6 +140,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * 
      * @return the fileId value.
      */
+    @Generated
     public String getFileId() {
         return this.fileId;
     }
@@ -135,6 +151,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * @param fileId the fileId value to set.
      * @return the HandleItem object itself.
      */
+    @Generated
     public HandleItem setFileId(String fileId) {
         this.fileId = fileId;
         return this;
@@ -145,6 +162,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * 
      * @return the parentId value.
      */
+    @Generated
     public String getParentId() {
         return this.parentId;
     }
@@ -155,6 +173,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * @param parentId the parentId value to set.
      * @return the HandleItem object itself.
      */
+    @Generated
     public HandleItem setParentId(String parentId) {
         this.parentId = parentId;
         return this;
@@ -165,6 +184,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * 
      * @return the sessionId value.
      */
+    @Generated
     public String getSessionId() {
         return this.sessionId;
     }
@@ -175,6 +195,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * @param sessionId the sessionId value to set.
      * @return the HandleItem object itself.
      */
+    @Generated
     public HandleItem setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
@@ -185,6 +206,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * 
      * @return the clientIp value.
      */
+    @Generated
     public String getClientIp() {
         return this.clientIp;
     }
@@ -195,6 +217,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * @param clientIp the clientIp value to set.
      * @return the HandleItem object itself.
      */
+    @Generated
     public HandleItem setClientIp(String clientIp) {
         this.clientIp = clientIp;
         return this;
@@ -205,6 +228,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * 
      * @return the clientName value.
      */
+    @Generated
     public String getClientName() {
         return this.clientName;
     }
@@ -215,6 +239,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * @param clientName the clientName value to set.
      * @return the HandleItem object itself.
      */
+    @Generated
     public HandleItem setClientName(String clientName) {
         this.clientName = clientName;
         return this;
@@ -226,6 +251,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * 
      * @return the openTime value.
      */
+    @Generated
     public OffsetDateTime getOpenTime() {
         if (this.openTime == null) {
             return null;
@@ -240,6 +266,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * @param openTime the openTime value to set.
      * @return the HandleItem object itself.
      */
+    @Generated
     public HandleItem setOpenTime(OffsetDateTime openTime) {
         if (openTime == null) {
             this.openTime = null;
@@ -254,6 +281,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * 
      * @return the lastReconnectTime value.
      */
+    @Generated
     public OffsetDateTime getLastReconnectTime() {
         if (this.lastReconnectTime == null) {
             return null;
@@ -267,6 +295,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * @param lastReconnectTime the lastReconnectTime value to set.
      * @return the HandleItem object itself.
      */
+    @Generated
     public HandleItem setLastReconnectTime(OffsetDateTime lastReconnectTime) {
         if (lastReconnectTime == null) {
             this.lastReconnectTime = null;
@@ -281,6 +310,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * 
      * @return the accessRightList value.
      */
+    @Generated
     public List<ShareFileHandleAccessRights> getAccessRightList() {
         if (this.accessRightList == null) {
             this.accessRightList = new ArrayList<>();
@@ -294,19 +324,22 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * @param accessRightList the accessRightList value to set.
      * @return the HandleItem object itself.
      */
+    @Generated
     public HandleItem setAccessRightList(List<ShareFileHandleAccessRights> accessRightList) {
         this.accessRightList = accessRightList;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Handle" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Handle" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("HandleId", this.handleId);
         xmlWriter.writeXml(this.path, "Path");
@@ -335,6 +368,7 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the HandleItem.
      */
+    @Generated
     public static HandleItem fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -349,8 +383,9 @@ public final class HandleItem implements XmlSerializable<HandleItem> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the HandleItem.
      */
+    @Generated
     public static HandleItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Handle" : rootElementName;
+        String finalRootElementName = rootElementName == null || rootElementName.isEmpty() ? "Handle" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             HandleItem deserializedHandleItem = new HandleItem();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

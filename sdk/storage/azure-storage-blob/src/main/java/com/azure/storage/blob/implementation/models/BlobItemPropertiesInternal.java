@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.AccessTier;
@@ -33,207 +34,248 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
     /*
      * The Creation-Time property.
      */
+    @Generated
     private DateTimeRfc1123 creationTime;
 
     /*
      * The Last-Modified property.
      */
+    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The Etag property.
      */
+    @Generated
     private String eTag;
 
     /*
      * Size in bytes
      */
+    @Generated
     private Long contentLength;
 
     /*
      * The Content-Type property.
      */
+    @Generated
     private String contentType;
 
     /*
      * The Content-Encoding property.
      */
+    @Generated
     private String contentEncoding;
 
     /*
      * The Content-Language property.
      */
+    @Generated
     private String contentLanguage;
 
     /*
      * The Content-MD5 property.
      */
+    @Generated
     private byte[] contentMd5;
 
     /*
      * The Content-Disposition property.
      */
+    @Generated
     private String contentDisposition;
 
     /*
      * The Cache-Control property.
      */
+    @Generated
     private String cacheControl;
 
     /*
      * The x-ms-blob-sequence-number property.
      */
+    @Generated
     private Long blobSequenceNumber;
 
     /*
      * The BlobType property.
      */
+    @Generated
     private BlobType blobType;
 
     /*
      * The LeaseStatus property.
      */
+    @Generated
     private LeaseStatusType leaseStatus;
 
     /*
      * The LeaseState property.
      */
+    @Generated
     private LeaseStateType leaseState;
 
     /*
      * The LeaseDuration property.
      */
+    @Generated
     private LeaseDurationType leaseDuration;
 
     /*
      * The CopyId property.
      */
+    @Generated
     private String copyId;
 
     /*
      * The CopyStatus property.
      */
+    @Generated
     private CopyStatusType copyStatus;
 
     /*
      * The CopySource property.
      */
+    @Generated
     private String copySource;
 
     /*
      * The CopyProgress property.
      */
+    @Generated
     private String copyProgress;
 
     /*
      * The CopyCompletionTime property.
      */
+    @Generated
     private DateTimeRfc1123 copyCompletionTime;
 
     /*
      * The CopyStatusDescription property.
      */
+    @Generated
     private String copyStatusDescription;
 
     /*
      * The ServerEncrypted property.
      */
+    @Generated
     private Boolean serverEncrypted;
 
     /*
      * The IncrementalCopy property.
      */
+    @Generated
     private Boolean incrementalCopy;
 
     /*
      * The DestinationSnapshot property.
      */
+    @Generated
     private String destinationSnapshot;
 
     /*
      * The DeletedTime property.
      */
+    @Generated
     private DateTimeRfc1123 deletedTime;
 
     /*
      * The RemainingRetentionDays property.
      */
+    @Generated
     private Integer remainingRetentionDays;
 
     /*
      * The AccessTier property.
      */
+    @Generated
     private AccessTier accessTier;
 
     /*
      * The AccessTierInferred property.
      */
+    @Generated
     private Boolean accessTierInferred;
 
     /*
      * The ArchiveStatus property.
      */
+    @Generated
     private ArchiveStatus archiveStatus;
 
     /*
      * The CustomerProvidedKeySha256 property.
      */
+    @Generated
     private String customerProvidedKeySha256;
 
     /*
      * The name of the encryption scope under which the blob is encrypted.
      */
+    @Generated
     private String encryptionScope;
 
     /*
      * The AccessTierChangeTime property.
      */
+    @Generated
     private DateTimeRfc1123 accessTierChangeTime;
 
     /*
      * The TagCount property.
      */
+    @Generated
     private Integer tagCount;
 
     /*
      * The Expiry-Time property.
      */
+    @Generated
     private DateTimeRfc1123 expiresOn;
 
     /*
      * The Sealed property.
      */
+    @Generated
     private Boolean isSealed;
 
     /*
      * If an object is in rehydrate pending state then this header is returned with priority of rehydrate. Valid values
      * are High and Standard.
      */
+    @Generated
     private RehydratePriority rehydratePriority;
 
     /*
      * The LastAccessTime property.
      */
+    @Generated
     private DateTimeRfc1123 lastAccessedOn;
 
     /*
      * The ImmutabilityPolicyUntilDate property.
      */
+    @Generated
     private DateTimeRfc1123 immutabilityPolicyExpiresOn;
 
     /*
      * The ImmutabilityPolicyMode property.
      */
+    @Generated
     private BlobImmutabilityPolicyMode immutabilityPolicyMode;
 
     /*
      * The LegalHold property.
      */
+    @Generated
     private Boolean legalHold;
 
     /**
      * Creates an instance of BlobItemPropertiesInternal class.
      */
+    @Generated
     public BlobItemPropertiesInternal() {
     }
 
@@ -242,6 +284,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the creationTime value.
      */
+    @Generated
     public OffsetDateTime getCreationTime() {
         if (this.creationTime == null) {
             return null;
@@ -255,6 +298,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param creationTime the creationTime value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setCreationTime(OffsetDateTime creationTime) {
         if (creationTime == null) {
             this.creationTime = null;
@@ -269,6 +313,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -282,6 +327,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param lastModified the lastModified value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -296,6 +342,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -306,6 +353,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param eTag the eTag value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -316,6 +364,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the contentLength value.
      */
+    @Generated
     public Long getContentLength() {
         return this.contentLength;
     }
@@ -326,6 +375,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param contentLength the contentLength value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
@@ -336,6 +386,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the contentType value.
      */
+    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -346,6 +397,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param contentType the contentType value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setContentType(String contentType) {
         this.contentType = contentType;
         return this;
@@ -356,6 +408,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the contentEncoding value.
      */
+    @Generated
     public String getContentEncoding() {
         return this.contentEncoding;
     }
@@ -366,6 +419,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param contentEncoding the contentEncoding value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
@@ -376,6 +430,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the contentLanguage value.
      */
+    @Generated
     public String getContentLanguage() {
         return this.contentLanguage;
     }
@@ -386,6 +441,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param contentLanguage the contentLanguage value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
@@ -396,6 +452,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the contentMd5 value.
      */
+    @Generated
     public byte[] getContentMd5() {
         return CoreUtils.clone(this.contentMd5);
     }
@@ -406,6 +463,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param contentMd5 the contentMd5 value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setContentMd5(byte[] contentMd5) {
         this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
@@ -416,6 +474,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the contentDisposition value.
      */
+    @Generated
     public String getContentDisposition() {
         return this.contentDisposition;
     }
@@ -426,6 +485,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param contentDisposition the contentDisposition value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
@@ -436,6 +496,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the cacheControl value.
      */
+    @Generated
     public String getCacheControl() {
         return this.cacheControl;
     }
@@ -446,6 +507,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param cacheControl the cacheControl value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
@@ -456,6 +518,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the blobSequenceNumber value.
      */
+    @Generated
     public Long getBlobSequenceNumber() {
         return this.blobSequenceNumber;
     }
@@ -466,6 +529,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setBlobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
@@ -476,6 +540,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the blobType value.
      */
+    @Generated
     public BlobType getBlobType() {
         return this.blobType;
     }
@@ -486,6 +551,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param blobType the blobType value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setBlobType(BlobType blobType) {
         this.blobType = blobType;
         return this;
@@ -496,6 +562,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the leaseStatus value.
      */
+    @Generated
     public LeaseStatusType getLeaseStatus() {
         return this.leaseStatus;
     }
@@ -506,6 +573,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param leaseStatus the leaseStatus value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setLeaseStatus(LeaseStatusType leaseStatus) {
         this.leaseStatus = leaseStatus;
         return this;
@@ -516,6 +584,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the leaseState value.
      */
+    @Generated
     public LeaseStateType getLeaseState() {
         return this.leaseState;
     }
@@ -526,6 +595,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param leaseState the leaseState value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setLeaseState(LeaseStateType leaseState) {
         this.leaseState = leaseState;
         return this;
@@ -536,6 +606,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the leaseDuration value.
      */
+    @Generated
     public LeaseDurationType getLeaseDuration() {
         return this.leaseDuration;
     }
@@ -546,6 +617,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param leaseDuration the leaseDuration value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setLeaseDuration(LeaseDurationType leaseDuration) {
         this.leaseDuration = leaseDuration;
         return this;
@@ -556,6 +628,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the copyId value.
      */
+    @Generated
     public String getCopyId() {
         return this.copyId;
     }
@@ -566,6 +639,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param copyId the copyId value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setCopyId(String copyId) {
         this.copyId = copyId;
         return this;
@@ -576,6 +650,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the copyStatus value.
      */
+    @Generated
     public CopyStatusType getCopyStatus() {
         return this.copyStatus;
     }
@@ -586,6 +661,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param copyStatus the copyStatus value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setCopyStatus(CopyStatusType copyStatus) {
         this.copyStatus = copyStatus;
         return this;
@@ -596,6 +672,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the copySource value.
      */
+    @Generated
     public String getCopySource() {
         return this.copySource;
     }
@@ -606,6 +683,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param copySource the copySource value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setCopySource(String copySource) {
         this.copySource = copySource;
         return this;
@@ -616,6 +694,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the copyProgress value.
      */
+    @Generated
     public String getCopyProgress() {
         return this.copyProgress;
     }
@@ -626,6 +705,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param copyProgress the copyProgress value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setCopyProgress(String copyProgress) {
         this.copyProgress = copyProgress;
         return this;
@@ -636,6 +716,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the copyCompletionTime value.
      */
+    @Generated
     public OffsetDateTime getCopyCompletionTime() {
         if (this.copyCompletionTime == null) {
             return null;
@@ -649,6 +730,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param copyCompletionTime the copyCompletionTime value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setCopyCompletionTime(OffsetDateTime copyCompletionTime) {
         if (copyCompletionTime == null) {
             this.copyCompletionTime = null;
@@ -663,6 +745,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the copyStatusDescription value.
      */
+    @Generated
     public String getCopyStatusDescription() {
         return this.copyStatusDescription;
     }
@@ -673,6 +756,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param copyStatusDescription the copyStatusDescription value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setCopyStatusDescription(String copyStatusDescription) {
         this.copyStatusDescription = copyStatusDescription;
         return this;
@@ -683,6 +767,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the serverEncrypted value.
      */
+    @Generated
     public Boolean isServerEncrypted() {
         return this.serverEncrypted;
     }
@@ -693,6 +778,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param serverEncrypted the serverEncrypted value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setServerEncrypted(Boolean serverEncrypted) {
         this.serverEncrypted = serverEncrypted;
         return this;
@@ -703,6 +789,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the incrementalCopy value.
      */
+    @Generated
     public Boolean isIncrementalCopy() {
         return this.incrementalCopy;
     }
@@ -713,6 +800,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param incrementalCopy the incrementalCopy value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setIncrementalCopy(Boolean incrementalCopy) {
         this.incrementalCopy = incrementalCopy;
         return this;
@@ -723,6 +811,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the destinationSnapshot value.
      */
+    @Generated
     public String getDestinationSnapshot() {
         return this.destinationSnapshot;
     }
@@ -733,6 +822,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param destinationSnapshot the destinationSnapshot value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setDestinationSnapshot(String destinationSnapshot) {
         this.destinationSnapshot = destinationSnapshot;
         return this;
@@ -743,6 +833,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the deletedTime value.
      */
+    @Generated
     public OffsetDateTime getDeletedTime() {
         if (this.deletedTime == null) {
             return null;
@@ -756,6 +847,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param deletedTime the deletedTime value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setDeletedTime(OffsetDateTime deletedTime) {
         if (deletedTime == null) {
             this.deletedTime = null;
@@ -770,6 +862,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the remainingRetentionDays value.
      */
+    @Generated
     public Integer getRemainingRetentionDays() {
         return this.remainingRetentionDays;
     }
@@ -780,6 +873,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param remainingRetentionDays the remainingRetentionDays value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setRemainingRetentionDays(Integer remainingRetentionDays) {
         this.remainingRetentionDays = remainingRetentionDays;
         return this;
@@ -790,6 +884,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the accessTier value.
      */
+    @Generated
     public AccessTier getAccessTier() {
         return this.accessTier;
     }
@@ -800,6 +895,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param accessTier the accessTier value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setAccessTier(AccessTier accessTier) {
         this.accessTier = accessTier;
         return this;
@@ -810,6 +906,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the accessTierInferred value.
      */
+    @Generated
     public Boolean isAccessTierInferred() {
         return this.accessTierInferred;
     }
@@ -820,6 +917,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param accessTierInferred the accessTierInferred value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setAccessTierInferred(Boolean accessTierInferred) {
         this.accessTierInferred = accessTierInferred;
         return this;
@@ -830,6 +928,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the archiveStatus value.
      */
+    @Generated
     public ArchiveStatus getArchiveStatus() {
         return this.archiveStatus;
     }
@@ -840,6 +939,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param archiveStatus the archiveStatus value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setArchiveStatus(ArchiveStatus archiveStatus) {
         this.archiveStatus = archiveStatus;
         return this;
@@ -850,6 +950,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the customerProvidedKeySha256 value.
      */
+    @Generated
     public String getCustomerProvidedKeySha256() {
         return this.customerProvidedKeySha256;
     }
@@ -860,6 +961,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param customerProvidedKeySha256 the customerProvidedKeySha256 value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setCustomerProvidedKeySha256(String customerProvidedKeySha256) {
         this.customerProvidedKeySha256 = customerProvidedKeySha256;
         return this;
@@ -870,6 +972,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the encryptionScope value.
      */
+    @Generated
     public String getEncryptionScope() {
         return this.encryptionScope;
     }
@@ -880,6 +983,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param encryptionScope the encryptionScope value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setEncryptionScope(String encryptionScope) {
         this.encryptionScope = encryptionScope;
         return this;
@@ -890,6 +994,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the accessTierChangeTime value.
      */
+    @Generated
     public OffsetDateTime getAccessTierChangeTime() {
         if (this.accessTierChangeTime == null) {
             return null;
@@ -903,6 +1008,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param accessTierChangeTime the accessTierChangeTime value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setAccessTierChangeTime(OffsetDateTime accessTierChangeTime) {
         if (accessTierChangeTime == null) {
             this.accessTierChangeTime = null;
@@ -917,6 +1023,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the tagCount value.
      */
+    @Generated
     public Integer getTagCount() {
         return this.tagCount;
     }
@@ -927,6 +1034,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param tagCount the tagCount value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setTagCount(Integer tagCount) {
         this.tagCount = tagCount;
         return this;
@@ -937,6 +1045,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the expiresOn value.
      */
+    @Generated
     public OffsetDateTime getExpiresOn() {
         if (this.expiresOn == null) {
             return null;
@@ -950,6 +1059,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param expiresOn the expiresOn value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setExpiresOn(OffsetDateTime expiresOn) {
         if (expiresOn == null) {
             this.expiresOn = null;
@@ -964,6 +1074,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the isSealed value.
      */
+    @Generated
     public Boolean isSealed() {
         return this.isSealed;
     }
@@ -974,6 +1085,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param isSealed the isSealed value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setIsSealed(Boolean isSealed) {
         this.isSealed = isSealed;
         return this;
@@ -985,6 +1097,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the rehydratePriority value.
      */
+    @Generated
     public RehydratePriority getRehydratePriority() {
         return this.rehydratePriority;
     }
@@ -996,6 +1109,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param rehydratePriority the rehydratePriority value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setRehydratePriority(RehydratePriority rehydratePriority) {
         this.rehydratePriority = rehydratePriority;
         return this;
@@ -1006,6 +1120,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the lastAccessedOn value.
      */
+    @Generated
     public OffsetDateTime getLastAccessedOn() {
         if (this.lastAccessedOn == null) {
             return null;
@@ -1019,6 +1134,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param lastAccessedOn the lastAccessedOn value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setLastAccessedOn(OffsetDateTime lastAccessedOn) {
         if (lastAccessedOn == null) {
             this.lastAccessedOn = null;
@@ -1033,6 +1149,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the immutabilityPolicyExpiresOn value.
      */
+    @Generated
     public OffsetDateTime getImmutabilityPolicyExpiresOn() {
         if (this.immutabilityPolicyExpiresOn == null) {
             return null;
@@ -1046,6 +1163,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param immutabilityPolicyExpiresOn the immutabilityPolicyExpiresOn value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setImmutabilityPolicyExpiresOn(OffsetDateTime immutabilityPolicyExpiresOn) {
         if (immutabilityPolicyExpiresOn == null) {
             this.immutabilityPolicyExpiresOn = null;
@@ -1060,6 +1178,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the immutabilityPolicyMode value.
      */
+    @Generated
     public BlobImmutabilityPolicyMode getImmutabilityPolicyMode() {
         return this.immutabilityPolicyMode;
     }
@@ -1070,6 +1189,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param immutabilityPolicyMode the immutabilityPolicyMode value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setImmutabilityPolicyMode(BlobImmutabilityPolicyMode immutabilityPolicyMode) {
         this.immutabilityPolicyMode = immutabilityPolicyMode;
         return this;
@@ -1080,6 +1200,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * 
      * @return the legalHold value.
      */
+    @Generated
     public Boolean isLegalHold() {
         return this.legalHold;
     }
@@ -1090,19 +1211,22 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * @param legalHold the legalHold value to set.
      * @return the BlobItemPropertiesInternal object itself.
      */
+    @Generated
     public BlobItemPropertiesInternal setLegalHold(Boolean legalHold) {
         this.legalHold = legalHold;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Properties" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Properties" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Creation-Time", Objects.toString(this.creationTime, null));
         xmlWriter.writeStringElement("Last-Modified", Objects.toString(this.lastModified, null));
@@ -1160,6 +1284,7 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobItemPropertiesInternal.
      */
+    @Generated
     public static BlobItemPropertiesInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -1174,9 +1299,11 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
      * it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobItemPropertiesInternal.
      */
+    @Generated
     public static BlobItemPropertiesInternal fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Properties" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "Properties" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobItemPropertiesInternal deserializedBlobItemPropertiesInternal = new BlobItemPropertiesInternal();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

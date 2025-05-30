@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 
 /**
  * Parameter group.
@@ -14,11 +15,13 @@ public final class SourceLeaseAccessConditions {
     /*
      * Required if the source file has an active infinite lease.
      */
+    @Generated
     private String sourceLeaseId;
 
     /**
      * Creates an instance of SourceLeaseAccessConditions class.
      */
+    @Generated
     public SourceLeaseAccessConditions() {
     }
 
@@ -27,6 +30,7 @@ public final class SourceLeaseAccessConditions {
      * 
      * @return the sourceLeaseId value.
      */
+    @Generated
     public String getSourceLeaseId() {
         return this.sourceLeaseId;
     }
@@ -37,6 +41,7 @@ public final class SourceLeaseAccessConditions {
      * @param sourceLeaseId the sourceLeaseId value to set.
      * @return the SourceLeaseAccessConditions object itself.
      */
+    @Generated
     public SourceLeaseAccessConditions setSourceLeaseId(String sourceLeaseId) {
         this.sourceLeaseId = sourceLeaseId;
         return this;

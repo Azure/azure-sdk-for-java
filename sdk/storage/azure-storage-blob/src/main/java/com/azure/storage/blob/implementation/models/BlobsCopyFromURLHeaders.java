@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
@@ -20,61 +21,73 @@ public final class BlobsCopyFromURLHeaders {
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-copy-id property.
      */
+    @Generated
     private String xMsCopyId;
 
     /*
      * The ETag property.
      */
+    @Generated
     private String eTag;
 
     /*
      * The x-ms-content-crc64 property.
      */
+    @Generated
     private byte[] xMsContentCrc64;
 
     /*
      * The Last-Modified property.
      */
+    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-version-id property.
      */
+    @Generated
     private String xMsVersionId;
 
     /*
      * The x-ms-copy-status property.
      */
+    @Generated
     private String xMsCopyStatus = "success";
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-client-request-id property.
      */
+    @Generated
     private String xMsClientRequestId;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The Content-MD5 property.
      */
+    @Generated
     private byte[] contentMD5;
 
     /*
      * The x-ms-encryption-scope property.
      */
+    @Generated
     private String xMsEncryptionScope;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -102,10 +115,14 @@ public final class BlobsCopyFromURLHeaders {
         String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
         if (xMsContentCrc64 != null) {
             this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
+        } else {
+            this.xMsContentCrc64 = null;
         }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
+        } else {
+            this.lastModified = null;
         }
         this.xMsVersionId = rawHeaders.getValue(X_MS_VERSION_ID);
         this.xMsCopyStatus = rawHeaders.getValue(X_MS_COPY_STATUS);
@@ -114,10 +131,14 @@ public final class BlobsCopyFromURLHeaders {
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
         String contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
         if (contentMD5 != null) {
             this.contentMD5 = Base64.getDecoder().decode(contentMD5);
+        } else {
+            this.contentMD5 = null;
         }
         this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
     }
@@ -127,6 +148,7 @@ public final class BlobsCopyFromURLHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -137,6 +159,7 @@ public final class BlobsCopyFromURLHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
+    @Generated
     public BlobsCopyFromURLHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -147,6 +170,7 @@ public final class BlobsCopyFromURLHeaders {
      * 
      * @return the xMsCopyId value.
      */
+    @Generated
     public String getXMsCopyId() {
         return this.xMsCopyId;
     }
@@ -157,6 +181,7 @@ public final class BlobsCopyFromURLHeaders {
      * @param xMsCopyId the xMsCopyId value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
+    @Generated
     public BlobsCopyFromURLHeaders setXMsCopyId(String xMsCopyId) {
         this.xMsCopyId = xMsCopyId;
         return this;
@@ -167,6 +192,7 @@ public final class BlobsCopyFromURLHeaders {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -177,6 +203,7 @@ public final class BlobsCopyFromURLHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
+    @Generated
     public BlobsCopyFromURLHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -187,6 +214,7 @@ public final class BlobsCopyFromURLHeaders {
      * 
      * @return the xMsContentCrc64 value.
      */
+    @Generated
     public byte[] getXMsContentCrc64() {
         return CoreUtils.clone(this.xMsContentCrc64);
     }
@@ -197,6 +225,7 @@ public final class BlobsCopyFromURLHeaders {
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
+    @Generated
     public BlobsCopyFromURLHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
         return this;
@@ -207,6 +236,7 @@ public final class BlobsCopyFromURLHeaders {
      * 
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -220,6 +250,7 @@ public final class BlobsCopyFromURLHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
+    @Generated
     public BlobsCopyFromURLHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -234,6 +265,7 @@ public final class BlobsCopyFromURLHeaders {
      * 
      * @return the xMsVersionId value.
      */
+    @Generated
     public String getXMsVersionId() {
         return this.xMsVersionId;
     }
@@ -244,6 +276,7 @@ public final class BlobsCopyFromURLHeaders {
      * @param xMsVersionId the xMsVersionId value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
+    @Generated
     public BlobsCopyFromURLHeaders setXMsVersionId(String xMsVersionId) {
         this.xMsVersionId = xMsVersionId;
         return this;
@@ -254,6 +287,7 @@ public final class BlobsCopyFromURLHeaders {
      * 
      * @return the xMsCopyStatus value.
      */
+    @Generated
     public String getXMsCopyStatus() {
         return this.xMsCopyStatus;
     }
@@ -264,6 +298,7 @@ public final class BlobsCopyFromURLHeaders {
      * @param xMsCopyStatus the xMsCopyStatus value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
+    @Generated
     public BlobsCopyFromURLHeaders setXMsCopyStatus(String xMsCopyStatus) {
         this.xMsCopyStatus = xMsCopyStatus;
         return this;
@@ -274,6 +309,7 @@ public final class BlobsCopyFromURLHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -284,6 +320,7 @@ public final class BlobsCopyFromURLHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
+    @Generated
     public BlobsCopyFromURLHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -294,6 +331,7 @@ public final class BlobsCopyFromURLHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
+    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -304,6 +342,7 @@ public final class BlobsCopyFromURLHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
+    @Generated
     public BlobsCopyFromURLHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -314,6 +353,7 @@ public final class BlobsCopyFromURLHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -327,6 +367,7 @@ public final class BlobsCopyFromURLHeaders {
      * @param date the date value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
+    @Generated
     public BlobsCopyFromURLHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -341,6 +382,7 @@ public final class BlobsCopyFromURLHeaders {
      * 
      * @return the contentMD5 value.
      */
+    @Generated
     public byte[] getContentMD5() {
         return CoreUtils.clone(this.contentMD5);
     }
@@ -351,6 +393,7 @@ public final class BlobsCopyFromURLHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
+    @Generated
     public BlobsCopyFromURLHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = CoreUtils.clone(contentMD5);
         return this;
@@ -361,6 +404,7 @@ public final class BlobsCopyFromURLHeaders {
      * 
      * @return the xMsEncryptionScope value.
      */
+    @Generated
     public String getXMsEncryptionScope() {
         return this.xMsEncryptionScope;
     }
@@ -371,6 +415,7 @@ public final class BlobsCopyFromURLHeaders {
      * @param xMsEncryptionScope the xMsEncryptionScope value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
+    @Generated
     public BlobsCopyFromURLHeaders setXMsEncryptionScope(String xMsEncryptionScope) {
         this.xMsEncryptionScope = xMsEncryptionScope;
         return this;

@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,26 +21,31 @@ public final class ArrowField implements XmlSerializable<ArrowField> {
     /*
      * The Type property.
      */
+    @Generated
     private String type;
 
     /*
      * The Name property.
      */
+    @Generated
     private String name;
 
     /*
      * The Precision property.
      */
+    @Generated
     private Integer precision;
 
     /*
      * The Scale property.
      */
+    @Generated
     private Integer scale;
 
     /**
      * Creates an instance of ArrowField class.
      */
+    @Generated
     public ArrowField() {
     }
 
@@ -49,6 +54,7 @@ public final class ArrowField implements XmlSerializable<ArrowField> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -59,6 +65,7 @@ public final class ArrowField implements XmlSerializable<ArrowField> {
      * @param type the type value to set.
      * @return the ArrowField object itself.
      */
+    @Generated
     public ArrowField setType(String type) {
         this.type = type;
         return this;
@@ -69,6 +76,7 @@ public final class ArrowField implements XmlSerializable<ArrowField> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -79,6 +87,7 @@ public final class ArrowField implements XmlSerializable<ArrowField> {
      * @param name the name value to set.
      * @return the ArrowField object itself.
      */
+    @Generated
     public ArrowField setName(String name) {
         this.name = name;
         return this;
@@ -89,6 +98,7 @@ public final class ArrowField implements XmlSerializable<ArrowField> {
      * 
      * @return the precision value.
      */
+    @Generated
     public Integer getPrecision() {
         return this.precision;
     }
@@ -99,6 +109,7 @@ public final class ArrowField implements XmlSerializable<ArrowField> {
      * @param precision the precision value to set.
      * @return the ArrowField object itself.
      */
+    @Generated
     public ArrowField setPrecision(Integer precision) {
         this.precision = precision;
         return this;
@@ -109,6 +120,7 @@ public final class ArrowField implements XmlSerializable<ArrowField> {
      * 
      * @return the scale value.
      */
+    @Generated
     public Integer getScale() {
         return this.scale;
     }
@@ -119,19 +131,22 @@ public final class ArrowField implements XmlSerializable<ArrowField> {
      * @param scale the scale value to set.
      * @return the ArrowField object itself.
      */
+    @Generated
     public ArrowField setScale(Integer scale) {
         this.scale = scale;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Field" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Field" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Type", this.type);
         xmlWriter.writeStringElement("Name", this.name);
@@ -148,6 +163,7 @@ public final class ArrowField implements XmlSerializable<ArrowField> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the ArrowField.
      */
+    @Generated
     public static ArrowField fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -162,8 +178,9 @@ public final class ArrowField implements XmlSerializable<ArrowField> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the ArrowField.
      */
+    @Generated
     public static ArrowField fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Field" : rootElementName;
+        String finalRootElementName = rootElementName == null || rootElementName.isEmpty() ? "Field" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ArrowField deserializedArrowField = new ArrowField();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

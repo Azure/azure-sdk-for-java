@@ -1014,8 +1014,7 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareItemInternal> listSharesSegment(String prefix, String marker, Integer maxresults,
         List<ListSharesIncludeType> include, Integer timeout) {
-        return new PagedIterable<>(
-            () -> listSharesSegmentSinglePage(prefix, marker, maxresults, include, timeout, Context.NONE),
+        return new PagedIterable<>(() -> listSharesSegmentSinglePage(prefix, marker, maxresults, include, timeout),
             nextLink -> listSharesSegmentNextSinglePage(nextLink));
     }
 
@@ -1150,8 +1149,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareItemInternal> listSharesSegmentNoCustomHeaders(String prefix, String marker,
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout) {
-        return new PagedIterable<>(() -> listSharesSegmentNoCustomHeadersSinglePage(prefix, marker, maxresults, include,
-            timeout, Context.NONE), nextLink -> listSharesSegmentNextSinglePage(nextLink));
+        return new PagedIterable<>(
+            () -> listSharesSegmentNoCustomHeadersSinglePage(prefix, marker, maxresults, include, timeout),
+            nextLink -> listSharesSegmentNextSinglePage(nextLink));
     }
 
     /**

@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -18,26 +19,31 @@ public final class PathsUndeleteHeaders {
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-client-request-id property.
      */
+    @Generated
     private String xMsClientRequestId;
 
     /*
      * The x-ms-resource-type property.
      */
+    @Generated
     private String xMsResourceType;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -58,6 +64,8 @@ public final class PathsUndeleteHeaders {
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
     }
 
@@ -66,6 +74,7 @@ public final class PathsUndeleteHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -76,6 +85,7 @@ public final class PathsUndeleteHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathsUndeleteHeaders object itself.
      */
+    @Generated
     public PathsUndeleteHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -86,6 +96,7 @@ public final class PathsUndeleteHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -96,6 +107,7 @@ public final class PathsUndeleteHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathsUndeleteHeaders object itself.
      */
+    @Generated
     public PathsUndeleteHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -106,6 +118,7 @@ public final class PathsUndeleteHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
+    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -116,6 +129,7 @@ public final class PathsUndeleteHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the PathsUndeleteHeaders object itself.
      */
+    @Generated
     public PathsUndeleteHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -126,6 +140,7 @@ public final class PathsUndeleteHeaders {
      * 
      * @return the xMsResourceType value.
      */
+    @Generated
     public String getXMsResourceType() {
         return this.xMsResourceType;
     }
@@ -136,6 +151,7 @@ public final class PathsUndeleteHeaders {
      * @param xMsResourceType the xMsResourceType value to set.
      * @return the PathsUndeleteHeaders object itself.
      */
+    @Generated
     public PathsUndeleteHeaders setXMsResourceType(String xMsResourceType) {
         this.xMsResourceType = xMsResourceType;
         return this;
@@ -146,6 +162,7 @@ public final class PathsUndeleteHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -159,6 +176,7 @@ public final class PathsUndeleteHeaders {
      * @param date the date value to set.
      * @return the PathsUndeleteHeaders object itself.
      */
+    @Generated
     public PathsUndeleteHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
