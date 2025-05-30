@@ -26,17 +26,6 @@
     <Or>
       <Class name="com.azure.messaging.servicebus.ServiceBusErrorContext" />
       <Class name="com.azure.messaging.servicebus.ServiceBusTransactionContext" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.CorrelationFilterImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.SqlFilterImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.SqlRuleActionImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeedImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionImpl" />
       <Class name="com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter" />
       <Class name="com.azure.messaging.servicebus.administration.models.CreateQueueOptions" />
       <Class name="com.azure.messaging.servicebus.administration.models.CreateTopicOptions" />
@@ -56,16 +45,6 @@
     <Or>
       <Class name="com.azure.messaging.servicebus.ServiceBusClientBuilder" />
       <Class name="com.azure.messaging.servicebus.administration.ServiceBusAdministrationClientBuilder" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.CorrelationFilterImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.SqlFilterImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.SqlRuleActionImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeedImpl" />
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionImpl" />
       <Class name="com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver" />
       <Class name="com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor" />
       <Class name="com.azure.messaging.servicebus.models.AbandonOptions" />
@@ -91,7 +70,8 @@
   <Match>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
     <Or>
-      <Class name="com.azure.messaging.servicebus.administration.implementation.models.TrueFilterImpl" />
+      <Class name="com.azure.messaging.servicebus.administration.implementation.models.FalseFilter" />
+      <Class name="com.azure.messaging.servicebus.administration.implementation.models.TrueFilter" />
       <Class name="com.azure.messaging.servicebus.administration.models.RuleProperties$1" />
     </Or>
   </Match>
