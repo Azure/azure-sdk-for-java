@@ -272,20 +272,15 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 .getEffectiveHttpTransportSerializer(this)
                 .wrapInHttpRequest(request, requestUri);
 
-            Mono<HttpResponse> httpResponseMono = this
-                .httpClient
-                .send(httpRequest, request.getResponseTimeout());
+            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
 
             if (this.gatewayServerErrorInjector != null) {
                 httpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(request.getResponseTimeout(),
                     httpRequest, request, httpResponseMono);
-                return toDocumentServiceResponse(httpResponseMono, request, httpRequest)
-                    .subscribeOn(CosmosSchedulers.CLIENT_TELEMETRY_BOUNDED_ELASTIC);
+                return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
             }
 
-            return toDocumentServiceResponse(httpResponseMono, request, httpRequest)
-                .subscribeOn(CosmosSchedulers.CLIENT_TELEMETRY_BOUNDED_ELASTIC);
-
+            return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -374,56 +369,53 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                                                       RxDocumentServiceRequest request,
                                                                       HttpRequest httpRequest) {
 
-        return httpResponseMono
-            .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC)
-            .flatMap(httpResponse -> {
+        return httpResponseMono.publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC).flatMap(httpResponse -> {
+            // header key/value pairs
+            HttpHeaders httpResponseHeaders = httpResponse.headers();
+            int httpResponseStatus = httpResponse.statusCode();
 
-                // header key/value pairs
-                HttpHeaders httpResponseHeaders = httpResponse.headers();
-                int httpResponseStatus = httpResponse.statusCode();
+            Mono<ByteBuf> contentObservable = httpResponse
+                .body()
+                .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER))
+                .map(bodyByteBuf -> bodyByteBuf.retain())
+                .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
 
-                Mono<ByteBuf> contentObservable = httpResponse
-                    .body()
-                    .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER))
-                    .map(bodyByteBuf -> bodyByteBuf.retain())
-                    .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
+            return contentObservable
+                .map(content -> {
+                    // Capture transport client request timeline
+                    ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
+                    if (reactorNettyRequestRecord != null) {
+                        reactorNettyRequestRecord.setTimeCompleted(Instant.now());
+                    }
 
-                return contentObservable
-                    .map(content -> {
-                        // Capture transport client request timeline
-                        ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
-                        if (reactorNettyRequestRecord != null) {
-                            reactorNettyRequestRecord.setTimeCompleted(Instant.now());
+                    StoreResponse rsp = request
+                        .getEffectiveHttpTransportSerializer(this)
+                        .unwrapToStoreResponse(request, httpResponseStatus, httpResponseHeaders, content);
+
+                    if (reactorNettyRequestRecord != null) {
+                        rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
+
+                        if (this.gatewayServerErrorInjector != null) {
+                            // only configure when fault injection is used
+                            rsp.setFaultInjectionRuleId(
+                                request
+                                    .faultInjectionRequestContext
+                                    .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
+
+                            rsp.setFaultInjectionRuleEvaluationResults(
+                                request
+                                    .faultInjectionRequestContext
+                                    .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
                         }
+                    }
 
-                        StoreResponse rsp = request
-                            .getEffectiveHttpTransportSerializer(this)
-                            .unwrapToStoreResponse(request, httpResponseStatus, httpResponseHeaders, content);
+                    if (request.requestContext.cosmosDiagnostics != null) {
+                        BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, globalEndpointManager);
+                    }
 
-                        if (reactorNettyRequestRecord != null) {
-                            rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
-
-                            if (this.gatewayServerErrorInjector != null) {
-                                // only configure when fault injection is used
-                                rsp.setFaultInjectionRuleId(
-                                    request
-                                        .faultInjectionRequestContext
-                                        .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
-
-                                rsp.setFaultInjectionRuleEvaluationResults(
-                                    request
-                                        .faultInjectionRequestContext
-                                        .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
-                            }
-                        }
-
-                        if (request.requestContext.cosmosDiagnostics != null) {
-                            BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, globalEndpointManager);
-                        }
-
-                        return rsp;
-                    })
-                    .single();
+                    return rsp;
+                })
+                .single();
 
             })
             .map(rsp -> {
