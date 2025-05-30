@@ -30,7 +30,6 @@ import com.azure.v2.security.keyvault.keys.models.ReleaseKeyResult;
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -45,6 +44,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -108,7 +108,8 @@ public final class KeyClientImpl {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.service = RestProxy.create(KeyClientService.class, this.httpPipeline);
+        this.service
+            = com.azure.v2.security.keyvault.keys.implementation.KeyClientServiceImpl.getNewInstance(this.httpPipeline);
     }
 
     /**
@@ -685,8 +686,25 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyItem> getKeyVersions(String keyName, Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getKeyVersionsSinglePage(keyName, maxresults),
-            (pagingOptions, nextLink) -> getKeyVersionsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getKeyVersions'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getKeyVersions'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getKeyVersions'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getKeyVersions'."));
+            }
+            return getKeyVersionsSinglePage(keyName, maxresults);
+        }, (pagingOptions, nextLink) -> getKeyVersionsNextSinglePage(nextLink));
     }
 
     /**
@@ -704,8 +722,25 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyItem> getKeyVersions(String keyName) {
         final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getKeyVersionsSinglePage(keyName, maxresults),
-            (pagingOptions, nextLink) -> getKeyVersionsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getKeyVersions'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getKeyVersions'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getKeyVersions'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getKeyVersions'."));
+            }
+            return getKeyVersionsSinglePage(keyName, maxresults);
+        }, (pagingOptions, nextLink) -> getKeyVersionsNextSinglePage(nextLink));
     }
 
     /**
@@ -726,8 +761,25 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyItem> getKeyVersions(String keyName, Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> getKeyVersionsSinglePage(keyName, maxresults, requestContext),
-            (pagingOptions, nextLink) -> getKeyVersionsNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getKeyVersions'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getKeyVersions'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getKeyVersions'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getKeyVersions'."));
+            }
+            return getKeyVersionsSinglePage(keyName, maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getKeyVersionsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -796,8 +848,25 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyItem> getKeys(Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getKeysSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'offset' in PagingOptions is not supported in API 'getKeys'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageSize' in PagingOptions is not supported in API 'getKeys'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageIndex' in PagingOptions is not supported in API 'getKeys'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getKeys'."));
+            }
+            return getKeysSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink));
     }
 
     /**
@@ -815,8 +884,25 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyItem> getKeys() {
         final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getKeysSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'offset' in PagingOptions is not supported in API 'getKeys'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageSize' in PagingOptions is not supported in API 'getKeys'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageIndex' in PagingOptions is not supported in API 'getKeys'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getKeys'."));
+            }
+            return getKeysSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink));
     }
 
     /**
@@ -838,8 +924,25 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyItem> getKeys(Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> getKeysSinglePage(maxresults, requestContext),
-            (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'offset' in PagingOptions is not supported in API 'getKeys'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageSize' in PagingOptions is not supported in API 'getKeys'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageIndex' in PagingOptions is not supported in API 'getKeys'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getKeys'."));
+            }
+            return getKeysSinglePage(maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -1346,8 +1449,25 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedKeyItem> getDeletedKeys(Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getDeletedKeysSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getDeletedKeysNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getDeletedKeys'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getDeletedKeys'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getDeletedKeys'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getDeletedKeys'."));
+            }
+            return getDeletedKeysSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getDeletedKeysNextSinglePage(nextLink));
     }
 
     /**
@@ -1365,8 +1485,25 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedKeyItem> getDeletedKeys() {
         final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getDeletedKeysSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getDeletedKeysNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getDeletedKeys'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getDeletedKeys'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getDeletedKeys'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getDeletedKeys'."));
+            }
+            return getDeletedKeysSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getDeletedKeysNextSinglePage(nextLink));
     }
 
     /**
@@ -1388,8 +1525,25 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedKeyItem> getDeletedKeys(Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> getDeletedKeysSinglePage(maxresults, requestContext),
-            (pagingOptions, nextLink) -> getDeletedKeysNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getDeletedKeys'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getDeletedKeys'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getDeletedKeys'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getDeletedKeys'."));
+            }
+            return getDeletedKeysSinglePage(maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getDeletedKeysNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -1754,4 +1908,6 @@ public final class KeyClientImpl {
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyClientImpl.class);
 }

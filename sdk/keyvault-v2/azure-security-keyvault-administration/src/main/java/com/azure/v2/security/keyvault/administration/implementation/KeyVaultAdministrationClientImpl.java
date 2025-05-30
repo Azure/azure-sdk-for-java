@@ -21,7 +21,6 @@ import com.azure.v2.security.keyvault.administration.implementation.models.Updat
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -129,7 +128,9 @@ public final class KeyVaultAdministrationClientImpl {
         this.serviceVersion = serviceVersion;
         this.roleDefinitions = new RoleDefinitionsImpl(this);
         this.roleAssignments = new RoleAssignmentsImpl(this);
-        this.service = RestProxy.create(KeyVaultAdministrationClientService.class, this.httpPipeline);
+        this.service
+            = com.azure.v2.security.keyvault.administration.implementation.KeyVaultAdministrationClientServiceImpl
+                .getNewInstance(this.httpPipeline);
     }
 
     /**

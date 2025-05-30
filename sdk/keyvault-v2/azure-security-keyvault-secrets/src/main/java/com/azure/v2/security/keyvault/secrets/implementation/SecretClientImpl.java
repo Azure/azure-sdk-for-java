@@ -19,7 +19,6 @@ import com.azure.v2.security.keyvault.secrets.implementation.models.SecretUpdate
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -34,6 +33,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -97,7 +97,8 @@ public final class SecretClientImpl {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.service = RestProxy.create(SecretClientService.class, this.httpPipeline);
+        this.service = com.azure.v2.security.keyvault.secrets.implementation.SecretClientServiceImpl
+            .getNewInstance(this.httpPipeline);
     }
 
     /**
@@ -476,8 +477,25 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecrets(Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getSecretsSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'offset' in PagingOptions is not supported in API 'getSecrets'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageSize' in PagingOptions is not supported in API 'getSecrets'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageIndex' in PagingOptions is not supported in API 'getSecrets'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getSecrets'."));
+            }
+            return getSecretsSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink));
     }
 
     /**
@@ -494,8 +512,25 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecrets() {
         final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getSecretsSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'offset' in PagingOptions is not supported in API 'getSecrets'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageSize' in PagingOptions is not supported in API 'getSecrets'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageIndex' in PagingOptions is not supported in API 'getSecrets'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getSecrets'."));
+            }
+            return getSecretsSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink));
     }
 
     /**
@@ -516,8 +551,25 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecrets(Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> getSecretsSinglePage(maxresults, requestContext),
-            (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'offset' in PagingOptions is not supported in API 'getSecrets'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageSize' in PagingOptions is not supported in API 'getSecrets'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'pageIndex' in PagingOptions is not supported in API 'getSecrets'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getSecrets'."));
+            }
+            return getSecretsSinglePage(maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -584,8 +636,25 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecretVersions(String secretName, Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getSecretVersionsSinglePage(secretName, maxresults),
-            (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getSecretVersions'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getSecretVersions'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getSecretVersions'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getSecretVersions'."));
+            }
+            return getSecretVersionsSinglePage(secretName, maxresults);
+        }, (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink));
     }
 
     /**
@@ -603,8 +672,25 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecretVersions(String secretName) {
         final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getSecretVersionsSinglePage(secretName, maxresults),
-            (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getSecretVersions'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getSecretVersions'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getSecretVersions'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getSecretVersions'."));
+            }
+            return getSecretVersionsSinglePage(secretName, maxresults);
+        }, (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink));
     }
 
     /**
@@ -626,9 +712,25 @@ public final class SecretClientImpl {
     public PagedIterable<SecretItem> getSecretVersions(String secretName, Integer maxresults,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>(
-            (pagingOptions) -> getSecretVersionsSinglePage(secretName, maxresults, requestContext),
-            (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getSecretVersions'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getSecretVersions'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getSecretVersions'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getSecretVersions'."));
+            }
+            return getSecretVersionsSinglePage(secretName, maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -692,8 +794,25 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecretItem> getDeletedSecrets(Integer maxresults) {
-        return new PagedIterable<>((pagingOptions) -> getDeletedSecretsSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getDeletedSecrets'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getDeletedSecrets'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getDeletedSecrets'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getDeletedSecrets'."));
+            }
+            return getDeletedSecretsSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink));
     }
 
     /**
@@ -709,8 +828,25 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecretItem> getDeletedSecrets() {
         final Integer maxresults = null;
-        return new PagedIterable<>((pagingOptions) -> getDeletedSecretsSinglePage(maxresults),
-            (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getDeletedSecrets'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getDeletedSecrets'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getDeletedSecrets'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getDeletedSecrets'."));
+            }
+            return getDeletedSecretsSinglePage(maxresults);
+        }, (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink));
     }
 
     /**
@@ -730,8 +866,25 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecretItem> getDeletedSecrets(Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> getDeletedSecretsSinglePage(maxresults, requestContext),
-            (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'offset' in PagingOptions is not supported in API 'getDeletedSecrets'."));
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageSize' in PagingOptions is not supported in API 'getDeletedSecrets'."));
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'pageIndex' in PagingOptions is not supported in API 'getDeletedSecrets'."));
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    "'continuationToken' in PagingOptions is not supported in API 'getDeletedSecrets'."));
+            }
+            return getDeletedSecretsSinglePage(maxresults, requestContext);
+        }, (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -1050,4 +1203,6 @@ public final class SecretClientImpl {
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecretClientImpl.class);
 }

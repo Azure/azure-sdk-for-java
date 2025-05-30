@@ -4,9 +4,9 @@
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.microsoft.typespec.http.client.generator.core.customization.Customization;
-import com.microsoft.typespec.http.client.generator.core.customization.Editor;
-import com.microsoft.typespec.http.client.generator.core.customization.LibraryCustomization;
+import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.Editor;
+import com.azure.autorest.customization.LibraryCustomization;
 import org.slf4j.Logger;
 
 import java.net.MalformedURLException;
@@ -53,14 +53,18 @@ public class AdministrationCustomizations extends Customization {
         // Update imports statements for moved classes in impl client.
         classPath = "src/main/java/com/azure/v2/security/keyvault/administration/implementation/RoleAssignmentsImpl.java";
         newFileContent = editor.getFileContent(classPath)
-            .replace("implementation.implementation", "implementation");
+            .replace("implementation.implementation", "implementation")
+            // TODO (vcolin7): Remove this workaround once the client is generated with the correct client reference.
+            .replace("this.httpPipeline", "client.getHttpPipeline()");
 
         editor.replaceFile(classPath, newFileContent);
 
         // Update imports statements for moved classes in impl client.
         classPath = "src/main/java/com/azure/v2/security/keyvault/administration/implementation/RoleDefinitionsImpl.java";
         newFileContent = editor.getFileContent(classPath)
-            .replace("implementation.implementation", "implementation");
+            .replace("implementation.implementation", "implementation")
+            // TODO (vcolin7): Remove this workaround once the client is generated with the correct client reference.
+            .replace("this.httpPipeline", "client.getHttpPipeline()");
 
         editor.replaceFile(classPath, newFileContent);
     }
