@@ -46,19 +46,17 @@ public class BlobStorageCustomization extends Customization {
 
                 // Add Accessor to PageList
                 clazz.setMembers(clazz.getMembers()
-                    .addFirst(StaticJavaParser.parseBodyDeclaration(String.join("\n", "static {",
-                        "    PageListHelper.setAccessor(new PageListHelper.PageListAccessor() {",
-                        "        @Override",
-                        "        public String getNextMarker(PageList pageList) {",
-                        "            return pageList.getNextMarker();",
-                        "        }",
-                        "",
-                        "        @Override",
-                        "        public PageList setNextMarker(PageList pageList, String marker) {",
-                        "            return pageList.setNextMarker(marker);",
-                        "        }",
-                        "    });",
-                        "}"))));
+                    .addFirst(StaticJavaParser.parseBodyDeclaration("static {"
+                        + "PageListHelper.setAccessor(new PageListHelper.PageListAccessor() {"
+                        + "    @Override"
+                        + "    public String getNextMarker(PageList pageList) {"
+                        + "        return pageList.getNextMarker();"
+                        + "    }"
+                        + "    @Override"
+                        + "    public PageList setNextMarker(PageList pageList, String marker) {"
+                        + "        return pageList.setNextMarker(marker);"
+                        + "    }"
+                        + "}); }")));
             });
         });
 
@@ -88,16 +86,12 @@ public class BlobStorageCustomization extends Customization {
 
         // Block - Generator
         models.getClass("Block").customizeAst(ast -> ast.getClassByName("Block").ifPresent(clazz -> {
-            clazz.getMethodsByName("getSizeInt").forEach(method -> {
-                method.setName("getSize")
-                    .addMarkerAnnotation("Deprecated")
-                    .setType("int")
-                    .getJavadoc().ifPresent(javadoc -> method.setJavadocComment(javadoc
-                        .addBlockTag("deprecated", "Use {@link #getSizeLong()}")));
-
-                // Cast the long size to int.
-                modifyReturnExpression(method, exprString -> "(int) " + exprString);
-            });
+            clazz.getMethodsByName("getSizeInt").forEach(method -> method.setName("getSize")
+                .addMarkerAnnotation("Deprecated")
+                .setType("int")
+                .setBody(StaticJavaParser.parseBlock("{ return (int) this.sizeLong; }"))
+                .getJavadoc().ifPresent(javadoc -> method.setJavadocComment(javadoc
+                    .addBlockTag("deprecated", "Use {@link #getSizeLong()}"))));
 
             clazz.getMethodsByName("setSizeInt").forEach(method -> {
                 method.setName("setSize")

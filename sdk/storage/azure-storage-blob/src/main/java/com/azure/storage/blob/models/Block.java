@@ -96,7 +96,7 @@ public final class Block implements XmlSerializable<Block> {
     @Generated
     @Deprecated
     public int getSize() {
-        return (int) this.sizeInt;
+        return (int) this.sizeLong;
     }
 
     /**

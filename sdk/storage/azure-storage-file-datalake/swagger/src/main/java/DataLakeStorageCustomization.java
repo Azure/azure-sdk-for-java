@@ -17,6 +17,7 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import org.slf4j.Logger;
 
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -108,7 +109,14 @@ public class DataLakeStorageCustomization extends Customization {
                     .addBlockTag("throws", "IllegalStateException", "If a token is not an allowed type."))));
         }));
 
-        updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.datalake.implementation"));
+        PackageCustomization implementation = customization.getPackage("com.azure.storage.file.datalake.implementation");
+        updateImplToMapInternalException(implementation);
+
+        // Fix to a bug where OffsetDateTime is no longer added as an import to generated service clients.
+        // This should be removed once the bug is Autorest Java is fixed.
+        for (String name : Arrays.asList("FileSystemsImpl", "PathsImpl")) {
+            implementation.getClass(name).customizeAst(ast -> ast.addImport(OffsetDateTime.class));
+        }
     }
 
     /**
