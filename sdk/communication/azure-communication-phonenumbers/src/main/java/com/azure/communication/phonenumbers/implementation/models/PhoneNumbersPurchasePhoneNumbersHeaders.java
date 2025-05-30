@@ -5,6 +5,7 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,23 +17,24 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
     /*
      * The operation-id property.
      */
+    @Generated
     private String operationId;
 
     /*
      * The purchase-id property.
      */
+    @Generated
     private String purchaseId;
 
     /*
      * The Operation-Location property.
      */
+    @Generated
     private String operationLocation;
 
     private static final HttpHeaderName OPERATION_ID = HttpHeaderName.fromString("operation-id");
 
     private static final HttpHeaderName PURCHASE_ID = HttpHeaderName.fromString("purchase-id");
-
-    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -43,7 +45,7 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
     public PhoneNumbersPurchasePhoneNumbersHeaders(HttpHeaders rawHeaders) {
         this.operationId = rawHeaders.getValue(OPERATION_ID);
         this.purchaseId = rawHeaders.getValue(PURCHASE_ID);
-        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
+        this.operationLocation = rawHeaders.getValue(HttpHeaderName.OPERATION_LOCATION);
     }
 
     /**
@@ -51,6 +53,7 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
      * 
      * @return the operationId value.
      */
+    @Generated
     public String getOperationId() {
         return this.operationId;
     }
@@ -61,6 +64,7 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
      * @param operationId the operationId value to set.
      * @return the PhoneNumbersPurchasePhoneNumbersHeaders object itself.
      */
+    @Generated
     public PhoneNumbersPurchasePhoneNumbersHeaders setOperationId(String operationId) {
         this.operationId = operationId;
         return this;
@@ -71,6 +75,7 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
      * 
      * @return the purchaseId value.
      */
+    @Generated
     public String getPurchaseId() {
         return this.purchaseId;
     }
@@ -81,6 +86,7 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
      * @param purchaseId the purchaseId value to set.
      * @return the PhoneNumbersPurchasePhoneNumbersHeaders object itself.
      */
+    @Generated
     public PhoneNumbersPurchasePhoneNumbersHeaders setPurchaseId(String purchaseId) {
         this.purchaseId = purchaseId;
         return this;
@@ -91,6 +97,7 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
      * 
      * @return the operationLocation value.
      */
+    @Generated
     public String getOperationLocation() {
         return this.operationLocation;
     }
@@ -101,6 +108,7 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
      * @param operationLocation the operationLocation value to set.
      * @return the PhoneNumbersPurchasePhoneNumbersHeaders object itself.
      */
+    @Generated
     public PhoneNumbersPurchasePhoneNumbersHeaders setOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
         return this;

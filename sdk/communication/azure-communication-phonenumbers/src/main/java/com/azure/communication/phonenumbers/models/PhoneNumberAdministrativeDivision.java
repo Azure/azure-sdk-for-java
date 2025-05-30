@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -17,18 +18,23 @@ import java.io.IOException;
 @Immutable
 public final class PhoneNumberAdministrativeDivision implements JsonSerializable<PhoneNumberAdministrativeDivision> {
     /*
-     * Represents the localized name of the administrative division of the locality. e.g. state or province localized name.
+     * Represents the localized name of the administrative division of the locality. e.g. state or province localized
+     * name.
      */
+    @Generated
     private String localizedName;
 
     /*
-     * Represents the abbreviated name of the administrative division of the locality. e.g. state or province abbreviation such as WA (Washington).
+     * Represents the abbreviated name of the administrative division of the locality. e.g. state or province
+     * abbreviation such as WA (Washington).
      */
+    @Generated
     private String abbreviatedName;
 
     /**
      * Creates an instance of PhoneNumberAdministrativeDivision class.
      */
+    @Generated
     public PhoneNumberAdministrativeDivision() {
     }
 
@@ -38,6 +44,7 @@ public final class PhoneNumberAdministrativeDivision implements JsonSerializable
      * 
      * @return the localizedName value.
      */
+    @Generated
     public String getLocalizedName() {
         return this.localizedName;
     }
@@ -48,6 +55,7 @@ public final class PhoneNumberAdministrativeDivision implements JsonSerializable
      * 
      * @return the abbreviatedName value.
      */
+    @Generated
     public String getAbbreviatedName() {
         return this.abbreviatedName;
     }
@@ -55,6 +63,7 @@ public final class PhoneNumberAdministrativeDivision implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -70,6 +79,7 @@ public final class PhoneNumberAdministrativeDivision implements JsonSerializable
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoneNumberAdministrativeDivision.
      */
+    @Generated
     public static PhoneNumberAdministrativeDivision fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumberAdministrativeDivision deserializedPhoneNumberAdministrativeDivision

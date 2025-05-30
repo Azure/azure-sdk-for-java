@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,36 +20,43 @@ public final class OperatorInformation implements JsonSerializable<OperatorInfor
     /*
      * E.164 formatted string representation of the phone number
      */
+    @Generated
     private String phoneNumber;
 
     /*
      * National format of the phone number
      */
+    @Generated
     private String nationalFormat;
 
     /*
      * International format of the phone number
      */
+    @Generated
     private String internationalFormat;
 
     /*
      * ISO 3166-1 two character ('alpha-2') code associated with the phone number.
      */
+    @Generated
     private String isoCountryCode;
 
     /*
      * Type of service associated with the phone number
      */
+    @Generated
     private OperatorNumberType numberType;
 
     /*
      * Represents metadata describing the operator of a phone number
      */
+    @Generated
     private OperatorDetails operatorDetails;
 
     /**
      * Creates an instance of OperatorInformation class.
      */
+    @Generated
     public OperatorInformation() {
     }
 
@@ -57,6 +65,7 @@ public final class OperatorInformation implements JsonSerializable<OperatorInfor
      * 
      * @return the phoneNumber value.
      */
+    @Generated
     public String getPhoneNumber() {
         return this.phoneNumber;
     }
@@ -66,6 +75,7 @@ public final class OperatorInformation implements JsonSerializable<OperatorInfor
      * 
      * @return the nationalFormat value.
      */
+    @Generated
     public String getNationalFormat() {
         return this.nationalFormat;
     }
@@ -75,6 +85,7 @@ public final class OperatorInformation implements JsonSerializable<OperatorInfor
      * 
      * @return the internationalFormat value.
      */
+    @Generated
     public String getInternationalFormat() {
         return this.internationalFormat;
     }
@@ -84,6 +95,7 @@ public final class OperatorInformation implements JsonSerializable<OperatorInfor
      * 
      * @return the isoCountryCode value.
      */
+    @Generated
     public String getIsoCountryCode() {
         return this.isoCountryCode;
     }
@@ -93,6 +105,7 @@ public final class OperatorInformation implements JsonSerializable<OperatorInfor
      * 
      * @return the numberType value.
      */
+    @Generated
     public OperatorNumberType getNumberType() {
         return this.numberType;
     }
@@ -102,6 +115,7 @@ public final class OperatorInformation implements JsonSerializable<OperatorInfor
      * 
      * @return the operatorDetails value.
      */
+    @Generated
     public OperatorDetails getOperatorDetails() {
         return this.operatorDetails;
     }
@@ -109,6 +123,7 @@ public final class OperatorInformation implements JsonSerializable<OperatorInfor
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -124,6 +139,7 @@ public final class OperatorInformation implements JsonSerializable<OperatorInfor
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OperatorInformation.
      */
+    @Generated
     public static OperatorInformation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OperatorInformation deserializedOperatorInformation = new OperatorInformation();

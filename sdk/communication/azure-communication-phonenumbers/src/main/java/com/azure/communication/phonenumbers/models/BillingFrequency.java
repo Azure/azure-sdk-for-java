@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class BillingFrequency extends ExpandableStringEnum<BillingFrequenc
     /**
      * Static value monthly for BillingFrequency.
      */
+    @Generated
     public static final BillingFrequency MONTHLY = fromString("monthly");
 
     /**
@@ -21,6 +23,7 @@ public final class BillingFrequency extends ExpandableStringEnum<BillingFrequenc
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public BillingFrequency() {
     }
@@ -31,6 +34,7 @@ public final class BillingFrequency extends ExpandableStringEnum<BillingFrequenc
      * @param name a name to look for.
      * @return the corresponding BillingFrequency.
      */
+    @Generated
     public static BillingFrequency fromString(String name) {
         return fromString(name, BillingFrequency.class);
     }
@@ -40,6 +44,7 @@ public final class BillingFrequency extends ExpandableStringEnum<BillingFrequenc
      * 
      * @return known BillingFrequency values.
      */
+    @Generated
     public static Collection<BillingFrequency> values() {
         return values(BillingFrequency.class);
     }

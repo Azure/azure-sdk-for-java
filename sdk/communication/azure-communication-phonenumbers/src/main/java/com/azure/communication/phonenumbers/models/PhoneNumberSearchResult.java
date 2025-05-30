@@ -4,7 +4,9 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,41 +23,62 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
     /*
      * The search id.
      */
+    @Generated
     private String searchId;
 
     /*
      * The phone numbers that are available. Can be fewer than the desired search quantity.
      */
+    @Generated
     private List<String> phoneNumbers;
 
     /*
      * The phone number's type, e.g. geographic, or tollFree.
      */
+    @Generated
     private PhoneNumberType phoneNumberType;
 
     /*
      * Phone number's assignment type.
      */
+    @Generated
     private PhoneNumberAssignmentType assignmentType;
 
     /*
      * Capabilities of a phone number.
      */
+    @Generated
     private PhoneNumberCapabilities capabilities;
 
     /*
      * The incurred cost for a single phone number.
      */
+    @Generated
     private PhoneNumberCost cost;
 
     /*
-     * The date that this search result expires and phone numbers are no longer on hold. A search result expires in less than 15min, e.g. 2020-11-19T16:31:49.048Z.
+     * The date that this search result expires and phone numbers are no longer on hold. A search result expires in less
+     * than 15min, e.g. 2020-11-19T16:31:49.048Z.
      */
+    @Generated
     private OffsetDateTime searchExpiresBy;
+
+    /*
+     * The error code of the search.
+     */
+    @Generated
+    private Integer errorCode;
+
+    /*
+     * Mapping Error Messages to Codes
+     */
+    @Generated
+    private PhoneNumberSearchResultError error;
 
     /**
      * Creates an instance of PhoneNumberSearchResult class.
      */
+    @Generated
     public PhoneNumberSearchResult() {
     }
 
@@ -64,6 +87,7 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
      * 
      * @return the searchId value.
      */
+    @Generated
     public String getSearchId() {
         return this.searchId;
     }
@@ -74,6 +98,7 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
      * 
      * @return the phoneNumbers value.
      */
+    @Generated
     public List<String> getPhoneNumbers() {
         return this.phoneNumbers;
     }
@@ -83,6 +108,7 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
      * 
      * @return the phoneNumberType value.
      */
+    @Generated
     public PhoneNumberType getPhoneNumberType() {
         return this.phoneNumberType;
     }
@@ -92,6 +118,7 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
      * 
      * @return the assignmentType value.
      */
+    @Generated
     public PhoneNumberAssignmentType getAssignmentType() {
         return this.assignmentType;
     }
@@ -101,6 +128,7 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
      * 
      * @return the capabilities value.
      */
+    @Generated
     public PhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
     }
@@ -110,6 +138,7 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
      * 
      * @return the cost value.
      */
+    @Generated
     public PhoneNumberCost getCost() {
         return this.cost;
     }
@@ -120,13 +149,35 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
      * 
      * @return the searchExpiresBy value.
      */
+    @Generated
     public OffsetDateTime getSearchExpiresBy() {
         return this.searchExpiresBy;
     }
 
     /**
+     * Get the errorCode property: The error code of the search.
+     * 
+     * @return the errorCode value.
+     */
+    @Generated
+    public Integer getErrorCode() {
+        return this.errorCode;
+    }
+
+    /**
+     * Get the error property: Mapping Error Messages to Codes.
+     * 
+     * @return the error value.
+     */
+    @Generated
+    public PhoneNumberSearchResultError getError() {
+        return this.error;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -142,6 +193,7 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoneNumberSearchResult.
      */
+    @Generated
     public static PhoneNumberSearchResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumberSearchResult deserializedPhoneNumberSearchResult = new PhoneNumberSearchResult();
@@ -165,8 +217,13 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
                 } else if ("cost".equals(fieldName)) {
                     deserializedPhoneNumberSearchResult.cost = PhoneNumberCost.fromJson(reader);
                 } else if ("searchExpiresBy".equals(fieldName)) {
-                    deserializedPhoneNumberSearchResult.searchExpiresBy
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPhoneNumberSearchResult.searchExpiresBy = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedPhoneNumberSearchResult.errorCode = reader.getNullable(JsonReader::getInt);
+                } else if ("error".equals(fieldName)) {
+                    deserializedPhoneNumberSearchResult.error
+                        = PhoneNumberSearchResultError.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

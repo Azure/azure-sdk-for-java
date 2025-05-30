@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,21 +20,25 @@ public final class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> 
     /*
      * The cost amount.
      */
+    @Generated
     private double amount;
 
     /*
      * The ISO 4217 currency code for the cost amount, e.g. USD.
      */
+    @Generated
     private String currencyCode;
 
     /*
      * The frequency with which the cost gets billed.
      */
+    @Generated
     private BillingFrequency billingFrequency;
 
     /**
      * Creates an instance of PhoneNumberCost class.
      */
+    @Generated
     public PhoneNumberCost() {
     }
 
@@ -42,6 +47,7 @@ public final class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> 
      * 
      * @return the amount value.
      */
+    @Generated
     public double getAmount() {
         return this.amount;
     }
@@ -51,6 +57,7 @@ public final class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> 
      * 
      * @return the currencyCode value.
      */
+    @Generated
     public String getCurrencyCode() {
         return this.currencyCode;
     }
@@ -60,6 +67,7 @@ public final class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> 
      * 
      * @return the billingFrequency value.
      */
+    @Generated
     public BillingFrequency getBillingFrequency() {
         return this.billingFrequency;
     }
@@ -67,6 +75,7 @@ public final class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -82,6 +91,7 @@ public final class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoneNumberCost.
      */
+    @Generated
     public static PhoneNumberCost fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumberCost deserializedPhoneNumberCost = new PhoneNumberCost();

@@ -5,6 +5,7 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,13 +18,16 @@ import java.io.IOException;
 @Fluent
 public final class OperatorInformationOptions implements JsonSerializable<OperatorInformationOptions> {
     /*
-     * Includes the fields operatorDetails, numberType, and isoCountryCode in the response.  Please note: use of this option will result in additional costs
+     * Includes the fields operatorDetails, numberType, and isoCountryCode in the response. Please note: use of this
+     * option will result in additional costs
      */
+    @Generated
     private Boolean includeAdditionalOperatorDetails;
 
     /**
      * Creates an instance of OperatorInformationOptions class.
      */
+    @Generated
     public OperatorInformationOptions() {
     }
 
@@ -33,6 +37,7 @@ public final class OperatorInformationOptions implements JsonSerializable<Operat
      * 
      * @return the includeAdditionalOperatorDetails value.
      */
+    @Generated
     public Boolean isIncludeAdditionalOperatorDetails() {
         return this.includeAdditionalOperatorDetails;
     }
@@ -44,6 +49,7 @@ public final class OperatorInformationOptions implements JsonSerializable<Operat
      * @param includeAdditionalOperatorDetails the includeAdditionalOperatorDetails value to set.
      * @return the OperatorInformationOptions object itself.
      */
+    @Generated
     public OperatorInformationOptions setIncludeAdditionalOperatorDetails(Boolean includeAdditionalOperatorDetails) {
         this.includeAdditionalOperatorDetails = includeAdditionalOperatorDetails;
         return this;
@@ -52,6 +58,7 @@ public final class OperatorInformationOptions implements JsonSerializable<Operat
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +74,7 @@ public final class OperatorInformationOptions implements JsonSerializable<Operat
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the OperatorInformationOptions.
      */
+    @Generated
     public static OperatorInformationOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OperatorInformationOptions deserializedOperatorInformationOptions = new OperatorInformationOptions();

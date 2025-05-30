@@ -6,6 +6,7 @@ package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class OperatorInformationRequest implements JsonSerializable<Operat
     /*
      * Phone number(s) whose operator information is being requested
      */
+    @Generated
     private List<String> phoneNumbers;
 
     /*
      * Represents options to modify a search request for operator information
      */
+    @Generated
     private OperatorInformationOptions options;
 
     /**
      * Creates an instance of OperatorInformationRequest class.
      */
+    @Generated
     public OperatorInformationRequest() {
     }
 
@@ -39,6 +43,7 @@ public final class OperatorInformationRequest implements JsonSerializable<Operat
      * 
      * @return the phoneNumbers value.
      */
+    @Generated
     public List<String> getPhoneNumbers() {
         return this.phoneNumbers;
     }
@@ -49,6 +54,7 @@ public final class OperatorInformationRequest implements JsonSerializable<Operat
      * @param phoneNumbers the phoneNumbers value to set.
      * @return the OperatorInformationRequest object itself.
      */
+    @Generated
     public OperatorInformationRequest setPhoneNumbers(List<String> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
         return this;
@@ -59,6 +65,7 @@ public final class OperatorInformationRequest implements JsonSerializable<Operat
      * 
      * @return the options value.
      */
+    @Generated
     public OperatorInformationOptions getOptions() {
         return this.options;
     }
@@ -69,6 +76,7 @@ public final class OperatorInformationRequest implements JsonSerializable<Operat
      * @param options the options value to set.
      * @return the OperatorInformationRequest object itself.
      */
+    @Generated
     public OperatorInformationRequest setOptions(OperatorInformationOptions options) {
         this.options = options;
         return this;
@@ -77,6 +85,7 @@ public final class OperatorInformationRequest implements JsonSerializable<Operat
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +103,7 @@ public final class OperatorInformationRequest implements JsonSerializable<Operat
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OperatorInformationRequest.
      */
+    @Generated
     public static OperatorInformationRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OperatorInformationRequest deserializedOperatorInformationRequest = new OperatorInformationRequest();

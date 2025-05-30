@@ -5,6 +5,7 @@
 package com.azure.communication.phonenumbers.siprouting.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
     /*
      * Gets or sets description of the route.
      */
+    @Generated
     private String description;
 
     /*
      * Gets or sets name of the route.
      */
+    @Generated
     private String name;
 
     /*
@@ -32,16 +35,19 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
      * The regex should match only digits with an optional '+' prefix without spaces.
      * I.e. "^\+[1-9][0-9]{3,23}$".
      */
+    @Generated
     private String numberPattern;
 
     /*
      * Gets or sets list of SIP trunks for routing calls. Trunks are represented as FQDN.
      */
+    @Generated
     private List<String> trunks;
 
     /**
      * Creates an instance of SipTrunkRoute class.
      */
+    @Generated
     public SipTrunkRoute() {
     }
 
@@ -50,6 +56,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -60,6 +67,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
      * @param description the description value to set.
      * @return the SipTrunkRoute object itself.
      */
+    @Generated
     public SipTrunkRoute setDescription(String description) {
         this.description = description;
         return this;
@@ -70,6 +78,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -80,6 +89,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
      * @param name the name value to set.
      * @return the SipTrunkRoute object itself.
      */
+    @Generated
     public SipTrunkRoute setName(String name) {
         this.name = name;
         return this;
@@ -93,6 +103,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
      * 
      * @return the numberPattern value.
      */
+    @Generated
     public String getNumberPattern() {
         return this.numberPattern;
     }
@@ -106,6 +117,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
      * @param numberPattern the numberPattern value to set.
      * @return the SipTrunkRoute object itself.
      */
+    @Generated
     public SipTrunkRoute setNumberPattern(String numberPattern) {
         this.numberPattern = numberPattern;
         return this;
@@ -116,6 +128,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
      * 
      * @return the trunks value.
      */
+    @Generated
     public List<String> getTrunks() {
         return this.trunks;
     }
@@ -126,6 +139,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
      * @param trunks the trunks value to set.
      * @return the SipTrunkRoute object itself.
      */
+    @Generated
     public SipTrunkRoute setTrunks(List<String> trunks) {
         this.trunks = trunks;
         return this;
@@ -134,6 +148,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -153,6 +168,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SipTrunkRoute.
      */
+    @Generated
     public static SipTrunkRoute fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SipTrunkRoute deserializedSipTrunkRoute = new SipTrunkRoute();
