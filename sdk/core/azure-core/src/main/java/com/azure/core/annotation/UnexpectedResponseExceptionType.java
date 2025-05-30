@@ -68,4 +68,13 @@ public @interface UnexpectedResponseExceptionType {
      * @return The HTTP status codes that trigger the exception to be thrown or returned.
      */
     int[] code() default { };
+
+    /**
+     * The class to decode the body of the HTTP response that accompanies an {@link HttpResponseException} to be thrown
+     * or returned.
+     *
+     * @return The class to decode the body of the HTTP response that accompanies an {@link HttpResponseException} to be
+     * thrown or returned.
+     */
+    Class<?> exceptionBodyClass() default Object.class;
 }
