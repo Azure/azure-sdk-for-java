@@ -12,6 +12,7 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
 import java.nio.ByteBuffer;
+import java.util.Optional;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
@@ -47,17 +48,15 @@ public final class RequestBodyHandler {
             setEmptyBody(body);
             return false;
         }
-        boolean isContentTypeSetInHeaders
-            = requestContext.getParameters().stream().anyMatch(p -> "contentType".equals(p.getName()));
+        Optional<HttpRequestContext.MethodParameter> contentTypeParamParamOpt
+            = requestContext.getParameters().stream().filter(p -> p.getName().equals("contentType")).findFirst();
 
         if (parameterType.getKind().isPrimitive()) {
-            return addRequestBodyStatements(body, parameterType, requestBody.getParameterName(),
-                processingEnv.getElementUtils(), processingEnv.getTypeUtils(), requestBody.getContentType(),
-                isContentTypeSetInHeaders);
+            return addRequestBodyStatements(body, parameterType, requestBody, processingEnv.getElementUtils(),
+                processingEnv.getTypeUtils(), contentTypeParamParamOpt);
         } else {
-            addRequestBodyWithNullCheck(body, parameterType, requestBody.getParameterName(),
-                processingEnv.getElementUtils(), processingEnv.getTypeUtils(), requestBody.getContentType(),
-                isContentTypeSetInHeaders);
+            addRequestBodyWithNullCheck(body, parameterType, requestBody, processingEnv.getElementUtils(),
+                processingEnv.getTypeUtils(), contentTypeParamParamOpt);
             // serializationFormat could be set but not in scope to use for response body handling
             return false;
         }
@@ -130,11 +129,7 @@ public final class RequestBodyHandler {
     }
 
     private static TypeElement getTypeElement(Elements elementUtils, String name) {
-        TypeElement element = elementUtils.getTypeElement(name);
-        if (element == null) {
-            return null;
-        }
-        return element;
+        return elementUtils.getTypeElement(name);
     }
 
     /**
@@ -216,24 +211,35 @@ public final class RequestBodyHandler {
             parameterName, parameterName)));
     }
 
-    private static void addRequestBodyWithNullCheck(BlockStmt body, TypeMirror parameterType, String parameterName,
-        Elements elementUtils, Types typeUtils, String bodyContentType, boolean isContentTypeSetInHeaders) {
+    private static void addRequestBodyWithNullCheck(BlockStmt body, TypeMirror parameterType,
+        HttpRequestContext.Body requestBody, Elements elementUtils, Types typeUtils,
+        Optional<HttpRequestContext.MethodParameter> contentTypeParam) {
         body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
         body.tryAddImportToParentCompilationUnit(CoreUtils.class);
+        String parameterName = requestBody.getParameterName();
 
         BlockStmt ifBlock = new BlockStmt();
         IfStmt ifStatement = new IfStmt(StaticJavaParser.parseExpression(parameterName + " != null"), ifBlock, null);
 
-        addRequestBodyStatements(ifBlock, parameterType, parameterName, elementUtils, typeUtils, bodyContentType,
-            isContentTypeSetInHeaders);
+        addRequestBodyStatements(ifBlock, parameterType, requestBody, elementUtils, typeUtils, contentTypeParam);
         body.addStatement(ifStatement);
     }
 
-    private static boolean addRequestBodyStatements(BlockStmt body, TypeMirror parameterType, String parameterName,
-        Elements elementUtils, Types typeUtils, String bodyContentType, boolean isContentTypeSetInHeaders) {
-        if (isContentTypeSetInHeaders) {
-            body.addStatement(StaticJavaParser
-                .parseStatement("httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType);"));
+    private static boolean addRequestBodyStatements(BlockStmt body, TypeMirror parameterType,
+        HttpRequestContext.Body requestBody, Elements elementUtils, Types typeUtils,
+        Optional<HttpRequestContext.MethodParameter> contentTypeParam) {
+        String bodyContentType = requestBody.getContentType();
+        String parameterName = requestBody.getParameterName();
+        if (contentTypeParam.isPresent()) {
+            String paramType = contentTypeParam.get().getShortTypeName();
+            if ("String".equals(paramType)) {
+                body.addStatement(StaticJavaParser
+                    .parseStatement("httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType);"));
+            } else {
+                // use String.valueOf to convert the content type to a string
+                body.addStatement(StaticJavaParser.parseStatement(
+                    "httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, String" + ".valueOf(contentType));"));
+            }
         } else {
             setContentTypeHeader(body, bodyContentType == null ? ContentType.APPLICATION_JSON : bodyContentType);
         }
