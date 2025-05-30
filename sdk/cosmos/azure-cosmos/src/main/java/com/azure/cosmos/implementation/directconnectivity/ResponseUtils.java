@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
@@ -18,7 +19,11 @@ class ResponseUtils {
 
         HttpHeaders httpResponseHeaders = httpClientResponse.headers();
 
-        Mono<ByteBuf> contentObservable = httpClientResponse.body().switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER));
+        Mono<ByteBuf> contentObservable = httpClientResponse
+            .body()
+            .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER))
+            .map(bodyByteBuf -> bodyByteBuf.retain())
+            .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
 
         return contentObservable.map(byteBufContent -> {
             // transforms to Mono<StoreResponse>

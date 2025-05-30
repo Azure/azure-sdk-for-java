@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.clienttelemetry;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
@@ -187,6 +188,7 @@ public class ClientTelemetry {
 
         return httpResponseMono
             .flatMap(HttpResponse::bodyAsString)
+            .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC)
             .map(ClientTelemetry::parse)
             .doOnSuccess(metadata -> {
                 azureVmMetaDataSingleton.compareAndSet(null, metadata);

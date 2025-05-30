@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
@@ -17,7 +18,7 @@ public class ErrorUtils {
     private static final Logger logger = LoggerFactory.getLogger(ErrorUtils.class);
 
     static Mono<String> getErrorResponseAsync(HttpResponse responseMessage, HttpRequest request) {
-        return responseMessage.bodyAsString().switchIfEmpty(Mono.just(StringUtils.EMPTY));
+        return responseMessage.bodyAsString().switchIfEmpty(Mono.just(StringUtils.EMPTY)).publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
     }
 
     static void logGoneException(URI physicalAddress, String activityId) {
