@@ -5,6 +5,7 @@ package io.clientcore.annotation.processor.test.serializers;
 
 import io.clientcore.annotation.processor.test.implementation.SimpleXmlSerializableService;
 import io.clientcore.annotation.processor.test.implementation.models.SimpleXmlSerializable;
+import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.Response;
@@ -66,7 +67,9 @@ public class XmlSerializableTests {
             + "<int>10</int><string>10</string></SimpleXml>";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> new Response<>(request, 200,
+            .httpClient(request -> new Response<>(request.setHeaders(new HttpHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE,
+                contentType)))
+                , 200,
                 new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType), new StringBinaryData(response)))
             .build();
 
@@ -87,7 +90,8 @@ public class XmlSerializableTests {
             + "<SimpleXml boolean=\"true\" decimal=\"10.0\"></SimpleXml>";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> new Response<>(request, 200,
+            .httpClient(request -> new Response<>(request.setHeaders(new HttpHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE,
+                contentType))), 200,
                 new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType), new StringBinaryData(response)))
             .build();
 

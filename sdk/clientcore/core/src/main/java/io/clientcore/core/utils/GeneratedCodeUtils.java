@@ -14,6 +14,8 @@ import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import java.lang.reflect.ParameterizedType;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +67,8 @@ public final class GeneratedCodeUtils {
             }
 
             uriBuilder.addQueryParameterValues(nameToAdd, valuesToAdd);
+        } else if (value instanceof OffsetDateTime) {
+            uriBuilder.addQueryParameter(nameToAdd, ((OffsetDateTime) value).format(DateTimeFormatter.ISO_INSTANT));
         } else {
             // Single value object, stringify and encode it.
             String valueToAdd

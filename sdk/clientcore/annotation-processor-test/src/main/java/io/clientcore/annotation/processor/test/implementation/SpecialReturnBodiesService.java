@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package io.clientcore.annotation.processor.test.implementation;
 
+import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.core.annotations.ServiceInterface;
+import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
 import io.clientcore.core.http.annotations.HttpRequestInformation;
@@ -15,6 +17,7 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Base64Uri;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -119,6 +122,8 @@ public interface SpecialReturnBodiesService {
     /**
      * Gets Base64 encoded binary data from the specified URL.
      * @param endpoint The URL.
+     * @param contentType The content type header value.
+     * @param value The value to encode.
      * @return A response containing the Base64 encoded binary data.
      */
     @HttpRequestInformation(
@@ -127,5 +132,32 @@ public interface SpecialReturnBodiesService {
         expectedStatusCodes = { 200 },
         returnValueWireType = Base64Uri.class)
     @UnexpectedResponseExceptionDetail
-    Response<byte[]> base64url(@HostParam("url") String endpoint);
+    Response<byte[]> base64url(@HostParam("url") String endpoint, @HeaderParam("content-type") String contentType,
+        @BodyParam("application/json") byte[] value);
+
+    /**
+     * Gets Base64 encoded binary data from the specified URL.
+     * @param endpoint The URL.
+     * @param value The value to encode.
+     * @return A response containing the Base64 encoded binary data.
+     */
+    @HttpRequestInformation(
+        method = HttpMethod.GET,
+        path = "/encode/datetime/header/rfc3339",
+        expectedStatusCodes = { 204 })
+    @UnexpectedResponseExceptionDetail
+    Response<Void> rfc3339(@HostParam("url") String endpoint, @HeaderParam("value") OffsetDateTime value);
+
+    /**
+     * Gets omit body from the specified URL.
+     * @param endpoint The URL.
+     * @param body The body to omit.
+     * @return A response indicating the body was omitted.
+     */
+    @HttpRequestInformation(
+        method = HttpMethod.POST,
+        path = "/parameters/body-optionality/optional-explicit/omit",
+        expectedStatusCodes = { 204 })
+    @UnexpectedResponseExceptionDetail
+    Response<Void> omit(@HostParam("url") String endpoint, @BodyParam("application/json") Foo body);
 }
