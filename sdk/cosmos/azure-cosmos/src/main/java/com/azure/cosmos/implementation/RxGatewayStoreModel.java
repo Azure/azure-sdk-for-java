@@ -274,8 +274,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
             Mono<HttpResponse> httpResponseMono = this
                 .httpClient
-                .send(httpRequest, request.getResponseTimeout())
-                .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
+                .send(httpRequest, request.getResponseTimeout());
 
             if (this.gatewayServerErrorInjector != null) {
                 httpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(request.getResponseTimeout(),
@@ -373,147 +372,149 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                                                       RxDocumentServiceRequest request,
                                                                       HttpRequest httpRequest) {
 
-        return httpResponseMono.flatMap(httpResponse -> {
+        return httpResponseMono
+            .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC)
+            .flatMap(httpResponse -> {
 
-            // header key/value pairs
-            HttpHeaders httpResponseHeaders = httpResponse.headers();
-            int httpResponseStatus = httpResponse.statusCode();
+                // header key/value pairs
+                HttpHeaders httpResponseHeaders = httpResponse.headers();
+                int httpResponseStatus = httpResponse.statusCode();
 
-            Mono<ByteBuf> contentObservable = httpResponse
-                .body()
-                .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER));
+                Mono<ByteBuf> contentObservable = httpResponse
+                    .body()
+                    .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER));
 
-            return contentObservable
-                .map(content -> {
-                    // Capture transport client request timeline
-                    ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
-                    if (reactorNettyRequestRecord != null) {
-                        reactorNettyRequestRecord.setTimeCompleted(Instant.now());
-                    }
+                return contentObservable
+                    .map(content -> {
+                        // Capture transport client request timeline
+                        ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
+                        if (reactorNettyRequestRecord != null) {
+                            reactorNettyRequestRecord.setTimeCompleted(Instant.now());
+                        }
 
-                    StoreResponse rsp = request
-                        .getEffectiveHttpTransportSerializer(this)
-                        .unwrapToStoreResponse(request, httpResponseStatus, httpResponseHeaders, content);
+                        StoreResponse rsp = request
+                            .getEffectiveHttpTransportSerializer(this)
+                            .unwrapToStoreResponse(request, httpResponseStatus, httpResponseHeaders, content);
 
-                    if (reactorNettyRequestRecord != null) {
-                        rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
+                        if (reactorNettyRequestRecord != null) {
+                            rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
 
-                        if (this.gatewayServerErrorInjector != null) {
-                            // only configure when fault injection is used
-                            rsp.setFaultInjectionRuleId(
-                                request
-                                    .faultInjectionRequestContext
-                                    .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
+                            if (this.gatewayServerErrorInjector != null) {
+                                // only configure when fault injection is used
+                                rsp.setFaultInjectionRuleId(
+                                    request
+                                        .faultInjectionRequestContext
+                                        .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
 
-                            rsp.setFaultInjectionRuleEvaluationResults(
-                                request
-                                    .faultInjectionRequestContext
-                                    .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
+                                rsp.setFaultInjectionRuleEvaluationResults(
+                                    request
+                                        .faultInjectionRequestContext
+                                        .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
+                            }
+                        }
+
+                        if (request.requestContext.cosmosDiagnostics != null) {
+                            BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, globalEndpointManager);
+                        }
+
+                        return rsp;
+                    })
+                    .single();
+
+            }).map(rsp -> {
+                RxDocumentServiceResponse rxDocumentServiceResponse;
+                if (httpRequest.reactorNettyRequestRecord() != null) {
+                    rxDocumentServiceResponse =
+                        new RxDocumentServiceResponse(this.clientContext, rsp,
+                            httpRequest.reactorNettyRequestRecord().takeTimelineSnapshot());
+
+                } else {
+                    rxDocumentServiceResponse =
+                        new RxDocumentServiceResponse(this.clientContext, rsp);
+                }
+                rxDocumentServiceResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
+                return rxDocumentServiceResponse;
+            }).onErrorResume(throwable -> {
+                Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
+                if (!(unwrappedException instanceof Exception)) {
+                    // fatal error
+                    logger.error("Unexpected failure {}", unwrappedException.getMessage(), unwrappedException);
+                    return Mono.error(unwrappedException);
+                }
+
+                Exception exception = (Exception) unwrappedException;
+                CosmosException dce;
+                if (!(exception instanceof CosmosException)) {
+                    // wrap in CosmosException
+                    logger.warn("Network failure", exception);
+
+                    int statusCode = 0;
+                    if (WebExceptionUtility.isNetworkFailure(exception)) {
+                        if (WebExceptionUtility.isReadTimeoutException(exception)) {
+                            statusCode = HttpConstants.StatusCodes.REQUEST_TIMEOUT;
+                        } else {
+                            statusCode = HttpConstants.StatusCodes.SERVICE_UNAVAILABLE;
                         }
                     }
 
-                    if (request.requestContext.cosmosDiagnostics != null) {
-                        BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, globalEndpointManager);
-                    }
-
-                    return rsp;
-                })
-                .single();
-
-        }).map(rsp -> {
-            RxDocumentServiceResponse rxDocumentServiceResponse;
-            if (httpRequest.reactorNettyRequestRecord() != null) {
-                rxDocumentServiceResponse =
-                    new RxDocumentServiceResponse(this.clientContext, rsp,
-                        httpRequest.reactorNettyRequestRecord().takeTimelineSnapshot());
-
-            } else {
-                rxDocumentServiceResponse =
-                    new RxDocumentServiceResponse(this.clientContext, rsp);
-            }
-            rxDocumentServiceResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
-            return rxDocumentServiceResponse;
-        }).onErrorResume(throwable -> {
-            Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
-            if (!(unwrappedException instanceof Exception)) {
-                // fatal error
-                logger.error("Unexpected failure {}", unwrappedException.getMessage(), unwrappedException);
-                return Mono.error(unwrappedException);
-            }
-
-            Exception exception = (Exception) unwrappedException;
-            CosmosException dce;
-            if (!(exception instanceof CosmosException)) {
-                // wrap in CosmosException
-                logger.warn("Network failure", exception);
-
-                int statusCode = 0;
-                if (WebExceptionUtility.isNetworkFailure(exception)) {
-                    if (WebExceptionUtility.isReadTimeoutException(exception)) {
-                        statusCode = HttpConstants.StatusCodes.REQUEST_TIMEOUT;
-                    } else {
-                        statusCode = HttpConstants.StatusCodes.SERVICE_UNAVAILABLE;
-                    }
-                }
-
-                dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, exception);
-                BridgeInternal.setRequestHeaders(dce, request.getHeaders());
-            } else {
-                dce = (CosmosException) exception;
-            }
-
-            if (WebExceptionUtility.isNetworkFailure(dce)) {
-                if (WebExceptionUtility.isReadTimeoutException(dce)) {
-                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                    dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, exception);
+                    BridgeInternal.setRequestHeaders(dce, request.getHeaders());
                 } else {
-                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                    dce = (CosmosException) exception;
                 }
-            }
 
-            if (request.requestContext.cosmosDiagnostics != null) {
+                if (WebExceptionUtility.isNetworkFailure(dce)) {
+                    if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                        BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                    } else {
+                        BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                    }
+                }
+
+                if (request.requestContext.cosmosDiagnostics != null) {
+                    if (httpRequest.reactorNettyRequestRecord() != null) {
+                        ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+                        BridgeInternal.setRequestTimeline(dce, reactorNettyRequestRecord.takeTimelineSnapshot());
+
+                        ImplementationBridgeHelpers
+                            .CosmosExceptionHelper
+                            .getCosmosExceptionAccessor()
+                            .setFaultInjectionRuleId(
+                                dce,
+                                request.faultInjectionRequestContext
+                                    .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
+
+                        ImplementationBridgeHelpers
+                            .CosmosExceptionHelper
+                            .getCosmosExceptionAccessor()
+                            .setFaultInjectionEvaluationResults(
+                                dce,
+                                request.faultInjectionRequestContext
+                                    .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
+                    }
+
+                    BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, globalEndpointManager);
+                }
+
+                return Mono.error(dce);
+            }).doFinally(signalType -> {
+
+                if (signalType != SignalType.CANCEL) {
+                    return;
+                }
+
                 if (httpRequest.reactorNettyRequestRecord() != null) {
+
                     ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
-                    BridgeInternal.setRequestTimeline(dce, reactorNettyRequestRecord.takeTimelineSnapshot());
 
-                    ImplementationBridgeHelpers
-                        .CosmosExceptionHelper
-                        .getCosmosExceptionAccessor()
-                        .setFaultInjectionRuleId(
-                            dce,
-                            request.faultInjectionRequestContext
-                                .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
+                    RequestTimeline requestTimeline = reactorNettyRequestRecord.takeTimelineSnapshot();
+                    long transportRequestId = reactorNettyRequestRecord.getTransportRequestId();
 
-                    ImplementationBridgeHelpers
-                        .CosmosExceptionHelper
-                        .getCosmosExceptionAccessor()
-                        .setFaultInjectionEvaluationResults(
-                            dce,
-                            request.faultInjectionRequestContext
-                                .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
+                    GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
+
+                    request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
                 }
-
-                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, globalEndpointManager);
-            }
-
-            return Mono.error(dce);
-        }).doFinally(signalType -> {
-
-            if (signalType != SignalType.CANCEL) {
-                return;
-            }
-
-            if (httpRequest.reactorNettyRequestRecord() != null) {
-
-                ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
-
-                RequestTimeline requestTimeline = reactorNettyRequestRecord.takeTimelineSnapshot();
-                long transportRequestId = reactorNettyRequestRecord.getTransportRequestId();
-
-                GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
-
-                request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
-            }
-        });
+            });
     }
 
     private void validateOrThrow(RxDocumentServiceRequest request,
