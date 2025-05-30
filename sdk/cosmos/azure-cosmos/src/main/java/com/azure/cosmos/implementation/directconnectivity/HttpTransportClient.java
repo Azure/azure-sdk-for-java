@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -240,9 +239,7 @@ public class HttpTransportClient extends TransportClient {
                                 null);
                     });
 
-            return httpResponseMono
-                .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC)
-                .flatMap(rsp -> processHttpResponse(request.requestContext.resourcePhysicalAddress,
+            return httpResponseMono.flatMap(rsp -> processHttpResponse(request.requestContext.resourcePhysicalAddress,
                     httpRequest, activityId, rsp, physicalAddress));
 
         } catch (Exception e) {

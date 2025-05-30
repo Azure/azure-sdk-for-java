@@ -19,11 +19,7 @@ class ResponseUtils {
 
         HttpHeaders httpResponseHeaders = httpClientResponse.headers();
 
-        Mono<ByteBuf> contentObservable = httpClientResponse
-            .body()
-            .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER))
-            .map(bodyByteBuf -> bodyByteBuf.retain())
-            .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
+        Mono<ByteBuf> contentObservable = httpClientResponse.body().switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER));
 
         return contentObservable.map(byteBufContent -> {
             // transforms to Mono<StoreResponse>

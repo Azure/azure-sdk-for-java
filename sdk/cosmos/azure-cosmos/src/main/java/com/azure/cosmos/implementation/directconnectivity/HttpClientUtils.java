@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosError;
-import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -37,9 +36,7 @@ public class HttpClientUtils {
     }
 
     private static Mono<CosmosException> createDocumentClientException(RxDocumentServiceRequest request, HttpResponse httpResponse) {
-        Mono<String> readStream = httpResponse
-            .bodyAsString()
-            .switchIfEmpty(Mono.just(StringUtils.EMPTY));
+        Mono<String> readStream = httpResponse.bodyAsString().switchIfEmpty(Mono.just(StringUtils.EMPTY));
 
         return readStream.map(body -> {
             CosmosError cosmosError = new CosmosError(body);
