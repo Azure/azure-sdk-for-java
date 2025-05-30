@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -18,46 +19,55 @@ public final class PathsCreateHeaders {
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
+    @Generated
     private String eTag;
 
     /*
      * The Last-Modified property.
      */
+    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The Content-Length property.
      */
+    @Generated
     private Long contentLength;
 
     /*
      * The x-ms-encryption-key-sha256 property.
      */
+    @Generated
     private String xMsEncryptionKeySha256;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-continuation property.
      */
+    @Generated
     private String xMsContinuation;
 
     /*
      * The x-ms-request-server-encrypted property.
      */
+    @Generated
     private Boolean xMsRequestServerEncrypted;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -82,10 +92,14 @@ public final class PathsCreateHeaders {
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
+        } else {
+            this.lastModified = null;
         }
         String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
+        } else {
+            this.contentLength = null;
         }
         this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
@@ -93,10 +107,14 @@ public final class PathsCreateHeaders {
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
+        } else {
+            this.xMsRequestServerEncrypted = null;
         }
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
     }
 
@@ -105,6 +123,7 @@ public final class PathsCreateHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -115,6 +134,7 @@ public final class PathsCreateHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathsCreateHeaders object itself.
      */
+    @Generated
     public PathsCreateHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -125,6 +145,7 @@ public final class PathsCreateHeaders {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -135,6 +156,7 @@ public final class PathsCreateHeaders {
      * @param eTag the eTag value to set.
      * @return the PathsCreateHeaders object itself.
      */
+    @Generated
     public PathsCreateHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -145,6 +167,7 @@ public final class PathsCreateHeaders {
      * 
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -158,6 +181,7 @@ public final class PathsCreateHeaders {
      * @param lastModified the lastModified value to set.
      * @return the PathsCreateHeaders object itself.
      */
+    @Generated
     public PathsCreateHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -172,6 +196,7 @@ public final class PathsCreateHeaders {
      * 
      * @return the contentLength value.
      */
+    @Generated
     public Long getContentLength() {
         return this.contentLength;
     }
@@ -182,6 +207,7 @@ public final class PathsCreateHeaders {
      * @param contentLength the contentLength value to set.
      * @return the PathsCreateHeaders object itself.
      */
+    @Generated
     public PathsCreateHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
@@ -192,6 +218,7 @@ public final class PathsCreateHeaders {
      * 
      * @return the xMsEncryptionKeySha256 value.
      */
+    @Generated
     public String getXMsEncryptionKeySha256() {
         return this.xMsEncryptionKeySha256;
     }
@@ -202,6 +229,7 @@ public final class PathsCreateHeaders {
      * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
      * @return the PathsCreateHeaders object itself.
      */
+    @Generated
     public PathsCreateHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
         this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
         return this;
@@ -212,6 +240,7 @@ public final class PathsCreateHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -222,6 +251,7 @@ public final class PathsCreateHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathsCreateHeaders object itself.
      */
+    @Generated
     public PathsCreateHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -232,6 +262,7 @@ public final class PathsCreateHeaders {
      * 
      * @return the xMsContinuation value.
      */
+    @Generated
     public String getXMsContinuation() {
         return this.xMsContinuation;
     }
@@ -242,6 +273,7 @@ public final class PathsCreateHeaders {
      * @param xMsContinuation the xMsContinuation value to set.
      * @return the PathsCreateHeaders object itself.
      */
+    @Generated
     public PathsCreateHeaders setXMsContinuation(String xMsContinuation) {
         this.xMsContinuation = xMsContinuation;
         return this;
@@ -252,6 +284,7 @@ public final class PathsCreateHeaders {
      * 
      * @return the xMsRequestServerEncrypted value.
      */
+    @Generated
     public Boolean isXMsRequestServerEncrypted() {
         return this.xMsRequestServerEncrypted;
     }
@@ -262,6 +295,7 @@ public final class PathsCreateHeaders {
      * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
      * @return the PathsCreateHeaders object itself.
      */
+    @Generated
     public PathsCreateHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
         this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
         return this;
@@ -272,6 +306,7 @@ public final class PathsCreateHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -285,6 +320,7 @@ public final class PathsCreateHeaders {
      * @param date the date value to set.
      * @return the PathsCreateHeaders object itself.
      */
+    @Generated
     public PathsCreateHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;

@@ -37,7 +37,6 @@ import com.azure.storage.file.datalake.implementation.models.ListBlobsShowOnly;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathList;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

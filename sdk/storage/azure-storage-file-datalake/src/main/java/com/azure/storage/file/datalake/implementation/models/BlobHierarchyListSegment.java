@@ -5,7 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,16 +23,19 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
     /*
      * The BlobPrefixes property.
      */
+    @Generated
     private List<BlobPrefix> blobPrefixes = new ArrayList<>();
 
     /*
      * The BlobItems property.
      */
+    @Generated
     private List<BlobItemInternal> blobItems = new ArrayList<>();
 
     /**
      * Creates an instance of BlobHierarchyListSegment class.
      */
+    @Generated
     public BlobHierarchyListSegment() {
     }
 
@@ -41,6 +44,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
      * 
      * @return the blobPrefixes value.
      */
+    @Generated
     public List<BlobPrefix> getBlobPrefixes() {
         return this.blobPrefixes;
     }
@@ -51,6 +55,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
      * @param blobPrefixes the blobPrefixes value to set.
      * @return the BlobHierarchyListSegment object itself.
      */
+    @Generated
     public BlobHierarchyListSegment setBlobPrefixes(List<BlobPrefix> blobPrefixes) {
         this.blobPrefixes = blobPrefixes;
         return this;
@@ -61,6 +66,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
      * 
      * @return the blobItems value.
      */
+    @Generated
     public List<BlobItemInternal> getBlobItems() {
         return this.blobItems;
     }
@@ -71,19 +77,22 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
      * @param blobItems the blobItems value to set.
      * @return the BlobHierarchyListSegment object itself.
      */
+    @Generated
     public BlobHierarchyListSegment setBlobItems(List<BlobItemInternal> blobItems) {
         this.blobItems = blobItems;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Blobs" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Blobs" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (this.blobPrefixes != null) {
             for (BlobPrefix element : this.blobPrefixes) {
@@ -106,6 +115,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobHierarchyListSegment.
      */
+    @Generated
     public static BlobHierarchyListSegment fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -120,9 +130,10 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobHierarchyListSegment.
      */
+    @Generated
     public static BlobHierarchyListSegment fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Blobs" : rootElementName;
+        String finalRootElementName = rootElementName == null || rootElementName.isEmpty() ? "Blobs" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobHierarchyListSegment deserializedBlobHierarchyListSegment = new BlobHierarchyListSegment();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
