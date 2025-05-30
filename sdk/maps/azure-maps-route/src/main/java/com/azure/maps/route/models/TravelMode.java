@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,41 +15,49 @@ public final class TravelMode extends ExpandableStringEnum<TravelMode> {
     /**
      * The returned routes are optimized for cars.
      */
+    @Generated
     public static final TravelMode CAR = fromString("car");
 
     /**
      * The returned routes are optimized for commercial vehicles, like for trucks.
      */
+    @Generated
     public static final TravelMode TRUCK = fromString("truck");
 
     /**
      * The returned routes are optimized for taxis. BETA functionality.
      */
+    @Generated
     public static final TravelMode TAXI = fromString("taxi");
 
     /**
      * The returned routes are optimized for buses, including the use of bus only lanes. BETA functionality.
      */
+    @Generated
     public static final TravelMode BUS = fromString("bus");
 
     /**
      * The returned routes are optimized for vans. BETA functionality.
      */
+    @Generated
     public static final TravelMode VAN = fromString("van");
 
     /**
      * The returned routes are optimized for motorcycles. BETA functionality.
      */
+    @Generated
     public static final TravelMode MOTORCYCLE = fromString("motorcycle");
 
     /**
      * The returned routes are optimized for bicycles, including use of bicycle lanes.
      */
+    @Generated
     public static final TravelMode BICYCLE = fromString("bicycle");
 
     /**
      * The returned routes are optimized for pedestrians, including the use of sidewalks.
      */
+    @Generated
     public static final TravelMode PEDESTRIAN = fromString("pedestrian");
 
     /**
@@ -56,6 +65,7 @@ public final class TravelMode extends ExpandableStringEnum<TravelMode> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TravelMode() {
     }
@@ -66,6 +76,7 @@ public final class TravelMode extends ExpandableStringEnum<TravelMode> {
      * @param name a name to look for.
      * @return the corresponding TravelMode.
      */
+    @Generated
     public static TravelMode fromString(String name) {
         return fromString(name, TravelMode.class);
     }
@@ -75,6 +86,7 @@ public final class TravelMode extends ExpandableStringEnum<TravelMode> {
      * 
      * @return known TravelMode values.
      */
+    @Generated
     public static Collection<TravelMode> values() {
         return values(TravelMode.class);
     }

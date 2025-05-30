@@ -171,9 +171,15 @@ public final class RestResourceDatasetTypeProperties implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("relativeUrl", this.relativeUrl);
-        jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
-        jsonWriter.writeUntypedField("requestBody", this.requestBody);
+        if (this.relativeUrl != null) {
+            jsonWriter.writeUntypedField("relativeUrl", this.relativeUrl);
+        }
+        if (this.requestMethod != null) {
+            jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
+        }
+        if (this.requestBody != null) {
+            jsonWriter.writeUntypedField("requestBody", this.requestBody);
+        }
         jsonWriter.writeMapField("additionalHeaders", this.additionalHeaders,
             (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeMapField("paginationRules", this.paginationRules,

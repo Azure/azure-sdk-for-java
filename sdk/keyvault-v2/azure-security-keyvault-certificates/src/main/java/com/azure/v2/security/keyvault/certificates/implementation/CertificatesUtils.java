@@ -38,7 +38,7 @@ public final class CertificatesUtils {
                 getIdMetadataPiece(tokens, versionIndex));
         } catch (URISyntaxException e) {
             // Should never come here.
-            logger.atError().log("Received Malformed Secret Id URL from KV Service");
+            logger.atError().setThrowable(e).log("Received Malformed Secret Id URL from KV Service");
 
             return new IdMetadata(id, null, null, null);
         }

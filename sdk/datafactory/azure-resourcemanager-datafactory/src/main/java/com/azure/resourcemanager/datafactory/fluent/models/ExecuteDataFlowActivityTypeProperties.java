@@ -307,10 +307,18 @@ public class ExecuteDataFlowActivityTypeProperties implements JsonSerializable<E
         jsonWriter.writeJsonField("integrationRuntime", this.integrationRuntime);
         jsonWriter.writeJsonField("continuationSettings", this.continuationSettings);
         jsonWriter.writeJsonField("compute", this.compute);
-        jsonWriter.writeUntypedField("traceLevel", this.traceLevel);
-        jsonWriter.writeUntypedField("continueOnError", this.continueOnError);
-        jsonWriter.writeUntypedField("runConcurrently", this.runConcurrently);
-        jsonWriter.writeUntypedField("sourceStagingConcurrency", this.sourceStagingConcurrency);
+        if (this.traceLevel != null) {
+            jsonWriter.writeUntypedField("traceLevel", this.traceLevel);
+        }
+        if (this.continueOnError != null) {
+            jsonWriter.writeUntypedField("continueOnError", this.continueOnError);
+        }
+        if (this.runConcurrently != null) {
+            jsonWriter.writeUntypedField("runConcurrently", this.runConcurrently);
+        }
+        if (this.sourceStagingConcurrency != null) {
+            jsonWriter.writeUntypedField("sourceStagingConcurrency", this.sourceStagingConcurrency);
+        }
         return jsonWriter.writeEndObject();
     }
 

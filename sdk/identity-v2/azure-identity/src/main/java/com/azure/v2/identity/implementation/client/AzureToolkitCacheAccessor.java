@@ -10,9 +10,9 @@ import com.sun.jna.Platform;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
-import io.clientcore.core.instrumentation.logging.LogLevel;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
@@ -32,9 +32,8 @@ public class AzureToolkitCacheAccessor {
                     = new KeyChainAccessor(null, "Microsoft.Developer.IdentityService", INTELLIJ_TOOLKIT_CACHE);
                 String jsonCred = new String(accessor.read(), StandardCharsets.UTF_8);
                 return parseRefreshTokenFromJson(jsonCred);
-            } catch (Exception | Error e) {
-                LOGGER.atLevel(LogLevel.VERBOSE)
-                    .log("IntelliJCredential => Refresh Token Cache Unavailable: " + e.getMessage());
+            } catch (RuntimeException e) {
+                LOGGER.atVerbose().setThrowable(e).log("IntelliJCredential => Refresh Token Cache Unavailable");
             }
 
         } else if (Platform.isLinux()) {
@@ -45,9 +44,8 @@ public class AzureToolkitCacheAccessor {
                 String jsonCred = new String(accessor.read(), StandardCharsets.UTF_8);
 
                 return parseRefreshTokenFromJson(jsonCred);
-            } catch (Exception | Error e) {
-                LOGGER.atLevel(LogLevel.VERBOSE)
-                    .log("IntelliJCredential => Refresh Token Cache Unavailable: " + e.getMessage());
+            } catch (RuntimeException e) {
+                LOGGER.atVerbose().setThrowable(e).log("IntelliJCredential => Refresh Token Cache Unavailable.");
             }
 
         } else if (Platform.isWindows()) {
@@ -60,13 +58,12 @@ public class AzureToolkitCacheAccessor {
                         .toString());
                 String data = new String(cacheFileAccessor.read(), StandardCharsets.UTF_8);
                 return parseRefreshTokenFromJson(data);
-            } catch (Exception | Error e) {
-                LOGGER.atLevel(LogLevel.VERBOSE)
-                    .log("IntelliJCredential => Refresh Token Cache Unavailable: " + e.getMessage());
+            } catch (RuntimeException e) {
+                LOGGER.atVerbose().setThrowable(e).log("IntelliJCredential => Refresh Token Cache Unavailable.");
             }
 
         } else {
-            LOGGER.atLevel(LogLevel.VERBOSE).log(String.format("OS %s Platform not supported.", Platform.getOSType()));
+            LOGGER.atVerbose().addKeyValue("osType", Platform.getOSType()).log("OS %s Platform not supported.");
         }
         return null;
     }
@@ -109,11 +106,12 @@ public class AzureToolkitCacheAccessor {
                             reader.skipChildren();
                         }
                     }
-                    throw new CredentialUnavailableException("IntelliJCredential => Refresh Token not found.");
+                    throw LOGGER.throwableAtError()
+                        .log("IntelliJCredential => Refresh Token not found.", CredentialUnavailableException::new);
                 });
             }
-        } catch (Exception e) {
-            LOGGER.atLevel(LogLevel.VERBOSE).log("IntelliJCredential => Refresh Token not found: " + e.getMessage());
+        } catch (IOException e) {
+            LOGGER.atVerbose().setThrowable(e).log("IntelliJCredential => Refresh Token not found.");
             return null;
         }
     }

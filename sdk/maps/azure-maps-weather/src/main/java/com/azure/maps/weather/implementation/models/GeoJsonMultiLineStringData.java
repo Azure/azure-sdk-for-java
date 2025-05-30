@@ -5,6 +5,7 @@
 package com.azure.maps.weather.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public class GeoJsonMultiLineStringData implements JsonSerializable<GeoJsonMulti
     /*
      * Coordinates for the `GeoJson MultiLineString` geometry.
      */
+    @Generated
     private List<List<List<Double>>> coordinates;
 
     /**
      * Creates an instance of GeoJsonMultiLineStringData class.
      */
+    @Generated
     public GeoJsonMultiLineStringData() {
     }
 
@@ -33,6 +36,7 @@ public class GeoJsonMultiLineStringData implements JsonSerializable<GeoJsonMulti
      * 
      * @return the coordinates value.
      */
+    @Generated
     public List<List<List<Double>>> getCoordinates() {
         return this.coordinates;
     }
@@ -43,6 +47,7 @@ public class GeoJsonMultiLineStringData implements JsonSerializable<GeoJsonMulti
      * @param coordinates the coordinates value to set.
      * @return the GeoJsonMultiLineStringData object itself.
      */
+    @Generated
     public GeoJsonMultiLineStringData setCoordinates(List<List<List<Double>>> coordinates) {
         this.coordinates = coordinates;
         return this;
@@ -51,6 +56,7 @@ public class GeoJsonMultiLineStringData implements JsonSerializable<GeoJsonMulti
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -68,6 +74,7 @@ public class GeoJsonMultiLineStringData implements JsonSerializable<GeoJsonMulti
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GeoJsonMultiLineStringData.
      */
+    @Generated
     public static GeoJsonMultiLineStringData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonMultiLineStringData deserializedGeoJsonMultiLineStringData = new GeoJsonMultiLineStringData();

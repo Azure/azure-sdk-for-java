@@ -64,7 +64,9 @@ public final class AzurePostgreSqlSinkUpsertSettings implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("keys", this.keys);
+        if (this.keys != null) {
+            jsonWriter.writeUntypedField("keys", this.keys);
+        }
         return jsonWriter.writeEndObject();
     }
 

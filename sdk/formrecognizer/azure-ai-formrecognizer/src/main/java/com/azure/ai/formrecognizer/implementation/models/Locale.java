@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class Locale extends ExpandableStringEnum<Locale> {
     /**
      * Static value en-AU for Locale.
      */
+    @Generated
     public static final Locale EN_AU = fromString("en-AU");
 
     /**
      * Static value en-CA for Locale.
      */
+    @Generated
     public static final Locale EN_CA = fromString("en-CA");
 
     /**
      * Static value en-GB for Locale.
      */
+    @Generated
     public static final Locale EN_GB = fromString("en-GB");
 
     /**
      * Static value en-IN for Locale.
      */
+    @Generated
     public static final Locale EN_IN = fromString("en-IN");
 
     /**
      * Static value en-US for Locale.
      */
+    @Generated
     public static final Locale EN_US = fromString("en-US");
 
     /**
@@ -41,6 +47,7 @@ public final class Locale extends ExpandableStringEnum<Locale> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public Locale() {
     }
@@ -51,6 +58,7 @@ public final class Locale extends ExpandableStringEnum<Locale> {
      * @param name a name to look for.
      * @return the corresponding Locale.
      */
+    @Generated
     public static Locale fromString(String name) {
         return fromString(name, Locale.class);
     }
@@ -60,6 +68,7 @@ public final class Locale extends ExpandableStringEnum<Locale> {
      * 
      * @return known Locale values.
      */
+    @Generated
     public static Collection<Locale> values() {
         return values(Locale.class);
     }

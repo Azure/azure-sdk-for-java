@@ -113,8 +113,12 @@ public final class DatasetSchemaDataElement implements JsonSerializable<DatasetS
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("name", this.name);
-        jsonWriter.writeUntypedField("type", this.type);
+        if (this.name != null) {
+            jsonWriter.writeUntypedField("name", this.name);
+        }
+        if (this.type != null) {
+            jsonWriter.writeUntypedField("type", this.type);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

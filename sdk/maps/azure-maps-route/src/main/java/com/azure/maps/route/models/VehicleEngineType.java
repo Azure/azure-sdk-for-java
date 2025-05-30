@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class VehicleEngineType extends ExpandableStringEnum<VehicleEngineT
     /**
      * Internal combustion engine.
      */
+    @Generated
     public static final VehicleEngineType COMBUSTION = fromString("combustion");
 
     /**
      * Electric engine.
      */
+    @Generated
     public static final VehicleEngineType ELECTRIC = fromString("electric");
 
     /**
@@ -26,6 +29,7 @@ public final class VehicleEngineType extends ExpandableStringEnum<VehicleEngineT
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VehicleEngineType() {
     }
@@ -36,6 +40,7 @@ public final class VehicleEngineType extends ExpandableStringEnum<VehicleEngineT
      * @param name a name to look for.
      * @return the corresponding VehicleEngineType.
      */
+    @Generated
     public static VehicleEngineType fromString(String name) {
         return fromString(name, VehicleEngineType.class);
     }
@@ -45,6 +50,7 @@ public final class VehicleEngineType extends ExpandableStringEnum<VehicleEngineT
      * 
      * @return known VehicleEngineType values.
      */
+    @Generated
     public static Collection<VehicleEngineType> values() {
         return values(VehicleEngineType.class);
     }

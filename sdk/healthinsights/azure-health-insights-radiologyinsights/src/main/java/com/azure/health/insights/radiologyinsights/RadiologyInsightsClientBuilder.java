@@ -57,6 +57,9 @@ public final class RadiologyInsightsClientBuilder implements HttpTrait<Radiology
     private static final String SDK_VERSION = "version";
 
     @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://cognitiveservices.azure.com/.default" };
+
+    @Generated
     private static final Map<String, String> PROPERTIES
         = CoreUtils.getProperties("azure-health-insights-radiologyinsights.properties");
 
@@ -182,6 +185,22 @@ public final class RadiologyInsightsClientBuilder implements HttpTrait<Radiology
     }
 
     /*
+     * The TokenCredential used for authentication.
+     */
+    @Generated
+    private TokenCredential tokenCredential;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
+        return this;
+    }
+
+    /*
      * The KeyCredential used for authentication.
      */
     @Generated
@@ -266,6 +285,13 @@ public final class RadiologyInsightsClientBuilder implements HttpTrait<Radiology
     }
 
     @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
+
+    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -327,30 +353,4 @@ public final class RadiologyInsightsClientBuilder implements HttpTrait<Radiology
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RadiologyInsightsClientBuilder.class);
-
-    @Generated
-    private void validateClient() {
-        // This method is invoked from 'buildInnerClient'/'buildClient' method.
-        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-    }
-
-    @Generated
-    private static final String[] DEFAULT_SCOPES = new String[] { "https://cognitiveservices.azure.com/.default" };
-
-    /*
-     * The TokenCredential used for authentication.
-     */
-    @Generated
-    private TokenCredential tokenCredential;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public RadiologyInsightsClientBuilder credential(TokenCredential tokenCredential) {
-        this.tokenCredential = tokenCredential;
-        return this;
-    }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.maps.timezone.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class RepresentativePoint implements JsonSerializable<Representativ
     /*
      * Latitude property
      */
+    @Generated
     private Float latitude;
 
     /*
      * Longitude property
      */
+    @Generated
     private Float longitude;
 
     /**
      * Creates an instance of RepresentativePoint class.
      */
+    @Generated
     public RepresentativePoint() {
     }
 
@@ -37,6 +41,7 @@ public final class RepresentativePoint implements JsonSerializable<Representativ
      * 
      * @return the latitude value.
      */
+    @Generated
     public Float getLatitude() {
         return this.latitude;
     }
@@ -46,6 +51,7 @@ public final class RepresentativePoint implements JsonSerializable<Representativ
      * 
      * @return the longitude value.
      */
+    @Generated
     public Float getLongitude() {
         return this.longitude;
     }
@@ -53,6 +59,7 @@ public final class RepresentativePoint implements JsonSerializable<Representativ
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +74,7 @@ public final class RepresentativePoint implements JsonSerializable<Representativ
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RepresentativePoint.
      */
+    @Generated
     public static RepresentativePoint fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RepresentativePoint deserializedRepresentativePoint = new RepresentativePoint();

@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class ParagraphRole extends ExpandableStringEnum<ParagraphRole> {
     /**
      * Text near the top edge of the page.
      */
+    @Generated
     public static final ParagraphRole PAGE_HEADER = fromString("pageHeader");
 
     /**
      * Text near the bottom edge of the page.
      */
+    @Generated
     public static final ParagraphRole PAGE_FOOTER = fromString("pageFooter");
 
     /**
      * Page number.
      */
+    @Generated
     public static final ParagraphRole PAGE_NUMBER = fromString("pageNumber");
 
     /**
      * Top-level title describing the entire document.
      */
+    @Generated
     public static final ParagraphRole TITLE = fromString("title");
 
     /**
      * Sub heading describing a section of the document.
      */
+    @Generated
     public static final ParagraphRole SECTION_HEADING = fromString("sectionHeading");
 
     /**
      * A note usually placed after the main content on a page.
      */
+    @Generated
     public static final ParagraphRole FOOTNOTE = fromString("footnote");
 
     /**
      * A block of formulas, often with shared alignment.
      */
+    @Generated
     public static final ParagraphRole FORMULA_BLOCK = fromString("formulaBlock");
 
     /**
@@ -51,6 +59,7 @@ public final class ParagraphRole extends ExpandableStringEnum<ParagraphRole> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ParagraphRole() {
     }
@@ -61,6 +70,7 @@ public final class ParagraphRole extends ExpandableStringEnum<ParagraphRole> {
      * @param name a name to look for.
      * @return the corresponding ParagraphRole.
      */
+    @Generated
     public static ParagraphRole fromString(String name) {
         return fromString(name, ParagraphRole.class);
     }
@@ -70,6 +80,7 @@ public final class ParagraphRole extends ExpandableStringEnum<ParagraphRole> {
      * 
      * @return known ParagraphRole values.
      */
+    @Generated
     public static Collection<ParagraphRole> values() {
         return values(ParagraphRole.class);
     }

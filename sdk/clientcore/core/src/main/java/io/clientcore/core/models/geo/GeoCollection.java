@@ -5,6 +5,7 @@ package io.clientcore.core.models.geo;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -32,6 +33,7 @@ import java.util.Objects;
  */
 @Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class GeoCollection extends GeoObject {
+    private static final ClientLogger LOGGER = new ClientLogger(GeoCollection.class);
     private final List<GeoObject> geometries;
 
     /**
@@ -123,8 +125,10 @@ public final class GeoCollection extends GeoObject {
                 if ("type".equals(fieldName)) {
                     String type = reader.getString();
                     if (!GeoObjectType.GEOMETRY_COLLECTION.toString().equals(type)) {
-                        throw new IllegalStateException("'type' was expected to be non-null and equal to "
-                            + "'GeometryCollection'. The found 'type' was '" + type + "'.");
+                        throw LOGGER.throwableAtError()
+                            .addKeyValue("expectedType", "GeometryCollection")
+                            .addKeyValue("actualType", type)
+                            .log("Deserialization failed.", IllegalStateException::new);
                     }
                 } else if ("geometries".equals(fieldName)) {
                     geometriesFound = true;
@@ -141,7 +145,8 @@ public final class GeoCollection extends GeoObject {
             }
 
             if (!geometriesFound) {
-                throw new IllegalStateException("Required property 'geometries' wasn't found.");
+                throw LOGGER.throwableAtError()
+                    .log("Required property 'geometries' wasn't found.", IllegalStateException::new);
             }
 
             return new GeoCollection(geometries, boundingBox, customProperties);

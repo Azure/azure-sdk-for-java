@@ -5,6 +5,7 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public final class Intersection implements JsonSerializable<Intersection> {
     /*
      * Primary street for the location.
      */
+    @Generated
     private String baseStreet;
 
     /*
      * The first intersecting street.
      */
+    @Generated
     private String secondaryStreet1;
 
     /*
      * If any, the second intersecting street.
      */
+    @Generated
     private String secondaryStreet2;
 
     /*
      * Type of intersection.
      */
+    @Generated
     private String intersectionType;
 
     /*
      * Complete name of the intersection.
      */
+    @Generated
     private String displayName;
 
     /**
      * Creates an instance of Intersection class.
      */
+    @Generated
     public Intersection() {
     }
 
@@ -52,6 +59,7 @@ public final class Intersection implements JsonSerializable<Intersection> {
      * 
      * @return the baseStreet value.
      */
+    @Generated
     public String getBaseStreet() {
         return this.baseStreet;
     }
@@ -62,6 +70,7 @@ public final class Intersection implements JsonSerializable<Intersection> {
      * @param baseStreet the baseStreet value to set.
      * @return the Intersection object itself.
      */
+    @Generated
     public Intersection setBaseStreet(String baseStreet) {
         this.baseStreet = baseStreet;
         return this;
@@ -72,6 +81,7 @@ public final class Intersection implements JsonSerializable<Intersection> {
      * 
      * @return the secondaryStreet1 value.
      */
+    @Generated
     public String getSecondaryStreet1() {
         return this.secondaryStreet1;
     }
@@ -82,6 +92,7 @@ public final class Intersection implements JsonSerializable<Intersection> {
      * @param secondaryStreet1 the secondaryStreet1 value to set.
      * @return the Intersection object itself.
      */
+    @Generated
     public Intersection setSecondaryStreet1(String secondaryStreet1) {
         this.secondaryStreet1 = secondaryStreet1;
         return this;
@@ -92,6 +103,7 @@ public final class Intersection implements JsonSerializable<Intersection> {
      * 
      * @return the secondaryStreet2 value.
      */
+    @Generated
     public String getSecondaryStreet2() {
         return this.secondaryStreet2;
     }
@@ -102,6 +114,7 @@ public final class Intersection implements JsonSerializable<Intersection> {
      * @param secondaryStreet2 the secondaryStreet2 value to set.
      * @return the Intersection object itself.
      */
+    @Generated
     public Intersection setSecondaryStreet2(String secondaryStreet2) {
         this.secondaryStreet2 = secondaryStreet2;
         return this;
@@ -112,6 +125,7 @@ public final class Intersection implements JsonSerializable<Intersection> {
      * 
      * @return the intersectionType value.
      */
+    @Generated
     public String getIntersectionType() {
         return this.intersectionType;
     }
@@ -122,6 +136,7 @@ public final class Intersection implements JsonSerializable<Intersection> {
      * @param intersectionType the intersectionType value to set.
      * @return the Intersection object itself.
      */
+    @Generated
     public Intersection setIntersectionType(String intersectionType) {
         this.intersectionType = intersectionType;
         return this;
@@ -132,6 +147,7 @@ public final class Intersection implements JsonSerializable<Intersection> {
      * 
      * @return the displayName value.
      */
+    @Generated
     public String getDisplayName() {
         return this.displayName;
     }
@@ -142,6 +158,7 @@ public final class Intersection implements JsonSerializable<Intersection> {
      * @param displayName the displayName value to set.
      * @return the Intersection object itself.
      */
+    @Generated
     public Intersection setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -150,6 +167,7 @@ public final class Intersection implements JsonSerializable<Intersection> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -169,6 +187,7 @@ public final class Intersection implements JsonSerializable<Intersection> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the Intersection.
      */
+    @Generated
     public static Intersection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Intersection deserializedIntersection = new Intersection();

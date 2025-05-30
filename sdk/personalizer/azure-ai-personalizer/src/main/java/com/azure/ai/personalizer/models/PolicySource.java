@@ -4,6 +4,7 @@
 
 package com.azure.ai.personalizer.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class PolicySource extends ExpandableStringEnum<PolicySource> {
     /**
      * Static value Online for PolicySource.
      */
+    @Generated
     public static final PolicySource ONLINE = fromString("Online");
 
     /**
      * Static value Baseline for PolicySource.
      */
+    @Generated
     public static final PolicySource BASELINE = fromString("Baseline");
 
     /**
      * Static value Random for PolicySource.
      */
+    @Generated
     public static final PolicySource RANDOM = fromString("Random");
 
     /**
      * Static value Custom for PolicySource.
      */
+    @Generated
     public static final PolicySource CUSTOM = fromString("Custom");
 
     /**
      * Static value OfflineExperimentation for PolicySource.
      */
+    @Generated
     public static final PolicySource OFFLINE_EXPERIMENTATION = fromString("OfflineExperimentation");
 
     /**
@@ -41,6 +47,7 @@ public final class PolicySource extends ExpandableStringEnum<PolicySource> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PolicySource() {
     }
@@ -51,6 +58,7 @@ public final class PolicySource extends ExpandableStringEnum<PolicySource> {
      * @param name a name to look for.
      * @return the corresponding PolicySource.
      */
+    @Generated
     public static PolicySource fromString(String name) {
         return fromString(name, PolicySource.class);
     }
@@ -60,6 +68,7 @@ public final class PolicySource extends ExpandableStringEnum<PolicySource> {
      * 
      * @return known PolicySource values.
      */
+    @Generated
     public static Collection<PolicySource> values() {
         return values(PolicySource.class);
     }

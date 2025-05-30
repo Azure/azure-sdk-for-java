@@ -4,6 +4,7 @@
 
 package com.azure.data.appconfiguration.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public final class Key implements JsonSerializable<Key> {
     /*
      * The name of the key.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of Key class.
      */
+    @Generated
     public Key() {
     }
 
@@ -32,6 +35,7 @@ public final class Key implements JsonSerializable<Key> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -39,6 +43,7 @@ public final class Key implements JsonSerializable<Key> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -53,6 +58,7 @@ public final class Key implements JsonSerializable<Key> {
      * JSON null.
      * @throws IOException If an error occurs while reading the Key.
      */
+    @Generated
     public static Key fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Key deserializedKey = new Key();

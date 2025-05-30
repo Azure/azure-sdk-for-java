@@ -12,8 +12,10 @@
   <suppress checks="FinalClass" files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl.java" />
   <suppress checks="GoodLogging" files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl.java" />
   <suppress checks="JavadocPackage" files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl.java" />
-  <suppress checks="ThrowFromClientLogger" files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl.java" />
 
   <!-- TODO (vcolin7): Remove after updating the CheckStyle tool to handle RequestContext and Poller instead of RequestOptions and SyncPoller, respectively -->
   <suppress checks="ServiceClient" files="com.azure.v2.security.keyvault.certificates.CertificateClient.java" />
+
+  <!-- TODO (lmolkova): update codegen to log exceptions -->
+  <suppress checks="RawExceptionThrow" files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientImpl.java" />
 </suppressions>

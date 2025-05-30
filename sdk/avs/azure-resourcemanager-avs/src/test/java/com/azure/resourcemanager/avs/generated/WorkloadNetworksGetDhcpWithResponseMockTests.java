@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcp;
@@ -21,20 +21,20 @@ public final class WorkloadNetworksGetDhcpWithResponseMockTests {
     @Test
     public void testGetDhcpWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"rtvtiukye\",\"segments\":[\"nmnahmnx\",\"k\",\"jqirwrw\"],\"provisioningState\":\"Canceled\",\"revision\":6305545466909412711},\"id\":\"fhxwrsne\",\"name\":\"mozqv\",\"type\":\"ubqmamh\"}";
+            = "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"cnjrohmbpyryxame\",\"segments\":[\"dyvkfkmr\",\"cxneh\",\"sm\"],\"provisioningState\":\"Deleting\",\"revision\":7274187586173675983},\"id\":\"apucygvo\",\"name\":\"vyuns\",\"type\":\"xlghieegj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkDhcp response = manager.workloadNetworks()
-            .getDhcpWithResponse("yjwpfilkmkkh", "l", "dndviauogp", com.azure.core.util.Context.NONE)
+            .getDhcpWithResponse("oqza", "unwqr", "zfrgqhaohcm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rtvtiukye", response.properties().displayName());
-        Assertions.assertEquals(6305545466909412711L, response.properties().revision());
+        Assertions.assertEquals("cnjrohmbpyryxame", response.properties().displayName());
+        Assertions.assertEquals(7274187586173675983L, response.properties().revision());
     }
 }

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.avs.models.Sku;
 public final class ClustersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Clusters_CreateOrUpdate.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/Clusters_CreateOrUpdate.json
      */
     /**
      * Sample code: Clusters_CreateOrUpdate.

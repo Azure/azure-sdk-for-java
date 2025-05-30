@@ -200,15 +200,8 @@ public final class SearchesImpl {
         String query, String addressLine, String countryRegion, List<Double> bbox, String view,
         List<Double> coordinates, String adminDistrict, String adminDistrict2, String adminDistrict3, String locality,
         String postalCode) {
-        final String accept = "application/geo+json, application/json";
-        String bboxConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(bbox, CollectionFormat.CSV);
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getGeocoding(this.client.getHost(), this.client.getApiVersion(),
-            this.client.getAcceptLanguage(), top, query, addressLine, countryRegion, bboxConverted, view,
-            coordinatesConverted, adminDistrict, adminDistrict2, adminDistrict3, locality, postalCode,
-            this.client.getClientId(), accept, context));
+        return FluxUtil.withContext(context -> getGeocodingWithResponseAsync(top, query, addressLine, countryRegion,
+            bbox, view, coordinates, adminDistrict, adminDistrict2, adminDistrict3, locality, postalCode, context));
     }
 
     /**
@@ -642,15 +635,9 @@ public final class SearchesImpl {
     public Mono<Response<GeocodingResponse>> getGeocodingNoCustomHeadersWithResponseAsync(Integer top, String query,
         String addressLine, String countryRegion, List<Double> bbox, String view, List<Double> coordinates,
         String adminDistrict, String adminDistrict2, String adminDistrict3, String locality, String postalCode) {
-        final String accept = "application/geo+json, application/json";
-        String bboxConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(bbox, CollectionFormat.CSV);
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getGeocodingNoCustomHeaders(this.client.getHost(),
-            this.client.getApiVersion(), this.client.getAcceptLanguage(), top, query, addressLine, countryRegion,
-            bboxConverted, view, coordinatesConverted, adminDistrict, adminDistrict2, adminDistrict3, locality,
-            postalCode, this.client.getClientId(), accept, context));
+        return FluxUtil
+            .withContext(context -> getGeocodingNoCustomHeadersWithResponseAsync(top, query, addressLine, countryRegion,
+                bbox, view, coordinates, adminDistrict, adminDistrict2, adminDistrict3, locality, postalCode, context));
     }
 
     /**
@@ -874,10 +861,7 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GeocodingBatchResponse>>
         getGeocodingBatchWithResponseAsync(GeocodingBatchRequestBody geocodingBatchRequestBody) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getGeocodingBatch(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), this.client.getAcceptLanguage(),
-            geocodingBatchRequestBody, accept, context));
+        return FluxUtil.withContext(context -> getGeocodingBatchWithResponseAsync(geocodingBatchRequestBody, context));
     }
 
     /**
@@ -1272,12 +1256,8 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boundary>> getPolygonWithResponseAsync(List<Double> coordinates, String view,
         BoundaryResultTypeEnum resultType, ResolutionEnum resolution) {
-        final String accept = "application/geo+json, application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil.withContext(
-            context -> service.getPolygon(this.client.getHost(), this.client.getClientId(), this.client.getApiVersion(),
-                this.client.getAcceptLanguage(), coordinatesConverted, view, resultType, resolution, accept, context));
+        return FluxUtil
+            .withContext(context -> getPolygonWithResponseAsync(coordinates, view, resultType, resolution, context));
     }
 
     /**
@@ -1494,17 +1474,8 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GeocodingResponse>> getReverseGeocodingWithResponseAsync(List<Double> coordinates,
         List<ReverseGeocodingResultTypeEnum> resultTypes, String view) {
-        final String accept = "application/geo+json, application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        String resultTypesConverted = (resultTypes == null)
-            ? null
-            : resultTypes.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.getReverseGeocoding(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), this.client.getAcceptLanguage(),
-            coordinatesConverted, resultTypesConverted, view, accept, context));
+        return FluxUtil
+            .withContext(context -> getReverseGeocodingWithResponseAsync(coordinates, resultTypes, view, context));
     }
 
     /**
@@ -1830,10 +1801,8 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GeocodingBatchResponse>>
         getReverseGeocodingBatchWithResponseAsync(ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getReverseGeocodingBatch(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), this.client.getAcceptLanguage(),
-            reverseGeocodingBatchRequestBody, accept, context));
+        return FluxUtil.withContext(
+            context -> getReverseGeocodingBatchWithResponseAsync(reverseGeocodingBatchRequestBody, context));
     }
 
     /**

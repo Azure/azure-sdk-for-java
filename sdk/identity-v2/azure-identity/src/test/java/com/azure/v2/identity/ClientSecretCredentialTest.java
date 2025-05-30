@@ -18,6 +18,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockConstruction;
@@ -29,7 +31,7 @@ public class ClientSecretCredentialTest {
     private static final String CLIENT_ID = UUID.randomUUID().toString();
 
     @Test
-    public void testValidSecrets() throws Exception {
+    public void testValidSecrets() {
         // setup
         String secret = "secret";
         String token1 = "token1";
@@ -66,7 +68,7 @@ public class ClientSecretCredentialTest {
     }
 
     @Test
-    public void testValidSecretsCAE() throws Exception {
+    public void testValidSecretsCAE() {
         // setup
         String secret = "secret";
         String token1 = "token1";
@@ -119,7 +121,7 @@ public class ClientSecretCredentialTest {
     }
 
     @Test
-    public void testInvalidSecrets() throws Exception {
+    public void testInvalidSecrets() {
         // setup
         String secret = "secret";
         String badSecret = "badsecret";
@@ -138,18 +140,17 @@ public class ClientSecretCredentialTest {
                 .clientSecret(badSecret)
                 .additionallyAllowedTenants("*")
                 .build();
-            try {
-                credential.getToken(request);
-            } catch (Exception e) {
-                Assertions
-                    .assertTrue(e instanceof CredentialAuthenticationException && "bad secret".equals(e.getMessage()));
-            }
+
+            CredentialAuthenticationException ex
+                = assertThrows(CredentialAuthenticationException.class, () -> credential.getToken(request));
+            assertTrue(ex.getMessage().startsWith("bad secret"));
+
             Assertions.assertNotNull(identityClientMock);
         }
     }
 
     @Test
-    public void testInvalidParameters() throws Exception {
+    public void testInvalidParameters() {
         // setup
         String secret = "secret";
         String token1 = "token1";

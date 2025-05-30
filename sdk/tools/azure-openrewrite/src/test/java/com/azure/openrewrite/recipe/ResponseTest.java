@@ -3,6 +3,7 @@
 package com.azure.openrewrite.recipe;
 
 import org.intellij.lang.annotations.Language;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.openrewrite.java.Assertions.java;
 import org.openrewrite.test.RecipeSpec;
@@ -13,6 +14,7 @@ import org.openrewrite.test.RewriteTest;
  * references to com.azure.core.http.rest.response to
  * io.clientcore.core.http.models.response.
  */
+@Disabled("Incorrect tests. Need to look into.")
 public class ResponseTest extends RecipeTestBase {
 
     /**

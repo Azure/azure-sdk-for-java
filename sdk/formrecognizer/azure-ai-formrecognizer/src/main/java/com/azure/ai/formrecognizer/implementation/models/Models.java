@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class Models implements JsonSerializable<Models> {
     /*
      * Summary of all trained custom models.
      */
+    @Generated
     private ModelsSummary summary;
 
     /*
      * Collection of trained custom models.
      */
+    @Generated
     private List<ModelInfo> modelList;
 
     /*
      * Link to the next page of custom models.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of Models class.
      */
+    @Generated
     public Models() {
     }
 
@@ -43,6 +48,7 @@ public final class Models implements JsonSerializable<Models> {
      * 
      * @return the summary value.
      */
+    @Generated
     public ModelsSummary getSummary() {
         return this.summary;
     }
@@ -53,6 +59,7 @@ public final class Models implements JsonSerializable<Models> {
      * @param summary the summary value to set.
      * @return the Models object itself.
      */
+    @Generated
     public Models setSummary(ModelsSummary summary) {
         this.summary = summary;
         return this;
@@ -63,6 +70,7 @@ public final class Models implements JsonSerializable<Models> {
      * 
      * @return the modelList value.
      */
+    @Generated
     public List<ModelInfo> getModelList() {
         return this.modelList;
     }
@@ -73,6 +81,7 @@ public final class Models implements JsonSerializable<Models> {
      * @param modelList the modelList value to set.
      * @return the Models object itself.
      */
+    @Generated
     public Models setModelList(List<ModelInfo> modelList) {
         this.modelList = modelList;
         return this;
@@ -83,6 +92,7 @@ public final class Models implements JsonSerializable<Models> {
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -93,6 +103,7 @@ public final class Models implements JsonSerializable<Models> {
      * @param nextLink the nextLink value to set.
      * @return the Models object itself.
      */
+    @Generated
     public Models setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -101,6 +112,7 @@ public final class Models implements JsonSerializable<Models> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +130,7 @@ public final class Models implements JsonSerializable<Models> {
      * JSON null.
      * @throws IOException If an error occurs while reading the Models.
      */
+    @Generated
     public static Models fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Models deserializedModels = new Models();

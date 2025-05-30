@@ -5,6 +5,7 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,33 +19,44 @@ import java.util.List;
 @Fluent
 public class GeoJsonFeature extends GeoJsonObject {
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
+    @Generated
     private GeoJsonObjectType type = GeoJsonObjectType.GEO_JSON_FEATURE;
 
     /*
-     * A valid `GeoJSON` geometry object. The type must be one of the seven valid GeoJSON geometry types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon and GeometryCollection. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1) for details.
+     * A valid `GeoJSON` geometry object. The type must be one of the seven valid GeoJSON geometry types - Point,
+     * MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon and GeometryCollection. Please refer to [RFC
+     * 7946](https://tools.ietf.org/html/rfc7946#section-3.1) for details.
      */
+    @Generated
     private GeoJsonGeometry geometry;
 
     /*
-     * Properties can contain any additional metadata about the `Feature`. Value can be any JSON object or a JSON null value
+     * Properties can contain any additional metadata about the `Feature`. Value can be any JSON object or a JSON null
+     * value
      */
+    @Generated
     private Object properties;
 
     /*
      * Identifier for the feature.
      */
+    @Generated
     private String id;
 
     /*
-     * The type of the feature. The value depends on the data model the current feature is part of. Some data models may have an empty value.
+     * The type of the feature. The value depends on the data model the current feature is part of. Some data models may
+     * have an empty value.
      */
+    @Generated
     private String featureType;
 
     /**
      * Creates an instance of GeoJsonFeature class.
      */
+    @Generated
     public GeoJsonFeature() {
     }
 
@@ -55,6 +67,7 @@ public class GeoJsonFeature extends GeoJsonObject {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public GeoJsonObjectType getType() {
         return this.type;
@@ -67,6 +80,7 @@ public class GeoJsonFeature extends GeoJsonObject {
      * 
      * @return the geometry value.
      */
+    @Generated
     public GeoJsonGeometry getGeometry() {
         return this.geometry;
     }
@@ -79,6 +93,7 @@ public class GeoJsonFeature extends GeoJsonObject {
      * @param geometry the geometry value to set.
      * @return the GeoJsonFeature object itself.
      */
+    @Generated
     public GeoJsonFeature setGeometry(GeoJsonGeometry geometry) {
         this.geometry = geometry;
         return this;
@@ -90,6 +105,7 @@ public class GeoJsonFeature extends GeoJsonObject {
      * 
      * @return the properties value.
      */
+    @Generated
     public Object getProperties() {
         return this.properties;
     }
@@ -101,6 +117,7 @@ public class GeoJsonFeature extends GeoJsonObject {
      * @param properties the properties value to set.
      * @return the GeoJsonFeature object itself.
      */
+    @Generated
     public GeoJsonFeature setProperties(Object properties) {
         this.properties = properties;
         return this;
@@ -111,6 +128,7 @@ public class GeoJsonFeature extends GeoJsonObject {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -121,6 +139,7 @@ public class GeoJsonFeature extends GeoJsonObject {
      * @param id the id value to set.
      * @return the GeoJsonFeature object itself.
      */
+    @Generated
     public GeoJsonFeature setId(String id) {
         this.id = id;
         return this;
@@ -132,6 +151,7 @@ public class GeoJsonFeature extends GeoJsonObject {
      * 
      * @return the featureType value.
      */
+    @Generated
     public String getFeatureType() {
         return this.featureType;
     }
@@ -143,6 +163,7 @@ public class GeoJsonFeature extends GeoJsonObject {
      * @param featureType the featureType value to set.
      * @return the GeoJsonFeature object itself.
      */
+    @Generated
     public GeoJsonFeature setFeatureType(String featureType) {
         this.featureType = featureType;
         return this;
@@ -151,6 +172,7 @@ public class GeoJsonFeature extends GeoJsonObject {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GeoJsonFeature setBbox(List<Double> bbox) {
         super.setBbox(bbox);
@@ -160,13 +182,16 @@ public class GeoJsonFeature extends GeoJsonObject {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("bbox", getBbox(), (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeJsonField("geometry", this.geometry);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeUntypedField("properties", this.properties);
+        if (this.properties != null) {
+            jsonWriter.writeUntypedField("properties", this.properties);
+        }
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("featureType", this.featureType);
         return jsonWriter.writeEndObject();
@@ -181,6 +206,7 @@ public class GeoJsonFeature extends GeoJsonObject {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GeoJsonFeature.
      */
+    @Generated
     public static GeoJsonFeature fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -206,6 +232,7 @@ public class GeoJsonFeature extends GeoJsonObject {
         });
     }
 
+    @Generated
     static GeoJsonFeature fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonFeature deserializedGeoJsonFeature = new GeoJsonFeature();

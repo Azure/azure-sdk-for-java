@@ -273,14 +273,30 @@ public final class AzureMLExecutePipelineActivityTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("mlPipelineId", this.mlPipelineId);
-        jsonWriter.writeUntypedField("mlPipelineEndpointId", this.mlPipelineEndpointId);
-        jsonWriter.writeUntypedField("version", this.version);
-        jsonWriter.writeUntypedField("experimentName", this.experimentName);
-        jsonWriter.writeUntypedField("mlPipelineParameters", this.mlPipelineParameters);
-        jsonWriter.writeUntypedField("dataPathAssignments", this.dataPathAssignments);
-        jsonWriter.writeUntypedField("mlParentRunId", this.mlParentRunId);
-        jsonWriter.writeUntypedField("continueOnStepFailure", this.continueOnStepFailure);
+        if (this.mlPipelineId != null) {
+            jsonWriter.writeUntypedField("mlPipelineId", this.mlPipelineId);
+        }
+        if (this.mlPipelineEndpointId != null) {
+            jsonWriter.writeUntypedField("mlPipelineEndpointId", this.mlPipelineEndpointId);
+        }
+        if (this.version != null) {
+            jsonWriter.writeUntypedField("version", this.version);
+        }
+        if (this.experimentName != null) {
+            jsonWriter.writeUntypedField("experimentName", this.experimentName);
+        }
+        if (this.mlPipelineParameters != null) {
+            jsonWriter.writeUntypedField("mlPipelineParameters", this.mlPipelineParameters);
+        }
+        if (this.dataPathAssignments != null) {
+            jsonWriter.writeUntypedField("dataPathAssignments", this.dataPathAssignments);
+        }
+        if (this.mlParentRunId != null) {
+            jsonWriter.writeUntypedField("mlParentRunId", this.mlParentRunId);
+        }
+        if (this.continueOnStepFailure != null) {
+            jsonWriter.writeUntypedField("continueOnStepFailure", this.continueOnStepFailure);
+        }
         return jsonWriter.writeEndObject();
     }
 

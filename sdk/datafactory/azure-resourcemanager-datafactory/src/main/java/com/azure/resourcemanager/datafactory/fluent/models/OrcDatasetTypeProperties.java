@@ -100,7 +100,9 @@ public final class OrcDatasetTypeProperties implements JsonSerializable<OrcDatas
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("location", this.location);
-        jsonWriter.writeUntypedField("orcCompressionCodec", this.orcCompressionCodec);
+        if (this.orcCompressionCodec != null) {
+            jsonWriter.writeUntypedField("orcCompressionCodec", this.orcCompressionCodec);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -76,6 +76,20 @@ public final class PatientDocument implements JsonSerializable<PatientDocument> 
     private final ClinicalDocumentContent content;
 
     /**
+     * Creates an instance of PatientDocument class.
+     *
+     * @param type the type value to set.
+     * @param id the id value to set.
+     * @param content the content value to set.
+     */
+    @Generated
+    public PatientDocument(ClinicalDocumentContentType type, String id, ClinicalDocumentContent content) {
+        this.type = type;
+        this.id = id;
+        this.content = content;
+    }
+
+    /**
      * Get the type property: The type of the patient document, such as 'note' (text document) or 'fhirBundle' (FHIR
      * JSON document).
      *
@@ -315,19 +329,5 @@ public final class PatientDocument implements JsonSerializable<PatientDocument> 
             deserializedPatientDocument.administrativeMetadata = administrativeMetadata;
             return deserializedPatientDocument;
         });
-    }
-
-    /**
-     * Creates an instance of PatientDocument class.
-     *
-     * @param type the type value to set.
-     * @param id the id value to set.
-     * @param content the content value to set.
-     */
-    @Generated
-    public PatientDocument(ClinicalDocumentContentType type, String id, ClinicalDocumentContent content) {
-        this.type = type;
-        this.id = id;
-        this.content = content;
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.maps.weather.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,11 +23,13 @@ public class GeoJsonPointData implements JsonSerializable<GeoJsonPointData> {
      * _latitude_, precisely in that order. _Altitude/Elevation_ is an optional third element. Please refer to [RFC
      * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.1) for details.
      */
+    @Generated
     private List<Double> coordinates;
 
     /**
      * Creates an instance of GeoJsonPointData class.
      */
+    @Generated
     public GeoJsonPointData() {
     }
 
@@ -37,6 +40,7 @@ public class GeoJsonPointData implements JsonSerializable<GeoJsonPointData> {
      * 
      * @return the coordinates value.
      */
+    @Generated
     public List<Double> getCoordinates() {
         return this.coordinates;
     }
@@ -49,6 +53,7 @@ public class GeoJsonPointData implements JsonSerializable<GeoJsonPointData> {
      * @param coordinates the coordinates value to set.
      * @return the GeoJsonPointData object itself.
      */
+    @Generated
     public GeoJsonPointData setCoordinates(List<Double> coordinates) {
         this.coordinates = coordinates;
         return this;
@@ -57,6 +62,7 @@ public class GeoJsonPointData implements JsonSerializable<GeoJsonPointData> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -73,6 +79,7 @@ public class GeoJsonPointData implements JsonSerializable<GeoJsonPointData> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GeoJsonPointData.
      */
+    @Generated
     public static GeoJsonPointData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonPointData deserializedGeoJsonPointData = new GeoJsonPointData();

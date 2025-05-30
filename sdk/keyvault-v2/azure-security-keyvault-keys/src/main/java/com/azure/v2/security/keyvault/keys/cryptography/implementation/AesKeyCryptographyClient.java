@@ -17,12 +17,12 @@ import com.azure.v2.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.v2.security.keyvault.keys.models.JsonWebKey;
 import com.azure.v2.security.keyvault.keys.models.KeyOperation;
 import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -33,6 +33,7 @@ import java.util.Objects;
 import static com.azure.v2.security.keyvault.keys.cryptography.implementation.CryptographyUtils.verifyKeyPermissions;
 
 class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
+    private static final ClientLogger LOGGER = new ClientLogger(AesKeyCryptographyClient.class);
     static final int AES_BLOCK_SIZE = 16;
     private final byte[] aesKey;
 
@@ -42,27 +43,38 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         aesKey = jsonWebKey.toAes().getEncoded();
 
         if (aesKey == null || aesKey.length == 0) {
-            throw new IllegalArgumentException("The provided JSON Web Key cannot be null or empty.");
+            throw LOGGER.throwableAtError()
+                .log("The provided JSON Web Key cannot be null or empty.", IllegalArgumentException::new);
         }
     }
 
     private static void validateEncryptionAlgorithm(EncryptionAlgorithm algorithm) {
         if (isGcm(algorithm)) {
-            throw new UnsupportedOperationException("AES-GCM is not supported for local cryptography operations.");
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log("AES-GCM is not supported for local cryptography operations.", UnsupportedOperationException::new);
         }
 
         if (!isAes(algorithm)) {
-            throw new IllegalArgumentException("Encryption algorithm provided is not supported: " + algorithm);
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log("Encryption algorithm provided is not supported.", IllegalArgumentException::new);
         }
     }
 
-    private static byte[] generateIv(int sizeInBytes) throws NoSuchAlgorithmException {
-        SecureRandom randomSecureRandom = SecureRandom.getInstance("SHA1PRNG");
-        byte[] iv = new byte[sizeInBytes];
+    private static byte[] generateIv(int sizeInBytes) {
+        try {
+            SecureRandom randomSecureRandom = SecureRandom.getInstance("SHA1PRNG");
+            byte[] iv = new byte[sizeInBytes];
 
-        randomSecureRandom.nextBytes(iv);
+            randomSecureRandom.nextBytes(iv);
 
-        return iv;
+            return iv;
+        } catch (NoSuchAlgorithmException e) {
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", "SHA1PRNG")
+                .log("Could not generate iv for this local operation.", e, CoreException::from);
+        }
     }
 
     private static boolean isAes(EncryptionAlgorithm encryptionAlgorithm) {
@@ -82,29 +94,19 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, RequestContext requestContext) {
-        try {
-            return encryptInternal(algorithm, plaintext, null, null, requestContext);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return encryptInternal(algorithm, plaintext, null, null, requestContext);
     }
 
     @Override
     public EncryptResult encrypt(EncryptParameters encryptParameters, RequestContext requestContext) {
         Objects.requireNonNull(encryptParameters, "Encrypt parameters cannot be null.");
 
-        try {
-            return encryptInternal(encryptParameters.getAlgorithm(), encryptParameters.getPlainText(),
-                encryptParameters.getIv(), encryptParameters.getAdditionalAuthenticatedData(), requestContext);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return encryptInternal(encryptParameters.getAlgorithm(), encryptParameters.getPlainText(),
+            encryptParameters.getIv(), encryptParameters.getAdditionalAuthenticatedData(), requestContext);
     }
 
     private EncryptResult encryptInternal(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv,
-        byte[] additionalAuthenticatedData, RequestContext requestContext)
-        throws BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException, InvalidKeyException,
-        NoSuchAlgorithmException, NoSuchPaddingException, IOException {
+        byte[] additionalAuthenticatedData, RequestContext requestContext) {
 
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
         Objects.requireNonNull(plaintext, "Plaintext cannot be null.");
@@ -117,58 +119,54 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.encrypt(algorithm, plaintext, null, null, requestContext);
             }
 
-            throw new NoSuchAlgorithmException(algorithm.toString());
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log("Unsupported encryption algorithm.", CoreException::from);
         }
 
-        verifyKeyPermissions(jsonWebKey, KeyOperation.ENCRYPT);
+        verifyKeyPermissions(jsonWebKey, KeyOperation.ENCRYPT, LOGGER);
         validateEncryptionAlgorithm(algorithm);
 
         SymmetricEncryptionAlgorithm symmetricEncryptionAlgorithm = (SymmetricEncryptionAlgorithm) baseAlgorithm;
 
         if (iv == null) {
             if (isAes(algorithm)) {
-                try {
-                    iv = generateIv(AES_BLOCK_SIZE);
-                } catch (NoSuchAlgorithmException e) {
-                    throw new RuntimeException("Could not generate iv for this local operation.", e);
-                }
+                iv = generateIv(AES_BLOCK_SIZE);
             } else {
-                throw new IllegalArgumentException("Encryption algorithm provided is not supported: " + algorithm);
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("algorithm", algorithm.getValue())
+                    .log("Unsupported encryption algorithm provided.", CoreException::from);
             }
         }
 
-        byte[] ciphertext = symmetricEncryptionAlgorithm.createEncryptor(aesKey, iv, additionalAuthenticatedData, null)
-            .doFinal(plaintext);
+        byte[] ciphertext;
+        try {
+            ciphertext = symmetricEncryptionAlgorithm.createEncryptor(aesKey, iv, additionalAuthenticatedData, null)
+                .doFinal(plaintext);
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException
+            | BadPaddingException | InvalidAlgorithmParameterException ex) {
+            throw LOGGER.throwableAtError().log(ex, CoreException::from);
+        }
 
         return new EncryptResult(ciphertext, algorithm, jsonWebKey.getId(), iv, null, additionalAuthenticatedData);
     }
 
     @Override
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, RequestContext requestContext) {
-        try {
-            return decryptInternal(algorithm, ciphertext, null, null, null, requestContext);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return decryptInternal(algorithm, ciphertext, null, null, null, requestContext);
     }
 
     @Override
     public DecryptResult decrypt(DecryptParameters decryptParameters, RequestContext requestContext) {
         Objects.requireNonNull(decryptParameters, "Decrypt parameters cannot be null.");
 
-        try {
-            return decryptInternal(decryptParameters.getAlgorithm(), decryptParameters.getCipherText(),
-                decryptParameters.getIv(), decryptParameters.getAdditionalAuthenticatedData(),
-                decryptParameters.getAuthenticationTag(), requestContext);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return decryptInternal(decryptParameters.getAlgorithm(), decryptParameters.getCipherText(),
+            decryptParameters.getIv(), decryptParameters.getAdditionalAuthenticatedData(),
+            decryptParameters.getAuthenticationTag(), requestContext);
     }
 
     private DecryptResult decryptInternal(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv,
-        byte[] additionalAuthenticatedData, byte[] authenticationTag, RequestContext requestContext)
-        throws BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException, InvalidKeyException,
-        NoSuchAlgorithmException, NoSuchPaddingException, IOException {
+        byte[] additionalAuthenticatedData, byte[] authenticationTag, RequestContext requestContext) {
 
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
         Objects.requireNonNull(ciphertext, "Ciphertext cannot be null.");
@@ -181,33 +179,44 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
                 return implClient.decrypt(algorithm, ciphertext, requestContext);
             }
 
-            throw new NoSuchAlgorithmException(algorithm.toString());
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log("Unsupported encryption algorithm.", CoreException::from);
         }
 
-        verifyKeyPermissions(jsonWebKey, KeyOperation.DECRYPT);
+        verifyKeyPermissions(jsonWebKey, KeyOperation.DECRYPT, LOGGER);
         validateEncryptionAlgorithm(algorithm);
 
         SymmetricEncryptionAlgorithm symmetricEncryptionAlgorithm = (SymmetricEncryptionAlgorithm) baseAlgorithm;
 
         Objects.requireNonNull(iv, "'iv' cannot be null in local decryption operations.");
 
-        byte[] plaintext
-            = symmetricEncryptionAlgorithm.createDecryptor(aesKey, iv, additionalAuthenticatedData, authenticationTag)
+        byte[] plaintext;
+
+        try {
+            plaintext = symmetricEncryptionAlgorithm
+                .createDecryptor(aesKey, iv, additionalAuthenticatedData, authenticationTag)
                 .doFinal(ciphertext);
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException
+            | BadPaddingException | InvalidAlgorithmParameterException ex) {
+            throw LOGGER.throwableAtError().log(ex, CoreException::from);
+        }
 
         return new DecryptResult(plaintext, algorithm, jsonWebKey.getId());
     }
 
     @Override
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, RequestContext requestContext) {
-        throw new UnsupportedOperationException("The sign operation not supported for OCT/symmetric keys.");
+        throw LOGGER.throwableAtError()
+            .log("The sign operation not supported for OCT/symmetric keys.", UnsupportedOperationException::new);
     }
 
     @Override
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
         RequestContext requestContext) {
 
-        throw new UnsupportedOperationException("The verify operation is not supported for OCT/symmetric keys.");
+        throw LOGGER.throwableAtError()
+            .log("The verify operation not supported for OCT/symmetric keys.", UnsupportedOperationException::new);
     }
 
     @Override
@@ -220,17 +229,15 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (!(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
             if (implClient != null) {
-                try {
-                    return implClient.wrapKey(algorithm, keyToWrap, requestContext);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
+                return implClient.wrapKey(algorithm, keyToWrap, requestContext);
             }
 
-            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
-        verifyKeyPermissions(jsonWebKey, KeyOperation.WRAP_KEY);
+        verifyKeyPermissions(jsonWebKey, KeyOperation.WRAP_KEY, LOGGER);
 
         LocalKeyWrapAlgorithm localKeyWrapAlgorithm = (LocalKeyWrapAlgorithm) baseAlgorithm;
 
@@ -239,19 +246,15 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         try {
             transform = localKeyWrapAlgorithm.createEncryptor(aesKey, null, null);
         } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
 
         byte[] encrypted;
 
         try {
             encrypted = transform.doFinal(keyToWrap);
-        } catch (Exception e) {
-            if (e instanceof RuntimeException) {
-                throw (RuntimeException) e;
-            } else {
-                throw new RuntimeException(e);
-            }
+        } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException | NoSuchAlgorithmException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
 
         return new WrapResult(encrypted, algorithm, jsonWebKey.getId());
@@ -262,23 +265,21 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
-        verifyKeyPermissions(jsonWebKey, KeyOperation.UNWRAP_KEY);
+        verifyKeyPermissions(jsonWebKey, KeyOperation.UNWRAP_KEY, LOGGER);
 
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
             if (implClient != null) {
-                try {
-                    return implClient.unwrapKey(algorithm, encryptedKey, requestContext);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
+                return implClient.unwrapKey(algorithm, encryptedKey, requestContext);
             }
 
-            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("algorithm", algorithm.getValue())
+                .log("Algorithm not supported.", IllegalArgumentException::new);
         }
 
-        verifyKeyPermissions(jsonWebKey, KeyOperation.UNWRAP_KEY);
+        verifyKeyPermissions(jsonWebKey, KeyOperation.UNWRAP_KEY, LOGGER);
 
         LocalKeyWrapAlgorithm localKeyWrapAlgorithm = (LocalKeyWrapAlgorithm) baseAlgorithm;
 
@@ -287,7 +288,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             return new UnwrapResult(decrypted, algorithm, jsonWebKey.getId());
         } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 

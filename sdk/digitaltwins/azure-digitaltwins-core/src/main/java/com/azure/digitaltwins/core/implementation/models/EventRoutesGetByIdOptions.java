@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 
 /**
  * Parameter group.
@@ -14,16 +15,19 @@ public final class EventRoutesGetByIdOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
+    @Generated
     private String traceparent;
 
     /*
      * Provides vendor-specific trace identification information and is a companion to traceparent.
      */
+    @Generated
     private String tracestate;
 
     /**
      * Creates an instance of EventRoutesGetByIdOptions class.
      */
+    @Generated
     public EventRoutesGetByIdOptions() {
     }
 
@@ -32,6 +36,7 @@ public final class EventRoutesGetByIdOptions {
      * 
      * @return the traceparent value.
      */
+    @Generated
     public String getTraceparent() {
         return this.traceparent;
     }
@@ -42,6 +47,7 @@ public final class EventRoutesGetByIdOptions {
      * @param traceparent the traceparent value to set.
      * @return the EventRoutesGetByIdOptions object itself.
      */
+    @Generated
     public EventRoutesGetByIdOptions setTraceparent(String traceparent) {
         this.traceparent = traceparent;
         return this;
@@ -53,6 +59,7 @@ public final class EventRoutesGetByIdOptions {
      * 
      * @return the tracestate value.
      */
+    @Generated
     public String getTracestate() {
         return this.tracestate;
     }
@@ -64,6 +71,7 @@ public final class EventRoutesGetByIdOptions {
      * @param tracestate the tracestate value to set.
      * @return the EventRoutesGetByIdOptions object itself.
      */
+    @Generated
     public EventRoutesGetByIdOptions setTracestate(String tracestate) {
         this.tracestate = tracestate;
         return this;
