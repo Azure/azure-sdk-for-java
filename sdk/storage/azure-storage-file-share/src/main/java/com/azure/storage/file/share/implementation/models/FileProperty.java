@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.xml.XmlReader;
@@ -27,41 +28,49 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * locally. The value of Content-Length may not reflect that fact until the handle is closed or the op-lock is
      * broken. To retrieve current property values, call Get File Properties.
      */
+    @Generated
     private long contentLength;
 
     /*
      * The CreationTime property.
      */
+    @Generated
     private OffsetDateTime creationTime;
 
     /*
      * The LastAccessTime property.
      */
+    @Generated
     private OffsetDateTime lastAccessTime;
 
     /*
      * The LastWriteTime property.
      */
+    @Generated
     private OffsetDateTime lastWriteTime;
 
     /*
      * The ChangeTime property.
      */
+    @Generated
     private OffsetDateTime changeTime;
 
     /*
      * The Last-Modified property.
      */
+    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The Etag property.
      */
+    @Generated
     private String etag;
 
     /**
      * Creates an instance of FileProperty class.
      */
+    @Generated
     public FileProperty() {
     }
 
@@ -72,6 +81,7 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * 
      * @return the contentLength value.
      */
+    @Generated
     public long getContentLength() {
         return this.contentLength;
     }
@@ -84,6 +94,7 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * @param contentLength the contentLength value to set.
      * @return the FileProperty object itself.
      */
+    @Generated
     public FileProperty setContentLength(long contentLength) {
         this.contentLength = contentLength;
         return this;
@@ -94,6 +105,7 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * 
      * @return the creationTime value.
      */
+    @Generated
     public OffsetDateTime getCreationTime() {
         return this.creationTime;
     }
@@ -104,6 +116,7 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * @param creationTime the creationTime value to set.
      * @return the FileProperty object itself.
      */
+    @Generated
     public FileProperty setCreationTime(OffsetDateTime creationTime) {
         this.creationTime = creationTime;
         return this;
@@ -114,6 +127,7 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * 
      * @return the lastAccessTime value.
      */
+    @Generated
     public OffsetDateTime getLastAccessTime() {
         return this.lastAccessTime;
     }
@@ -124,6 +138,7 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * @param lastAccessTime the lastAccessTime value to set.
      * @return the FileProperty object itself.
      */
+    @Generated
     public FileProperty setLastAccessTime(OffsetDateTime lastAccessTime) {
         this.lastAccessTime = lastAccessTime;
         return this;
@@ -134,6 +149,7 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * 
      * @return the lastWriteTime value.
      */
+    @Generated
     public OffsetDateTime getLastWriteTime() {
         return this.lastWriteTime;
     }
@@ -144,6 +160,7 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * @param lastWriteTime the lastWriteTime value to set.
      * @return the FileProperty object itself.
      */
+    @Generated
     public FileProperty setLastWriteTime(OffsetDateTime lastWriteTime) {
         this.lastWriteTime = lastWriteTime;
         return this;
@@ -154,6 +171,7 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * 
      * @return the changeTime value.
      */
+    @Generated
     public OffsetDateTime getChangeTime() {
         return this.changeTime;
     }
@@ -164,6 +182,7 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * @param changeTime the changeTime value to set.
      * @return the FileProperty object itself.
      */
+    @Generated
     public FileProperty setChangeTime(OffsetDateTime changeTime) {
         this.changeTime = changeTime;
         return this;
@@ -174,6 +193,7 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * 
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -187,6 +207,7 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * @param lastModified the lastModified value to set.
      * @return the FileProperty object itself.
      */
+    @Generated
     public FileProperty setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -201,6 +222,7 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * 
      * @return the etag value.
      */
+    @Generated
     public String getEtag() {
         return this.etag;
     }
@@ -211,19 +233,22 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * @param etag the etag value to set.
      * @return the FileProperty object itself.
      */
+    @Generated
     public FileProperty setEtag(String etag) {
         this.etag = etag;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "FileProperty" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "FileProperty" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeLongElement("Content-Length", this.contentLength);
         xmlWriter.writeStringElement("CreationTime",
@@ -247,6 +272,7 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the FileProperty.
      */
+    @Generated
     public static FileProperty fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -261,8 +287,10 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the FileProperty.
      */
+    @Generated
     public static FileProperty fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "FileProperty" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "FileProperty" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             FileProperty deserializedFileProperty = new FileProperty();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

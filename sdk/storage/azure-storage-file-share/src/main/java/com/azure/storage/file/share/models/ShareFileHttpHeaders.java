@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 
 /**
@@ -15,36 +16,43 @@ public final class ShareFileHttpHeaders {
     /*
      * Sets the MIME content type of the file. The default type is 'application/octet-stream'.
      */
+    @Generated
     private String contentType;
 
     /*
      * Specifies which content encodings have been applied to the file.
      */
+    @Generated
     private String contentEncoding;
 
     /*
      * Specifies the natural languages used by this resource.
      */
+    @Generated
     private String contentLanguage;
 
     /*
      * Sets the file's cache control. The File service stores this value but does not use or modify it.
      */
+    @Generated
     private String cacheControl;
 
     /*
      * Sets the file's MD5 hash.
      */
+    @Generated
     private byte[] contentMd5;
 
     /*
      * Sets the file's Content-Disposition header.
      */
+    @Generated
     private String contentDisposition;
 
     /**
      * Creates an instance of ShareFileHttpHeaders class.
      */
+    @Generated
     public ShareFileHttpHeaders() {
     }
 
@@ -54,6 +62,7 @@ public final class ShareFileHttpHeaders {
      * 
      * @return the contentType value.
      */
+    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -65,6 +74,7 @@ public final class ShareFileHttpHeaders {
      * @param contentType the contentType value to set.
      * @return the ShareFileHttpHeaders object itself.
      */
+    @Generated
     public ShareFileHttpHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;
@@ -75,6 +85,7 @@ public final class ShareFileHttpHeaders {
      * 
      * @return the contentEncoding value.
      */
+    @Generated
     public String getContentEncoding() {
         return this.contentEncoding;
     }
@@ -85,6 +96,7 @@ public final class ShareFileHttpHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the ShareFileHttpHeaders object itself.
      */
+    @Generated
     public ShareFileHttpHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
@@ -95,6 +107,7 @@ public final class ShareFileHttpHeaders {
      * 
      * @return the contentLanguage value.
      */
+    @Generated
     public String getContentLanguage() {
         return this.contentLanguage;
     }
@@ -105,6 +118,7 @@ public final class ShareFileHttpHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the ShareFileHttpHeaders object itself.
      */
+    @Generated
     public ShareFileHttpHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
@@ -116,6 +130,7 @@ public final class ShareFileHttpHeaders {
      * 
      * @return the cacheControl value.
      */
+    @Generated
     public String getCacheControl() {
         return this.cacheControl;
     }
@@ -127,6 +142,7 @@ public final class ShareFileHttpHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the ShareFileHttpHeaders object itself.
      */
+    @Generated
     public ShareFileHttpHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
@@ -137,6 +153,7 @@ public final class ShareFileHttpHeaders {
      * 
      * @return the contentMd5 value.
      */
+    @Generated
     public byte[] getContentMd5() {
         return CoreUtils.clone(this.contentMd5);
     }
@@ -147,6 +164,7 @@ public final class ShareFileHttpHeaders {
      * @param contentMd5 the contentMd5 value to set.
      * @return the ShareFileHttpHeaders object itself.
      */
+    @Generated
     public ShareFileHttpHeaders setContentMd5(byte[] contentMd5) {
         this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
@@ -157,6 +175,7 @@ public final class ShareFileHttpHeaders {
      * 
      * @return the contentDisposition value.
      */
+    @Generated
     public String getContentDisposition() {
         return this.contentDisposition;
     }
@@ -167,6 +186,7 @@ public final class ShareFileHttpHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the ShareFileHttpHeaders object itself.
      */
+    @Generated
     public ShareFileHttpHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
