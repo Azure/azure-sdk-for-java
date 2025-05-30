@@ -27,6 +27,8 @@ import com.openai.models.embeddings.CreateEmbeddingResponse;
 import com.openai.models.embeddings.Embedding;
 import com.openai.models.embeddings.EmbeddingCreateParams;
 import com.openai.models.embeddings.EmbeddingModel;
+import com.openai.models.images.Image;
+import com.openai.models.images.ImageGenerateParams;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
@@ -49,6 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.Base64;
 import java.util.Collections;
@@ -717,5 +720,15 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
             }))
             .onCompleteFuture()
             .join();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiImageClient")
+    public void testImageGeneration(String apiType, String apiVersion, String testModel) {
+        client = createAsyncClient(apiType, apiVersion);
+        String prompt = "A futuristic city skyline at sunset";
+        ImageGenerateParams params = createImageGenerateParams(testModel, prompt);
+        Optional<List<Image>> images = client.images().generate(params).join().data();
+        assertImageGeneration(images);
     }
 }

@@ -36,6 +36,8 @@ import com.openai.models.chat.completions.ChatCompletionTool;
 import com.openai.models.chat.completions.ChatCompletionToolMessageParam;
 import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
 import com.openai.models.completions.CompletionUsage;
+import com.openai.models.images.Image;
+import com.openai.models.images.ImageGenerateParams;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,6 +46,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import static java.util.Arrays.asList;
@@ -344,6 +347,15 @@ public class OpenAIOkHttpClientTestBase {
         return createParams;
     }
 
+    ImageGenerateParams createImageGenerateParams(String testModel, String prompt) {
+        return ImageGenerateParams.builder()
+            .prompt(prompt)
+            .model(testModel)
+            .n(1)
+            .quality(ImageGenerateParams.Quality.HD)
+            .build();
+    }
+
     // Response: Helper methods to assert response
     void assertChatCompletion(ChatCompletion chatCompletion, int expectedChoicesSize) {
         assertNotNull(chatCompletion._id());
@@ -587,5 +599,14 @@ public class OpenAIOkHttpClientTestBase {
     void assertAudioTranscription(Transcription transcription) {
         assertNotNull(transcription.text());
         assertTrue(transcription.isValid());
+    }
+
+    void assertImageGeneration(Optional<List<Image>> images) {
+        assertNotNull(images);
+        assertTrue(images.isPresent());
+        assertFalse(images.get().isEmpty());
+        for (Image image : images.get()) {
+            assertNotNull(image.url());
+        }
     }
 }
