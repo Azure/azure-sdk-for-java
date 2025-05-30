@@ -177,8 +177,8 @@ public final class ChatThreadAsyncClient {
     public Mono<Void> updateThreadProperties(UpdateChatThreadOptions options) {
         try {
             Objects.requireNonNull(options, "'options' cannot be null.");
-            return withContext(context -> updateThreadProperties(options, context)
-                .flatMap((Response<Void> res) -> Mono.empty()));
+            return withContext(
+                context -> updateThreadProperties(options, context).flatMap((Response<Void> res) -> Mono.empty()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -205,8 +205,7 @@ public final class ChatThreadAsyncClient {
     Mono<Response<Void>> updateThreadProperties(UpdateChatThreadOptions options, Context context) {
         context = context == null ? Context.NONE : context;
         try {
-            return this.chatThreadClient
-                .updateChatThreadPropertiesWithResponseAsync(chatThreadId, options, context)
+            return this.chatThreadClient.updateChatThreadPropertiesWithResponseAsync(chatThreadId, options, context)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

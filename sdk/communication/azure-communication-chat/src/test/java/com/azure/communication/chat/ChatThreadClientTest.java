@@ -159,12 +159,11 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             "canUpdateThreadPropertiesWithThreadCreationDateRetentionPolicy", 50);
 
         String newTopic = "Updated Topic";
-        ThreadCreationDateRetentionPolicy updatedPolicy = new ThreadCreationDateRetentionPolicy()
-            .setDeleteThreadAfterDays(90); // changed from 50 → 90
+        ThreadCreationDateRetentionPolicy updatedPolicy
+            = new ThreadCreationDateRetentionPolicy().setDeleteThreadAfterDays(90); // changed from 50 → 90
 
-        UpdateChatThreadOptions options = new UpdateChatThreadOptions()
-            .setTopic(newTopic)
-            .setRetentionPolicy(updatedPolicy);
+        UpdateChatThreadOptions options
+            = new UpdateChatThreadOptions().setTopic(newTopic).setRetentionPolicy(updatedPolicy);
 
         // Act
         chatThreadClient.updateThreadPropertiesWithResponse(options, Context.NONE);
@@ -185,15 +184,13 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canUpdateThreadPropertiesToNoneRetentionPolicy(HttpClient httpClient) {
         // Arrange
-        setupTestWithCreationDateRetentionPolicy(httpClient,
-            "canUpdateThreadPropertiesToNoneRetentionPolicy", 60);
+        setupTestWithCreationDateRetentionPolicy(httpClient, "canUpdateThreadPropertiesToNoneRetentionPolicy", 60);
 
         String newTopic = "Updated Topic With None Policy";
         NoneRetentionPolicy nonePolicy = new NoneRetentionPolicy();
 
-        UpdateChatThreadOptions options = new UpdateChatThreadOptions()
-            .setTopic(newTopic)
-            .setRetentionPolicy(nonePolicy);
+        UpdateChatThreadOptions options
+            = new UpdateChatThreadOptions().setTopic(newTopic).setRetentionPolicy(nonePolicy);
 
         // Act
         chatThreadClient.updateThreadPropertiesWithResponse(options, Context.NONE);
@@ -208,7 +205,6 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         assertTrue(chatRetentionPolicy instanceof NoneRetentionPolicy);
     }
-
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -252,9 +248,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("key1", "value1");
         metadata.put("key2", "value2");
-        UpdateChatThreadOptions options = new UpdateChatThreadOptions()
-            .setTopic(newTopic)
-            .setMetadata(metadata);
+        UpdateChatThreadOptions options = new UpdateChatThreadOptions().setTopic(newTopic).setMetadata(metadata);
 
         // Act
         chatThreadClient.updateThreadProperties(options);
@@ -272,11 +266,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Arrange
         setupTest(httpClient, "canUpdateThreadWithRetentionPolicy");
         String newTopic = "Topic with Retention";
-        ThreadCreationDateRetentionPolicy retentionPolicy = new ThreadCreationDateRetentionPolicy()
-            .setDeleteThreadAfterDays(90);
-        UpdateChatThreadOptions options = new UpdateChatThreadOptions()
-            .setTopic(newTopic)
-            .setRetentionPolicy(retentionPolicy);
+        ThreadCreationDateRetentionPolicy retentionPolicy
+            = new ThreadCreationDateRetentionPolicy().setDeleteThreadAfterDays(90);
+        UpdateChatThreadOptions options
+            = new UpdateChatThreadOptions().setTopic(newTopic).setRetentionPolicy(retentionPolicy);
 
         // Act
         chatThreadClient.updateThreadProperties(options);
