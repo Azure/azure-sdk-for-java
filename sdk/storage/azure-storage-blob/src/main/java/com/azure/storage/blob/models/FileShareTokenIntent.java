@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class FileShareTokenIntent extends ExpandableStringEnum<FileShareTo
     /**
      * Static value backup for FileShareTokenIntent.
      */
+    @Generated
     public static final FileShareTokenIntent BACKUP = fromString("backup");
 
     /**
@@ -21,6 +23,7 @@ public final class FileShareTokenIntent extends ExpandableStringEnum<FileShareTo
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public FileShareTokenIntent() {
     }
@@ -31,6 +34,7 @@ public final class FileShareTokenIntent extends ExpandableStringEnum<FileShareTo
      * @param name a name to look for.
      * @return the corresponding FileShareTokenIntent.
      */
+    @Generated
     public static FileShareTokenIntent fromString(String name) {
         return fromString(name, FileShareTokenIntent.class);
     }
@@ -40,6 +44,7 @@ public final class FileShareTokenIntent extends ExpandableStringEnum<FileShareTo
      * 
      * @return known FileShareTokenIntent values.
      */
+    @Generated
     public static Collection<FileShareTokenIntent> values() {
         return values(FileShareTokenIntent.class);
     }

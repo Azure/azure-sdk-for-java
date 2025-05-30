@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -20,36 +21,43 @@ public final class ContainersGetAccountInfoHeaders {
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-account-kind property.
      */
+    @Generated
     private AccountKind xMsAccountKind;
 
     /*
      * The x-ms-is-hns-enabled property.
      */
+    @Generated
     private Boolean xMsIsHnsEnabled;
 
     /*
      * The x-ms-sku-name property.
      */
+    @Generated
     private SkuName xMsSkuName;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-client-request-id property.
      */
+    @Generated
     private String xMsClientRequestId;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -71,20 +79,28 @@ public final class ContainersGetAccountInfoHeaders {
         String xMsAccountKind = rawHeaders.getValue(X_MS_ACCOUNT_KIND);
         if (xMsAccountKind != null) {
             this.xMsAccountKind = AccountKind.fromString(xMsAccountKind);
+        } else {
+            this.xMsAccountKind = null;
         }
         String xMsIsHnsEnabled = rawHeaders.getValue(X_MS_IS_HNS_ENABLED);
         if (xMsIsHnsEnabled != null) {
             this.xMsIsHnsEnabled = Boolean.parseBoolean(xMsIsHnsEnabled);
+        } else {
+            this.xMsIsHnsEnabled = null;
         }
         String xMsSkuName = rawHeaders.getValue(X_MS_SKU_NAME);
         if (xMsSkuName != null) {
             this.xMsSkuName = SkuName.fromString(xMsSkuName);
+        } else {
+            this.xMsSkuName = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
     }
 
@@ -93,6 +109,7 @@ public final class ContainersGetAccountInfoHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -103,6 +120,7 @@ public final class ContainersGetAccountInfoHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the ContainersGetAccountInfoHeaders object itself.
      */
+    @Generated
     public ContainersGetAccountInfoHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -113,6 +131,7 @@ public final class ContainersGetAccountInfoHeaders {
      * 
      * @return the xMsAccountKind value.
      */
+    @Generated
     public AccountKind getXMsAccountKind() {
         return this.xMsAccountKind;
     }
@@ -123,6 +142,7 @@ public final class ContainersGetAccountInfoHeaders {
      * @param xMsAccountKind the xMsAccountKind value to set.
      * @return the ContainersGetAccountInfoHeaders object itself.
      */
+    @Generated
     public ContainersGetAccountInfoHeaders setXMsAccountKind(AccountKind xMsAccountKind) {
         this.xMsAccountKind = xMsAccountKind;
         return this;
@@ -133,6 +153,7 @@ public final class ContainersGetAccountInfoHeaders {
      * 
      * @return the xMsIsHnsEnabled value.
      */
+    @Generated
     public Boolean isXMsIsHnsEnabled() {
         return this.xMsIsHnsEnabled;
     }
@@ -143,6 +164,7 @@ public final class ContainersGetAccountInfoHeaders {
      * @param xMsIsHnsEnabled the xMsIsHnsEnabled value to set.
      * @return the ContainersGetAccountInfoHeaders object itself.
      */
+    @Generated
     public ContainersGetAccountInfoHeaders setXMsIsHnsEnabled(Boolean xMsIsHnsEnabled) {
         this.xMsIsHnsEnabled = xMsIsHnsEnabled;
         return this;
@@ -153,6 +175,7 @@ public final class ContainersGetAccountInfoHeaders {
      * 
      * @return the xMsSkuName value.
      */
+    @Generated
     public SkuName getXMsSkuName() {
         return this.xMsSkuName;
     }
@@ -163,6 +186,7 @@ public final class ContainersGetAccountInfoHeaders {
      * @param xMsSkuName the xMsSkuName value to set.
      * @return the ContainersGetAccountInfoHeaders object itself.
      */
+    @Generated
     public ContainersGetAccountInfoHeaders setXMsSkuName(SkuName xMsSkuName) {
         this.xMsSkuName = xMsSkuName;
         return this;
@@ -173,6 +197,7 @@ public final class ContainersGetAccountInfoHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -183,6 +208,7 @@ public final class ContainersGetAccountInfoHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the ContainersGetAccountInfoHeaders object itself.
      */
+    @Generated
     public ContainersGetAccountInfoHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -193,6 +219,7 @@ public final class ContainersGetAccountInfoHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
+    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -203,6 +230,7 @@ public final class ContainersGetAccountInfoHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the ContainersGetAccountInfoHeaders object itself.
      */
+    @Generated
     public ContainersGetAccountInfoHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -213,6 +241,7 @@ public final class ContainersGetAccountInfoHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -226,6 +255,7 @@ public final class ContainersGetAccountInfoHeaders {
      * @param date the date value to set.
      * @return the ContainersGetAccountInfoHeaders object itself.
      */
+    @Generated
     public ContainersGetAccountInfoHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;

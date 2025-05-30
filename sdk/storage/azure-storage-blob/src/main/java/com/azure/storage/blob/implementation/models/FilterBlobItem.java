@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,31 +21,37 @@ public final class FilterBlobItem implements XmlSerializable<FilterBlobItem> {
     /*
      * The Name property.
      */
+    @Generated
     private String name;
 
     /*
      * The ContainerName property.
      */
+    @Generated
     private String containerName;
 
     /*
      * Blob tags
      */
+    @Generated
     private BlobTags tags;
 
     /*
      * The VersionId property.
      */
+    @Generated
     private String versionId;
 
     /*
      * The IsCurrentVersion property.
      */
+    @Generated
     private Boolean isCurrentVersion;
 
     /**
      * Creates an instance of FilterBlobItem class.
      */
+    @Generated
     public FilterBlobItem() {
     }
 
@@ -54,6 +60,7 @@ public final class FilterBlobItem implements XmlSerializable<FilterBlobItem> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -64,6 +71,7 @@ public final class FilterBlobItem implements XmlSerializable<FilterBlobItem> {
      * @param name the name value to set.
      * @return the FilterBlobItem object itself.
      */
+    @Generated
     public FilterBlobItem setName(String name) {
         this.name = name;
         return this;
@@ -74,6 +82,7 @@ public final class FilterBlobItem implements XmlSerializable<FilterBlobItem> {
      * 
      * @return the containerName value.
      */
+    @Generated
     public String getContainerName() {
         return this.containerName;
     }
@@ -84,6 +93,7 @@ public final class FilterBlobItem implements XmlSerializable<FilterBlobItem> {
      * @param containerName the containerName value to set.
      * @return the FilterBlobItem object itself.
      */
+    @Generated
     public FilterBlobItem setContainerName(String containerName) {
         this.containerName = containerName;
         return this;
@@ -94,6 +104,7 @@ public final class FilterBlobItem implements XmlSerializable<FilterBlobItem> {
      * 
      * @return the tags value.
      */
+    @Generated
     public BlobTags getTags() {
         return this.tags;
     }
@@ -104,6 +115,7 @@ public final class FilterBlobItem implements XmlSerializable<FilterBlobItem> {
      * @param tags the tags value to set.
      * @return the FilterBlobItem object itself.
      */
+    @Generated
     public FilterBlobItem setTags(BlobTags tags) {
         this.tags = tags;
         return this;
@@ -114,6 +126,7 @@ public final class FilterBlobItem implements XmlSerializable<FilterBlobItem> {
      * 
      * @return the versionId value.
      */
+    @Generated
     public String getVersionId() {
         return this.versionId;
     }
@@ -124,6 +137,7 @@ public final class FilterBlobItem implements XmlSerializable<FilterBlobItem> {
      * @param versionId the versionId value to set.
      * @return the FilterBlobItem object itself.
      */
+    @Generated
     public FilterBlobItem setVersionId(String versionId) {
         this.versionId = versionId;
         return this;
@@ -134,6 +148,7 @@ public final class FilterBlobItem implements XmlSerializable<FilterBlobItem> {
      * 
      * @return the isCurrentVersion value.
      */
+    @Generated
     public Boolean isCurrentVersion() {
         return this.isCurrentVersion;
     }
@@ -144,19 +159,22 @@ public final class FilterBlobItem implements XmlSerializable<FilterBlobItem> {
      * @param isCurrentVersion the isCurrentVersion value to set.
      * @return the FilterBlobItem object itself.
      */
+    @Generated
     public FilterBlobItem setIsCurrentVersion(Boolean isCurrentVersion) {
         this.isCurrentVersion = isCurrentVersion;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Blob" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Blob" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Name", this.name);
         xmlWriter.writeStringElement("ContainerName", this.containerName);
@@ -174,6 +192,7 @@ public final class FilterBlobItem implements XmlSerializable<FilterBlobItem> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the FilterBlobItem.
      */
+    @Generated
     public static FilterBlobItem fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -188,8 +207,9 @@ public final class FilterBlobItem implements XmlSerializable<FilterBlobItem> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the FilterBlobItem.
      */
+    @Generated
     public static FilterBlobItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Blob" : rootElementName;
+        String finalRootElementName = rootElementName == null || rootElementName.isEmpty() ? "Blob" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             FilterBlobItem deserializedFilterBlobItem = new FilterBlobItem();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
