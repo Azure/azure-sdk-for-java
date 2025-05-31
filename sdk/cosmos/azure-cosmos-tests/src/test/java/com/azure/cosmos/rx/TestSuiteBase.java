@@ -1487,7 +1487,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             .multipleWriteRegionsEnabled(multiMasterEnabled)
             .preferredRegions(preferredRegions)
             .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-            .consistencyLevel(consistencyLevel);
+            .consistencyLevel(consistencyLevel)
+            .dnsLookupLoggingEnabled(true);
+
         ImplementationBridgeHelpers
             .CosmosClientBuilderHelper
             .getCosmosClientBuilderAccessor()
