@@ -17,6 +17,9 @@ import com.openai.core.JsonValue;
 import com.openai.errors.BadRequestException;
 import com.openai.models.FunctionDefinition;
 import com.openai.models.FunctionParameters;
+import com.openai.models.audio.AudioModel;
+import com.openai.models.audio.transcriptions.Transcription;
+import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
 import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionAssistantMessageParam;
 import com.openai.models.chat.completions.ChatCompletionContentPart;
@@ -33,12 +36,17 @@ import com.openai.models.chat.completions.ChatCompletionTool;
 import com.openai.models.chat.completions.ChatCompletionToolMessageParam;
 import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
 import com.openai.models.completions.CompletionUsage;
+import com.openai.models.images.Image;
+import com.openai.models.images.ImageGenerateParams;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import static java.util.Arrays.asList;
@@ -51,9 +59,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class OpenAIOkHttpClientTestBase {
     static final String ASSISTANT_CONTENT
         = "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous.";
-    static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_GA = AzureOpenAIServiceVersion.getV2024_06_01();
+    static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_GA
+        = AzureOpenAIServiceVersion.getV2025_03_01_PREVIEW();
     static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_PREVIEW
-        = AzureOpenAIServiceVersion.getV2024_08_01_PREVIEW();
+        = AzureOpenAIServiceVersion.getV2025_03_01_PREVIEW();
     static final String USER_CONTENT = "Who won the world series in 2020?";
 
     String getEndpoint() {
@@ -62,6 +71,10 @@ public class OpenAIOkHttpClientTestBase {
             azureOpenaiEndpoint = azureOpenaiEndpoint.substring(0, azureOpenaiEndpoint.length() - 1);
         }
         return azureOpenaiEndpoint;
+    }
+
+    static Path openTestResourceFile(String fileName) {
+        return Paths.get("src/test/resources/" + fileName);
     }
 
     static Supplier<String> getBearerTokenCredentialProvider() {
@@ -325,6 +338,24 @@ public class OpenAIOkHttpClientTestBase {
         return extraBody;
     }
 
+    TranscriptionCreateParams createTranscriptionCreateParams(String testModel) {
+
+        TranscriptionCreateParams createParams = TranscriptionCreateParams.builder()
+            .file(openTestResourceFile("batman.wav"))
+            .model(AudioModel.of(testModel))
+            .build();
+        return createParams;
+    }
+
+    ImageGenerateParams createImageGenerateParams(String testModel, String prompt) {
+        return ImageGenerateParams.builder()
+            .prompt(prompt)
+            .model(testModel)
+            .n(1)
+            .quality(ImageGenerateParams.Quality.HD)
+            .build();
+    }
+
     // Response: Helper methods to assert response
     void assertChatCompletion(ChatCompletion chatCompletion, int expectedChoicesSize) {
         assertNotNull(chatCompletion._id());
@@ -563,5 +594,19 @@ public class OpenAIOkHttpClientTestBase {
         JsonValue violenceSeverity = violenceMap.get("severity");
         assertNotNull(violenceSeverity);
         assertEquals("medium", violenceSeverity.asString().get());
+    }
+
+    void assertAudioTranscription(Transcription transcription) {
+        assertNotNull(transcription.text());
+        assertTrue(transcription.isValid());
+    }
+
+    void assertImageGeneration(Optional<List<Image>> images) {
+        assertNotNull(images);
+        assertTrue(images.isPresent());
+        assertFalse(images.get().isEmpty());
+        for (Image image : images.get()) {
+            assertNotNull(image.url());
+        }
     }
 }

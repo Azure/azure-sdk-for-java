@@ -10,7 +10,10 @@ import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.models.ChatModel;
+import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseRetrieveParams;
+import com.openai.models.responses.ResponseDeleteParams;
 
 public final class ResponsesExample {
     private ResponsesExample() {}
@@ -29,14 +32,34 @@ public final class ResponsesExample {
             .build();
 
         ResponseCreateParams createParams = ResponseCreateParams.builder()
-                .input("Tell me a story about building the best SDK!")
-                .model(ChatModel.GPT_4O_MINI)
-                .build();
+            .input("Tell me a story about building the best SDK!")
+            .model(ChatModel.GPT_4O_MINI)
+            .build();
 
-        client.responses().create(createParams).output().forEach(item ->
+        Response response = client.responses().create(createParams);
+
+        response.output().forEach(item ->
             item.message().ifPresent(message ->
                 message.content().forEach(content ->
                     content.outputText().ifPresent(
                         outputText -> System.out.println(outputText.text())))));
+
+        ResponseRetrieveParams getPreviousResponse = ResponseRetrieveParams.builder()
+            .responseId(response.id())
+            .build();
+
+        Response previousResponse = client.responses().retrieve(getPreviousResponse);
+
+        previousResponse.output().forEach(item ->
+            item.message().ifPresent(message ->
+                message.content().forEach(content ->
+                    content.outputText().ifPresent(
+                        outputText -> System.out.println(outputText.text())))));
+
+        ResponseDeleteParams deletePreviousResponse = ResponseDeleteParams.builder()
+            .responseId(response.id())
+            .build();
+
+        client.responses().delete(deletePreviousResponse);
     }
 }
