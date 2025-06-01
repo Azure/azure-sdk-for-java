@@ -33,7 +33,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
 
     /**
      * Get the kind property: Retention Policy Type.
-     *
+     * 
      * @return the kind value.
      */
     @Override
@@ -44,7 +44,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
     /**
      * Get the deleteThreadAfterDays property: Indicates how many days after the thread creation the thread will be
      * deleted.
-     *
+     * 
      * @return the deleteThreadAfterDays value.
      */
     public int getDeleteThreadAfterDays() {
@@ -54,7 +54,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
     /**
      * Set the deleteThreadAfterDays property: Indicates how many days after the thread creation the thread will be
      * deleted.
-     *
+     * 
      * @param deleteThreadAfterDays the deleteThreadAfterDays value to set.
      * @return the ThreadCreationDateRetentionPolicy object itself.
      */
@@ -76,7 +76,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
 
     /**
      * Reads an instance of ThreadCreationDateRetentionPolicy from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ThreadCreationDateRetentionPolicy if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

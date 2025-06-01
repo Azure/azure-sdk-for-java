@@ -10,18 +10,16 @@ import java.util.Collection;
 /**
  * Retention Policy Type.
  */
-public final class RetentionPolicyKind
-    extends ExpandableStringEnum<com.azure.communication.chat.models.RetentionPolicyKind> {
+public final class RetentionPolicyKind extends ExpandableStringEnum<RetentionPolicyKind> {
     /**
      * Thread retention policy based on thread creation date.
      */
-    public static final com.azure.communication.chat.models.RetentionPolicyKind THREAD_CREATION_DATE
-        = fromString("threadCreationDate");
+    public static final RetentionPolicyKind THREAD_CREATION_DATE = fromString("threadCreationDate");
 
     /**
      * No thread retention policy.
      */
-    public static final com.azure.communication.chat.models.RetentionPolicyKind NONE = fromString("none");
+    public static final RetentionPolicyKind NONE = fromString("none");
 
     /**
      * Creates a new instance of RetentionPolicyKind value.
@@ -38,8 +36,8 @@ public final class RetentionPolicyKind
      * @param name a name to look for.
      * @return the corresponding RetentionPolicyKind.
      */
-    public static com.azure.communication.chat.models.RetentionPolicyKind fromString(String name) {
-        return fromString(name, com.azure.communication.chat.models.RetentionPolicyKind.class);
+    public static RetentionPolicyKind fromString(String name) {
+        return fromString(name, RetentionPolicyKind.class);
     }
 
     /**
@@ -47,7 +45,7 @@ public final class RetentionPolicyKind
      *
      * @return known RetentionPolicyKind values.
      */
-    public static Collection<com.azure.communication.chat.models.RetentionPolicyKind> values() {
-        return values(com.azure.communication.chat.models.RetentionPolicyKind.class);
+    public static Collection<RetentionPolicyKind> values() {
+        return values(RetentionPolicyKind.class);
     }
 }

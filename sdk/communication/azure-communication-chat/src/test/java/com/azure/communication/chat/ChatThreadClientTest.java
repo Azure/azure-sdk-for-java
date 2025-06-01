@@ -678,6 +678,9 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Action & Assert
         chatThreadClient.sendReadReceipt(response.getId());
 
+        // Add delay to allow the read receipt to be available in list
+        Thread.sleep(1000);
+
         PagedIterable<ChatMessageReadReceipt> readReceiptsResponse
             = chatThreadClient.listReadReceipts(new ListReadReceiptOptions().setMaxPageSize(1), Context.NONE);
 

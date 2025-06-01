@@ -58,8 +58,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
      * @param deleteThreadAfterDays the deleteThreadAfterDays value to set.
      * @return the ThreadCreationDateRetentionPolicy object itself.
      */
-    public ThreadCreationDateRetentionPolicy
-        setDeleteThreadAfterDays(int deleteThreadAfterDays) {
+    public ThreadCreationDateRetentionPolicy setDeleteThreadAfterDays(int deleteThreadAfterDays) {
         this.deleteThreadAfterDays = deleteThreadAfterDays;
         return this;
     }
@@ -84,11 +83,10 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ThreadCreationDateRetentionPolicy.
      */
-    public static com.azure.communication.chat.models.ThreadCreationDateRetentionPolicy fromJson(JsonReader jsonReader)
-        throws IOException {
+    public static ThreadCreationDateRetentionPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            com.azure.communication.chat.models.ThreadCreationDateRetentionPolicy deserializedThreadCreationDateRetentionPolicy
-                = new com.azure.communication.chat.models.ThreadCreationDateRetentionPolicy();
+            ThreadCreationDateRetentionPolicy deserializedThreadCreationDateRetentionPolicy
+                = new ThreadCreationDateRetentionPolicy();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
