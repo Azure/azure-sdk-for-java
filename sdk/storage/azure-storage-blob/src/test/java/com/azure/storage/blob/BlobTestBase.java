@@ -1133,8 +1133,9 @@ public class BlobTestBase extends TestProxyTestBase {
                 xml.append("<Marker>MARKER--</Marker>");
             }
             xml.append("<MaxResults>").append(maxResourcesPerPage).append("</MaxResults>");
-            if (isHierarchical)
+            if (isHierarchical) {
                 xml.append("<Delimiter>/</Delimiter>");
+            }
 
             // blobs
             int numberOfResultsOnThisPage = getNumberOfResultsOnThisPage();
