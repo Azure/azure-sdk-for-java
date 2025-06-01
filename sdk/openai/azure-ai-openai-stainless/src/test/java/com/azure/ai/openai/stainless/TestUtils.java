@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai.stainless;
 
+import com.openai.models.embeddings.EmbeddingModel;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseOutputText;
 import org.junit.jupiter.params.provider.Arguments;
@@ -101,5 +102,10 @@ public class TestUtils {
             .filter(Objects::nonNull)
             .findFirst()
             .orElse(null);
+    }
+
+    static Stream<Arguments> azureOnlyClientWithEmbedding() {
+        return Stream.of(Arguments.of("AZURE_OPEN_AI", "GA", EmbeddingModel.TEXT_EMBEDDING_ADA_002.toString()),
+            Arguments.of("AZURE_OPEN_AI", "PREVIEW", EmbeddingModel.TEXT_EMBEDDING_ADA_002.toString()));
     }
 }

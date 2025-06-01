@@ -632,7 +632,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
             .build());
         ResponseCreateParams createParams = ResponseCreateParams.builder()
             .inputOfResponse(Collections.singletonList(messageInputItem))
-            .model(ChatModel.GPT_4O_MINI)
+            .model(testModel)
             .build();
 
         Response response = client.responses().create(createParams).join();
@@ -665,7 +665,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
             .build());
         ResponseCreateParams createParams = ResponseCreateParams.builder()
             .inputOfResponse(Collections.singletonList(messageInputItem))
-            .model(ChatModel.GPT_4O_MINI)
+            .model(testModel)
             .build();
 
         Response response = client.responses().create(createParams).join();
@@ -681,13 +681,13 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClientWithEmbedding")
     public void embeddingsReturnSuccessfully(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
 
         EmbeddingCreateParams createParams = EmbeddingCreateParams.builder()
             .input("The quick brown fox jumped over the lazy dog")
-            .model(EmbeddingModel.TEXT_EMBEDDING_ADA_002)
+            .model(testModel)
             .build();
 
         CreateEmbeddingResponse response = client.embeddings().create(createParams).join();
@@ -709,7 +709,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
 
         ResponseCreateParams createParams = ResponseCreateParams.builder()
             .input("Tell me a short story about building the best SDK!")
-            .model(ChatModel.GPT_4O_MINI)
+            .model(testModel)
             .build();
 
         client.responses()
