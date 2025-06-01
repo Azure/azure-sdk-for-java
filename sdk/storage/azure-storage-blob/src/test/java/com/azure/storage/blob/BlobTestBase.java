@@ -22,6 +22,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
@@ -82,6 +83,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -1071,6 +1073,165 @@ public class BlobTestBase extends TestProxyTestBase {
             return builder.build();
         } else { //playback or not set
             return new MockTokenCredential();
+        }
+    }
+
+    protected static final class PagingTimeoutTestClient implements HttpClient {
+        private final Queue<String> responses = new java.util.LinkedList<>();
+        private final int maxResourcesPerPage;
+        private final int totalResourcesExpected;
+        private final int totalPagesExpected;
+
+        private int resourceCounter = 0;
+        private int pageCounter;
+
+        public PagingTimeoutTestClient(int totalResourcesExpected, int maxResourcesPerPage) {
+            this.totalResourcesExpected = totalResourcesExpected;
+            this.maxResourcesPerPage = maxResourcesPerPage;
+            this.totalPagesExpected = (int) Math.ceil((double) totalResourcesExpected / maxResourcesPerPage);
+        }
+
+        public PagingTimeoutTestClient addListBlobsResponse(boolean isHierarchical) {
+            for (pageCounter = 0; pageCounter < totalPagesExpected; pageCounter++) {
+                responses.add(buildListBlobsXmlPage(isHierarchical));
+            }
+            return this;
+        }
+
+        public PagingTimeoutTestClient addFindBlobsResponse() {
+            for (pageCounter = 0; pageCounter < totalPagesExpected; pageCounter++) {
+                responses.add(buildFindBlobsXmlPage());
+            }
+            return this;
+        }
+
+        public PagingTimeoutTestClient addListContainersResponse() {
+            for (pageCounter = 0; pageCounter < totalPagesExpected; pageCounter++) {
+                responses.add(buildListContainersXmlPage());
+            }
+            return this;
+        }
+
+        private int getNumberOfResultsOnThisPage() {
+            int remainingItemsToGenerate = this.totalResourcesExpected - this.resourceCounter;
+            return Math.min(remainingItemsToGenerate, this.maxResourcesPerPage);
+        }
+
+        private boolean isLastPage() {
+            return pageCounter == totalPagesExpected - 1;
+        }
+
+        private String buildListBlobsXmlPage(boolean isHierarchical) {
+            StringBuilder xml = new StringBuilder();
+
+            // header
+            xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
+                .append("<EnumerationResults ServiceEndpoint=\"https://account.blob.core.windows.net/\"")
+                .append(" ContainerName=\"foo\">");
+
+            if (pageCounter != 0)
+                xml.append("<Marker>MARKER--</Marker>");
+            xml.append("<MaxResults>").append(maxResourcesPerPage).append("</MaxResults>");
+            if (isHierarchical)
+                xml.append("<Delimiter>/</Delimiter>");
+
+            // blobs
+            int numberOfResultsOnThisPage = getNumberOfResultsOnThisPage();
+            xml.append("<Blobs>");
+            for (int i = 0; i < numberOfResultsOnThisPage; i++) {
+                xml.append("<Blob><Name>blob").append(resourceCounter++).append("</Name></Blob>");
+            }
+            xml.append("</Blobs>");
+
+            // footer
+            if (isLastPage()) {
+                xml.append("<NextMarker/>");
+            } else {
+                xml.append("<NextMarker>MARKER--</NextMarker>");
+
+            }
+            xml.append("</EnumerationResults>");
+
+            return xml.toString();
+        }
+
+        private String buildFindBlobsXmlPage() {
+            StringBuilder xml = new StringBuilder();
+
+            // header
+            xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
+                .append("<EnumerationResults ServiceEndpoint=\"https://account.blob.core.windows.net/\">");
+
+            if (pageCounter != 0)
+                xml.append("<Marker>MARKER--</Marker>");
+            xml.append("<Where>&quot;dummyKey&quot;=&apos;dummyValue&apos;</Where>");
+            xml.append("<MaxResults>").append(maxResourcesPerPage).append("</MaxResults>");
+
+            // blobs
+            int numberOfResultsOnThisPage = getNumberOfResultsOnThisPage();
+            xml.append("<Blobs>");
+            for (int i = 0; i <= numberOfResultsOnThisPage; i++) {
+                xml.append("<Blob>")
+                    .append("<Name>blob")
+                    .append(resourceCounter++)
+                    .append("</Name>")
+                    .append("<ContainerName>foo</ContainerName>")
+                    .append("<Tags><TagSet><Tag><Key>dummyKey</Key><Value>dummyValue</Value></Tag></TagSet></Tags>")
+                    .append("</Blob>");
+            }
+            xml.append("</Blobs>");
+
+            // footer
+            if (isLastPage()) {
+                xml.append("<NextMarker/>");
+            } else {
+                xml.append("<NextMarker>MARKER--</NextMarker>");
+
+            }
+            xml.append("</EnumerationResults>");
+
+            return xml.toString();
+        }
+
+        private String buildListContainersXmlPage() {
+            StringBuilder xml = new StringBuilder();
+
+            // header
+            xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
+                .append("<EnumerationResults ServiceEndpoint=\"https://account.blob.core.windows.net/\">");
+
+            if (pageCounter != 0)
+                xml.append("<Marker>MARKER--</Marker>");
+            xml.append("<MaxResults>").append(maxResourcesPerPage).append("</MaxResults>");
+
+            // containers
+            int numberOfResultsOnThisPage = getNumberOfResultsOnThisPage();
+            xml.append("<Containers>");
+            for (int i = 0; i <= numberOfResultsOnThisPage; i++) {
+                xml.append("<Container><Name>container").append(resourceCounter++).append("</Name></Container>");
+            }
+            xml.append("</Containers>");
+
+            // footer
+            if (isLastPage()) {
+                xml.append("<NextMarker/>");
+            } else {
+                xml.append("<NextMarker>MARKER--</NextMarker>");
+
+            }
+            xml.append("</EnumerationResults>");
+
+            return xml.toString();
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
+            HttpResponse response
+                = new MockHttpResponse(request, 200, headers, responses.poll().getBytes(StandardCharsets.UTF_8));
+
+            int requestDelaySeconds = 4;
+            return Mono.delay(Duration.ofSeconds(requestDelaySeconds)).then(Mono.just(response));
         }
     }
 }

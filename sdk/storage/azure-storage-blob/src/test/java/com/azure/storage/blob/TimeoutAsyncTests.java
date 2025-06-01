@@ -32,7 +32,7 @@ public class TimeoutAsyncTests {
             = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
                 .containerName("foo")
-                .httpClient(new TimeoutTests.ListBlobsWithTimeoutTestClient())
+                .httpClient(new BlobTestBase.PagingTimeoutTestClient(5, 3).addListBlobsResponse(false))
                 .buildAsyncClient();
 
         StepVerifier
@@ -51,7 +51,7 @@ public class TimeoutAsyncTests {
             = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
                 .containerName("foo")
-                .httpClient(new TimeoutTests.ListBlobsWithTimeoutTestClient())
+                .httpClient(new BlobTestBase.PagingTimeoutTestClient(5, 3).addListBlobsResponse(true))
                 .buildAsyncClient();
 
         StepVerifier
@@ -70,7 +70,7 @@ public class TimeoutAsyncTests {
             = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
                 .containerName("foo")
-                .httpClient(new TimeoutTests.FindBlobsWithTimeoutClient())
+                .httpClient(new BlobTestBase.PagingTimeoutTestClient(5, 3).addFindBlobsResponse())
                 .buildAsyncClient();
 
         StepVerifier.create(containerClient.findBlobsByTags(
@@ -83,7 +83,7 @@ public class TimeoutAsyncTests {
         BlobServiceAsyncClient serviceClient
             = new BlobServiceClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
-                .httpClient(new TimeoutTests.ListContainersWithTimeoutTestClient())
+                .httpClient(new BlobTestBase.PagingTimeoutTestClient(5, 3).addListContainersResponse())
                 .buildAsyncClient();
 
         StepVerifier
@@ -101,7 +101,7 @@ public class TimeoutAsyncTests {
         BlobServiceAsyncClient serviceClient
             = new BlobServiceClientBuilder().endpoint("https://account.blob.core.windows.net/")
                 .credential(new MockTokenCredential())
-                .httpClient(new TimeoutTests.FindBlobsWithTimeoutClient())
+                .httpClient(new BlobTestBase.PagingTimeoutTestClient(5, 3).addFindBlobsResponse())
                 .buildAsyncClient();
 
         StepVerifier.create(serviceClient.findBlobsByTags(
