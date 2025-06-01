@@ -1129,8 +1129,9 @@ public class BlobTestBase extends TestProxyTestBase {
                 .append("<EnumerationResults ServiceEndpoint=\"https://account.blob.core.windows.net/\"")
                 .append(" ContainerName=\"foo\">");
 
-            if (pageCounter != 0)
+            if (pageCounter != 0) {
                 xml.append("<Marker>MARKER--</Marker>");
+            }
             xml.append("<MaxResults>").append(maxResourcesPerPage).append("</MaxResults>");
             if (isHierarchical)
                 xml.append("<Delimiter>/</Delimiter>");
@@ -1162,8 +1163,9 @@ public class BlobTestBase extends TestProxyTestBase {
             xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
                 .append("<EnumerationResults ServiceEndpoint=\"https://account.blob.core.windows.net/\">");
 
-            if (pageCounter != 0)
+            if (pageCounter != 0) {
                 xml.append("<Marker>MARKER--</Marker>");
+            }
             xml.append("<Where>&quot;dummyKey&quot;=&apos;dummyValue&apos;</Where>");
             xml.append("<MaxResults>").append(maxResourcesPerPage).append("</MaxResults>");
 
@@ -1200,8 +1202,9 @@ public class BlobTestBase extends TestProxyTestBase {
             xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
                 .append("<EnumerationResults ServiceEndpoint=\"https://account.blob.core.windows.net/\">");
 
-            if (pageCounter != 0)
+            if (pageCounter != 0) {
                 xml.append("<Marker>MARKER--</Marker>");
+            }
             xml.append("<MaxResults>").append(maxResourcesPerPage).append("</MaxResults>");
 
             // containers
