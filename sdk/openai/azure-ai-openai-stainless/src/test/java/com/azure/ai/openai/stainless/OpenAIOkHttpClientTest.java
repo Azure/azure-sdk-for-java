@@ -34,6 +34,7 @@ import com.openai.models.images.ImageGenerateParams;
 import com.openai.models.images.ImageModel;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseStreamEvent;
 import com.openai.models.responses.ResponseRetrieveParams;
 import com.openai.models.responses.ResponseDeleteParams;
 import com.openai.models.responses.ResponseInputItem;
@@ -638,7 +639,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
             .build());
         ResponseCreateParams createParams = ResponseCreateParams.builder()
             .inputOfResponse(Collections.singletonList(messageInputItem))
-            .model(ChatModel.GPT_4O_MINI)
+            .model(testModel)
             .build();
 
         Response response = client.responses().create(createParams);
@@ -671,7 +672,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
             .build());
         ResponseCreateParams createParams = ResponseCreateParams.builder()
             .inputOfResponse(Collections.singletonList(messageInputItem))
-            .model(ChatModel.GPT_4O_MINI)
+            .model(testModel)
             .build();
 
         Response response = client.responses().create(createParams);
@@ -687,13 +688,13 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClientWithEmbedding")
     public void embeddingsReturnSuccessfully(String apiType, String apiVersion, String testModel) {
         OpenAIClient client = createClient(apiType, apiVersion);
 
         EmbeddingCreateParams createParams = EmbeddingCreateParams.builder()
             .input("The quick brown fox jumped over the lazy dog")
-            .model(EmbeddingModel.TEXT_EMBEDDING_ADA_002)
+            .model(testModel)
             .build();
 
         CreateEmbeddingResponse response = client.embeddings().create(createParams);
@@ -716,5 +717,23 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         ImageGenerateParams params = createImageGenerateParams(testModel, prompt);
         Optional<List<Image>> images = client.images().generate(params).data();
         assertImageGeneration(images);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    void streamingReturnSuccessfully(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+
+        ResponseCreateParams createParams = ResponseCreateParams.builder()
+            .input("Tell me a short story about building the best SDK! in 300 words or less.")
+            .model(testModel)
+            .build();
+
+        try (StreamResponse<ResponseStreamEvent> streamResponse = client.responses().createStreaming(createParams)) {
+            streamResponse.stream().forEach(event -> event.outputTextDelta().ifPresent(textEvent -> {
+                assertNotNull(textEvent.delta(), "Text delta should not be null");
+                assertFalse(textEvent.delta().trim().isEmpty(), "Text delta should not be empty");
+            }));
+        }
     }
 }
