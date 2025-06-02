@@ -5,6 +5,7 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
 import com.azure.compute.batch.implementation.lro.JobScheduleDeletePoller;
+import com.azure.compute.batch.implementation.lro.JobScheduleTerminatePoller;
 import com.azure.compute.batch.implementation.task.SyncTaskSubmitter;
 import com.azure.compute.batch.implementation.task.TaskManager;
 import com.azure.compute.batch.implementation.task.TaskSubmitter;
@@ -11969,6 +11970,27 @@ public final class BatchClient {
     }
 
     /**
+     * Begins terminating a Job Schedule from the specified Account.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to terminate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the termination of the Job Schedule.
+     * The poller provides {@link BatchJobSchedule} instances during polling and returns the last known
+     * {@link BatchJobSchedule} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJobSchedule, BatchJobSchedule> beginTerminateJobSchedule(String jobScheduleId) {
+        JobScheduleTerminatePoller poller = new JobScheduleTerminatePoller(this, jobScheduleId, new RequestOptions());
+        return SyncPoller.createPoller(Duration.ofSeconds(5), poller.getActivationOperation(),
+            poller.getPollOperation(), poller.getCancelOperation(), poller.getFetchResultOperation());
+    }
+
+    /**
      * Lists all of the Job Schedules in the specified Account.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14123,6 +14145,58 @@ public final class BatchClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         terminateJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Begins terminating a Job Schedule from the specified Account.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to terminate.
+     * @param options Optional parameters for Terminate Job Schedule operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the termination of the Job Schedule.
+     * The poller provides {@link BatchJobSchedule} instances during polling and returns the last known
+     * {@link BatchJobSchedule} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJobSchedule, BatchJobSchedule> beginTerminateJobSchedule(String jobScheduleId,
+        BatchJobScheduleTerminateOptions options, RequestConditions requestConditions) {
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Boolean force = options == null ? null : options.isForce();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        // Create and return the poller
+        JobScheduleTerminatePoller poller = new JobScheduleTerminatePoller(this, jobScheduleId, requestOptions);
+        return SyncPoller.createPoller(Duration.ofSeconds(5), poller.getActivationOperation(),
+            poller.getPollOperation(), poller.getCancelOperation(), poller.getFetchResultOperation());
     }
 
     /**
