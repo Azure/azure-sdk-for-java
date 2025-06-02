@@ -2,11 +2,11 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.azure.autorest.customization.MethodCustomization;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
 import org.slf4j.Logger;
 import com.github.javaparser.StaticJavaParser;
 
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,31 +18,28 @@ public class InferenceCustomizations extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         // remove unused class (no reference to them, after partial-update)
+
+        // TODO (alzimmer): This can be replaced with a TypeSpec rename.
         PackageCustomization implModels = customization.getPackage("com.azure.ai.inference.implementation.models");
         ClassCustomization embedRequest1 = implModels.getClass("EmbedRequest1");
         embedRequest1.rename("ImageEmbedRequest");
-        PackageCustomization inferenceModels = customization.getPackage("com.azure.ai.inference.models");
-        inferenceModels.getClass("ChatCompletionsOptions").customizeAst(ast -> {
+
+        customization.getClass("com.azure.ai.inference.models", "ChatCompletionsOptions").customizeAst(ast -> {
             ast.addImport("com.azure.ai.inference.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper");
 
-            ast.getClassByName("ChatCompletionsOptions").ifPresent(clazz -> {
-
-                // Add Accessor to ChatCompletionsOptions
-                clazz.setMembers(clazz.getMembers()
-                    .addFirst(StaticJavaParser.parseBodyDeclaration(String.join("\n", "static {",
-                        "    ChatCompletionsOptionsAccessHelper.setAccessor(new ChatCompletionsOptionsAccessHelper.ChatCompletionsOptionsAccessor() {",
-                        "        @Override",
-                        "        public void setStream(ChatCompletionsOptions options, boolean stream) {",
-                        "            options.setStream(stream);",
-                        "        }",
-                        "    });",
-                        "}"))));
-            });
+            ast.getClassByName("ChatCompletionsOptions").ifPresent(clazz -> clazz.getMembers()
+                .add(0, new ConstructorDeclaration().setStatic(true).setBody(StaticJavaParser.parseBlock("{"
+                    + "ChatCompletionsOptionsAccessHelper.setAccessor(new ChatCompletionsOptionsAccessHelper.ChatCompletionsOptionsAccessor() {"
+                    + "    @Override"
+                    + "    public void setStream(ChatCompletionsOptions options, boolean stream) {"
+                    + "        options.setStream(stream);"
+                    + "    }"
+                    + "}); }"))));
         });
-        PackageCustomization base = customization.getPackage("com.azure.ai.inference");
-        ClassCustomization serviceVersion = base.getClass("ModelServiceVersion");
-        serviceVersion.getMethod("getLatest")
-            .replaceBody("return V2024_05_01_PREVIEW;");
+
+        customization.getClass("com.azure.ai.inference", "ModelServiceVersion").customizeAst(ast ->
+            ast.getClassByName("ModelServiceVersion").ifPresent(clazz -> clazz.getMethodsByName("getLatest")
+                .forEach(method -> method.setBody(StaticJavaParser.parseBlock("{ return V2024_05_01_PREVIEW; }")))));
         customizeChatCompletionsBaseClasses(customization, logger);
     }
 
@@ -50,13 +47,8 @@ public class InferenceCustomizations extends Customization {
         List<String> classList = Arrays.asList("ChatCompletionsNamedToolChoice", "ChatCompletionsToolCall", "ChatCompletionsToolDefinition");
         for (String className : classList) {
             logger.info("Customizing the {} class", className);
-            ClassCustomization namedToolSelectionClass = customization.getPackage("com.azure.ai.inference.models").getClass(className);
-            namedToolSelectionClass.setModifier(Modifier.PUBLIC);
+            customization.getClass("com.azure.ai.inference.models", className).customizeAst(ast ->
+                ast.getClassByName(className).ifPresent(clazz -> clazz.setModifiers(Modifier.Keyword.PUBLIC)));
         }
     }
-
-    private static String joinWithNewline(String... lines) {
-        return String.join("\n", lines);
-    }
-
 }
