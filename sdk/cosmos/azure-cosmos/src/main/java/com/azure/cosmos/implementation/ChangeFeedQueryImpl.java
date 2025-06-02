@@ -154,7 +154,7 @@ class ChangeFeedQueryImpl<T> {
         }
 
         if (consistencyLevelOverrideApplicable && this.client.getReadConsistencyStrategy() != null) {
-            String readConsistencyStrategyName = options.getReadConsistencyStrategy().toString();
+            String readConsistencyStrategyName = this.client.getReadConsistencyStrategy().toString();
             this.client.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
             headers.put(
                 HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
