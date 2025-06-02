@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class KnowledgeAgentRequestLimits implements JsonSerializable<Knowl
     /*
      * The maximum runtime in seconds.
      */
+    @Generated
     private Integer maxRuntimeInSeconds;
 
     /*
      * Limits the maximum size of the content in the output.
      */
+    @Generated
     private Integer maxOutputSize;
 
     /**
      * Creates an instance of KnowledgeAgentRequestLimits class.
      */
+    @Generated
     public KnowledgeAgentRequestLimits() {
     }
 
@@ -39,6 +43,7 @@ public final class KnowledgeAgentRequestLimits implements JsonSerializable<Knowl
      * 
      * @return the maxRuntimeInSeconds value.
      */
+    @Generated
     public Integer getMaxRuntimeInSeconds() {
         return this.maxRuntimeInSeconds;
     }
@@ -49,6 +54,7 @@ public final class KnowledgeAgentRequestLimits implements JsonSerializable<Knowl
      * @param maxRuntimeInSeconds the maxRuntimeInSeconds value to set.
      * @return the KnowledgeAgentRequestLimits object itself.
      */
+    @Generated
     public KnowledgeAgentRequestLimits setMaxRuntimeInSeconds(Integer maxRuntimeInSeconds) {
         this.maxRuntimeInSeconds = maxRuntimeInSeconds;
         return this;
@@ -59,6 +65,7 @@ public final class KnowledgeAgentRequestLimits implements JsonSerializable<Knowl
      * 
      * @return the maxOutputSize value.
      */
+    @Generated
     public Integer getMaxOutputSize() {
         return this.maxOutputSize;
     }
@@ -69,6 +76,7 @@ public final class KnowledgeAgentRequestLimits implements JsonSerializable<Knowl
      * @param maxOutputSize the maxOutputSize value to set.
      * @return the KnowledgeAgentRequestLimits object itself.
      */
+    @Generated
     public KnowledgeAgentRequestLimits setMaxOutputSize(Integer maxOutputSize) {
         this.maxOutputSize = maxOutputSize;
         return this;
@@ -77,6 +85,7 @@ public final class KnowledgeAgentRequestLimits implements JsonSerializable<Knowl
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class KnowledgeAgentRequestLimits implements JsonSerializable<Knowl
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the KnowledgeAgentRequestLimits.
      */
+    @Generated
     public static KnowledgeAgentRequestLimits fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KnowledgeAgentRequestLimits deserializedKnowledgeAgentRequestLimits = new KnowledgeAgentRequestLimits();

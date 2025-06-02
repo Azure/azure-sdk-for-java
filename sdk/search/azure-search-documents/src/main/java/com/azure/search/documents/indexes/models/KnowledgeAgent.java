@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,26 +24,31 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
     /*
      * The name of the knowledge agent.
      */
+    @Generated
     private final String name;
 
     /*
      * Contains configuration options on how to connect to AI models.
      */
+    @Generated
     private final List<KnowledgeAgentModel> models;
 
     /*
      * The targetIndexes property.
      */
+    @Generated
     private final List<KnowledgeAgentTargetIndex> targetIndexes;
 
     /*
      * Guardrails to limit how much resources are utilized for a single agent retrieval request.
      */
+    @Generated
     private KnowledgeAgentRequestLimits requestLimits;
 
     /*
      * The ETag of the agent.
      */
+    @Generated
     private String eTag;
 
     /*
@@ -54,11 +60,13 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * keys is not available for free search services, and is only available for paid services created on or after
      * January 1, 2019.
      */
+    @Generated
     private SearchResourceEncryptionKey encryptionKey;
 
     /*
      * The description of the agent.
      */
+    @Generated
     private String description;
 
     /**
@@ -68,6 +76,7 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * @param models the models value to set.
      * @param targetIndexes the targetIndexes value to set.
      */
+    @Generated
     public KnowledgeAgent(String name, List<KnowledgeAgentModel> models,
         List<KnowledgeAgentTargetIndex> targetIndexes) {
         this.name = name;
@@ -80,6 +89,7 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -89,6 +99,7 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * 
      * @return the models value.
      */
+    @Generated
     public List<KnowledgeAgentModel> getModels() {
         return this.models;
     }
@@ -98,6 +109,7 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * 
      * @return the targetIndexes value.
      */
+    @Generated
     public List<KnowledgeAgentTargetIndex> getTargetIndexes() {
         return this.targetIndexes;
     }
@@ -108,6 +120,7 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * 
      * @return the requestLimits value.
      */
+    @Generated
     public KnowledgeAgentRequestLimits getRequestLimits() {
         return this.requestLimits;
     }
@@ -119,6 +132,7 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * @param requestLimits the requestLimits value to set.
      * @return the KnowledgeAgent object itself.
      */
+    @Generated
     public KnowledgeAgent setRequestLimits(KnowledgeAgentRequestLimits requestLimits) {
         this.requestLimits = requestLimits;
         return this;
@@ -129,6 +143,7 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -139,6 +154,7 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * @param eTag the eTag value to set.
      * @return the KnowledgeAgent object itself.
      */
+    @Generated
     public KnowledgeAgent setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -155,6 +171,7 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * 
      * @return the encryptionKey value.
      */
+    @Generated
     public SearchResourceEncryptionKey getEncryptionKey() {
         return this.encryptionKey;
     }
@@ -171,6 +188,7 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * @param encryptionKey the encryptionKey value to set.
      * @return the KnowledgeAgent object itself.
      */
+    @Generated
     public KnowledgeAgent setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
         return this;
@@ -181,6 +199,7 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -191,6 +210,7 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * @param description the description value to set.
      * @return the KnowledgeAgent object itself.
      */
+    @Generated
     public KnowledgeAgent setDescription(String description) {
         this.description = description;
         return this;
@@ -199,6 +219,7 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -221,6 +242,7 @@ public final class KnowledgeAgent implements JsonSerializable<KnowledgeAgent> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KnowledgeAgent.
      */
+    @Generated
     public static KnowledgeAgent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

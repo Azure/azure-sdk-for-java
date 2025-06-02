@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,21 +23,25 @@ public final class DocumentIntelligenceLayoutSkillChunkingProperties
     /*
      * The unit of the chunk.
      */
+    @Generated
     private DocumentIntelligenceLayoutSkillChunkingUnit unit;
 
     /*
      * The maximum chunk length in characters. Default is 500.
      */
+    @Generated
     private Integer maximumLength;
 
     /*
      * The length of overlap provided between two text chunks. Default is 0.
      */
+    @Generated
     private Integer overlapLength;
 
     /**
      * Creates an instance of DocumentIntelligenceLayoutSkillChunkingProperties class.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkillChunkingProperties() {
     }
 
@@ -45,6 +50,7 @@ public final class DocumentIntelligenceLayoutSkillChunkingProperties
      * 
      * @return the unit value.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkillChunkingUnit getUnit() {
         return this.unit;
     }
@@ -55,6 +61,7 @@ public final class DocumentIntelligenceLayoutSkillChunkingProperties
      * @param unit the unit value to set.
      * @return the DocumentIntelligenceLayoutSkillChunkingProperties object itself.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkillChunkingProperties setUnit(DocumentIntelligenceLayoutSkillChunkingUnit unit) {
         this.unit = unit;
         return this;
@@ -65,6 +72,7 @@ public final class DocumentIntelligenceLayoutSkillChunkingProperties
      * 
      * @return the maximumLength value.
      */
+    @Generated
     public Integer getMaximumLength() {
         return this.maximumLength;
     }
@@ -75,6 +83,7 @@ public final class DocumentIntelligenceLayoutSkillChunkingProperties
      * @param maximumLength the maximumLength value to set.
      * @return the DocumentIntelligenceLayoutSkillChunkingProperties object itself.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkillChunkingProperties setMaximumLength(Integer maximumLength) {
         this.maximumLength = maximumLength;
         return this;
@@ -85,6 +94,7 @@ public final class DocumentIntelligenceLayoutSkillChunkingProperties
      * 
      * @return the overlapLength value.
      */
+    @Generated
     public Integer getOverlapLength() {
         return this.overlapLength;
     }
@@ -95,6 +105,7 @@ public final class DocumentIntelligenceLayoutSkillChunkingProperties
      * @param overlapLength the overlapLength value to set.
      * @return the DocumentIntelligenceLayoutSkillChunkingProperties object itself.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkillChunkingProperties setOverlapLength(Integer overlapLength) {
         this.overlapLength = overlapLength;
         return this;
@@ -103,6 +114,7 @@ public final class DocumentIntelligenceLayoutSkillChunkingProperties
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -120,6 +132,7 @@ public final class DocumentIntelligenceLayoutSkillChunkingProperties
      * instance of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DocumentIntelligenceLayoutSkillChunkingProperties.
      */
+    @Generated
     public static DocumentIntelligenceLayoutSkillChunkingProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentIntelligenceLayoutSkillChunkingProperties deserializedDocumentIntelligenceLayoutSkillChunkingProperties

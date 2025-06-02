@@ -446,7 +446,7 @@ public final class IndexesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndex> list(String select, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listSinglePage(select, requestOptions, Context.NONE));
+        return new PagedIterable<>(() -> listSinglePage(select, requestOptions));
     }
 
     /**

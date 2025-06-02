@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.agents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,16 +24,19 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
     /*
      * The type of the reference.
      */
+    @Generated
     private String type = "KnowledgeAgentReference";
 
     /*
      * The ID of the reference.
      */
+    @Generated
     private final String id;
 
     /*
      * The source activity ID for the reference.
      */
+    @Generated
     private final int activitySource;
 
     /**
@@ -41,6 +45,7 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
      * @param id the id value to set.
      * @param activitySource the activitySource value to set.
      */
+    @Generated
     public KnowledgeAgentReference(String id, int activitySource) {
         this.id = id;
         this.activitySource = activitySource;
@@ -51,6 +56,7 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -60,6 +66,7 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -69,6 +76,7 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
      * 
      * @return the activitySource value.
      */
+    @Generated
     public int getActivitySource() {
         return this.activitySource;
     }
@@ -76,6 +84,7 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +103,7 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KnowledgeAgentReference.
      */
+    @Generated
     public static KnowledgeAgentReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -119,6 +129,7 @@ public class KnowledgeAgentReference implements JsonSerializable<KnowledgeAgentR
         });
     }
 
+    @Generated
     static KnowledgeAgentReference fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

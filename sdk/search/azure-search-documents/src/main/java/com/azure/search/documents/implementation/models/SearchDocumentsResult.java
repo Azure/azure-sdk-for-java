@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -31,29 +32,34 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * count may be greater than the number of results in this response. This can happen if you use the $top or $skip
      * parameters, or if the query can't return all the requested documents in a single response.
      */
+    @Generated
     private Long count;
 
     /*
      * A value indicating the percentage of the index that was included in the query, or null if minimumCoverage was not
      * specified in the request.
      */
+    @Generated
     private Double coverage;
 
     /*
      * The facet query results for the search operation, organized as a collection of buckets for each faceted field;
      * null if the query did not include any facet expressions.
      */
+    @Generated
     private Map<String, List<FacetResult>> facets;
 
     /*
      * The answers query results for the search operation; null if the answers query parameter was not specified or set
      * to 'none'.
      */
+    @Generated
     private List<QueryAnswerResult> answers;
 
     /*
      * Debug information that applies to the search results as a whole.
      */
+    @Generated
     private DebugInfo debugInfo;
 
     /*
@@ -61,11 +67,13 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * You can use this JSON along with @odata.nextLink to formulate another POST Search request to get the next part of
      * the search response.
      */
+    @Generated
     private SearchRequest nextPageParameters;
 
     /*
      * The sequence of results returned by the query.
      */
+    @Generated
     private final List<SearchResult> results;
 
     /*
@@ -73,21 +81,25 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * this URL to formulate another GET or POST Search request to get the next part of the search response. Make sure
      * to use the same verb (GET or POST) as the request that produced this response.
      */
+    @Generated
     private String nextLink;
 
     /*
      * Reason that a partial response was returned for a semantic ranking request.
      */
+    @Generated
     private SemanticErrorReason semanticPartialResponseReason;
 
     /*
      * Type of partial response that was returned for a semantic ranking request.
      */
+    @Generated
     private SemanticSearchResultsType semanticPartialResponseType;
 
     /*
      * Type of query rewrite that was used to retrieve documents.
      */
+    @Generated
     private SemanticQueryRewritesResultType semanticQueryRewritesResultType;
 
     /**
@@ -95,6 +107,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * 
      * @param results the results value to set.
      */
+    @Generated
     public SearchDocumentsResult(List<SearchResult> results) {
         this.results = results;
     }
@@ -107,6 +120,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * 
      * @return the count value.
      */
+    @Generated
     public Long getCount() {
         return this.count;
     }
@@ -117,6 +131,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * 
      * @return the coverage value.
      */
+    @Generated
     public Double getCoverage() {
         return this.coverage;
     }
@@ -127,6 +142,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * 
      * @return the facets value.
      */
+    @Generated
     public Map<String, List<FacetResult>> getFacets() {
         return this.facets;
     }
@@ -137,6 +153,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * 
      * @return the answers value.
      */
+    @Generated
     public List<QueryAnswerResult> getAnswers() {
         return this.answers;
     }
@@ -146,6 +163,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * 
      * @return the debugInfo value.
      */
+    @Generated
     public DebugInfo getDebugInfo() {
         return this.debugInfo;
     }
@@ -157,6 +175,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * 
      * @return the nextPageParameters value.
      */
+    @Generated
     public SearchRequest getNextPageParameters() {
         return this.nextPageParameters;
     }
@@ -166,6 +185,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * 
      * @return the results value.
      */
+    @Generated
     public List<SearchResult> getResults() {
         return this.results;
     }
@@ -177,6 +197,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -187,6 +208,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * 
      * @return the semanticPartialResponseReason value.
      */
+    @Generated
     public SemanticErrorReason getSemanticPartialResponseReason() {
         return this.semanticPartialResponseReason;
     }
@@ -197,6 +219,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * 
      * @return the semanticPartialResponseType value.
      */
+    @Generated
     public SemanticSearchResultsType getSemanticPartialResponseType() {
         return this.semanticPartialResponseType;
     }
@@ -206,6 +229,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * 
      * @return the semanticQueryRewritesResultType value.
      */
+    @Generated
     public SemanticQueryRewritesResultType getSemanticQueryRewritesResultType() {
         return this.semanticQueryRewritesResultType;
     }
@@ -213,6 +237,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -228,6 +253,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchDocumentsResult.
      */
+    @Generated
     public static SearchDocumentsResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean resultsFound = false;
