@@ -4,7 +4,13 @@
 package com.azure.communication.common;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
@@ -16,7 +22,13 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 
-import static com.azure.communication.common.EntraCommunicationTokenUtils.*;
+import static com.azure.communication.common.EntraCommunicationTokenUtils.allScopesStartWith;
+import static com.azure.communication.common.EntraCommunicationTokenUtils.COMMUNICATION_CLIENTS_SCOPE_PREFIX;
+import static com.azure.communication.common.EntraCommunicationTokenUtils.COMMUNICATION_CLIENTS_ENDPOINT;
+import static com.azure.communication.common.EntraCommunicationTokenUtils.COMMUNICATION_CLIENTS_API_VERSION;
+import static com.azure.communication.common.EntraCommunicationTokenUtils.TEAMS_EXTENSION_SCOPE_PREFIX;
+import static com.azure.communication.common.EntraCommunicationTokenUtils.TEAMS_EXTENSION_ENDPOINT;
+import static com.azure.communication.common.EntraCommunicationTokenUtils.TEAMS_EXTENSION_API_VERSION;
 
 /**
  * Represents a credential that exchanges an Entra token for an Azure Communication Services (ACS) token, enabling access to ACS resources.
@@ -34,7 +46,7 @@ final class EntraTokenCredential implements AutoCloseable {
      *
      * @param entraTokenOptions The options for configuring the Entra token credential.
      */
-    public EntraTokenCredential(EntraCommunicationTokenCredentialOptions entraTokenOptions) {
+    EntraTokenCredential(EntraCommunicationTokenCredentialOptions entraTokenOptions) {
         this(entraTokenOptions, null);
     }
 
@@ -43,7 +55,7 @@ final class EntraTokenCredential implements AutoCloseable {
      * This constructor is intended for scenarios where an Entra user token is required for Azure Communication Services.
      *
      * @param entraTokenOptions The options for configuring the Entra token credential.
-     * @param httpClient        The HTTP client to use for making requests.
+     * @param httpClient The HTTP client to use for making requests.
      */
     EntraTokenCredential(EntraCommunicationTokenCredentialOptions entraTokenOptions, HttpClient httpClient) {
         this.resourceEndpoint = entraTokenOptions.getResourceEndpoint();
@@ -112,9 +124,10 @@ final class EntraTokenCredential implements AutoCloseable {
         } else if (allScopesStartWith(scopes, COMMUNICATION_CLIENTS_SCOPE_PREFIX)) {
             return new String[] { COMMUNICATION_CLIENTS_ENDPOINT, COMMUNICATION_CLIENTS_API_VERSION };
         } else {
-            throw new IllegalArgumentException("Scopes validation failed. Ensure all scopes start with either "
-                + TEAMS_EXTENSION_SCOPE_PREFIX + " or " + COMMUNICATION_CLIENTS_SCOPE_PREFIX);
-        }
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Scopes validation failed. Ensure all scopes start with either "
+                    + TEAMS_EXTENSION_SCOPE_PREFIX + " or " + COMMUNICATION_CLIENTS_SCOPE_PREFIX));
+    }
     }
 
     private Mono<String> parseAccessTokenFromResponse(HttpResponse response) {

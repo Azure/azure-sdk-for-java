@@ -7,7 +7,10 @@ import com.azure.core.credential.TokenCredential;
 
 import java.util.Objects;
 
-import static com.azure.communication.common.EntraCommunicationTokenUtils.*;
+import static com.azure.communication.common.EntraCommunicationTokenUtils.allScopesStartWith;
+import static com.azure.communication.common.EntraCommunicationTokenUtils.TEAMS_EXTENSION_SCOPE_PREFIX;
+import static com.azure.communication.common.EntraCommunicationTokenUtils.COMMUNICATION_CLIENTS_SCOPE_PREFIX;
+import static com.azure.communication.common.EntraCommunicationTokenUtils.DEFAULT_SCOPE;
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
 /**
@@ -24,7 +27,7 @@ public final class EntraCommunicationTokenCredentialOptions {
     /**
      * Initializes a new instance of EntraCommunicationTokenCredentialOptions.
      *
-     * @param tokenCredential  The credential capable of fetching an Entra user token.
+     * @param tokenCredential The credential capable of fetching an Entra user token.
      * @param resourceEndpoint The URI of the Azure Communication Services resource. For example, https://myResource.communication.azure.com.
      */
     public EntraCommunicationTokenCredentialOptions(TokenCredential tokenCredential, String resourceEndpoint) {
@@ -34,9 +37,12 @@ public final class EntraCommunicationTokenCredentialOptions {
     /**
      * Initializes a new instance of EntraCommunicationTokenCredentialOptions with custom scopes.
      *
-     * @param tokenCredential  The credential capable of fetching an Entra user token.
+     * @param tokenCredential The credential capable of fetching an Entra user token.
      * @param resourceEndpoint The URI of the Azure Communication Services resource. For example, https://myResource.communication.azure.com.
-     * @param scopes           The scopes required for the Entra user token. These scopes determine the permissions granted to the token. For example, ["https://communication.azure.com/clients/VoIP"].
+     * @param scopes The scopes required for the Entra user token. These scopes determine the permissions granted to the token. For example, ["https://communication.azure.com/clients/VoIP"].
+     *
+     * @throws NullPointerException if tokenCredential is null.
+     * @throws IllegalArgumentException if resourceEndpoint is null or empty, or if scopes are null, empty, or invalid.
      */
     public EntraCommunicationTokenCredentialOptions(TokenCredential tokenCredential, String resourceEndpoint,
         String[] scopes) {

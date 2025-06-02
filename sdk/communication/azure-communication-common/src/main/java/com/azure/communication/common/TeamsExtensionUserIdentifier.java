@@ -19,8 +19,8 @@ public final class TeamsExtensionUserIdentifier extends CommunicationIdentifier 
     /**
      * Creates a TeamsExtensionUserIdentifier object
      *
-     * @param userId    ID of the Microsoft Teams Extension user i.e. the Entra ID object id of the user.
-     * @param tenantId  Tenant ID of the Microsoft Teams Extension user.
+     * @param userId ID of the Microsoft Teams Extension user i.e. the Entra ID object id of the user.
+     * @param tenantId Tenant ID of the Microsoft Teams Extension user.
      * @param resourceId The Communication Services resource id.
      * @param cloudEnvironment The cloudEnvironment environment that the Microsoft Teams Extension user belongs to. Defaults to PUBLIC if null.
      * @throws IllegalArgumentException if any parameter fail the validation.
@@ -47,8 +47,8 @@ public final class TeamsExtensionUserIdentifier extends CommunicationIdentifier 
     /**
      * Creates a TeamsExtensionUserIdentifier object
      *
-     * @param userId    ID of the Microsoft Teams Extension user i.e. the Entra ID object id of the user.
-     * @param tenantId  Tenant ID of the Microsoft Teams Extension user.
+     * @param userId ID of the Microsoft Teams Extension user i.e. the Entra ID object id of the user.
+     * @param tenantId Tenant ID of the Microsoft Teams Extension user.
      * @param resourceId The Communication Services resource id.
      * @throws IllegalArgumentException if any parameter fail the validation.
      */
@@ -125,5 +125,10 @@ public final class TeamsExtensionUserIdentifier extends CommunicationIdentifier 
         }
 
         return ((TeamsExtensionUserIdentifier) that).getRawId().equals(getRawId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getRawId().hashCode();
     }
 }

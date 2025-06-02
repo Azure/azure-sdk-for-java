@@ -9,7 +9,7 @@ import com.azure.core.util.CoreUtils;
  */
 public final class PhoneNumberIdentifier extends CommunicationIdentifier {
 
-    private static final String Anonymous = "anonymous";
+    private static final String ANONYMOUS = "anonymous";
 
     private final String phoneNumber;
     private String assertedId;
@@ -44,7 +44,7 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
      * @return true if the phone number is anonymous, false otherwise.
      */
     public boolean isAnonymous() {
-        return getRawId().equals(PHONE_NUMBER_PREFIX + Anonymous);
+        return getRawId().equals(PHONE_NUMBER_PREFIX + ANONYMOUS);
     }
 
     /**
