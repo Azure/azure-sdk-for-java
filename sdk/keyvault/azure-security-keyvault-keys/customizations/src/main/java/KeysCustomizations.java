@@ -12,71 +12,97 @@ import org.slf4j.Logger;
 public class KeysCustomizations extends Customization {
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        // Remove unnecessary files.
         removeFiles(libraryCustomization.getRawEditor());
-        moveListResultFiles(libraryCustomization);
         customizeServiceVersion(libraryCustomization);
+        customizeKeyCurveName(libraryCustomization.getRawEditor());
+        customizeReleaseKeyResult(libraryCustomization.getRawEditor());
         customizeModuleInfo(libraryCustomization.getRawEditor());
+        customizePackageInfos(libraryCustomization.getRawEditor());
     }
 
     private static void removeFiles(Editor editor) {
+        editor.removeFile("src/main/java/com/azure/security/keyvault/keys/KeyAsyncClient.java");
         editor.removeFile("src/main/java/com/azure/security/keyvault/keys/KeyClient.java");
         editor.removeFile("src/main/java/com/azure/security/keyvault/keys/KeyClientBuilder.java");
-        editor.removeFile("src/main/java/com/azure/security/keyvault/keys/implementation/models/package-info.java");
-    }
-
-    private static void moveListResultFiles(LibraryCustomization libraryCustomization) {
-        moveSingleFile(libraryCustomization,
-            "com.azure.security.keyvault.keys.implementation.implementation.models",
-            "com.azure.security.keyvault.keys.implementation.models", "DeletedKeyListResult");
-        moveSingleFile(libraryCustomization,
-            "com.azure.security.keyvault.keys.implementation.implementation.models",
-            "com.azure.security.keyvault.keys.implementation.models", "KeyListResult");
-
-        // Update imports statements for moved classes in impl client.
-        String classPath = "src/main/java/com/azure/security/keyvault/keys/implementation/KeyClientImpl.java";
-        Editor editor = libraryCustomization.getRawEditor();
-        String newFileContent = editor.getFileContent(classPath)
-            .replace("implementation.implementation", "implementation");
-
-        editor.replaceFile(classPath, newFileContent);
-    }
-
-    private static void moveSingleFile(LibraryCustomization libraryCustomization, String oldPackage, String newPackage,
-        String className) {
-
-        Editor editor = libraryCustomization.getRawEditor();
-        String oldClassPath = "src/main/java/" + oldPackage.replace('.', '/') + "/" + className + ".java";
-        String newClassPath = "src/main/java/" + newPackage.replace('.', '/') + "/" + className + ".java";
-
-        // Update the package declaration.
-        libraryCustomization.getPackage(oldPackage)
-            .getClass(className)
-            .customizeAst(ast -> ast.getPackageDeclaration()
-                .ifPresent(packageDeclaration -> packageDeclaration.setName(newPackage)));
-
-        // Remove unnecessary import statement.
-        String newFileContent = editor.getFileContent(oldClassPath)
-            .replace("import " + oldPackage + "." + className.replace("ListResult", "Item") + ";\n", "");
-
-        // Replace file contents.
-        editor.replaceFile(oldClassPath, newFileContent);
-
-        // Move file to the new path.
-        editor.renameFile(oldClassPath, newClassPath);
     }
 
     private static void customizeServiceVersion(LibraryCustomization libraryCustomization) {
+        String classPath = "src/main/java/com/azure/security/keyvault/keys/KeyVaultServiceVersion.java";
+        Editor editor = libraryCustomization.getRawEditor();
+        String newFileContent = editor.getFileContent(classPath).replace(
+            joinWithNewline(
+                "/**",
+                " * Service version of KeyVaultClient.",
+                " */",
+                "public enum KeyVaultServiceVersion implements ServiceVersion {",
+                "    /**",
+                "     * Enum value 7.5.",
+                "     */",
+                "    V7_5(\"7.5\"),",
+                "",
+                "    /**",
+                "     * Enum value 7.6-preview.2."),
+            joinWithNewline(
+                "/**",
+                " * The versions of Azure Key Vault Keys supported by this client library.",
+                " */",
+                "public enum KeyVaultServiceVersion implements ServiceVersion {",
+                "    /**",
+                "     * Service version {@code 7.0}.",
+                "     */",
+                "    V7_0(\"7.0\"),",
+                "",
+                "    /**",
+                "     * Service version {@code 7.1}.",
+                "     */",
+                "    V7_1(\"7.1\"),",
+                "",
+                "    /**",
+                "     * Service version {@code 7.2}.",
+                "     */",
+                "    V7_2(\"7.2\"),",
+                "",
+                "    /**",
+                "     * Service version {@code 7.3}.",
+                "     */",
+                "    V7_3(\"7.3\"),",
+                "",
+                "    /**",
+                "     * Service version {@code 7.4}.",
+                "     */",
+                "    V7_4(\"7.4\"),",
+                "",
+                "    /**",
+                "     * Service version {@code 7.5}.",
+                "     */",
+                "    V7_5(\"7.5\"),",
+                "",
+                "    /**",
+                "     * Service version {@code 7.6-preview.2}."));
+
+        editor.replaceFile(classPath, newFileContent);
+
         libraryCustomization.getPackage("com.azure.security.keyvault.keys")
             .getClass("KeyVaultServiceVersion")
             .rename("KeyServiceVersion");
+    }
+
+    private static void customizeReleaseKeyResult(Editor editor) {
+        editor.getFileContent("src/main/java/com/azure/security/keyvault/keys/models/ReleaseKeyResult.java")
+            .replace("private ReleaseKeyResult(", "public ReleaseKeyResult)");
+    }
+
+    private static void customizeKeyCurveName(LibraryCustomization libraryCustomization) {
+        String classPath = "src/main/java/com/azure/security/keyvault/keys/models/KeyCurveName.java";
+        Editor editor = libraryCustomization.getRawEditor();
+        String newFileContent = editor.getFileContent(classPath)
+            .replace(" For valid values, see JsonWebKeyCurveName.", "");
     }
 
     private static void customizeModuleInfo(Editor editor) {
         editor.replaceFile("src/main/java/module-info.java", joinWithNewline(
             "// Copyright (c) Microsoft Corporation. All rights reserved.",
             "// Licensed under the MIT License.",
-            "// Code generated by Microsoft (R) TypeSpec Code Generator.",
             "",
             "module com.azure.security.keyvault.keys {",
             "    requires transitive com.azure.core;",
@@ -85,7 +111,223 @@ public class KeysCustomizations extends Customization {
             "    exports com.azure.security.keyvault.keys.models;",
             "    exports com.azure.security.keyvault.keys.cryptography;",
             "    exports com.azure.security.keyvault.keys.cryptography.models;",
+            "",
+            "    opens com.azure.security.keyvault.keys to com.azure.core;",
+            "    opens com.azure.security.keyvault.keys.models to com.azure.core;",
+            "    opens com.azure.security.keyvault.keys.implementation.models to com.azure.core;",
+            "    opens com.azure.security.keyvault.keys.cryptography.models to com.azure.core;",
             "}"));
+    }
+
+    private static void customizePackageInfos(Editor editor) {
+        editor.replaceFile("src/main/java/com/azure/security/keyvault/keys/package-info.java", joinWithNewline(
+            "// Copyright (c) Microsoft Corporation. All rights reserved.",
+            "// Licensed under the MIT License.",
+            "",
+            "/**",
+            " * <!-- @formatter:off -->",
+            " * <p><a href=\"https://learn.microsoft.com/azure/key-vault/general/\">Azure Key Vault</a> is a cloud-based service",
+            " * provided by Microsoft Azure that allows users to securely store and manage cryptographic keys used for encrypting",
+            " * and decrypting data. It is a part of Azure Key Vault, which is a cloud-based service for managing cryptographic keys,",
+            " * secrets, and certificates.</p>",
+            " *",
+            " * <p>Azure Key Vault Keys provides a centralized and highly secure key management solution, allowing you to protect",
+            " * your keys and control access to them. It eliminates the need for storing keys in code or configuration files,",
+            " * reducing the risk of exposure and unauthorized access.</p>",
+            " *",
+            " * <p>With Azure Key Vault Keys, you can perform various operations on cryptographic keys, such as creating keys,",
+            " * importing existing keys, generating key pairs, encrypting data using keys, and decrypting data using keys.",
+            " * The service supports various key types and algorithms, including symmetric keys, asymmetric keys, and",
+            " * Elliptic Curve Cryptography (ECC) keys.</p>",
+            " *",
+            " * <p>The Azure Key Vault Keys client library allows developers to interact with the Azure Key Vault service",
+            " * from their applications. The library provides a set of APIs that enable developers to securely create keys,",
+            " * import existing keys, delete keys, retrieving key metadata, encrypting and decrypting data using keys,",
+            " * and signing and verifying signatures using keys.</p>",
+            " *",
+            " * <p><strong>Key Concepts:</strong></p>",
+            " *",
+            " * <p>What is a Key Client?</p>",
+            " * <p>The key client performs the interactions with the Azure Key Vault service for getting, setting, updating,",
+            " * deleting, and listing keys and its versions. Asynchronous (`KeyAsyncClient`) and synchronous (`KeyClient`) clients",
+            " * exist in the SDK allowing for the selection of a client based on an application's use case. Once you have",
+            " * initialized a key, you can interact with the primary resource types in Key Vault.</p>",
+            " *",
+            " * <p>What is an Azure Key Vault Key ?</p>",
+            " * <p>Azure Key Vault supports multiple key types (RSA and EC) and algorithms, and enables the use of",
+            " * Hardware Security Modules (HSM) for high value keys. In addition to the key material, the following attributes may",
+            " * be specified:</p>",
+            " *",
+            " * <ul>",
+            " *     <li>enabled: Specifies whether the key is enabled and usable for cryptographic operations.</li>",
+            " *     <li>notBefore: Identifies the time before which the key must not be used for cryptographic operations.</li>",
+            " *     <li>expires: Identifies the expiration time on or after which the key MUST NOT be used for cryptographic operations.</li>",
+            " *     <li>created: Indicates when this version of the key was created.</li>",
+            " *     <li>updated: Indicates when this version of the key was updated.</li>",
+            " * </ul>",
+            " *",
+            " * <h2>Getting Started</h2>",
+            " *",
+            " * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the",
+            " * {@link com.azure.security.keyvault.keys.KeyClient} class, a vault url and a credential object.</p>",
+            " *",
+            " * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,",
+            " * which is appropriate for most scenarios, including local development and production environments. Additionally,",
+            " * we recommend using a",
+            " * <a href=\"https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/\">",
+            " * managed identity</a> for authentication in production environments.",
+            " * You can find more information on different ways of authenticating and their corresponding credential types in the",
+            " * <a href=\"https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable\">",
+            " * Azure Identity documentation\"</a>.</p>",
+            " *",
+            " * <p><strong>Sample: Construct Synchronous Key Client</strong></p>",
+            " *",
+            " * <p>The following code sample demonstrates the creation of a {@link com.azure.security.keyvault.keys.KeyClient},",
+            " * using the {@link com.azure.security.keyvault.keys.KeyClientBuilder} to configure it.</p>",
+            " *",
+            " * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.instantiation -->",
+            " * <pre>",
+            " * KeyClient keyClient = new KeyClientBuilder&#40;&#41;",
+            " *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;",
+            " *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;",
+            " *     .buildClient&#40;&#41;;",
+            " * </pre>",
+            " * <!-- end com.azure.security.keyvault.keys.KeyClient.instantiation -->",
+            " *",
+            " * <p><strong>Sample: Construct Asynchronous Key Client</strong></p>",
+            " *",
+            " * <p>The following code sample demonstrates the creation of a",
+            " * {@link com.azure.security.keyvault.keys.KeyClient}, using the",
+            " * {@link com.azure.security.keyvault.keys.KeyClientBuilder} to configure it.</p>",
+            " *",
+            " * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.instantiation -->",
+            " * <pre>",
+            " * KeyAsyncClient keyAsyncClient = new KeyClientBuilder&#40;&#41;",
+            " *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;",
+            " *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;",
+            " *     .buildAsyncClient&#40;&#41;;",
+            " * </pre>",
+            " * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.instantiation -->",
+            " *",
+            " * <br>",
+            " *",
+            " * <hr>",
+            " *",
+            " * <h2>Create a Cryptographic Key</h2>",
+            " * The {@link com.azure.security.keyvault.keys.KeyClient} or",
+            " * {@link com.azure.security.keyvault.keys.KeyAsyncClient} can be used to create a key in the key vault.",
+            " *",
+            " * <p><strong>Synchronous Code Sample:</strong></p>",
+            " * <p>The following code sample demonstrates how to synchronously create a cryptographic key in the key vault,",
+            " * using the {@link com.azure.security.keyvault.keys.KeyClient#createKey(java.lang.String, com.azure.security.keyvault.keys.models.KeyType)} API.</p>",
+            " *",
+            " * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->",
+            " * <pre>",
+            " * KeyVaultKey key = keyClient.createKey&#40;&quot;keyName&quot;, KeyType.EC&#41;;",
+            " * System.out.printf&#40;&quot;Created key with name: %s and id: %s%n&quot;, key.getName&#40;&#41;, key.getId&#40;&#41;&#41;;",
+            " * </pre>",
+            " * <!-- end com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->",
+            " *",
+            " * <p><strong>Note:</strong> For the asynchronous sample, refer to",
+            " * {@link com.azure.security.keyvault.keys.KeyAsyncClient}.</p>",
+            " *",
+            " * <br>",
+            " *",
+            " * <hr>",
+            " *",
+            " * <h2>Get a Cryptographic Key</h2>",
+            " * The {@link com.azure.security.keyvault.keys.KeyClient} or",
+            " * {@link com.azure.security.keyvault.keys.KeyAsyncClient} can be used to retrieve a key from the",
+            " * key vault.",
+            " *",
+            " * <p><strong>Synchronous Code Sample:</strong></p>",
+            " * <p>The following code sample demonstrates how to synchronously retrieve a key from the key vault, using",
+            " * the {@link com.azure.security.keyvault.keys.KeyClient#getKey(java.lang.String)} API.</p>",
+            " *",
+            " * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKey#String -->",
+            " * <pre>",
+            " * KeyVaultKey keyWithVersionValue = keyClient.getKey&#40;&quot;keyName&quot;&#41;;",
+            " *",
+            " * System.out.printf&#40;&quot;Retrieved key with name: %s and: id %s%n&quot;, keyWithVersionValue.getName&#40;&#41;,",
+            " *     keyWithVersionValue.getId&#40;&#41;&#41;;",
+            " * </pre>",
+            " * <!-- end com.azure.security.keyvault.keys.KeyClient.getKey#String -->",
+            " *",
+            " * <p><strong>Note:</strong> For the asynchronous sample, refer to",
+            " * {@link com.azure.security.keyvault.keys.KeyAsyncClient}.</p>",
+            " *",
+            " * <br>",
+            " *",
+            " * <hr>",
+            " *",
+            " * <h2>Delete a Cryptographic Key</h2>",
+            " * The {@link com.azure.security.keyvault.keys.KeyClient} or",
+            " * {@link com.azure.security.keyvault.keys.KeyAsyncClient} can be used to delete a key from the key vault.",
+            " *",
+            " * <p><strong>Synchronous Code Sample:</strong></p>",
+            " * <p>The following code sample demonstrates how to synchronously delete a key from the",
+            " * key vault, using the {@link com.azure.security.keyvault.keys.KeyClient#beginDeleteKey(java.lang.String)} API.</p>",
+            " *",
+            " * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->",
+            " * <pre>",
+            " * SyncPoller&lt;DeletedKey, Void&gt; deleteKeyPoller = keyClient.beginDeleteKey&#40;&quot;keyName&quot;&#41;;",
+            " * PollResponse&lt;DeletedKey&gt; deleteKeyPollResponse = deleteKeyPoller.poll&#40;&#41;;",
+            " *",
+            " * &#47;&#47; Deleted date only works for SoftDelete Enabled Key Vault.",
+            " * DeletedKey deletedKey = deleteKeyPollResponse.getValue&#40;&#41;;",
+            " *",
+            " * System.out.printf&#40;&quot;Key delete date: %s%n&quot;, deletedKey.getDeletedOn&#40;&#41;&#41;;",
+            " * System.out.printf&#40;&quot;Deleted key's recovery id: %s%n&quot;, deletedKey.getRecoveryId&#40;&#41;&#41;;",
+            " *",
+            " * &#47;&#47; Key is being deleted on the server.",
+            " * deleteKeyPoller.waitForCompletion&#40;&#41;;",
+            " * &#47;&#47; Key is deleted",
+            " * </pre>",
+            " * <!-- end com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->",
+            " *",
+            " * <p><strong>Note:</strong> For the asynchronous sample, refer to",
+            " * {@link com.azure.security.keyvault.keys.KeyAsyncClient}.</p>",
+            " *",
+            " * @see com.azure.security.keyvault.keys.KeyClient",
+            " * @see com.azure.security.keyvault.keys.KeyAsyncClient",
+            " * @see com.azure.security.keyvault.keys.KeyClientBuilder",
+            " */",
+            "package com.azure.security.keyvault.keys;"));
+
+        editor.replaceFile("src/main/java/com/azure/security/keyvault/keys/models/package-info.java", joinWithNewline(
+            "// Copyright (c) Microsoft Corporation. All rights reserved.",
+            "// Licensed under the MIT License.",
+            "",
+            "/**",
+            " * <!-- @formatter:off -->",
+            " * Package containing the data models for Keys clients. The key vault client performs cryptographic key operations and",
+            " * vault operations against the Key Vault service.",
+            " */",
+            "package com.azure.security.keyvault.keys.models;"));
+
+        editor.replaceFile("src/main/java/com/azure/security/keyvault/keys/implementation/package-info.java",
+            joinWithNewline(
+                "// Copyright (c) Microsoft Corporation. All rights reserved.",
+                "// Licensed under the MIT License.",
+                "",
+                "/**",
+                " * <!-- @formatter:off -->",
+                " * Package containing the implementations for Keys clients. The key vault clients perform cryptographic key operations",
+                " * and vault operations against the Key Vault service.",
+                " */",
+                "package com.azure.security.keyvault.keys.implementation;"));
+
+        editor.replaceFile("src/main/java/com/azure/security/keyvault/keys/implementation/models/package-info.java",
+            joinWithNewline(
+                "// Copyright (c) Microsoft Corporation. All rights reserved.",
+                "// Licensed under the MIT License.",
+                "",
+                "/**",
+                " * <!-- @formatter:off -->",
+                " * Package containing the implementation data models for Keys clients. The Key Vault clients perform cryptographic key",
+                " * operations and vault operations against the Key Vault service.",
+                " */",
+                "package com.azure.security.keyvault.keys.implementation.models;"));
     }
 
     private static String joinWithNewline(String... lines) {
