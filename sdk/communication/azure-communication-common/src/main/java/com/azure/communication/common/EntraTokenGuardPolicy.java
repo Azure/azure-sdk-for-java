@@ -20,7 +20,7 @@ import java.time.OffsetDateTime;
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
-final class EntraTokenGuardPolicy implements HttpPipelinePolicy {
+public final class EntraTokenGuardPolicy implements HttpPipelinePolicy {
 
     private String entraTokenCache;
     private HttpResponse responseCache;
