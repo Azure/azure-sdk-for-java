@@ -27,8 +27,15 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
  * Client for connecting to App Configuration when multiple replicas are in use.
+ * 
+ * The client automatically retries retryable HTTP errors (429, 408, 5xx) and implements backoff logic to prevent
+ * overwhelming failing replicas.
  */
 class AppConfigurationReplicaClient {
+    private static final long INITIAL_BACKOFF_OFFSET_MS = 1L;
+
+    /** HTTP status code for "Not Modified" responses */
+    private static final int HTTP_NOT_MODIFIED = 304;
 
     private final String endpoint;
 
@@ -49,7 +56,7 @@ class AppConfigurationReplicaClient {
         this.endpoint = endpoint;
         this.originClient = originClient;
         this.client = client;
-        this.backoffEndTime = Instant.now().minusMillis(1);
+        this.backoffEndTime = Instant.now().minusMillis(INITIAL_BACKOFF_OFFSET_MS);
         this.failedAttempts = 0;
     }
 
@@ -96,6 +103,7 @@ class AppConfigurationReplicaClient {
      *
      * @param key String value of the watch key
      * @param label String value of the watch key, use \0 for null.
+     * @param context Azure SDK context for request correlation
      * @return The first returned configuration.
      */
     ConfigurationSetting getWatchKey(String key, String label, Context context)
@@ -108,7 +116,7 @@ class AppConfigurationReplicaClient {
             this.failedAttempts = 0;
             return watchKey;
         } catch (HttpResponseException e) {
-            throw hanndleHttpResponseException(e);
+            throw handleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
@@ -118,7 +126,9 @@ class AppConfigurationReplicaClient {
      * Gets a list of Configuration Settings from the given config store that match the Setting Selector criteria.
      *
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
+     * @param context Azure SDK context for request correlation
      * @return List of Configuration Settings.
+     * @throws HttpResponseException if the request fails
      */
     List<ConfigurationSetting> listSettings(SettingSelector settingSelector, Context context)
         throws HttpResponseException {
@@ -132,12 +142,20 @@ class AppConfigurationReplicaClient {
             this.failedAttempts = 0;
             return configurationSettings;
         } catch (HttpResponseException e) {
-            throw hanndleHttpResponseException(e);
+            throw handleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
     }
 
+    /**
+     * Lists feature flags from the Azure App Configuration store.
+     * 
+     * @param settingSelector selector criteria for feature flags
+     * @param context Azure SDK context for request correlation
+     * @return FeatureFlags containing the retrieved feature flags and match conditions
+     * @throws HttpResponseException if the request fails
+     */
     FeatureFlags listFeatureFlags(SettingSelector settingSelector, Context context)
         throws HttpResponseException {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
@@ -157,12 +175,21 @@ class AppConfigurationReplicaClient {
             settingSelector.setMatchConditions(checks);
             return new FeatureFlags(settingSelector, configurationSettings);
         } catch (HttpResponseException e) {
-            throw hanndleHttpResponseException(e);
+            throw handleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
     }
 
+    /**
+     * Lists configuration settings from a specific snapshot.
+     * 
+     * @param snapshotName the name of the snapshot to retrieve settings from
+     * @param context Azure SDK context for request correlation
+     * @return list of configuration settings from the snapshot
+     * @throws IllegalArgumentException if the snapshot is not of type KEY
+     * @throws HttpResponseException if the request fails
+     */
     List<ConfigurationSetting> listSettingSnapshot(String snapshotName, Context context) {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
@@ -178,7 +205,7 @@ class AppConfigurationReplicaClient {
             settings.forEach(setting -> configurationSettings.add(NormalizeNull.normalizeNullLabel(setting)));
             return configurationSettings;
         } catch (HttpResponseException e) {
-            throw hanndleHttpResponseException(e);
+            throw handleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }

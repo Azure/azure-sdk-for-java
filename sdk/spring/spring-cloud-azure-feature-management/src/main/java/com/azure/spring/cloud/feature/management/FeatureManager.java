@@ -74,7 +74,8 @@ public class FeatureManager {
      * @param featureManagementConfigurations Configuration Properties for Feature Flags
      * @param properties FeatureManagementConfigProperties
      * @param contextAccessor TargetingContextAccessor
-     * @param evaluationOptions TargetingE
+     * @param evaluationOptions TargetingEvaluationOptions
+     * @param telemetryPublisher TelemetryPublisher
      */
     FeatureManager(ApplicationContext context, FeatureManagementProperties featureManagementConfigurations,
         FeatureManagementConfigProperties properties, TargetingContextAccessor contextAccessor,

@@ -28,36 +28,82 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
 
+/**
+ * Azure App Configuration data loader implementation for Spring Boot's ConfigDataLoader.
+ * 
+ * @since 6.0.0
+ */
+
 public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfigDataResource> {
 
+    /**
+     * Logger instance for this class.
+     */
     private static Log logger = new DeferredLog();
 
+    /**
+     * The Azure App Configuration data resource being processed.
+     */
     private AzureAppConfigDataResource resource;
 
+    /**
+     * Factory for creating replica clients to connect to Azure App Configuration.
+     */
     private AppConfigurationReplicaClientFactory replicaClientFactory;
 
+    /**
+     * Factory for creating Key Vault clients for secret resolution.
+     */
     private AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
 
+    /**
+     * State holder for managing configuration and feature flag states.
+     */
     private StateHolder storeState = new StateHolder();
 
+    /**
+     * Client for handling feature flag operations.
+     */
     private FeatureFlagClient featureFlagClient;
 
+    /**
+     * Request context for tracking operations and telemetry.
+     */
     private Context requestContext;
 
+    /**
+     * Application start time for calculating delays.
+     */
     private static final Instant START_DATE = Instant.now();
 
+    /**
+     * Pre-kill time in seconds for delaying exceptions during startup.
+     */
     private static final Integer PREKILL_TIME = 5;
 
+    /**
+     * Constructs a new AzureAppConfigDataLoader with the specified logger factory.
+     *
+     * @param logFactory the deferred log factory for creating loggers
+     */
     public AzureAppConfigDataLoader(DeferredLogFactory logFactory) {
         logger = logFactory.getLog(getClass());
     }
 
+    /**
+     * Loads configuration data from Azure App Configuration service.
+     *
+     * @param context the config data loader context
+     * @param resource the Azure App Configuration data resource
+     * @return ConfigData containing loaded property sources
+     * @throws IOException if an I/O error occurs during loading
+     * @throws ConfigDataResourceNotFoundException if the configuration resource is not found
+     */
     @Override
     public ConfigData load(ConfigDataLoaderContext context, AzureAppConfigDataResource resource)
         throws IOException, ConfigDataResourceNotFoundException {
         this.resource = resource;
         storeState.setNextForcedRefresh(resource.getRefreshInterval());
-
         if (context.getBootstrapContext().isRegistered(FeatureFlagClient.class)) {
             featureFlagClient = context.getBootstrapContext().get(FeatureFlagClient.class);
         } else {
@@ -67,9 +113,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         }
         // Reset telemetry usage for refresh
         featureFlagClient.resetTelemetry();
-
         List<EnumerablePropertySource<?>> sourceList = new ArrayList<>();
-
         if (resource.isConfigStoreEnabled()) {
             replicaClientFactory = context.getBootstrapContext()
                 .get(AppConfigurationReplicaClientFactory.class);
@@ -80,7 +124,6 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 .getAvailableClients(resource.getEndpoint(), true);
 
             boolean reloadFailed = false;
-
             boolean pushRefresh = false;
             PushNotification notification = resource.getMonitoring().getPushNotification();
             if ((notification.getPrimaryToken() != null
@@ -148,9 +191,15 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         return new ConfigData(sourceList);
     }
 
+    /**
+     * Handles failed property source generation when all replicas fail during application startup.
+     *
+     * @param e the exception that caused the failure
+     * @throws RuntimeException always thrown to indicate the startup failure
+     */
     private void failedToGeneratePropertySource(Exception e) {
-        logger.error("Fail fast is set and there was an error reading configuration from Azure App "
-            + "Configuration store " + resource.getEndpoint() + ".");
+        logger.error("Configuration loading failed during application startup from Azure App Configuration store "
+            + resource.getEndpoint() + ". Application cannot start without required configuration.");
         delayException();
         throw new RuntimeException("Failed to generate property sources for " + resource.getEndpoint(), e);
     }
@@ -187,11 +236,11 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     }
 
     /**
-     * Creates a new set of AppConfigurationPropertySources, 1 per Label.
+     * Creates a list of feature flags from Azure App Configuration.
      *
      * @param client client for connecting to App Configuration
-     * @return a list of AppConfigurationPropertySources
-     * @throws Exception creating a property source failed
+     * @return a list of FeatureFlags
+     * @throws Exception creating feature flags failed
      */
     private List<FeatureFlags> createFeatureFlags(AppConfigurationReplicaClient client)
         throws Exception {
