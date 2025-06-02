@@ -3,10 +3,11 @@
 ## 1.0.0-beta.3 (2025-06-02)
 
 ### Features Added
-- Add support for Base64Uri Response handling (#[45491](https://github.com/Azure/azure-sdk-for-java/pull/45491))
+- Add support for Base64 URI response handling (#[45491](https://github.com/Azure/azure-sdk-for-java/pull/45491))
 - Use HttpResponseException in annotation-processor (#[45053](https://github.com/Azure/azure-sdk-for-java/pull/45053))
-- Use UriBuilder when creating HttpRequest.setUri in annotation processor (#[45201](https://github.com/Azure/azure-sdk-for-java/pull/45201))
-- Add try-with-resources to the annotation processor (#[45193](https://github.com/Azure/azure-sdk-for-java/pull/45193))
+- Use UriBuilder when creating HttpRequest.setUri in annotation-processor (#[45201](https://github.
+  com/Azure/azure-sdk-for-java/pull/45201))
+- Add try-with-resources to the annotation-processor (#[45193](https://github.com/Azure/azure-sdk-for-java/pull/45193))
 
 ### Bugs Fixed
 - Fix the issue with the nextLink when the host is also provided.
