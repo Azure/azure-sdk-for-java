@@ -1,14 +1,11 @@
 # Release History
 
-## 1.0.0-beta.10 (Unreleased)
+## 1.0.0-beta.10 (2025-06-02)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added new logging exceptions checks (#[45433](https://github.com/Azure/azure-sdk-for-java/pull/45433))
+- Added support for list BinaryData serialization (#[45423](https://github.com/Azure/azure-sdk-for-java/pull/45423))
+- Updates to support Java 24 (#[45265](https://github.com/Azure/azure-sdk-for-java/pull/45265))
 
 ## 1.0.0-beta.9 (2025-04-30)
 
