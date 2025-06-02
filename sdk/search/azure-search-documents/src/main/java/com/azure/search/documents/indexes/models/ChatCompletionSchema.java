@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,28 +23,33 @@ public final class ChatCompletionSchema implements JsonSerializable<ChatCompleti
     /*
      * Type of schema representation. Usually 'object'. Default is 'object'.
      */
+    @Generated
     private String type;
 
     /*
      * A JSON-formatted string that defines the output schema's properties and constraints for the model.
      */
+    @Generated
     private String properties;
 
     /*
      * An array of the property names that are required to be part of the model's response. All properties must be
      * included for structured outputs.
      */
+    @Generated
     private List<String> required;
 
     /*
      * Controls whether it is allowable for an object to contain additional keys / values that were not defined in the
      * JSON Schema. Default is false.
      */
+    @Generated
     private Boolean additionalProperties;
 
     /**
      * Creates an instance of ChatCompletionSchema class.
      */
+    @Generated
     public ChatCompletionSchema() {
     }
 
@@ -52,6 +58,7 @@ public final class ChatCompletionSchema implements JsonSerializable<ChatCompleti
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -62,6 +69,7 @@ public final class ChatCompletionSchema implements JsonSerializable<ChatCompleti
      * @param type the type value to set.
      * @return the ChatCompletionSchema object itself.
      */
+    @Generated
     public ChatCompletionSchema setType(String type) {
         this.type = type;
         return this;
@@ -73,6 +81,7 @@ public final class ChatCompletionSchema implements JsonSerializable<ChatCompleti
      * 
      * @return the properties value.
      */
+    @Generated
     public String getProperties() {
         return this.properties;
     }
@@ -84,6 +93,7 @@ public final class ChatCompletionSchema implements JsonSerializable<ChatCompleti
      * @param properties the properties value to set.
      * @return the ChatCompletionSchema object itself.
      */
+    @Generated
     public ChatCompletionSchema setProperties(String properties) {
         this.properties = properties;
         return this;
@@ -95,6 +105,7 @@ public final class ChatCompletionSchema implements JsonSerializable<ChatCompleti
      * 
      * @return the required value.
      */
+    @Generated
     public List<String> getRequired() {
         return this.required;
     }
@@ -106,6 +117,7 @@ public final class ChatCompletionSchema implements JsonSerializable<ChatCompleti
      * @param required the required value to set.
      * @return the ChatCompletionSchema object itself.
      */
+    @Generated
     public ChatCompletionSchema setRequired(List<String> required) {
         this.required = required;
         return this;
@@ -117,6 +129,7 @@ public final class ChatCompletionSchema implements JsonSerializable<ChatCompleti
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Boolean isAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -128,6 +141,7 @@ public final class ChatCompletionSchema implements JsonSerializable<ChatCompleti
      * @param additionalProperties the additionalProperties value to set.
      * @return the ChatCompletionSchema object itself.
      */
+    @Generated
     public ChatCompletionSchema setAdditionalProperties(Boolean additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -136,6 +150,7 @@ public final class ChatCompletionSchema implements JsonSerializable<ChatCompleti
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -154,6 +169,7 @@ public final class ChatCompletionSchema implements JsonSerializable<ChatCompleti
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ChatCompletionSchema.
      */
+    @Generated
     public static ChatCompletionSchema fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ChatCompletionSchema deserializedChatCompletionSchema = new ChatCompletionSchema();

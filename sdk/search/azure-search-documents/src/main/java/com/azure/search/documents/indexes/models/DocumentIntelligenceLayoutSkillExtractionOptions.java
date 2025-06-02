@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,11 +18,13 @@ public final class DocumentIntelligenceLayoutSkillExtractionOptions
     /**
      * Specify that image content should be extracted from the document.
      */
+    @Generated
     public static final DocumentIntelligenceLayoutSkillExtractionOptions IMAGES = fromString("images");
 
     /**
      * Specify that location metadata should be extracted from the document.
      */
+    @Generated
     public static final DocumentIntelligenceLayoutSkillExtractionOptions LOCATION_METADATA
         = fromString("locationMetadata");
 
@@ -30,6 +33,7 @@ public final class DocumentIntelligenceLayoutSkillExtractionOptions
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DocumentIntelligenceLayoutSkillExtractionOptions() {
     }
@@ -40,6 +44,7 @@ public final class DocumentIntelligenceLayoutSkillExtractionOptions
      * @param name a name to look for.
      * @return the corresponding DocumentIntelligenceLayoutSkillExtractionOptions.
      */
+    @Generated
     public static DocumentIntelligenceLayoutSkillExtractionOptions fromString(String name) {
         return fromString(name, DocumentIntelligenceLayoutSkillExtractionOptions.class);
     }
@@ -49,6 +54,7 @@ public final class DocumentIntelligenceLayoutSkillExtractionOptions
      * 
      * @return known DocumentIntelligenceLayoutSkillExtractionOptions values.
      */
+    @Generated
     public static Collection<DocumentIntelligenceLayoutSkillExtractionOptions> values() {
         return values(DocumentIntelligenceLayoutSkillExtractionOptions.class);
     }
