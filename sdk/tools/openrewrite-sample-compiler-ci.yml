@@ -53,7 +53,6 @@ extends:
                   publishJUnitResults: false
               
               - task: Maven@3
-                dependsOn: OpenRewriteCompilerPlugin
                 displayName: 'Run Golden Image Compiler on OpenRewrite Samples'
                 inputs:
                   mavenPomFile: 'sdk/tools/azure-openrewrite/pom.xml'
