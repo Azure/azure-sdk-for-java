@@ -92,18 +92,6 @@ public class TestUtils {
         return Stream.of(Arguments.of(AZURE_OPEN_AI, GA, GPT_4O), Arguments.of(AZURE_OPEN_AI, PREVIEW, GPT_4O));
     }
 
-    static String extractOutputText(Response response) {
-        return response.output()
-            .stream()
-            .map(item -> item.message().orElse(null))
-            .filter(Objects::nonNull)
-            .flatMap(message -> message.content().stream())
-            .map(content -> content.outputText().map(ResponseOutputText::text).orElse(null))
-            .filter(Objects::nonNull)
-            .findFirst()
-            .orElse(null);
-    }
-
     static Stream<Arguments> azureOnlyClientWithEmbedding() {
         return Stream.of(Arguments.of("AZURE_OPEN_AI", "GA", EmbeddingModel.TEXT_EMBEDDING_ADA_002.toString()),
             Arguments.of("AZURE_OPEN_AI", "PREVIEW", EmbeddingModel.TEXT_EMBEDDING_ADA_002.toString()));

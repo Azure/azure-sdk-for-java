@@ -38,6 +38,8 @@ import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
 import com.openai.models.completions.CompletionUsage;
 import com.openai.models.images.Image;
 import com.openai.models.images.ImageGenerateParams;
+import com.openai.models.responses.Response;
+import com.openai.models.responses.ResponseOutputText;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -46,6 +48,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -608,5 +611,17 @@ public class OpenAIOkHttpClientTestBase {
         for (Image image : images.get()) {
             assertNotNull(image.url());
         }
+    }
+
+    static String extractOutputText(Response response) {
+        return response.output()
+            .stream()
+            .map(item -> item.message().orElse(null))
+            .filter(Objects::nonNull)
+            .flatMap(message -> message.content().stream())
+            .map(content -> content.outputText().map(ResponseOutputText::text).orElse(null))
+            .filter(Objects::nonNull)
+            .findFirst()
+            .orElse(null);
     }
 }
