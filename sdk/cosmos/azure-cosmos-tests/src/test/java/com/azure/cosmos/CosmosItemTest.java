@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.ConsistencyTestsBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
@@ -46,7 +47,6 @@ import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import net.bytebuddy.asm.MemberSubstitution;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -1249,8 +1249,7 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
-    public void queryItemsWithLatestCommitted() throws Exception{
-
+    public void queryItemsWithLatestCommitted() throws JsonProcessingException {
         if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("This test is only relevant for DIRECT mode");
         }
@@ -1264,19 +1263,20 @@ public class CosmosItemTest extends TestSuiteBase {
             && accountConsistencyLevel != ConsistencyLevel.EVENTUAL) {
 
             throw new SkipException(
-                "This test is only relevant for accounts with consistency level EVENTUAL or SESSSION.");
+                "This test is only relevant for accounts with consistency level EVENTUAL or SESSION.");
         }
 
-        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+        String id = UUID.randomUUID().toString();
+        ObjectNode properties = getDocumentDefinition(id, id);
+        container.createItem(properties);
 
-        String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
+        String query = String.format("SELECT * from c where c.id = '%s'", id);
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions()
             .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
 
-        Iterator<FeedResponse<InternalObjectNode>> feedResponseIterator1 =
+        Iterator<FeedResponse<ObjectNode>> feedResponseIterator1 =
             container
-                .queryItems(query, cosmosQueryRequestOptions, InternalObjectNode.class)
+                .queryItems(query, cosmosQueryRequestOptions, ObjectNode.class)
                 .iterableByPage(null)
                 .iterator();
 
@@ -1284,12 +1284,189 @@ public class CosmosItemTest extends TestSuiteBase {
 
         // Very basic validation
         assertThat(hasNext).isTrue();
-        FeedResponse<InternalObjectNode> response = feedResponseIterator1.next();
+        FeedResponse<ObjectNode> response = feedResponseIterator1.next();
+        CosmosDiagnosticsContext ctx = response.getCosmosDiagnostics().getDiagnosticsContext();
+        assertThat(ctx).isNotNull();
+        logger.info("Diagnostics context: {}", ctx.toJson());
+        assertThat(ctx.getDiagnostics()).hasSize(2);
+        List<CosmosDiagnostics> diagnosticsList = new ArrayList<>(ctx.getDiagnostics());
+        CosmosDiagnostics queryPlanDiagnostics = diagnosticsList.get(0);
+        List<ClientSideRequestStatistics> storeResultListQueryPlan =
+            new ArrayList<>(queryPlanDiagnostics.getClientSideRequestStatistics());
+        assertThat(storeResultListQueryPlan).hasSize(1);
+        assertThat(storeResultListQueryPlan.get(0).getGatewayStatisticsList()).hasSize(1);
+        assertThat(storeResultListQueryPlan.get(0).getGatewayStatisticsList().get(0).getOperationType())
+            .isEqualTo(OperationType.QueryPlan);
+
+        CosmosDiagnostics queryDiagnostics = diagnosticsList.get(1);
+        List<ClientSideRequestStatistics> storeResultListQuery =
+            new ArrayList<>(queryDiagnostics.getClientSideRequestStatistics());
+        assertThat(storeResultListQuery).hasSize(2);
+        ArrayList<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseList =
+            new ArrayList<>(storeResultListQuery.get(0).getResponseStatisticsList());
+        assertThat(storeResponseList).hasSize(2);
+        assertThat(storeResponseList.get(0).getRequestResourceType()).isEqualTo(ResourceType.Document);
+        assertThat(storeResponseList.get(0).getRequestOperationType()).isEqualTo(OperationType.Query);
+        assertThat(storeResponseList.get(1).getRequestResourceType()).isEqualTo(ResourceType.Document);
+        assertThat(storeResponseList.get(1).getRequestOperationType()).isEqualTo(OperationType.Query);
+
+        storeResponseList = new ArrayList<>(storeResultListQuery.get(1).getResponseStatisticsList());
+        assertThat(storeResponseList).hasSize(2);
+        assertThat(storeResponseList.get(0).getRequestResourceType()).isEqualTo(ResourceType.Document);
+        assertThat(storeResponseList.get(0).getRequestOperationType()).isEqualTo(OperationType.Query);
+        assertThat(storeResponseList.get(1).getRequestResourceType()).isEqualTo(ResourceType.Document);
+        assertThat(storeResponseList.get(1).getRequestOperationType()).isEqualTo(OperationType.Query);
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void readItemWithLatestCommitted() throws JsonProcessingException {
+        if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("This test is only relevant for DIRECT mode");
+        }
+
+        ConsistencyLevel accountConsistencyLevel = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getEffectiveConsistencyLevel(this.client.asyncClient(), OperationType.Create, ConsistencyLevel.STRONG);
+
+        if (accountConsistencyLevel != ConsistencyLevel.SESSION
+            && accountConsistencyLevel != ConsistencyLevel.EVENTUAL) {
+
+            throw new SkipException(
+                "This test is only relevant for accounts with consistency level EVENTUAL or SESSION.");
+        }
+
+        String id = UUID.randomUUID().toString();
+        ObjectNode properties = getDocumentDefinition(id, id);
+        container.createItem(properties);
+
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions()
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+
+        CosmosItemResponse<ObjectNode> response = container
+            .readItem(id, new PartitionKey(id), cosmosItemRequestOptions, ObjectNode.class);
+
+        CosmosDiagnosticsContext ctx = response.getDiagnostics().getDiagnosticsContext();
+        assertThat(ctx).isNotNull();
+        logger.info("Diagnostics context: {}", ctx.toJson());
+        assertThat(ctx.getDiagnostics()).hasSize(1);
+        List<CosmosDiagnostics> diagnosticsList = new ArrayList<>(ctx.getDiagnostics());
+        CosmosDiagnostics pointReadDiagnostics = diagnosticsList.get(0);
+        List<ClientSideRequestStatistics> storeResultListPointRead =
+            new ArrayList<>(pointReadDiagnostics.getClientSideRequestStatistics());
+        assertThat(storeResultListPointRead).hasSize(1);
+        ArrayList<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseList =
+            new ArrayList<>(storeResultListPointRead.get(0).getResponseStatisticsList());
+        assertThat(storeResponseList).hasSize(2);
+        assertThat(storeResponseList.get(0).getRequestResourceType()).isEqualTo(ResourceType.Document);
+        assertThat(storeResponseList.get(0).getRequestOperationType()).isEqualTo(OperationType.Read);
+        assertThat(storeResponseList.get(1).getRequestResourceType()).isEqualTo(ResourceType.Document);
+        assertThat(storeResponseList.get(1).getRequestOperationType()).isEqualTo(OperationType.Read);
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void readManyWithLatestCommitted() throws JsonProcessingException {
+        if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("This test is only relevant for DIRECT mode");
+        }
+
+        ConsistencyLevel accountConsistencyLevel = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getEffectiveConsistencyLevel(this.client.asyncClient(), OperationType.Create, ConsistencyLevel.STRONG);
+
+        if (accountConsistencyLevel != ConsistencyLevel.SESSION
+            && accountConsistencyLevel != ConsistencyLevel.EVENTUAL) {
+
+            throw new SkipException(
+                "This test is only relevant for accounts with consistency level EVENTUAL or SESSION.");
+        }
+
+        String pk = UUID.randomUUID().toString();
+        String id1 = UUID.randomUUID().toString();
+        ObjectNode properties1 = getDocumentDefinition(id1, pk);
+        container.createItem(properties1);
+
+        String id2 = UUID.randomUUID().toString();
+        ObjectNode properties2 = getDocumentDefinition(id2, pk);
+        container.createItem(properties2);
+
+        List<CosmosItemIdentity> identities = new ArrayList<>();
+        identities.add(new CosmosItemIdentity(new PartitionKey(pk), id1));
+        identities.add(new CosmosItemIdentity(new PartitionKey(pk), id2));
+
+        CosmosReadManyRequestOptions cosmosReadManyRequestOptions = new CosmosReadManyRequestOptions()
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+
+        FeedResponse<ObjectNode> response = container
+            .readMany(identities, cosmosReadManyRequestOptions, ObjectNode.class);
+
         CosmosDiagnosticsContext ctx = response.getCosmosDiagnostics().getDiagnosticsContext();
         assertThat(ctx).isNotNull();
         logger.info("Diagnostics context: {}", ctx.toJson());
         assertThat(ctx.getDiagnostics()).hasSize(1);
+        List<CosmosDiagnostics> diagnosticsList = new ArrayList<>(ctx.getDiagnostics());
+        CosmosDiagnostics pointReadDiagnostics = diagnosticsList.get(0);
+        List<ClientSideRequestStatistics> storeResultListPointRead =
+            new ArrayList<>(pointReadDiagnostics.getClientSideRequestStatistics());
+        assertThat(storeResultListPointRead).hasSize(1);
+        ArrayList<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseList =
+            new ArrayList<>(storeResultListPointRead.get(0).getResponseStatisticsList());
+        assertThat(storeResponseList).hasSize(2);
+        assertThat(storeResponseList.get(0).getRequestResourceType()).isEqualTo(ResourceType.Document);
+        assertThat(storeResponseList.get(0).getRequestOperationType()).isEqualTo(OperationType.Query);
+        assertThat(storeResponseList.get(1).getRequestResourceType()).isEqualTo(ResourceType.Document);
+        assertThat(storeResponseList.get(1).getRequestOperationType()).isEqualTo(OperationType.Query);
+    }
 
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void readManyWithLatestCommitted_SingleItem() throws JsonProcessingException {
+        if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("This test is only relevant for DIRECT mode");
+        }
+
+        ConsistencyLevel accountConsistencyLevel = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getEffectiveConsistencyLevel(this.client.asyncClient(), OperationType.Create, ConsistencyLevel.STRONG);
+
+        if (accountConsistencyLevel != ConsistencyLevel.SESSION
+            && accountConsistencyLevel != ConsistencyLevel.EVENTUAL) {
+
+            throw new SkipException(
+                "This test is only relevant for accounts with consistency level EVENTUAL or SESSION.");
+        }
+
+        String pk = UUID.randomUUID().toString();
+        String id1 = UUID.randomUUID().toString();
+        ObjectNode properties1 = getDocumentDefinition(id1, pk);
+        container.createItem(properties1);
+
+        List<CosmosItemIdentity> identities = new ArrayList<>();
+        identities.add(new CosmosItemIdentity(new PartitionKey(pk), id1));
+
+        CosmosReadManyRequestOptions cosmosReadManyRequestOptions = new CosmosReadManyRequestOptions()
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+
+        FeedResponse<ObjectNode> response = container
+            .readMany(identities, cosmosReadManyRequestOptions, ObjectNode.class);
+
+        CosmosDiagnosticsContext ctx = response.getCosmosDiagnostics().getDiagnosticsContext();
+        assertThat(ctx).isNotNull();
+        logger.info("Diagnostics context: {}", ctx.toJson());
+        assertThat(ctx.getDiagnostics()).hasSize(1);
+        List<CosmosDiagnostics> diagnosticsList = new ArrayList<>(ctx.getDiagnostics());
+        CosmosDiagnostics pointReadDiagnostics = diagnosticsList.get(0);
+        List<ClientSideRequestStatistics> storeResultListPointRead =
+            new ArrayList<>(pointReadDiagnostics.getClientSideRequestStatistics());
+        assertThat(storeResultListPointRead).hasSize(1);
+        ArrayList<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseList =
+            new ArrayList<>(storeResultListPointRead.get(0).getResponseStatisticsList());
+        assertThat(storeResponseList).hasSize(2);
+        assertThat(storeResponseList.get(0).getRequestResourceType()).isEqualTo(ResourceType.Document);
+        assertThat(storeResponseList.get(0).getRequestOperationType()).isEqualTo(OperationType.Read);
+        assertThat(storeResponseList.get(1).getRequestResourceType()).isEqualTo(ResourceType.Document);
+        assertThat(storeResponseList.get(1).getRequestOperationType()).isEqualTo(OperationType.Read);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
