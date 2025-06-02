@@ -102,13 +102,22 @@ public abstract class CommunicationIdentifier {
         String resourceId = segments[0];
         String tenantId = segments[1];
         String userId = segments[2];
-        CommunicationCloudEnvironment cloud = switch (prefix) {
-            case ACS_USER_PREFIX -> CommunicationCloudEnvironment.PUBLIC;
-            case ACS_USER_DOD_CLOUD_PREFIX -> CommunicationCloudEnvironment.DOD;
-            case ACS_USER_GCCH_CLOUD_PREFIX -> CommunicationCloudEnvironment.GCCH;
-            default -> throw new IllegalArgumentException(
-                "Invalid prefix " + prefix + " for TeamsExtensionUserIdentifier");
-        };
+
+        CommunicationCloudEnvironment cloud;
+        switch (prefix) {
+            case ACS_USER_PREFIX:
+                cloud = CommunicationCloudEnvironment.PUBLIC;
+                break;
+            case ACS_USER_DOD_CLOUD_PREFIX:
+                cloud = CommunicationCloudEnvironment.DOD;
+                break;
+            case ACS_USER_GCCH_CLOUD_PREFIX:
+                cloud = CommunicationCloudEnvironment.GCCH;
+                break;
+            default:
+                throw new IllegalArgumentException(
+                    "Invalid prefix " + prefix + " for TeamsExtensionUserIdentifier");
+        }
 
         return new TeamsExtensionUserIdentifier(userId, tenantId, resourceId, cloud);
     }
