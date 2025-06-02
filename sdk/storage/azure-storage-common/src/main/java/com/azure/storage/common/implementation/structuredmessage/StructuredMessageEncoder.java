@@ -14,14 +14,15 @@ import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.CRC64_LENGTH;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.DEFAULT_MESSAGE_VERSION;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_HEADER_LENGTH;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_SEGMENT_HEADER_LENGTH;
+
 /**
  * Encoder for structured messages with support for segmenting and CRC64 checksums.
  */
 public class StructuredMessageEncoder {
-    private static final int DEFAULT_MESSAGE_VERSION = 1;
-    private static final int V1_HEADER_LENGTH = 13;
-    private static final int V1_SEGMENT_HEADER_LENGTH = 10;
-    private static final int CRC64_LENGTH = 8;
     private static final ClientLogger LOGGER = new ClientLogger(StructuredMessageEncoder.class);
 
     private final int messageVersion;
