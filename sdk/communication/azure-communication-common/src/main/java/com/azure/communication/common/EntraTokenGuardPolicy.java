@@ -20,6 +20,9 @@ import java.time.OffsetDateTime;
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
+/**
+ * Pipeline policy that caches and validates Entra and ACS tokens in HTTP responses.
+ */
 public final class EntraTokenGuardPolicy implements HttpPipelinePolicy {
 
     private String entraTokenCache;
