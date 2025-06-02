@@ -502,7 +502,7 @@ com.azure.v2:azure-security-keyvault-certificates;5.0.0-beta.1;5.0.0-beta.1
 com.azure.v2:azure-security-keyvault-secrets;5.0.0-beta.1;5.0.0-beta.1
 com.azure.v2:azure-security-keyvault-keys;5.0.0-beta.1;5.0.0-beta.1
 io.clientcore:clientcore-parent;1.0.0-beta.3;1.0.0-beta.3
-io.clientcore:core;1.0.0-beta.9;1.0.0-beta.10
+io.clientcore:core;1.0.0-beta.10;1.0.0-beta.11
 io.clientcore:http-netty4;1.0.0-beta.1;1.0.0-beta.1
 io.clientcore:http-okhttp3;1.0.0-beta.2;1.0.0-beta.3
 io.clientcore:http-stress;1.0.0-beta.1;1.0.0-beta.1
@@ -520,7 +520,6 @@ io.clientcore:annotation-processor-test;1.0.0-beta.1;1.0.0-beta.1
 
 unreleased_com.azure:azure-core-amqp;2.10.0-beta.1
 
-unreleased_io.clientcore:core;1.0.0-beta.10
 unreleased_io.clientcore:annotation-processor;1.0.0-beta.3
 unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
