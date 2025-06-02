@@ -65,7 +65,6 @@ import static com.azure.ai.openai.stainless.TestUtils.GPT_3_5_TURBO;
 import static com.azure.ai.openai.stainless.TestUtils.OPEN_AI;
 import static com.azure.ai.openai.stainless.TestUtils.PREVIEW;
 import static com.azure.ai.openai.stainless.TestUtils.V1;
-import static com.azure.ai.openai.stainless.TestUtils.extractOutputText;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
