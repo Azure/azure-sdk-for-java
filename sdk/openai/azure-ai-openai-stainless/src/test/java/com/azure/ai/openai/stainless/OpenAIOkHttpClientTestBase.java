@@ -36,10 +36,13 @@ import com.openai.models.chat.completions.ChatCompletionTool;
 import com.openai.models.chat.completions.ChatCompletionToolMessageParam;
 import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
 import com.openai.models.completions.CompletionUsage;
+import com.openai.models.embeddings.CreateEmbeddingResponse;
+import com.openai.models.embeddings.Embedding;
 import com.openai.models.images.Image;
 import com.openai.models.images.ImageGenerateParams;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseOutputText;
+import com.openai.models.responses.ResponseOutputMessage;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -51,6 +54,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -623,5 +627,44 @@ public class OpenAIOkHttpClientTestBase {
             .filter(Objects::nonNull)
             .findFirst()
             .orElse(null);
+    }
+
+    void assertResponsesReturnTextSuccessfully(Response response) {
+        assertNotNull(response, "Response should not be null");
+        assertFalse(response.output().isEmpty(), "Response output should not be empty");
+
+        String text = extractOutputText(response);
+
+        assertNotNull(text, "Text should not be null");
+        assertFalse(text.trim().isEmpty(), "Text should not be empty");
+    }
+
+    List<ResponseOutputMessage> assertResponsesConversationTest(Response response) {
+        assertNotNull(response, "Response should not be null");
+        assertFalse(response.output().isEmpty(), "Response output should not be empty");
+
+        List<ResponseOutputMessage> messages = new ArrayList<>();
+        response.output().forEach(output -> output.message().ifPresent(messages::add));
+
+        List<String> texts = messages.stream()
+            .flatMap(message -> message.content().stream())
+            .map(content -> content.outputText().map(ResponseOutputText::text).orElse(null))
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+
+        assertFalse(texts.isEmpty(), "Text outputs should not be empty");
+
+        return messages;
+    }
+
+    void assertEmbeddingsReturnSuccessfully(CreateEmbeddingResponse response) {
+        assertNotNull(response, "Embedding response should not be null");
+        List<Embedding> embeddings = response.data();
+        assertNotNull(embeddings, "Embedding list should not be null");
+        assertFalse(embeddings.isEmpty(), "Embedding list should not be empty");
+
+        Embedding embedding = embeddings.get(0);
+        assertNotNull(embedding.embedding(), "Embedding vector should not be null");
+        assertFalse(embedding.embedding().isEmpty(), "Embedding vector should not be empty");
     }
 }

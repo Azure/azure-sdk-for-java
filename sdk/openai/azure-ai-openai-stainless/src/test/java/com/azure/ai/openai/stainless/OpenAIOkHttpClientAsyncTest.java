@@ -13,7 +13,6 @@ import com.openai.core.JsonValue;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.errors.BadRequestException;
 import com.openai.errors.NotFoundException;
-import com.openai.models.ChatModel;
 import com.openai.models.ResponseFormatJsonObject;
 import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
 import com.openai.models.audio.transcriptions.TranscriptionCreateResponse;
@@ -24,9 +23,7 @@ import com.openai.models.chat.completions.ChatCompletionMessageParam;
 import com.openai.models.chat.completions.ChatCompletionMessageToolCall;
 import com.openai.models.completions.CompletionUsage;
 import com.openai.models.embeddings.CreateEmbeddingResponse;
-import com.openai.models.embeddings.Embedding;
 import com.openai.models.embeddings.EmbeddingCreateParams;
-import com.openai.models.embeddings.EmbeddingModel;
 import com.openai.models.images.Image;
 import com.openai.models.images.ImageGenerateParams;
 import com.openai.models.responses.EasyInputMessage;
@@ -34,7 +31,6 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseOutputMessage;
-import com.openai.models.responses.ResponseOutputText;
 import com.openai.models.responses.ResponseRetrieveParams;
 import com.openai.models.responses.ResponseDeleteParams;
 import com.openai.models.responses.ResponseInputImage;
@@ -50,14 +46,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 import static com.azure.ai.openai.stainless.TestUtils.AZURE_OPEN_AI;
 import static com.azure.ai.openai.stainless.TestUtils.GA;
@@ -488,13 +482,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
 
         Response response = client.responses().create(createParams).join();
 
-        assertNotNull(response, "Response should not be null");
-        assertFalse(response.output().isEmpty(), "Response output should not be empty");
-
-        String text = extractOutputText(response);
-
-        assertNotNull(text, "Text should not be null");
-        assertFalse(text.trim().isEmpty(), "Text should not be empty");
+        assertResponsesReturnTextSuccessfully(response);
     }
 
     @ParameterizedTest
@@ -514,20 +502,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
         for (int i = 0; i < 2; i++) {
             Response response = client.responses().create(createParams).join();
 
-            assertNotNull(response, "Response should not be null");
-            assertFalse(response.output().isEmpty(), "Response output should not be empty");
-
-            List<ResponseOutputMessage> messages = new ArrayList<>();
-            response.output().forEach(output -> output.message().ifPresent(messages::add));
-
-            List<String> texts = messages.stream()
-                .flatMap(message -> message.content().stream())
-                .map(content -> content.outputText().map(ResponseOutputText::text).orElse(null))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-            assertFalse(texts.isEmpty(), "Text outputs should not be empty");
-
+            List<ResponseOutputMessage> messages = assertResponsesConversationTest(response);
             messages.forEach(msg -> inputItems.add(ResponseInputItem.ofResponseOutputMessage(msg)));
 
             inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
@@ -690,15 +665,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
             .build();
 
         CreateEmbeddingResponse response = client.embeddings().create(createParams).join();
-
-        assertNotNull(response, "Embedding response should not be null");
-        List<Embedding> embeddings = response.data();
-        assertNotNull(embeddings, "Embedding list should not be null");
-        assertFalse(embeddings.isEmpty(), "Embedding list should not be empty");
-
-        Embedding embedding = embeddings.get(0);
-        assertNotNull(embedding.embedding(), "Embedding vector should not be null");
-        assertFalse(embedding.embedding().isEmpty(), "Embedding vector should not be empty");
+        assertEmbeddingsReturnSuccessfully(response);
     }
 
     @ParameterizedTest
