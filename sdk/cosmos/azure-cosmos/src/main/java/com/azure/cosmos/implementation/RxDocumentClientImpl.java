@@ -183,7 +183,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static final ImplementationBridgeHelpers.CosmosOperationDetailsHelper.CosmosOperationDetailsAccessor operationDetailsAccessor =
         ImplementationBridgeHelpers.CosmosOperationDetailsHelper.getCosmosOperationDetailsAccessor();
 
-    private static final String tempMachineId = "uuid:" + UUID.randomUUID();
+    private static final String tempMachineId = "uuid:" + UUIDs.nonBlockingRandomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
     private static final AtomicInteger clientIdGenerator = new AtomicInteger(0);
@@ -754,7 +754,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             clientTelemetry = new ClientTelemetry(
                     this,
                     null,
-                    randomUuid().toString(),
+                    UUIDs.nonBlockingRandomUUID().toString(),
                     ManagementFactory.getRuntimeMXBean().getName(),
                     connectionPolicy.getConnectionMode(),
                     globalEndpointManager.getLatestDatabaseAccount().getId(),
@@ -1165,7 +1165,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .getImpl(nonNullQueryOptions)
             .getCorrelationActivityId();
         UUID correlationActivityId = correlationActivityIdOfRequestOptions != null ?
-            correlationActivityIdOfRequestOptions : randomUuid();
+            correlationActivityIdOfRequestOptions : UUIDs.nonBlockingRandomUUID();
 
         final AtomicBoolean isQueryCancelledOnTimeout = new AtomicBoolean(false);
 
@@ -1710,7 +1710,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (consistencyLevel != null) {
-            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
+            // adding the "x-ms-consistency-level" header with consistency level stricter than the
+            // account's default consistency level in Compute Gateway will result in a 400 Bad Request
+            // even when it is done for resource types / operations where this header should simply be ignored
+            // making the change here to restrict adding the header to when it is relevant.
+            if ((operationType.isReadOnlyOperation() || operationType == OperationType.Batch) && (resourceType.isMasterResource() || resourceType == ResourceType.Document)) {
+                headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
+            }
         }
 
         if (readConsistencyStrategy != null
@@ -4148,7 +4154,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return Flux.empty();
         }
 
-        UUID activityId = randomUuid();
+        UUID activityId = UUIDs.nonBlockingRandomUUID();
 
         final AtomicBoolean isQueryCancelledOnTimeout = new AtomicBoolean(false);
 
@@ -4569,7 +4575,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             SqlQuerySpec querySpec = createLogicalPartitionScanQuerySpec(partitionKey, partitionKeySelectors);
 
             String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
-            UUID activityId = randomUuid();
+            UUID activityId = UUIDs.nonBlockingRandomUUID();
 
             final AtomicBoolean isQueryCancelledOnTimeout = new AtomicBoolean(false);
 
@@ -6365,29 +6371,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static FeedRange toFeedRange(PartitionKeyRange pkRange) {
         return new FeedRangeEpkImpl(pkRange.toRange());
-    }
-
-    /**
-     * Creates a type 4 (pseudo randomly generated) UUID.
-     * <p>
-     * The {@link UUID} is generated using a non-cryptographically strong pseudo random number generator.
-     *
-     * @return A randomly generated {@link UUID}.
-     */
-    public static UUID randomUuid() {
-        // Note: Copied from CoreUtils
-        return randomUuid(ThreadLocalRandom.current().nextLong(), ThreadLocalRandom.current().nextLong());
-    }
-
-    static UUID randomUuid(long msb, long lsb) {
-        msb &= 0xffffffffffff0fffL; // Clear the UUID version.
-        msb |= 0x0000000000004000L; // Set the UUID version to 4.
-        lsb &= 0x3fffffffffffffffL; // Clear the variant.
-        lsb |= 0x8000000000000000L; // Set the variant to IETF.
-
-        // Use new UUID(long, long) instead of UUID.randomUUID as UUID.randomUUID may be blocking.
-        // For environments using Reactor's BlockHound this will raise an exception if called in non-blocking threads.
-        return new UUID(msb, lsb);
     }
 
     public PartitionKeyRange addPartitionLevelUnavailableRegionsForPointOperationRequestForPerPartitionCircuitBreaker(

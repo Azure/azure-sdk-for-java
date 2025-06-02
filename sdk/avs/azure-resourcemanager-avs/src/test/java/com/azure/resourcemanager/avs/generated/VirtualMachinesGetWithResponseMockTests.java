@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.VirtualMachine;
@@ -20,17 +20,17 @@ public final class VirtualMachinesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"ljeamu\",\"moRefId\":\"zmlovuanash\",\"folderPath\":\"lpmjerb\",\"restrictMovement\":\"Disabled\"},\"id\":\"vidizozsdb\",\"name\":\"cxjmonfdgnwncyp\",\"type\":\"uwwltvuqjctz\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"kqtob\",\"moRefId\":\"uxofshfphwpnulai\",\"folderPath\":\"zejywhslw\",\"restrictMovement\":\"Disabled\"},\"id\":\"llndnpd\",\"name\":\"rpqaf\",\"type\":\"fugsnnfhyetefy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VirtualMachine response = manager.virtualMachines()
-            .getWithResponse("gnl", "zonzlrpiqywnc", "jtszcof", "zehtdhgb", com.azure.core.util.Context.NONE)
+            .getWithResponse("taboidvmf", "hppubowsepdfgkmt", "herngb", "c", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.avs.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.PortMirroringDirectionEnum;
@@ -23,22 +23,22 @@ public final class WorkloadNetworksListPortMirroringMockTests {
     @Test
     public void testListPortMirroring() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"nhg\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"ynfsvkhgbvqtan\",\"destination\":\"fdlpukhpyr\",\"status\":\"SUCCESS\",\"provisioningState\":\"Failed\",\"revision\":1916878919574088822},\"id\":\"gkhnmgbrouxddbh\",\"name\":\"hpfpazjzoywjxhp\",\"type\":\"ulontacnpqwteht\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"vfkakpold\",\"direction\":\"EGRESS\",\"source\":\"boclzhzjknyuxgv\",\"destination\":\"xpn\",\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":1672814708325363784},\"id\":\"i\",\"name\":\"trekidswys\",\"type\":\"br\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<WorkloadNetworkPortMirroring> response = manager.workloadNetworks()
-            .listPortMirroring("fusuckzmkwklsno", "axmqeqal", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadNetworkPortMirroring> response
+            = manager.workloadNetworks().listPortMirroring("mcyefoyzbam", "in", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nhg", response.iterator().next().displayName());
-        Assertions.assertEquals(PortMirroringDirectionEnum.BIDIRECTIONAL, response.iterator().next().direction());
-        Assertions.assertEquals("ynfsvkhgbvqtan", response.iterator().next().source());
-        Assertions.assertEquals("fdlpukhpyr", response.iterator().next().destination());
-        Assertions.assertEquals(1916878919574088822L, response.iterator().next().revision());
+        Assertions.assertEquals("vfkakpold", response.iterator().next().displayName());
+        Assertions.assertEquals(PortMirroringDirectionEnum.EGRESS, response.iterator().next().direction());
+        Assertions.assertEquals("boclzhzjknyuxgv", response.iterator().next().source());
+        Assertions.assertEquals("xpn", response.iterator().next().destination());
+        Assertions.assertEquals(1672814708325363784L, response.iterator().next().revision());
     }
 }

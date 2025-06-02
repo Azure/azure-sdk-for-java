@@ -7,8 +7,8 @@ package com.azure.resourcemanager.avs.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcp;
@@ -22,19 +22,19 @@ public final class WorkloadNetworksListDhcpMockTests {
     @Test
     public void testListDhcp() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"xxgewpk\",\"segments\":[\"ylkmqp\",\"o\",\"hlfbcgwgc\",\"oxoebqi\"],\"provisioningState\":\"Building\",\"revision\":4976347516464596123},\"id\":\"fujqlafcba\",\"name\":\"hpzpo\",\"type\":\"o\"}]}";
+            = "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"qd\",\"segments\":[\"wflj\",\"zn\",\"mtuatmzwcjjncqtj\",\"mizvgbgatzuuvbx\"],\"provisioningState\":\"Succeeded\",\"revision\":8608381823862362175},\"id\":\"gahttzlswvaj\",\"name\":\"fu\",\"type\":\"lx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<WorkloadNetworkDhcp> response
-            = manager.workloadNetworks().listDhcp("z", "pqwjedm", com.azure.core.util.Context.NONE);
+            = manager.workloadNetworks().listDhcp("jxcx", "rzdcgdzbenribcaw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xxgewpk", response.iterator().next().properties().displayName());
-        Assertions.assertEquals(4976347516464596123L, response.iterator().next().properties().revision());
+        Assertions.assertEquals("qd", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(8608381823862362175L, response.iterator().next().properties().revision());
     }
 }

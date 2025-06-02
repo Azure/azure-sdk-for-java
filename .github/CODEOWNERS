@@ -428,10 +428,10 @@
 # ServiceOwners:                                     @nberdy
 
 # ServiceLabel: %Device Update
-/sdk/deviceupdate/                                   @dpokluda
+/sdk/deviceupdate/                                   @xinanqiu
 
 # ServiceLabel: %Device Update
-# ServiceOwners:                                     @dpokluda
+# ServiceOwners:                                     @xinanqiu
 
 # ServiceLabel: %DevOps
 # ServiceOwners:                                     @narula0781 @ashishonce @romil07
@@ -536,7 +536,7 @@
 
 # ServiceLabel: %Load Testing
 # PRLabel: %Load Testing
-/sdk/loadtesting/                                    @Harshan01 @prativen @ninallam
+/sdk/loadtesting/                                    @Harshan01 @prativen @ninallam @mitsha-microsoft
 
 # ServiceLabel: %Logic App
 # ServiceOwners:                                     @Azure/azure-logicapps-team
@@ -839,6 +839,12 @@
 
 # PRLabel: %Azure SDK Tools
 /sdk/tools/                                          @srnagar @jonathangiles
+
+# PRLabel: %Azure SDK Tools
+/sdk/tools/azure-openrewrite/                        @jairmyree @srnagar @jonathangiles @samvaity
+
+# PRLabel: %Azure SDK Tools
+/sdk/tools/azure-openrewrite-compiler-maven-plugin/       @jairmyree @srnagar @jonathangiles @samvaity
 
 # ServiceLabel: %Azure SDK Tools
 # AzureSdkOwners:                                    @srnagar @jonathangiles

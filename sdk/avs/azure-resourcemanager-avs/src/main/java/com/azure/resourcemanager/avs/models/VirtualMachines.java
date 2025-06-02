@@ -77,7 +77,7 @@ public interface VirtualMachines {
      * @param privateCloudName Name of the private cloud.
      * @param clusterName Name of the cluster.
      * @param virtualMachineId ID of the virtual machine.
-     * @param restrictMovement The body type of the operation request.
+     * @param restrictMovement The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -92,7 +92,7 @@ public interface VirtualMachines {
      * @param privateCloudName Name of the private cloud.
      * @param clusterName Name of the cluster.
      * @param virtualMachineId ID of the virtual machine.
-     * @param restrictMovement The body type of the operation request.
+     * @param restrictMovement The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

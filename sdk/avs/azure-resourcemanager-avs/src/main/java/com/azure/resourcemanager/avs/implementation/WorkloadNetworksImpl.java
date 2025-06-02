@@ -18,8 +18,8 @@ import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPortMirroringInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIpInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkSegmentInner;
-import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVirtualMachineInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVMGroupInner;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVirtualMachineInner;
 import com.azure.resourcemanager.avs.models.WorkloadNetwork;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcp;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsService;
@@ -27,10 +27,10 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZone;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkGateway;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroring;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPublicIp;
-import com.azure.resourcemanager.avs.models.WorkloadNetworks;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegment;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkVirtualMachine;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroup;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkVirtualMachine;
+import com.azure.resourcemanager.avs.models.WorkloadNetworks;
 
 public final class WorkloadNetworksImpl implements WorkloadNetworks {
     private static final ClientLogger LOGGER = new ClientLogger(WorkloadNetworksImpl.class);

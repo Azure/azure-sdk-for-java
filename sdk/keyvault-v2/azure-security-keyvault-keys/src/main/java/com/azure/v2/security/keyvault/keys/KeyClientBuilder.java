@@ -35,6 +35,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
@@ -129,17 +130,19 @@ public final class KeyClientBuilder implements ConfigurationTrait<KeyClientBuild
         String endpoint = getEndpoint(configuration);
 
         if (endpoint == null) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "An Azure Key Vault or Managed HSM endpoint is required. You can set one by using the"
+            throw LOGGER.throwableAtError()
+                .log("An Azure Key Vault or Managed HSM endpoint is required. You can set one by using the"
                     + " KeyClientBuilder.endpoint() method or by setting the environment variable"
-                    + " 'AZURE_KEYVAULT_ENDPOINT'."));
+                    + " 'AZURE_KEYVAULT_ENDPOINT'.", IllegalStateException::new);
         }
 
         KeyServiceVersion version = this.version == null ? KeyServiceVersion.getLatest() : this.version;
 
         if (credential == null) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "A credential object is required. You can set one by using the KeyClientBuilder.credential() method."));
+            throw LOGGER.throwableAtError()
+                .log(
+                    "A credential object is required. You can set one by using the KeyClientBuilder.credential() method.",
+                    IllegalStateException::new);
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -186,16 +189,14 @@ public final class KeyClientBuilder implements ConfigurationTrait<KeyClientBuild
      */
     @Override
     public KeyClientBuilder endpoint(String endpoint) {
-        if (endpoint == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'endpoint' cannot be null."));
-        }
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
         try {
             URI uri = new URI(endpoint);
             this.endpoint = uri.toString();
         } catch (URISyntaxException e) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("The Azure Key Vault endpoint is malformed.", e));
+            throw LOGGER.throwableAtError()
+                .log("The Azure Key Vault endpoint is malformed.", e, IllegalArgumentException::new);
         }
 
         return this;
@@ -213,9 +214,7 @@ public final class KeyClientBuilder implements ConfigurationTrait<KeyClientBuild
      */
     @Override
     public KeyClientBuilder credential(TokenCredential credential) {
-        if (credential == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'credential' cannot be null."));
-        }
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         this.credential = credential;
 
@@ -260,10 +259,7 @@ public final class KeyClientBuilder implements ConfigurationTrait<KeyClientBuild
      */
     @Override
     public KeyClientBuilder addHttpPipelinePolicy(HttpPipelinePolicy pipelinePolicy) {
-        if (pipelinePolicy == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'pipelinePolicy' cannot be null."));
-        }
-
+        Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null.");
         pipelinePolicies.add(pipelinePolicy);
 
         return this;

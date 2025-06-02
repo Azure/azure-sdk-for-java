@@ -13,14 +13,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.avs.fluent.AddonsClient;
@@ -31,14 +34,18 @@ import com.azure.resourcemanager.avs.fluent.ClustersClient;
 import com.azure.resourcemanager.avs.fluent.DatastoresClient;
 import com.azure.resourcemanager.avs.fluent.GlobalReachConnectionsClient;
 import com.azure.resourcemanager.avs.fluent.HcxEnterpriseSitesClient;
+import com.azure.resourcemanager.avs.fluent.HostsClient;
 import com.azure.resourcemanager.avs.fluent.IscsiPathsClient;
 import com.azure.resourcemanager.avs.fluent.LocationsClient;
 import com.azure.resourcemanager.avs.fluent.OperationsClient;
 import com.azure.resourcemanager.avs.fluent.PlacementPoliciesClient;
 import com.azure.resourcemanager.avs.fluent.PrivateCloudsClient;
+import com.azure.resourcemanager.avs.fluent.ProvisionedNetworksClient;
+import com.azure.resourcemanager.avs.fluent.PureStoragePoliciesClient;
 import com.azure.resourcemanager.avs.fluent.ScriptCmdletsClient;
 import com.azure.resourcemanager.avs.fluent.ScriptExecutionsClient;
 import com.azure.resourcemanager.avs.fluent.ScriptPackagesClient;
+import com.azure.resourcemanager.avs.fluent.SkusClient;
 import com.azure.resourcemanager.avs.fluent.VirtualMachinesClient;
 import com.azure.resourcemanager.avs.fluent.WorkloadNetworksClient;
 import java.io.IOException;
@@ -182,6 +189,20 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
+     * The SkusClient object to access its operations.
+     */
+    private final SkusClient skus;
+
+    /**
+     * Gets the SkusClient object to access its operations.
+     * 
+     * @return the SkusClient object.
+     */
+    public SkusClient getSkus() {
+        return this.skus;
+    }
+
+    /**
      * The AddonsClient object to access its operations.
      */
     private final AddonsClient addons;
@@ -252,6 +273,20 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
+     * The HostsClient object to access its operations.
+     */
+    private final HostsClient hosts;
+
+    /**
+     * Gets the HostsClient object to access its operations.
+     * 
+     * @return the HostsClient object.
+     */
+    public HostsClient getHosts() {
+        return this.hosts;
+    }
+
+    /**
      * The PlacementPoliciesClient object to access its operations.
      */
     private final PlacementPoliciesClient placementPolicies;
@@ -319,6 +354,34 @@ public final class AvsClientImpl implements AvsClient {
      */
     public IscsiPathsClient getIscsiPaths() {
         return this.iscsiPaths;
+    }
+
+    /**
+     * The ProvisionedNetworksClient object to access its operations.
+     */
+    private final ProvisionedNetworksClient provisionedNetworks;
+
+    /**
+     * Gets the ProvisionedNetworksClient object to access its operations.
+     * 
+     * @return the ProvisionedNetworksClient object.
+     */
+    public ProvisionedNetworksClient getProvisionedNetworks() {
+        return this.provisionedNetworks;
+    }
+
+    /**
+     * The PureStoragePoliciesClient object to access its operations.
+     */
+    private final PureStoragePoliciesClient pureStoragePolicies;
+
+    /**
+     * Gets the PureStoragePoliciesClient object to access its operations.
+     * 
+     * @return the PureStoragePoliciesClient object.
+     */
+    public PureStoragePoliciesClient getPureStoragePolicies() {
+        return this.pureStoragePolicies;
     }
 
     /**
@@ -394,20 +457,24 @@ public final class AvsClientImpl implements AvsClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-09-01";
+        this.apiVersion = "2024-09-01";
         this.operations = new OperationsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
         this.privateClouds = new PrivateCloudsClientImpl(this);
+        this.skus = new SkusClientImpl(this);
         this.addons = new AddonsClientImpl(this);
         this.authorizations = new AuthorizationsClientImpl(this);
         this.cloudLinks = new CloudLinksClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
         this.datastores = new DatastoresClientImpl(this);
+        this.hosts = new HostsClientImpl(this);
         this.placementPolicies = new PlacementPoliciesClientImpl(this);
         this.virtualMachines = new VirtualMachinesClientImpl(this);
         this.globalReachConnections = new GlobalReachConnectionsClientImpl(this);
         this.hcxEnterpriseSites = new HcxEnterpriseSitesClientImpl(this);
         this.iscsiPaths = new IscsiPathsClientImpl(this);
+        this.provisionedNetworks = new ProvisionedNetworksClientImpl(this);
+        this.pureStoragePolicies = new PureStoragePoliciesClientImpl(this);
         this.scriptExecutions = new ScriptExecutionsClientImpl(this);
         this.scriptPackages = new ScriptPackagesClientImpl(this);
         this.scriptCmdlets = new ScriptCmdletsClientImpl(this);
@@ -449,6 +516,23 @@ public final class AvsClientImpl implements AvsClient {
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

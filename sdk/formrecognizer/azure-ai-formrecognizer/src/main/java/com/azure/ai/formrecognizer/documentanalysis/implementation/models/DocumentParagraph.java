@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.ParagraphRole;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,21 +23,25 @@ public final class DocumentParagraph implements JsonSerializable<DocumentParagra
     /*
      * Semantic role of the paragraph.
      */
+    @Generated
     private ParagraphRole role;
 
     /*
      * Concatenated content of the paragraph in reading order.
      */
+    @Generated
     private final String content;
 
     /*
      * Bounding regions covering the paragraph.
      */
+    @Generated
     private List<BoundingRegion> boundingRegions;
 
     /*
      * Location of the paragraph in the reading order concatenated content.
      */
+    @Generated
     private final List<DocumentSpan> spans;
 
     /**
@@ -45,6 +50,7 @@ public final class DocumentParagraph implements JsonSerializable<DocumentParagra
      * @param content the content value to set.
      * @param spans the spans value to set.
      */
+    @Generated
     public DocumentParagraph(String content, List<DocumentSpan> spans) {
         this.content = content;
         this.spans = spans;
@@ -55,6 +61,7 @@ public final class DocumentParagraph implements JsonSerializable<DocumentParagra
      * 
      * @return the role value.
      */
+    @Generated
     public ParagraphRole getRole() {
         return this.role;
     }
@@ -65,6 +72,7 @@ public final class DocumentParagraph implements JsonSerializable<DocumentParagra
      * @param role the role value to set.
      * @return the DocumentParagraph object itself.
      */
+    @Generated
     public DocumentParagraph setRole(ParagraphRole role) {
         this.role = role;
         return this;
@@ -75,6 +83,7 @@ public final class DocumentParagraph implements JsonSerializable<DocumentParagra
      * 
      * @return the content value.
      */
+    @Generated
     public String getContent() {
         return this.content;
     }
@@ -84,6 +93,7 @@ public final class DocumentParagraph implements JsonSerializable<DocumentParagra
      * 
      * @return the boundingRegions value.
      */
+    @Generated
     public List<BoundingRegion> getBoundingRegions() {
         return this.boundingRegions;
     }
@@ -94,6 +104,7 @@ public final class DocumentParagraph implements JsonSerializable<DocumentParagra
      * @param boundingRegions the boundingRegions value to set.
      * @return the DocumentParagraph object itself.
      */
+    @Generated
     public DocumentParagraph setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
         return this;
@@ -104,6 +115,7 @@ public final class DocumentParagraph implements JsonSerializable<DocumentParagra
      * 
      * @return the spans value.
      */
+    @Generated
     public List<DocumentSpan> getSpans() {
         return this.spans;
     }
@@ -111,6 +123,7 @@ public final class DocumentParagraph implements JsonSerializable<DocumentParagra
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -131,6 +144,7 @@ public final class DocumentParagraph implements JsonSerializable<DocumentParagra
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentParagraph.
      */
+    @Generated
     public static DocumentParagraph fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean contentFound = false;

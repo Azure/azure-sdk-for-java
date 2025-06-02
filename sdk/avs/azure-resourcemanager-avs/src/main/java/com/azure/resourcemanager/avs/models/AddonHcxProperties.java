@@ -27,9 +27,14 @@ public final class AddonHcxProperties extends AddonProperties {
     private String offer;
 
     /*
-     * The state of the addon provisioning
+     * HCX management network.
      */
-    private AddonProvisioningState provisioningState;
+    private String managementNetwork;
+
+    /*
+     * HCX uplink network
+     */
+    private String uplinkNetwork;
 
     /**
      * Creates an instance of AddonHcxProperties class.
@@ -68,13 +73,43 @@ public final class AddonHcxProperties extends AddonProperties {
     }
 
     /**
-     * Get the provisioningState property: The state of the addon provisioning.
+     * Get the managementNetwork property: HCX management network.
      * 
-     * @return the provisioningState value.
+     * @return the managementNetwork value.
      */
-    @Override
-    public AddonProvisioningState provisioningState() {
-        return this.provisioningState;
+    public String managementNetwork() {
+        return this.managementNetwork;
+    }
+
+    /**
+     * Set the managementNetwork property: HCX management network.
+     * 
+     * @param managementNetwork the managementNetwork value to set.
+     * @return the AddonHcxProperties object itself.
+     */
+    public AddonHcxProperties withManagementNetwork(String managementNetwork) {
+        this.managementNetwork = managementNetwork;
+        return this;
+    }
+
+    /**
+     * Get the uplinkNetwork property: HCX uplink network.
+     * 
+     * @return the uplinkNetwork value.
+     */
+    public String uplinkNetwork() {
+        return this.uplinkNetwork;
+    }
+
+    /**
+     * Set the uplinkNetwork property: HCX uplink network.
+     * 
+     * @param uplinkNetwork the uplinkNetwork value to set.
+     * @return the AddonHcxProperties object itself.
+     */
+    public AddonHcxProperties withUplinkNetwork(String uplinkNetwork) {
+        this.uplinkNetwork = uplinkNetwork;
+        return this;
     }
 
     /**
@@ -100,6 +135,8 @@ public final class AddonHcxProperties extends AddonProperties {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("offer", this.offer);
         jsonWriter.writeStringField("addonType", this.addonType == null ? null : this.addonType.toString());
+        jsonWriter.writeStringField("managementNetwork", this.managementNetwork);
+        jsonWriter.writeStringField("uplinkNetwork", this.uplinkNetwork);
         return jsonWriter.writeEndObject();
     }
 
@@ -120,12 +157,16 @@ public final class AddonHcxProperties extends AddonProperties {
                 reader.nextToken();
 
                 if ("provisioningState".equals(fieldName)) {
-                    deserializedAddonHcxProperties.provisioningState
-                        = AddonProvisioningState.fromString(reader.getString());
+                    deserializedAddonHcxProperties
+                        .withProvisioningState(AddonProvisioningState.fromString(reader.getString()));
                 } else if ("offer".equals(fieldName)) {
                     deserializedAddonHcxProperties.offer = reader.getString();
                 } else if ("addonType".equals(fieldName)) {
                     deserializedAddonHcxProperties.addonType = AddonType.fromString(reader.getString());
+                } else if ("managementNetwork".equals(fieldName)) {
+                    deserializedAddonHcxProperties.managementNetwork = reader.getString();
+                } else if ("uplinkNetwork".equals(fieldName)) {
+                    deserializedAddonHcxProperties.uplinkNetwork = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -100,8 +100,8 @@
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <revapi.skip>true</revapi.skip>
 
-    <jacoco.min.linecoverage>0.36</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.25</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.30</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.23</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>

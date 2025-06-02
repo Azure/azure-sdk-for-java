@@ -278,11 +278,19 @@ public final class AzureDataLakeAnalyticsLinkedServiceTypeProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("accountName", this.accountName);
         jsonWriter.writeUntypedField("tenant", this.tenant);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-        jsonWriter.writeUntypedField("subscriptionId", this.subscriptionId);
-        jsonWriter.writeUntypedField("resourceGroupName", this.resourceGroupName);
-        jsonWriter.writeUntypedField("dataLakeAnalyticsUri", this.dataLakeAnalyticsUri);
+        if (this.subscriptionId != null) {
+            jsonWriter.writeUntypedField("subscriptionId", this.subscriptionId);
+        }
+        if (this.resourceGroupName != null) {
+            jsonWriter.writeUntypedField("resourceGroupName", this.resourceGroupName);
+        }
+        if (this.dataLakeAnalyticsUri != null) {
+            jsonWriter.writeUntypedField("dataLakeAnalyticsUri", this.dataLakeAnalyticsUri);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

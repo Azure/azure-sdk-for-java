@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,56 +21,67 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
     /*
      * Row index of the cell.
      */
+    @Generated
     private int rowIndex;
 
     /*
      * Column index of the cell.
      */
+    @Generated
     private int columnIndex;
 
     /*
      * Number of rows spanned by this cell.
      */
+    @Generated
     private Integer rowSpan;
 
     /*
      * Number of columns spanned by this cell.
      */
+    @Generated
     private Integer columnSpan;
 
     /*
      * Text content of the cell.
      */
+    @Generated
     private String text;
 
     /*
      * Bounding box of the cell.
      */
+    @Generated
     private List<Float> boundingBox;
 
     /*
      * Confidence value.
      */
+    @Generated
     private float confidence;
 
     /*
      * When includeTextDetails is set to true, a list of references to the text elements constituting this table cell.
      */
+    @Generated
     private List<String> elements;
 
     /*
      * Is the current cell a header cell?
      */
+    @Generated
     private Boolean isHeader;
 
     /*
      * Is the current cell a footer cell?
      */
+    @Generated
     private Boolean isFooter;
 
     /**
      * Creates an instance of DataTableCell class.
      */
+    @Generated
     public DataTableCell() {
     }
 
@@ -78,6 +90,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * 
      * @return the rowIndex value.
      */
+    @Generated
     public int getRowIndex() {
         return this.rowIndex;
     }
@@ -88,6 +101,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * @param rowIndex the rowIndex value to set.
      * @return the DataTableCell object itself.
      */
+    @Generated
     public DataTableCell setRowIndex(int rowIndex) {
         this.rowIndex = rowIndex;
         return this;
@@ -98,6 +112,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * 
      * @return the columnIndex value.
      */
+    @Generated
     public int getColumnIndex() {
         return this.columnIndex;
     }
@@ -108,6 +123,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * @param columnIndex the columnIndex value to set.
      * @return the DataTableCell object itself.
      */
+    @Generated
     public DataTableCell setColumnIndex(int columnIndex) {
         this.columnIndex = columnIndex;
         return this;
@@ -118,6 +134,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * 
      * @return the rowSpan value.
      */
+    @Generated
     public Integer getRowSpan() {
         return this.rowSpan;
     }
@@ -128,6 +145,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * @param rowSpan the rowSpan value to set.
      * @return the DataTableCell object itself.
      */
+    @Generated
     public DataTableCell setRowSpan(Integer rowSpan) {
         this.rowSpan = rowSpan;
         return this;
@@ -138,6 +156,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * 
      * @return the columnSpan value.
      */
+    @Generated
     public Integer getColumnSpan() {
         return this.columnSpan;
     }
@@ -148,6 +167,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * @param columnSpan the columnSpan value to set.
      * @return the DataTableCell object itself.
      */
+    @Generated
     public DataTableCell setColumnSpan(Integer columnSpan) {
         this.columnSpan = columnSpan;
         return this;
@@ -158,6 +178,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * 
      * @return the text value.
      */
+    @Generated
     public String getText() {
         return this.text;
     }
@@ -168,6 +189,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * @param text the text value to set.
      * @return the DataTableCell object itself.
      */
+    @Generated
     public DataTableCell setText(String text) {
         this.text = text;
         return this;
@@ -178,6 +200,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * 
      * @return the boundingBox value.
      */
+    @Generated
     public List<Float> getBoundingBox() {
         return this.boundingBox;
     }
@@ -188,6 +211,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * @param boundingBox the boundingBox value to set.
      * @return the DataTableCell object itself.
      */
+    @Generated
     public DataTableCell setBoundingBox(List<Float> boundingBox) {
         this.boundingBox = boundingBox;
         return this;
@@ -198,6 +222,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * 
      * @return the confidence value.
      */
+    @Generated
     public float getConfidence() {
         return this.confidence;
     }
@@ -208,6 +233,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * @param confidence the confidence value to set.
      * @return the DataTableCell object itself.
      */
+    @Generated
     public DataTableCell setConfidence(float confidence) {
         this.confidence = confidence;
         return this;
@@ -219,6 +245,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * 
      * @return the elements value.
      */
+    @Generated
     public List<String> getElements() {
         return this.elements;
     }
@@ -230,6 +257,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * @param elements the elements value to set.
      * @return the DataTableCell object itself.
      */
+    @Generated
     public DataTableCell setElements(List<String> elements) {
         this.elements = elements;
         return this;
@@ -240,6 +268,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * 
      * @return the isHeader value.
      */
+    @Generated
     public Boolean isHeader() {
         return this.isHeader;
     }
@@ -250,6 +279,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * @param isHeader the isHeader value to set.
      * @return the DataTableCell object itself.
      */
+    @Generated
     public DataTableCell setIsHeader(Boolean isHeader) {
         this.isHeader = isHeader;
         return this;
@@ -260,6 +290,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * 
      * @return the isFooter value.
      */
+    @Generated
     public Boolean isFooter() {
         return this.isFooter;
     }
@@ -270,6 +301,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * @param isFooter the isFooter value to set.
      * @return the DataTableCell object itself.
      */
+    @Generated
     public DataTableCell setIsFooter(Boolean isFooter) {
         this.isFooter = isFooter;
         return this;
@@ -278,6 +310,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -303,6 +336,7 @@ public final class DataTableCell implements JsonSerializable<DataTableCell> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataTableCell.
      */
+    @Generated
     public static DataTableCell fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataTableCell deserializedDataTableCell = new DataTableCell();

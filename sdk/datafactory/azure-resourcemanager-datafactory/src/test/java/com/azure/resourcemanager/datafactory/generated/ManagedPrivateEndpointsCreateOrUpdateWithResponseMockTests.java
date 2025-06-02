@@ -26,7 +26,7 @@ public final class ManagedPrivateEndpointsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"jyfiabhepxqtkynl\",\"description\":\"norhwdo\",\"status\":\"ythsl\"},\"fqdns\":[\"lvwbgbmpit\"],\"groupId\":\"xhiuhgvgnolusqfd\",\"isReserved\":true,\"privateLinkResourceId\":\"pwvieymkguvrd\",\"provisioningState\":\"proytd\",\"\":{\"vmvpp\":\"datalq\",\"is\":\"datatsolxnhlrpsign\"}},\"name\":\"obpxfgp\",\"type\":\"zdzswvfwiunjwqx\",\"etag\":\"tfzgdq\",\"id\":\"vbiryxsa\"}";
+            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"jyfiabhepxqtkynl\",\"description\":\"norhwdo\",\"status\":\"ythsl\"},\"fqdns\":[\"lvwbgbmpit\"],\"groupId\":\"xhiuhgvgnolusqfd\",\"isReserved\":true,\"privateLinkResourceId\":\"pwvieymkguvrd\",\"provisioningState\":\"proytd\",\"vmvpp\":\"datalq\",\"is\":\"datatsolxnhlrpsign\"},\"name\":\"obpxfgp\",\"type\":\"zdzswvfwiunjwqx\",\"etag\":\"tfzgdq\",\"id\":\"vbiryxsa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -42,7 +42,8 @@ public final class ManagedPrivateEndpointsCreateOrUpdateWithResponseMockTests {
                 .withFqdns(Arrays.asList("sayiivoixefncqf", "wqnz", "ctnmkitsvkuop", "vqsabopou"))
                 .withGroupId("gxnzpqegga")
                 .withPrivateLinkResourceId("zudysndiexb")
-                .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "wjmqn")))
+                .withAdditionalProperties(mapOf("orengkunydgw", "datarggqaohaxqvbzze", "jcdcduwuintii",
+                    "datauoharvjfzz", "unsydjcemu", "datad", "isReserved", false, "provisioningState", "wjmqn")))
             .withIfMatch("nfwijlvkrnsodohp")
             .create();
 

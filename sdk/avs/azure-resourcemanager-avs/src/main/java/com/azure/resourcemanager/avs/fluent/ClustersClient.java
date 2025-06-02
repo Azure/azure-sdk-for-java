@@ -148,7 +148,7 @@ public interface ClustersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param clusterName Name of the cluster.
-     * @param clusterUpdate The cluster properties to be updated.
+     * @param clusterUpdate The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -164,7 +164,7 @@ public interface ClustersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param clusterName Name of the cluster.
-     * @param clusterUpdate The cluster properties to be updated.
+     * @param clusterUpdate The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -181,7 +181,7 @@ public interface ClustersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param clusterName Name of the cluster.
-     * @param clusterUpdate The cluster properties to be updated.
+     * @param clusterUpdate The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -197,7 +197,7 @@ public interface ClustersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param clusterName Name of the cluster.
-     * @param clusterUpdate The cluster properties to be updated.
+     * @param clusterUpdate The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

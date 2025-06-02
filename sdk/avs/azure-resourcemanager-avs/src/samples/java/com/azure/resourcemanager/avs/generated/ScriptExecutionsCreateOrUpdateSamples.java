@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class ScriptExecutionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/ScriptExecutions_CreateOrUpdate.
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/ScriptExecutions_CreateOrUpdate.
      * json
      */
     /**

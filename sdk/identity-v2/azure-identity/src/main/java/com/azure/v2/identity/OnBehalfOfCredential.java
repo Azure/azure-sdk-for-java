@@ -12,6 +12,8 @@ import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
+import static com.azure.v2.identity.implementation.util.LoggingUtil.logAndThrowTokenError;
+
 /**
  * <p>On Behalf of authentication in Azure is a way for a user or application to authenticate to a service or resource
  * using credentials from another identity provider. This type of authentication is typically used when a user or
@@ -64,17 +66,15 @@ public class OnBehalfOfCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
         }
 
         try {
             AccessToken token = confidentialClient.authenticateWithOBO(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return token;
-        } catch (Exception e) {
-            LoggingUtil.logTokenError(LOGGER, request, e);
-            throw LOGGER.logThrowableAsError(new CredentialAuthenticationException(e.getMessage(), e));
+        } catch (RuntimeException e) {
+            throw logAndThrowTokenError(LOGGER, request, e, CredentialAuthenticationException::new);
         }
     }
-
 }

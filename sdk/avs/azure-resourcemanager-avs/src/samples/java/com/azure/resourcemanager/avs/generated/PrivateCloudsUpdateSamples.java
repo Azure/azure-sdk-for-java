@@ -18,7 +18,7 @@ import com.azure.resourcemanager.avs.models.ResourceIdentityType;
 public final class PrivateCloudsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/PrivateClouds_Update.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/PrivateClouds_Update.json
      */
     /**
      * Sample code: PrivateClouds_Update.
@@ -41,7 +41,7 @@ public final class PrivateCloudsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/PrivateClouds_Update_Stretched.
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/PrivateClouds_Update_Stretched.
      * json
      */
     /**

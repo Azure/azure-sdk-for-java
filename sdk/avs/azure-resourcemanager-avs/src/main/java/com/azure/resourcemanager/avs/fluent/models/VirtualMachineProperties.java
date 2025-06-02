@@ -29,7 +29,7 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     private String displayName;
 
     /*
-     * Virtual machine managed object reference id
+     * vCenter managed object reference ID of the virtual machine
      */
     private String moRefId;
 
@@ -68,7 +68,7 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     }
 
     /**
-     * Get the moRefId property: Virtual machine managed object reference id.
+     * Get the moRefId property: vCenter managed object reference ID of the virtual machine.
      * 
      * @return the moRefId value.
      */

@@ -9,7 +9,6 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
@@ -36,7 +35,7 @@ public class WeatherCustomization extends Customization {
         customizeDailyAirQualityForecastResult(models);
         customizeDailyForecast(models);
         customizeDailyForecastDetail(models);
-        customizeWeatherValue(models);
+        customizeWeatherUnitDetails(models);
         customizeDailyForecastSummary(models);
         customizeDailyHistoricalActuals(models);
         customizeDailyHistoricalActualsResult(models);
@@ -96,12 +95,9 @@ public class WeatherCustomization extends Customization {
     private void customizeLatLongPairClasses(ClassOrInterfaceDeclaration clazz, String propertyName, String getter,
             String setter) {
         clazz.findAncestor(CompilationUnit.class).ifPresent(p -> p.addImport("com.azure.core.models.GeoPosition"));
-        clazz.getMethodsByName(getter)
-                .get(0)
-                .setType("GeoPosition")
-                .setBody(StaticJavaParser.parseBlock(
-                        "{ return new GeoPosition(this." + propertyName + ".getLongitude(), this." + propertyName
-                                + ".getLatitude()); }"));
+        clazz.getMethodsByName(getter).forEach(method -> method.setType("GeoPosition")
+            .setBody(StaticJavaParser.parseBlock("{ return new GeoPosition(this." + propertyName + ".getLongitude(), "
+                + "this." + propertyName + ".getLatitude()); }")));
         clazz.getMethodsByName(setter).forEach(Node::remove);
     }
 
@@ -119,27 +115,24 @@ public class WeatherCustomization extends Customization {
         clazz.getMethodsByName(getter).forEach(Node::remove);
         clazz.getMethodsByName(setter).forEach(Node::remove);
         clazz.addMethod("getPolygon", Modifier.Keyword.PUBLIC)
-                .setType("GeoPolygon")
-                .setBody(StaticJavaParser.parseBlock("{ return Utility.toGeoPolygon(this." + property + "); }"))
-                .setJavadocComment(new Javadoc(JavadocDescription.parseText("Return GeoPolygon")).addBlockTag("return",
-                        "Returns a {@link GeoPolygon} for this weather window"));
+            .setType("GeoPolygon")
+            .setBody(StaticJavaParser.parseBlock("{ return Utility.toGeoPolygon(this." + property + "); }"))
+            .setJavadocComment(new Javadoc(JavadocDescription.parseText("Return GeoPolygon"))
+                .addBlockTag("return", "Returns a {@link GeoPolygon} for this weather window"));
     }
 
     // Customizes classes with getYear() as a String
     private void customizeClassesWithString(ClassOrInterfaceDeclaration clazz) {
-        clazz.getMethodsByName("getYear")
-                .get(0)
-                .setType("Integer")
-                .setBody(StaticJavaParser.parseBlock("{ return Integer.valueOf(" + "year" + "); }"));
+        clazz.getMethodsByName("getYear").forEach(method -> method.setType("Integer")
+            .setBody(StaticJavaParser.parseBlock("{ return Integer.valueOf(" + "year" + "); }")));
         clazz.getMethodsByName("setYear").forEach(Node::remove);
     }
 
     // Customizes to private constructor class
     private void customizePrivateConstructor(ClassOrInterfaceDeclaration clazz) {
-        clazz.getConstructors()
-                .get(0)
-                .setModifiers(Modifier.Keyword.PRIVATE)
-                .setJavadocComment("Set default " + clazz.getNameAsString() + " constructor to private");
+        clazz.getConstructors().get(0)
+            .setModifiers(Modifier.Keyword.PRIVATE)
+            .setJavadocComment("Set default " + clazz.getNameAsString() + " constructor to private");
     }
 
     // Customizes to remove setter in ActiveStorm
@@ -147,9 +140,8 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "ActiveStorm", clazz -> {
             customizePrivateConstructor(clazz);
             customizeClassesWithString(clazz);
-            clazz.getMothod("getGovId").rename("getGovernmentId");
-            bulkRemoveMethods(clazz, "setBasinId", "setName", "setIsActive", "setIsSubtropical", "setGovId",
-                    "isActive");
+            clazz.getMethodsByName("getGovId").forEach(method -> method.setName("getGovernmentId"));
+            bulkRemoveMethods(clazz, "setBasinId", "setName", "setIsActive", "setIsSubtropical", "setGovId", "isActive");
         });
     }
 
@@ -165,8 +157,7 @@ public class WeatherCustomization extends Customization {
     private void customizeAirAndPollen(PackageCustomization models) {
         customizeClass(models, "AirAndPollen", clazz -> {
             customizePrivateConstructor(clazz);
-            bulkRemoveMethods(clazz, "setDescription", "setValue", "setCategory", "setCategoryValue",
-                    "setAirQualityType");
+            bulkRemoveMethods(clazz, "setDescription", "setValue", "setCategory", "setCategoryValue", "setAirQualityType");
         });
     }
 
@@ -175,7 +166,7 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "AirQuality", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setTimestamp", "setIndex", "setGlobalIndex", "setDominantPollutant",
-                    "setCategory", "setCategoryColor", "setDescription", "setPollutants");
+                "setCategory", "setCategoryColor", "setDescription", "setPollutants");
         });
     }
 
@@ -192,7 +183,7 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "AlertDetails", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setName", "setDescription", "setStartTime", "setEndTime", "setLatestStatus",
-                    "setDetails", "setLanguage");
+                "setDetails", "setLanguage");
         });
     }
 
@@ -209,13 +200,11 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "CurrentConditions", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setDateTime", "setDescription", "setIconCode", "setHasPrecipitation",
-                    "setIsDaytime", "setTemperature", "setRealFeelTemperature", "setRealFeelTemperatureShade",
-                    "setRelativeHumidity", "setDewPoint", "setWind", "setWindGust", "setUvIndex",
-                    "setUvIndexDescription",
-                    "setVisibility", "setObstructionsToVisibility", "setCloudCover", "setCloudCeiling", "setPressure",
-                    "setPressureTendency", "setPastTwentyFourHourTemperatureDeparture", "setApparentTemperature",
-                    "setWindChillTemperature", "setWetBulbTemperature", "setPrecipitationSummary",
-                    "setTemperatureSummary");
+                "setIsDaytime", "setTemperature", "setRealFeelTemperature", "setRealFeelTemperatureShade",
+                "setRelativeHumidity", "setDewPoint", "setWind", "setWindGust", "setUvIndex", "setUvIndexDescription",
+                "setVisibility", "setObstructionsToVisibility", "setCloudCover", "setCloudCeiling", "setPressure",
+                "setPressureTendency", "setPastTwentyFourHourTemperatureDeparture", "setApparentTemperature",
+                "setWindChillTemperature", "setWetBulbTemperature", "setPrecipitationSummary", "setTemperatureSummary");
         });
     }
 
@@ -224,7 +213,7 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "DailyAirQuality", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setTimestamp", "setIndex", "setGlobalIndex", "setDominantPollutant",
-                    "setCategory", "setCategoryColor", "setDescription");
+                "setCategory", "setCategoryColor", "setDescription");
         });
     }
 
@@ -241,8 +230,8 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "DailyForecast", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setDateTime", "setTemperature", "setRealFeelTemperature",
-                    "setRealFeelTemperatureShade", "setHoursOfSun", "setMeanTemperatureDeviation", "setAirQuality",
-                    "setDaytimeForecast", "setNighttimeForecast", "setSources");
+                "setRealFeelTemperatureShade", "setHoursOfSun", "setMeanTemperatureDeviation", "setAirQuality",
+                "setDaytimeForecast", "setNighttimeForecast", "setSources");
         });
     }
 
@@ -251,25 +240,23 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "DailyForecastDetail", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setIconCode", "setIconPhrase", "setLocalSource", "setHasPrecipitation",
-                    "setPrecipitationType", "setPrecipitationIntensity", "setShortDescription", "setLongPhrase",
-                    "setPrecipitationProbability", "setThunderstormProbability", "setRainProbability",
-                    "setSnowProbability",
-                    "setIceProbability", "setWind", "setWindGust", "setTotalLiquid", "setRain", "setSnow", "setIce",
-                    "setHoursOfPrecipitation", "setHoursOfRain", "setHoursOfSnow", "setHoursOfIce", "setCloudCover");
-            clazz.getMethodsByName("isHasPrecipitation").get(0).setName("hasPrecipitation");
-            clazz.getMethodsByName("getRain").get(0).setName("getRainUnitDetails");
-            clazz.getMethodsByName("getSnow").get(0).setName("getSnowUnitDetails");
-            clazz.getMethodsByName("getIce").get(0).setName("getIceUnitDetails");
-            clazz.getMethodsByName("getWind").get(0).setName("getWindUnitDetails");
+                "setPrecipitationType", "setPrecipitationIntensity", "setShortDescription", "setLongPhrase",
+                "setPrecipitationProbability", "setThunderstormProbability", "setRainProbability",
+                "setSnowProbability", "setIceProbability", "setWind", "setWindGust", "setTotalLiquid", "setRain",
+                "setSnow", "setIce", "setHoursOfPrecipitation", "setHoursOfRain", "setHoursOfSnow", "setHoursOfIce",
+                "setCloudCover");
+            clazz.getMethodsByName("isHasPrecipitation").forEach(method -> method.setName("hasPrecipitation"));
+            clazz.getMethodsByName("getRain").forEach(method -> method.setName("getRainUnitDetails"));
+            clazz.getMethodsByName("getSnow").forEach(method -> method.setName("getSnowUnitDetails"));
+            clazz.getMethodsByName("getIce").forEach(method -> method.setName("getIceUnitDetails"));
+            clazz.getMethodsByName("getWind").forEach(method -> method.setName("getWindUnitDetails"));
         });
     }
 
-    // Customize WeatherValue
-    private void customizeWeatherValue(PackageCustomization models) {
-        customizeClass(models, "WeatherValue",
-                clazz -> bulkRemoveMethods(clazz, "setValue", "setUnitLabel", "setUnitType"));
-
-        models.getClass("WeatherValue").rename("WeatherUnitDetails");
+    // Customize WeatherUnitDetails
+    private void customizeWeatherUnitDetails(PackageCustomization models) {
+        customizeClass(models, "WeatherUnitDetails",
+            clazz -> bulkRemoveMethods(clazz, "setValue", "setUnitLabel", "setUnitType"));
     }
 
     // Remove setters from DailyForecastSummary
@@ -285,7 +272,7 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "DailyHistoricalActuals", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setTimestamp", "setTemperature", "setDegreeDaySummary", "setPrecipitation",
-                    "setSnowfall", "setSnowDepth");
+                "setSnowfall", "setSnowDepth");
         });
     }
 
@@ -334,7 +321,7 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "DailyIndex", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setIndexName", "setIndexId", "setDateTime", "setValue", "setCategoryDescription",
-                    "setCategoryValue", "setIsAscending", "setDescription");
+                "setCategoryValue", "setIsAscending", "setDescription");
         });
     }
 
@@ -351,8 +338,7 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "ForecastInterval", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setStartMinute", "setMinute", "setDecibelRelativeToZ", "setShortDescription",
-                    "setThreshold", "setColor", "setSimplifiedColor", "setPrecipitationType", "setIconCode",
-                    "setCloudCover");
+                "setThreshold", "setColor", "setSimplifiedColor", "setPrecipitationType", "setIconCode", "setCloudCover");
         });
     }
 
@@ -369,10 +355,10 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "HourlyForecast", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setTimestamp", "setIconCode", "setIconPhrase", "setHasPrecipitation",
-                    "setIsDaylight", "setTemperature", "setRealFeelTemperature", "setWetBulbTemperature", "setDewPoint",
-                    "setWind", "setWindGust", "setRelativeHumidity", "setVisibility", "setCloudCeiling", "setUvIndex",
-                    "setUvIndexDescription", "setPrecipitationProbability", "setRainProbability", "setSnowProbability",
-                    "setIceProbability", "setTotalLiquid", "setRain", "setSnow", "setIce", "setCloudCover");
+                "setIsDaylight", "setTemperature", "setRealFeelTemperature", "setWetBulbTemperature", "setDewPoint",
+                "setWind", "setWindGust", "setRelativeHumidity", "setVisibility", "setCloudCeiling", "setUvIndex",
+                "setUvIndexDescription", "setPrecipitationProbability", "setRainProbability", "setSnowProbability",
+                "setIceProbability", "setTotalLiquid", "setRain", "setSnow", "setIce", "setCloudCover");
         });
     }
 
@@ -381,7 +367,7 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "IntervalSummary", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setStartMinute", "setEndMinute", "setTotalMinutes", "setShortDescription",
-                    "setBriefDescription", "setLongPhrase", "setIconCode");
+                "setBriefDescription", "setLongPhrase", "setIconCode");
         });
     }
 
@@ -406,7 +392,7 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "MinuteForecastSummary", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setBriefPhrase60", "setShortDescription", "setBriefDescription", "setLongPhrase",
-                    "setIconCode");
+                "setIconCode");
         });
     }
 
@@ -422,8 +408,8 @@ public class WeatherCustomization extends Customization {
     private void customizePrecipitationSummary(PackageCustomization models) {
         customizeClass(models, "PrecipitationSummary", clazz -> {
             customizePrivateConstructor(clazz);
-            bulkRemoveMethods(clazz, "setPastHour", "setPast3Hours", "setPast6Hours", "setPast9Hours",
-                    "setPast12Hours", "setPast18Hours", "setPast24Hours");
+            bulkRemoveMethods(clazz, "setPastHour", "setPast3Hours", "setPast6Hours", "setPast9Hours", "setPast12Hours",
+                "setPast18Hours", "setPast24Hours");
         });
     }
 
@@ -448,10 +434,10 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "QuarterDayForecast", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setDateTime", "setEffectiveDate", "setQuarter", "setIconCode", "setIconPhrase",
-                    "setPhrase", "setTemperature", "setRealFeelTemperature", "setDewPoint", "setRelativeHumidity",
-                    "setWind", "setWindGust", "setVisibility", "setCloudCover", "setPrecipitationType",
-                    "setHasPrecipitation", "setPrecipitationIntensity", "setPrecipitationProbability",
-                    "setThunderstormProbability", "setTotalLiquid", "setRain", "setSnow", "setIce");
+                "setPhrase", "setTemperature", "setRealFeelTemperature", "setDewPoint", "setRelativeHumidity",
+                "setWind", "setWindGust", "setVisibility", "setCloudCover", "setPrecipitationType",
+                "setHasPrecipitation", "setPrecipitationIntensity", "setPrecipitationProbability",
+                "setThunderstormProbability", "setTotalLiquid", "setRain", "setSnow", "setIce");
         });
     }
 
@@ -468,7 +454,7 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "SevereWeatherAlert", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setCountryCode", "setAlertId", "setDescription", "setCategory", "setPriority",
-                    "setClassification", "setLevel", "setSource", "setSourceId", "setDisclaimer", "setAlertDetails");
+                "setClassification", "setLevel", "setSource", "setSourceId", "setDisclaimer", "setAlertDetails");
         });
     }
 
@@ -486,7 +472,7 @@ public class WeatherCustomization extends Customization {
             customizePrivateConstructor(clazz);
             customizeLatLongPairClasses(clazz, "coordinates", "getCoordinates", "setCoordinates");
             bulkRemoveMethods(clazz, "setCoordinates", "setTimestamp", "setInitializedTimestamp", "setMaxWindGust",
-                    "setSustainedWind", "setStatus", "setWeatherWindow", "setWindRadiiSummary");
+                "setSustainedWind", "setStatus", "setWeatherWindow", "setWindRadiiSummary");
         });
     }
 
@@ -504,8 +490,8 @@ public class WeatherCustomization extends Customization {
             customizePrivateConstructor(clazz);
             customizeLatLongPairClasses(clazz, "coordinates", "getCoordinates", "setCoordinates");
             bulkRemoveMethods(clazz, "setTimestamp", "setMaxWindGust", "setSustainedWind", "setMinimumPressure",
-                    "setMovement", "setStatus", "setIsSubtropical", "setHasTropicalPotential", "setIsPostTropical",
-                    "setWindRadiiSummary");
+                "setMovement", "setStatus", "setIsSubtropical", "setHasTropicalPotential", "setIsPostTropical",
+                "setWindRadiiSummary");
         });
     }
 
@@ -521,30 +507,31 @@ public class WeatherCustomization extends Customization {
     private void customizeStormSearchResult(PackageCustomization models) {
         customizeClass(models, "StormSearchResult", clazz -> {
             customizePrivateConstructor(clazz);
-            clazz.getMothod("getGovId").rename("getGovernmentId");
+            clazz.getMethodsByName("getGovId").forEach(method -> method.setName("getGovernmentId"));
             bulkRemoveMethods(clazz, "setStorms", "setNextLink", "getNextLink");
         });
     }
 
     // Remove setters from StormSearchResultItem
     private void customizeStormSearchResultItem(PackageCustomization models) {
-        models.getClass("StormSearchResultItem")
-                .customizeAst(ast -> ast.getClassByName("StormSearchResultItem").ifPresent(clazz -> {
-                    customizePrivateConstructor(clazz);
-                    customizeClassesWithString(clazz);
-                    bulkRemoveMethods(clazz, "setBasinId", "setName", "setIsActive", "setIsRetired", "setIsSubtropical",
-                            "setGovId");
-                }));
+        models.getClass("StormSearchResultItem").customizeAst(ast -> ast.getClassByName("StormSearchResultItem")
+            .ifPresent(clazz -> {
+                customizePrivateConstructor(clazz);
+                customizeClassesWithString(clazz);
+                bulkRemoveMethods(clazz, "setBasinId", "setName", "setIsActive", "setIsRetired", "setIsSubtropical",
+                    "setGovId");
+                clazz.getMethodsByName("getGovId").forEach(method -> method.setName("getGovernmentId"));
+            }));
     }
 
     // Remove setters from StormWindRadiiSummary
     private void customizeStormWindRadiiSummary(PackageCustomization models) {
-        models.getClass("StormWindRadiiSummary")
-                .customizeAst(ast -> ast.getClassByName("StormWindRadiiSummary").ifPresent(clazz -> {
-                    customizePrivateConstructor(clazz);
-                    customizeGeoJsonGeometryProperty(clazz, "getRadiiGeometry", "setRadiiGeometry", "radiiGeometry");
-                    bulkRemoveMethods(clazz, "setTimestamp", "setWindSpeed", "setRadiusSectorData");
-                }));
+        models.getClass("StormWindRadiiSummary").customizeAst(ast -> ast.getClassByName("StormWindRadiiSummary")
+            .ifPresent(clazz -> {
+                customizePrivateConstructor(clazz);
+                customizeGeoJsonGeometryProperty(clazz, "getRadiiGeometry", "setRadiiGeometry", "radiiGeometry");
+                bulkRemoveMethods(clazz, "setTimestamp", "setWindSpeed", "setRadiusSectorData");
+            }));
     }
 
     // Remove setters from SunGlare
@@ -568,14 +555,8 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "WeatherAlongRoutePrecipitation", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setDbz", "setType");
-            clazz.getMethodsByName("getDbz").get(0).setName("getDeciblesRelativeToZ");
+            clazz.getMethodsByName("getDbz").forEach(method -> method.setName("getDeciblesRelativeToZ"));
         });
-    }
-
-    // Remove setters from WeatherAlongRouteSummary
-    private void customizeWeatherAlongRouteSummary(PackageCustomization models) {
-        customizeClass(models, "WeatherAlongRouteSummary",
-                clazz -> bulkRemoveMethods(clazz, "setIconCode", "setHazards"));
     }
 
     // Remove setters from WeatherHazards
@@ -616,16 +597,17 @@ public class WeatherCustomization extends Customization {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setValue", "setUnit", "setUnitType", "setYear");
 
-            MethodDeclaration fromJson = clazz.getMethodsByName("fromJson").get(0);
-            String body = fromJson.getBody().get().toString();
-            body = body.replace("deserializedWeatherValueYear.year = reader.getNullable(JsonReader::getInt);",
+            clazz.getMethodsByName("fromJson").forEach(method -> method.getBody().ifPresent(body -> {
+                String bodyString = body.toString().replace(
+                    "deserializedWeatherValueYear.year = reader.getNullable(JsonReader::getInt);",
                     String.join("\n",
-                            "if (reader.currentToken() == JsonToken.NUMBER) {",
-                            "    deserializedWeatherValueYear.year = reader.getNullable(JsonReader::getInt);",
-                            "} else if (reader.currentToken() == JsonToken.STRING) {",
-                            "    deserializedWeatherValueYear.year = Integer.parseInt(reader.getString());",
-                            "}"));
-            fromJson.setBody(StaticJavaParser.parseBlock(body));
+                        "if (reader.currentToken() == JsonToken.NUMBER) {",
+                        "    deserializedWeatherValueYear.year = reader.getNullable(JsonReader::getInt);",
+                        "} else if (reader.currentToken() == JsonToken.STRING) {",
+                        "    deserializedWeatherValueYear.year = Integer.parseInt(reader.getString());",
+                        "}"));
+                method.setBody(StaticJavaParser.parseBlock(bodyString));
+            }));
         });
     }
 
@@ -678,15 +660,14 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "WaypointForecast", clazz -> {
             customizePrivateConstructor(clazz);
             bulkRemoveMethods(clazz, "setIconCode", "setIsDaytime", "setCloudCover", "setTemperature", "setWind",
-                    "setWindGust", "setPrecipitation", "setLightningCount", "setSunGlare", "setHazards",
-                    "setNotifications");
+                "setWindGust", "setPrecipitation", "setLightningCount", "setSunGlare", "setHazards", "setNotifications");
         });
     }
 
     private static void customizeClass(PackageCustomization models, String className,
-            Consumer<ClassOrInterfaceDeclaration> classOrInterfaceDeclarationConsumer) {
-        models.getClass(className)
-                .customizeAst(ast -> ast.getClassByName(className).ifPresent(classOrInterfaceDeclarationConsumer));
+        Consumer<ClassOrInterfaceDeclaration> classOrInterfaceDeclarationConsumer) {
+        models.getClass(className).customizeAst(ast -> ast.getClassByName(className)
+            .ifPresent(classOrInterfaceDeclarationConsumer));
     }
 
     private static void bulkRemoveMethods(ClassOrInterfaceDeclaration clazz, String... methodsToRemove) {
@@ -704,7 +685,7 @@ public class WeatherCustomization extends Customization {
     private void addToIntMethod(PackageCustomization models, String... classNames) {
         for (String className : classNames) {
             customizeClass(models, className, clazz -> clazz.addMethod("toInt").setType("int")
-                    .setBody(StaticJavaParser.parseBlock("{ return Integer.parseInt(toString()); }")));
+                .setBody(StaticJavaParser.parseBlock("{ return Integer.parseInt(toString()); }")));
         }
     }
 }

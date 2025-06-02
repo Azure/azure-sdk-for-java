@@ -4,6 +4,7 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.ai.personalizer.models.PolicySource;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,31 +22,37 @@ public final class PersonalizerPolicyResult implements JsonSerializable<Personal
     /*
      * The name of the Learning Settings.
      */
+    @Generated
     private String name;
 
     /*
      * The arguments of the Learning Settings.
      */
+    @Generated
     private String arguments;
 
     /*
      * The source of the Learning Settings.
      */
+    @Generated
     private PolicySource policySource;
 
     /*
      * The aggregate results of the Offline Evaluation.
      */
+    @Generated
     private List<PersonalizerPolicyResultSummary> summary;
 
     /*
      * The aggregate total of the Offline Evaluation.
      */
+    @Generated
     private PersonalizerPolicyResultTotalSummary totalSummary;
 
     /**
      * Creates an instance of PersonalizerPolicyResult class.
      */
+    @Generated
     public PersonalizerPolicyResult() {
     }
 
@@ -54,6 +61,7 @@ public final class PersonalizerPolicyResult implements JsonSerializable<Personal
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -63,6 +71,7 @@ public final class PersonalizerPolicyResult implements JsonSerializable<Personal
      *
      * @return the arguments value.
      */
+    @Generated
     public String getArguments() {
         return this.arguments;
     }
@@ -72,6 +81,7 @@ public final class PersonalizerPolicyResult implements JsonSerializable<Personal
      *
      * @return the policySource value.
      */
+    @Generated
     public PolicySource getPolicySource() {
         return this.policySource;
     }
@@ -81,6 +91,7 @@ public final class PersonalizerPolicyResult implements JsonSerializable<Personal
      *
      * @return the summary value.
      */
+    @Generated
     public List<PersonalizerPolicyResultSummary> getSummary() {
         return this.summary;
     }
@@ -90,6 +101,7 @@ public final class PersonalizerPolicyResult implements JsonSerializable<Personal
      *
      * @return the totalSummary value.
      */
+    @Generated
     public PersonalizerPolicyResultSummary getTotalSummary() {
         return this.totalSummary;
     }
@@ -97,6 +109,7 @@ public final class PersonalizerPolicyResult implements JsonSerializable<Personal
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -111,6 +124,7 @@ public final class PersonalizerPolicyResult implements JsonSerializable<Personal
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PersonalizerPolicyResult.
      */
+    @Generated
     public static PersonalizerPolicyResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerPolicyResult deserializedPersonalizerPolicyResult = new PersonalizerPolicyResult();

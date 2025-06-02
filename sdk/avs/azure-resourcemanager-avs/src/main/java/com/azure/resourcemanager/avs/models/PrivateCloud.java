@@ -66,6 +66,13 @@ public interface PrivateCloud {
     PrivateCloudIdentity identity();
 
     /**
+     * Gets the zones property: The availability zones.
+     * 
+     * @return the zones value.
+     */
+    List<String> zones();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -331,11 +338,11 @@ public interface PrivateCloud {
          * The stage of the PrivateCloud definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithManagementCluster,
-            DefinitionStages.WithInternet, DefinitionStages.WithIdentitySources, DefinitionStages.WithAvailability,
-            DefinitionStages.WithEncryption, DefinitionStages.WithExtendedNetworkBlocks, DefinitionStages.WithCircuit,
-            DefinitionStages.WithNetworkBlock, DefinitionStages.WithVcenterPassword, DefinitionStages.WithNsxtPassword,
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithZones, DefinitionStages.WithManagementCluster, DefinitionStages.WithInternet,
+            DefinitionStages.WithIdentitySources, DefinitionStages.WithAvailability, DefinitionStages.WithEncryption,
+            DefinitionStages.WithExtendedNetworkBlocks, DefinitionStages.WithCircuit, DefinitionStages.WithNetworkBlock,
+            DefinitionStages.WithVcenterPassword, DefinitionStages.WithNsxtPassword,
             DefinitionStages.WithSecondaryCircuit, DefinitionStages.WithVirtualNetworkId,
             DefinitionStages.WithDnsZoneType {
             /**
@@ -378,6 +385,19 @@ public interface PrivateCloud {
              * @return the next definition stage.
              */
             WithCreate withIdentity(PrivateCloudIdentity identity);
+        }
+
+        /**
+         * The stage of the PrivateCloud definition allowing to specify zones.
+         */
+        interface WithZones {
+            /**
+             * Specifies the zones property: The availability zones..
+             * 
+             * @param zones The availability zones.
+             * @return the next definition stage.
+             */
+            WithCreate withZones(List<String> zones);
         }
 
         /**
