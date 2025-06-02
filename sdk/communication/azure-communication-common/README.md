@@ -113,12 +113,15 @@ This approach needs to be used for authorizing an Entra user with a Teams licens
 This requires providing the `https://auth.msft.communication.azure.com/TeamsExtension.ManageCalls` scope.
 
 ```java
-InteractiveBrowserCredentialOptions options = new InteractiveBrowserCredentialOptions("<your-tenant-id>", "<your-client-id>", new Uri("<your-redirect-uri>"));
-InteractiveBrowserCredential entraTokenCredential = new InteractiveBrowserCredential(options);
+InteractiveBrowserCredential tokenCredential = new InteractiveBrowserCredentialBuilder()
+    .clientId("<your-client-id>")
+    .tenantId("<your-tenant-id>")
+    .redirectUrl("<your-redirect-uri>")
+    .build();
 String resourceEndpoint = "https://<your-resource>.communication.azure.com";
 String[] scopes = new String[] { "https://auth.msft.communication.azure.com/TeamsExtension.ManageCalls" };
 
-EntraCommunicationTokenCredentialOptions entraTokenCredentialOptions = new EntraCommunicationTokenCredentialOptions(entraTokenCredential, resourceEndpoint, scopes);
+EntraCommunicationTokenCredentialOptions entraTokenCredentialOptions = new EntraCommunicationTokenCredentialOptions(tokenCredential, resourceEndpoint, scopes);
 CommunicationTokenCredential credential = new CommunicationTokenCredential(entraTokenCredentialOptions);
 ```
 
@@ -127,12 +130,15 @@ The scopes for these scenarios follow the format `https://communication.azure.co
 If specific scopes are not provided, the default scopes will be set to `https://communication.azure.com/clients/.default`.
 
 ```java
-InteractiveBrowserCredentialOptions options = new InteractiveBrowserCredentialOptions("<your-tenant-id>", "<your-client-id>", new Uri("<your-redirect-uri>"));
-InteractiveBrowserCredential entraTokenCredential = new InteractiveBrowserCredential(options);
+InteractiveBrowserCredential tokenCredential = new InteractiveBrowserCredentialBuilder()
+    .clientId("<your-client-id>")
+    .tenantId("<your-tenant-id>")
+    .redirectUrl("<your-redirect-uri>")
+    .build();
 String resourceEndpoint = "https://<your-resource>.communication.azure.com";
 String[] scopes = new String[] { "https://communication.azure.com/clients/VoIP" };
 
-EntraCommunicationTokenCredentialOptions entraTokenCredentialOptions = new EntraCommunicationTokenCredentialOptions(entraTokenCredential, resourceEndpoint, scopes);
+EntraCommunicationTokenCredentialOptions entraTokenCredentialOptions = new EntraCommunicationTokenCredentialOptions(tokenCredential, resourceEndpoint, scopes);
 CommunicationTokenCredential credential = new CommunicationTokenCredential(entraTokenCredentialOptions);
 ```
 
