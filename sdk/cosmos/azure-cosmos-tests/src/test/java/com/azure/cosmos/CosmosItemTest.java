@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -61,6 +62,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1244,6 +1246,50 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 =
                 container.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void queryItemsWithLatestCommitted() throws Exception{
+
+        if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("This test is only relevant for DIRECT mode");
+        }
+
+        ConsistencyLevel accountConsistencyLevel = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getEffectiveConsistencyLevel(this.client.asyncClient(), OperationType.Create, ConsistencyLevel.STRONG);
+
+        if (accountConsistencyLevel != ConsistencyLevel.SESSION
+            && accountConsistencyLevel != ConsistencyLevel.EVENTUAL) {
+
+            throw new SkipException(
+                "This test is only relevant for accounts with consistency level EVENTUAL or SESSSION.");
+        }
+
+        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+
+        String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions()
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+
+        Iterator<FeedResponse<InternalObjectNode>> feedResponseIterator1 =
+            container
+                .queryItems(query, cosmosQueryRequestOptions, InternalObjectNode.class)
+                .iterableByPage(null)
+                .iterator();
+
+        boolean hasNext = feedResponseIterator1.hasNext();
+
+        // Very basic validation
+        assertThat(hasNext).isTrue();
+        FeedResponse<InternalObjectNode> response = feedResponseIterator1.next();
+        CosmosDiagnosticsContext ctx = response.getCosmosDiagnostics().getDiagnosticsContext();
+        assertThat(ctx).isNotNull();
+        logger.info("Diagnostics context: {}", ctx.toJson());
+        assertThat(ctx.getDiagnostics()).hasSize(1);
+
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)

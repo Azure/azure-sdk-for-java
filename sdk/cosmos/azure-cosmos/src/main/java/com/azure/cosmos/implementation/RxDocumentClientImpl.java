@@ -4387,6 +4387,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
+            public ReadConsistencyStrategy getReadConsistencyStrategy() {
+                return RxDocumentClientImpl.this.getReadConsistencyStrategy();
+            }
+
+            @Override
+            public ConsistencyLevel getConsistencyLevel() {
+                return RxDocumentClientImpl.this.getConsistencyLevel();
+            }
+
+            @Override
+            public void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
+                RxDocumentClientImpl.this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            }
+
+            @Override
             public Mono<RxDocumentServiceResponse> readFeedAsync(RxDocumentServiceRequest request) {
                 // TODO Auto-generated method stub
                 return null;
