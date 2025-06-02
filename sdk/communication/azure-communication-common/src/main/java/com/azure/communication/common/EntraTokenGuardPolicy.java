@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 
@@ -53,7 +54,7 @@ final class EntraTokenGuardPolicy implements HttpPipelinePolicy {
             AccessToken accessToken = new TokenParser().parseJWTToken(accessTokenNode.get("token").asText());
 
             return OffsetDateTime.now().isBefore(accessToken.getExpiresAt());
-        } catch (Exception e) {
+        } catch (RuntimeException | IOException e) {
             return false;
         }
     }

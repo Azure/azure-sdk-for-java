@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static com.azure.communication.common.EntraCommunicationTokenUtils.allScopesStartWith;
@@ -59,7 +60,7 @@ final class EntraTokenCredential implements AutoCloseable {
      */
     EntraTokenCredential(EntraCommunicationTokenCredentialOptions entraTokenOptions, HttpClient httpClient) {
         this.resourceEndpoint = entraTokenOptions.getResourceEndpoint();
-        this.scopes = entraTokenOptions.getScopes() == null ? null : entraTokenOptions.getScopes().clone();
+        this.scopes = entraTokenOptions.getScopes();
         this.pipeline = createPipelineFromOptions(entraTokenOptions, httpClient);
 
         this.exchangeEntraToken().subscribe();
@@ -138,7 +139,7 @@ final class EntraTokenCredential implements AutoCloseable {
                 String token = accessTokenNode.get("token").asText();
 
                 return Mono.just(token);
-            } catch (Exception ex) {
+            } catch (RuntimeException | IOException ex) {
                 return FluxUtil.monoError(logger,
                     new HttpResponseException("Failed to parse the response : " + body, response));
             }
