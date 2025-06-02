@@ -13,7 +13,7 @@ import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 /**
  * The Entra Communication Token Options.
  */
-public class EntraCommunicationTokenCredentialOptions {
+public final class EntraCommunicationTokenCredentialOptions {
 
     private static final String[] DEFAULT_SCOPES = { DEFAULT_SCOPE };
 

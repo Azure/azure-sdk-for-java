@@ -64,7 +64,7 @@ public final class TeamsExtensionUserIdentifier extends CommunicationIdentifier 
      * @return TeamsExtensionUserIdentifier object itself.
      */
     @Override
-    protected TeamsExtensionUserIdentifier setRawId(String rawId) {
+    public TeamsExtensionUserIdentifier setRawId(String rawId) {
         super.setRawId(rawId);
         return this;
     }
@@ -104,7 +104,7 @@ public final class TeamsExtensionUserIdentifier extends CommunicationIdentifier 
     /**
      * Generate rawId for TeamsExtensionUserIdentifier
      */
-    public void generateRawId() {
+    private void generateRawId() {
         if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
             super.setRawId(ACS_USER_DOD_CLOUD_PREFIX + resourceId + "_" + tenantId + "_" + userId);
         } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.GCCH)) {
