@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
@@ -1288,6 +1289,8 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosDiagnosticsContext ctx = response.getCosmosDiagnostics().getDiagnosticsContext();
         assertThat(ctx).isNotNull();
         logger.info("Diagnostics context: {}", ctx.toJson());
+
+        assertThat(ctx.getEffectiveReadConsistencyStrategy()).isEqualTo(ReadConsistencyStrategy.LATEST_COMMITTED);
         assertThat(ctx.getDiagnostics()).hasSize(2);
         List<CosmosDiagnostics> diagnosticsList = new ArrayList<>(ctx.getDiagnostics());
         CosmosDiagnostics queryPlanDiagnostics = diagnosticsList.get(0);
@@ -1349,6 +1352,8 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosDiagnosticsContext ctx = response.getDiagnostics().getDiagnosticsContext();
         assertThat(ctx).isNotNull();
         logger.info("Diagnostics context: {}", ctx.toJson());
+
+        assertThat(ctx.getEffectiveReadConsistencyStrategy()).isEqualTo(ReadConsistencyStrategy.LATEST_COMMITTED);
         assertThat(ctx.getDiagnostics()).hasSize(1);
         List<CosmosDiagnostics> diagnosticsList = new ArrayList<>(ctx.getDiagnostics());
         CosmosDiagnostics pointReadDiagnostics = diagnosticsList.get(0);
@@ -1404,6 +1409,8 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosDiagnosticsContext ctx = response.getCosmosDiagnostics().getDiagnosticsContext();
         assertThat(ctx).isNotNull();
         logger.info("Diagnostics context: {}", ctx.toJson());
+
+        assertThat(ctx.getEffectiveReadConsistencyStrategy()).isEqualTo(ReadConsistencyStrategy.LATEST_COMMITTED);
         assertThat(ctx.getDiagnostics()).hasSize(1);
         List<CosmosDiagnostics> diagnosticsList = new ArrayList<>(ctx.getDiagnostics());
         CosmosDiagnostics pointReadDiagnostics = diagnosticsList.get(0);
@@ -1454,6 +1461,8 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosDiagnosticsContext ctx = response.getCosmosDiagnostics().getDiagnosticsContext();
         assertThat(ctx).isNotNull();
         logger.info("Diagnostics context: {}", ctx.toJson());
+
+        assertThat(ctx.getEffectiveReadConsistencyStrategy()).isEqualTo(ReadConsistencyStrategy.LATEST_COMMITTED);
         assertThat(ctx.getDiagnostics()).hasSize(1);
         List<CosmosDiagnostics> diagnosticsList = new ArrayList<>(ctx.getDiagnostics());
         CosmosDiagnostics pointReadDiagnostics = diagnosticsList.get(0);
@@ -1467,6 +1476,62 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(storeResponseList.get(0).getRequestOperationType()).isEqualTo(OperationType.Read);
         assertThat(storeResponseList.get(1).getRequestResourceType()).isEqualTo(ResourceType.Document);
         assertThat(storeResponseList.get(1).getRequestOperationType()).isEqualTo(OperationType.Read);
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void queryChangeFeedWithLatestCommitted() throws JsonProcessingException {
+        if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("This test is only relevant for DIRECT mode");
+        }
+
+        ConsistencyLevel accountConsistencyLevel = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getEffectiveConsistencyLevel(this.client.asyncClient(), OperationType.Create, ConsistencyLevel.STRONG);
+
+        if (accountConsistencyLevel != ConsistencyLevel.SESSION
+            && accountConsistencyLevel != ConsistencyLevel.EVENTUAL) {
+
+            throw new SkipException(
+                "This test is only relevant for accounts with consistency level EVENTUAL or SESSION.");
+        }
+
+        String pk = UUID.randomUUID().toString();
+        String id1 = UUID.randomUUID().toString();
+        ObjectNode properties1 = getDocumentDefinition(id1, pk);
+        container.createItem(properties1);
+
+        List<CosmosItemIdentity> identities = new ArrayList<>();
+        identities.add(new CosmosItemIdentity(new PartitionKey(pk), id1));
+
+        CosmosChangeFeedRequestOptions requestOptions = CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(
+            FeedRange.forLogicalPartition(new PartitionKey(pk)))
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+
+        FeedResponse<ObjectNode> response = container
+            .queryChangeFeed(requestOptions, ObjectNode.class)
+            .iterableByPage(null)
+            .iterator()
+            .next();
+
+        CosmosDiagnosticsContext ctx = response.getCosmosDiagnostics().getDiagnosticsContext();
+        assertThat(ctx).isNotNull();
+        logger.info("Diagnostics context: {}", ctx.toJson());
+
+        assertThat(ctx.getEffectiveReadConsistencyStrategy()).isEqualTo(ReadConsistencyStrategy.LATEST_COMMITTED);
+        assertThat(ctx.getDiagnostics()).hasSize(1);
+        List<CosmosDiagnostics> diagnosticsList = new ArrayList<>(ctx.getDiagnostics());
+        CosmosDiagnostics changeFeedDiagnostics = diagnosticsList.get(0);
+        List<ClientSideRequestStatistics> storeResultListChangeFeed =
+            new ArrayList<>(changeFeedDiagnostics.getClientSideRequestStatistics());
+        assertThat(storeResultListChangeFeed).hasSize(1);
+        ArrayList<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseList =
+            new ArrayList<>(storeResultListChangeFeed.get(0).getResponseStatisticsList());
+        assertThat(storeResponseList).hasSize(2);
+        assertThat(storeResponseList.get(0).getRequestResourceType()).isEqualTo(ResourceType.Document);
+        assertThat(storeResponseList.get(0).getRequestOperationType()).isEqualTo(OperationType.ReadFeed);
+        assertThat(storeResponseList.get(1).getRequestResourceType()).isEqualTo(ResourceType.Document);
+        assertThat(storeResponseList.get(1).getRequestOperationType()).isEqualTo(OperationType.ReadFeed);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
