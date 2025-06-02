@@ -127,7 +127,7 @@ final class EntraTokenCredential implements AutoCloseable {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Scopes validation failed. Ensure all scopes start with either "
                     + TEAMS_EXTENSION_SCOPE_PREFIX + " or " + COMMUNICATION_CLIENTS_SCOPE_PREFIX));
-    }
+        }
     }
 
     private Mono<String> parseAccessTokenFromResponse(HttpResponse response) {
