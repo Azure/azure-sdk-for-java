@@ -72,6 +72,7 @@ Depending on your scenario, you may want to initialize the `CommunicationTokenCr
 
 - a static token (suitable for short-lived clients used to e.g. send one-off Chat messages) or
 - a callback function that ensures a continuous authentication state (ideal e.g. for long Calling sessions).
+- a token credential capable of obtaining an Entra user token. You can provide any implementation of [Azure.Core.TokenCredential](https://learn.microsoft.com/es-es/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable). It is suitable for scenarios where Entra user access tokens are needed to authenticate with Communication Services.
 
 The tokens supplied to the `CommunicationTokenCredential` either through the constructor or via the token refresher callback can be obtained using the Azure Communication Identity library.
 
@@ -101,6 +102,38 @@ CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRef
     .setRefreshProactively(true)
     .setInitialToken(token);
 CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);     
+```
+
+### Create a credential with a token credential capable of obtaining an Entra user token
+
+For scenarios where an Entra user can be used with Communication Services, you need to initialize any implementation of [Azure.Core.TokenCredential](https://learn.microsoft.com/es-es/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) and provide it to the `EntraCommunicationTokenCredentialOptions`.
+Along with this, you must provide the URI of the Azure Communication Services resource and the scopes required for the Entra user token. These scopes determine the permissions granted to the token.
+
+This approach needs to be used for authorizing an Entra user with a Teams license to use Teams Phone Extensibility features through your Azure Communication Services resource.
+This requires providing the `https://auth.msft.communication.azure.com/TeamsExtension.ManageCalls` scope.
+
+```java
+InteractiveBrowserCredentialOptions options = new InteractiveBrowserCredentialOptions("<your-tenant-id>", "<your-client-id>", new Uri("<your-redirect-uri>"));
+InteractiveBrowserCredential entraTokenCredential = new InteractiveBrowserCredential(options);
+String resourceEndpoint = "https://<your-resource>.communication.azure.com";
+String[] scopes = new String[] { "https://auth.msft.communication.azure.com/TeamsExtension.ManageCalls" };
+
+EntraCommunicationTokenCredentialOptions entraTokenCredentialOptions = new EntraCommunicationTokenCredentialOptions(entraTokenCredential, resourceEndpoint, scopes);
+CommunicationTokenCredential credential = new CommunicationTokenCredential(entraTokenCredentialOptions);
+```
+
+Other scenarios for Entra users to utilize Azure Communication Services are currently in the **preview stage only and should not be used in production**.
+The scopes for these scenarios follow the format `https://communication.azure.com/clients/<Azure Communication Services Clients API permission>`.
+If specific scopes are not provided, the default scopes will be set to `https://communication.azure.com/clients/.default`.
+
+```java
+InteractiveBrowserCredentialOptions options = new InteractiveBrowserCredentialOptions("<your-tenant-id>", "<your-client-id>", new Uri("<your-redirect-uri>"));
+InteractiveBrowserCredential entraTokenCredential = new InteractiveBrowserCredential(options);
+String resourceEndpoint = "https://<your-resource>.communication.azure.com";
+String[] scopes = new String[] { "https://communication.azure.com/clients/VoIP" };
+
+EntraCommunicationTokenCredentialOptions entraTokenCredentialOptions = new EntraCommunicationTokenCredentialOptions(entraTokenCredential, resourceEndpoint, scopes);
+CommunicationTokenCredential credential = new CommunicationTokenCredential(entraTokenCredentialOptions);
 ```
 
 ## Troubleshooting

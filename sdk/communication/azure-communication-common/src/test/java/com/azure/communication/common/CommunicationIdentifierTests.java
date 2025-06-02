@@ -32,7 +32,8 @@ public class CommunicationIdentifierTests {
         assertEquals(CommunicationCloudEnvironment.PUBLIC,
             new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130").getCloudEnvironment());
         assertEquals(CommunicationCloudEnvironment.PUBLIC,
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd").getCloudEnvironment());
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd").getCloudEnvironment());
     }
 
     @Test
@@ -55,37 +56,40 @@ public class CommunicationIdentifierTests {
     @Test
     public void rawIdTakesPrecedenceInEqualityCheck() {
         // Teams users
-        assertEquals(
-            new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true),
+        assertEquals(new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true),
             new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true));
         assertNotEquals(
             new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true).setRawId("Raw Id"),
             new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true).setRawId("Another Raw Id"));
+        assertEquals(new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true),
+            new MicrosoftTeamsUserIdentifier("override", true)
+                .setRawId("8:teamsvisitor:45ab2481-1c1c-4005-be24-0ffb879b1130"));
         assertEquals(
-            new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true),
-            new MicrosoftTeamsUserIdentifier("override", true).setRawId("8:teamsvisitor:45ab2481-1c1c-4005-be24-0ffb879b1130"));
-        assertEquals(
-            new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH),
+            new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", false)
+                .setCloudEnvironment(CommunicationCloudEnvironment.GCCH),
             new MicrosoftTeamsUserIdentifier("override", false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH)
                 .setRawId("8:gcch:45ab2481-1c1c-4005-be24-0ffb879b1130"));
         assertEquals(
-            new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true).setCloudEnvironment(CommunicationCloudEnvironment.GCCH),
+            new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true)
+                .setCloudEnvironment(CommunicationCloudEnvironment.GCCH),
             new MicrosoftTeamsUserIdentifier("override", false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH)
                 .setRawId("8:teamsvisitor:45ab2481-1c1c-4005-be24-0ffb879b1130"));
         assertEquals(
-            new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", false).setCloudEnvironment(CommunicationCloudEnvironment.DOD),
+            new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", false)
+                .setCloudEnvironment(CommunicationCloudEnvironment.DOD),
             new MicrosoftTeamsUserIdentifier("override", false).setCloudEnvironment(CommunicationCloudEnvironment.DOD)
                 .setRawId("8:dod:45ab2481-1c1c-4005-be24-0ffb879b1130"));
         assertEquals(
-            new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true).setCloudEnvironment(CommunicationCloudEnvironment.DOD),
+            new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true)
+                .setCloudEnvironment(CommunicationCloudEnvironment.DOD),
             new MicrosoftTeamsUserIdentifier("override", false).setCloudEnvironment(CommunicationCloudEnvironment.DOD)
                 .setRawId("8:teamsvisitor:45ab2481-1c1c-4005-be24-0ffb879b1130"));
-        assertEquals(
-            new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", false),
-            new MicrosoftTeamsUserIdentifier("override", false).setRawId("8:orgid:45ab2481-1c1c-4005-be24-0ffb879b1130"));
-        assertEquals(
-            new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true),
-            new MicrosoftTeamsUserIdentifier("override", false).setRawId("8:teamsvisitor:45ab2481-1c1c-4005-be24-0ffb879b1130"));
+        assertEquals(new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", false),
+            new MicrosoftTeamsUserIdentifier("override", false)
+                .setRawId("8:orgid:45ab2481-1c1c-4005-be24-0ffb879b1130"));
+        assertEquals(new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true),
+            new MicrosoftTeamsUserIdentifier("override", false)
+                .setRawId("8:teamsvisitor:45ab2481-1c1c-4005-be24-0ffb879b1130"));
         assertEquals(
             new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true).setRawId("test raw id")
                 .setCloudEnvironment(CommunicationCloudEnvironment.GCCH),
@@ -94,61 +98,106 @@ public class CommunicationIdentifierTests {
 
         // Phone numbers
         assertEquals(new PhoneNumberIdentifier("+14255550123"), new PhoneNumberIdentifier("+14255550123"));
-        assertEquals(new PhoneNumberIdentifier("+14255550123"), new PhoneNumberIdentifier("+override").setRawId("4:+14255550123"));
-        assertNotEquals(new PhoneNumberIdentifier("+14255550123").setRawId("Raw Id"), new PhoneNumberIdentifier("+14255550123").setRawId("Another Raw Id"));
+        assertEquals(new PhoneNumberIdentifier("+14255550123"),
+            new PhoneNumberIdentifier("+override").setRawId("4:+14255550123"));
+        assertNotEquals(new PhoneNumberIdentifier("+14255550123").setRawId("Raw Id"),
+            new PhoneNumberIdentifier("+14255550123").setRawId("Another Raw Id"));
 
         // Teams Applications
         assertEquals(
-            new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC),
-            new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC));
+            new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130",
+                CommunicationCloudEnvironment.PUBLIC),
+            new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130",
+                CommunicationCloudEnvironment.PUBLIC));
         assertNotEquals(
-            new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC),
-            new MicrosoftTeamsAppIdentifier("55ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC));
+            new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130",
+                CommunicationCloudEnvironment.PUBLIC),
+            new MicrosoftTeamsAppIdentifier("55ab2481-1c1c-4005-be24-0ffb879b1130",
+                CommunicationCloudEnvironment.PUBLIC));
         assertNotEquals(
-            new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.PUBLIC),
+            new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130",
+                CommunicationCloudEnvironment.PUBLIC),
             new MicrosoftTeamsAppIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", CommunicationCloudEnvironment.DOD));
 
         // Teams Extension User
         assertEquals(
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"),
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"));
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"),
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"));
         assertEquals(
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"),
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.PUBLIC));
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"),
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.PUBLIC));
         assertNotEquals(
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"),
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.GCCH));
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"),
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.GCCH));
         assertNotEquals(
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"),
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.DOD));
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"),
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.DOD));
         assertEquals(
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.GCCH),
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.GCCH));
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.GCCH),
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.GCCH));
         assertEquals(
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.DOD),
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.DOD));
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.DOD),
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.DOD));
         assertEquals(
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.PUBLIC),
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.PUBLIC)
-                .setRawId("8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768"));
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.PUBLIC),
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.PUBLIC).setRawId(
+                    "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768"));
         assertEquals(
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.GCCH),
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.GCCH)
-                .setRawId("8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768"));
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.GCCH),
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.GCCH).setRawId(
+                    "8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768"));
         assertEquals(
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.DOD),
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.DOD)
-                .setRawId("8:dod-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768"));
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.DOD),
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.DOD).setRawId(
+                    "8:dod-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768"));
         assertNotEquals(
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd").setRawId("Raw Id"),
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd").setRawId("Another Raw Id"));
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd").setRawId("Raw Id"),
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd")
+                    .setRawId("Another Raw Id"));
     }
 
     @Test
     public void getRawIdOfIdentifier() {
-        assertRawId(new CommunicationUserIdentifier("8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"),
+        assertRawId(
+            new CommunicationUserIdentifier(
+                "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"),
             "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130");
-        assertRawId(new CommunicationUserIdentifier("8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"),
+        assertRawId(
+            new CommunicationUserIdentifier(
+                "8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"),
             "8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130");
         assertRawId(new CommunicationUserIdentifier("someFutureFormat"), "someFutureFormat");
 
@@ -165,29 +214,45 @@ public class CommunicationIdentifierTests {
         assertRawId(new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true)
             .setRawId("8:orgid:legacyFormat"), "8:orgid:legacyFormat");
 
-        assertRawId(new MicrosoftTeamsAppIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.PUBLIC),
-            "28:orgid:01234567-89ab-cdef-0123-456789abcdef");
-        assertRawId(new MicrosoftTeamsAppIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.GCCH),
+        assertRawId(new MicrosoftTeamsAppIdentifier("01234567-89ab-cdef-0123-456789abcdef",
+            CommunicationCloudEnvironment.PUBLIC), "28:orgid:01234567-89ab-cdef-0123-456789abcdef");
+        assertRawId(
+            new MicrosoftTeamsAppIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.GCCH),
             "28:gcch:01234567-89ab-cdef-0123-456789abcdef");
-        assertRawId(new MicrosoftTeamsAppIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.DOD),
+        assertRawId(
+            new MicrosoftTeamsAppIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.DOD),
             "28:dod:01234567-89ab-cdef-0123-456789abcdef");
 
-        assertRawId(new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"),
+        assertRawId(
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"),
             "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768");
-        assertRawId(new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.PUBLIC),
+        assertRawId(
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.PUBLIC),
             "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768");
-        assertRawId(new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.GCCH),
+        assertRawId(
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.GCCH),
             "8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768");
-        assertRawId(new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.DOD),
+        assertRawId(
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.DOD),
             "8:dod-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768");
 
         assertRawId(new PhoneNumberIdentifier("+112345556789"), "4:+112345556789");
         assertRawId(new PhoneNumberIdentifier("112345556789"), "4:112345556789");
         assertRawId(new PhoneNumberIdentifier("otherFormat").setRawId("4:207ffef6-9444-41fb-92ab-20eacaae2768"),
             "4:207ffef6-9444-41fb-92ab-20eacaae2768");
-        assertRawId(new PhoneNumberIdentifier("otherFormat").setRawId("4:207ffef6-9444-41fb-92ab-20eacaae2768_207ffef6-9444-41fb-92ab-20eacaae2768"),
+        assertRawId(
+            new PhoneNumberIdentifier("otherFormat")
+                .setRawId("4:207ffef6-9444-41fb-92ab-20eacaae2768_207ffef6-9444-41fb-92ab-20eacaae2768"),
             "4:207ffef6-9444-41fb-92ab-20eacaae2768_207ffef6-9444-41fb-92ab-20eacaae2768");
-        assertRawId(new PhoneNumberIdentifier("otherFormat").setRawId("4:+112345556789_207ffef6-9444-41fb-92ab-20eacaae2768"),
+        assertRawId(
+            new PhoneNumberIdentifier("otherFormat").setRawId("4:+112345556789_207ffef6-9444-41fb-92ab-20eacaae2768"),
             "4:+112345556789_207ffef6-9444-41fb-92ab-20eacaae2768");
         assertRawId(new PhoneNumberIdentifier("+112345556789").setRawId("4:otherFormat"), "4:otherFormat");
 
@@ -199,13 +264,17 @@ public class CommunicationIdentifierTests {
     @Test
     public void createIdentifierFromRawId() {
         assertIdentifier("8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130",
-            new CommunicationUserIdentifier("8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"));
+            new CommunicationUserIdentifier(
+                "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"));
         assertIdentifier("8:spool:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130",
-            new CommunicationUserIdentifier("8:spool:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"));
+            new CommunicationUserIdentifier(
+                "8:spool:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"));
         assertIdentifier("8:dod-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130",
-            new CommunicationUserIdentifier("8:dod-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"));
+            new CommunicationUserIdentifier(
+                "8:dod-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"));
         assertIdentifier("8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130",
-            new CommunicationUserIdentifier("8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"));
+            new CommunicationUserIdentifier(
+                "8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"));
         assertIdentifier("8:acs:something", new CommunicationUserIdentifier("8:acs:something"));
 
         assertIdentifier("8:orgid:45ab2481-1c1c-4005-be24-0ffb879b1130",
@@ -220,25 +289,35 @@ public class CommunicationIdentifierTests {
         assertIdentifier("8:teamsvisitor:45ab2481-1c1c-4005-be24-0ffb879b1130",
             new MicrosoftTeamsUserIdentifier("45ab2481-1c1c-4005-be24-0ffb879b1130", true)
                 .setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC));
-        assertIdentifier("8:orgid:legacyFormat",
-            new MicrosoftTeamsUserIdentifier("legacyFormat", false)
-                .setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC));
+        assertIdentifier("8:orgid:legacyFormat", new MicrosoftTeamsUserIdentifier("legacyFormat", false)
+            .setCloudEnvironment(CommunicationCloudEnvironment.PUBLIC));
 
-        assertIdentifier("28:orgid:01234567-89ab-cdef-0123-456789abcdef",
-            new MicrosoftTeamsAppIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.PUBLIC));
-        assertIdentifier("28:gcch:01234567-89ab-cdef-0123-456789abcdef",
-            new MicrosoftTeamsAppIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.GCCH));
+        assertIdentifier("28:orgid:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftTeamsAppIdentifier(
+            "01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.PUBLIC));
+        assertIdentifier("28:gcch:01234567-89ab-cdef-0123-456789abcdef", new MicrosoftTeamsAppIdentifier(
+            "01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.GCCH));
         assertIdentifier("28:dod:01234567-89ab-cdef-0123-456789abcdef",
             new MicrosoftTeamsAppIdentifier("01234567-89ab-cdef-0123-456789abcdef", CommunicationCloudEnvironment.DOD));
 
-        assertIdentifier("8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768",
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"));
-        assertIdentifier("8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768",
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.PUBLIC));
-        assertIdentifier("8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768",
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.GCCH));
-        assertIdentifier("8:dod-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768",
-            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768", "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd", CommunicationCloudEnvironment.DOD));
+        assertIdentifier(
+            "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768",
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd"));
+        assertIdentifier(
+            "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768",
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.PUBLIC));
+        assertIdentifier(
+            "8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768",
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.GCCH));
+        assertIdentifier(
+            "8:dod-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768",
+            new TeamsExtensionUserIdentifier("207ffef6-9444-41fb-92ab-20eacaae2768",
+                "45ab2481-1c1c-4005-be24-0ffb879b1130", "bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd",
+                CommunicationCloudEnvironment.DOD));
 
         assertIdentifier("4:+112345556789", new PhoneNumberIdentifier("+112345556789"));
         assertIdentifier("4:112345556789", new PhoneNumberIdentifier("112345556789"));
@@ -269,9 +348,12 @@ public class CommunicationIdentifierTests {
         assertRoundTrip("8:gcch:45ab2481-1c1c-4005-be24-0ffb879b1130");
         assertRoundTrip("8:teamsvisitor:45ab2481-1c1c-4005-be24-0ffb879b1130");
         assertRoundTrip("8:orgid:legacyFormat");
-        assertRoundTrip("8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768");
-        assertRoundTrip("8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768");
-        assertRoundTrip("8:dod-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768");
+        assertRoundTrip(
+            "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768");
+        assertRoundTrip(
+            "8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768");
+        assertRoundTrip(
+            "8:dod-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130_207ffef6-9444-41fb-92ab-20eacaae2768");
         assertRoundTrip("4:112345556789");
         assertRoundTrip("4:+112345556789");
         assertRoundTrip("4:207ffef6-9444-41fb-92ab-20eacaae2768");

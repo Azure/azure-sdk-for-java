@@ -25,7 +25,8 @@ public final class TeamsExtensionUserIdentifier extends CommunicationIdentifier 
      * @param cloudEnvironment The cloudEnvironment environment that the Microsoft Teams Extension user belongs to. Defaults to PUBLIC if null.
      * @throws IllegalArgumentException if any parameter fail the validation.
      */
-    public TeamsExtensionUserIdentifier(String userId, String tenantId, String resourceId, CommunicationCloudEnvironment cloudEnvironment) {
+    public TeamsExtensionUserIdentifier(String userId, String tenantId, String resourceId,
+        CommunicationCloudEnvironment cloudEnvironment) {
         if (CoreUtils.isNullOrEmpty(userId)) {
             throw new IllegalArgumentException("The initialization parameter [userId] cannot be null or empty.");
         }

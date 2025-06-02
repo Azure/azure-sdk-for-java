@@ -67,18 +67,25 @@ public abstract class CommunicationIdentifier {
         return switch (prefix) {
             case TEAMS_USER_ANONYMOUS_PREFIX -> new MicrosoftTeamsUserIdentifier(suffix, true);
             case TEAMS_USER_PUBLIC_CLOUD_PREFIX -> new MicrosoftTeamsUserIdentifier(suffix, false);
-            case TEAMS_USER_DOD_CLOUD_PREFIX -> new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
-            case TEAMS_USER_GCCH_CLOUD_PREFIX -> new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
+            case TEAMS_USER_DOD_CLOUD_PREFIX -> new MicrosoftTeamsUserIdentifier(suffix, false)
+                .setCloudEnvironment(CommunicationCloudEnvironment.DOD);
+            case TEAMS_USER_GCCH_CLOUD_PREFIX -> new MicrosoftTeamsUserIdentifier(suffix, false)
+                .setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
             case SPOOL_USER_PREFIX -> new CommunicationUserIdentifier(rawId);
-            case ACS_USER_PREFIX, ACS_USER_DOD_CLOUD_PREFIX, ACS_USER_GCCH_CLOUD_PREFIX -> tryCreateTeamsExtensionUserOrCommunicationUser(prefix, suffix, rawId);
-            case TEAMS_APP_PUBLIC_CLOUD_PREFIX -> new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.PUBLIC);
-            case TEAMS_APP_GCCH_CLOUD_PREFIX -> new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.GCCH);
-            case TEAMS_APP_DOD_CLOUD_PREFIX -> new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.DOD);
+            case ACS_USER_PREFIX, ACS_USER_DOD_CLOUD_PREFIX, ACS_USER_GCCH_CLOUD_PREFIX -> tryCreateTeamsExtensionUserOrCommunicationUser(
+                prefix, suffix, rawId);
+            case TEAMS_APP_PUBLIC_CLOUD_PREFIX -> new MicrosoftTeamsAppIdentifier(suffix,
+                CommunicationCloudEnvironment.PUBLIC);
+            case TEAMS_APP_GCCH_CLOUD_PREFIX -> new MicrosoftTeamsAppIdentifier(suffix,
+                CommunicationCloudEnvironment.GCCH);
+            case TEAMS_APP_DOD_CLOUD_PREFIX -> new MicrosoftTeamsAppIdentifier(suffix,
+                CommunicationCloudEnvironment.DOD);
             default -> new UnknownIdentifier(rawId);
         };
     }
 
-    private static CommunicationIdentifier tryCreateTeamsExtensionUserOrCommunicationUser(String prefix, String suffix, String rawId) {
+    private static CommunicationIdentifier tryCreateTeamsExtensionUserOrCommunicationUser(String prefix, String suffix,
+        String rawId) {
         String[] segments = suffix.split("_");
         if (segments.length != 3) {
             return new CommunicationUserIdentifier(rawId);
@@ -91,8 +98,8 @@ public abstract class CommunicationIdentifier {
             case ACS_USER_PREFIX -> CommunicationCloudEnvironment.PUBLIC;
             case ACS_USER_DOD_CLOUD_PREFIX -> CommunicationCloudEnvironment.DOD;
             case ACS_USER_GCCH_CLOUD_PREFIX -> CommunicationCloudEnvironment.GCCH;
-            default ->
-                throw new IllegalArgumentException("Invalid prefix " + prefix + " for TeamsExtensionUserIdentifier");
+            default -> throw new IllegalArgumentException(
+                "Invalid prefix " + prefix + " for TeamsExtensionUserIdentifier");
         };
 
         return new TeamsExtensionUserIdentifier(userId, tenantId, resourceId, cloud);
