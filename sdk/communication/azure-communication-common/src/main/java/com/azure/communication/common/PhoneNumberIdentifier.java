@@ -40,6 +40,8 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
 
     /**
      * Checks if the phone number is anonymous, e.g., used to represent a hidden caller ID.
+     *
+     * @return true if the phone number is anonymous, false otherwise.
      */
     public boolean isAnonymous() {
         return getRawId().equals(PHONE_NUMBER_PREFIX + Anonymous);

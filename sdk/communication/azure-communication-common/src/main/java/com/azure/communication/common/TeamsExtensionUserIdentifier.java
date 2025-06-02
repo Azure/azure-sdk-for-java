@@ -101,6 +101,9 @@ public final class TeamsExtensionUserIdentifier extends CommunicationIdentifier 
         return cloudEnvironment;
     }
 
+    /**
+     * Generate rawId for TeamsExtensionUserIdentifier
+     */
     public void generateRawId() {
         if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
             super.setRawId(ACS_USER_DOD_CLOUD_PREFIX + resourceId + "_" + tenantId + "_" + userId);
