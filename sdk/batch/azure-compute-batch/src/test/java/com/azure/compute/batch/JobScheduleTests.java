@@ -183,19 +183,20 @@ public class JobScheduleTests extends BatchClientTestBase {
             jobSchedule = batchClient.getJobSchedule(jobScheduleId);
             Assertions.assertEquals(BatchJobScheduleState.ACTIVE, jobSchedule.getState());
 
-            batchClient.terminateJobSchedule(jobScheduleId);
-            jobSchedule = batchClient.getJobSchedule(jobScheduleId);
-            Assertions.assertTrue(jobSchedule.getState() == BatchJobScheduleState.TERMINATING
-                || jobSchedule.getState() == BatchJobScheduleState.COMPLETED);
+            // Terminate using LRO
+            SyncPoller<BatchJobSchedule, BatchJobSchedule> terminatePoller
+                = batchClient.beginTerminateJobSchedule(jobScheduleId);
+            terminatePoller.waitForCompletion();
 
-            sleepIfRunningAgainstService(2 * 1000);
-            jobSchedule = batchClient.getJobSchedule(jobScheduleId);
+            jobSchedule = terminatePoller.getFinalResult();
+            Assertions.assertNotNull(jobSchedule);
             Assertions.assertEquals(BatchJobScheduleState.COMPLETED, jobSchedule.getState());
 
             batchClient.deleteJobSchedule(jobScheduleId);
+            sleepIfRunningAgainstService(2 * 1000);
             try {
                 jobSchedule = batchClient.getJobSchedule(jobScheduleId);
-                Assertions.assertTrue(true, "Shouldn't be here, the jobschedule should be deleted");
+                Assertions.fail("Shouldn't be here, the jobschedule should be deleted");
             } catch (HttpResponseException err) {
                 if (err.getResponse().getStatusCode() != 404) {
                     throw err;
