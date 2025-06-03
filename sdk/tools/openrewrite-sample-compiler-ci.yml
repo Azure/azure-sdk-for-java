@@ -49,7 +49,7 @@ extends:
                       "sdk/core-v2/pom.xml"
                     )
                     foreach ($modulePath in $modulePaths) {
-                      mvn --% -f $modulePath clean install $commonFlags
+                      mvn -f $modulePath clean install $commonFlags
                     }
 
               - task: Maven@3
