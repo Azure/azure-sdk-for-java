@@ -12,11 +12,6 @@ import java.util.Collection;
  * Mapping Error Messages to Codes.
  */
 public final class PhoneNumberSearchResultError extends ExpandableStringEnum<PhoneNumberSearchResultError> {
-    /**
-     * Static value NoError for PhoneNumberSearchResultError.
-     */
-    @Generated
-    public static final PhoneNumberSearchResultError NO_ERROR = fromString("NoError");
 
     /**
      * Static value UnknownErrorCode for PhoneNumberSearchResultError.
