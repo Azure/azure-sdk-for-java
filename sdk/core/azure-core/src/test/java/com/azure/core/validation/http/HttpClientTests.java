@@ -97,7 +97,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -623,31 +624,35 @@ public abstract class HttpClientTests {
         HttpClient httpClient, byte[] expectedResponseBody) {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, requestUrl, new HttpHeaders(), requestBody);
 
-        AtomicLong progress = new AtomicLong();
+        BlockingQueue<Long> progress = new LinkedBlockingQueue<>();
         Context context = Contexts.empty()
-            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::set))
+            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::add))
             .getContext();
 
         StepVerifier.create(httpClient.send(request, context).flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(responseBytes -> assertArraysEqual(expectedResponseBody, responseBytes))
             .verifyComplete();
 
-        assertEquals(expectedResponseBody.length, progress.intValue());
+        assertEquals(expectedResponseBody.length, progress.stream().mapToInt(Long::intValue).max().orElse(0),
+            () -> "Received the following progress updates: "
+                + Arrays.toString(progress.stream().mapToLong(Long::longValue).toArray()));
     }
 
     private static void canSendBinaryDataSyncWithProgressReporter(URL requestUrl, BinaryData requestBody,
         HttpClient httpClient, byte[] expectedResponseBody) {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, requestUrl, new HttpHeaders(), requestBody);
 
-        AtomicLong progress = new AtomicLong();
+        BlockingQueue<Long> progress = new LinkedBlockingQueue<>();
         Context context = Contexts.empty()
-            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::set))
+            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::add))
             .getContext();
 
         try (HttpResponse httpResponse = httpClient.sendSync(request, context)) {
             byte[] responseBytes = httpResponse.getBodyAsBinaryData().toBytes();
             assertArraysEqual(expectedResponseBody, responseBytes);
-            assertEquals(expectedResponseBody.length, progress.intValue());
+            assertEquals(expectedResponseBody.length, progress.stream().mapToInt(Long::intValue).max().orElse(0),
+                () -> "Received the following progress updates: "
+                    + Arrays.toString(progress.stream().mapToLong(Long::longValue).toArray()));
         }
     }
 
