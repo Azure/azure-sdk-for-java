@@ -12,18 +12,10 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCap
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberRawOperation;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
-<<<<<<< HEAD
-=======
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReservationPurchaseRequest;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
-import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchaseReservationResponse;
-import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
+import com.azure.communication.phonenumbers.models.BrowsePhoneNumbersOptions;
+import com.azure.communication.phonenumbers.models.CreateOrUpdateReservationOptions;
 import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
@@ -40,16 +32,11 @@ import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
-import com.azure.communication.phonenumbers.models.BrowsePhoneNumbersOptions;
-import com.azure.communication.phonenumbers.models.CreateOrUpdateReservationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
-<<<<<<< HEAD
+import com.azure.communication.phonenumbers.models.PurchaseReservationResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
-=======
-import com.azure.communication.phonenumbers.models.PurchaseReservationResult;
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -62,7 +49,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
-
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -73,6 +59,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -187,9 +174,9 @@ public final class PhoneNumbersAsyncClient {
 
     /**
      * Gets a reservation by its ID.
-     * 
+     *
      * Retrieves the reservation with the given ID, including all of the phone numbers associated with it.
-     * 
+     *
      * @param reservationId The id of the reservation.
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      * @throws NullPointerException if {@code reservationId} is null.
@@ -202,9 +189,9 @@ public final class PhoneNumbersAsyncClient {
 
     /**
      * Gets a reservation by its ID.
-     * 
+     *
      * Retrieves the reservation with the given ID, including all of the phone numbers associated with it.
-     * 
+     *
      * @param reservationId The id of the reservation.
      * @return represents a reservation for phone numbers on successful completion of {@link PhoneNumbersReservation}.
      * @throws NullPointerException if {@code reservationId} is null.
@@ -248,11 +235,11 @@ public final class PhoneNumbersAsyncClient {
 
     /**
      * Browses for available phone numbers to purchase.
-     * 
+     *
      * Browses for available phone numbers to purchase. The response will be a randomized list of phone numbers
      * available to purchase matching the browsing criteria. This operation is not paginated. Since the results are
      * randomized, repeating the same request will not guarantee the same results.
-     * 
+     *
      * @param browsePhoneNumbersOptions An object defining the criteria to browse for available phone numbers.
      * @return the result of a phone number browse operation on successful completion of {@link Mono}.
      */
@@ -265,11 +252,11 @@ public final class PhoneNumbersAsyncClient {
 
     /**
      * Browses for available phone numbers to purchase.
-     * 
+     *
      * Browses for available phone numbers to purchase. The response will be a randomized list of phone numbers
      * available to purchase matching the browsing criteria. This operation is not paginated. Since the results are
      * randomized, repeating the same request will not guarantee the same results.
-     * 
+     *
      * @param browsePhoneNumbersOptions An object defining the criteria to browse for available phone numbers.
      * @return the result of a phone number browse operation on successful completion of {@link PhoneNumbersBrowseResult}.
      */
@@ -577,14 +564,14 @@ public final class PhoneNumbersAsyncClient {
     }
 
     private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>>
-<<<<<<< HEAD
-        purchaseNumbersInitOperation(String searchId, Context context) {
+        purchaseNumbersInitOperation(String searchId, Boolean agreeToNotResell, Context context) {
         return (pollingContext) -> withContext(contextValue -> {
             if (context != null) {
                 contextValue = context;
             }
             return client
-                .purchasePhoneNumbersWithResponseAsync(new PhoneNumberPurchaseRequest().setSearchId(searchId),
+                .purchasePhoneNumbersWithResponseAsync(
+                    new PhoneNumberPurchaseRequest().setSearchId(searchId).setAgreeToNotResell(agreeToNotResell),
                     contextValue)
                 .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
                 .flatMap(response -> {
@@ -592,35 +579,16 @@ public final class PhoneNumbersAsyncClient {
                     return getOperation(pollingContext.getData("operationId"));
                 });
         });
-=======
-        purchaseNumbersInitOperation(String searchId, Boolean agreeToNotResell, Context context) {
-        return (pollingContext) -> {
-            return withContext(contextValue -> {
-                if (context != null) {
-                    contextValue = context;
-                }
-                return client
-                    .purchasePhoneNumbersWithResponseAsync(
-                        new PhoneNumberPurchaseRequest().setSearchId(searchId).setAgreeToNotResell(agreeToNotResell),
-                        contextValue)
-                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
-                    .flatMap((PhoneNumbersPurchasePhoneNumbersResponse response) -> {
-                        pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
-                        return getOperation(pollingContext.getData("operationId"));
-                    });
-            });
-        };
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     }
 
     /**
      * Starts the purchase of all phone numbers in the reservation.
-     * 
+     *
      * Starts a long running operation to purchase all of the phone numbers in the reservation. Purchase can only be
      * started for active reservations that at least one phone number. If any of the phone numbers in the reservation is
      * from a country where reselling is not permitted, do not resell agreement is required. The response will include
      * an 'Operation-Location' header that can be used to query the status of the operation.
-     * 
+     *
      * @param reservationId The id of the reservation.
      * @throws NullPointerException if {@code reservationId} is null.
      * @throws RuntimeException if purchase operation fails.
@@ -633,12 +601,12 @@ public final class PhoneNumbersAsyncClient {
 
     /**
      * Starts the purchase of all phone numbers in the reservation.
-     * 
+     *
      * Starts a long running operation to purchase all of the phone numbers in the reservation. Purchase can only be
      * started for active reservations that at least one phone number. If any of the phone numbers in the reservation is
      * from a country where reselling is not permitted, do not resell agreement is required. The response will include
      * an 'Operation-Location' header that can be used to query the status of the operation.
-     * 
+     *
      * @param reservationId The id of the reservation.
      * @param agreeToNotResell Parameter indicating agreement to not resell the phone numbers.
      * @throws NullPointerException if {@code reservationId} is null.
@@ -668,20 +636,19 @@ public final class PhoneNumbersAsyncClient {
 
     private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>>
         purchaseReservationInitOperation(UUID reservationId, Boolean agreeToNotResell, Context context) {
-        return (pollingContext) -> {
-            return withContext(contextValue -> {
-                if (context != null) {
-                    contextValue = context;
-                }
-                return client.purchaseReservationWithResponseAsync(reservationId,
+        return (pollingContext) -> withContext(contextValue -> {
+            if (context != null) {
+                contextValue = context;
+            }
+            return client
+                .purchaseReservationWithResponseAsync(reservationId,
                     new PhoneNumbersReservationPurchaseRequest().setAgreeToNotResell(agreeToNotResell), contextValue)
-                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
-                    .flatMap((PhoneNumbersPurchaseReservationResponse response) -> {
-                        pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
-                        return getOperation(pollingContext.getData("operationId"));
-                    });
-            });
-        };
+                .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
+                .flatMap(response -> {
+                    pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
+                    return getOperation(pollingContext.getData("operationId"));
+                });
+        });
     }
 
     /**
@@ -935,7 +902,7 @@ public final class PhoneNumbersAsyncClient {
 
     /**
      * Lists all reservations.
-     * 
+     *
      * Retrieves a paginated list of all phone number reservations. Note that the reservations will not be populated
      * with the phone numbers associated with them.
      * @return A {@link PagedFlux} of {@link PhoneNumbersReservation} instances
@@ -948,10 +915,10 @@ public final class PhoneNumbersAsyncClient {
 
     /**
      * Lists all reservations.
-     * 
+     *
      * Retrieves a paginated list of all phone number reservations. Note that the reservations will not be populated
      * with the phone numbers associated with them.
-     * 
+     *
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
      * @return A {@link PagedFlux} of {@link PhoneNumbersReservation} instances
@@ -999,7 +966,7 @@ public final class PhoneNumbersAsyncClient {
 
     /**
      * Updates a reservation by its ID.
-     * 
+     *
      * Adds and removes phone numbers from the reservation with the given ID. The response will be the updated state of
      * the reservation. Phone numbers can be reserved by including them in the payload. If a number is already in the
      * reservation, it will be ignored. To remove a phone number, set it explicitly to null in the request payload. This
@@ -1007,7 +974,7 @@ public final class PhoneNumbersAsyncClient {
      * one is created. Only reservations with 'active' status can be updated. Updating a reservation will extend the
      * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
      * time. Partial success is possible, in which case the response will have a 207 status code.
-     * 
+     *
      * @param reservationOptions The request object containing the reservation ID and the phone numbers to add or remove.
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      */
@@ -1024,7 +991,7 @@ public final class PhoneNumbersAsyncClient {
 
     /**
      * Updates a reservation by its ID.
-     * 
+     *
      * Adds and removes phone numbers from the reservation with the given ID. The response will be the updated state of
      * the reservation. Phone numbers can be reserved by including them in the payload. If a number is already in the
      * reservation, it will be ignored. To remove a phone number, set it explicitly to null in the request payload. This
@@ -1032,7 +999,7 @@ public final class PhoneNumbersAsyncClient {
      * one is created. Only reservations with 'active' status can be updated. Updating a reservation will extend the
      * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
      * time. Partial success is possible, in which case the response will have a 207 status code.
-     * 
+     *
      * @param reservationOptions The request object containing the reservation ID and the phone numbers to add or remove.
      * @return represents a reservation for phone numbers on successful completion of {@link PhoneNumbersReservation}.
      */
@@ -1049,10 +1016,10 @@ public final class PhoneNumbersAsyncClient {
 
     /**
      * Deletes a reservation by its ID.
-     * 
+     *
      * Deletes the reservation with the given ID. Any phone number in the reservation will be released and made
      * available for others to purchase. Only reservations with 'active' status can be deleted.
-     * 
+     *
      * @param reservationId The id of the reservation that's going to be deleted.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1063,10 +1030,10 @@ public final class PhoneNumbersAsyncClient {
 
     /**
      * Deletes a reservation by its ID.
-     * 
+     *
      * Deletes the reservation with the given ID. Any phone number in the reservation will be released and made
      * available for others to purchase. Only reservations with 'active' status can be deleted.
-     * 
+     *
      * @param reservationId The id of the reservation that's going to be deleted.
      * @return A {@link Mono} that completes when a successful response is received.
      */

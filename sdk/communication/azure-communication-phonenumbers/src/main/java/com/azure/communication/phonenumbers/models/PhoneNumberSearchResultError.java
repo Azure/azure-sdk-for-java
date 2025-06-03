@@ -4,10 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
-<<<<<<< HEAD
 import com.azure.core.annotation.Generated;
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,201 +12,134 @@ import java.util.Collection;
  * Mapping Error Messages to Codes.
  */
 public final class PhoneNumberSearchResultError extends ExpandableStringEnum<PhoneNumberSearchResultError> {
-<<<<<<< HEAD
     /**
      * Static value NoError for PhoneNumberSearchResultError.
      */
     @Generated
     public static final PhoneNumberSearchResultError NO_ERROR = fromString("NoError");
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
 
     /**
      * Static value UnknownErrorCode for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static final PhoneNumberSearchResultError UNKNOWN_ERROR_CODE = fromString("UnknownErrorCode");
 
     /**
      * Static value OutOfStock for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static final PhoneNumberSearchResultError OUT_OF_STOCK = fromString("OutOfStock");
 
     /**
      * Static value AuthorizationDenied for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static final PhoneNumberSearchResultError AUTHORIZATION_DENIED = fromString("AuthorizationDenied");
 
     /**
      * Static value MissingAddress for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static final PhoneNumberSearchResultError MISSING_ADDRESS = fromString("MissingAddress");
 
     /**
      * Static value InvalidAddress for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static final PhoneNumberSearchResultError INVALID_ADDRESS = fromString("InvalidAddress");
 
     /**
      * Static value InvalidOfferModel for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static final PhoneNumberSearchResultError INVALID_OFFER_MODEL = fromString("InvalidOfferModel");
 
     /**
      * Static value NotEnoughLicenses for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static final PhoneNumberSearchResultError NOT_ENOUGH_LICENSES = fromString("NotEnoughLicenses");
 
     /**
      * Static value NoWallet for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static final PhoneNumberSearchResultError NO_WALLET = fromString("NoWallet");
 
     /**
      * Static value NotEnoughCredit for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static final PhoneNumberSearchResultError NOT_ENOUGH_CREDIT = fromString("NotEnoughCredit");
 
     /**
      * Static value NumbersPartiallyAcquired for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static final PhoneNumberSearchResultError NUMBERS_PARTIALLY_ACQUIRED
         = fromString("NumbersPartiallyAcquired");
 
     /**
      * Static value AllNumbersNotAcquired for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static final PhoneNumberSearchResultError ALL_NUMBERS_NOT_ACQUIRED = fromString("AllNumbersNotAcquired");
 
     /**
      * Static value ReservationExpired for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static final PhoneNumberSearchResultError RESERVATION_EXPIRED = fromString("ReservationExpired");
 
     /**
      * Static value PurchaseFailed for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static final PhoneNumberSearchResultError PURCHASE_FAILED = fromString("PurchaseFailed");
 
     /**
      * Static value BillingUnavailable for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static final PhoneNumberSearchResultError BILLING_UNAVAILABLE = fromString("BillingUnavailable");
 
     /**
      * Static value ProvisioningFailed for PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
     public static final PhoneNumberSearchResultError PROVISIONING_FAILED = fromString("ProvisioningFailed");
 
     /**
-     * Static value UnknownSearchError for PhoneNumberSearchResultError.
-     */
-    @Generated
-    public static final PhoneNumberSearchResultError UNKNOWN_SEARCH_ERROR = fromString("UnknownSearchError");
-
-    /**
-=======
-    public static final PhoneNumberSearchResultError PROVISIONING_FAILED = fromString("ProvisioningFailed");
-
-    /**
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
      * Creates a new instance of PhoneNumberSearchResultError value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     @Deprecated
     public PhoneNumberSearchResultError() {
     }
 
     /**
      * Creates or finds a PhoneNumberSearchResultError from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding PhoneNumberSearchResultError.
      */
-<<<<<<< HEAD
     @Generated
-    public static PhoneNumberSearchResultError fromString(String name) {
-=======
     public static PhoneNumberSearchResultError fromString(String name) {
         // Custom mapping for UnknownSearchError to UNKNOWN_ERROR_CODE
         if ("UnknownSearchError".equalsIgnoreCase(name)) {
             return UNKNOWN_ERROR_CODE;
         }
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
         return fromString(name, PhoneNumberSearchResultError.class);
     }
 
     /**
      * Gets known PhoneNumberSearchResultError values.
-     * 
+     *
      * @return known PhoneNumberSearchResultError values.
      */
-<<<<<<< HEAD
     @Generated
-=======
->>>>>>> 8b41adbd7b04c352ea235acd602c2b881677914f
     public static Collection<PhoneNumberSearchResultError> values() {
         return values(PhoneNumberSearchResultError.class);
     }
