@@ -40,7 +40,6 @@ extends:
                 inputs:
                   targetType: 'inline'
                   script: |
-                    $commonFlags = "-B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip"
                     $modulePaths = @(
                       "eng/code-quality-reports/pom.xml",
                       "sdk/parents/pom.xml",
@@ -49,7 +48,7 @@ extends:
                       "sdk/core-v2/pom.xml"
                     )
                     foreach ($modulePath in $modulePaths) {
-                      mvn -f $modulePath clean install $commonFlags
+                      mvn -f $modulePath clean install --% -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
                     }
 
               - task: Maven@3
