@@ -19,7 +19,6 @@ import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.Context;
 import com.azure.json.JsonProviders;
@@ -69,6 +68,8 @@ public class TestProxyTests extends TestProxyTestBase {
     private static final HttpHeaderName OCP_APIM_SUBSCRIPTION_KEY
         = HttpHeaderName.fromString("Ocp-Apim-Subscription-Key");
 
+    private HttpClient wiretapClient;
+
     static {
         CUSTOM_SANITIZER.add(new TestProxySanitizer("$..modelId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
         CUSTOM_SANITIZER.add(new TestProxySanitizer("TableName\\\"*:*\\\"(?<tablename>.*)\\\"", REDACTED,
@@ -85,10 +86,14 @@ public class TestProxyTests extends TestProxyTestBase {
         server.close();
     }
 
+    private HttpClient getRecordHttpClient() {
+        return wiretapClient;
+    }
+
     @Test
     @Tag("Record")
     public void testBasicRecord() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpClient client = getRecordHttpClient();
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
 
@@ -137,7 +142,8 @@ public class TestProxyTests extends TestProxyTestBase {
     @Tag("Record")
     @RecordWithoutRequestBody
     public void testRecordWithPath() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+
+        HttpClient client = getRecordHttpClient();
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
 
@@ -156,7 +162,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Record")
     public void testRecordWithHeaders() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpClient client = getRecordHttpClient();
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
 
@@ -328,7 +334,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Record")
     public void testResetTestProxyData() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpClient client = getRecordHttpClient();
 
         final HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
@@ -347,7 +353,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Record")
     public void testRecordWithRedirect() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpClient client = getRecordHttpClient();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client)
             .policies(new RedirectPolicy(), interceptorManager.getRecordPolicy())
