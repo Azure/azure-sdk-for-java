@@ -34,6 +34,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class ThinClientStoreModel extends RxGatewayStoreModel {
     private String globalDatabaseAccountName = null;
+    private final Map<String, String> defaultHeaders;
 
     public ThinClientStoreModel(
         DiagnosticsClientContext clientContext,
@@ -51,11 +52,33 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             globalEndpointManager,
             httpClient,
             ApiType.SQL);
+
+        String userAgent = userAgentContainer != null
+            ? userAgentContainer.getUserAgent()
+            : UserAgentContainer.BASE_USER_AGENT_STRING;
+
+        this.defaultHeaders = Collections.singletonMap(
+            HttpConstants.HttpHeaders.USER_AGENT, userAgent
+        );
     }
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
         return super.processMessage(request);
+    }
+
+    @Override
+    protected Map<String, String> getDefaultHeaders(
+        ApiType apiType,
+        UserAgentContainer userAgentContainer) {
+
+        // For ThinClient http/2 used for framing only
+        // All operation-level headers are only added to the rntbd-encoded message
+        // the thin client proxy will parse the rntbd headers (not the content!) and substitute any
+        // missing headers for routing (like partitionId or replicaId)
+        // Since the Thin client proxy also needs to set the user-agent header to a different value
+        // it is not added to the rntbd headers - just http-headers in the SDK
+        return this.defaultHeaders;
     }
 
     @Override
@@ -124,6 +147,12 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             headers,
             Flux.just(contentAsByteArray));
     }
+
+    @Override
+    public Map<String, String> getDefaultHeaders() {
+        return this.defaultHeaders;
+    }
+
 
     private HttpHeaders getHttpHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
