@@ -18,6 +18,7 @@ import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.JavadocBlockTag;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
@@ -137,6 +138,25 @@ public class BlobStorageCustomization extends Customization {
                     .addBlockTag("param", "queryType", "the queryType value to set.")
                     .addBlockTag("return", "the QueryRequest object itself."));
         }));
+
+        implementationModels.getClass("BlobSignedIdentifierWrapper").customizeAst(ast -> ast.getClassByName("BlobSignedIdentifierWrapper")
+            .ifPresent(clazz -> {
+                Javadoc baseJavadoc = new Javadoc(JavadocDescription.parseText("Reads an instance of BlobSignedIdentifierWrapper from the XmlReader."))
+                    .addBlockTag("param", "xmlReader", "The XmlReader being read.")
+                    .addBlockTag("return", "An instance of BlobSignedIdentifierWrapper if the XmlReader was pointing "
+                        + "to an instance of it, or null if it was pointing to XML null.")
+                    .addBlockTag("throws", "XMLStreamException", "If an error occurs while reading the BlobSignedIdentifierWrapper.");
+
+                clazz.getMethodsBySignature("fromXml", "XmlReader")
+                    .forEach(method -> method.setJavadocComment(baseJavadoc));
+
+                clazz.getMethodsBySignature("fromXml", "XmlReader", "String").forEach(method -> {
+                    baseJavadoc.getBlockTags().add(1, JavadocBlockTag.createParamBlockTag("rootElementName",
+                        "Optional root element name to override the default defined by the model. Used to support "
+                            + "cases where the model can deserialize from different root element names."));
+                    method.setJavadocComment(baseJavadoc);
+                });
+            }));
 
         // Fix for a bug introduced in Autorest Java, this customization should be removed once fixed.
         for (String name : Arrays.asList("BlobsDownloadHeaders", "BlobsGetPropertiesHeaders", "BlobsQueryHeaders", "ContainersGetPropertiesHeaders")) {
