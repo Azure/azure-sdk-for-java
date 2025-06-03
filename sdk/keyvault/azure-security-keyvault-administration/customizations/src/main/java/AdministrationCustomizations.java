@@ -43,7 +43,8 @@ public class AdministrationCustomizations extends Customization {
             "com.azure.security.keyvault.administration.implementation");
         String implPath = "src/main/java/com/azure/security/keyvault/administration/implementation/";
 
-        // Make some implementation methods public to facilitate calling LROs.
+        // Make some implementation methods public to facilitate calling LROs:
+        // KeyVaultAdministrationClientImpl
         replaceInFile(packageCustomization.getClass("KeyVaultAdministrationClientImpl"),
             implPath + "KeyVaultAdministrationClientImpl.java",
             new String[] {
@@ -164,9 +165,9 @@ public class AdministrationCustomizations extends Customization {
                     "    V7_5(\"7.5\"),",
                     "",
                     "    /**",
-                    "     * Service version {@code 7.6}.",
+                    "     * Service version {@code 7.6-preview.2}.",
                     "     */",
-                    "    V7_6(\"7.6\");",
+                    "    V7_6_PREVIEW_2(\"7.6-preview.2\");",
                     "",
                     "    private final String version;",
                     "",
@@ -184,13 +185,14 @@ public class AdministrationCustomizations extends Customization {
                     "",
                     "    /**",
                     "     * Gets the latest service version supported by this client library.",
-                    "     * ",
+                    "     *",
                     "     * @return The latest {@link KeyVaultAdministrationServiceVersion}.",
                     "     */",
                     "    public static KeyVaultAdministrationServiceVersion getLatest() {",
-                    "        return V7_6;",
+                    "        return V7_6_PREVIEW_2;",
                     "    }",
-                    "}"));
+                    "}",
+                    ""));
     }
 
     private static void customizeModuleInfo(Editor editor) {
@@ -832,7 +834,8 @@ public class AdministrationCustomizations extends Customization {
                 " * @see com.azure.security.keyvault.administration.KeyVaultSettingsAsyncClient",
                 " * @see com.azure.security.keyvault.administration.KeyVaultSettingsClientBuilder",
                 " */",
-                "package com.azure.security.keyvault.administration;"));
+                "package com.azure.security.keyvault.administration;",
+                ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/administration/models/package-info.java",
             joinWithNewline(
@@ -844,7 +847,8 @@ public class AdministrationCustomizations extends Customization {
                 " * Package containing the data models for Administration clients. The Key Vault clients perform cryptographic key and",
                 " * vault operations against the Key Vault service.",
                 " */",
-                "package com.azure.security.keyvault.administration.models;"));
+                "package com.azure.security.keyvault.administration.models;",
+                ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/administration/implementation/package-info.java",
             joinWithNewline(
@@ -856,7 +860,8 @@ public class AdministrationCustomizations extends Customization {
                 " * Package containing the implementations for Administration clients. The Key Vault clients perform cryptographic key",
                 " * operations and vault operations against the Key Vault service.",
                 " */",
-                "package com.azure.security.keyvault.administration.implementation;"));
+                "package com.azure.security.keyvault.administration.implementation;",
+                ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/administration/implementation/models/package-info.java",
             joinWithNewline(
@@ -868,7 +873,8 @@ public class AdministrationCustomizations extends Customization {
                 " * Package containing the implementation data models for Administration clients. The Key Vault clients perform",
                 " * cryptographic key operations and vault operations against the Key Vault service.",
                 " */",
-                "package com.azure.security.keyvault.administration.implementation.models;"));
+                "package com.azure.security.keyvault.administration.implementation.models;",
+                ""));
     }
 
     /**
@@ -884,12 +890,9 @@ public class AdministrationCustomizations extends Customization {
         String[] stringsToReplace, String[] replacementStrings) {
 
         if (stringsToReplace != null && replacementStrings != null) {
-            // Replace all instances of KeyVaultServiceVersion with KeyVaultAdministrationServiceVersion. We'll remove
-            // this once the TSP spec includes all service versions.
             Editor editor = classCustomization.getEditor();
             String fileContent = editor.getFileContent(classPath);
 
-            // Ensure names has an even length.
             if (stringsToReplace.length != replacementStrings.length) {
                 throw new IllegalArgumentException(
                     "'stringsToReplace' must have the same number of elements as 'replacementStrings'.");

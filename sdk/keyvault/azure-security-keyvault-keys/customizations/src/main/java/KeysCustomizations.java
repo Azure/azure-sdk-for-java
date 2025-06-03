@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
@@ -14,8 +15,9 @@ public class KeysCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         removeFiles(libraryCustomization.getRawEditor());
         customizeServiceVersion(libraryCustomization);
+        customizeKeyAttestation(libraryCustomization);
         customizeKeyCurveName(libraryCustomization.getRawEditor());
-        customizeReleaseKeyResult(libraryCustomization.getRawEditor());
+        customizeReleaseKeyResult(libraryCustomization);
         customizeModuleInfo(libraryCustomization.getRawEditor());
         customizePackageInfos(libraryCustomization.getRawEditor());
     }
@@ -77,9 +79,9 @@ public class KeysCustomizations extends Customization {
                     "    V7_5(\"7.5\"),",
                     "",
                     "    /**",
-                    "     * Service version {@code 7.6}.",
+                    "     * Service version {@code 7.6-preview.2}.",
                     "     */",
-                    "    V7_6(\"7.6\");",
+                    "    V7_6_PREVIEW_2(\"7.6-preview.2\");",
                     "",
                     "    private final String version;",
                     "",
@@ -97,21 +99,39 @@ public class KeysCustomizations extends Customization {
                     "",
                     "    /**",
                     "     * Gets the latest service version supported by this client library.",
-                    "     * ",
+                    "     *",
                     "     * @return The latest {@link KeyServiceVersion}.",
                     "     */",
                     "    public static KeyServiceVersion getLatest() {",
-                    "        return V7_6;",
+                    "        return V7_6_PREVIEW_2;",
                     "    }",
-                    "}"));
+                    "}",
+                    ""));
     }
 
-    private static void customizeReleaseKeyResult(Editor editor) {
-        String classPath = "src/main/java/com/azure/security/keyvault/keys/models/ReleaseKeyResult.java";
-        String newFileContent = editor.getFileContent(classPath)
-            .replace("private ReleaseKeyResult(", "public ReleaseKeyResult(");
-
-        editor.replaceFile(classPath, newFileContent);
+    private static void customizeKeyAttestation(LibraryCustomization libraryCustomization) {
+        replaceInFile(
+            libraryCustomization.getPackage("com.azure.security.keyvault.keys.models").getClass("KeyAttestation"),
+            "src/main/java/com/azure/security/keyvault/keys/models/KeyAttestation.java",
+            new String[] {
+                "Get the certificatePemFile property: A base64url-encoded string containing certificates in PEM format, used for attestation validation.",
+                "@return the certificatePemFile value.",
+                "Get the privateKeyAttestation property: The attestation blob bytes encoded as base64url string corresponding to a private key.",
+                "@return the privateKeyAttestation value.",
+                "Get the publicKeyAttestation property: The attestation blob bytes encoded as base64url string corresponding to a public key in case of asymmetric key.",
+                "@return the publicKeyAttestation value.",
+                "Get the version property: The version of the attestation.",
+                "@return the version value."
+            }, new String[] {
+                "Get a base64url-encoded string containing certificates in PEM format, used for attestation validation.",
+                "@return The certificate in PEM format.",
+                "Get the attestation blob bytes encoded as base64url string corresponding to a private key.",
+                "@return The attestation blob bytes for the private portion of the key.",
+                "Get the attestation blob bytes encoded as base64url string corresponding to a public key in case of asymmetric key.",
+                "@return The attestation blob bytes for the public portion of the key.",
+                "Get the version of the attestation.",
+                "@return The version of the attestation."
+            });
     }
 
     private static void customizeKeyCurveName(Editor editor) {
@@ -120,6 +140,22 @@ public class KeysCustomizations extends Customization {
             .replace(" For valid values, see JsonWebKeyCurveName.", "");
 
         editor.replaceFile(classPath, newFileContent);
+    }
+
+    private static void customizeReleaseKeyResult(LibraryCustomization libraryCustomization) {
+        replaceInFile(
+            libraryCustomization.getPackage("com.azure.security.keyvault.keys.models").getClass("ReleaseKeyResult"),
+            "src/main/java/com/azure/security/keyvault/keys/models/ReleaseKeyResult.java",
+            new String[] {
+                "Creates an instance of ReleaseKeyResult class.",
+                "private ReleaseKeyResult(",
+                "Get the value property: A signed object containing the released key.",
+                "@return the value value." },
+            new String[] {
+                "Creates an instance of ReleaseKeyResult.",
+                "public ReleaseKeyResult(",
+                "A signed object containing the released key.",
+                "@return The released key." });
     }
 
     private static void customizeModuleInfo(Editor editor) {
@@ -139,7 +175,8 @@ public class KeysCustomizations extends Customization {
             "    opens com.azure.security.keyvault.keys.models to com.azure.core;",
             "    opens com.azure.security.keyvault.keys.implementation.models to com.azure.core;",
             "    opens com.azure.security.keyvault.keys.cryptography.models to com.azure.core;",
-            "}"));
+            "}",
+            ""));
     }
 
     private static void customizePackageInfos(Editor editor) {
@@ -315,7 +352,8 @@ public class KeysCustomizations extends Customization {
             " * @see com.azure.security.keyvault.keys.KeyAsyncClient",
             " * @see com.azure.security.keyvault.keys.KeyClientBuilder",
             " */",
-            "package com.azure.security.keyvault.keys;"));
+            "package com.azure.security.keyvault.keys;",
+            ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/keys/models/package-info.java", joinWithNewline(
             "// Copyright (c) Microsoft Corporation. All rights reserved.",
@@ -326,7 +364,8 @@ public class KeysCustomizations extends Customization {
             " * Package containing the data models for Keys clients. The key vault client performs cryptographic key operations and",
             " * vault operations against the Key Vault service.",
             " */",
-            "package com.azure.security.keyvault.keys.models;"));
+            "package com.azure.security.keyvault.keys.models;",
+            ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/keys/implementation/package-info.java",
             joinWithNewline(
@@ -338,7 +377,8 @@ public class KeysCustomizations extends Customization {
                 " * Package containing the implementations for Keys clients. The key vault clients perform cryptographic key operations",
                 " * and vault operations against the Key Vault service.",
                 " */",
-                "package com.azure.security.keyvault.keys.implementation;"));
+                "package com.azure.security.keyvault.keys.implementation;",
+                ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/keys/implementation/models/package-info.java",
             joinWithNewline(
@@ -350,7 +390,40 @@ public class KeysCustomizations extends Customization {
                 " * Package containing the implementation data models for Keys clients. The Key Vault clients perform cryptographic key",
                 " * operations and vault operations against the Key Vault service.",
                 " */",
-                "package com.azure.security.keyvault.keys.implementation.models;"));
+                "package com.azure.security.keyvault.keys.implementation.models;",
+                ""));
+    }
+
+    /**
+     * This method replaces all the provided strings in the specified file with new strings provided in the latter half
+     * of the 'strings' parameter.
+     *
+     * @param classCustomization The class customization to use to edit the file.
+     * @param classPath The path to the file to edit.
+     * @param stringsToReplace The strings to replace.
+     * @param replacementStrings The strings to replace with.
+     */
+    private static void replaceInFile(ClassCustomization classCustomization, String classPath,
+        String[] stringsToReplace, String[] replacementStrings) {
+
+        if (stringsToReplace != null && replacementStrings != null) {
+            Editor editor = classCustomization.getEditor();
+            String fileContent = editor.getFileContent(classPath);
+
+            if (stringsToReplace.length != replacementStrings.length) {
+                throw new IllegalArgumentException(
+                    "'stringsToReplace' must have the same number of elements as 'replacementStrings'.");
+            }
+
+            for (int i = 0; i < stringsToReplace.length; i++) {
+                fileContent = fileContent.replace(stringsToReplace[i], replacementStrings[i]);
+            }
+
+            editor.replaceFile(classPath, fileContent);
+        } else if (stringsToReplace != null || replacementStrings != null) {
+            throw new IllegalArgumentException(
+                "'stringsToReplace' must have the same number of elements as 'replacementStrings'.");
+        }
     }
 
     private static String joinWithNewline(String... lines) {

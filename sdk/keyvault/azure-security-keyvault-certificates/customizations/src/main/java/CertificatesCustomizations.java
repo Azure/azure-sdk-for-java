@@ -121,9 +121,9 @@ public class CertificatesCustomizations extends Customization {
                     "    V7_5(\"7.5\"),",
                     "",
                     "    /**",
-                    "     * Service version {@code 7.6}.",
+                    "     * Service version {@code 7.6-preview.2}.",
                     "     */",
-                    "    V7_6(\"7.6\");",
+                    "    V7_6_PREVIEW_2(\"7.6-preview.2\");",
                     "",
                     "    private final String version;",
                     "",
@@ -141,13 +141,14 @@ public class CertificatesCustomizations extends Customization {
                     "",
                     "    /**",
                     "     * Gets the latest service version supported by this client library.",
-                    "     * ",
+                    "     *",
                     "     * @return The latest {@link CertificateServiceVersion}.",
                     "     */",
                     "    public static CertificateServiceVersion getLatest() {",
-                    "        return V7_6;",
+                    "        return V7_6_PREVIEW_2;",
                     "    }",
-                    "}"));
+                    "}",
+                    ""));
     }
 
     private static void replaceInFile(ClassCustomization classCustomization, String classPath,
@@ -375,7 +376,8 @@ public class CertificatesCustomizations extends Customization {
             " * @see com.azure.security.keyvault.certificates.CertificateAsyncClient",
             " * @see com.azure.security.keyvault.certificates.CertificateClientBuilder",
             " */",
-            "package com.azure.security.keyvault.certificates;"));
+            "package com.azure.security.keyvault.certificates;",
+            ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/certificates/models/package-info.java",
             joinWithNewline(
@@ -387,7 +389,8 @@ public class CertificatesCustomizations extends Customization {
                 " * Package containing the data models for Certificates clients. The key vault client performs cryptographic key and",
                 " * vault operations against the Key Vault service.",
                 " */",
-                "package com.azure.security.keyvault.certificates.models;"));
+                "package com.azure.security.keyvault.certificates.models;",
+                ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/certificates/implementation/package-info.java",
             joinWithNewline(
@@ -399,7 +402,8 @@ public class CertificatesCustomizations extends Customization {
                 " * Package containing the implementations for Certificates clients. The key vault client performs cryptographic key",
                 " * operations and vault operations against the Key Vault service.",
                 " */",
-                "package com.azure.security.keyvault.certificates.implementation;"));
+                "package com.azure.security.keyvault.certificates.implementation;",
+                ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/certificates/implementation/models/package-info.java",
             joinWithNewline(
@@ -411,7 +415,8 @@ public class CertificatesCustomizations extends Customization {
                 " * Package containing the implementation data models for Certificates clients. The key vault client performs",
                 " * cryptographic key operations and vault operations against the Key Vault service.",
                 " */",
-                "package com.azure.security.keyvault.certificates.implementation.models;"));
+                "package com.azure.security.keyvault.certificates.implementation.models;",
+                ""));
     }
 
     private static String joinWithNewline(String... lines) {

@@ -76,9 +76,9 @@ public class SecretsCustomizations extends Customization {
                     "    V7_5(\"7.5\"),",
                     "",
                     "    /**",
-                    "     * Service version {@code 7.6}.",
+                    "     * Service version {@code 7.6-preview.2}.",
                     "     */",
-                    "    V7_6(\"7.6\");",
+                    "    V7_6_PREVIEW_2(\"7.6-preview.2\");",
                     "",
                     "    private final String version;",
                     "",
@@ -96,13 +96,14 @@ public class SecretsCustomizations extends Customization {
                     "",
                     "    /**",
                     "     * Gets the latest service version supported by this client library.",
-                    "     * ",
+                    "     *",
                     "     * @return The latest {@link SecretServiceVersion}.",
                     "     */",
                     "    public static SecretServiceVersion getLatest() {",
-                    "        return V7_6;",
+                    "        return V7_6_PREVIEW_2;",
                     "    }",
-                    "}"));
+                    "}",
+                    ""));
     }
 
     private static void customizeModuleInfo(Editor editor) {
@@ -304,7 +305,8 @@ public class SecretsCustomizations extends Customization {
             " * @see com.azure.security.keyvault.secrets.SecretClientBuilder",
             " * @see com.azure.security.keyvault.secrets.models.KeyVaultSecret",
             " */",
-            "package com.azure.security.keyvault.secrets;"));
+            "package com.azure.security.keyvault.secrets;",
+            ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/secrets/models/package-info.java",
             joinWithNewline("// Copyright (c) Microsoft Corporation. All rights reserved.",
@@ -315,7 +317,8 @@ public class SecretsCustomizations extends Customization {
                 " * Package containing the data models for Secrets clients. The Key Vault clients perform cryptographic key and vault",
                 " * operations against the Key Vault service.",
                 " */",
-                "package com.azure.security.keyvault.secrets.models;"));
+                "package com.azure.security.keyvault.secrets.models;",
+                ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/secrets/implementation/package-info.java",
             joinWithNewline("// Copyright (c) Microsoft Corporation. All rights reserved.",
@@ -326,7 +329,8 @@ public class SecretsCustomizations extends Customization {
                 " * Package containing the implementations for Secrets clients. The Key Vault clients perform cryptographic key",
                 " * operations and vault operations against the Key Vault service.",
                 " */",
-                "package com.azure.security.keyvault.secrets.implementation;"));
+                "package com.azure.security.keyvault.secrets.implementation;",
+                ""));
 
         editor.replaceFile("src/main/java/com/azure/security/keyvault/secrets/implementation/models/package-info.java",
             joinWithNewline("// Copyright (c) Microsoft Corporation. All rights reserved.",
@@ -337,7 +341,8 @@ public class SecretsCustomizations extends Customization {
                 " * Package containing the implementation data models for Secrets clients. The Key Vault clients perform cryptographic",
                 " * key operations and vault operations against the Key Vault service.",
                 " */",
-                "package com.azure.security.keyvault.secrets.implementation.models;"));
+                "package com.azure.security.keyvault.secrets.implementation.models;",
+                ""));
     }
 
     private static String joinWithNewline(String... lines) {
