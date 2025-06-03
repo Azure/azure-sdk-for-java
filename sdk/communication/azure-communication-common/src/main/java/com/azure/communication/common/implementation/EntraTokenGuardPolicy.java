@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.common;
+package com.azure.communication.common.implementation;
 
-import com.azure.communication.common.implementation.TokenParser;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;

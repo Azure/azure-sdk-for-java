@@ -3,6 +3,7 @@
 
 package com.azure.communication.common;
 
+import com.azure.communication.common.implementation.EntraTokenGuardPolicy;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
