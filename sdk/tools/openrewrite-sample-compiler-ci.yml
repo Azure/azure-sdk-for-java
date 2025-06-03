@@ -40,22 +40,11 @@ extends:
                 inputs:
                   targetType: 'inline'
                   script: |
-                    mvn --% -f sdk/parents/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
                     mvn --% -f eng/code-quality-reports/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
+                    mvn --% -f sdk/parents/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
                     mvn --% -f common/perf-test-core/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
                     mvn --% -f sdk/clientcore/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
                     mvn --% -f sdk/core-v2/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
-
-              - task: Maven@3
-                displayName: 'Build and Install Azure OpenRewrite'
-                inputs:
-                  mavenPomFile: 'sdk/tools/azure-openrewrite/pom.xml'
-                  goals: 'clean install'
-                  options: '-B -DskipTests -Dgpg.skip'
-                  javaHomeOption: 'JDKVersion'
-                  jdkVersionOption: '1.8'
-                  mavenOptions: '-Xmx3072m'
-                  publishJUnitResults: false
 
               - task: Maven@3
                 displayName: 'Build and Install OpenRewrite Compiler Maven Plugin'
