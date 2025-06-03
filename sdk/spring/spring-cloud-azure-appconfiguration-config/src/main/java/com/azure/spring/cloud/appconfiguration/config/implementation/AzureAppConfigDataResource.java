@@ -3,7 +3,6 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.boot.context.config.ConfigDataResource;

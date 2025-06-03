@@ -61,11 +61,13 @@ public class AppConfigurationRefreshUtil {
                 clientFactory.setCurrentConfigStoreClient(originEndpoint, originEndpoint);
 
                 AppConfigurationStoreMonitoring monitor = connection.getMonitoring();
-                
+
                 boolean pushRefresh = false;
                 PushNotification notification = monitor.getPushNotification();
-                if ((notification.getPrimaryToken() != null && StringUtils.hasText(notification.getPrimaryToken().getName()))
-                    || (notification.getSecondaryToken() != null && StringUtils.hasText(notification.getPrimaryToken().getName()))) {
+                if ((notification.getPrimaryToken() != null
+                    && StringUtils.hasText(notification.getPrimaryToken().getName()))
+                    || (notification.getSecondaryToken() != null
+                        && StringUtils.hasText(notification.getPrimaryToken().getName()))) {
                     pushRefresh = true;
                 }
                 Context context = new Context("refresh", true).addData(PUSH_REFRESH, pushRefresh);
@@ -85,8 +87,8 @@ public class AppConfigurationRefreshUtil {
                             break;
                         } catch (HttpResponseException e) {
                             LOGGER.warn(
-                                "Failed to connect to App Configuration store {} during configuration refresh check. " +
-                                    "Status: {}, Message: {}",
+                                "Failed to connect to App Configuration store {} during configuration refresh check. "
+                                    + "Status: {}, Message: {}",
                                 client.getEndpoint(), e.getResponse().getStatusCode(), e.getMessage());
 
                             clientFactory.backoffClient(originEndpoint, client.getEndpoint());
@@ -111,8 +113,8 @@ public class AppConfigurationRefreshUtil {
                             break;
                         } catch (HttpResponseException e) {
                             LOGGER.warn(
-                                "Failed to connect to App Configuration store {} during feature flag refresh check. " +
-                                    "Status: {}, Message: {}",
+                                "Failed to connect to App Configuration store {} during feature flag refresh check. "
+                                    + "Status: {}, Message: {}",
                                 client.getEndpoint(), e.getResponse().getStatusCode(), e.getMessage());
 
                             clientFactory.backoffClient(originEndpoint, client.getEndpoint());

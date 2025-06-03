@@ -438,7 +438,7 @@ public class FeatureManager {
      * @param featureFilter Feature filter evaluation context
      * @param featureContext Feature context
      * @param filterName Name of the filter for logging
-     * @return Mono<Boolean> result of filter evaluation
+     * @return {@code Mono<Boolean>} result of filter evaluation
      */
     private Mono<Boolean> evaluateFilter(FeatureFilterEvaluationContext featureFilter, Object featureContext,
         String filterName) {
