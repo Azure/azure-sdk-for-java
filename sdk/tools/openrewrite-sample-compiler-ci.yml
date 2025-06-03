@@ -37,7 +37,7 @@ extends:
                 inputs:
                   mavenPomFile: 'sdk/clientcore/pom.xml'
                   goals: 'clean install'
-                  options: '-B -DskipTests -Dgpg.skip'
+                  options: '-B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
                   mavenOptions: '-Xmx3072m'
@@ -48,7 +48,7 @@ extends:
                 inputs:
                   mavenPomFile: 'sdk/core-v2/pom.xml'
                   goals: 'clean install'
-                  options: '-B -DskipTests -Dgpg.skip'
+                  options: '-B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
                   mavenOptions: '-Xmx3072m'
