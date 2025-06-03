@@ -4,55 +4,55 @@
 
 package com.azure.resourcemanager.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * This value can be set to 'enabled' to avoid breaking changes on existing customer resources and templates. If set to
  * 'disabled', traffic over public interface is not allowed, and private endpoint connections would be the exclusive
  * access method.
  */
-public enum PublicNetworkAccess {
+public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetworkAccess> {
     /**
-     * Enum value enabled.
+     * Static value enabled for PublicNetworkAccess.
      */
-    ENABLED("enabled"),
+    public static final PublicNetworkAccess ENABLED = fromString("enabled");
 
     /**
-     * Enum value disabled.
+     * Static value disabled for PublicNetworkAccess.
      */
-    DISABLED("disabled");
+    public static final PublicNetworkAccess DISABLED = fromString("disabled");
 
     /**
-     * The actual serialized value for a PublicNetworkAccess instance.
+     * Static value securedByPerimeter for PublicNetworkAccess.
      */
-    private final String value;
-
-    PublicNetworkAccess(String value) {
-        this.value = value;
-    }
+    public static final PublicNetworkAccess SECURED_BY_PERIMETER = fromString("securedByPerimeter");
 
     /**
-     * Parses a serialized value to a PublicNetworkAccess instance.
+     * Creates a new instance of PublicNetworkAccess value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed PublicNetworkAccess object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static PublicNetworkAccess fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        PublicNetworkAccess[] items = PublicNetworkAccess.values();
-        for (PublicNetworkAccess item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public PublicNetworkAccess() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a PublicNetworkAccess from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding PublicNetworkAccess.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static PublicNetworkAccess fromString(String name) {
+        return fromString(name, PublicNetworkAccess.class);
+    }
+
+    /**
+     * Gets known PublicNetworkAccess values.
+     * 
+     * @return known PublicNetworkAccess values.
+     */
+    public static Collection<PublicNetworkAccess> values() {
+        return values(PublicNetworkAccess.class);
     }
 }
