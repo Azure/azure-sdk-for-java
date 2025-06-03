@@ -176,12 +176,11 @@ public class JobTests extends BatchClientTestBase {
         String jobId = getStringIdWithUserNamePrefix("-Job-canCRUDWithPoolNodeComm");
         BatchNodeCommunicationMode targetMode = BatchNodeCommunicationMode.SIMPLIFIED;
 
-        BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
-            .setOffer("UbuntuServer")
-            .setSku("18.04-LTS")
-            .setVersion("latest");
+        BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("microsoftwindowsserver")
+            .setOffer("windowsserver")
+            .setSku("2022-datacenter-smalldisk-g2");
 
-        VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
+        VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.windows amd64");
 
         BatchPoolSpecification poolSpec = new BatchPoolSpecification("STANDARD_D1_V2");
         poolSpec.setVirtualMachineConfiguration(configuration).setTargetNodeCommunicationMode(targetMode);
