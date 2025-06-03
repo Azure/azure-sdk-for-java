@@ -88,15 +88,19 @@ public class KeysCustomizations extends Customization {
     }
 
     private static void customizeReleaseKeyResult(Editor editor) {
-        editor.getFileContent("src/main/java/com/azure/security/keyvault/keys/models/ReleaseKeyResult.java")
-            .replace("private ReleaseKeyResult(", "public ReleaseKeyResult)");
+        String classPath = "src/main/java/com/azure/security/keyvault/keys/models/ReleaseKeyResult.java";
+        String newFileContent = editor.getFileContent(classPath)
+            .replace("private ReleaseKeyResult(", "public ReleaseKeyResult(");
+
+        editor.replaceFile(classPath, newFileContent);
     }
 
-    private static void customizeKeyCurveName(LibraryCustomization libraryCustomization) {
+    private static void customizeKeyCurveName(Editor editor) {
         String classPath = "src/main/java/com/azure/security/keyvault/keys/models/KeyCurveName.java";
-        Editor editor = libraryCustomization.getRawEditor();
         String newFileContent = editor.getFileContent(classPath)
             .replace(" For valid values, see JsonWebKeyCurveName.", "");
+
+        editor.replaceFile(classPath, newFileContent);
     }
 
     private static void customizeModuleInfo(Editor editor) {

@@ -27,7 +27,7 @@ public final class ReleaseKeyResult implements JsonSerializable<ReleaseKeyResult
      * Creates an instance of ReleaseKeyResult class.
      */
     @Generated
-    private ReleaseKeyResult() {
+    public ReleaseKeyResult() {
     }
 
     /**
