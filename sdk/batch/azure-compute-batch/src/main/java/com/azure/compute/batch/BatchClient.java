@@ -4,7 +4,6 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
-import com.azure.compute.batch.implementation.lro.JobScheduleDeletePoller;
 import com.azure.compute.batch.implementation.lro.JobScheduleTerminatePoller;
 import com.azure.compute.batch.implementation.task.SyncTaskSubmitter;
 import com.azure.compute.batch.implementation.task.TaskManager;
@@ -144,6 +143,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -160,14 +160,16 @@ public final class BatchClient {
     @Generated
     private final BatchClientImpl serviceClient;
 
+    private final BatchAsyncClient asyncClient;
+
     /**
      * Initializes an instance of BatchClient class.
      *
      * @param serviceClient the service client implementation.
      */
-    @Generated
     BatchClient(BatchClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+        this.asyncClient = new BatchAsyncClient(this.serviceClient);
     }
 
     /**
@@ -11859,9 +11861,8 @@ public final class BatchClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId) {
-        JobScheduleDeletePoller poller = new JobScheduleDeletePoller(this, jobScheduleId, new RequestOptions());
-        return SyncPoller.createPoller(Duration.ofSeconds(5), poller.getActivationOperation(),
-            poller.getPollOperation(), poller.getCancelOperation(), poller.getFetchResultOperation());
+        PollerFlux<BatchJobSchedule, Void> asyncPoller = asyncClient.beginDeleteJobSchedule(jobScheduleId);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
@@ -13865,36 +13866,9 @@ public final class BatchClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId,
         BatchJobScheduleDeleteOptions options, RequestConditions requestConditions) {
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Boolean force = options == null ? null : options.isForce();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (force != null) {
-            requestOptions.addQueryParam("force", String.valueOf(force), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        JobScheduleDeletePoller poller = new JobScheduleDeletePoller(this, jobScheduleId, requestOptions);
-        return SyncPoller.createPoller(Duration.ofSeconds(5), poller.getActivationOperation(),
-            poller.getPollOperation(), poller.getCancelOperation(), poller.getFetchResultOperation());
+        PollerFlux<BatchJobSchedule, Void> asyncPoller
+            = asyncClient.beginDeleteJobSchedule(jobScheduleId, options, requestConditions);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
