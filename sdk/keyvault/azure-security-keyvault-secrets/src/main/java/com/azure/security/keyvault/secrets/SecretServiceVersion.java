@@ -41,9 +41,9 @@ public enum SecretServiceVersion implements ServiceVersion {
     V7_5("7.5"),
 
     /**
-     * Service version {@code 7.6-preview.2}.
+     * Service version {@code 7.6}.
      */
-    V7_6_PREVIEW_2("7.6-preview.2");
+    V7_6("7.6");
 
     private final String version;
 
@@ -65,6 +65,6 @@ public enum SecretServiceVersion implements ServiceVersion {
      * @return The latest {@link SecretServiceVersion}.
      */
     public static SecretServiceVersion getLatest() {
-        return V7_6_PREVIEW_2;
+        return V7_6;
     }
 }

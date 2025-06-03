@@ -41,9 +41,9 @@ public enum CertificateServiceVersion implements ServiceVersion {
     V7_5("7.5"),
 
     /**
-     * Service version {@code 7.6-preview.2}.
+     * Service version {@code 7.6}.
      */
-    V7_6_PREVIEW_2("7.6-preview.2");
+    V7_6("7.6");
 
     private final String version;
 
@@ -65,6 +65,6 @@ public enum CertificateServiceVersion implements ServiceVersion {
      * @return The latest {@link CertificateServiceVersion}.
      */
     public static CertificateServiceVersion getLatest() {
-        return V7_6_PREVIEW_2;
+        return V7_6;
     }
 }
