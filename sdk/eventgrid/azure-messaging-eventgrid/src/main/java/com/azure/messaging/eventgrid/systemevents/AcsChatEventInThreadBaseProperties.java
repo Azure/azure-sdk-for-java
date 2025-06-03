@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
     /*
      * The transaction id will be used as co-relation vector
      */
+    @Generated
     private String transactionId;
 
     /*
      * The chat thread id
      */
+    @Generated
     private String threadId;
 
     /**
      * Creates an instance of AcsChatEventInThreadBaseProperties class.
      */
+    @Generated
     public AcsChatEventInThreadBaseProperties() {
     }
 
@@ -37,6 +41,7 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
      * 
      * @return the transactionId value.
      */
+    @Generated
     public String getTransactionId() {
         return this.transactionId;
     }
@@ -47,6 +52,7 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
      * @param transactionId the transactionId value to set.
      * @return the AcsChatEventInThreadBaseProperties object itself.
      */
+    @Generated
     public AcsChatEventInThreadBaseProperties setTransactionId(String transactionId) {
         this.transactionId = transactionId;
         return this;
@@ -57,6 +63,7 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
      * 
      * @return the threadId value.
      */
+    @Generated
     public String getThreadId() {
         return this.threadId;
     }
@@ -67,6 +74,7 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
      * @param threadId the threadId value to set.
      * @return the AcsChatEventInThreadBaseProperties object itself.
      */
+    @Generated
     public AcsChatEventInThreadBaseProperties setThreadId(String threadId) {
         this.threadId = threadId;
         return this;
@@ -75,6 +83,7 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatEventInThreadBaseProperties.
      */
+    @Generated
     public static AcsChatEventInThreadBaseProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsChatEventInThreadBaseProperties deserializedAcsChatEventInThreadBaseProperties

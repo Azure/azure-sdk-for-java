@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,17 +24,20 @@ public final class AzureOpenAITokenizerParameters implements JsonSerializable<Az
      * Only applies if the unit is set to azureOpenAITokens. Options include 'R50k_base', 'P50k_base', 'P50k_edit' and
      * 'CL100k_base'. The default value is 'CL100k_base'.
      */
+    @Generated
     private SplitSkillEncoderModelName encoderModelName;
 
     /*
      * (Optional) Only applies if the unit is set to azureOpenAITokens. This parameter defines a collection of special
      * tokens that are permitted within the tokenization process.
      */
+    @Generated
     private List<String> allowedSpecialTokens;
 
     /**
      * Creates an instance of AzureOpenAITokenizerParameters class.
      */
+    @Generated
     public AzureOpenAITokenizerParameters() {
     }
 
@@ -43,6 +47,7 @@ public final class AzureOpenAITokenizerParameters implements JsonSerializable<Az
      * 
      * @return the encoderModelName value.
      */
+    @Generated
     public SplitSkillEncoderModelName getEncoderModelName() {
         return this.encoderModelName;
     }
@@ -54,6 +59,7 @@ public final class AzureOpenAITokenizerParameters implements JsonSerializable<Az
      * @param encoderModelName the encoderModelName value to set.
      * @return the AzureOpenAITokenizerParameters object itself.
      */
+    @Generated
     public AzureOpenAITokenizerParameters setEncoderModelName(SplitSkillEncoderModelName encoderModelName) {
         this.encoderModelName = encoderModelName;
         return this;
@@ -65,6 +71,7 @@ public final class AzureOpenAITokenizerParameters implements JsonSerializable<Az
      * 
      * @return the allowedSpecialTokens value.
      */
+    @Generated
     public List<String> getAllowedSpecialTokens() {
         return this.allowedSpecialTokens;
     }
@@ -76,6 +83,7 @@ public final class AzureOpenAITokenizerParameters implements JsonSerializable<Az
      * @param allowedSpecialTokens the allowedSpecialTokens value to set.
      * @return the AzureOpenAITokenizerParameters object itself.
      */
+    @Generated
     public AzureOpenAITokenizerParameters setAllowedSpecialTokens(List<String> allowedSpecialTokens) {
         this.allowedSpecialTokens = allowedSpecialTokens;
         return this;
@@ -84,6 +92,7 @@ public final class AzureOpenAITokenizerParameters implements JsonSerializable<Az
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,6 +111,7 @@ public final class AzureOpenAITokenizerParameters implements JsonSerializable<Az
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureOpenAITokenizerParameters.
      */
+    @Generated
     public static AzureOpenAITokenizerParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureOpenAITokenizerParameters deserializedAzureOpenAITokenizerParameters

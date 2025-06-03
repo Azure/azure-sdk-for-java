@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,6 +23,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
      * ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $
      * '.
      */
+    @Generated
     private String deviceId;
 
     /*
@@ -29,21 +31,25 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
      * ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $
      * '.
      */
+    @Generated
     private String moduleId;
 
     /*
      * Name of the IoT Hub where the device was created or deleted.
      */
+    @Generated
     private String hubName;
 
     /*
      * Information about the device connection state event.
      */
+    @Generated
     private DeviceConnectionStateEventInfo deviceConnectionStateEventInfo;
 
     /**
      * Creates an instance of DeviceConnectionStateEventProperties class.
      */
+    @Generated
     public DeviceConnectionStateEventProperties() {
     }
 
@@ -54,6 +60,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
      * 
      * @return the deviceId value.
      */
+    @Generated
     public String getDeviceId() {
         return this.deviceId;
     }
@@ -66,6 +73,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
      * @param deviceId the deviceId value to set.
      * @return the DeviceConnectionStateEventProperties object itself.
      */
+    @Generated
     public DeviceConnectionStateEventProperties setDeviceId(String deviceId) {
         this.deviceId = deviceId;
         return this;
@@ -78,6 +86,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
      * 
      * @return the moduleId value.
      */
+    @Generated
     public String getModuleId() {
         return this.moduleId;
     }
@@ -90,6 +99,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
      * @param moduleId the moduleId value to set.
      * @return the DeviceConnectionStateEventProperties object itself.
      */
+    @Generated
     public DeviceConnectionStateEventProperties setModuleId(String moduleId) {
         this.moduleId = moduleId;
         return this;
@@ -100,6 +110,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
      * 
      * @return the hubName value.
      */
+    @Generated
     public String getHubName() {
         return this.hubName;
     }
@@ -110,6 +121,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
      * @param hubName the hubName value to set.
      * @return the DeviceConnectionStateEventProperties object itself.
      */
+    @Generated
     public DeviceConnectionStateEventProperties setHubName(String hubName) {
         this.hubName = hubName;
         return this;
@@ -120,6 +132,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
      * 
      * @return the deviceConnectionStateEventInfo value.
      */
+    @Generated
     public DeviceConnectionStateEventInfo getDeviceConnectionStateEventInfo() {
         return this.deviceConnectionStateEventInfo;
     }
@@ -130,6 +143,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
      * @param deviceConnectionStateEventInfo the deviceConnectionStateEventInfo value to set.
      * @return the DeviceConnectionStateEventProperties object itself.
      */
+    @Generated
     public DeviceConnectionStateEventProperties
         setDeviceConnectionStateEventInfo(DeviceConnectionStateEventInfo deviceConnectionStateEventInfo) {
         this.deviceConnectionStateEventInfo = deviceConnectionStateEventInfo;
@@ -139,6 +153,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -157,6 +172,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeviceConnectionStateEventProperties.
      */
+    @Generated
     public static DeviceConnectionStateEventProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeviceConnectionStateEventProperties deserializedDeviceConnectionStateEventProperties

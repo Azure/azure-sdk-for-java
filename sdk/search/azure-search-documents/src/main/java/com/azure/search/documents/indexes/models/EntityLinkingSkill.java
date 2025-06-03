@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,23 +23,27 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "#Microsoft.Skills.Text.V3.EntityLinkingSkill";
 
     /*
      * A value indicating which language code to use. Default is `en`.
      */
+    @Generated
     private String defaultLanguageCode;
 
     /*
      * A value between 0 and 1 that be used to only include entities whose confidence score is greater than the value
      * specified. If not set (default), or if explicitly set to null, all entities will be included.
      */
+    @Generated
     private Double minimumPrecision;
 
     /*
      * The version of the model to use when calling the Text Analytics service. It will default to the latest available
      * when not specified. We recommend you do not specify this value unless absolutely necessary.
      */
+    @Generated
     private String modelVersion;
 
     /**
@@ -47,6 +52,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
+    @Generated
     public EntityLinkingSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -56,6 +62,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -66,6 +73,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
      * 
      * @return the defaultLanguageCode value.
      */
+    @Generated
     public String getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
@@ -76,6 +84,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the EntityLinkingSkill object itself.
      */
+    @Generated
     public EntityLinkingSkill setDefaultLanguageCode(String defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
@@ -88,6 +97,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
      * 
      * @return the minimumPrecision value.
      */
+    @Generated
     public Double getMinimumPrecision() {
         return this.minimumPrecision;
     }
@@ -100,6 +110,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
      * @param minimumPrecision the minimumPrecision value to set.
      * @return the EntityLinkingSkill object itself.
      */
+    @Generated
     public EntityLinkingSkill setMinimumPrecision(Double minimumPrecision) {
         this.minimumPrecision = minimumPrecision;
         return this;
@@ -112,6 +123,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
      * 
      * @return the modelVersion value.
      */
+    @Generated
     public String getModelVersion() {
         return this.modelVersion;
     }
@@ -124,6 +136,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
      * @param modelVersion the modelVersion value to set.
      * @return the EntityLinkingSkill object itself.
      */
+    @Generated
     public EntityLinkingSkill setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
@@ -132,6 +145,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntityLinkingSkill setName(String name) {
         super.setName(name);
@@ -141,6 +155,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntityLinkingSkill setDescription(String description) {
         super.setDescription(description);
@@ -150,6 +165,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntityLinkingSkill setContext(String context) {
         super.setContext(context);
@@ -159,6 +175,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -183,6 +200,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EntityLinkingSkill.
      */
+    @Generated
     public static EntityLinkingSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

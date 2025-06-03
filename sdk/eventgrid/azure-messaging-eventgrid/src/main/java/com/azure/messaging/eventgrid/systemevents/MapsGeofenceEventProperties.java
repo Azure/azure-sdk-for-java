@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,28 +22,33 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
     /*
      * Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
      */
+    @Generated
     private List<String> expiredGeofenceGeometryId;
 
     /*
      * Lists the fence geometries that either fully contain the coordinate position or have an overlap with the
      * searchBuffer around the fence.
      */
+    @Generated
     private List<MapsGeofenceGeometry> geometries;
 
     /*
      * Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
      */
+    @Generated
     private List<String> invalidPeriodGeofenceGeometryId;
 
     /*
      * True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the
      * Azure Maps event subscriber.
      */
+    @Generated
     private Boolean isEventPublished;
 
     /**
      * Creates an instance of MapsGeofenceEventProperties class.
      */
+    @Generated
     public MapsGeofenceEventProperties() {
     }
 
@@ -52,6 +58,7 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
      * 
      * @return the expiredGeofenceGeometryId value.
      */
+    @Generated
     public List<String> getExpiredGeofenceGeometryId() {
         return this.expiredGeofenceGeometryId;
     }
@@ -63,6 +70,7 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
      * @param expiredGeofenceGeometryId the expiredGeofenceGeometryId value to set.
      * @return the MapsGeofenceEventProperties object itself.
      */
+    @Generated
     public MapsGeofenceEventProperties setExpiredGeofenceGeometryId(List<String> expiredGeofenceGeometryId) {
         this.expiredGeofenceGeometryId = expiredGeofenceGeometryId;
         return this;
@@ -74,6 +82,7 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
      * 
      * @return the geometries value.
      */
+    @Generated
     public List<MapsGeofenceGeometry> getGeometries() {
         return this.geometries;
     }
@@ -85,6 +94,7 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
      * @param geometries the geometries value to set.
      * @return the MapsGeofenceEventProperties object itself.
      */
+    @Generated
     public MapsGeofenceEventProperties setGeometries(List<MapsGeofenceGeometry> geometries) {
         this.geometries = geometries;
         return this;
@@ -96,6 +106,7 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
      * 
      * @return the invalidPeriodGeofenceGeometryId value.
      */
+    @Generated
     public List<String> getInvalidPeriodGeofenceGeometryId() {
         return this.invalidPeriodGeofenceGeometryId;
     }
@@ -107,6 +118,7 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
      * @param invalidPeriodGeofenceGeometryId the invalidPeriodGeofenceGeometryId value to set.
      * @return the MapsGeofenceEventProperties object itself.
      */
+    @Generated
     public MapsGeofenceEventProperties
         setInvalidPeriodGeofenceGeometryId(List<String> invalidPeriodGeofenceGeometryId) {
         this.invalidPeriodGeofenceGeometryId = invalidPeriodGeofenceGeometryId;
@@ -119,6 +131,7 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
      * 
      * @return the isEventPublished value.
      */
+    @Generated
     public Boolean isEventPublished() {
         return this.isEventPublished;
     }
@@ -130,6 +143,7 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
      * @param isEventPublished the isEventPublished value to set.
      * @return the MapsGeofenceEventProperties object itself.
      */
+    @Generated
     public MapsGeofenceEventProperties setIsEventPublished(Boolean isEventPublished) {
         this.isEventPublished = isEventPublished;
         return this;
@@ -138,6 +152,7 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -158,6 +173,7 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MapsGeofenceEventProperties.
      */
+    @Generated
     public static MapsGeofenceEventProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MapsGeofenceEventProperties deserializedMapsGeofenceEventProperties = new MapsGeofenceEventProperties();
