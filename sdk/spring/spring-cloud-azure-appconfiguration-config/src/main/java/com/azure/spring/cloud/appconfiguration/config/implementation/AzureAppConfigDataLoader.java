@@ -7,6 +7,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -125,6 +126,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
             boolean reloadFailed = false;
             boolean pushRefresh = false;
+            Exception lastException = null;
             PushNotification notification = resource.getMonitoring().getPushNotification();
             if ((notification.getPrimaryToken() != null
                 && StringUtils.hasText(notification.getPrimaryToken().getName()))
@@ -132,13 +134,13 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                     && StringUtils.hasText(notification.getPrimaryToken().getName()))) {
                 pushRefresh = true;
             }
-            requestContext = new Context("refresh", resource.isRefresh()).addData(PUSH_REFRESH,
-                pushRefresh);
-
             // Feature Management needs to be set in the last config store.
+            requestContext = new Context("refresh", resource.isRefresh()).addData(PUSH_REFRESH, pushRefresh);
 
-            for (AppConfigurationReplicaClient client : clients) {
-                sourceList = new ArrayList<>();
+            Iterator<AppConfigurationReplicaClient> clientIterator = clients.iterator();
+
+            while (clientIterator.hasNext()) {
+                AppConfigurationReplicaClient client = clientIterator.next();
 
                 if (reloadFailed
                     && !AppConfigurationRefreshUtil.refreshStoreCheck(client,
@@ -167,19 +169,31 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
                         storeState.setState(resource.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
                     }
-                    storeState.setLoadState(resource.getEndpoint(), true);
+                    storeState.setLoadState(resource.getEndpoint(), true); // Success - configuration loaded, exit loop
+                    lastException = null;
+                    // Break out of the loop since we have successfully loaded configuration
+                    break;
                 } catch (AppConfigurationStatusException e) {
                     reloadFailed = true;
-                    replicaClientFactory.backoffClientClient(resource.getEndpoint(), client.getEndpoint());
+                    replicaClientFactory.backoffClient(resource.getEndpoint(), client.getEndpoint());
+                    lastException = e;
+                    // Log the specific replica failure with context
+                    logReplicaFailure(client, "status exception", clientIterator.hasNext(), e);
                 } catch (Exception e) {
-                    failedToGeneratePropertySource(e);
-
-                    // Not a retriable error
-                    break;
+                    // Store the exception to potentially use if all replicas fail
+                    lastException = e; // Log the specific replica failure with context
+                    logReplicaFailure(client, "exception", clientIterator.hasNext(), e);
                 }
-                if (sourceList.size() > 0) {
-                    break;
-                }
+            } // Check if all replicas failed
+            if (lastException != null && !resource.isRefresh()) {
+                // During startup, if all replicas failed, fail the application
+                logger.error("Azure App Configuration failed to load configuration during startup for store: "
+                    + resource.getEndpoint() + ". Application cannot start without required configuration.");
+                failedToGeneratePropertySource(lastException);
+            } else if (lastException != null && resource.isRefresh()) {
+                // During refresh, log warning but don't fail the application
+                logger.warn("Azure App Configuration failed during refresh for store: "
+                    + resource.getEndpoint() + ". Continuing with existing configuration.");
             }
         }
 
@@ -256,15 +270,36 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         return featureFlagWatchKeys;
     }
 
+    /**
+     * Logs a replica failure with contextual information about the failure scenario and available replicas.
+     *
+     * @param client the replica client that failed
+     * @param exceptionType a brief description of the exception type (e.g., "status exception", "exception")
+     * @param hasMoreReplicas whether there are additional replicas available to try
+     * @param exception the exception that caused the failure
+     */
+    private void logReplicaFailure(AppConfigurationReplicaClient client, String exceptionType,
+        boolean hasMoreReplicas, Exception exception) {
+        String scenario = resource.isRefresh() ? "refresh" : "startup";
+        String nextAction = hasMoreReplicas ? "Trying next replica." : "No more replicas available.";
+
+        logger.warn("Azure App Configuration replica " + client.getEndpoint()
+            + " failed during " + scenario + " with " + exceptionType + ". "
+            + nextAction + " Store: " + resource.getEndpoint(), exception);
+    }
+
+    /**
+     * Introduces a delay before throwing exceptions during startup to prevent fast crash loops.
+     */
     private void delayException() {
         Instant currentDate = Instant.now();
-        Instant preKillTIme = START_DATE.plusSeconds(PREKILL_TIME);
-        if (currentDate.isBefore(preKillTIme)) {
-            long diffInMillies = Math.abs(preKillTIme.toEpochMilli() - currentDate.toEpochMilli());
+        Instant preKillTime = START_DATE.plusSeconds(PREKILL_TIME);
+        if (currentDate.isBefore(preKillTime)) {
+            long diffInMillies = Math.abs(preKillTime.toEpochMilli() - currentDate.toEpochMilli());
             try {
                 Thread.sleep(diffInMillies);
             } catch (InterruptedException e) {
-                logger.error("Failed to wait before fast fail.");
+                Thread.currentThread().interrupt(); // Restore interrupted status
             }
         }
     }
