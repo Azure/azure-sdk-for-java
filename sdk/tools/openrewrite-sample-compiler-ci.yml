@@ -40,31 +40,11 @@ extends:
                 inputs:
                   targetType: 'inline'
                   script: |
-                    mvn -f sdk/parents/pom.xml clean install
-                    mvn -f eng/code-quality-reports/pom.xml clean install
-                    mvn -f common/perf-test-core/pom.xml clean install
-
-              - task: Maven@3
-                displayName: 'Build and Install Clientcore from Source'
-                inputs:
-                  mavenPomFile: 'sdk/clientcore/pom.xml'
-                  goals: 'clean install'
-                  options: '-B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip'
-                  javaHomeOption: 'JDKVersion'
-                  jdkVersionOption: '1.8'
-                  mavenOptions: '-Xmx3072m'
-                  publishJUnitResults: false
-
-              - task: Maven@3
-                displayName: 'Build and Install Azure Azure Core V2 from Source'
-                inputs:
-                  mavenPomFile: 'sdk/core-v2/pom.xml'
-                  goals: 'clean install'
-                  options: '-B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip'
-                  javaHomeOption: 'JDKVersion'
-                  jdkVersionOption: '1.8'
-                  mavenOptions: '-Xmx3072m'
-                  publishJUnitResults: false
+                    mvn -f sdk/parents/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
+                    mvn -f eng/code-quality-reports/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
+                    mvn -f common/perf-test-core/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
+                    mvn -f sdk/clientcore/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
+                    mvn -f sdk/core-v2/pom.xml clean install -B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip
 
               - task: Maven@3
                 displayName: 'Build and Install Azure OpenRewrite'
