@@ -31,13 +31,24 @@ extends:
                     - /sdk/tools/azure-openrewrite/
                     - sdk/core-v2/
                     - sdk/clientcore/
+                    - eng/
+
+              - task: Maven@3
+                displayName: 'Build and Install Code Quality Reports'
+                inputs:
+                  mavenPomFile: 'eng/code-quality-reports/pom.xml'
+                  goals: 'clean install'
+                  options: '-B'
+                  javaHomeOption: 'JDKVersion'
+                  jdkVersionOption: '1.8'
+                  mavenOptions: '-Xmx3072m'
 
               - task: Maven@3
                 displayName: 'Build and Install Clientcore from Source'
                 inputs:
                   mavenPomFile: 'sdk/clientcore/pom.xml'
                   goals: 'clean install'
-                  options: '-B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.check.skip=true'
+                  options: '-B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
                   mavenOptions: '-Xmx3072m'
@@ -48,7 +59,7 @@ extends:
                 inputs:
                   mavenPomFile: 'sdk/core-v2/pom.xml'
                   goals: 'clean install'
-                  options: '-B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.check.skip=true'
+                  options: '-B -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipSpringITs -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
                   mavenOptions: '-Xmx3072m'
