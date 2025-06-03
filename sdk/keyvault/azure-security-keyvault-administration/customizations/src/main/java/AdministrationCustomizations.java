@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
- import com.azure.autorest.customization.ClassCustomization;
+import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
