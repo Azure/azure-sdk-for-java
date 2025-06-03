@@ -12,7 +12,7 @@ import com.azure.resourcemanager.avs.fluent.models.IscsiPathInner;
 public final class IscsiPathsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/IscsiPaths_CreateOrUpdate.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/IscsiPaths_CreateOrUpdate.json
      */
     /**
      * Sample code: IscsiPaths_CreateOrUpdate.

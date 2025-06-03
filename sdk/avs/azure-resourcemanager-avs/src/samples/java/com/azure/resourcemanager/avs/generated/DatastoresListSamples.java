@@ -10,7 +10,7 @@ package com.azure.resourcemanager.avs.generated;
 public final class DatastoresListSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Datastores_List.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/Datastores_List.json
      */
     /**
      * Sample code: Datastores_List.

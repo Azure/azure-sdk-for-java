@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class WorkloadNetworksCreateDnsServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreateDnsService.
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/WorkloadNetworks_CreateDnsService.
      * json
      */
     /**

@@ -3,6 +3,8 @@
 
 package com.azure.v2.security.keyvault.keys.cryptography.implementation;
 
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -16,6 +18,7 @@ import java.security.Provider;
 import java.util.Arrays;
 
 abstract class AesCbcPad extends SymmetricEncryptionAlgorithm {
+    private static final ClientLogger LOGGER = new ClientLogger(AesCbcPad.class);
     final int keySizeInBytes;
     final int keySize;
 
@@ -40,7 +43,10 @@ abstract class AesCbcPad extends SymmetricEncryptionAlgorithm {
         NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         if (key == null || key.length < keySizeInBytes) {
-            throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
+            throw LOGGER.throwableAtError()
+                .addKeyValue("actualSize", key == null ? 0 : key.length)
+                .addKeyValue("expectedSize", keySizeInBytes)
+                .log("Key is too short.", InvalidKeyException::new);
         }
 
         return new AesCbcPadEncryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, provider);
@@ -60,7 +66,10 @@ abstract class AesCbcPad extends SymmetricEncryptionAlgorithm {
         NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         if (key == null || key.length < keySizeInBytes) {
-            throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
+            throw LOGGER.throwableAtError()
+                .addKeyValue("actualSize", key == null ? 0 : key.length)
+                .addKeyValue("expectedSize", keySizeInBytes)
+                .log("Key is too short.", InvalidKeyException::new);
         }
 
         return new AesCbcPadDecryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, provider);

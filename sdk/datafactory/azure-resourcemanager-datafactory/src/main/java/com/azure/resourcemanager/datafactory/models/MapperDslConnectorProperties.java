@@ -87,7 +87,9 @@ public final class MapperDslConnectorProperties implements JsonSerializable<Mapp
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         return jsonWriter.writeEndObject();
     }
 

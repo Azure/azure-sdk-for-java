@@ -27,8 +27,8 @@ public final class KeyVaultSetting {
      */
     public KeyVaultSetting(String name, boolean value) {
         if (CoreUtils.isNullOrEmpty(name)) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("The 'name' parameter cannot be null or empty"));
+            throw LOGGER.throwableAtError()
+                .log("The 'name' parameter cannot be null or empty", IllegalArgumentException::new);
         }
 
         this.name = name;
@@ -52,9 +52,10 @@ public final class KeyVaultSetting {
      */
     public boolean asBoolean() {
         if (type != KeyVaultSettingType.BOOLEAN) {
-            throw LOGGER.logThrowableAsError(new UnsupportedOperationException(
-                String.format("Cannot get setting value as %s from setting value of " + "type %s",
-                    KeyVaultSettingType.BOOLEAN, this.getType())));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("settingName", this.name)
+                .addKeyValue("settingType", this.type.getValue())
+                .log("Cannot get setting value as boolean", UnsupportedOperationException::new);
         }
 
         return (Boolean) this.value;

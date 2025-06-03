@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.Datastore;
@@ -15,6 +15,7 @@ import com.azure.resourcemanager.avs.models.DiskPoolVolume;
 import com.azure.resourcemanager.avs.models.ElasticSanVolume;
 import com.azure.resourcemanager.avs.models.MountOptionEnum;
 import com.azure.resourcemanager.avs.models.NetAppVolume;
+import com.azure.resourcemanager.avs.models.PureStorageVolume;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -25,28 +26,32 @@ public final class DatastoresCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"netAppVolume\":{\"id\":\"anokqgu\"},\"diskPoolVolume\":{\"targetId\":\"jqnv\",\"lunName\":\"roylaxxu\",\"mountOption\":\"ATTACH\",\"path\":\"sdosfjbjsvgjr\"},\"elasticSanVolume\":{\"targetId\":\"r\"},\"status\":\"Inaccessible\"},\"id\":\"ytdc\",\"name\":\"xgccknfnw\",\"type\":\"btmvpdvjdhttza\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"netAppVolume\":{\"id\":\"abpxuc\"},\"diskPoolVolume\":{\"targetId\":\"ggqowey\",\"lunName\":\"rdhlis\",\"mountOption\":\"MOUNT\",\"path\":\"lqqmpiz\"},\"elasticSanVolume\":{\"targetId\":\"w\"},\"pureStorageVolume\":{\"storagePoolId\":\"qxpxiwfcngjsaa\",\"sizeGb\":2137009925},\"status\":\"Unknown\"},\"id\":\"mkzjvkviir\",\"name\":\"gfgrwsdp\",\"type\":\"ra\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Datastore response = manager.datastores()
-            .define("pypqtgsfj")
-            .withExistingCluster("itvtzeexavo", "tfgle", "dmdqb")
-            .withNetAppVolume(new NetAppVolume().withId("hhxud"))
-            .withDiskPoolVolume(
-                new DiskPoolVolume().withTargetId("vodhtn").withLunName("irudh").withMountOption(MountOptionEnum.MOUNT))
-            .withElasticSanVolume(new ElasticSanVolume().withTargetId("zrcxfailcfxwmdbo"))
+            .define("gunbtgfebwlnbm")
+            .withExistingCluster("gbzahgxqdlyr", "ltlaprltzkatbhj", "znnbsoqeqalarvl")
+            .withNetAppVolume(new NetAppVolume().withId("udzqavbp"))
+            .withDiskPoolVolume(new DiskPoolVolume().withTargetId("mjxlyyzglgouw")
+                .withLunName("lmjjyuo")
+                .withMountOption(MountOptionEnum.MOUNT))
+            .withElasticSanVolume(new ElasticSanVolume().withTargetId("ytunlbfjkwr"))
+            .withPureStorageVolume(new PureStorageVolume().withStoragePoolId("nkqbhsyrq").withSizeGb(166091812))
             .create();
 
-        Assertions.assertEquals("anokqgu", response.netAppVolume().id());
-        Assertions.assertEquals("jqnv", response.diskPoolVolume().targetId());
-        Assertions.assertEquals("roylaxxu", response.diskPoolVolume().lunName());
-        Assertions.assertEquals(MountOptionEnum.ATTACH, response.diskPoolVolume().mountOption());
-        Assertions.assertEquals("r", response.elasticSanVolume().targetId());
+        Assertions.assertEquals("abpxuc", response.netAppVolume().id());
+        Assertions.assertEquals("ggqowey", response.diskPoolVolume().targetId());
+        Assertions.assertEquals("rdhlis", response.diskPoolVolume().lunName());
+        Assertions.assertEquals(MountOptionEnum.MOUNT, response.diskPoolVolume().mountOption());
+        Assertions.assertEquals("w", response.elasticSanVolume().targetId());
+        Assertions.assertEquals("qxpxiwfcngjsaa", response.pureStorageVolume().storagePoolId());
+        Assertions.assertEquals(2137009925, response.pureStorageVolume().sizeGb());
     }
 }

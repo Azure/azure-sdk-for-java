@@ -17,8 +17,8 @@ public class GetDocumentClassifiers {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.listclassifiers.getdocumentclassifiers
+        // BEGIN:com.azure.ai.documentintelligence.generated.list-classifiers.get-document-classifiers
         PagedIterable<DocumentClassifierDetails> response = documentIntelligenceAdministrationClient.listClassifiers();
-        // END:com.azure.ai.documentintelligence.generated.listclassifiers.getdocumentclassifiers
+        // END:com.azure.ai.documentintelligence.generated.list-classifiers.get-document-classifiers
     }
 }

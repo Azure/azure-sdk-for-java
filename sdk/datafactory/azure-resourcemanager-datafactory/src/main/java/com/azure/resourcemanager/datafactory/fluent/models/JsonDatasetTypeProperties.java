@@ -136,7 +136,9 @@ public final class JsonDatasetTypeProperties implements JsonSerializable<JsonDat
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("location", this.location);
-        jsonWriter.writeUntypedField("encodingName", this.encodingName);
+        if (this.encodingName != null) {
+            jsonWriter.writeUntypedField("encodingName", this.encodingName);
+        }
         jsonWriter.writeJsonField("compression", this.compression);
         return jsonWriter.writeEndObject();
     }

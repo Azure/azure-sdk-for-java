@@ -28,7 +28,7 @@ public final class LinkedServicesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"LinkedService\",\"version\":\"vkcufwse\",\"connectVia\":{\"referenceName\":\"kalekneaho\",\"parameters\":{\"gtrnjzbvbwabily\":\"dataupxibu\",\"qpkskbidmz\":\"datamfaxepuvwahfnlks\",\"qf\":\"datajpbhcgesbt\"}},\"description\":\"hlitcydgesflnzi\",\"parameters\":{\"rjkinofwzci\":{\"type\":\"String\",\"defaultValue\":\"datadhxamjhpqfjpef\"}},\"annotations\":[\"dataqesyifdrbkprblw\",\"databjse\",\"dataqqts\",\"dataupogtrwkuwn\"],\"\":{\"wngtiyzzi\":\"datajeo\",\"nrky\":\"datauovgipqgtsgo\",\"qoiqonnvaybo\":\"datahtcrxcnuyfvrid\",\"pojbifixdgkvlze\":\"databigzlvqmy\"}},\"name\":\"qopwabrzrhdezlhs\",\"type\":\"pdbol\",\"etag\":\"hyqdvxqoajfoscd\",\"id\":\"fatf\"}";
+            = "{\"properties\":{\"type\":\"LinkedService\",\"version\":\"vkcufwse\",\"connectVia\":{\"referenceName\":\"kalekneaho\",\"parameters\":{\"gtrnjzbvbwabily\":\"dataupxibu\",\"qpkskbidmz\":\"datamfaxepuvwahfnlks\",\"qf\":\"datajpbhcgesbt\"}},\"description\":\"hlitcydgesflnzi\",\"parameters\":{\"rjkinofwzci\":{\"type\":\"String\",\"defaultValue\":\"datadhxamjhpqfjpef\"}},\"annotations\":[\"dataqesyifdrbkprblw\",\"databjse\",\"dataqqts\",\"dataupogtrwkuwn\"],\"wngtiyzzi\":\"datajeo\",\"nrky\":\"datauovgipqgtsgo\",\"qoiqonnvaybo\":\"datahtcrxcnuyfvrid\",\"pojbifixdgkvlze\":\"databigzlvqmy\"},\"name\":\"qopwabrzrhdezlhs\",\"type\":\"pdbol\",\"etag\":\"hyqdvxqoajfoscd\",\"id\":\"fatf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -54,7 +54,8 @@ public final class LinkedServicesCreateOrUpdateWithResponseMockTests {
                         "spnyutfhqighnun",
                         new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("databxau")))
                     .withAnnotations(Arrays.asList("datamzbir", "datanddaovgi"))
-                    .withAdditionalProperties(mapOf("type", "LinkedService")))
+                    .withAdditionalProperties(mapOf("woahfaqlcq", "dataivsagrfjhcrq", "type", "LinkedService", "yclv",
+                        "dataliegzjktfsci", "cvjdvxucqxjxxmsi", "dataztrln")))
                 .withIfMatch("hsv")
                 .create();
 

@@ -4,6 +4,8 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.models.GeoBoundingBox;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -11,7 +13,6 @@ import com.azure.maps.search.implementation.models.GeometryCopyright;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import com.azure.core.models.GeoBoundingBox;
 
 /**
  * `GeoJSON GeocodingFeature` object that describe the boundaries of a geographical area. Geometry of the feature is
@@ -23,33 +24,40 @@ import com.azure.core.models.GeoBoundingBox;
 public final class Boundary extends GeoJsonFeature {
 
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
+    @Generated
     private GeoJsonObjectType type = GeoJsonObjectType.fromString("Boundary");
 
     /*
      * The name associated with the geographical area.
      */
+    @Generated
     private String name;
 
     /*
      * The copyright string.
      */
+    @Generated
     private String copyright;
 
     /*
      * A URL that lists many of the data providers for Azure Maps and their related copyright information.
      */
+    @Generated
     private String copyrightURL;
 
     /*
      * A collection of copyright information for each geometry of the Boundary object in the same order they appear.
      */
+    @Generated
     private List<GeometryCopyright> geometriesCopyright;
 
     /**
      * Creates an instance of Boundary class.
      */
+    @Generated
     public Boundary() {
     }
 
@@ -60,6 +68,7 @@ public final class Boundary extends GeoJsonFeature {
      *
      * @return the type value.
      */
+    @Generated
     @Override
     public GeoJsonObjectType getType() {
         return this.type;
@@ -70,6 +79,7 @@ public final class Boundary extends GeoJsonFeature {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -80,6 +90,7 @@ public final class Boundary extends GeoJsonFeature {
      * @param name the name value to set.
      * @return the Boundary object itself.
      */
+    @Generated
     public Boundary setName(String name) {
         this.name = name;
         return this;
@@ -90,6 +101,7 @@ public final class Boundary extends GeoJsonFeature {
      *
      * @return the copyright value.
      */
+    @Generated
     public String getCopyright() {
         return this.copyright;
     }
@@ -100,6 +112,7 @@ public final class Boundary extends GeoJsonFeature {
      * @param copyright the copyright value to set.
      * @return the Boundary object itself.
      */
+    @Generated
     public Boundary setCopyright(String copyright) {
         this.copyright = copyright;
         return this;
@@ -111,6 +124,7 @@ public final class Boundary extends GeoJsonFeature {
      *
      * @return the copyrightURL value.
      */
+    @Generated
     public String getCopyrightUrl() {
         return this.copyrightURL;
     }
@@ -122,6 +136,7 @@ public final class Boundary extends GeoJsonFeature {
      * @param copyrightURL the copyrightURL value to set.
      * @return the Boundary object itself.
      */
+    @Generated
     public Boundary setCopyrightUrl(String copyrightURL) {
         this.copyrightURL = copyrightURL;
         return this;
@@ -133,6 +148,7 @@ public final class Boundary extends GeoJsonFeature {
      *
      * @return the geometriesCopyright value.
      */
+    @Generated
     public List<GeometryCopyright> getGeometriesCopyright() {
         return this.geometriesCopyright;
     }
@@ -144,6 +160,7 @@ public final class Boundary extends GeoJsonFeature {
      * @param geometriesCopyright the geometriesCopyright value to set.
      * @return the Boundary object itself.
      */
+    @Generated
     public Boundary setGeometriesCopyright(List<GeometryCopyright> geometriesCopyright) {
         this.geometriesCopyright = geometriesCopyright;
         return this;
@@ -152,6 +169,7 @@ public final class Boundary extends GeoJsonFeature {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Boundary setGeometry(GeoJsonGeometry geometry) {
         super.setGeometry(geometry);
@@ -161,6 +179,7 @@ public final class Boundary extends GeoJsonFeature {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Boundary setProperties(Object properties) {
         super.setProperties(properties);
@@ -170,6 +189,7 @@ public final class Boundary extends GeoJsonFeature {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Boundary setId(String id) {
         super.setId(id);
@@ -179,6 +199,7 @@ public final class Boundary extends GeoJsonFeature {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Boundary setFeatureType(String featureType) {
         super.setFeatureType(featureType);
@@ -186,13 +207,12 @@ public final class Boundary extends GeoJsonFeature {
     }
 
     /**
-     * /**
      * Sets the bounding box of this feature using a {@link GeoBoundingBox}.
      *
      * @param bbox The bounding box to set.
      * @return The updated Boundary object.
-     * /
      */
+    @Generated
     public Boundary setBbox(GeoBoundingBox bbox) {
         List<Double> bboxList = new ArrayList<>();
         bboxList.add(bbox.getNorth());
@@ -206,12 +226,15 @@ public final class Boundary extends GeoJsonFeature {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("geometry", getGeometry());
         jsonWriter.writeArrayField("bbox", getBbox(), (writer, element) -> writer.writeDouble(element));
-        jsonWriter.writeUntypedField("properties", getProperties());
+        if (getProperties() != null) {
+            jsonWriter.writeUntypedField("properties", getProperties());
+        }
         jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("featureType", getFeatureType());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
@@ -232,6 +255,7 @@ public final class Boundary extends GeoJsonFeature {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Boundary.
      */
+    @Generated
     public static Boundary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Boundary deserializedBoundary = new Boundary();

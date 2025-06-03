@@ -1,0 +1,103 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.core.http.rest
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.core.http.rest
+displayName: Migrate from azure.core.http.rest to next generation stack
+description: This recipe migrates azure.core.http.rest package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # EncodedParameter
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Page
+  # --------------------------------------------------------------------
+
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PagedFlux
+  # --------------------------------------------------------------------
+
+  # TODO: Async API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PagedFluxBase
+  # --------------------------------------------------------------------
+
+  # TODO: Async API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PagedIterable
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.rest.PagedIterable
+      newFullyQualifiedTypeName: io.clientcore.core.http.paging.PagedIterable
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # PagedResponse
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.rest.PagedResponse
+      newFullyQualifiedTypeName: io.clientcore.core.http.paging.PagedResponse
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # PagedResponseBase
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # RequestOptions
+  # --------------------------------------------------------------------
+
+  - com.azure.openrewrite.core.http.rest.RequestOptionsCustomRecipe
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.rest.RequestOptions
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.RequestContext
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # Response
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.rest.Response
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.Response
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ResponseBase
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # SimpleResponse
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.rest.SimpleResponse
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.Response
+
+  # --------------------------------------------------------------------
+  # StreamResponse
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement

@@ -12,14 +12,17 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
+import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.utils.GeneratedCodeUtils;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
@@ -60,9 +63,7 @@ public final class ResponseHandler {
             body.addStatement(statement);
         }
 
-        if (!method.getExpectedStatusCodes().isEmpty()) {
-            validateResponseStatus(body, method, usingTryWithResources);
-        }
+        validateResponseStatus(body, method, usingTryWithResources);
 
         handleRequestReturn(body, returnType, entityType, method, serializationFormatSet);
     }
@@ -85,32 +86,75 @@ public final class ResponseHandler {
 
     private static void validateResponseStatus(BlockStmt body, HttpRequestContext method,
         boolean usingTryWithResources) {
-        body.addStatement(StaticJavaParser.parseStatement("int responseCode = networkResponse.getStatusCode();"));
-        String expectedResponseCheck;
-        if (method.getExpectedStatusCodes().size() == 1) {
-            expectedResponseCheck = "responseCode == " + method.getExpectedStatusCodes().get(0) + ";";
-        } else {
-            String statusCodes = method.getExpectedStatusCodes()
-                .stream()
-                .map(code -> "responseCode == " + code)
-                .collect(Collectors.joining(" || "));
-            expectedResponseCheck = "(" + statusCodes + ");";
-        }
-        body.addStatement(StaticJavaParser.parseStatement("boolean expectedResponse = " + expectedResponseCheck));
+        addStatusCodeCheck(body, method);
+        addExceptionHandling(body, method, usingTryWithResources);
+    }
 
-        body.tryAddImportToParentCompilationUnit(HttpResponseException.class);
-        BlockStmt ifBlock = new BlockStmt();
-        ifBlock.addStatement(
-            StaticJavaParser.parseStatement("String errorMessage = networkResponse.getValue().toString();"));
-        if (!usingTryWithResources) {
-            closeResponse(ifBlock);
+    private static void addStatusCodeCheck(BlockStmt body, HttpRequestContext method) {
+        body.addStatement(StaticJavaParser.parseStatement("int responseCode = networkResponse.getStatusCode();"));
+        String expectedResponseCheck
+            = AnnotationProcessorUtils.generateExpectedResponseCheck(method.getExpectedStatusCodes());
+        body.addStatement(StaticJavaParser.parseStatement("boolean expectedResponse = " + expectedResponseCheck + ";"));
+    }
+
+    private static void addExceptionHandling(BlockStmt body, HttpRequestContext method, boolean usingTryWithResources) {
+        BlockStmt errorBlock = new BlockStmt();
+        body.tryAddImportToParentCompilationUnit(GeneratedCodeUtils.class);
+        Map<Integer, HttpRequestContext.ExceptionBodyTypeInfo> mappings = method.getExceptionBodyMappings();
+        if (!mappings.isEmpty() && method.getDefaultExceptionBodyType() != null) {
+            // Both map and default
+            getStatusCodeMapping(body, errorBlock, mappings);
+            errorBlock.addStatement("java.lang.reflect.ParameterizedType defaultErrorBodyType = "
+                + AnnotationProcessorUtils.createParameterizedTypeStatement(method.getDefaultExceptionBodyType(), body)
+                + ";");
+            errorBlock.addStatement(
+                "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, statusToExceptionTypeMap, LOGGER);");
+        } else if (!mappings.isEmpty()) {
+            // Only map
+            getStatusCodeMapping(body, errorBlock, mappings);
+            errorBlock.addStatement(
+                "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap, LOGGER);");
+        } else if (method.getDefaultExceptionBodyType() != null) {
+            // Only default
+            errorBlock.addStatement("java.lang.reflect.ParameterizedType defaultErrorBodyType = "
+                + AnnotationProcessorUtils.createParameterizedTypeStatement(method.getDefaultExceptionBodyType(), body)
+                + ";");
+            errorBlock.addStatement(
+                "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);");
+        } else {
+            // Neither
+            Statement stmt = StaticJavaParser.parseStatement(
+                "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, "
+                    + "xmlSerializer, null, null, LOGGER);");
+            stmt.setLineComment("\n Handle unexpected response");
+            errorBlock.addStatement(stmt);
         }
-        ifBlock.addStatement(
-            StaticJavaParser.parseStatement("throw new HttpResponseException(errorMessage, networkResponse, null);"));
+        if (!usingTryWithResources) {
+            closeResponse(errorBlock);
+        }
         IfStmt ifStmt = new IfStmt()
             .setCondition(new UnaryExpr(new NameExpr("expectedResponse"), UnaryExpr.Operator.LOGICAL_COMPLEMENT))
-            .setThenStmt(ifBlock);
+            .setThenStmt(errorBlock);
         body.addStatement(ifStmt);
+    }
+
+    private static void getStatusCodeMapping(BlockStmt body, BlockStmt errorBlock,
+        Map<Integer, HttpRequestContext.ExceptionBodyTypeInfo> mappings) {
+        body.tryAddImportToParentCompilationUnit(Map.class);
+        body.tryAddImportToParentCompilationUnit(HashMap.class);
+        body.tryAddImportToParentCompilationUnit(CoreUtils.class);
+        errorBlock.addStatement(
+            "Map<Integer, java.lang.reflect.ParameterizedType> statusToExceptionTypeMap = new HashMap<>();");
+        for (Map.Entry<Integer, HttpRequestContext.ExceptionBodyTypeInfo> entry : mappings.entrySet()) {
+            if (entry.getValue().isDefaultObject() || entry.getValue().getTypeMirror() == null) {
+                errorBlock.addStatement("statusToExceptionTypeMap.put(" + entry.getKey()
+                    + ", CoreUtils.createParameterizedType(Object.class));");
+            } else {
+                errorBlock.addStatement("statusToExceptionTypeMap.put(" + entry.getKey() + ", "
+                    + AnnotationProcessorUtils.createParameterizedTypeStatement(entry.getValue().getTypeMirror(), body)
+                    + ");");
+            }
+        }
     }
 
     private static void handleRequestReturn(BlockStmt body, TypeMirror returnType, java.lang.reflect.Type entityType,
@@ -135,11 +179,26 @@ public final class ResponseHandler {
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // Return is a byte[]. Convert the network response body into a byte[].
             body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = networkResponse.getValue();"));
+            // If the wire type is Base64Uri, decode it accordingly.
+            boolean isBase64Uri = false;
+            TypeMirror wireType = method.getReturnValueWireType();
+            if (wireType != null && wireType.getKind() == TypeKind.DECLARED) {
+                DeclaredType declaredWireType = (DeclaredType) wireType;
+                TypeElement wireTypeElement = (TypeElement) declaredWireType.asElement();
+                isBase64Uri = Base64Uri.class.getCanonicalName().equals(wireTypeElement.getQualifiedName().toString());
+            }
+            String returnExpr;
+            if (isBase64Uri) {
+                body.tryAddImportToParentCompilationUnit(Base64Uri.class);
+                returnExpr = "responseBody != null ? new Base64Uri(responseBody.toBytes()).decodedBytes() : null";
+            } else {
+                returnExpr = "responseBody != null ? responseBody.toBytes() : null";
+            }
 
             // Return responseBody.toBytes(), or null if it was null, as-is which will have the behavior of
             // null -> null, empty -> empty, and data -> data, which offers three unique states for knowing information
             // about the network response shape, as nullness != emptiness.
-            addReturnStatement(body, returnIsResponse, "responseBody != null ? responseBody.toBytes() : null");
+            addReturnStatement(body, returnIsResponse, returnExpr);
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
             // Return type is an InputStream. Return the network response body as an InputStream.
             // DO NOT close the network response for this return as it will result in the InputStream either being
@@ -238,40 +297,12 @@ public final class ResponseHandler {
 
     private static void handleDeclaredTypeResponse(BlockStmt body, DeclaredType returnType,
         boolean serializationFormatSet, String typeCast) {
-        TypeElement typeElement = (TypeElement) returnType.asElement();
         body.tryAddImportToParentCompilationUnit(CoreUtils.class);
         body.tryAddImportToParentCompilationUnit(ParameterizedType.class);
 
         if (!returnType.getTypeArguments().isEmpty()) {
-            TypeMirror firstGenericType = returnType.getTypeArguments().get(0);
-            if (firstGenericType.getKind() == TypeKind.ARRAY) {
-                ArrayType arrayType = (ArrayType) firstGenericType;
-                String componentTypeName = arrayType.getComponentType().toString();
-                body.addStatement("ParameterizedType returnType = CoreUtils.createParameterizedType("
-                    + typeElement.getSimpleName() + ".class," + componentTypeName + "[].class);");
-            } else if (firstGenericType instanceof DeclaredType) {
-                DeclaredType genericDeclaredType = (DeclaredType) firstGenericType;
-                TypeElement genericTypeElement = (TypeElement) genericDeclaredType.asElement();
-
-                body.findCompilationUnit()
-                    .ifPresent(
-                        compilationUnit -> compilationUnit.addImport(genericTypeElement.getQualifiedName().toString()));
-
-                if (genericTypeElement.getQualifiedName().contentEquals(List.class.getCanonicalName())) {
-                    if (!genericDeclaredType.getTypeArguments().isEmpty()) {
-                        String innerType = ((DeclaredType) genericDeclaredType.getTypeArguments().get(0)).asElement()
-                            .getSimpleName()
-                            .toString();
-                        body.addStatement("ParameterizedType returnType = CoreUtils.createParameterizedType("
-                            + genericTypeElement.getSimpleName() + ".class, " + innerType + ".class);");
-                    }
-                } else {
-                    String genericType
-                        = ((DeclaredType) returnType.getTypeArguments().get(0)).asElement().getSimpleName().toString();
-                    body.addStatement("ParameterizedType returnType = CoreUtils.createParameterizedType("
-                        + typeElement.getSimpleName() + ".class, " + genericType + ".class);");
-                }
-            }
+            body.addStatement(StaticJavaParser.parseStatement("ParameterizedType returnType = "
+                + AnnotationProcessorUtils.createParameterizedTypeStatement(returnType, body) + ";"));
         } else {
             body.addStatement(
                 "ParameterizedType returnType = CoreUtils.createParameterizedType(" + typeCast + ".class);");
@@ -296,8 +327,9 @@ public final class ResponseHandler {
             + "    deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType); "
             + "} else if (xmlSerializer.supportsFormat(serializationFormat)) { "
             + "    deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType); "
-            + "} else { " + "    throw new UnsupportedOperationException("
-            + "        \"None of the provided serializers support the format: \" + serializationFormat + \".\"); "
+            + "} else { "
+            + "    throw LOGGER.throwableAtError().addKeyValue(\"serializationFormat\", serializationFormat.name())\n"
+            + "                .log(\"None of the provided serializers support the format.\", UnsupportedOperationException::new);"
             + "}");
     }
 

@@ -59,8 +59,9 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.9</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.10</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
     </dependency>
+
     <dependency>
       <groupId>com.azure.v2</groupId>
       <artifactId>azure-core</artifactId>

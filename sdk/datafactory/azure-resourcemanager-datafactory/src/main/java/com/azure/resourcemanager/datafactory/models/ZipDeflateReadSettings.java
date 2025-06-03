@@ -81,7 +81,9 @@ public final class ZipDeflateReadSettings extends CompressionReadSettings {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("preserveZipFileNameAsFolder", this.preserveZipFileNameAsFolder);
+        if (this.preserveZipFileNameAsFolder != null) {
+            jsonWriter.writeUntypedField("preserveZipFileNameAsFolder", this.preserveZipFileNameAsFolder);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

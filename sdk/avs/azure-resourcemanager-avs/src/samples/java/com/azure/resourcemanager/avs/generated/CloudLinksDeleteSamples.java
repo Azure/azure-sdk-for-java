@@ -10,7 +10,7 @@ package com.azure.resourcemanager.avs.generated;
 public final class CloudLinksDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/CloudLinks_Delete.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/CloudLinks_Delete.json
      */
     /**
      * Sample code: CloudLinks_Delete.

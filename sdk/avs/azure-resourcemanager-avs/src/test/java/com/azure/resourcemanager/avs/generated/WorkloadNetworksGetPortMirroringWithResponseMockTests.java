@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.PortMirroringDirectionEnum;
@@ -22,23 +22,24 @@ public final class WorkloadNetworksGetPortMirroringWithResponseMockTests {
     @Test
     public void testGetPortMirroringWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"q\",\"direction\":\"EGRESS\",\"source\":\"renlvhhtklnvnafv\",\"destination\":\"yfedevjbo\",\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":41375191452971631},\"id\":\"khminqcymc\",\"name\":\"ngnbdxxew\",\"type\":\"ninvudbchaqdt\"}";
+            = "{\"properties\":{\"displayName\":\"ndo\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"ltoormkfqlwxldyk\",\"destination\":\"sy\",\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":5192971092079574246},\"id\":\"bmjk\",\"name\":\"ibjgsjjxxahm\",\"type\":\"nadzyq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkPortMirroring response = manager.workloadNetworks()
-            .getPortMirroringWithResponse("evrh", "ljyoogwx", "nsduugwbsre", com.azure.core.util.Context.NONE)
+            .getPortMirroringWithResponse("ffg", "lukkutvlxhrpqhvm", "lcouqehbhbcdszir",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("q", response.displayName());
-        Assertions.assertEquals(PortMirroringDirectionEnum.EGRESS, response.direction());
-        Assertions.assertEquals("renlvhhtklnvnafv", response.source());
-        Assertions.assertEquals("yfedevjbo", response.destination());
-        Assertions.assertEquals(41375191452971631L, response.revision());
+        Assertions.assertEquals("ndo", response.displayName());
+        Assertions.assertEquals(PortMirroringDirectionEnum.BIDIRECTIONAL, response.direction());
+        Assertions.assertEquals("ltoormkfqlwxldyk", response.source());
+        Assertions.assertEquals("sy", response.destination());
+        Assertions.assertEquals(5192971092079574246L, response.revision());
     }
 }

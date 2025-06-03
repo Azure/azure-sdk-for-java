@@ -136,7 +136,9 @@ public final class CosmosDbMongoDbApiLinkedServiceTypeProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("connectionString", this.connectionString);
         jsonWriter.writeUntypedField("database", this.database);
-        jsonWriter.writeUntypedField("isServerVersionAbove32", this.isServerVersionAbove32);
+        if (this.isServerVersionAbove32 != null) {
+            jsonWriter.writeUntypedField("isServerVersionAbove32", this.isServerVersionAbove32);
+        }
         return jsonWriter.writeEndObject();
     }
 

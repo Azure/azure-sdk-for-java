@@ -223,14 +223,28 @@ public final class JsonFormat extends DatasetStorageFormat {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("serializer", serializer());
-        jsonWriter.writeUntypedField("deserializer", deserializer());
+        if (serializer() != null) {
+            jsonWriter.writeUntypedField("serializer", serializer());
+        }
+        if (deserializer() != null) {
+            jsonWriter.writeUntypedField("deserializer", deserializer());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("filePattern", this.filePattern);
-        jsonWriter.writeUntypedField("nestingSeparator", this.nestingSeparator);
-        jsonWriter.writeUntypedField("encodingName", this.encodingName);
-        jsonWriter.writeUntypedField("jsonNodeReference", this.jsonNodeReference);
-        jsonWriter.writeUntypedField("jsonPathDefinition", this.jsonPathDefinition);
+        if (this.filePattern != null) {
+            jsonWriter.writeUntypedField("filePattern", this.filePattern);
+        }
+        if (this.nestingSeparator != null) {
+            jsonWriter.writeUntypedField("nestingSeparator", this.nestingSeparator);
+        }
+        if (this.encodingName != null) {
+            jsonWriter.writeUntypedField("encodingName", this.encodingName);
+        }
+        if (this.jsonNodeReference != null) {
+            jsonWriter.writeUntypedField("jsonNodeReference", this.jsonNodeReference);
+        }
+        if (this.jsonPathDefinition != null) {
+            jsonWriter.writeUntypedField("jsonPathDefinition", this.jsonPathDefinition);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

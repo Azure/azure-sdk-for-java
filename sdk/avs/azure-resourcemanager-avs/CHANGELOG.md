@@ -1,14 +1,148 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (2025-05-28)
 
-### Features Added
+- Azure Resource Manager Avs client library for Java. This package contains Microsoft Azure SDK for Avs Management SDK. Azure VMware Solution API. Package tag package-2024-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.WorkloadNetworkDhcpRelay` was modified
 
-### Other Changes
+* `provisioningState()` was removed
+* `segments()` was removed
+
+#### `models.AddonArcProperties` was modified
+
+* `provisioningState()` was removed
+
+#### `models.VmPlacementPolicyProperties` was modified
+
+* `provisioningState()` was removed
+
+#### `models.AddonVrProperties` was modified
+
+* `provisioningState()` was removed
+
+#### `models.VmHostPlacementPolicyProperties` was modified
+
+* `provisioningState()` was removed
+
+#### `models.AddonHcxProperties` was modified
+
+* `provisioningState()` was removed
+
+#### `models.AddonSrmProperties` was modified
+
+* `provisioningState()` was removed
+
+#### `models.WorkloadNetworkDhcpServer` was modified
+
+* `segments()` was removed
+* `provisioningState()` was removed
+
+### Features Added
+
+* `models.ProvisionedNetworkListResult` was added
+
+* `models.HostKind` was added
+
+* `models.ProvisionedNetwork` was added
+
+* `models.ResourceSkuRestrictionInfo` was added
+
+* `models.PureStoragePolicies` was added
+
+* `models.SpecializedHostProperties` was added
+
+* `models.ResourceSkuLocationInfo` was added
+
+* `models.PureStoragePolicy$UpdateStages` was added
+
+* `models.HostProvisioningState` was added
+
+* `models.GeneralHostProperties` was added
+
+* `models.HostMaintenance` was added
+
+* `models.Skus` was added
+
+* `models.HostModel` was added
+
+* `models.HostProperties` was added
+
+* `models.ProvisionedNetworks` was added
+
+* `models.ResourceSku` was added
+
+* `models.ResourceSkuRestrictionsReasonCode` was added
+
+* `models.HostListResult` was added
+
+* `models.ResourceSkuZoneDetails` was added
+
+* `models.ResourceSkuRestrictionsType` was added
+
+* `models.PureStoragePolicy$DefinitionStages` was added
+
+* `models.ResourceSkuResourceType` was added
+
+* `models.ResourceSkuRestrictions` was added
+
+* `models.PureStoragePolicy` was added
+
+* `models.PureStoragePolicy$Definition` was added
+
+* `models.ProvisionedNetworkProvisioningState` was added
+
+* `models.PureStorageVolume` was added
+
+* `models.ResourceSkuCapabilities` was added
+
+* `models.Hosts` was added
+
+* `models.PureStoragePolicy$Update` was added
+
+* `models.PagedResourceSku` was added
+
+* `models.PureStoragePolicyProvisioningState` was added
+
+* `models.PureStoragePolicyListResult` was added
+
+* `models.ProvisionedNetworkTypes` was added
+
+#### `models.Datastore` was modified
+
+* `pureStorageVolume()` was added
+
+#### `models.Datastore$Definition` was modified
+
+* `withPureStorageVolume(models.PureStorageVolume)` was added
+
+#### `AvsManager` was modified
+
+* `pureStoragePolicies()` was added
+* `hosts()` was added
+* `provisionedNetworks()` was added
+* `skus()` was added
+
+#### `models.PrivateCloud$Definition` was modified
+
+* `withZones(java.util.List)` was added
+
+#### `models.AddonHcxProperties` was modified
+
+* `withManagementNetwork(java.lang.String)` was added
+* `withUplinkNetwork(java.lang.String)` was added
+* `managementNetwork()` was added
+* `uplinkNetwork()` was added
+
+#### `models.Datastore$Update` was modified
+
+* `withPureStorageVolume(models.PureStorageVolume)` was added
+
+#### `models.PrivateCloud` was modified
+
+* `zones()` was added
 
 ## 1.2.0 (2024-09-11)
 

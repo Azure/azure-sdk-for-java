@@ -23,7 +23,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.util.Objects;
 import java.util.UUID;
 
-import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrationUtil.CANNOT_BE_NULL;
 import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrationUtil.mapPages;
 import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrationUtil.mapResponse;
 import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrationUtil.roleAssignmentToKeyVaultRoleAssignment;
@@ -279,18 +278,12 @@ public final class KeyVaultAccessControlClient {
     public PagedIterable<KeyVaultRoleDefinition> listRoleDefinitions(KeyVaultRoleScope roleScope,
         RequestContext requestContext) {
 
-        try {
-            Objects.requireNonNull(roleScope, String.format(CANNOT_BE_NULL, "'roleScope'"));
+        Objects.requireNonNull(roleScope, "'roleScope' cannot be null.");
 
-            return mapPages(
-                pagingOptions -> clientImpl.getRoleDefinitions()
-                    .listSinglePage(roleScope.getValue(), null, requestContext),
-                (pagingOptions, nextLink) -> clientImpl.getRoleDefinitions()
-                    .listNextSinglePage(nextLink, requestContext),
-                KeyVaultAdministrationUtil::roleDefinitionToKeyVaultRoleDefinition);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapPages(
+            pagingOptions -> clientImpl.getRoleDefinitions().listSinglePage(roleScope.getValue(), null, requestContext),
+            (pagingOptions, nextLink) -> clientImpl.getRoleDefinitions().listNextSinglePage(nextLink, requestContext),
+            KeyVaultAdministrationUtil::roleDefinitionToKeyVaultRoleDefinition);
     }
 
     /**
@@ -349,15 +342,11 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleDefinition setRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        try {
-            Objects.requireNonNull(roleScope, String.format(CANNOT_BE_NULL, "'roleScope'"));
+        Objects.requireNonNull(roleScope, "'roleScope' cannot be null.");
 
-            return roleDefinitionToKeyVaultRoleDefinition(clientImpl.getRoleDefinitions()
-                .createOrUpdate(roleScope.toString(),
-                    isNullOrEmpty(roleDefinitionName) ? UUID.randomUUID().toString() : roleDefinitionName, null));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return roleDefinitionToKeyVaultRoleDefinition(clientImpl.getRoleDefinitions()
+            .createOrUpdate(roleScope.toString(),
+                isNullOrEmpty(roleDefinitionName) ? UUID.randomUUID().toString() : roleDefinitionName, null));
     }
 
     /**
@@ -423,15 +412,11 @@ public final class KeyVaultAccessControlClient {
     public Response<KeyVaultRoleDefinition> setRoleDefinitionWithResponse(SetRoleDefinitionOptions options,
         RequestContext requestContext) {
 
-        try {
-            return mapResponse(
-                clientImpl.getRoleDefinitions()
-                    .createOrUpdateWithResponse(options.getRoleScope().toString(), options.getRoleDefinitionName(),
-                        validateAndGetRoleDefinitionCreateParameters(options), requestContext),
-                KeyVaultAdministrationUtil::roleDefinitionToKeyVaultRoleDefinition);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(
+            clientImpl.getRoleDefinitions()
+                .createOrUpdateWithResponse(options.getRoleScope().toString(), options.getRoleDefinitionName(),
+                    validateAndGetRoleDefinitionCreateParameters(options, LOGGER), requestContext),
+            KeyVaultAdministrationUtil::roleDefinitionToKeyVaultRoleDefinition);
     }
 
     /**
@@ -464,14 +449,10 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleDefinition getRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        try {
-            validateRoleDefinitionParameters(roleScope, roleDefinitionName);
+        validateRoleDefinitionParameters(roleScope, roleDefinitionName, LOGGER);
 
-            return roleDefinitionToKeyVaultRoleDefinition(
-                clientImpl.getRoleDefinitions().get(roleScope.toString(), roleDefinitionName));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return roleDefinitionToKeyVaultRoleDefinition(
+            clientImpl.getRoleDefinitions().get(roleScope.toString(), roleDefinitionName));
     }
 
     /**
@@ -514,16 +495,11 @@ public final class KeyVaultAccessControlClient {
     public Response<KeyVaultRoleDefinition> getRoleDefinitionWithResponse(KeyVaultRoleScope roleScope,
         String roleDefinitionName, RequestContext requestContext) {
 
-        try {
-            validateRoleDefinitionParameters(roleScope, roleDefinitionName);
+        validateRoleDefinitionParameters(roleScope, roleDefinitionName, LOGGER);
 
-            return mapResponse(
-                clientImpl.getRoleDefinitions()
-                    .getWithResponse(roleScope.toString(), roleDefinitionName, requestContext),
-                KeyVaultAdministrationUtil::roleDefinitionToKeyVaultRoleDefinition);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(
+            clientImpl.getRoleDefinitions().getWithResponse(roleScope.toString(), roleDefinitionName, requestContext),
+            KeyVaultAdministrationUtil::roleDefinitionToKeyVaultRoleDefinition);
     }
 
     /**
@@ -552,13 +528,9 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        try {
-            validateRoleDefinitionParameters(roleScope, roleDefinitionName);
+        validateRoleDefinitionParameters(roleScope, roleDefinitionName, LOGGER);
 
-            clientImpl.getRoleDefinitions().delete(roleScope.toString(), roleDefinitionName);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        clientImpl.getRoleDefinitions().delete(roleScope.toString(), roleDefinitionName);
     }
 
     /**
@@ -600,15 +572,11 @@ public final class KeyVaultAccessControlClient {
         try (Response<RoleDefinition> response = clientImpl.getRoleDefinitions()
             .deleteWithResponse(roleScope.toString(), roleDefinitionName, requestContext)) {
 
-            validateRoleDefinitionParameters(roleScope, roleDefinitionName);
+            validateRoleDefinitionParameters(roleScope, roleDefinitionName, LOGGER);
 
             return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } catch (RuntimeException e) {
-            if (e instanceof HttpResponseException) {
-                return swallowExceptionForStatusCode(404, (HttpResponseException) e, LOGGER);
-            }
-
-            throw LOGGER.logThrowableAsError(e);
+        } catch (HttpResponseException e) {
+            return swallowExceptionForStatusCode(404, e);
         }
     }
 
@@ -675,18 +643,14 @@ public final class KeyVaultAccessControlClient {
     public PagedIterable<KeyVaultRoleAssignment> listRoleAssignments(KeyVaultRoleScope roleScope,
         RequestContext requestContext) {
 
-        try {
-            Objects.requireNonNull(roleScope, String.format(CANNOT_BE_NULL, "'roleScope'"));
+        Objects.requireNonNull(roleScope, "'roleScope' cannot be null.");
 
-            return mapPages(
-                pagingOptions -> clientImpl.getRoleAssignments()
-                    .listForScopeSinglePage(roleScope.toString(), null, requestContext),
-                (pagingOptions, nextLink) -> clientImpl.getRoleAssignments()
-                    .listForScopeNextSinglePage(nextLink, requestContext),
-                KeyVaultAdministrationUtil::roleAssignmentToKeyVaultRoleAssignment);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapPages(
+            pagingOptions -> clientImpl.getRoleAssignments()
+                .listForScopeSinglePage(roleScope.toString(), null, requestContext),
+            (pagingOptions, nextLink) -> clientImpl.getRoleAssignments()
+                .listForScopeNextSinglePage(nextLink, requestContext),
+            KeyVaultAdministrationUtil::roleAssignmentToKeyVaultRoleAssignment);
     }
 
     /**
@@ -769,16 +733,12 @@ public final class KeyVaultAccessControlClient {
     public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleScope roleScope, String roleDefinitionId,
         String principalId, String roleAssignmentName) {
 
-        try {
-            RoleAssignmentCreateParameters parameters
-                = validateAndGetRoleAssignmentCreateParameters(roleScope, roleDefinitionId, principalId,
-                    isNullOrEmpty(roleAssignmentName) ? UUID.randomUUID().toString() : roleAssignmentName);
+        RoleAssignmentCreateParameters parameters
+            = validateAndGetRoleAssignmentCreateParameters(roleScope, roleDefinitionId, principalId,
+                isNullOrEmpty(roleAssignmentName) ? UUID.randomUUID().toString() : roleAssignmentName, LOGGER);
 
-            return roleAssignmentToKeyVaultRoleAssignment(
-                clientImpl.getRoleAssignments().create(roleScope.toString(), roleAssignmentName, parameters));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return roleAssignmentToKeyVaultRoleAssignment(
+            clientImpl.getRoleAssignments().create(roleScope.toString(), roleAssignmentName, parameters));
     }
 
     /**
@@ -828,17 +788,13 @@ public final class KeyVaultAccessControlClient {
     public Response<KeyVaultRoleAssignment> createRoleAssignmentWithResponse(KeyVaultRoleScope roleScope,
         String roleDefinitionId, String principalId, String roleAssignmentName, RequestContext requestContext) {
 
-        try {
-            RoleAssignmentCreateParameters parameters = validateAndGetRoleAssignmentCreateParameters(roleScope,
-                roleDefinitionId, principalId, roleAssignmentName);
+        RoleAssignmentCreateParameters parameters = validateAndGetRoleAssignmentCreateParameters(roleScope,
+            roleDefinitionId, principalId, roleAssignmentName, LOGGER);
 
-            return mapResponse(
-                clientImpl.getRoleAssignments()
-                    .createWithResponse(roleScope.toString(), roleAssignmentName, parameters, requestContext),
-                KeyVaultAdministrationUtil::roleAssignmentToKeyVaultRoleAssignment);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(
+            clientImpl.getRoleAssignments()
+                .createWithResponse(roleScope.toString(), roleAssignmentName, parameters, requestContext),
+            KeyVaultAdministrationUtil::roleAssignmentToKeyVaultRoleAssignment);
     }
 
     /**
@@ -869,14 +825,10 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleAssignment getRoleAssignment(KeyVaultRoleScope roleScope, String roleAssignmentName) {
-        try {
-            validateRoleAssignmentParameters(roleScope, roleAssignmentName);
+        validateRoleAssignmentParameters(roleScope, roleAssignmentName, LOGGER);
 
-            return roleAssignmentToKeyVaultRoleAssignment(
-                clientImpl.getRoleAssignments().get(roleScope.toString(), roleAssignmentName));
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return roleAssignmentToKeyVaultRoleAssignment(
+            clientImpl.getRoleAssignments().get(roleScope.toString(), roleAssignmentName));
     }
 
     /**
@@ -917,16 +869,11 @@ public final class KeyVaultAccessControlClient {
     public Response<KeyVaultRoleAssignment> getRoleAssignmentWithResponse(KeyVaultRoleScope roleScope,
         String roleAssignmentName, RequestContext requestContext) {
 
-        try {
-            validateRoleAssignmentParameters(roleScope, roleAssignmentName);
+        validateRoleAssignmentParameters(roleScope, roleAssignmentName, LOGGER);
 
-            return mapResponse(
-                clientImpl.getRoleAssignments()
-                    .getWithResponse(roleScope.toString(), roleAssignmentName, requestContext),
-                KeyVaultAdministrationUtil::roleAssignmentToKeyVaultRoleAssignment);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        return mapResponse(
+            clientImpl.getRoleAssignments().getWithResponse(roleScope.toString(), roleAssignmentName, requestContext),
+            KeyVaultAdministrationUtil::roleAssignmentToKeyVaultRoleAssignment);
     }
 
     /**
@@ -954,13 +901,9 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteRoleAssignment(KeyVaultRoleScope roleScope, String roleAssignmentName) {
-        try {
-            validateRoleAssignmentParameters(roleScope, roleAssignmentName);
+        validateRoleAssignmentParameters(roleScope, roleAssignmentName, LOGGER);
 
-            clientImpl.getRoleAssignments().delete(roleScope.toString(), roleAssignmentName);
-        } catch (RuntimeException e) {
-            throw LOGGER.logThrowableAsError(e);
-        }
+        clientImpl.getRoleAssignments().delete(roleScope.toString(), roleAssignmentName);
     }
 
     /**
@@ -1001,15 +944,11 @@ public final class KeyVaultAccessControlClient {
         try (Response<RoleAssignment> response = clientImpl.getRoleAssignments()
             .deleteWithResponse(roleScope.toString(), roleAssignmentName, requestContext)) {
 
-            validateRoleAssignmentParameters(roleScope, roleAssignmentName);
+            validateRoleAssignmentParameters(roleScope, roleAssignmentName, LOGGER);
 
             return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } catch (RuntimeException e) {
-            if (e instanceof HttpResponseException) {
-                return swallowExceptionForStatusCode(404, (HttpResponseException) e, LOGGER);
-            }
-
-            throw LOGGER.logThrowableAsError(e);
+        } catch (HttpResponseException e) {
+            return swallowExceptionForStatusCode(404, e);
         }
     }
 }

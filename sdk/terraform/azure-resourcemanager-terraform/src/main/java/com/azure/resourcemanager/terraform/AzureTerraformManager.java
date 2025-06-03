@@ -24,8 +24,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.terraform.fluent.AzureTerraformClient;
-import com.azure.resourcemanager.terraform.implementation.AzureTerraformClientBuilder;
+import com.azure.resourcemanager.terraform.fluent.AzureTerraformManagementClient;
+import com.azure.resourcemanager.terraform.implementation.AzureTerraformManagementClientBuilder;
 import com.azure.resourcemanager.terraform.implementation.OperationsImpl;
 import com.azure.resourcemanager.terraform.implementation.TerraformsImpl;
 import com.azure.resourcemanager.terraform.models.Operations;
@@ -48,12 +48,12 @@ public final class AzureTerraformManager {
 
     private Terraforms terraforms;
 
-    private final AzureTerraformClient clientObject;
+    private final AzureTerraformManagementClient clientObject;
 
     private AzureTerraformManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new AzureTerraformClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new AzureTerraformManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -288,12 +288,12 @@ public final class AzureTerraformManager {
     }
 
     /**
-     * Gets wrapped service client AzureTerraformClient providing direct access to the underlying auto-generated API
-     * implementation, based on Azure REST API.
+     * Gets wrapped service client AzureTerraformManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client AzureTerraformClient.
+     * @return Wrapped service client AzureTerraformManagementClient.
      */
-    public AzureTerraformClient serviceClient() {
+    public AzureTerraformManagementClient serviceClient() {
         return this.clientObject;
     }
 }

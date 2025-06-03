@@ -25,7 +25,7 @@ public final class TriggersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"mm\",\"runtimeState\":\"Started\",\"annotations\":[\"datazfjlprljil\",\"datauavxidy\",\"datajmkfxzg\",\"datap\"],\"\":{\"fbreyvrlycikwqt\":\"datama\"}},\"name\":\"fryourlywxjvsqz\",\"type\":\"ysqy\",\"etag\":\"sqmikljc\",\"id\":\"ot\"}";
+            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"mm\",\"runtimeState\":\"Started\",\"annotations\":[\"datazfjlprljil\",\"datauavxidy\",\"datajmkfxzg\",\"datap\"],\"fbreyvrlycikwqt\":\"datama\"},\"name\":\"fryourlywxjvsqz\",\"type\":\"ysqy\",\"etag\":\"sqmikljc\",\"id\":\"ot\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,7 +39,9 @@ public final class TriggersCreateOrUpdateWithResponseMockTests {
             .withExistingFactory("usxyugidkgsjivdt", "tkqqdqxslbrttlw")
             .withProperties(new Trigger().withDescription("jnbcdnjexcyh")
                 .withAnnotations(Arrays.asList("dataraubx", "databmqgimwivqph"))
-                .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Stopped")))
+                .withAdditionalProperties(mapOf("mdx", "dataiwm", "twnhpcfsqdzi", "datawfajajpojzazzaks",
+                    "qvinvryxwzxjxotp", "datavykysavevnerpyzu", "kinsry", "dataokmdaihgig", "type", "Trigger",
+                    "runtimeState", "Stopped")))
             .withIfMatch("nyzytgkdw")
             .create();
 

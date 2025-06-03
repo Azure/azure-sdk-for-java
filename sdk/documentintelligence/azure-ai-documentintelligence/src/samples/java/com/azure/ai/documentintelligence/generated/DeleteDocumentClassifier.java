@@ -15,8 +15,8 @@ public class DeleteDocumentClassifier {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.deleteclassifier.deletedocumentclassifier
+        // BEGIN:com.azure.ai.documentintelligence.generated.delete-classifier.delete-document-classifier
         documentIntelligenceAdministrationClient.deleteClassifier("myClassifier");
-        // END:com.azure.ai.documentintelligence.generated.deleteclassifier.deletedocumentclassifier
+        // END:com.azure.ai.documentintelligence.generated.delete-classifier.delete-document-classifier
     }
 }
