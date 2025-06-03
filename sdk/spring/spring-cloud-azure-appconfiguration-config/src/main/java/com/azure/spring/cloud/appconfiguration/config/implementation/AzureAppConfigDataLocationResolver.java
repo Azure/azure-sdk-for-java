@@ -27,15 +27,30 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.autofailove
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 
+/**
+ * Resolves Azure App Configuration data locations for Spring Boot's ConfigData API.
+ * 
+ * @since 6.0.0
+ */
+
 public class AzureAppConfigDataLocationResolver
     implements ConfigDataLocationResolver<AzureAppConfigDataResource> {
 
     private static final Log LOGGER = new DeferredLog();
 
+    /** Prefix used to identify Azure App Configuration locations */
     public static final String PREFIX = "azureAppConfiguration";
 
+    /** Flag to track startup phase for proper resource initialization */
     private static final AtomicBoolean START_UP = new AtomicBoolean(true);
 
+    /**
+     * Determines if the given location can be resolved by this resolver.
+     * 
+     * @param context the resolver context containing binder and bootstrap information
+     * @param location the configuration data location to check
+     * @return true if this resolver can handle the location, false otherwise
+     */
     @Override
     public boolean isResolvable(ConfigDataLocationResolverContext context, ConfigDataLocation location) {
         if (!location.hasPrefix(PREFIX)) {
@@ -57,6 +72,15 @@ public class AzureAppConfigDataLocationResolver
         return (hasEndpoint || hasConnectionString || hasEndpoints || hasConnectionStrings);
     }
 
+    }
+
+    /**
+     * Resolves configuration data resources for the given location.
+     * 
+     * @param context the resolver context
+     * @param location the configuration data location
+     * @return empty list of resources
+     */
     @Override
     public List<AzureAppConfigDataResource> resolve(ConfigDataLocationResolverContext context,
         ConfigDataLocation location)
@@ -64,6 +88,15 @@ public class AzureAppConfigDataLocationResolver
         return Collections.emptyList();
     }
 
+    /**
+     * Resolves profile-specific configuration data resources.
+     * 
+     * @param resolverContext the resolver context
+     * @param location the configuration data location
+     * @param profiles the active Spring profiles
+     * @return list of Azure App Configuration data resources
+     * @throws ConfigDataLocationNotFoundException if location cannot be found
+     */
     @Override
     public List<AzureAppConfigDataResource> resolveProfileSpecific(
         ConfigDataLocationResolverContext resolverContext, ConfigDataLocation location, Profiles profiles)
@@ -80,6 +113,12 @@ public class AzureAppConfigDataLocationResolver
         return locations;
     }
 
+    /**
+     * Loads and validates Azure App Configuration properties from the configuration context.
+     * 
+     * @param context the configuration data location resolver context
+     * @return validated Azure App Configuration properties
+     */
     protected AppConfigurationProperties loadProperties(ConfigDataLocationResolverContext context) {
         Binder binder = context.getBinder();
         BindHandler bindHandler = getBindHandler(context);

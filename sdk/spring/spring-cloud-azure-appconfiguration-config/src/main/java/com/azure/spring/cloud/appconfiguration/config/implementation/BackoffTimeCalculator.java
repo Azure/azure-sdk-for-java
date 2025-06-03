@@ -5,14 +5,26 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 import java.util.Random;
 
 /**
- * Calculates the amount of time to the next refresh, if a refresh fails.
+ * Utility class for calculating exponential backoff times for Azure App Configuration retry operations.
  */
 final class BackoffTimeCalculator {
 
-    private static final Long MAX_ATTEMPTS = (long) 63;
+    /**
+     * Maximum number of attempts to consider for exponential backoff calculation. This prevents integer overflow when
+     * calculating 2^attempts. Value of 63 ensures that 2^63 is the largest power of 2 that fits in a long.
+     */
+    private static final long MAX_ATTEMPTS = 63;
 
-    private static final Long SECONDS_TO_NANO_SECONDS = (long) 1000000000;
+    /**
+     * Conversion factor from seconds to nanoseconds. Used to convert backoff times from seconds to nanoseconds for
+     * precise timing.
+     */
+    private static final long SECONDS_TO_NANOSECONDS = 1_000_000_000L;
 
+    /**
+     * Generator for introducing jitter in backoff calculations. Jitter helps prevent multiple
+     * clients from retrying simultaneously (thundering herd).
+     */
     private static final Random RANDOM = new Random();
 
     private static Long maxBackoff = (long) 600;

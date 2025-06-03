@@ -14,26 +14,48 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
 
+/**
+ * Represents an Azure App Configuration data resource that extends Spring Boot's ConfigDataResource.
+ * 
+ * @since 6.0.0
+ */
 public class AzureAppConfigDataResource extends ConfigDataResource {
 
+    /** Indicates whether the configuration store is enabled for loading configuration data. */
     private final boolean configStoreEnabled;
 
+    /** The endpoint URL of the Azure App Configuration store. */
     private final String endpoint;
 
-    private List<String> trimKeyPrefix;
+    /** List of key prefixes to trim from configuration keys when loading. */
+    private final List<String> trimKeyPrefix;
 
+    /** Spring Boot profiles configuration for conditional property loading. */
     private final Profiles profiles;
 
-    private List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
+    /** List of selectors for filtering key-value pairs from the configuration store. */
+    private final List<AppConfigurationKeyValueSelector> selects;
 
-    private List<FeatureFlagKeyValueSelector> featureFlagSelects = new ArrayList<>();
+    /** List of selectors for filtering feature flag key-value pairs from the configuration store. */
+    private final List<FeatureFlagKeyValueSelector> featureFlagSelects;
 
+    /** Monitoring configuration for the configuration store including refresh triggers. */
     private final AppConfigurationStoreMonitoring monitoring;
 
+    /** Indicates whether this resource supports configuration refresh at runtime. */
     private final boolean isRefresh;
 
-    private Duration refreshInterval;
+    /** The interval at which configuration should be refreshed from the store. */
+    private final Duration refreshInterval;
 
+    /**
+     * Constructs a new AzureAppConfigDataResource with the specified configuration store settings.
+     * 
+     * @param configStore the configuration store settings containing endpoint, selectors, and other options
+     * @param profiles the Spring Boot profiles for conditional configuration loading
+     * @param isRefresh whether this resource supports runtime configuration refresh
+     * @param refreshInterval the interval at which configuration should be refreshed
+     */
     AzureAppConfigDataResource(ConfigStore configStore, Profiles profiles, boolean isRefresh,
         Duration refreshInterval) {
         this.configStoreEnabled = configStore.isEnabled();
@@ -48,93 +70,83 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
     }
 
     /**
-     * @return the selects
+     * Gets the list of key-value selectors used to filter configuration data from the store.
+     * 
+     * @return the list of configuration key-value selectors, may be null or empty
      */
     public List<AppConfigurationKeyValueSelector> getSelects() {
         return selects;
     }
 
     /**
-     * @param selects the selects to set
-     */
-    public void setSelects(List<AppConfigurationKeyValueSelector> selects) {
-        this.selects = selects;
-    }
-
-    /**
-     * @return the selects for feature flags
+     * Gets the list of feature flag selectors used to filter feature flag data from the store.
+     * 
+     * @return the list of feature flag selectors, may be null or empty
      */
     public List<FeatureFlagKeyValueSelector> getFeatureFlagSelects() {
         return featureFlagSelects;
     }
 
     /**
-     * @param featureFlagSelects the selects to set
-     */
-    public void setFeatureFlagSelects(List<FeatureFlagKeyValueSelector> featureFlagSelects) {
-        this.featureFlagSelects = featureFlagSelects;
-    }
-
-    /**
-     * @return the configStoreEnabled
+     * Checks whether the configuration store is enabled for loading configuration data.
+     * 
+     * @return true if the configuration store is enabled, false otherwise
      */
     public boolean isConfigStoreEnabled() {
         return configStoreEnabled;
     }
 
     /**
-     * @return the endpoint
+     * Gets the endpoint URL of the Azure App Configuration store.
+     * 
+     * @return the endpoint URL as a string, may be null if not configured
      */
     public String getEndpoint() {
         return endpoint;
     }
 
     /**
-     * @return the monitoring
+     * Gets the monitoring configuration for this configuration store.
+     * 
+     * @return the monitoring configuration, may be null if not configured
      */
     public AppConfigurationStoreMonitoring getMonitoring() {
         return monitoring;
     }
 
     /**
-     * @return the trimKeyPrefix
+     * Gets the list of key prefixes to trim from configuration keys when loading.
+     * 
+     * @return the list of key prefixes to trim, may be null or empty if no trimming is configured
      */
     public List<String> getTrimKeyPrefix() {
         return trimKeyPrefix;
     }
 
     /**
-     * @param trimKeyPrefix the trimKeyPrefix to set
-     */
-    public void setTrimKeyPrefix(List<String> trimKeyPrefix) {
-        this.trimKeyPrefix = trimKeyPrefix;
-    }
-
-    /**
-     * @return the profiles
+     * Gets the Spring Boot profiles configuration for conditional property loading.
+     * 
+     * @return the profiles configuration, never null
      */
     public Profiles getProfiles() {
         return profiles;
     }
 
     /**
-     * @return the isRefresh
+     * Returns if true if this resource is being refreshed. False if the resource is being loaded at startup.
+     * 
+     * @return true if this is a refresh operation, false if it is a startup load
      */
     public boolean isRefresh() {
         return isRefresh;
     }
 
     /**
-     * @return the refreshInterval
+     * Gets the interval at which configuration should be refreshed from the store.
+     * 
+     * @return the refresh interval, may be null if not configured
      */
     public Duration getRefreshInterval() {
         return refreshInterval;
-    }
-
-    /**
-     * @param refreshInterval the refreshInterval to set
-     */
-    public void setRefreshInterval(Duration refreshInterval) {
-        this.refreshInterval = refreshInterval;
     }
 }

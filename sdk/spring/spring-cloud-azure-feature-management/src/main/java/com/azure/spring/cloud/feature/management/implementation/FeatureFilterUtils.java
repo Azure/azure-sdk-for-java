@@ -21,10 +21,12 @@ public class FeatureFilterUtils {
     }
 
     /**
-     * Looks at the given key in the parameters and coverts it to a list if it is currently a map.
+     * Looks at the given key in the parameters and converts it to a list if it is currently a map. Also handles empty
+     * strings and null values based on the fixNull parameter.
      *
      * @param parameters map of generic objects
-     * @param key key of object int the parameters map
+     * @param key key of object in the parameters map
+     * @param fixNull whether to convert null values to empty lists
      */
     @SuppressWarnings("unchecked")
     public static void updateValueFromMapToList(Map<String, Object> parameters, String key, boolean fixNull) {
@@ -47,7 +49,8 @@ public class FeatureFilterUtils {
     }
 
     /**
-     * Computes the percentage that the contextId falls into.
+     * Computes the percentage bucket (0-100) that the contextId falls into. Uses SHA-256 hash for consistent
+     * distribution across the percentage range.
      * 
      * @param contextId Id of the context being targeted
      * @return the bucket value of the context id
