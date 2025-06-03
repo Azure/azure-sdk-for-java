@@ -76,8 +76,11 @@ class FeatureManagementConfiguration implements ApplicationContextAware {
     @Scope("request")
     @ConditionalOnMissingBean(TargetingFilter.class)
     @ConditionalOnBean(TargetingContextAccessor.class)
-    public TargetingFilter targettingFilter(TargetingContextAccessor context) {
-        return new TargetingFilter(context, new TargetingEvaluationOptions().setIgnoreCase(true));
+    public TargetingFilter targetingFilter(TargetingContextAccessor context,
+        ObjectProvider<TargetingEvaluationOptions> evaluationOptionsProvider) {
+        TargetingEvaluationOptions evaluationOptions = evaluationOptionsProvider
+            .getIfAvailable(() -> new TargetingEvaluationOptions().setIgnoreCase(true));
+        return new TargetingFilter(context, evaluationOptions);
     }
     
     @Bean

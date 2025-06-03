@@ -15,9 +15,9 @@ import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClie
  * Vault host.
  */
 class AppConfigurationKeyVaultClientFactory {
-
     /**
      * Cache of secret client managers by Key Vault host.
+     */
     private final Map<String, AppConfigurationSecretClientManager> keyVaultClients;
 
     /**

@@ -50,6 +50,7 @@ class AppConfigurationReplicaClient {
     /**
      * Holds Configuration Client and info needed to manage backoff.
      * @param endpoint client endpoint
+     * @param originClient origin client identifier
      * @param client Configuration Client to App Configuration store
      */
     AppConfigurationReplicaClient(String endpoint, String originClient, ConfigurationClient client) {
@@ -105,6 +106,7 @@ class AppConfigurationReplicaClient {
      * @param label String value of the watch key, use \0 for null.
      * @param context Azure SDK context for request correlation
      * @return The first returned configuration.
+     * @throws HttpResponseException if the request fails
      */
     ConfigurationSetting getWatchKey(String key, String label, Context context)
         throws HttpResponseException {
@@ -212,8 +214,9 @@ class AppConfigurationReplicaClient {
     }
 
     boolean checkWatchKeys(SettingSelector settingSelector, Context context) {
-        List<PagedResponse<ConfigurationSetting>> results = client.listConfigurationSettings(settingSelector, context)
-            .streamByPage().filter(pagedResponse -> pagedResponse.getStatusCode() != 304).toList();
+        List<PagedResponse<ConfigurationSetting>> results = client
+            .listConfigurationSettings(settingSelector, context)
+            .streamByPage().filter(pagedResponse -> pagedResponse.getStatusCode() != HTTP_NOT_MODIFIED).toList();
         return results.size() > 0;
     }
 
@@ -227,7 +230,14 @@ class AppConfigurationReplicaClient {
         }
     }
 
-    private HttpResponseException hanndleHttpResponseException(HttpResponseException e) {
+    /**
+     * Handles HTTP response exceptions by determining if they are retryable.
+     * 
+     * @param e the HTTP response exception to handle
+     * @return an AppConfigurationStatusException for retryable errors, or the original exception for non-retryable
+     * errors
+     */
+    private HttpResponseException handleHttpResponseException(HttpResponseException e) {
         if (e.getResponse() != null) {
             int statusCode = e.getResponse().getStatusCode();
 

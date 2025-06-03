@@ -116,11 +116,11 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             KeyVaultSecret secret = keyVaultClientFactory.getClient("https://" + uri.getHost()).getSecret(uri);
             properties.put(key, secret.getValue());
         } catch (URISyntaxException e) {
-            LOGGER.error(String.format("Error Retrieving Key Vault Entry for key %s.", key));
+            LOGGER.error("Error Retrieving Key Vault Entry for key {}.", key);
             throw new InvalidConfigurationPropertyValueException(key, "<Redacted>",
                 "Invalid URI found in JSON property field 'uri' unable to parse.");
         } catch (RuntimeException e) {
-            LOGGER.error(String.format("Error Retrieving Key Vault Entry for key %s.", key));
+            LOGGER.error("Error Retrieving Key Vault Entry for key {}.", key);
             throw e;
         }
     }
