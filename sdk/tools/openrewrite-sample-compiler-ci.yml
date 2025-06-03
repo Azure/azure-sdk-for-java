@@ -29,7 +29,7 @@ extends:
                   Paths:
                     - /sdk/tools/azure-openrewrite-compiler-maven-plugin/
                     - /sdk/tools/azure-openrewrite/
-                    - sdk/core-v2/
+                    - /sdk/core-v2/
                     - sdk/clientcore/
                     - sdk/parents/
                     - eng/
