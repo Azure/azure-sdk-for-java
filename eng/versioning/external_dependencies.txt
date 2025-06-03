@@ -382,7 +382,6 @@ springboot3_org.springframework.boot:spring-boot-test;3.4.4
 springboot3_org.springframework.boot:spring-boot-testcontainers;3.4.4
 springboot3_org.springframework.cloud:spring-cloud-bus;4.2.1
 springboot3_org.springframework.cloud:spring-cloud-context;4.2.1
-springboot3_org.springframework.cloud:spring-cloud-starter-bootstrap;4.2.1
 springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;4.2.1
 springboot3_org.springframework.cloud:spring-cloud-stream-test-binder;4.2.1
 springboot3_org.springframework.cloud:spring-cloud-stream;4.2.1
