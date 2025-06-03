@@ -153,7 +153,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         return this.defaultHeaders;
     }
 
-
     private HttpHeaders getHttpHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
         // todo: select only required headers from defaults
