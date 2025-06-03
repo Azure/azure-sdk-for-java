@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,16 +33,6 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
      * An array that contains all of the locations for the service.
      */
     private List<GraphApiComputeRegionalServiceResource> locations;
-
-    /*
-     * Describes the status of a service.
-     */
-    private ServiceStatus status;
-
-    /*
-     * Time of the last state change (ISO-8601 format).
-     */
-    private OffsetDateTime creationTime;
 
     /**
      * Creates an instance of GraphApiComputeServiceResourceProperties class.
@@ -88,26 +77,6 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
      */
     public List<GraphApiComputeRegionalServiceResource> locations() {
         return this.locations;
-    }
-
-    /**
-     * Get the status property: Describes the status of a service.
-     * 
-     * @return the status value.
-     */
-    @Override
-    public ServiceStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Get the creationTime property: Time of the last state change (ISO-8601 format).
-     * 
-     * @return the creationTime value.
-     */
-    @Override
-    public OffsetDateTime creationTime() {
-        return this.creationTime;
     }
 
     /**
@@ -176,8 +145,8 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
                 reader.nextToken();
 
                 if ("creationTime".equals(fieldName)) {
-                    deserializedGraphApiComputeServiceResourceProperties.creationTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedGraphApiComputeServiceResourceProperties.withCreationTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("instanceSize".equals(fieldName)) {
                     deserializedGraphApiComputeServiceResourceProperties
                         .withInstanceSize(ServiceSize.fromString(reader.getString()));
@@ -185,8 +154,8 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
                     deserializedGraphApiComputeServiceResourceProperties
                         .withInstanceCount(reader.getNullable(JsonReader::getInt));
                 } else if ("status".equals(fieldName)) {
-                    deserializedGraphApiComputeServiceResourceProperties.status
-                        = ServiceStatus.fromString(reader.getString());
+                    deserializedGraphApiComputeServiceResourceProperties
+                        .withStatus(ServiceStatus.fromString(reader.getString()));
                 } else if ("serviceType".equals(fieldName)) {
                     deserializedGraphApiComputeServiceResourceProperties.serviceType
                         = ServiceType.fromString(reader.getString());

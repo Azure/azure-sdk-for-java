@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.dependencymap.fluent.DiscoverySourcesClient;
@@ -81,10 +83,29 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
             @PathParam("sourceName") String sourceName, @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources/{sourceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DiscoverySourceResourceInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @PathParam("sourceName") String sourceName, @HeaderParam("Accept") String accept, Context context);
+
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources/{sourceName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @PathParam("sourceName") String sourceName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") DiscoverySourceResourceInner resource,
+            Context context);
+
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources/{sourceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
             @PathParam("sourceName") String sourceName, @HeaderParam("Content-Type") String contentType,
@@ -101,11 +122,30 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json") DiscoverySourceResourceTagsUpdate properties, Context context);
 
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources/{sourceName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @PathParam("sourceName") String sourceName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DiscoverySourceResourceTagsUpdate properties, Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources/{sourceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @PathParam("sourceName") String sourceName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources/{sourceName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
             @PathParam("sourceName") String sourceName, @HeaderParam("Accept") String accept, Context context);
@@ -120,10 +160,27 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/discoverySources")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DiscoverySourceResourceListResult> listByMapsResourceSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mapName") String mapName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DiscoverySourceResourceListResult>> listByMapsResourceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DiscoverySourceResourceListResult> listByMapsResourceNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -173,45 +230,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param sourceName discovery source resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DiscoverySourceResource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiscoverySourceResourceInner>> getWithResponseAsync(String resourceGroupName, String mapName,
-        String sourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
-        if (sourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, mapName, sourceName, accept, context);
-    }
-
-    /**
-     * Get a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -238,7 +256,31 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiscoverySourceResourceInner> getWithResponse(String resourceGroupName, String mapName,
         String sourceName, Context context) {
-        return getWithResponseAsync(resourceGroupName, mapName, sourceName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mapName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+        }
+        if (sourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, mapName, sourceName, accept, context);
     }
 
     /**
@@ -311,42 +353,96 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      * @param mapName Maps resource name.
      * @param sourceName discovery source resource.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Discovery Source resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Discovery Source resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String mapName,
-        String sourceName, DiscoverySourceResourceInner resource, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mapName, String sourceName,
+        DiscoverySourceResourceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
         }
         if (sourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, sourceName, contentType, accept, resource,
+            Context.NONE);
+    }
+
+    /**
+     * Create a DiscoverySourceResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param sourceName discovery source resource.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Discovery Source resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mapName, String sourceName,
+        DiscoverySourceResourceInner resource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mapName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+        }
+        if (sourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, mapName, sourceName, contentType, accept, resource,
             context);
     }
@@ -380,31 +476,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      * @param mapName Maps resource name.
      * @param sourceName discovery source resource.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a Discovery Source resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DiscoverySourceResourceInner>, DiscoverySourceResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String mapName, String sourceName, DiscoverySourceResourceInner resource,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, mapName, sourceName, resource, context);
-        return this.client.<DiscoverySourceResourceInner, DiscoverySourceResourceInner>getLroResult(mono,
-            this.client.getHttpPipeline(), DiscoverySourceResourceInner.class, DiscoverySourceResourceInner.class,
-            context);
-    }
-
-    /**
-     * Create a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -413,7 +484,9 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiscoverySourceResourceInner>, DiscoverySourceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String mapName, String sourceName, DiscoverySourceResourceInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, mapName, sourceName, resource).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, mapName, sourceName, resource);
+        return this.client.<DiscoverySourceResourceInner, DiscoverySourceResourceInner>getLroResult(response,
+            DiscoverySourceResourceInner.class, DiscoverySourceResourceInner.class, Context.NONE);
     }
 
     /**
@@ -433,7 +506,10 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     public SyncPoller<PollResult<DiscoverySourceResourceInner>, DiscoverySourceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String mapName, String sourceName, DiscoverySourceResourceInner resource,
         Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, mapName, sourceName, resource, context).getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, mapName, sourceName, resource, context);
+        return this.client.<DiscoverySourceResourceInner, DiscoverySourceResourceInner>getLroResult(response,
+            DiscoverySourceResourceInner.class, DiscoverySourceResourceInner.class, context);
     }
 
     /**
@@ -462,26 +538,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      * @param mapName Maps resource name.
      * @param sourceName discovery source resource.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Discovery Source resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiscoverySourceResourceInner> createOrUpdateAsync(String resourceGroupName, String mapName,
-        String sourceName, DiscoverySourceResourceInner resource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mapName, sourceName, resource, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -490,7 +546,7 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoverySourceResourceInner createOrUpdate(String resourceGroupName, String mapName, String sourceName,
         DiscoverySourceResourceInner resource) {
-        return createOrUpdateAsync(resourceGroupName, mapName, sourceName, resource).block();
+        return beginCreateOrUpdate(resourceGroupName, mapName, sourceName, resource).getFinalResult();
     }
 
     /**
@@ -509,7 +565,7 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoverySourceResourceInner createOrUpdate(String resourceGroupName, String mapName, String sourceName,
         DiscoverySourceResourceInner resource, Context context) {
-        return createOrUpdateAsync(resourceGroupName, mapName, sourceName, resource, context).block();
+        return beginCreateOrUpdate(resourceGroupName, mapName, sourceName, resource, context).getFinalResult();
     }
 
     /**
@@ -566,43 +622,98 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      * @param mapName Maps resource name.
      * @param sourceName discovery source resource.
      * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Discovery Source resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Discovery Source resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String mapName,
-        String sourceName, DiscoverySourceResourceTagsUpdate properties, Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String mapName, String sourceName,
+        DiscoverySourceResourceTagsUpdate properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
         }
         if (sourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
         }
         if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
         } else {
             properties.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, mapName, sourceName, contentType, accept, properties, context);
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, sourceName, contentType, accept, properties,
+            Context.NONE);
+    }
+
+    /**
+     * Update a DiscoverySourceResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param sourceName discovery source resource.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Discovery Source resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String mapName, String sourceName,
+        DiscoverySourceResourceTagsUpdate properties, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mapName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+        }
+        if (sourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, sourceName, contentType, accept, properties,
+            context);
     }
 
     /**
@@ -634,31 +745,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      * @param mapName Maps resource name.
      * @param sourceName discovery source resource.
      * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a Discovery Source resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DiscoverySourceResourceInner>, DiscoverySourceResourceInner> beginUpdateAsync(
-        String resourceGroupName, String mapName, String sourceName, DiscoverySourceResourceTagsUpdate properties,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, mapName, sourceName, properties, context);
-        return this.client.<DiscoverySourceResourceInner, DiscoverySourceResourceInner>getLroResult(mono,
-            this.client.getHttpPipeline(), DiscoverySourceResourceInner.class, DiscoverySourceResourceInner.class,
-            context);
-    }
-
-    /**
-     * Update a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -667,7 +753,9 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiscoverySourceResourceInner>, DiscoverySourceResourceInner> beginUpdate(
         String resourceGroupName, String mapName, String sourceName, DiscoverySourceResourceTagsUpdate properties) {
-        return this.beginUpdateAsync(resourceGroupName, mapName, sourceName, properties).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, mapName, sourceName, properties);
+        return this.client.<DiscoverySourceResourceInner, DiscoverySourceResourceInner>getLroResult(response,
+            DiscoverySourceResourceInner.class, DiscoverySourceResourceInner.class, Context.NONE);
     }
 
     /**
@@ -687,7 +775,9 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     public SyncPoller<PollResult<DiscoverySourceResourceInner>, DiscoverySourceResourceInner> beginUpdate(
         String resourceGroupName, String mapName, String sourceName, DiscoverySourceResourceTagsUpdate properties,
         Context context) {
-        return this.beginUpdateAsync(resourceGroupName, mapName, sourceName, properties, context).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, mapName, sourceName, properties, context);
+        return this.client.<DiscoverySourceResourceInner, DiscoverySourceResourceInner>getLroResult(response,
+            DiscoverySourceResourceInner.class, DiscoverySourceResourceInner.class, context);
     }
 
     /**
@@ -716,26 +806,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      * @param mapName Maps resource name.
      * @param sourceName discovery source resource.
      * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Discovery Source resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiscoverySourceResourceInner> updateAsync(String resourceGroupName, String mapName, String sourceName,
-        DiscoverySourceResourceTagsUpdate properties, Context context) {
-        return beginUpdateAsync(resourceGroupName, mapName, sourceName, properties, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -744,7 +814,7 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoverySourceResourceInner update(String resourceGroupName, String mapName, String sourceName,
         DiscoverySourceResourceTagsUpdate properties) {
-        return updateAsync(resourceGroupName, mapName, sourceName, properties).block();
+        return beginUpdate(resourceGroupName, mapName, sourceName, properties).getFinalResult();
     }
 
     /**
@@ -763,7 +833,7 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoverySourceResourceInner update(String resourceGroupName, String mapName, String sourceName,
         DiscoverySourceResourceTagsUpdate properties, Context context) {
-        return updateAsync(resourceGroupName, mapName, sourceName, properties, context).block();
+        return beginUpdate(resourceGroupName, mapName, sourceName, properties, context).getFinalResult();
     }
 
     /**
@@ -811,37 +881,80 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param sourceName discovery source resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String mapName, String sourceName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mapName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+        }
+        if (sourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, sourceName, accept, Context.NONE);
+    }
+
+    /**
+     * Delete a DiscoverySourceResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param sourceName discovery source resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String mapName,
-        String sourceName, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String mapName, String sourceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
         }
         if (sourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, mapName, sourceName, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, mapName, sourceName, accept, context);
     }
 
     /**
@@ -869,28 +982,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param sourceName discovery source resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String mapName,
-        String sourceName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, mapName, sourceName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -898,7 +989,8 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mapName, String sourceName) {
-        return this.beginDeleteAsync(resourceGroupName, mapName, sourceName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, mapName, sourceName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -916,7 +1008,8 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mapName, String sourceName,
         Context context) {
-        return this.beginDeleteAsync(resourceGroupName, mapName, sourceName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, mapName, sourceName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -942,31 +1035,13 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
      * @param sourceName discovery source resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String mapName, String sourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mapName, sourceName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String mapName, String sourceName) {
-        deleteAsync(resourceGroupName, mapName, sourceName).block();
+        beginDelete(resourceGroupName, mapName, sourceName).getFinalResult();
     }
 
     /**
@@ -982,7 +1057,7 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String mapName, String sourceName, Context context) {
-        deleteAsync(resourceGroupName, mapName, sourceName, context).block();
+        beginDelete(resourceGroupName, mapName, sourceName, context).getFinalResult();
     }
 
     /**
@@ -1028,45 +1103,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DiscoverySourceResource list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DiscoverySourceResourceInner>>
-        listByMapsResourceSinglePageAsync(String resourceGroupName, String mapName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByMapsResource(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, mapName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List DiscoverySourceResource resources by MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1083,17 +1119,77 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mapName Maps resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DiscoverySourceResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DiscoverySourceResourceInner> listByMapsResourceSinglePage(String resourceGroupName,
+        String mapName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mapName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiscoverySourceResourceListResult> res
+            = service.listByMapsResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, mapName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List DiscoverySourceResource resources by MapsResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DiscoverySourceResource list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a DiscoverySourceResource list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DiscoverySourceResourceInner> listByMapsResourceAsync(String resourceGroupName, String mapName,
-        Context context) {
-        return new PagedFlux<>(() -> listByMapsResourceSinglePageAsync(resourceGroupName, mapName, context),
-            nextLink -> listByMapsResourceNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DiscoverySourceResourceInner> listByMapsResourceSinglePage(String resourceGroupName,
+        String mapName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mapName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiscoverySourceResourceListResult> res = service.listByMapsResourceSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, mapName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1109,7 +1205,8 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoverySourceResourceInner> listByMapsResource(String resourceGroupName, String mapName) {
-        return new PagedIterable<>(listByMapsResourceAsync(resourceGroupName, mapName));
+        return new PagedIterable<>(() -> listByMapsResourceSinglePage(resourceGroupName, mapName),
+            nextLink -> listByMapsResourceNextSinglePage(nextLink));
     }
 
     /**
@@ -1127,7 +1224,8 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoverySourceResourceInner> listByMapsResource(String resourceGroupName, String mapName,
         Context context) {
-        return new PagedIterable<>(listByMapsResourceAsync(resourceGroupName, mapName, context));
+        return new PagedIterable<>(() -> listByMapsResourceSinglePage(resourceGroupName, mapName, context),
+            nextLink -> listByMapsResourceNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1162,27 +1260,57 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DiscoverySourceResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DiscoverySourceResourceInner> listByMapsResourceNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiscoverySourceResourceListResult> res
+            = service.listByMapsResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DiscoverySourceResource list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the response of a DiscoverySourceResource list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DiscoverySourceResourceInner>> listByMapsResourceNextSinglePageAsync(String nextLink,
+    private PagedResponse<DiscoverySourceResourceInner> listByMapsResourceNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByMapsResourceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DiscoverySourceResourceListResult> res
+            = service.listByMapsResourceNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DiscoverySourcesClientImpl.class);
 }

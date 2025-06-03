@@ -6,7 +6,17 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.Test;
@@ -18,7 +28,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 // End to end sanity tests for basic thin client functionality.
 public class ThinClientE2ETest {
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void testThinClientQuery() {
         CosmosAsyncClient client = null;
         try {
@@ -68,7 +78,7 @@ public class ThinClientE2ETest {
         }
     }
 
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void testThinClientDocumentPointOperations() {
         CosmosAsyncClient client = null;
         try {

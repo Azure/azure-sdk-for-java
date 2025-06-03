@@ -14,7 +14,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
@@ -49,7 +48,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
     @Override
     public byte[] toBytes() {
         if (length != null && length > MAX_ARRAY_SIZE) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+            throw LOGGER.throwableAtError().log(TOO_LARGE_FOR_BYTE_ARRAY + length, IllegalStateException::new);
         }
 
         if (bytes == null) {
@@ -60,7 +59,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
                 } catch (IOException ex) {
                     // This exception thrown here will eventually close the Channel, resulting in the latch being
                     // counted down.
-                    throw new UncheckedIOException(ex);
+                    throw LOGGER.throwableAtError().log(ex, CoreException::from);
                 }
             }));
 
@@ -83,7 +82,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
         try {
             return serializer.deserializeFromBytes(toBytes(), type);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -103,7 +102,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
         try {
             jsonWriter.writeBinary(toBytes());
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -121,7 +120,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
                     try {
                         buf.readBytes(outputStream, buf.readableBytes());
                     } catch (IOException ex) {
-                        throw new UncheckedIOException(ex);
+                        throw LOGGER.throwableAtError().log(ex, CoreException::from);
                     }
                 }));
 
@@ -133,7 +132,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
                 outputStream.write(bytes);
             }
         } catch (IOException ex) {
-            throw LOGGER.logThrowableAsError(CoreException.from(ex));
+            throw LOGGER.throwableAtError().log(ex, CoreException::from);
         }
     }
 

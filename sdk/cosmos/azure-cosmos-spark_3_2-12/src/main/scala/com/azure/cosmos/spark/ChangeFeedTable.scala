@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, UUIDs}
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -162,7 +162,7 @@ private class ChangeFeedTable(val session: SparkSession,
 
         try {
           container.readItem(
-            UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
+            UUIDs.nonBlockingRandomUUID().toString, new PartitionKey(UUIDs.nonBlockingRandomUUID().toString), classOf[ObjectNode])
             .block()
         } catch {
           case _: CosmosException =>

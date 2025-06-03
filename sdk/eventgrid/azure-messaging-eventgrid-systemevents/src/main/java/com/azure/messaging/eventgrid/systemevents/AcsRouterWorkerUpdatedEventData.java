@@ -29,13 +29,13 @@ public final class AcsRouterWorkerUpdatedEventData implements JsonSerializable<A
      * Router Worker Updated Queue Info
      */
     @Generated
-    private final List<AcsRouterQueueDetails> queueAssignments;
+    private List<AcsRouterQueueDetails> queueAssignments;
 
     /*
      * Router Worker Updated Channel Configuration
      */
     @Generated
-    private final List<AcsRouterChannelConfiguration> channelConfigurations;
+    private List<AcsRouterChannelConfiguration> channelConfigurations;
 
     /*
      * Router Worker Updated Total Capacity
@@ -59,26 +59,18 @@ public final class AcsRouterWorkerUpdatedEventData implements JsonSerializable<A
      * Router Worker Properties Updated
      */
     @Generated
-    private final List<AcsRouterUpdatedWorkerProperty> updatedWorkerProperties;
+    private List<AcsRouterUpdatedWorkerProperty> updatedWorkerProperties;
 
     /**
      * Creates an instance of AcsRouterWorkerUpdatedEventData class.
      * 
-     * @param queueAssignments the queueAssignments value to set.
-     * @param channelConfigurations the channelConfigurations value to set.
      * @param labels the labels value to set.
      * @param tags the tags value to set.
-     * @param updatedWorkerProperties the updatedWorkerProperties value to set.
      */
     @Generated
-    private AcsRouterWorkerUpdatedEventData(List<AcsRouterQueueDetails> queueAssignments,
-        List<AcsRouterChannelConfiguration> channelConfigurations, Map<String, String> labels, Map<String, String> tags,
-        List<AcsRouterUpdatedWorkerProperty> updatedWorkerProperties) {
-        this.queueAssignments = queueAssignments;
-        this.channelConfigurations = channelConfigurations;
+    private AcsRouterWorkerUpdatedEventData(Map<String, String> labels, Map<String, String> tags) {
         this.labels = labels;
         this.tags = tags;
-        this.updatedWorkerProperties = updatedWorkerProperties;
     }
 
     /**
@@ -158,14 +150,8 @@ public final class AcsRouterWorkerUpdatedEventData implements JsonSerializable<A
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("queueAssignments", this.queueAssignments,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("channelConfigurations", this.channelConfigurations,
-            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("updatedWorkerProperties", this.updatedWorkerProperties,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeStringField("workerId", this.workerId);
         jsonWriter.writeNumberField("totalCapacity", this.totalCapacity);
         return jsonWriter.writeEndObject();
@@ -215,8 +201,10 @@ public final class AcsRouterWorkerUpdatedEventData implements JsonSerializable<A
                 }
             }
             AcsRouterWorkerUpdatedEventData deserializedAcsRouterWorkerUpdatedEventData
-                = new AcsRouterWorkerUpdatedEventData(queueAssignments, channelConfigurations, labels, tags,
-                    updatedWorkerProperties);
+                = new AcsRouterWorkerUpdatedEventData(labels, tags);
+            deserializedAcsRouterWorkerUpdatedEventData.queueAssignments = queueAssignments;
+            deserializedAcsRouterWorkerUpdatedEventData.channelConfigurations = channelConfigurations;
+            deserializedAcsRouterWorkerUpdatedEventData.updatedWorkerProperties = updatedWorkerProperties;
             deserializedAcsRouterWorkerUpdatedEventData.workerId = workerId;
             deserializedAcsRouterWorkerUpdatedEventData.totalCapacity = totalCapacity;
 

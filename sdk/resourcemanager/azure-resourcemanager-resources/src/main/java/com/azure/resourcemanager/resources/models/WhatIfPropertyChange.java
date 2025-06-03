@@ -180,8 +180,12 @@ public final class WhatIfPropertyChange implements JsonSerializable<WhatIfProper
         jsonWriter.writeStringField("path", this.path);
         jsonWriter.writeStringField("propertyChangeType",
             this.propertyChangeType == null ? null : this.propertyChangeType.toString());
-        jsonWriter.writeUntypedField("before", this.before);
-        jsonWriter.writeUntypedField("after", this.after);
+        if (this.before != null) {
+            jsonWriter.writeUntypedField("before", this.before);
+        }
+        if (this.after != null) {
+            jsonWriter.writeUntypedField("after", this.after);
+        }
         jsonWriter.writeArrayField("children", this.children, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }

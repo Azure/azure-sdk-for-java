@@ -89,7 +89,6 @@ public final class EventInner extends EventInfoInner {
      */
     @Override
     public void validate() {
-        super.validate();
         if (eventRequestMessage() != null) {
             eventRequestMessage().validate();
         }

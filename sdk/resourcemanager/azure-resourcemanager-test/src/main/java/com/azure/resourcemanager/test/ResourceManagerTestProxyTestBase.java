@@ -126,7 +126,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
      */
     @RegisterExtension
     final PlaybackTimeoutInterceptor playbackTimeoutInterceptor
-        = new PlaybackTimeoutInterceptor(() -> Duration.ofSeconds(60));
+        = new PlaybackTimeoutInterceptor(() -> Duration.ofSeconds(120));
 
     /**
      * Initializes ResourceManagerTestProxyTestBase class.

@@ -6,6 +6,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
     /*
      * The kind of vector query being performed.
      */
+    @Generated
     private VectorQueryKind kind = VectorQueryKind.IMAGE_URL;
 
     /*
      * The URL of an image to be vectorized to perform a vector search query.
      */
+    @Generated
     private String url;
 
     /**
      * Creates an instance of VectorizableImageUrlQuery class.
      */
+    @Generated
     public VectorizableImageUrlQuery() {
     }
 
@@ -39,6 +43,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
      *
      * @return the kind value.
      */
+    @Generated
     @Override
     public VectorQueryKind getKind() {
         return this.kind;
@@ -49,6 +54,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
      *
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -59,6 +65,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
      * @param url the url value to set.
      * @return the VectorizableImageUrlQuery object itself.
      */
+    @Generated
     public VectorizableImageUrlQuery setUrl(String url) {
         this.url = url;
         return this;
@@ -67,6 +74,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableImageUrlQuery setKNearestNeighborsCount(Integer kNearestNeighborsCount) {
         super.setKNearestNeighborsCount(kNearestNeighborsCount);
@@ -76,6 +84,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableImageUrlQuery setFields(String... fields) {
         super.setFields(fields);
@@ -85,6 +94,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableImageUrlQuery setExhaustive(Boolean exhaustive) {
         super.setExhaustive(exhaustive);
@@ -94,6 +104,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableImageUrlQuery setOversampling(Double oversampling) {
         super.setOversampling(oversampling);
@@ -103,6 +114,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableImageUrlQuery setWeight(Float weight) {
         super.setWeight(weight);
@@ -112,6 +124,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableImageUrlQuery setThreshold(VectorThreshold threshold) {
         super.setThreshold(threshold);
@@ -121,6 +134,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableImageUrlQuery setFilterOverride(String filterOverride) {
         super.setFilterOverride(filterOverride);
@@ -130,6 +144,17 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public VectorizableImageUrlQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
+        super.setPerDocumentVectorLimit(perDocumentVectorLimit);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -140,6 +165,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
         jsonWriter.writeNumberField("weight", getWeight());
         jsonWriter.writeJsonField("threshold", getThreshold());
         jsonWriter.writeStringField("filterOverride", getFilterOverride());
+        jsonWriter.writeNumberField("perDocumentVectorLimit", getPerDocumentVectorLimit());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("url", this.url);
         return jsonWriter.writeEndObject();
@@ -153,6 +179,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the VectorizableImageUrlQuery.
      */
+    @Generated
     public static VectorizableImageUrlQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             VectorizableImageUrlQuery deserializedVectorizableImageUrlQuery = new VectorizableImageUrlQuery();
@@ -174,6 +201,9 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
                     deserializedVectorizableImageUrlQuery.setThreshold(VectorThreshold.fromJson(reader));
                 } else if ("filterOverride".equals(fieldName)) {
                     deserializedVectorizableImageUrlQuery.setFilterOverride(reader.getString());
+                } else if ("perDocumentVectorLimit".equals(fieldName)) {
+                    deserializedVectorizableImageUrlQuery
+                        .setPerDocumentVectorLimit(reader.getNullable(JsonReader::getInt));
                 } else if ("kind".equals(fieldName)) {
                     deserializedVectorizableImageUrlQuery.kind = VectorQueryKind.fromString(reader.getString());
                 } else if ("url".equals(fieldName)) {

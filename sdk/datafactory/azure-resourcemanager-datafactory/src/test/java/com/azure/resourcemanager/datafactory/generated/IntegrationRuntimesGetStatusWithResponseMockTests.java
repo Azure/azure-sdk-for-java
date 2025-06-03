@@ -20,7 +20,7 @@ public final class IntegrationRuntimesGetStatusWithResponseMockTests {
     @Test
     public void testGetStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"jhxydxicouilg\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"slagtmkiilcgejm\",\"state\":\"Limited\",\"\":{\"faqytqmc\":\"databzlmztkzg\",\"vfrtmwyezr\":\"datazdptoytcnxgq\"}}}";
+            = "{\"name\":\"jhxydxicouilg\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"slagtmkiilcgejm\",\"state\":\"Limited\",\"faqytqmc\":\"databzlmztkzg\",\"vfrtmwyezr\":\"datazdptoytcnxgq\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

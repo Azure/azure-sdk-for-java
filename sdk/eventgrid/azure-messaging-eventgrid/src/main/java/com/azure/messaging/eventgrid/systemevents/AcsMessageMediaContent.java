@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
     /*
      * The MIME type of the file this media represents
      */
+    @Generated
     private String mimeType;
 
     /*
      * The media identifier
      */
+    @Generated
     private String mediaId;
 
     /*
      * The filename of the underlying media file as specified when uploaded
      */
+    @Generated
     private String fileName;
 
     /*
      * The caption for the media object, if supported and provided
      */
+    @Generated
     private String caption;
 
     /*
      * Set to true if the sticker is animated; false otherwise.
      */
+    @Generated
     private Boolean animated;
 
     /**
      * Creates an instance of AcsMessageMediaContent class.
      */
+    @Generated
     public AcsMessageMediaContent() {
     }
 
@@ -52,6 +59,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
      * 
      * @return the mimeType value.
      */
+    @Generated
     public String getMimeType() {
         return this.mimeType;
     }
@@ -62,6 +70,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
      * @param mimeType the mimeType value to set.
      * @return the AcsMessageMediaContent object itself.
      */
+    @Generated
     public AcsMessageMediaContent setMimeType(String mimeType) {
         this.mimeType = mimeType;
         return this;
@@ -72,6 +81,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
      * 
      * @return the mediaId value.
      */
+    @Generated
     public String getMediaId() {
         return this.mediaId;
     }
@@ -82,6 +92,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
      * @param mediaId the mediaId value to set.
      * @return the AcsMessageMediaContent object itself.
      */
+    @Generated
     public AcsMessageMediaContent setMediaId(String mediaId) {
         this.mediaId = mediaId;
         return this;
@@ -92,6 +103,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
      * 
      * @return the fileName value.
      */
+    @Generated
     public String getFileName() {
         return this.fileName;
     }
@@ -102,6 +114,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
      * @param fileName the fileName value to set.
      * @return the AcsMessageMediaContent object itself.
      */
+    @Generated
     public AcsMessageMediaContent setFileName(String fileName) {
         this.fileName = fileName;
         return this;
@@ -112,6 +125,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
      * 
      * @return the caption value.
      */
+    @Generated
     public String getCaption() {
         return this.caption;
     }
@@ -122,6 +136,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
      * @param caption the caption value to set.
      * @return the AcsMessageMediaContent object itself.
      */
+    @Generated
     public AcsMessageMediaContent setCaption(String caption) {
         this.caption = caption;
         return this;
@@ -132,6 +147,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
      * 
      * @return the animated value.
      */
+    @Generated
     public Boolean isAnimated() {
         return this.animated;
     }
@@ -142,6 +158,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
      * @param animated the animated value to set.
      * @return the AcsMessageMediaContent object itself.
      */
+    @Generated
     public AcsMessageMediaContent setAnimated(Boolean animated) {
         this.animated = animated;
         return this;
@@ -150,6 +167,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -170,6 +188,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsMessageMediaContent.
      */
+    @Generated
     public static AcsMessageMediaContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsMessageMediaContent deserializedAcsMessageMediaContent = new AcsMessageMediaContent();

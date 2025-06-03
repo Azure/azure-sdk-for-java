@@ -7,6 +7,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.configuration.Configuration;
@@ -95,7 +96,7 @@ public final class TestProxyManager {
                 throw new RuntimeException("Test proxy did not initialize. Error log: " + errorLogString);
             }
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

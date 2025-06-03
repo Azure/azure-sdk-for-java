@@ -4,7 +4,15 @@
 
 ### Features Added
 
+- Updated the partition receiver to retry on terminal completion signal instead of sending it downstream. ([45400](https://github.com/Azure/azure-sdk-for-java/pull/45400))
+
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 5.20.3 (2025-04-16)
 
 ### Bugs Fixed
 

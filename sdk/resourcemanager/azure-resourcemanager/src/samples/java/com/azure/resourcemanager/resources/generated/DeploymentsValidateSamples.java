@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class DeploymentsValidateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/
      * PostDeploymentValidateOnResourceGroup.json
      */
     /**

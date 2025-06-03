@@ -88,6 +88,16 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
      * {@inheritDoc}
      */
     @Override
+    public DeploymentWhatIfProperties
+        withExtensionConfigs(Map<String, Map<String, DeploymentExtensionConfigItem>> extensionConfigs) {
+        super.withExtensionConfigs(extensionConfigs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public DeploymentWhatIfProperties withMode(DeploymentMode mode) {
         super.withMode(mode);
         return this;
@@ -153,6 +163,17 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
         if (parametersLink() != null) {
             parametersLink().validate();
         }
+        if (extensionConfigs() != null) {
+            extensionConfigs().values().forEach(e -> {
+                if (e != null) {
+                    e.values().forEach(e1 -> {
+                        if (e1 != null) {
+                            e1.validate();
+                        }
+                    });
+                }
+            });
+        }
         if (mode() == null) {
             throw LOGGER.atError()
                 .log(
@@ -178,10 +199,14 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("mode", mode() == null ? null : mode().toString());
-        jsonWriter.writeUntypedField("template", template());
+        if (template() != null) {
+            jsonWriter.writeUntypedField("template", template());
+        }
         jsonWriter.writeJsonField("templateLink", templateLink());
         jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("parametersLink", parametersLink());
+        jsonWriter.writeMapField("extensionConfigs", extensionConfigs(),
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeJson(element1)));
         jsonWriter.writeJsonField("debugSetting", debugSetting());
         jsonWriter.writeJsonField("onErrorDeployment", onErrorDeployment());
         jsonWriter.writeJsonField("expressionEvaluationOptions", expressionEvaluationOptions());
@@ -218,6 +243,10 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
                     deserializedDeploymentWhatIfProperties.withParameters(parameters);
                 } else if ("parametersLink".equals(fieldName)) {
                     deserializedDeploymentWhatIfProperties.withParametersLink(ParametersLink.fromJson(reader));
+                } else if ("extensionConfigs".equals(fieldName)) {
+                    Map<String, Map<String, DeploymentExtensionConfigItem>> extensionConfigs = reader.readMap(
+                        reader1 -> reader1.readMap(reader2 -> DeploymentExtensionConfigItem.fromJson(reader2)));
+                    deserializedDeploymentWhatIfProperties.withExtensionConfigs(extensionConfigs);
                 } else if ("debugSetting".equals(fieldName)) {
                     deserializedDeploymentWhatIfProperties.withDebugSetting(DebugSetting.fromJson(reader));
                 } else if ("onErrorDeployment".equals(fieldName)) {

@@ -35,7 +35,7 @@ public final class OrganizationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"marketplace\":{\"subscriptionId\":\"vt\",\"subscriptionStatus\":\"Suspended\",\"offerDetails\":{\"publisherId\":\"mqkrhahvljuahaqu\",\"offerId\":\"c\",\"planId\":\"hmdua\",\"planName\":\"exq\",\"termUnit\":\"fadmws\",\"termId\":\"r\"}},\"user\":{\"firstName\":\"xpvgo\",\"lastName\":\"lf\",\"emailAddress\":\"sgwbnbbeld\",\"upn\":\"k\",\"phoneNumber\":\"ali\"},\"provisioningState\":\"Succeeded\",\"partnerProperties\":{\"description\":\"hakauhashsf\"},\"singleSignOnProperties\":{\"type\":\"Saml\",\"state\":\"Disable\",\"enterpriseAppId\":\"z\",\"url\":\"ugicjooxdjebw\",\"aadDomains\":[\"wwfvov\",\"vmeueci\",\"yhz\"]}},\"identity\":{\"principalId\":\"ojgjrwjueiotwmc\",\"tenantId\":\"tdx\",\"type\":\"None\",\"userAssignedIdentities\":{\"skxfbk\":{\"clientId\":\"rjaw\",\"principalId\":\"wgxhn\"}}},\"location\":\"cg\",\"tags\":{\"auwhvylwzbtdhx\":\"ndnhj\",\"pow\":\"jznb\"},\"id\":\"wpr\",\"name\":\"qlveualupjmkh\",\"type\":\"xobbcswsrt\"}";
+            = "{\"properties\":{\"marketplace\":{\"subscriptionId\":\"zuhkfpbsjyof\",\"subscriptionStatus\":\"PendingFulfillmentStart\",\"offerDetails\":{\"publisherId\":\"uusdttouwa\",\"offerId\":\"oekqvk\",\"planId\":\"lns\",\"planName\":\"bxwyjsflhhcaa\",\"termUnit\":\"jixisxyawjoyaqcs\",\"termId\":\"jpkiidzyexznelix\"}},\"user\":{\"firstName\":\"rzt\",\"lastName\":\"lhbnxkna\",\"emailAddress\":\"ulppggdtpnapnyir\",\"upn\":\"uhpigvp\",\"phoneNumber\":\"lgqg\"},\"provisioningState\":\"Succeeded\",\"partnerProperties\":{\"description\":\"medjvcslynqwwncw\"},\"singleSignOnProperties\":{\"type\":\"Saml\",\"state\":\"Enable\",\"enterpriseAppId\":\"trmgucnapkte\",\"url\":\"llwptfdy\",\"aadDomains\":[\"qbuaceopzfqr\",\"huaoppp\",\"qeqxo\"]}},\"identity\":{\"principalId\":\"ahzxctobgbk\",\"tenantId\":\"oizpostmgrcfbun\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"swbxqz\":{\"principalId\":\"hhkxbp\",\"clientId\":\"ymjhxxjyngudivkr\"},\"ivetvtcq\":{\"principalId\":\"zjf\",\"clientId\":\"vjfdx\"},\"fxoblytkb\":{\"principalId\":\"tdo\",\"clientId\":\"cbxvwvxyslqbh\"}}},\"location\":\"pe\",\"tags\":{\"q\":\"fbkrvrnsvs\",\"rruvwbhsq\":\"ohxcrsbfova\",\"gjb\":\"sub\"},\"id\":\"rxbpyb\",\"name\":\"rfbjf\",\"type\":\"twss\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -45,55 +45,56 @@ public final class OrganizationsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OrganizationResource response = manager.organizations()
-            .define("ux")
-            .withRegion("jbhckfrlhr")
-            .withExistingResourceGroup("zyoxaepdkzjan")
-            .withTags(mapOf("ycanuzbpzkafku", "kyv", "rnwb", "b"))
+            .define("hspkdeemao")
+            .withRegion("ww")
+            .withExistingResourceGroup("ehhseyvjusrts")
+            .withTags(mapOf("mcqibycnojv", "qbex", "zhpvgqzcjrvxd", "nmefqsgzvahapj", "vawjvzunlu", "zlmwlxkvugfhz",
+                "xipeilpjzuaejx", "hnnpr"))
             .withProperties(new OrganizationProperties()
-                .withMarketplace(new MarketplaceDetails().withSubscriptionId("wbavxbniwdj")
-                    .withOfferDetails(new OfferDetails().withPublisherId("tsdbpgn")
-                        .withOfferId("ytxhp")
-                        .withPlanId("xbzpfzab")
-                        .withPlanName("cuh")
-                        .withTermUnit("tcty")
-                        .withTermId("klbb")))
-                .withUser(new UserDetails().withFirstName("plwzbhvgyugu")
-                    .withLastName("vmkfssxqu")
-                    .withEmailAddress("fpl")
-                    .withUpn("gsxnkjzkdeslpv")
-                    .withPhoneNumber("pwiyig"))
-                .withPartnerProperties(new PartnerProperties().withDescription("dwzbaiue"))
-                .withSingleSignOnProperties(new SingleSignOnPropertiesV2().withType(SingleSignOnType.SAML)
+                .withMarketplace(new MarketplaceDetails().withSubscriptionId("ag")
+                    .withOfferDetails(new OfferDetails().withPublisherId("melmqkrha")
+                        .withOfferId("vljua")
+                        .withPlanId("aquhcdhm")
+                        .withPlanName("alaexqpvfadmwsrc")
+                        .withTermUnit("vxpvgomz")
+                        .withTermId("misgwbnb")))
+                .withUser(new UserDetails().withFirstName("ldawkzbaliourqha")
+                    .withLastName("uhashsfwx")
+                    .withEmailAddress("owzxcu")
+                    .withUpn("cjooxdjebwpucwwf")
+                    .withPhoneNumber("vbvmeu"))
+                .withPartnerProperties(new PartnerProperties().withDescription("vyhzceuojgjrwj"))
+                .withSingleSignOnProperties(new SingleSignOnPropertiesV2().withType(SingleSignOnType.OPEN_ID)
                     .withState(SingleSignOnStates.DISABLE)
-                    .withEnterpriseAppId("yqupedeojnabckh")
-                    .withUrl("txp")
-                    .withAadDomains(Arrays.asList("btfhvpesaps", "rdqmhjjdhtldwkyz", "uutkncw"))))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("nv", new UserAssignedIdentity(), "azqugxywpmueefj",
-                    new UserAssignedIdentity(), "tcc", new UserAssignedIdentity(), "hl", new UserAssignedIdentity())))
+                    .withEnterpriseAppId("mcdytdxwitxnrj")
+                    .withUrl("gqwgxhniskxfbkp")
+                    .withAadDomains(Arrays.asList("klwndnhjdauwhv", "l"))))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("xzvlvqhjkbegib", new UserAssignedIdentity(), "tzjuzgwyzmhtxo",
+                    new UserAssignedIdentity(), "rwmdyvxqtay", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("cg", response.location());
-        Assertions.assertEquals("ndnhj", response.tags().get("auwhvylwzbtdhx"));
-        Assertions.assertEquals("vt", response.properties().marketplace().subscriptionId());
-        Assertions.assertEquals("mqkrhahvljuahaqu", response.properties().marketplace().offerDetails().publisherId());
-        Assertions.assertEquals("c", response.properties().marketplace().offerDetails().offerId());
-        Assertions.assertEquals("hmdua", response.properties().marketplace().offerDetails().planId());
-        Assertions.assertEquals("exq", response.properties().marketplace().offerDetails().planName());
-        Assertions.assertEquals("fadmws", response.properties().marketplace().offerDetails().termUnit());
-        Assertions.assertEquals("r", response.properties().marketplace().offerDetails().termId());
-        Assertions.assertEquals("xpvgo", response.properties().user().firstName());
-        Assertions.assertEquals("lf", response.properties().user().lastName());
-        Assertions.assertEquals("sgwbnbbeld", response.properties().user().emailAddress());
-        Assertions.assertEquals("k", response.properties().user().upn());
-        Assertions.assertEquals("ali", response.properties().user().phoneNumber());
-        Assertions.assertEquals("hakauhashsf", response.properties().partnerProperties().description());
+        Assertions.assertEquals("pe", response.location());
+        Assertions.assertEquals("fbkrvrnsvs", response.tags().get("q"));
+        Assertions.assertEquals("zuhkfpbsjyof", response.properties().marketplace().subscriptionId());
+        Assertions.assertEquals("uusdttouwa", response.properties().marketplace().offerDetails().publisherId());
+        Assertions.assertEquals("oekqvk", response.properties().marketplace().offerDetails().offerId());
+        Assertions.assertEquals("lns", response.properties().marketplace().offerDetails().planId());
+        Assertions.assertEquals("bxwyjsflhhcaa", response.properties().marketplace().offerDetails().planName());
+        Assertions.assertEquals("jixisxyawjoyaqcs", response.properties().marketplace().offerDetails().termUnit());
+        Assertions.assertEquals("jpkiidzyexznelix", response.properties().marketplace().offerDetails().termId());
+        Assertions.assertEquals("rzt", response.properties().user().firstName());
+        Assertions.assertEquals("lhbnxkna", response.properties().user().lastName());
+        Assertions.assertEquals("ulppggdtpnapnyir", response.properties().user().emailAddress());
+        Assertions.assertEquals("uhpigvp", response.properties().user().upn());
+        Assertions.assertEquals("lgqg", response.properties().user().phoneNumber());
+        Assertions.assertEquals("medjvcslynqwwncw", response.properties().partnerProperties().description());
         Assertions.assertEquals(SingleSignOnType.SAML, response.properties().singleSignOnProperties().type());
-        Assertions.assertEquals(SingleSignOnStates.DISABLE, response.properties().singleSignOnProperties().state());
-        Assertions.assertEquals("z", response.properties().singleSignOnProperties().enterpriseAppId());
-        Assertions.assertEquals("ugicjooxdjebw", response.properties().singleSignOnProperties().url());
-        Assertions.assertEquals("wwfvov", response.properties().singleSignOnProperties().aadDomains().get(0));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals(SingleSignOnStates.ENABLE, response.properties().singleSignOnProperties().state());
+        Assertions.assertEquals("trmgucnapkte", response.properties().singleSignOnProperties().enterpriseAppId());
+        Assertions.assertEquals("llwptfdy", response.properties().singleSignOnProperties().url());
+        Assertions.assertEquals("qbuaceopzfqr", response.properties().singleSignOnProperties().aadDomains().get(0));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

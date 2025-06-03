@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.AccountSkuListResult;
@@ -22,24 +22,24 @@ public final class AccountsListSkusWithResponseMockTests {
     @Test
     public void testListSkusWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"lgg\",\"sku\":{\"name\":\"bemzqkzszuwi\",\"tier\":\"Free\",\"size\":\"xxhljfpgpic\",\"family\":\"nzhrgmqgjsxvpqcb\",\"capacity\":1162167874}}]}";
+            = "{\"value\":[{\"resourceType\":\"fg\",\"sku\":{\"name\":\"ba\",\"tier\":\"Enterprise\",\"size\":\"bnzqcyknapq\",\"family\":\"yuicdhzbdy\",\"capacity\":1911202456}},{\"resourceType\":\"bdvibidmhmwffpl\",\"sku\":{\"name\":\"u\",\"tier\":\"Premium\",\"size\":\"kccrrvwey\",\"family\":\"oy\",\"capacity\":64161749}},{\"resourceType\":\"haim\",\"sku\":{\"name\":\"iroqbosh\",\"tier\":\"Basic\",\"size\":\"apyyrmfsvbpavbo\",\"family\":\"ppdbwnupgahxkum\",\"capacity\":1600876381}},{\"resourceType\":\"aacfdmmc\",\"sku\":{\"name\":\"g\",\"tier\":\"Basic\",\"size\":\"epvufhbzehew\",\"family\":\"qhnlbqnbld\",\"capacity\":890550632}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AccountSkuListResult response = manager.accounts()
-            .listSkusWithResponse("kfvxcnq", "xqpswok", com.azure.core.util.Context.NONE)
+            .listSkusWithResponse("f", "zopjhbzxliohr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lgg", response.value().get(0).resourceType());
-        Assertions.assertEquals("bemzqkzszuwi", response.value().get(0).sku().name());
-        Assertions.assertEquals(SkuTier.FREE, response.value().get(0).sku().tier());
-        Assertions.assertEquals("xxhljfpgpic", response.value().get(0).sku().size());
-        Assertions.assertEquals("nzhrgmqgjsxvpqcb", response.value().get(0).sku().family());
-        Assertions.assertEquals(1162167874, response.value().get(0).sku().capacity());
+        Assertions.assertEquals("fg", response.value().get(0).resourceType());
+        Assertions.assertEquals("ba", response.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.ENTERPRISE, response.value().get(0).sku().tier());
+        Assertions.assertEquals("bnzqcyknapq", response.value().get(0).sku().size());
+        Assertions.assertEquals("yuicdhzbdy", response.value().get(0).sku().family());
+        Assertions.assertEquals(1911202456, response.value().get(0).sku().capacity());
     }
 }

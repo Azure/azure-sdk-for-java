@@ -6,6 +6,7 @@ package io.clientcore.http.netty4.implementation;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.utils.AuthUtils;
 import io.clientcore.core.utils.AuthenticateChallenge;
 import io.clientcore.core.utils.CoreUtils;
@@ -44,9 +45,6 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec
  * This class handles authorizing requests being sent through a proxy that requires authentication.
  */
 public final class Netty4HttpProxyHandler extends ProxyHandler {
-    static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' "
-        + "header doesn't match the value sent in the 'Proxy-Authorization' header. Sent: %s, received: %s.";
-
     private static final String PROXY_AUTHENTICATION_INFO = "Proxy-Authentication-Info";
     private static final HttpHeaderName PROXY_AUTHENTICATION_INFO_NAME
         = HttpHeaderName.fromString(PROXY_AUTHENTICATION_INFO);
@@ -158,8 +156,9 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
         if (ctx.channel().isActive()) {
             return request;
         } else {
-            throw new HttpProxyHandler.HttpProxyConnectException(
-                exceptionMessage("Channel became inactive before 'newInitialMessage' was sent"), null);
+            throw LOGGER.throwableAtError()
+                .log(exceptionMessage("Channel became inactive before 'newInitialMessage' was sent"),
+                    m -> new HttpProxyHandler.HttpProxyConnectException(m, null));
         }
     }
 
@@ -167,7 +166,7 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
     protected boolean handleResponse(ChannelHandlerContext ctx, Object o) throws ProxyConnectException {
         if (o instanceof HttpResponse) {
             if (status != null) {
-                throw LOGGER.logThrowableAsWarning(new RuntimeException("Received too many responses for a request"));
+                throw LOGGER.throwableAtWarning().log("Received too many responses for a request", CoreException::from);
             }
 
             HttpResponse response = (HttpResponse) o;
@@ -197,11 +196,14 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
         boolean responseComplete = o instanceof LastHttpContent;
         if (responseComplete) {
             if (status == null) {
-                throw new HttpProxyHandler.HttpProxyConnectException(exceptionMessage("missing response"),
-                    innerHeaders);
+                throw LOGGER.throwableAtError()
+                    .log(exceptionMessage("missing response"),
+                        m -> new HttpProxyHandler.HttpProxyConnectException(m, innerHeaders));
             } else if (status.code() != 200) {
-                throw new HttpProxyHandler.HttpProxyConnectException(exceptionMessage("status: " + status),
-                    innerHeaders);
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("status", status.code())
+                    .log(exceptionMessage(status.reasonPhrase()),
+                        m -> new HttpProxyHandler.HttpProxyConnectException(m, innerHeaders));
             }
         }
 
@@ -258,8 +260,13 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
             String receivedValue = authenticationInfoPieces.get(name);
 
             if (!receivedValue.equalsIgnoreCase(sentValue)) {
-                throw LOGGER.logThrowableAsError(new IllegalStateException(
-                    String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", name)
+                    .addKeyValue("sent", sentValue)
+                    .addKeyValue("received", receivedValue)
+                    .log(
+                        "Property received in the 'Proxy-Authentication-Info' header doesn't match the value sent in the 'Proxy-Authorization' header",
+                        IllegalStateException::new);
             }
         }
     }

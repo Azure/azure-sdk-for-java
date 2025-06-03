@@ -5,6 +5,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public class GeoJsonLineStringData implements JsonSerializable<GeoJsonLineString
     /*
      * Coordinates for the `GeoJson LineString` geometry.
      */
+    @Generated
     private List<List<Double>> coordinates;
 
     /**
      * Creates an instance of GeoJsonLineStringData class.
      */
+    @Generated
     public GeoJsonLineStringData() {
     }
 
@@ -33,6 +36,7 @@ public class GeoJsonLineStringData implements JsonSerializable<GeoJsonLineString
      * 
      * @return the coordinates value.
      */
+    @Generated
     public List<List<Double>> getCoordinates() {
         return this.coordinates;
     }
@@ -43,6 +47,7 @@ public class GeoJsonLineStringData implements JsonSerializable<GeoJsonLineString
      * @param coordinates the coordinates value to set.
      * @return the GeoJsonLineStringData object itself.
      */
+    @Generated
     public GeoJsonLineStringData setCoordinates(List<List<Double>> coordinates) {
         this.coordinates = coordinates;
         return this;
@@ -51,6 +56,7 @@ public class GeoJsonLineStringData implements JsonSerializable<GeoJsonLineString
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -68,6 +74,7 @@ public class GeoJsonLineStringData implements JsonSerializable<GeoJsonLineString
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GeoJsonLineStringData.
      */
+    @Generated
     public static GeoJsonLineStringData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonLineStringData deserializedGeoJsonLineStringData = new GeoJsonLineStringData();

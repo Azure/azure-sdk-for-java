@@ -5,6 +5,7 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class MapsSearchAddressCountryRegion implements JsonSerializable<Ma
     /*
      * ISO of country/region
      */
+    @Generated
     private String iSO;
 
     /*
      * name of country/region
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of MapsSearchAddressCountryRegion class.
      */
+    @Generated
     public MapsSearchAddressCountryRegion() {
     }
 
@@ -37,6 +41,7 @@ public final class MapsSearchAddressCountryRegion implements JsonSerializable<Ma
      * 
      * @return the iSO value.
      */
+    @Generated
     public String getISO() {
         return this.iSO;
     }
@@ -47,6 +52,7 @@ public final class MapsSearchAddressCountryRegion implements JsonSerializable<Ma
      * @param iSO the iSO value to set.
      * @return the MapsSearchAddressCountryRegion object itself.
      */
+    @Generated
     public MapsSearchAddressCountryRegion setISO(String iSO) {
         this.iSO = iSO;
         return this;
@@ -57,6 +63,7 @@ public final class MapsSearchAddressCountryRegion implements JsonSerializable<Ma
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -67,6 +74,7 @@ public final class MapsSearchAddressCountryRegion implements JsonSerializable<Ma
      * @param name the name value to set.
      * @return the MapsSearchAddressCountryRegion object itself.
      */
+    @Generated
     public MapsSearchAddressCountryRegion setName(String name) {
         this.name = name;
         return this;
@@ -75,6 +83,7 @@ public final class MapsSearchAddressCountryRegion implements JsonSerializable<Ma
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class MapsSearchAddressCountryRegion implements JsonSerializable<Ma
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MapsSearchAddressCountryRegion.
      */
+    @Generated
     public static MapsSearchAddressCountryRegion fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MapsSearchAddressCountryRegion deserializedMapsSearchAddressCountryRegion

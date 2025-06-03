@@ -25,6 +25,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.standbypool.fluent.StandbyVirtualMachinesClient;
 import com.azure.resourcemanager.standbypool.fluent.models.StandbyVirtualMachineResourceInner;
 import com.azure.resourcemanager.standbypool.implementation.models.StandbyVirtualMachineResourceListResult;
@@ -74,6 +75,17 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}/standbyVirtualMachines/{standbyVirtualMachineName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StandbyVirtualMachineResourceInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("standbyVirtualMachinePoolName") String standbyVirtualMachinePoolName,
+            @PathParam("standbyVirtualMachineName") String standbyVirtualMachineName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}/standbyVirtualMachines")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -85,10 +97,29 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}/standbyVirtualMachines")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StandbyVirtualMachineResourceListResult> listByStandbyVirtualMachinePoolResourceSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("standbyVirtualMachinePoolName") String standbyVirtualMachinePoolName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StandbyVirtualMachineResourceListResult>> listByStandbyVirtualMachinePoolResourceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StandbyVirtualMachineResourceListResult> listByStandbyVirtualMachinePoolResourceNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -141,47 +172,6 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
      * @param standbyVirtualMachineName Name of the standby virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyVirtualMachineResource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StandbyVirtualMachineResourceInner>> getWithResponseAsync(String resourceGroupName,
-        String standbyVirtualMachinePoolName, String standbyVirtualMachineName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (standbyVirtualMachinePoolName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter standbyVirtualMachinePoolName is required and cannot be null."));
-        }
-        if (standbyVirtualMachineName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter standbyVirtualMachineName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, standbyVirtualMachinePoolName, standbyVirtualMachineName, accept, context);
-    }
-
-    /**
-     * Get a StandbyVirtualMachineResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @param standbyVirtualMachineName Name of the standby virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -209,8 +199,33 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandbyVirtualMachineResourceInner> getWithResponse(String resourceGroupName,
         String standbyVirtualMachinePoolName, String standbyVirtualMachineName, Context context) {
-        return getWithResponseAsync(resourceGroupName, standbyVirtualMachinePoolName, standbyVirtualMachineName,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (standbyVirtualMachinePoolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter standbyVirtualMachinePoolName is required and cannot be null."));
+        }
+        if (standbyVirtualMachineName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter standbyVirtualMachineName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, standbyVirtualMachinePoolName, standbyVirtualMachineName, accept, context);
     }
 
     /**
@@ -277,47 +292,6 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyVirtualMachineResource list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StandbyVirtualMachineResourceInner>>
-        listByStandbyVirtualMachinePoolResourceSinglePageAsync(String resourceGroupName,
-            String standbyVirtualMachinePoolName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (standbyVirtualMachinePoolName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter standbyVirtualMachinePoolName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByStandbyVirtualMachinePoolResource(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, standbyVirtualMachinePoolName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List StandbyVirtualMachineResource resources by StandbyVirtualMachinePoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -338,20 +312,80 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a StandbyVirtualMachineResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StandbyVirtualMachineResourceInner> listByStandbyVirtualMachinePoolResourceSinglePage(
+        String resourceGroupName, String standbyVirtualMachinePoolName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (standbyVirtualMachinePoolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter standbyVirtualMachinePoolName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StandbyVirtualMachineResourceListResult> res = service.listByStandbyVirtualMachinePoolResourceSync(
+            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
+            standbyVirtualMachinePoolName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List StandbyVirtualMachineResource resources by StandbyVirtualMachinePoolResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param standbyVirtualMachinePoolName Name of the standby virtual machine pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyVirtualMachineResource list operation as paginated response with
-     * {@link PagedFlux}.
+     * @return the response of a StandbyVirtualMachineResource list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StandbyVirtualMachineResourceInner> listByStandbyVirtualMachinePoolResourceAsync(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StandbyVirtualMachineResourceInner> listByStandbyVirtualMachinePoolResourceSinglePage(
         String resourceGroupName, String standbyVirtualMachinePoolName, Context context) {
-        return new PagedFlux<>(
-            () -> listByStandbyVirtualMachinePoolResourceSinglePageAsync(resourceGroupName,
-                standbyVirtualMachinePoolName, context),
-            nextLink -> listByStandbyVirtualMachinePoolResourceNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (standbyVirtualMachinePoolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter standbyVirtualMachinePoolName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StandbyVirtualMachineResourceListResult> res = service.listByStandbyVirtualMachinePoolResourceSync(
+            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
+            standbyVirtualMachinePoolName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -369,7 +403,8 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
     public PagedIterable<StandbyVirtualMachineResourceInner>
         listByStandbyVirtualMachinePoolResource(String resourceGroupName, String standbyVirtualMachinePoolName) {
         return new PagedIterable<>(
-            listByStandbyVirtualMachinePoolResourceAsync(resourceGroupName, standbyVirtualMachinePoolName));
+            () -> listByStandbyVirtualMachinePoolResourceSinglePage(resourceGroupName, standbyVirtualMachinePoolName),
+            nextLink -> listByStandbyVirtualMachinePoolResourceNextSinglePage(nextLink));
     }
 
     /**
@@ -387,8 +422,9 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyVirtualMachineResourceInner> listByStandbyVirtualMachinePoolResource(
         String resourceGroupName, String standbyVirtualMachinePoolName, Context context) {
-        return new PagedIterable<>(
-            listByStandbyVirtualMachinePoolResourceAsync(resourceGroupName, standbyVirtualMachinePoolName, context));
+        return new PagedIterable<>(() -> listByStandbyVirtualMachinePoolResourceSinglePage(resourceGroupName,
+            standbyVirtualMachinePoolName, context),
+            nextLink -> listByStandbyVirtualMachinePoolResourceNextSinglePage(nextLink, context));
     }
 
     /**
@@ -424,27 +460,58 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a StandbyVirtualMachineResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StandbyVirtualMachineResourceInner>
+        listByStandbyVirtualMachinePoolResourceNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StandbyVirtualMachineResourceListResult> res = service
+            .listByStandbyVirtualMachinePoolResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyVirtualMachineResource list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return the response of a StandbyVirtualMachineResource list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StandbyVirtualMachineResourceInner>>
-        listByStandbyVirtualMachinePoolResourceNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<StandbyVirtualMachineResourceInner>
+        listByStandbyVirtualMachinePoolResourceNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByStandbyVirtualMachinePoolResourceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StandbyVirtualMachineResourceListResult> res = service
+            .listByStandbyVirtualMachinePoolResourceNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StandbyVirtualMachinesClientImpl.class);
 }

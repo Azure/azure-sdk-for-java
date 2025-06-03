@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class DeploymentsWhatIfAtTenantScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/
      * PostDeploymentWhatIfOnTenant.json
      */
     /**

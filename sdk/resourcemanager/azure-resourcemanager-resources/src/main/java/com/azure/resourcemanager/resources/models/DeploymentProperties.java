@@ -45,6 +45,12 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
     private ParametersLink parametersLink;
 
     /*
+     * The configurations to use for deployment extensions. The keys of this object are deployment extension aliases as
+     * defined in the deployment template.
+     */
+    private Map<String, Map<String, DeploymentExtensionConfigItem>> extensionConfigs;
+
+    /*
      * The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental mode,
      * resources are deployed without deleting existing resources that are not included in the template. In Complete
      * mode, resources are deployed and existing resources in the resource group that are not included in the template
@@ -170,6 +176,29 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
      */
     public DeploymentProperties withParametersLink(ParametersLink parametersLink) {
         this.parametersLink = parametersLink;
+        return this;
+    }
+
+    /**
+     * Get the extensionConfigs property: The configurations to use for deployment extensions. The keys of this object
+     * are deployment extension aliases as defined in the deployment template.
+     * 
+     * @return the extensionConfigs value.
+     */
+    public Map<String, Map<String, DeploymentExtensionConfigItem>> extensionConfigs() {
+        return this.extensionConfigs;
+    }
+
+    /**
+     * Set the extensionConfigs property: The configurations to use for deployment extensions. The keys of this object
+     * are deployment extension aliases as defined in the deployment template.
+     * 
+     * @param extensionConfigs the extensionConfigs value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties
+        withExtensionConfigs(Map<String, Map<String, DeploymentExtensionConfigItem>> extensionConfigs) {
+        this.extensionConfigs = extensionConfigs;
         return this;
     }
 
@@ -305,6 +334,17 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
         if (parametersLink() != null) {
             parametersLink().validate();
         }
+        if (extensionConfigs() != null) {
+            extensionConfigs().values().forEach(e -> {
+                if (e != null) {
+                    e.values().forEach(e1 -> {
+                        if (e1 != null) {
+                            e1.validate();
+                        }
+                    });
+                }
+            });
+        }
         if (mode() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property mode in model DeploymentProperties"));
@@ -329,10 +369,14 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
-        jsonWriter.writeUntypedField("template", this.template);
+        if (this.template != null) {
+            jsonWriter.writeUntypedField("template", this.template);
+        }
         jsonWriter.writeJsonField("templateLink", this.templateLink);
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("parametersLink", this.parametersLink);
+        jsonWriter.writeMapField("extensionConfigs", this.extensionConfigs,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeJson(element1)));
         jsonWriter.writeJsonField("debugSetting", this.debugSetting);
         jsonWriter.writeJsonField("onErrorDeployment", this.onErrorDeployment);
         jsonWriter.writeJsonField("expressionEvaluationOptions", this.expressionEvaluationOptions);
@@ -369,6 +413,10 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
                     deserializedDeploymentProperties.parameters = parameters;
                 } else if ("parametersLink".equals(fieldName)) {
                     deserializedDeploymentProperties.parametersLink = ParametersLink.fromJson(reader);
+                } else if ("extensionConfigs".equals(fieldName)) {
+                    Map<String, Map<String, DeploymentExtensionConfigItem>> extensionConfigs = reader.readMap(
+                        reader1 -> reader1.readMap(reader2 -> DeploymentExtensionConfigItem.fromJson(reader2)));
+                    deserializedDeploymentProperties.extensionConfigs = extensionConfigs;
                 } else if ("debugSetting".equals(fieldName)) {
                     deserializedDeploymentProperties.debugSetting = DebugSetting.fromJson(reader);
                 } else if ("onErrorDeployment".equals(fieldName)) {

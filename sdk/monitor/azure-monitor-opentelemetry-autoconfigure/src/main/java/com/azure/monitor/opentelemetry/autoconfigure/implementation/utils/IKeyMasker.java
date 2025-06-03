@@ -12,7 +12,7 @@ public final class IKeyMasker {
 
     public static String mask(String instrumentationKey) {
         // Tests could set the connection string with a short one
-        if (instrumentationKey.length() > CHARACTERS_TO_KEEP_AT_END) {
+        if (instrumentationKey != null && instrumentationKey.length() > CHARACTERS_TO_KEEP_AT_END) {
             return "*" + instrumentationKey.substring(instrumentationKey.length() - CHARACTERS_TO_KEEP_AT_END);
         }
         return instrumentationKey;

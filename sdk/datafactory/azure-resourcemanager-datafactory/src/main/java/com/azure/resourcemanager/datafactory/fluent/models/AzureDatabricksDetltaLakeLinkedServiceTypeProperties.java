@@ -222,10 +222,14 @@ public final class AzureDatabricksDetltaLakeLinkedServiceTypeProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("domain", this.domain);
         jsonWriter.writeJsonField("accessToken", this.accessToken);
-        jsonWriter.writeUntypedField("clusterId", this.clusterId);
+        if (this.clusterId != null) {
+            jsonWriter.writeUntypedField("clusterId", this.clusterId);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         jsonWriter.writeJsonField("credential", this.credential);
-        jsonWriter.writeUntypedField("workspaceResourceId", this.workspaceResourceId);
+        if (this.workspaceResourceId != null) {
+            jsonWriter.writeUntypedField("workspaceResourceId", this.workspaceResourceId);
+        }
         return jsonWriter.writeEndObject();
     }
 

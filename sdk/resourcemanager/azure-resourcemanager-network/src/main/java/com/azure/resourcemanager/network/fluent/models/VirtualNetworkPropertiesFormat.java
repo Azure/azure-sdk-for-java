@@ -100,6 +100,11 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
      */
     private PrivateEndpointVNetPolicies privateEndpointVNetPolicies;
 
+    /*
+     * A reference to the default public nat gateway being used by this virtual network resource.
+     */
+    private SubResource defaultPublicNatGateway;
+
     /**
      * Creates an instance of VirtualNetworkPropertiesFormat class.
      */
@@ -388,6 +393,16 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     }
 
     /**
+     * Get the defaultPublicNatGateway property: A reference to the default public nat gateway being used by this
+     * virtual network resource.
+     * 
+     * @return the defaultPublicNatGateway value.
+     */
+    public SubResource defaultPublicNatGateway() {
+        return this.defaultPublicNatGateway;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -496,6 +511,8 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
                 } else if ("privateEndpointVNetPolicies".equals(fieldName)) {
                     deserializedVirtualNetworkPropertiesFormat.privateEndpointVNetPolicies
                         = PrivateEndpointVNetPolicies.fromString(reader.getString());
+                } else if ("defaultPublicNatGateway".equals(fieldName)) {
+                    deserializedVirtualNetworkPropertiesFormat.defaultPublicNatGateway = SubResource.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

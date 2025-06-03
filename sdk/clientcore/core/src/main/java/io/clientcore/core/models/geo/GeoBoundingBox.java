@@ -185,7 +185,7 @@ public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {
                     return maxAltitude;
 
                 default:
-                    throw LOGGER.logThrowableAsWarning(new IndexOutOfBoundsException("Index out of range: " + i));
+                    throw LOGGER.throwableAtWarning().addKeyValue("index", i).log(IndexOutOfBoundsException::new);
             }
         } else {
             switch (i) {
@@ -202,7 +202,7 @@ public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {
                     return north;
 
                 default:
-                    throw LOGGER.logThrowableAsWarning(new IndexOutOfBoundsException("Index out of range: " + i));
+                    throw LOGGER.throwableAtWarning().addKeyValue("index", i).log(IndexOutOfBoundsException::new);
             }
         }
     }
@@ -254,8 +254,8 @@ public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {
 
         int coordinateCount = coordinates.size();
         if (coordinateCount != 4 && coordinateCount != 6) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalStateException("Only 2 or 3 dimension bounding boxes are supported."));
+            throw LOGGER.throwableAtError()
+                .log("Only 2 or 3 dimension bounding boxes are supported.", IllegalStateException::new);
         }
 
         double west = coordinates.get(0).doubleValue();

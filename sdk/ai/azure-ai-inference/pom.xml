@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-inference</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-ai-inference;current} -->
+  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-ai-inference;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Inference</name>
@@ -85,7 +85,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.15.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
