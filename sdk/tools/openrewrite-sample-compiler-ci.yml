@@ -32,11 +32,22 @@ extends:
                     - sdk/core-v2/
                     - sdk/clientcore/
                     - eng/
+                    - common/perf-test-core/
 
               - task: Maven@3
                 displayName: 'Build and Install Code Quality Reports'
                 inputs:
                   mavenPomFile: 'eng/code-quality-reports/pom.xml'
+                  goals: 'clean install'
+                  options: '-B'
+                  javaHomeOption: 'JDKVersion'
+                  jdkVersionOption: '1.8'
+                  mavenOptions: '-Xmx3072m'
+
+              - task: Maven@3
+                displayName: 'Build and Install Perf Test Core'
+                inputs:
+                  mavenPomFile: 'common/perf-test-core/pom.xml'
                   goals: 'clean install'
                   options: '-B'
                   javaHomeOption: 'JDKVersion'
