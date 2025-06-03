@@ -534,7 +534,7 @@ public final class SearchServiceClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IndexStatisticsSummary> getIndexStatsSummary(RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> getIndexStatsSummarySinglePage(requestOptions, Context.NONE));
+        return new PagedIterable<>(() -> getIndexStatsSummarySinglePage(requestOptions));
     }
 
     /**

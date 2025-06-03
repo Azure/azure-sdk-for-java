@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,6 +21,7 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
     /*
      * A URI fragment specifying the type of Azure AI service resource attached to a skillset.
      */
+    @Generated
     private String odataType = "#Microsoft.Azure.Search.AIServicesByIdentity";
 
     /*
@@ -27,11 +29,13 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
      * managed identity is used. On updates to the skillset, if the identity is unspecified, the value remains
      * unchanged. If set to "none", the value of this property is cleared.
      */
+    @Generated
     private SearchIndexerDataIdentity identity;
 
     /*
      * The subdomain url for the corresponding AI Service.
      */
+    @Generated
     private final String subdomainUrl;
 
     /**
@@ -39,6 +43,7 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
      * 
      * @param subdomainUrl the subdomainUrl value to set.
      */
+    @Generated
     public AIServicesAccountIdentity(String subdomainUrl) {
         this.subdomainUrl = subdomainUrl;
     }
@@ -49,6 +54,7 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -61,6 +67,7 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
      * 
      * @return the identity value.
      */
+    @Generated
     public SearchIndexerDataIdentity getIdentity() {
         return this.identity;
     }
@@ -73,6 +80,7 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
      * @param identity the identity value to set.
      * @return the AIServicesAccountIdentity object itself.
      */
+    @Generated
     public AIServicesAccountIdentity setIdentity(SearchIndexerDataIdentity identity) {
         this.identity = identity;
         return this;
@@ -83,6 +91,7 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
      * 
      * @return the subdomainUrl value.
      */
+    @Generated
     public String getSubdomainUrl() {
         return this.subdomainUrl;
     }
@@ -90,6 +99,7 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AIServicesAccountIdentity setDescription(String description) {
         super.setDescription(description);
@@ -99,6 +109,7 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +129,7 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AIServicesAccountIdentity.
      */
+    @Generated
     public static AIServicesAccountIdentity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String description = null;

@@ -15,7 +15,7 @@ import com.azure.resourcemanager.avs.models.AddonVrProperties;
 public final class AddonsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Addons_CreateOrUpdate_HCX.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/Addons_CreateOrUpdate_HCX.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_HCX.
@@ -32,7 +32,7 @@ public final class AddonsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Addons_CreateOrUpdate_SRM.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/Addons_CreateOrUpdate_SRM.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_SRM.
@@ -48,8 +48,27 @@ public final class AddonsCreateOrUpdateSamples {
     }
 
     /*
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/
+     * Addons_CreateOrUpdate_HCX_With_Networks.json
+     */
+    /**
+     * Sample code: Addons_CreateOrUpdate_HCX_With_Networks.
+     * 
+     * @param manager Entry point to AvsManager.
+     */
+    public static void addonsCreateOrUpdateHCXWithNetworks(com.azure.resourcemanager.avs.AvsManager manager) {
+        manager.addons()
+            .define("hcx")
+            .withExistingPrivateCloud("group1", "cloud1")
+            .withProperties(new AddonHcxProperties().withOffer("VMware MaaS Cloud Provider (Enterprise)")
+                .withManagementNetwork("10.3.1.0/24")
+                .withUplinkNetwork("10.3.2.0/24"))
+            .create();
+    }
+
+    /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Addons_CreateOrUpdate_ArcReg.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/Addons_CreateOrUpdate_ArcReg.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_ArcReg.
@@ -67,7 +86,7 @@ public final class AddonsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Addons_CreateOrUpdate_VR.json
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/Addons_CreateOrUpdate_VR.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_VR.

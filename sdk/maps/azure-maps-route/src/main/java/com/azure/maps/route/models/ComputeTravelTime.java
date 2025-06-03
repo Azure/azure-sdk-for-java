@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class ComputeTravelTime extends ExpandableStringEnum<ComputeTravelT
     /**
      * Does not compute additional travel times.
      */
+    @Generated
     public static final ComputeTravelTime NONE = fromString("none");
 
     /**
@@ -21,6 +23,7 @@ public final class ComputeTravelTime extends ExpandableStringEnum<ComputeTravelT
      * noTrafficTravelTimeInSeconds, historicTrafficTravelTimeInSeconds and liveTrafficIncidentsTravelTimeInSeconds
      * being included in the summaries in the route response.
      */
+    @Generated
     public static final ComputeTravelTime ALL = fromString("all");
 
     /**
@@ -28,6 +31,7 @@ public final class ComputeTravelTime extends ExpandableStringEnum<ComputeTravelT
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ComputeTravelTime() {
     }
@@ -38,6 +42,7 @@ public final class ComputeTravelTime extends ExpandableStringEnum<ComputeTravelT
      * @param name a name to look for.
      * @return the corresponding ComputeTravelTime.
      */
+    @Generated
     public static ComputeTravelTime fromString(String name) {
         return fromString(name, ComputeTravelTime.class);
     }
@@ -47,6 +52,7 @@ public final class ComputeTravelTime extends ExpandableStringEnum<ComputeTravelT
      * 
      * @return known ComputeTravelTime values.
      */
+    @Generated
     public static Collection<ComputeTravelTime> values() {
         return values(ComputeTravelTime.class);
     }

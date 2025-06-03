@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -18,6 +19,7 @@ public final class VectorSearchCompressionKind extends ExpandableStringEnum<Vect
      * compressed to a narrower type by discretizing and representing each component of a vector using a reduced set of
      * quantized values, thereby reducing the overall data size.
      */
+    @Generated
     public static final VectorSearchCompressionKind SCALAR_QUANTIZATION = fromString("scalarQuantization");
 
     /**
@@ -25,6 +27,7 @@ public final class VectorSearchCompressionKind extends ExpandableStringEnum<Vect
      * compressed to the narrower binary type by discretizing and representing each component of a vector using binary
      * values, thereby reducing the overall data size.
      */
+    @Generated
     public static final VectorSearchCompressionKind BINARY_QUANTIZATION = fromString("binaryQuantization");
 
     /**
@@ -32,6 +35,7 @@ public final class VectorSearchCompressionKind extends ExpandableStringEnum<Vect
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VectorSearchCompressionKind() {
     }
@@ -42,6 +46,7 @@ public final class VectorSearchCompressionKind extends ExpandableStringEnum<Vect
      * @param name a name to look for.
      * @return the corresponding VectorSearchCompressionKind.
      */
+    @Generated
     public static VectorSearchCompressionKind fromString(String name) {
         return fromString(name, VectorSearchCompressionKind.class);
     }
@@ -51,6 +56,7 @@ public final class VectorSearchCompressionKind extends ExpandableStringEnum<Vect
      * 
      * @return known VectorSearchCompressionKind values.
      */
+    @Generated
     public static Collection<VectorSearchCompressionKind> values() {
         return values(VectorSearchCompressionKind.class);
     }

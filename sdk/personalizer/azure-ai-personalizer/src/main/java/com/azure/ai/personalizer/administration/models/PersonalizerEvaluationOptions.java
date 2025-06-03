@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,31 +24,37 @@ public final class PersonalizerEvaluationOptions implements JsonSerializable<Per
     /*
      * True if the evaluation should explore for a more optimal learning settings.
      */
+    @Generated
     private Boolean offlineExperimentationEnabled;
 
     /*
      * The name of the evaluation.
      */
+    @Generated
     private String name;
 
     /*
      * The start time of the evaluation.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * The end time of the evaluation.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * Additional learning settings to evaluate.
      */
+    @Generated
     private List<PersonalizerPolicy> policies;
 
     /**
      * Creates an instance of PersonalizerEvaluationOptions class.
      */
+    @Generated
     public PersonalizerEvaluationOptions() {
     }
 
@@ -57,6 +64,7 @@ public final class PersonalizerEvaluationOptions implements JsonSerializable<Per
      * 
      * @return the offlineExperimentationEnabled value.
      */
+    @Generated
     public Boolean isOfflineExperimentationEnabled() {
         return this.offlineExperimentationEnabled;
     }
@@ -68,6 +76,7 @@ public final class PersonalizerEvaluationOptions implements JsonSerializable<Per
      * @param offlineExperimentationEnabled the offlineExperimentationEnabled value to set.
      * @return the PersonalizerEvaluationOptions object itself.
      */
+    @Generated
     public PersonalizerEvaluationOptions setOfflineExperimentationEnabled(Boolean offlineExperimentationEnabled) {
         this.offlineExperimentationEnabled = offlineExperimentationEnabled;
         return this;
@@ -78,6 +87,7 @@ public final class PersonalizerEvaluationOptions implements JsonSerializable<Per
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -88,6 +98,7 @@ public final class PersonalizerEvaluationOptions implements JsonSerializable<Per
      * @param name the name value to set.
      * @return the PersonalizerEvaluationOptions object itself.
      */
+    @Generated
     public PersonalizerEvaluationOptions setName(String name) {
         this.name = name;
         return this;
@@ -98,6 +109,7 @@ public final class PersonalizerEvaluationOptions implements JsonSerializable<Per
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -108,6 +120,7 @@ public final class PersonalizerEvaluationOptions implements JsonSerializable<Per
      * @param startTime the startTime value to set.
      * @return the PersonalizerEvaluationOptions object itself.
      */
+    @Generated
     public PersonalizerEvaluationOptions setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -118,6 +131,7 @@ public final class PersonalizerEvaluationOptions implements JsonSerializable<Per
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -128,6 +142,7 @@ public final class PersonalizerEvaluationOptions implements JsonSerializable<Per
      * @param endTime the endTime value to set.
      * @return the PersonalizerEvaluationOptions object itself.
      */
+    @Generated
     public PersonalizerEvaluationOptions setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -138,6 +153,7 @@ public final class PersonalizerEvaluationOptions implements JsonSerializable<Per
      * 
      * @return the policies value.
      */
+    @Generated
     public List<PersonalizerPolicy> getPolicies() {
         return this.policies;
     }
@@ -148,6 +164,7 @@ public final class PersonalizerEvaluationOptions implements JsonSerializable<Per
      * @param policies the policies value to set.
      * @return the PersonalizerEvaluationOptions object itself.
      */
+    @Generated
     public PersonalizerEvaluationOptions setPolicies(List<PersonalizerPolicy> policies) {
         this.policies = policies;
         return this;
@@ -156,6 +173,7 @@ public final class PersonalizerEvaluationOptions implements JsonSerializable<Per
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -178,6 +196,7 @@ public final class PersonalizerEvaluationOptions implements JsonSerializable<Per
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PersonalizerEvaluationOptions.
      */
+    @Generated
     public static PersonalizerEvaluationOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerEvaluationOptions deserializedPersonalizerEvaluationOptions

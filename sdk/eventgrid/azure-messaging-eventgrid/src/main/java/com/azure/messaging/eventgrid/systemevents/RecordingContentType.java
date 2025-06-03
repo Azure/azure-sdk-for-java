@@ -4,6 +4,7 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class RecordingContentType extends ExpandableStringEnum<RecordingCo
     /**
      * Static value AudioVideo for RecordingContentType.
      */
+    @Generated
     public static final RecordingContentType AUDIO_VIDEO = fromString("AudioVideo");
 
     /**
      * Static value Audio for RecordingContentType.
      */
+    @Generated
     public static final RecordingContentType AUDIO = fromString("Audio");
 
     /**
@@ -26,6 +29,7 @@ public final class RecordingContentType extends ExpandableStringEnum<RecordingCo
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RecordingContentType() {
     }
@@ -36,6 +40,7 @@ public final class RecordingContentType extends ExpandableStringEnum<RecordingCo
      * @param name a name to look for.
      * @return the corresponding RecordingContentType.
      */
+    @Generated
     public static RecordingContentType fromString(String name) {
         return fromString(name, RecordingContentType.class);
     }
@@ -45,6 +50,7 @@ public final class RecordingContentType extends ExpandableStringEnum<RecordingCo
      * 
      * @return known RecordingContentType values.
      */
+    @Generated
     public static Collection<RecordingContentType> values() {
         return values(RecordingContentType.class);
     }

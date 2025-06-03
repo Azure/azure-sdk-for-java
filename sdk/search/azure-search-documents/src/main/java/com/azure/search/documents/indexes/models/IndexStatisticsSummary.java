@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,21 +24,25 @@ public final class IndexStatisticsSummary implements JsonSerializable<IndexStati
     /*
      * The name of the index.
      */
+    @Generated
     private final String name;
 
     /*
      * The number of documents in the index.
      */
+    @Generated
     private final long documentCount;
 
     /*
      * The amount of storage in bytes consumed by the index.
      */
+    @Generated
     private final long storageSize;
 
     /*
      * The amount of memory in bytes consumed by vectors in the index.
      */
+    @Generated
     private final long vectorIndexSize;
 
     /**
@@ -48,6 +53,7 @@ public final class IndexStatisticsSummary implements JsonSerializable<IndexStati
      * @param storageSize the storageSize value to set.
      * @param vectorIndexSize the vectorIndexSize value to set.
      */
+    @Generated
     public IndexStatisticsSummary(String name, long documentCount, long storageSize, long vectorIndexSize) {
         this.name = name;
         this.documentCount = documentCount;
@@ -60,6 +66,7 @@ public final class IndexStatisticsSummary implements JsonSerializable<IndexStati
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -69,6 +76,7 @@ public final class IndexStatisticsSummary implements JsonSerializable<IndexStati
      * 
      * @return the documentCount value.
      */
+    @Generated
     public long getDocumentCount() {
         return this.documentCount;
     }
@@ -78,6 +86,7 @@ public final class IndexStatisticsSummary implements JsonSerializable<IndexStati
      * 
      * @return the storageSize value.
      */
+    @Generated
     public long getStorageSize() {
         return this.storageSize;
     }
@@ -87,6 +96,7 @@ public final class IndexStatisticsSummary implements JsonSerializable<IndexStati
      * 
      * @return the vectorIndexSize value.
      */
+    @Generated
     public long getVectorIndexSize() {
         return this.vectorIndexSize;
     }
@@ -94,6 +104,7 @@ public final class IndexStatisticsSummary implements JsonSerializable<IndexStati
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -110,6 +121,7 @@ public final class IndexStatisticsSummary implements JsonSerializable<IndexStati
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IndexStatisticsSummary.
      */
+    @Generated
     public static IndexStatisticsSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

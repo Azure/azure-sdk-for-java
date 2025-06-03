@@ -7,8 +7,8 @@ package com.azure.resourcemanager.avs.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZone;
@@ -22,23 +22,23 @@ public final class WorkloadNetworksListDnsZonesMockTests {
     @Test
     public void testListDnsZones() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"coi\",\"domain\":[\"xncnwfe\",\"bnwgfmxj\",\"cgbjbgdlfgt\"],\"dnsServerIps\":[\"naquflq\",\"ctqhamzjrwdk\"],\"sourceIp\":\"eqyj\",\"dnsServices\":1498559377448823995,\"provisioningState\":\"Deleting\",\"revision\":345184952591350162},\"id\":\"zantkwceg\",\"name\":\"amlbnseqacjjvpil\",\"type\":\"uooqjagmdit\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"javfqn\",\"domain\":[\"qoewdogiyetesy\"],\"dnsServerIps\":[\"dbztjhqtfbov\"],\"sourceIp\":\"nkbw\",\"dnsServices\":3587482268659031002,\"provisioningState\":\"Succeeded\",\"revision\":4288895377578645868},\"id\":\"kzyaup\",\"name\":\"accxnafbwqroohtu\",\"type\":\"vmaonurjt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<WorkloadNetworkDnsZone> response
-            = manager.workloadNetworks().listDnsZones("aqehg", "dohzjq", com.azure.core.util.Context.NONE);
+            = manager.workloadNetworks().listDnsZones("oqqtl", "fhzbkr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("coi", response.iterator().next().displayName());
-        Assertions.assertEquals("xncnwfe", response.iterator().next().domain().get(0));
-        Assertions.assertEquals("naquflq", response.iterator().next().dnsServerIps().get(0));
-        Assertions.assertEquals("eqyj", response.iterator().next().sourceIp());
-        Assertions.assertEquals(1498559377448823995L, response.iterator().next().dnsServices());
-        Assertions.assertEquals(345184952591350162L, response.iterator().next().revision());
+        Assertions.assertEquals("javfqn", response.iterator().next().displayName());
+        Assertions.assertEquals("qoewdogiyetesy", response.iterator().next().domain().get(0));
+        Assertions.assertEquals("dbztjhqtfbov", response.iterator().next().dnsServerIps().get(0));
+        Assertions.assertEquals("nkbw", response.iterator().next().sourceIp());
+        Assertions.assertEquals(3587482268659031002L, response.iterator().next().dnsServices());
+        Assertions.assertEquals(4288895377578645868L, response.iterator().next().revision());
     }
 }

@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,31 +24,37 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "#Microsoft.Skills.Util.DocumentIntelligenceLayoutSkill";
 
     /*
      * Controls the cardinality of the output format. Default is 'markdown'.
      */
+    @Generated
     private DocumentIntelligenceLayoutSkillOutputFormat outputFormat;
 
     /*
      * Controls the cardinality of the output produced by the skill. Default is 'oneToMany'.
      */
+    @Generated
     private DocumentIntelligenceLayoutSkillOutputMode outputMode;
 
     /*
      * The depth of headers in the markdown output. Default is h6.
      */
+    @Generated
     private DocumentIntelligenceLayoutSkillMarkdownHeaderDepth markdownHeaderDepth;
 
     /*
      * Controls the cardinality of the content extracted from the document by the skill
      */
+    @Generated
     private List<DocumentIntelligenceLayoutSkillExtractionOptions> extractionOptions;
 
     /*
      * Controls the cardinality for chunking the content.
      */
+    @Generated
     private DocumentIntelligenceLayoutSkillChunkingProperties chunkingProperties;
 
     /**
@@ -56,6 +63,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -65,6 +73,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -75,6 +84,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
      * 
      * @return the outputFormat value.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkillOutputFormat getOutputFormat() {
         return this.outputFormat;
     }
@@ -85,6 +95,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
      * @param outputFormat the outputFormat value to set.
      * @return the DocumentIntelligenceLayoutSkill object itself.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkill setOutputFormat(DocumentIntelligenceLayoutSkillOutputFormat outputFormat) {
         this.outputFormat = outputFormat;
         return this;
@@ -96,6 +107,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
      * 
      * @return the outputMode value.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkillOutputMode getOutputMode() {
         return this.outputMode;
     }
@@ -107,6 +119,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
      * @param outputMode the outputMode value to set.
      * @return the DocumentIntelligenceLayoutSkill object itself.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkill setOutputMode(DocumentIntelligenceLayoutSkillOutputMode outputMode) {
         this.outputMode = outputMode;
         return this;
@@ -117,6 +130,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
      * 
      * @return the markdownHeaderDepth value.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkillMarkdownHeaderDepth getMarkdownHeaderDepth() {
         return this.markdownHeaderDepth;
     }
@@ -127,6 +141,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
      * @param markdownHeaderDepth the markdownHeaderDepth value to set.
      * @return the DocumentIntelligenceLayoutSkill object itself.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkill
         setMarkdownHeaderDepth(DocumentIntelligenceLayoutSkillMarkdownHeaderDepth markdownHeaderDepth) {
         this.markdownHeaderDepth = markdownHeaderDepth;
@@ -139,6 +154,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
      * 
      * @return the extractionOptions value.
      */
+    @Generated
     public List<DocumentIntelligenceLayoutSkillExtractionOptions> getExtractionOptions() {
         return this.extractionOptions;
     }
@@ -150,6 +166,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
      * @param extractionOptions the extractionOptions value to set.
      * @return the DocumentIntelligenceLayoutSkill object itself.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkill
         setExtractionOptions(List<DocumentIntelligenceLayoutSkillExtractionOptions> extractionOptions) {
         this.extractionOptions = extractionOptions;
@@ -161,6 +178,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
      * 
      * @return the chunkingProperties value.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkillChunkingProperties getChunkingProperties() {
         return this.chunkingProperties;
     }
@@ -171,6 +189,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
      * @param chunkingProperties the chunkingProperties value to set.
      * @return the DocumentIntelligenceLayoutSkill object itself.
      */
+    @Generated
     public DocumentIntelligenceLayoutSkill
         setChunkingProperties(DocumentIntelligenceLayoutSkillChunkingProperties chunkingProperties) {
         this.chunkingProperties = chunkingProperties;
@@ -180,6 +199,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DocumentIntelligenceLayoutSkill setName(String name) {
         super.setName(name);
@@ -189,6 +209,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DocumentIntelligenceLayoutSkill setDescription(String description) {
         super.setDescription(description);
@@ -198,6 +219,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DocumentIntelligenceLayoutSkill setContext(String context) {
         super.setContext(context);
@@ -207,6 +229,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -235,6 +258,7 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentIntelligenceLayoutSkill.
      */
+    @Generated
     public static DocumentIntelligenceLayoutSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

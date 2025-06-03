@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class PersonalizerSlotReward implements JsonSerializable<Personaliz
     /*
      * Slot id for which we are sending the reward.
      */
+    @Generated
     private String slotId;
 
     /*
      * Reward to be assigned to slotId. Value should be between -1 and 1 inclusive.
      */
+    @Generated
     private float value;
 
     /**
      * Creates an instance of PersonalizerSlotReward class.
      */
+    @Generated
     public PersonalizerSlotReward() {
     }
 
@@ -37,6 +41,7 @@ public final class PersonalizerSlotReward implements JsonSerializable<Personaliz
      * 
      * @return the slotId value.
      */
+    @Generated
     public String getSlotId() {
         return this.slotId;
     }
@@ -47,6 +52,7 @@ public final class PersonalizerSlotReward implements JsonSerializable<Personaliz
      * @param slotId the slotId value to set.
      * @return the PersonalizerSlotReward object itself.
      */
+    @Generated
     public PersonalizerSlotReward setSlotId(String slotId) {
         this.slotId = slotId;
         return this;
@@ -57,6 +63,7 @@ public final class PersonalizerSlotReward implements JsonSerializable<Personaliz
      * 
      * @return the value value.
      */
+    @Generated
     public float getValue() {
         return this.value;
     }
@@ -67,6 +74,7 @@ public final class PersonalizerSlotReward implements JsonSerializable<Personaliz
      * @param value the value value to set.
      * @return the PersonalizerSlotReward object itself.
      */
+    @Generated
     public PersonalizerSlotReward setValue(float value) {
         this.value = value;
         return this;
@@ -75,6 +83,7 @@ public final class PersonalizerSlotReward implements JsonSerializable<Personaliz
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class PersonalizerSlotReward implements JsonSerializable<Personaliz
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PersonalizerSlotReward.
      */
+    @Generated
     public static PersonalizerSlotReward fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerSlotReward deserializedPersonalizerSlotReward = new PersonalizerSlotReward();

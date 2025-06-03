@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,6 +18,7 @@ public final class DocumentIntelligenceLayoutSkillChunkingUnit
     /**
      * Specifies chunk by characters.
      */
+    @Generated
     public static final DocumentIntelligenceLayoutSkillChunkingUnit CHARACTERS = fromString("characters");
 
     /**
@@ -24,6 +26,7 @@ public final class DocumentIntelligenceLayoutSkillChunkingUnit
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DocumentIntelligenceLayoutSkillChunkingUnit() {
     }
@@ -34,6 +37,7 @@ public final class DocumentIntelligenceLayoutSkillChunkingUnit
      * @param name a name to look for.
      * @return the corresponding DocumentIntelligenceLayoutSkillChunkingUnit.
      */
+    @Generated
     public static DocumentIntelligenceLayoutSkillChunkingUnit fromString(String name) {
         return fromString(name, DocumentIntelligenceLayoutSkillChunkingUnit.class);
     }
@@ -43,6 +47,7 @@ public final class DocumentIntelligenceLayoutSkillChunkingUnit
      * 
      * @return known DocumentIntelligenceLayoutSkillChunkingUnit values.
      */
+    @Generated
     public static Collection<DocumentIntelligenceLayoutSkillChunkingUnit> values() {
         return values(DocumentIntelligenceLayoutSkillChunkingUnit.class);
     }

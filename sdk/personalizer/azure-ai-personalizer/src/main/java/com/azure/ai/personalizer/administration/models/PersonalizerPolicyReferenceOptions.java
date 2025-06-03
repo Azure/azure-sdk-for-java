@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class PersonalizerPolicyReferenceOptions implements JsonSerializabl
     /*
      * Evaluation Id of the evaluation.
      */
+    @Generated
     private String evaluationId;
 
     /*
      * Name of the learning settings.
      */
+    @Generated
     private String policyName;
 
     /**
      * Creates an instance of PersonalizerPolicyReferenceOptions class.
      */
+    @Generated
     public PersonalizerPolicyReferenceOptions() {
     }
 
@@ -37,6 +41,7 @@ public final class PersonalizerPolicyReferenceOptions implements JsonSerializabl
      * 
      * @return the evaluationId value.
      */
+    @Generated
     public String getEvaluationId() {
         return this.evaluationId;
     }
@@ -47,6 +52,7 @@ public final class PersonalizerPolicyReferenceOptions implements JsonSerializabl
      * @param evaluationId the evaluationId value to set.
      * @return the PersonalizerPolicyReferenceOptions object itself.
      */
+    @Generated
     public PersonalizerPolicyReferenceOptions setEvaluationId(String evaluationId) {
         this.evaluationId = evaluationId;
         return this;
@@ -57,6 +63,7 @@ public final class PersonalizerPolicyReferenceOptions implements JsonSerializabl
      * 
      * @return the policyName value.
      */
+    @Generated
     public String getPolicyName() {
         return this.policyName;
     }
@@ -67,6 +74,7 @@ public final class PersonalizerPolicyReferenceOptions implements JsonSerializabl
      * @param policyName the policyName value to set.
      * @return the PersonalizerPolicyReferenceOptions object itself.
      */
+    @Generated
     public PersonalizerPolicyReferenceOptions setPolicyName(String policyName) {
         this.policyName = policyName;
         return this;
@@ -75,6 +83,7 @@ public final class PersonalizerPolicyReferenceOptions implements JsonSerializabl
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class PersonalizerPolicyReferenceOptions implements JsonSerializabl
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PersonalizerPolicyReferenceOptions.
      */
+    @Generated
     public static PersonalizerPolicyReferenceOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerPolicyReferenceOptions deserializedPersonalizerPolicyReferenceOptions

@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class VectorsDebugInfo implements JsonSerializable<VectorsDebugInfo
     /*
      * The breakdown of subscores of the document prior to the chosen result set fusion/combination method such as RRF.
      */
+    @Generated
     private QueryResultDocumentSubscores subscores;
 
     /**
      * Creates an instance of VectorsDebugInfo class.
      */
+    @Generated
     public VectorsDebugInfo() {
     }
 
@@ -35,6 +38,7 @@ public final class VectorsDebugInfo implements JsonSerializable<VectorsDebugInfo
      * 
      * @return the subscores value.
      */
+    @Generated
     public QueryResultDocumentSubscores getSubscores() {
         return this.subscores;
     }
@@ -42,6 +46,7 @@ public final class VectorsDebugInfo implements JsonSerializable<VectorsDebugInfo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -56,6 +61,7 @@ public final class VectorsDebugInfo implements JsonSerializable<VectorsDebugInfo
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the VectorsDebugInfo.
      */
+    @Generated
     public static VectorsDebugInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             VectorsDebugInfo deserializedVectorsDebugInfo = new VectorsDebugInfo();

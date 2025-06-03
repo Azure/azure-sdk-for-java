@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,26 +23,31 @@ public final class ChatCompletionResponseFormatJsonSchemaProperties
     /*
      * Name of the json schema the model will adhere to
      */
+    @Generated
     private String name;
 
     /*
      * Description of the json schema the model will adhere to.
      */
+    @Generated
     private String description;
 
     /*
      * Whether or not the model's response should use structured outputs. Default is true
      */
+    @Generated
     private Boolean strict;
 
     /*
      * Object defining the custom schema the model will use to structure its output.
      */
+    @Generated
     private ChatCompletionSchema schema;
 
     /**
      * Creates an instance of ChatCompletionResponseFormatJsonSchemaProperties class.
      */
+    @Generated
     public ChatCompletionResponseFormatJsonSchemaProperties() {
     }
 
@@ -50,6 +56,7 @@ public final class ChatCompletionResponseFormatJsonSchemaProperties
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -60,6 +67,7 @@ public final class ChatCompletionResponseFormatJsonSchemaProperties
      * @param name the name value to set.
      * @return the ChatCompletionResponseFormatJsonSchemaProperties object itself.
      */
+    @Generated
     public ChatCompletionResponseFormatJsonSchemaProperties setName(String name) {
         this.name = name;
         return this;
@@ -70,6 +78,7 @@ public final class ChatCompletionResponseFormatJsonSchemaProperties
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -80,6 +89,7 @@ public final class ChatCompletionResponseFormatJsonSchemaProperties
      * @param description the description value to set.
      * @return the ChatCompletionResponseFormatJsonSchemaProperties object itself.
      */
+    @Generated
     public ChatCompletionResponseFormatJsonSchemaProperties setDescription(String description) {
         this.description = description;
         return this;
@@ -90,6 +100,7 @@ public final class ChatCompletionResponseFormatJsonSchemaProperties
      * 
      * @return the strict value.
      */
+    @Generated
     public Boolean isStrict() {
         return this.strict;
     }
@@ -100,6 +111,7 @@ public final class ChatCompletionResponseFormatJsonSchemaProperties
      * @param strict the strict value to set.
      * @return the ChatCompletionResponseFormatJsonSchemaProperties object itself.
      */
+    @Generated
     public ChatCompletionResponseFormatJsonSchemaProperties setStrict(Boolean strict) {
         this.strict = strict;
         return this;
@@ -110,6 +122,7 @@ public final class ChatCompletionResponseFormatJsonSchemaProperties
      * 
      * @return the schema value.
      */
+    @Generated
     public ChatCompletionSchema getSchema() {
         return this.schema;
     }
@@ -120,6 +133,7 @@ public final class ChatCompletionResponseFormatJsonSchemaProperties
      * @param schema the schema value to set.
      * @return the ChatCompletionResponseFormatJsonSchemaProperties object itself.
      */
+    @Generated
     public ChatCompletionResponseFormatJsonSchemaProperties setSchema(ChatCompletionSchema schema) {
         this.schema = schema;
         return this;
@@ -128,6 +142,7 @@ public final class ChatCompletionResponseFormatJsonSchemaProperties
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -146,6 +161,7 @@ public final class ChatCompletionResponseFormatJsonSchemaProperties
      * instance of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ChatCompletionResponseFormatJsonSchemaProperties.
      */
+    @Generated
     public static ChatCompletionResponseFormatJsonSchemaProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ChatCompletionResponseFormatJsonSchemaProperties deserializedChatCompletionResponseFormatJsonSchemaProperties

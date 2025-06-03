@@ -7,8 +7,8 @@ package com.azure.resourcemanager.avs.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.ScriptPackage;
@@ -21,17 +21,17 @@ public final class ScriptPackagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"eyirdhlisngw\",\"version\":\"qqmpizruwnpqx\",\"company\":\"iwfcngjsa\",\"uri\":\"iixtmkzj\"},\"id\":\"viirhgfgrws\",\"name\":\"pgratzvzbglbyvi\",\"type\":\"tctbrxkjzwrgxffm\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"gwfiwzcxmjpby\",\"version\":\"hmgtvljvrcmyfqi\",\"company\":\"xhnpo\",\"uri\":\"qwcabvnui\"},\"id\":\"ey\",\"name\":\"swlpaugmrmfj\",\"type\":\"rxwtoaukhfkvc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ScriptPackage> response
-            = manager.scriptPackages().list("ifmjnn", "wtqabpxuckp", com.azure.core.util.Context.NONE);
+            = manager.scriptPackages().list("sqyzqedikdfr", "biqmrjgei", com.azure.core.util.Context.NONE);
 
     }
 }

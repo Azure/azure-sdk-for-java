@@ -77,7 +77,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the key property: The key of the key-value.
-     * 
+     *
      * @return the key value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -87,7 +87,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the label property: The label the key-value belongs to.
-     * 
+     *
      * @return the label value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -97,7 +97,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the label property: The label the key-value belongs to.
-     * 
+     *
      * @param label the label value to set.
      * @return the KeyValue object itself.
      */
@@ -109,7 +109,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the contentType property: The content type of the value stored within the key-value.
-     * 
+     *
      * @return the contentType value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -119,7 +119,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the contentType property: The content type of the value stored within the key-value.
-     * 
+     *
      * @param contentType the contentType value to set.
      * @return the KeyValue object itself.
      */
@@ -131,7 +131,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the value property: The value of the key-value.
-     * 
+     *
      * @return the value value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -141,7 +141,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the value property: The value of the key-value.
-     * 
+     *
      * @param value the value value to set.
      * @return the KeyValue object itself.
      */
@@ -153,7 +153,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the lastModified property: A date representing the last time the key-value was modified.
-     * 
+     *
      * @return the lastModified value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -163,7 +163,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the lastModified property: A date representing the last time the key-value was modified.
-     * 
+     *
      * @param lastModified the lastModified value to set.
      * @return the KeyValue object itself.
      */
@@ -175,7 +175,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the tags property: The tags of the key-value.
-     * 
+     *
      * @return the tags value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -185,7 +185,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the tags property: The tags of the key-value.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the KeyValue object itself.
      */
@@ -197,7 +197,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the locked property: Indicates whether the key-value is locked.
-     * 
+     *
      * @return the locked value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -207,7 +207,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the locked property: Indicates whether the key-value is locked.
-     * 
+     *
      * @param locked the locked value to set.
      * @return the KeyValue object itself.
      */
@@ -219,7 +219,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the etag property: A value representing the current state of the resource.
-     * 
+     *
      * @return the etag value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -229,7 +229,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the etag property: A value representing the current state of the resource.
-     * 
+     *
      * @param etag the etag value to set.
      * @return the KeyValue object itself.
      */
@@ -259,7 +259,7 @@ class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Reads an instance of KeyValue from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyValue if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.

@@ -4,6 +4,7 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class AcsRouterWorkerSelectorState extends ExpandableStringEnum<Acs
     /**
      * Router Job Worker Selector is Active.
      */
+    @Generated
     public static final AcsRouterWorkerSelectorState ACTIVE = fromString("active");
 
     /**
      * Router Job Worker Selector has Expire.
      */
+    @Generated
     public static final AcsRouterWorkerSelectorState EXPIRED = fromString("expired");
 
     /**
@@ -26,6 +29,7 @@ public final class AcsRouterWorkerSelectorState extends ExpandableStringEnum<Acs
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AcsRouterWorkerSelectorState() {
     }
@@ -36,6 +40,7 @@ public final class AcsRouterWorkerSelectorState extends ExpandableStringEnum<Acs
      * @param name a name to look for.
      * @return the corresponding AcsRouterWorkerSelectorState.
      */
+    @Generated
     public static AcsRouterWorkerSelectorState fromString(String name) {
         return fromString(name, AcsRouterWorkerSelectorState.class);
     }
@@ -45,6 +50,7 @@ public final class AcsRouterWorkerSelectorState extends ExpandableStringEnum<Acs
      * 
      * @return known AcsRouterWorkerSelectorState values.
      */
+    @Generated
     public static Collection<AcsRouterWorkerSelectorState> values() {
         return values(AcsRouterWorkerSelectorState.class);
     }

@@ -4,6 +4,7 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,16 +25,19 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
     /*
      * The name of the snapshot.
      */
+    @Generated
     private String name;
 
     /*
      * The current status of the snapshot.
      */
+    @Generated
     private ConfigurationSnapshotStatus status;
 
     /*
      * A list of filters used to filter the key-values included in the snapshot.
      */
+    @Generated
     private final List<ConfigurationSettingsFilter> filters;
 
     /*
@@ -41,16 +45,19 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      * ensures there are no two key-values containing the same key. The 'key_label' composition type ensures there are
      * no two key-values containing the same key and label.
      */
+    @Generated
     private SnapshotComposition snapshotComposition;
 
     /*
      * The time that the snapshot was created.
      */
+    @Generated
     private OffsetDateTime createdAt;
 
     /*
      * The time that the snapshot will expire.
      */
+    @Generated
     private OffsetDateTime expiresAt;
 
     /*
@@ -58,26 +65,31 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      * is only writable during the creation of a snapshot. If not specified, the default lifetime of key-value revisions
      * will be used.
      */
+    @Generated
     private Long retentionPeriod;
 
     /*
      * The size in bytes of the snapshot.
      */
+    @Generated
     private Long sizeInBytes;
 
     /*
      * The amount of key-values in the snapshot.
      */
+    @Generated
     private Long itemCount;
 
     /*
      * The tags of the snapshot.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * A value representing the current state of the snapshot.
      */
+    @Generated
     private String eTag;
 
     /**
@@ -85,6 +97,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @param filters the filters value to set.
      */
+    @Generated
     public ConfigurationSnapshot(List<ConfigurationSettingsFilter> filters) {
         this.filters = filters;
     }
@@ -94,6 +107,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -103,6 +117,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @return the status value.
      */
+    @Generated
     public ConfigurationSnapshotStatus getStatus() {
         return this.status;
     }
@@ -112,6 +127,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @return the filters value.
      */
+    @Generated
     public List<ConfigurationSettingsFilter> getFilters() {
         return this.filters;
     }
@@ -123,6 +139,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @return the snapshotComposition value.
      */
+    @Generated
     public SnapshotComposition getSnapshotComposition() {
         return this.snapshotComposition;
     }
@@ -135,6 +152,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      * @param snapshotComposition the snapshotComposition value to set.
      * @return the ConfigurationSnapshot object itself.
      */
+    @Generated
     public ConfigurationSnapshot setSnapshotComposition(SnapshotComposition snapshotComposition) {
         this.snapshotComposition = snapshotComposition;
         return this;
@@ -145,6 +163,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @return the createdAt value.
      */
+    @Generated
     public OffsetDateTime getCreatedAt() {
         return this.createdAt;
     }
@@ -154,6 +173,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @return the expiresAt value.
      */
+    @Generated
     public OffsetDateTime getExpiresAt() {
         return this.expiresAt;
     }
@@ -165,6 +185,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @return the retentionPeriod value.
      */
+    @Generated
     public Duration getRetentionPeriod() {
         return this.retentionPeriod == null ? null : Duration.ofSeconds(this.retentionPeriod);
     }
@@ -177,6 +198,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      * @param retentionPeriod the retentionPeriod value to set.
      * @return the ConfigurationSnapshot object itself.
      */
+    @Generated
     public ConfigurationSnapshot setRetentionPeriod(Duration retentionPeriod) {
         this.retentionPeriod = retentionPeriod == null ? null : retentionPeriod.getSeconds();
         return this;
@@ -187,6 +209,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @return the sizeInBytes value.
      */
+    @Generated
     public Long getSizeInBytes() {
         return this.sizeInBytes;
     }
@@ -196,6 +219,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @return the itemCount value.
      */
+    @Generated
     public Long getItemCount() {
         return this.itemCount;
     }
@@ -205,6 +229,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -215,6 +240,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      * @param tags the tags value to set.
      * @return the ConfigurationSnapshot object itself.
      */
+    @Generated
     public ConfigurationSnapshot setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -225,6 +251,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -232,6 +259,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -252,6 +280,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ConfigurationSnapshot.
      */
+    @Generated
     public static ConfigurationSnapshot fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean filtersFound = false;

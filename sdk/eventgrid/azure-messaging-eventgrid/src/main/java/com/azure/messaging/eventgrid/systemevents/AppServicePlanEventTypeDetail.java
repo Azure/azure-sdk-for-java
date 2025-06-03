@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class AppServicePlanEventTypeDetail implements JsonSerializable<App
     /*
      * Kind of environment where app service plan is.
      */
+    @Generated
     private StampKind stampKind;
 
     /*
      * Type of action on the app service plan.
      */
+    @Generated
     private AppServicePlanAction action;
 
     /*
      * Asynchronous operation status of the operation on the app service plan.
      */
+    @Generated
     private AsyncStatus status;
 
     /**
      * Creates an instance of AppServicePlanEventTypeDetail class.
      */
+    @Generated
     public AppServicePlanEventTypeDetail() {
     }
 
@@ -42,6 +47,7 @@ public final class AppServicePlanEventTypeDetail implements JsonSerializable<App
      * 
      * @return the stampKind value.
      */
+    @Generated
     public StampKind getStampKind() {
         return this.stampKind;
     }
@@ -52,6 +58,7 @@ public final class AppServicePlanEventTypeDetail implements JsonSerializable<App
      * @param stampKind the stampKind value to set.
      * @return the AppServicePlanEventTypeDetail object itself.
      */
+    @Generated
     public AppServicePlanEventTypeDetail setStampKind(StampKind stampKind) {
         this.stampKind = stampKind;
         return this;
@@ -62,6 +69,7 @@ public final class AppServicePlanEventTypeDetail implements JsonSerializable<App
      * 
      * @return the action value.
      */
+    @Generated
     public AppServicePlanAction getAction() {
         return this.action;
     }
@@ -72,6 +80,7 @@ public final class AppServicePlanEventTypeDetail implements JsonSerializable<App
      * @param action the action value to set.
      * @return the AppServicePlanEventTypeDetail object itself.
      */
+    @Generated
     public AppServicePlanEventTypeDetail setAction(AppServicePlanAction action) {
         this.action = action;
         return this;
@@ -82,6 +91,7 @@ public final class AppServicePlanEventTypeDetail implements JsonSerializable<App
      * 
      * @return the status value.
      */
+    @Generated
     public AsyncStatus getStatus() {
         return this.status;
     }
@@ -92,6 +102,7 @@ public final class AppServicePlanEventTypeDetail implements JsonSerializable<App
      * @param status the status value to set.
      * @return the AppServicePlanEventTypeDetail object itself.
      */
+    @Generated
     public AppServicePlanEventTypeDetail setStatus(AsyncStatus status) {
         this.status = status;
         return this;
@@ -100,6 +111,7 @@ public final class AppServicePlanEventTypeDetail implements JsonSerializable<App
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +129,7 @@ public final class AppServicePlanEventTypeDetail implements JsonSerializable<App
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AppServicePlanEventTypeDetail.
      */
+    @Generated
     public static AppServicePlanEventTypeDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AppServicePlanEventTypeDetail deserializedAppServicePlanEventTypeDetail

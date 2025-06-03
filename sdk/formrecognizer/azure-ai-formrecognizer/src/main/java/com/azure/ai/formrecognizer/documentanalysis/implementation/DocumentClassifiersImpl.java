@@ -687,7 +687,7 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DocumentClassifierDetails> listClassifiers() {
-        return new PagedIterable<>(() -> listClassifiersSinglePage(Context.NONE),
+        return new PagedIterable<>(() -> listClassifiersSinglePage(),
             nextLink -> listClassifiersNextSinglePage(nextLink));
     }
 

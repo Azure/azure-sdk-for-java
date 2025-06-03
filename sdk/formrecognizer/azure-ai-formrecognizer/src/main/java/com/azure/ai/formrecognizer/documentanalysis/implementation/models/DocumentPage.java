@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,57 +22,68 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
     /*
      * 1-based page number in the input document.
      */
+    @Generated
     private final int pageNumber;
 
     /*
      * The general orientation of the content in clockwise direction, measured in degrees between (-180, 180].
      */
+    @Generated
     private Float angle;
 
     /*
      * The width of the image/PDF in pixels/inches, respectively.
      */
+    @Generated
     private Float width;
 
     /*
      * The height of the image/PDF in pixels/inches, respectively.
      */
+    @Generated
     private Float height;
 
     /*
      * The unit used by the width, height, and polygon properties. For images, the unit is "pixel". For PDF, the unit is
      * "inch".
      */
+    @Generated
     private LengthUnit unit;
 
     /*
      * Location of the page in the reading order concatenated content.
      */
+    @Generated
     private final List<DocumentSpan> spans;
 
     /*
      * Extracted words from the page.
      */
+    @Generated
     private List<DocumentWord> words;
 
     /*
      * Extracted selection marks from the page.
      */
+    @Generated
     private List<DocumentSelectionMark> selectionMarks;
 
     /*
      * Extracted lines from the page, potentially containing both textual and visual elements.
      */
+    @Generated
     private List<DocumentLine> lines;
 
     /*
      * Extracted barcodes from the page.
      */
+    @Generated
     private List<DocumentBarcode> barcodes;
 
     /*
      * Extracted formulas from the page.
      */
+    @Generated
     private List<DocumentFormula> formulas;
 
     /**
@@ -80,6 +92,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * @param pageNumber the pageNumber value to set.
      * @param spans the spans value to set.
      */
+    @Generated
     public DocumentPage(int pageNumber, List<DocumentSpan> spans) {
         this.pageNumber = pageNumber;
         this.spans = spans;
@@ -90,6 +103,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * 
      * @return the pageNumber value.
      */
+    @Generated
     public int getPageNumber() {
         return this.pageNumber;
     }
@@ -100,6 +114,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * 
      * @return the angle value.
      */
+    @Generated
     public Float getAngle() {
         return this.angle;
     }
@@ -111,6 +126,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * @param angle the angle value to set.
      * @return the DocumentPage object itself.
      */
+    @Generated
     public DocumentPage setAngle(Float angle) {
         this.angle = angle;
         return this;
@@ -121,6 +137,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * 
      * @return the width value.
      */
+    @Generated
     public Float getWidth() {
         return this.width;
     }
@@ -131,6 +148,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * @param width the width value to set.
      * @return the DocumentPage object itself.
      */
+    @Generated
     public DocumentPage setWidth(Float width) {
         this.width = width;
         return this;
@@ -141,6 +159,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * 
      * @return the height value.
      */
+    @Generated
     public Float getHeight() {
         return this.height;
     }
@@ -151,6 +170,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * @param height the height value to set.
      * @return the DocumentPage object itself.
      */
+    @Generated
     public DocumentPage setHeight(Float height) {
         this.height = height;
         return this;
@@ -162,6 +182,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * 
      * @return the unit value.
      */
+    @Generated
     public LengthUnit getUnit() {
         return this.unit;
     }
@@ -173,6 +194,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * @param unit the unit value to set.
      * @return the DocumentPage object itself.
      */
+    @Generated
     public DocumentPage setUnit(LengthUnit unit) {
         this.unit = unit;
         return this;
@@ -183,6 +205,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * 
      * @return the spans value.
      */
+    @Generated
     public List<DocumentSpan> getSpans() {
         return this.spans;
     }
@@ -192,6 +215,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * 
      * @return the words value.
      */
+    @Generated
     public List<DocumentWord> getWords() {
         return this.words;
     }
@@ -202,6 +226,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * @param words the words value to set.
      * @return the DocumentPage object itself.
      */
+    @Generated
     public DocumentPage setWords(List<DocumentWord> words) {
         this.words = words;
         return this;
@@ -212,6 +237,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * 
      * @return the selectionMarks value.
      */
+    @Generated
     public List<DocumentSelectionMark> getSelectionMarks() {
         return this.selectionMarks;
     }
@@ -222,6 +248,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * @param selectionMarks the selectionMarks value to set.
      * @return the DocumentPage object itself.
      */
+    @Generated
     public DocumentPage setSelectionMarks(List<DocumentSelectionMark> selectionMarks) {
         this.selectionMarks = selectionMarks;
         return this;
@@ -232,6 +259,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * 
      * @return the lines value.
      */
+    @Generated
     public List<DocumentLine> getLines() {
         return this.lines;
     }
@@ -242,6 +270,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * @param lines the lines value to set.
      * @return the DocumentPage object itself.
      */
+    @Generated
     public DocumentPage setLines(List<DocumentLine> lines) {
         this.lines = lines;
         return this;
@@ -252,6 +281,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * 
      * @return the barcodes value.
      */
+    @Generated
     public List<DocumentBarcode> getBarcodes() {
         return this.barcodes;
     }
@@ -262,6 +292,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * @param barcodes the barcodes value to set.
      * @return the DocumentPage object itself.
      */
+    @Generated
     public DocumentPage setBarcodes(List<DocumentBarcode> barcodes) {
         this.barcodes = barcodes;
         return this;
@@ -272,6 +303,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * 
      * @return the formulas value.
      */
+    @Generated
     public List<DocumentFormula> getFormulas() {
         return this.formulas;
     }
@@ -282,6 +314,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * @param formulas the formulas value to set.
      * @return the DocumentPage object itself.
      */
+    @Generated
     public DocumentPage setFormulas(List<DocumentFormula> formulas) {
         this.formulas = formulas;
         return this;
@@ -290,6 +323,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -317,6 +351,7 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentPage.
      */
+    @Generated
     public static DocumentPage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean pageNumberFound = false;

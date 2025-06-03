@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,16 +17,19 @@ public final class PermissionFilter extends ExpandableStringEnum<PermissionFilte
     /**
      * Field represents user IDs that should be used to filter document access on queries.
      */
+    @Generated
     public static final PermissionFilter USER_IDS = fromString("userIds");
 
     /**
      * Field represents group IDs that should be used to filter document access on queries.
      */
+    @Generated
     public static final PermissionFilter GROUP_IDS = fromString("groupIds");
 
     /**
      * Field represents an RBAC scope that should be used to filter document access on queries.
      */
+    @Generated
     public static final PermissionFilter RBAC_SCOPE = fromString("rbacScope");
 
     /**
@@ -33,6 +37,7 @@ public final class PermissionFilter extends ExpandableStringEnum<PermissionFilte
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PermissionFilter() {
     }
@@ -43,6 +48,7 @@ public final class PermissionFilter extends ExpandableStringEnum<PermissionFilte
      * @param name a name to look for.
      * @return the corresponding PermissionFilter.
      */
+    @Generated
     public static PermissionFilter fromString(String name) {
         return fromString(name, PermissionFilter.class);
     }
@@ -52,6 +58,7 @@ public final class PermissionFilter extends ExpandableStringEnum<PermissionFilte
      * 
      * @return known PermissionFilter values.
      */
+    @Generated
     public static Collection<PermissionFilter> values() {
         return values(PermissionFilter.class);
     }

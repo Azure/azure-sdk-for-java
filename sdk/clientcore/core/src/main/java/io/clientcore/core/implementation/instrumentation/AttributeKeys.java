@@ -84,6 +84,12 @@ public final class AttributeKeys {
     public static final String HTTP_RESPONSE_HEADER_CONTENT_LENGTH_KEY = "http.response.header.content-length";
 
     /**
+     * The value of response content type header.
+     * <a href="https://github.com/open-telemetry/semantic-conventions/blob/main/docs/attributes-registry/http.md#http-response-header">http.response.header.content-type attribute</a>
+     */
+    public static final String HTTP_RESPONSE_HEADER_CONTENT_TYPE_KEY = "http.response.header.content-type";
+
+    /**
      * The value of response location header indicating the URL to redirect to.
      * <a href="https://github.com/open-telemetry/semantic-conventions/blob/main/docs/attributes-registry/http.md#http-response-header">http.response.header.location attribute</a>
      */
@@ -156,7 +162,7 @@ public final class AttributeKeys {
      * Key representing response body. The value should be populated conditionally
      * if populated at all.
      */
-    public static final String HTTP_RESPONSE_BODY_CONTENT_KEY = "http.request.body.content";
+    public static final String HTTP_RESPONSE_BODY_CONTENT_KEY = "http.response.body.content";
 
     /**
      * Key representing operation name. The value should be a string.

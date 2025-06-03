@@ -47,11 +47,6 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
      */
     private AzureHybridBenefitType azureHybridBenefitType;
 
-    /*
-     * The provisioning state
-     */
-    private PlacementPolicyProvisioningState provisioningState;
-
     /**
      * Creates an instance of VmHostPlacementPolicyProperties class.
      */
@@ -169,16 +164,6 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
     }
 
     /**
-     * Get the provisioningState property: The provisioning state.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public PlacementPolicyProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -264,8 +249,8 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
                 } else if ("displayName".equals(fieldName)) {
                     deserializedVmHostPlacementPolicyProperties.withDisplayName(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedVmHostPlacementPolicyProperties.provisioningState
-                        = PlacementPolicyProvisioningState.fromString(reader.getString());
+                    deserializedVmHostPlacementPolicyProperties
+                        .withProvisioningState(PlacementPolicyProvisioningState.fromString(reader.getString()));
                 } else if ("vmMembers".equals(fieldName)) {
                     List<String> vmMembers = reader.readArray(reader1 -> reader1.getString());
                     deserializedVmHostPlacementPolicyProperties.vmMembers = vmMembers;

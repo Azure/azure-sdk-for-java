@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -27,16 +28,19 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "#Microsoft.Skills.Text.EntityRecognitionSkill";
 
     /*
      * A list of entity categories that should be extracted.
      */
+    @Generated
     private List<EntityCategory> categories;
 
     /*
      * A value indicating which language code to use. Default is `en`.
      */
+    @Generated
     private EntityRecognitionSkillLanguage defaultLanguageCode;
 
     /*
@@ -44,12 +48,14 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
      * this configuration is not set (default), set to null or set to false, entities which don't conform to one of the
      * pre-defined types will not be surfaced.
      */
+    @Generated
     private Boolean includeTypelessEntities;
 
     /*
      * A value between 0 and 1 that be used to only include entities whose confidence score is greater than the value
      * specified. If not set (default), or if explicitly set to null, all entities will be included.
      */
+    @Generated
     private Double minimumPrecision;
 
     /**
@@ -58,6 +64,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
+    @Generated
     public EntityRecognitionSkillV1(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -67,6 +74,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -77,6 +85,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
      * 
      * @return the categories value.
      */
+    @Generated
     public List<EntityCategory> getCategories() {
         return this.categories;
     }
@@ -87,6 +96,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
      * @param categories the categories value to set.
      * @return the EntityRecognitionSkillV1 object itself.
      */
+    @Generated
     public EntityRecognitionSkillV1 setCategories(List<EntityCategory> categories) {
         this.categories = categories;
         return this;
@@ -97,6 +107,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
      * 
      * @return the defaultLanguageCode value.
      */
+    @Generated
     public EntityRecognitionSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
@@ -107,6 +118,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the EntityRecognitionSkillV1 object itself.
      */
+    @Generated
     public EntityRecognitionSkillV1 setDefaultLanguageCode(EntityRecognitionSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
@@ -119,6 +131,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
      * 
      * @return the includeTypelessEntities value.
      */
+    @Generated
     public Boolean isIncludeTypelessEntities() {
         return this.includeTypelessEntities;
     }
@@ -131,6 +144,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
      * @param includeTypelessEntities the includeTypelessEntities value to set.
      * @return the EntityRecognitionSkillV1 object itself.
      */
+    @Generated
     public EntityRecognitionSkillV1 setIncludeTypelessEntities(Boolean includeTypelessEntities) {
         this.includeTypelessEntities = includeTypelessEntities;
         return this;
@@ -143,6 +157,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
      * 
      * @return the minimumPrecision value.
      */
+    @Generated
     public Double getMinimumPrecision() {
         return this.minimumPrecision;
     }
@@ -155,6 +170,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
      * @param minimumPrecision the minimumPrecision value to set.
      * @return the EntityRecognitionSkillV1 object itself.
      */
+    @Generated
     public EntityRecognitionSkillV1 setMinimumPrecision(Double minimumPrecision) {
         this.minimumPrecision = minimumPrecision;
         return this;
@@ -163,6 +179,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntityRecognitionSkillV1 setName(String name) {
         super.setName(name);
@@ -172,6 +189,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntityRecognitionSkillV1 setDescription(String description) {
         super.setDescription(description);
@@ -181,6 +199,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntityRecognitionSkillV1 setContext(String context) {
         super.setContext(context);
@@ -190,6 +209,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -217,6 +237,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EntityRecognitionSkillV1.
      */
+    @Generated
     public static EntityRecognitionSkillV1 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

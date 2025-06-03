@@ -108,24 +108,24 @@ public final class ResponseHandler {
                 + AnnotationProcessorUtils.createParameterizedTypeStatement(method.getDefaultExceptionBodyType(), body)
                 + ";");
             errorBlock.addStatement(
-                "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, statusToExceptionTypeMap);");
+                "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, statusToExceptionTypeMap, LOGGER);");
         } else if (!mappings.isEmpty()) {
             // Only map
             getStatusCodeMapping(body, errorBlock, mappings);
             errorBlock.addStatement(
-                "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap);");
+                "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, statusToExceptionTypeMap, LOGGER);");
         } else if (method.getDefaultExceptionBodyType() != null) {
             // Only default
             errorBlock.addStatement("java.lang.reflect.ParameterizedType defaultErrorBodyType = "
                 + AnnotationProcessorUtils.createParameterizedTypeStatement(method.getDefaultExceptionBodyType(), body)
                 + ";");
             errorBlock.addStatement(
-                "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null);");
+                "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, defaultErrorBodyType, null, LOGGER);");
         } else {
             // Neither
             Statement stmt = StaticJavaParser.parseStatement(
                 "GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, "
-                    + "xmlSerializer, null, null);");
+                    + "xmlSerializer, null, null, LOGGER);");
             stmt.setLineComment("\n Handle unexpected response");
             errorBlock.addStatement(stmt);
         }
@@ -327,8 +327,9 @@ public final class ResponseHandler {
             + "    deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType); "
             + "} else if (xmlSerializer.supportsFormat(serializationFormat)) { "
             + "    deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType); "
-            + "} else { " + "    throw new UnsupportedOperationException("
-            + "        \"None of the provided serializers support the format: \" + serializationFormat + \".\"); "
+            + "} else { "
+            + "    throw LOGGER.throwableAtError().addKeyValue(\"serializationFormat\", serializationFormat.name())\n"
+            + "                .log(\"None of the provided serializers support the format.\", UnsupportedOperationException::new);"
             + "}");
     }
 

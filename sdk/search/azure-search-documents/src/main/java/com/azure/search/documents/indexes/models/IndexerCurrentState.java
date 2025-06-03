@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,53 +23,63 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
     /*
      * The mode the indexer is running in.
      */
+    @Generated
     private IndexingMode mode;
 
     /*
      * Change tracking state used when indexing starts on all documents in the datasource.
      */
+    @Generated
     private String allDocsInitialTrackingState;
 
     /*
      * Change tracking state value when indexing finishes on all documents in the datasource.
      */
+    @Generated
     private String allDocsFinalTrackingState;
 
     /*
      * Change tracking state used when indexing starts on select, reset documents in the datasource.
      */
+    @Generated
     private String resetDocsInitialTrackingState;
 
     /*
      * Change tracking state value when indexing finishes on select, reset documents in the datasource.
      */
+    @Generated
     private String resetDocsFinalTrackingState;
 
     /*
      * The list of document keys that have been reset. The document key is the document's unique identifier for the data
      * in the search index. The indexer will prioritize selectively re-ingesting these keys.
      */
+    @Generated
     private List<String> resetDocumentKeys;
 
     /*
      * The list of datasource document ids that have been reset. The datasource document id is the unique identifier for
      * the data in the datasource. The indexer will prioritize selectively re-ingesting these ids.
      */
+    @Generated
     private List<String> resetDatasourceDocumentIds;
 
     /*
      * Change tracking state used when indexing starts on selective options from the datasource.
      */
+    @Generated
     private String resyncInitialTrackingState;
 
     /*
      * Change tracking state value when indexing finishes on selective options from the datasource.
      */
+    @Generated
     private String resyncFinalTrackingState;
 
     /**
      * Creates an instance of IndexerCurrentState class.
      */
+    @Generated
     public IndexerCurrentState() {
     }
 
@@ -77,6 +88,7 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
      * 
      * @return the mode value.
      */
+    @Generated
     public IndexingMode getMode() {
         return this.mode;
     }
@@ -87,6 +99,7 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
      * 
      * @return the allDocsInitialTrackingState value.
      */
+    @Generated
     public String getAllDocsInitialTrackingState() {
         return this.allDocsInitialTrackingState;
     }
@@ -97,6 +110,7 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
      * 
      * @return the allDocsFinalTrackingState value.
      */
+    @Generated
     public String getAllDocsFinalTrackingState() {
         return this.allDocsFinalTrackingState;
     }
@@ -107,6 +121,7 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
      * 
      * @return the resetDocsInitialTrackingState value.
      */
+    @Generated
     public String getResetDocsInitialTrackingState() {
         return this.resetDocsInitialTrackingState;
     }
@@ -117,6 +132,7 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
      * 
      * @return the resetDocsFinalTrackingState value.
      */
+    @Generated
     public String getResetDocsFinalTrackingState() {
         return this.resetDocsFinalTrackingState;
     }
@@ -128,6 +144,7 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
      * 
      * @return the resetDocumentKeys value.
      */
+    @Generated
     public List<String> getResetDocumentKeys() {
         return this.resetDocumentKeys;
     }
@@ -139,6 +156,7 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
      * 
      * @return the resetDatasourceDocumentIds value.
      */
+    @Generated
     public List<String> getResetDatasourceDocumentIds() {
         return this.resetDatasourceDocumentIds;
     }
@@ -149,6 +167,7 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
      * 
      * @return the resyncInitialTrackingState value.
      */
+    @Generated
     public String getResyncInitialTrackingState() {
         return this.resyncInitialTrackingState;
     }
@@ -159,6 +178,7 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
      * 
      * @return the resyncFinalTrackingState value.
      */
+    @Generated
     public String getResyncFinalTrackingState() {
         return this.resyncFinalTrackingState;
     }
@@ -166,6 +186,7 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -180,6 +201,7 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the IndexerCurrentState.
      */
+    @Generated
     public static IndexerCurrentState fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IndexerCurrentState deserializedIndexerCurrentState = new IndexerCurrentState();

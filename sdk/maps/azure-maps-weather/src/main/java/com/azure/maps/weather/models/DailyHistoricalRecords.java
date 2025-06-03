@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,26 +23,31 @@ public final class DailyHistoricalRecords implements JsonSerializable<DailyHisto
     /*
      * Date and time of the current observation displayed in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00.
      */
+    @Generated
     private OffsetDateTime timestamp;
 
     /*
      * Temperature value.
      */
+    @Generated
     private WeatherValueYearMaxMinAvg temperature;
 
     /*
      * Maximum amount of precipitation (liquid equivalent) that has fallen.
      */
+    @Generated
     private WeatherValueYearMax precipitation;
 
     /*
      * Maximum snowfall.
      */
+    @Generated
     private WeatherValueYearMax snowfall;
 
     /**
      * Set default DailyHistoricalRecords constructor to private
      */
+    @Generated
     private DailyHistoricalRecords() {
     }
 
@@ -51,6 +57,7 @@ public final class DailyHistoricalRecords implements JsonSerializable<DailyHisto
      *
      * @return the timestamp value.
      */
+    @Generated
     public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
@@ -60,6 +67,7 @@ public final class DailyHistoricalRecords implements JsonSerializable<DailyHisto
      *
      * @return the temperature value.
      */
+    @Generated
     public WeatherValueYearMaxMinAvg getTemperature() {
         return this.temperature;
     }
@@ -69,6 +77,7 @@ public final class DailyHistoricalRecords implements JsonSerializable<DailyHisto
      *
      * @return the precipitation value.
      */
+    @Generated
     public WeatherValueYearMax getPrecipitation() {
         return this.precipitation;
     }
@@ -78,6 +87,7 @@ public final class DailyHistoricalRecords implements JsonSerializable<DailyHisto
      *
      * @return the snowfall value.
      */
+    @Generated
     public WeatherValueYearMax getSnowfall() {
         return this.snowfall;
     }
@@ -85,6 +95,7 @@ public final class DailyHistoricalRecords implements JsonSerializable<DailyHisto
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -104,6 +115,7 @@ public final class DailyHistoricalRecords implements JsonSerializable<DailyHisto
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DailyHistoricalRecords.
      */
+    @Generated
     public static DailyHistoricalRecords fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DailyHistoricalRecords deserializedDailyHistoricalRecords = new DailyHistoricalRecords();

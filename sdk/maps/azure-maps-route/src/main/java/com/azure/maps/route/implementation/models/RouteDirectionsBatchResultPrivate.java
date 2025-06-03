@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -21,11 +22,19 @@ public final class RouteDirectionsBatchResultPrivate extends BatchResult {
     /*
      * Array containing the batch results.
      */
+    @Generated
     private List<RouteDirectionsBatchItem> batchItems;
+
+    /*
+     * Summary of the results for the batch request
+     */
+    @Generated
+    private BatchResultSummary batchSummary;
 
     /**
      * Creates an instance of RouteDirectionsBatchResultPrivate class.
      */
+    @Generated
     public RouteDirectionsBatchResultPrivate() {
     }
 
@@ -34,13 +43,26 @@ public final class RouteDirectionsBatchResultPrivate extends BatchResult {
      * 
      * @return the batchItems value.
      */
+    @Generated
     public List<RouteDirectionsBatchItem> getBatchItems() {
         return this.batchItems;
     }
 
     /**
+     * Get the batchSummary property: Summary of the results for the batch request.
+     * 
+     * @return the batchSummary value.
+     */
+    @Generated
+    @Override
+    public BatchResultSummary getBatchSummary() {
+        return this.batchSummary;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -55,6 +77,7 @@ public final class RouteDirectionsBatchResultPrivate extends BatchResult {
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteDirectionsBatchResultPrivate.
      */
+    @Generated
     public static RouteDirectionsBatchResultPrivate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteDirectionsBatchResultPrivate deserializedRouteDirectionsBatchResultPrivate
@@ -64,7 +87,7 @@ public final class RouteDirectionsBatchResultPrivate extends BatchResult {
                 reader.nextToken();
 
                 if ("summary".equals(fieldName)) {
-                    deserializedRouteDirectionsBatchResultPrivate.setBatchSummary(BatchResultSummary.fromJson(reader));
+                    deserializedRouteDirectionsBatchResultPrivate.batchSummary = BatchResultSummary.fromJson(reader);
                 } else if ("batchItems".equals(fieldName)) {
                     List<RouteDirectionsBatchItem> batchItems
                         = reader.readArray(reader1 -> RouteDirectionsBatchItem.fromJson(reader1));

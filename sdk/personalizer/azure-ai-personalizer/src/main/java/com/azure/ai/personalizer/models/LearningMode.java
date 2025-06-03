@@ -4,6 +4,7 @@
 
 package com.azure.ai.personalizer.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class LearningMode extends ExpandableStringEnum<LearningMode> {
     /**
      * Static value Online for LearningMode.
      */
+    @Generated
     public static final LearningMode ONLINE = fromString("Online");
 
     /**
      * Static value Apprentice for LearningMode.
      */
+    @Generated
     public static final LearningMode APPRENTICE = fromString("Apprentice");
 
     /**
      * Static value LoggingOnly for LearningMode.
      */
+    @Generated
     public static final LearningMode LOGGING_ONLY = fromString("LoggingOnly");
 
     /**
@@ -31,6 +35,7 @@ public final class LearningMode extends ExpandableStringEnum<LearningMode> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public LearningMode() {
     }
@@ -41,6 +46,7 @@ public final class LearningMode extends ExpandableStringEnum<LearningMode> {
      * @param name a name to look for.
      * @return the corresponding LearningMode.
      */
+    @Generated
     public static LearningMode fromString(String name) {
         return fromString(name, LearningMode.class);
     }
@@ -50,6 +56,7 @@ public final class LearningMode extends ExpandableStringEnum<LearningMode> {
      * 
      * @return known LearningMode values.
      */
+    @Generated
     public static Collection<LearningMode> values() {
         return values(LearningMode.class);
     }

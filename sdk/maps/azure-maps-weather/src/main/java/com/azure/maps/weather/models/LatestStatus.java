@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class LatestStatus implements JsonSerializable<LatestStatus> {
     /*
      * The latest status keyword for the alert, in the specified language. By default, returned in English (en-US).
      */
+    @Generated
     private String localized;
 
     /*
      * Latest status keyword for the alert, in English (en-US).
      */
+    @Generated
     private LatestStatusKeyword english;
 
     /**
      * Set default LatestStatus constructor to private
      */
+    @Generated
     private LatestStatus() {
     }
 
@@ -38,6 +42,7 @@ public final class LatestStatus implements JsonSerializable<LatestStatus> {
      *
      * @return the localized value.
      */
+    @Generated
     public String getLocalized() {
         return this.localized;
     }
@@ -47,6 +52,7 @@ public final class LatestStatus implements JsonSerializable<LatestStatus> {
      *
      * @return the english value.
      */
+    @Generated
     public LatestStatusKeyword getEnglish() {
         return this.english;
     }
@@ -54,6 +60,7 @@ public final class LatestStatus implements JsonSerializable<LatestStatus> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -70,6 +77,7 @@ public final class LatestStatus implements JsonSerializable<LatestStatus> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LatestStatus.
      */
+    @Generated
     public static LatestStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LatestStatus deserializedLatestStatus = new LatestStatus();

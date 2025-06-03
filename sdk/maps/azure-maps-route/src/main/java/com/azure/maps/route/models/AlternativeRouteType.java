@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,12 +16,14 @@ public final class AlternativeRouteType extends ExpandableStringEnum<Alternative
      * Allow any alternative route to be returned irrespective of how it compares to the reference route in terms of
      * optimality.
      */
+    @Generated
     public static final AlternativeRouteType ANY_ROUTE = fromString("anyRoute");
 
     /**
      * Return an alternative route only if it is better than the reference route according to the given planning
      * criteria.
      */
+    @Generated
     public static final AlternativeRouteType BETTER_ROUTE = fromString("betterRoute");
 
     /**
@@ -28,6 +31,7 @@ public final class AlternativeRouteType extends ExpandableStringEnum<Alternative
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AlternativeRouteType() {
     }
@@ -38,6 +42,7 @@ public final class AlternativeRouteType extends ExpandableStringEnum<Alternative
      * @param name a name to look for.
      * @return the corresponding AlternativeRouteType.
      */
+    @Generated
     public static AlternativeRouteType fromString(String name) {
         return fromString(name, AlternativeRouteType.class);
     }
@@ -47,6 +52,7 @@ public final class AlternativeRouteType extends ExpandableStringEnum<Alternative
      * 
      * @return known AlternativeRouteType values.
      */
+    @Generated
     public static Collection<AlternativeRouteType> values() {
         return values(AlternativeRouteType.class);
     }

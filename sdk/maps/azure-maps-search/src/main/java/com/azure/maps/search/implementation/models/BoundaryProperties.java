@@ -4,6 +4,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public class BoundaryProperties implements JsonSerializable<BoundaryProperties> 
     /*
      * The name associated with the geographical area.
      */
+    @Generated
     private String name;
 
     /*
      * The copyright string.
      */
+    @Generated
     private String copyright;
 
     /*
      * A URL that lists many of the data providers for Azure Maps and their related copyright information.
      */
+    @Generated
     private String copyrightURL;
 
     /*
      * A collection of copyright information for each geometry of the Boundary object in the same order they appear.
      */
+    @Generated
     private List<GeometryCopyright> geometriesCopyright;
 
     /**
      * Creates an instance of BoundaryProperties class.
      */
+    @Generated
     public BoundaryProperties() {
     }
 
@@ -48,6 +54,7 @@ public class BoundaryProperties implements JsonSerializable<BoundaryProperties> 
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -58,6 +65,7 @@ public class BoundaryProperties implements JsonSerializable<BoundaryProperties> 
      * @param name the name value to set.
      * @return the BoundaryProperties object itself.
      */
+    @Generated
     public BoundaryProperties setName(String name) {
         this.name = name;
         return this;
@@ -68,6 +76,7 @@ public class BoundaryProperties implements JsonSerializable<BoundaryProperties> 
      *
      * @return the copyright value.
      */
+    @Generated
     public String getCopyright() {
         return this.copyright;
     }
@@ -78,6 +87,7 @@ public class BoundaryProperties implements JsonSerializable<BoundaryProperties> 
      * @param copyright the copyright value to set.
      * @return the BoundaryProperties object itself.
      */
+    @Generated
     public BoundaryProperties setCopyright(String copyright) {
         this.copyright = copyright;
         return this;
@@ -89,6 +99,7 @@ public class BoundaryProperties implements JsonSerializable<BoundaryProperties> 
      *
      * @return the copyrightURL value.
      */
+    @Generated
     public String getCopyrightUrl() {
         return this.copyrightURL;
     }
@@ -100,6 +111,7 @@ public class BoundaryProperties implements JsonSerializable<BoundaryProperties> 
      * @param copyrightURL the copyrightURL value to set.
      * @return the BoundaryProperties object itself.
      */
+    @Generated
     public BoundaryProperties setCopyrightUrl(String copyrightURL) {
         this.copyrightURL = copyrightURL;
         return this;
@@ -111,6 +123,7 @@ public class BoundaryProperties implements JsonSerializable<BoundaryProperties> 
      *
      * @return the geometriesCopyright value.
      */
+    @Generated
     public List<GeometryCopyright> getGeometriesCopyright() {
         return this.geometriesCopyright;
     }
@@ -122,6 +135,7 @@ public class BoundaryProperties implements JsonSerializable<BoundaryProperties> 
      * @param geometriesCopyright the geometriesCopyright value to set.
      * @return the BoundaryProperties object itself.
      */
+    @Generated
     public BoundaryProperties setGeometriesCopyright(List<GeometryCopyright> geometriesCopyright) {
         this.geometriesCopyright = geometriesCopyright;
         return this;
@@ -130,6 +144,7 @@ public class BoundaryProperties implements JsonSerializable<BoundaryProperties> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -149,6 +164,7 @@ public class BoundaryProperties implements JsonSerializable<BoundaryProperties> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the BoundaryProperties.
      */
+    @Generated
     public static BoundaryProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BoundaryProperties deserializedBoundaryProperties = new BoundaryProperties();

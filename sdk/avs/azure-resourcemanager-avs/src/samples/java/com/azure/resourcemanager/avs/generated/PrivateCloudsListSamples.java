@@ -10,7 +10,7 @@ package com.azure.resourcemanager.avs.generated;
 public final class PrivateCloudsListSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/PrivateClouds_ListInSubscription.
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/PrivateClouds_ListInSubscription.
      * json
      */
     /**
@@ -23,7 +23,7 @@ public final class PrivateCloudsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2024-09-01/examples/
      * PrivateClouds_ListInSubscription_Stretched.json
      */
     /**

@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,16 +18,19 @@ public final class ChatCompletionResponseFormatType extends ExpandableStringEnum
     /**
      * Static value text for ChatCompletionResponseFormatType.
      */
+    @Generated
     public static final ChatCompletionResponseFormatType TEXT = fromString("text");
 
     /**
      * Static value jsonObject for ChatCompletionResponseFormatType.
      */
+    @Generated
     public static final ChatCompletionResponseFormatType JSON_OBJECT = fromString("jsonObject");
 
     /**
      * Static value jsonSchema for ChatCompletionResponseFormatType.
      */
+    @Generated
     public static final ChatCompletionResponseFormatType JSON_SCHEMA = fromString("jsonSchema");
 
     /**
@@ -34,6 +38,7 @@ public final class ChatCompletionResponseFormatType extends ExpandableStringEnum
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ChatCompletionResponseFormatType() {
     }
@@ -44,6 +49,7 @@ public final class ChatCompletionResponseFormatType extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding ChatCompletionResponseFormatType.
      */
+    @Generated
     public static ChatCompletionResponseFormatType fromString(String name) {
         return fromString(name, ChatCompletionResponseFormatType.class);
     }
@@ -53,6 +59,7 @@ public final class ChatCompletionResponseFormatType extends ExpandableStringEnum
      * 
      * @return known ChatCompletionResponseFormatType values.
      */
+    @Generated
     public static Collection<ChatCompletionResponseFormatType> values() {
         return values(ChatCompletionResponseFormatType.class);
     }

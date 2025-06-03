@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.models.ResponseError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -23,16 +24,19 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
     /*
      * Router Job Classification Policy Id
      */
+    @Generated
     private String classificationPolicyId;
 
     /*
      * Router Job Classification Failed Errors
      */
+    @Generated
     private List<AcsRouterCommunicationError> errors;
 
     /**
      * Creates an instance of AcsRouterJobClassificationFailedEventData class.
      */
+    @Generated
     public AcsRouterJobClassificationFailedEventData() {
     }
 
@@ -41,6 +45,7 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
      *
      * @return the classificationPolicyId value.
      */
+    @Generated
     public String getClassificationPolicyId() {
         return this.classificationPolicyId;
     }
@@ -51,6 +56,7 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
      * @param classificationPolicyId the classificationPolicyId value to set.
      * @return the AcsRouterJobClassificationFailedEventData object itself.
      */
+    @Generated
     public AcsRouterJobClassificationFailedEventData setClassificationPolicyId(String classificationPolicyId) {
         this.classificationPolicyId = classificationPolicyId;
         return this;
@@ -61,6 +67,7 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
      *
      * @return the errors value.
      */
+    @Generated
     public List<ResponseError> getErrors() {
         return this.errors.stream()
             .map(e -> new ResponseError(e.getCode(), e.getMessage()))
@@ -73,6 +80,7 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
      * @param errors the errors value to set.
      * @return the AcsRouterJobClassificationFailedEventData object itself.
      */
+    @Generated
     public AcsRouterJobClassificationFailedEventData setErrors(List<ResponseError> errors) {
         this.errors = errors.stream()
             .map(e -> new AcsRouterCommunicationError().setCode(e.getCode()).setMessage(e.getMessage()))
@@ -83,6 +91,7 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AcsRouterJobClassificationFailedEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
@@ -92,6 +101,7 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AcsRouterJobClassificationFailedEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
@@ -101,6 +111,7 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AcsRouterJobClassificationFailedEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
@@ -110,6 +121,7 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AcsRouterJobClassificationFailedEventData setJobId(String jobId) {
         super.setJobId(jobId);
@@ -119,6 +131,7 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AcsRouterJobClassificationFailedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
@@ -128,6 +141,7 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AcsRouterJobClassificationFailedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);
@@ -137,6 +151,7 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -160,6 +175,7 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterJobClassificationFailedEventData.
      */
+    @Generated
     public static AcsRouterJobClassificationFailedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsRouterJobClassificationFailedEventData deserializedAcsRouterJobClassificationFailedEventData

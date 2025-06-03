@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,26 +22,31 @@ public final class RouteInstructionGroup implements JsonSerializable<RouteInstru
     /*
      * Index of the first instruction in the instructions and belonging to this group.
      */
+    @Generated
     private Integer firstInstructionIndex;
 
     /*
      * Index of the last instruction in the instructions and belonging to this group.
      */
+    @Generated
     private Integer lastInstructionIndex;
 
     /*
      * Length of the group.
      */
+    @Generated
     private Integer groupLengthInMeters;
 
     /*
      * Summary message when human-readable text messages are requested for guidance (instructionType=text or tagged).
      */
+    @Generated
     private String groupMessage;
 
     /**
      * Creates an instance of RouteInstructionGroup class.
      */
+    @Generated
     public RouteInstructionGroup() {
     }
 
@@ -50,6 +56,7 @@ public final class RouteInstructionGroup implements JsonSerializable<RouteInstru
      * 
      * @return the firstInstructionIndex value.
      */
+    @Generated
     public Integer getFirstInstructionIndex() {
         return this.firstInstructionIndex;
     }
@@ -60,6 +67,7 @@ public final class RouteInstructionGroup implements JsonSerializable<RouteInstru
      * 
      * @return the lastInstructionIndex value.
      */
+    @Generated
     public Integer getLastInstructionIndex() {
         return this.lastInstructionIndex;
     }
@@ -69,6 +77,7 @@ public final class RouteInstructionGroup implements JsonSerializable<RouteInstru
      * 
      * @return the groupLengthInMeters value.
      */
+    @Generated
     public Integer getGroupLengthInMeters() {
         return this.groupLengthInMeters;
     }
@@ -79,6 +88,7 @@ public final class RouteInstructionGroup implements JsonSerializable<RouteInstru
      * 
      * @return the groupMessage value.
      */
+    @Generated
     public String getGroupMessage() {
         return this.groupMessage;
     }
@@ -86,6 +96,7 @@ public final class RouteInstructionGroup implements JsonSerializable<RouteInstru
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,6 +111,7 @@ public final class RouteInstructionGroup implements JsonSerializable<RouteInstru
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteInstructionGroup.
      */
+    @Generated
     public static RouteInstructionGroup fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteInstructionGroup deserializedRouteInstructionGroup = new RouteInstructionGroup();

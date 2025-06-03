@@ -38,6 +38,8 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.models.CoreException;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +61,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -73,7 +75,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public ConfigurationServiceVersion getServiceVersion() {
@@ -87,7 +89,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -96,7 +98,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Initializes an instance of AzureAppConfigurationClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint
      * @param serviceVersion Service version.
@@ -334,7 +336,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -344,7 +346,7 @@ public final class AzureAppConfigurationClientImpl {
      * time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -358,7 +360,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -369,7 +371,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -383,7 +385,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -393,7 +395,7 @@ public final class AzureAppConfigurationClientImpl {
      * time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -405,11 +407,11 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     * 
+     *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -424,7 +426,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -435,7 +437,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -450,7 +452,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
@@ -460,7 +462,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -473,7 +475,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name A filter for the name of the returned keys.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
@@ -482,7 +484,7 @@ public final class AzureAppConfigurationClientImpl {
      * time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeys(String name, String after, String syncToken, String acceptDatetime) {
@@ -491,9 +493,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeys() {
@@ -506,7 +508,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
@@ -528,7 +530,7 @@ public final class AzureAppConfigurationClientImpl {
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -552,7 +554,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
@@ -575,7 +577,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -599,7 +601,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
@@ -621,7 +623,7 @@ public final class AzureAppConfigurationClientImpl {
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -637,11 +639,11 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     * 
+     *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -665,7 +667,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
@@ -688,7 +690,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -705,7 +707,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param label A filter used to match labels. Syntax reference:
@@ -727,7 +729,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -750,7 +752,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param label A filter used to match labels. Syntax reference:
@@ -771,7 +773,7 @@ public final class AzureAppConfigurationClientImpl {
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeyValues(String key, String label, String syncToken, String after, String acceptDatetime,
@@ -782,9 +784,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeyValues() {
@@ -804,7 +806,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a single key-value.
-     * 
+     *
      * @param key The key of the key-value.
      * @param accept The accept parameter.
      * @param label The label of the key-value to retrieve.
@@ -819,7 +821,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -837,7 +839,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a single key-value.
-     * 
+     *
      * @param key The key of the key-value.
      * @param accept The accept parameter.
      * @param label The label of the key-value to retrieve.
@@ -851,7 +853,7 @@ public final class AzureAppConfigurationClientImpl {
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -863,12 +865,12 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a single key-value.
-     * 
+     *
      * @param key The key of the key-value.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -885,7 +887,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Creates a key-value.
-     * 
+     *
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @param label The label of the key-value to create.
@@ -898,7 +900,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -910,7 +912,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Creates a key-value.
-     * 
+     *
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @param label The label of the key-value to create.
@@ -922,7 +924,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param entity The key-value to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -934,12 +936,12 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Creates a key-value.
-     * 
+     *
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -955,7 +957,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Deletes a key-value.
-     * 
+     *
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
      * @param label The label of the key-value to delete.
@@ -965,7 +967,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -977,7 +979,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Deletes a key-value.
-     * 
+     *
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
      * @param label The label of the key-value to delete.
@@ -986,7 +988,7 @@ public final class AzureAppConfigurationClientImpl {
      * value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -996,12 +998,12 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Deletes a key-value.
-     * 
+     *
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1014,7 +1016,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -1028,7 +1030,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1046,7 +1048,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -1059,7 +1061,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeyValue(String key, String label, String syncToken, String acceptDatetime, String ifMatch,
@@ -1070,11 +1072,11 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key The key of the key-value to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeyValue(String key) {
@@ -1090,7 +1092,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -1100,7 +1102,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1125,7 +1127,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -1136,7 +1138,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1162,7 +1164,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -1172,7 +1174,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1185,11 +1187,11 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     * 
+     *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1206,7 +1208,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -1217,7 +1219,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1232,14 +1234,14 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1251,13 +1253,13 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkSnapshots(String syncToken, String after) {
@@ -1266,9 +1268,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkSnapshots() {
@@ -1279,7 +1281,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a single key-value snapshot.
-     * 
+     *
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
      * @param select Used to select what fields are present in the returned resource(s).
@@ -1291,7 +1293,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value snapshot.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1309,7 +1311,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a single key-value snapshot.
-     * 
+     *
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
      * @param select Used to select what fields are present in the returned resource(s).
@@ -1320,7 +1322,7 @@ public final class AzureAppConfigurationClientImpl {
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value snapshot.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1332,12 +1334,12 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a single key-value snapshot.
-     * 
+     *
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value snapshot.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1352,7 +1354,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Updates the state of a key-value snapshot.
-     * 
+     *
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
@@ -1365,7 +1367,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1378,7 +1380,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Updates the state of a key-value snapshot.
-     * 
+     *
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
@@ -1390,7 +1392,7 @@ public final class AzureAppConfigurationClientImpl {
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1402,14 +1404,14 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Updates the state of a key-value snapshot.
-     * 
+     *
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
      * @param entity The parameters used to update the snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1424,7 +1426,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name The name of the key-value snapshot to check.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
@@ -1434,7 +1436,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1447,7 +1449,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name The name of the key-value snapshot to check.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
@@ -1456,7 +1458,7 @@ public final class AzureAppConfigurationClientImpl {
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkSnapshot(String name, String syncToken, String ifMatch, String ifNoneMatch) {
@@ -1465,11 +1467,11 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name The name of the key-value snapshot to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkSnapshot(String name) {
@@ -1481,7 +1483,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -1492,7 +1494,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1511,7 +1513,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -1523,7 +1525,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1542,7 +1544,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -1553,7 +1555,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1566,11 +1568,11 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     * 
+     *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1587,7 +1589,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     * 
+     *
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -1599,7 +1601,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1614,7 +1616,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -1625,7 +1627,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1643,7 +1645,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -1653,7 +1655,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkLabels(String name, String syncToken, String after, String acceptDatetime,
@@ -1663,9 +1665,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkLabels() {
@@ -1679,7 +1681,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Locks a key-value.
-     * 
+     *
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to lock.
@@ -1691,7 +1693,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1703,7 +1705,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Locks a key-value.
-     * 
+     *
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to lock.
@@ -1714,7 +1716,7 @@ public final class AzureAppConfigurationClientImpl {
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1726,12 +1728,12 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Locks a key-value.
-     * 
+     *
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1746,7 +1748,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Unlocks a key-value.
-     * 
+     *
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to unlock.
@@ -1758,7 +1760,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1770,7 +1772,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Unlocks a key-value.
-     * 
+     *
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to unlock.
@@ -1781,7 +1783,7 @@ public final class AzureAppConfigurationClientImpl {
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1793,12 +1795,12 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Unlocks a key-value.
-     * 
+     *
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1813,7 +1815,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
@@ -1829,7 +1831,7 @@ public final class AzureAppConfigurationClientImpl {
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1852,7 +1854,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
@@ -1869,7 +1871,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1893,7 +1895,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
@@ -1909,7 +1911,7 @@ public final class AzureAppConfigurationClientImpl {
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1923,11 +1925,11 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     * 
+     *
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1947,7 +1949,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     * 
+     *
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
@@ -1964,7 +1966,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1980,7 +1982,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @param label A filter used to match labels. Syntax reference:
@@ -1996,7 +1998,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2017,7 +2019,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @param label A filter used to match labels. Syntax reference:
@@ -2032,7 +2034,7 @@ public final class AzureAppConfigurationClientImpl {
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkRevisions(String key, String label, String syncToken, String after, String acceptDatetime,
@@ -2042,9 +2044,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Requests the headers and status of the given resource.
-     * 
+     *
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkRevisions() {
@@ -2060,12 +2062,12 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets the state of a long running operation.
-     * 
+     *
      * @param snapshot Snapshot identifier for the long running operation.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the state of a long running operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2077,11 +2079,11 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets the state of a long running operation.
-     * 
+     *
      * @param snapshot Snapshot identifier for the long running operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the state of a long running operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2091,9 +2093,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     * 
+     *
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2101,7 +2103,7 @@ public final class AzureAppConfigurationClientImpl {
      * time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2115,9 +2117,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     * 
+     *
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2126,7 +2128,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2140,9 +2142,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     * 
+     *
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2154,7 +2156,7 @@ public final class AzureAppConfigurationClientImpl {
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2168,9 +2170,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     * 
+     *
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2183,7 +2185,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2197,15 +2199,15 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     * 
+     *
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a snapshot list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2219,16 +2221,16 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     * 
+     *
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a snapshot list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2242,9 +2244,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     * 
+     *
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2252,7 +2254,7 @@ public final class AzureAppConfigurationClientImpl {
      * time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2266,9 +2268,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     * 
+     *
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2277,7 +2279,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2291,9 +2293,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     * 
+     *
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2301,7 +2303,7 @@ public final class AzureAppConfigurationClientImpl {
      * time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2315,9 +2317,9 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     * 
+     *
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -2326,7 +2328,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CoreException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.agents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,11 +17,13 @@ public final class KnowledgeAgentMessageContentType extends ExpandableStringEnum
     /**
      * Text message content kind.
      */
+    @Generated
     public static final KnowledgeAgentMessageContentType TEXT = fromString("text");
 
     /**
      * Image message content kind.
      */
+    @Generated
     public static final KnowledgeAgentMessageContentType IMAGE = fromString("image");
 
     /**
@@ -28,6 +31,7 @@ public final class KnowledgeAgentMessageContentType extends ExpandableStringEnum
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public KnowledgeAgentMessageContentType() {
     }
@@ -38,6 +42,7 @@ public final class KnowledgeAgentMessageContentType extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding KnowledgeAgentMessageContentType.
      */
+    @Generated
     public static KnowledgeAgentMessageContentType fromString(String name) {
         return fromString(name, KnowledgeAgentMessageContentType.class);
     }
@@ -47,6 +52,7 @@ public final class KnowledgeAgentMessageContentType extends ExpandableStringEnum
      * 
      * @return known KnowledgeAgentMessageContentType values.
      */
+    @Generated
     public static Collection<KnowledgeAgentMessageContentType> values() {
         return values(KnowledgeAgentMessageContentType.class);
     }

@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,6 +18,7 @@ public final class DocumentIntelligenceLayoutSkillOutputMode
     /**
      * Specify that the output should be parsed as 'oneToMany'.
      */
+    @Generated
     public static final DocumentIntelligenceLayoutSkillOutputMode ONE_TO_MANY = fromString("oneToMany");
 
     /**
@@ -24,6 +26,7 @@ public final class DocumentIntelligenceLayoutSkillOutputMode
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DocumentIntelligenceLayoutSkillOutputMode() {
     }
@@ -34,6 +37,7 @@ public final class DocumentIntelligenceLayoutSkillOutputMode
      * @param name a name to look for.
      * @return the corresponding DocumentIntelligenceLayoutSkillOutputMode.
      */
+    @Generated
     public static DocumentIntelligenceLayoutSkillOutputMode fromString(String name) {
         return fromString(name, DocumentIntelligenceLayoutSkillOutputMode.class);
     }
@@ -43,6 +47,7 @@ public final class DocumentIntelligenceLayoutSkillOutputMode
      * 
      * @return known DocumentIntelligenceLayoutSkillOutputMode values.
      */
+    @Generated
     public static Collection<DocumentIntelligenceLayoutSkillOutputMode> values() {
         return values(DocumentIntelligenceLayoutSkillOutputMode.class);
     }

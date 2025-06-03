@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class IncomingRelationshipCollection implements JsonSerializable<In
     /*
      * The value property.
      */
+    @Generated
     private final List<IncomingRelationship> value;
 
     /*
      * A URI to retrieve the next page of objects.
      */
+    @Generated
     private String nextLink;
 
     /**
@@ -32,6 +35,7 @@ public final class IncomingRelationshipCollection implements JsonSerializable<In
      * 
      * @param value the value value to set.
      */
+    @Generated
     public IncomingRelationshipCollection(List<IncomingRelationship> value) {
         this.value = value;
     }
@@ -41,6 +45,7 @@ public final class IncomingRelationshipCollection implements JsonSerializable<In
      * 
      * @return the value value.
      */
+    @Generated
     public List<IncomingRelationship> getValue() {
         return this.value;
     }
@@ -50,6 +55,7 @@ public final class IncomingRelationshipCollection implements JsonSerializable<In
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -60,6 +66,7 @@ public final class IncomingRelationshipCollection implements JsonSerializable<In
      * @param nextLink the nextLink value to set.
      * @return the IncomingRelationshipCollection object itself.
      */
+    @Generated
     public IncomingRelationshipCollection setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -68,6 +75,7 @@ public final class IncomingRelationshipCollection implements JsonSerializable<In
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -85,6 +93,7 @@ public final class IncomingRelationshipCollection implements JsonSerializable<In
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IncomingRelationshipCollection.
      */
+    @Generated
     public static IncomingRelationshipCollection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean valueFound = false;

@@ -8,10 +8,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.body.InitializerDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
-import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
@@ -30,88 +27,65 @@ public class SearchCustomization extends Customization {
         customizeBoundaryProperties(implementationModels);
         customizeGeoJsonObject(models);
         customizeBoundary(models);
-        customizeBoundaryBbox(models);
 
-    }
-
-    private void customizeBoundaryBbox(PackageCustomization models) {
-        models.getClass("Boundary").customizeAst(ast -> {
-            ast.addImport("com.azure.core.models.GeoBoundingBox");
-
-            ast.getClassByName("Boundary").ifPresent(clazz -> clazz.getMethodsByName("setBbox").get(0)
-                .setParameters(new NodeList<>(new Parameter().setName("bbox").setType("GeoBoundingBox")))
-                .setBody(StaticJavaParser.parseBlock(
-                    "{ List<Double> bboxList = new ArrayList<>(); bboxList.add(bbox.getNorth()); bboxList.add(bbox.getWest()); bboxList.add(bbox.getSouth()); bboxList.add(bbox.getEast()); super.setBbox(bboxList); return this; }"))
-                .setJavadocComment("/**\n" +
-                " * Sets the bounding box of this feature using a {@link GeoBoundingBox}.\n" +
-                " *\n" +
-                " * @param bbox The bounding box to set.\n" +
-                " * @return The updated Boundary object.\n" +
-                " */")
-                .getAnnotationByName("Override").ifPresent(Node::remove));
-        });
     }
 
     private void customizeGeoJsonObject(PackageCustomization models) {
         models.getClass("GeoJsonObject").customizeAst(ast -> {
-            ast.addImport("com.azure.maps.search.implementation.models.GeoJsonPoint")
-                .addImport("com.azure.maps.search.implementation.models.GeoJsonMultiPoint")
-                .addImport("com.azure.maps.search.implementation.models.GeoJsonLineString")
-                .addImport("com.azure.maps.search.implementation.models.GeoJsonMultiLineString")
-                .addImport("com.azure.maps.search.implementation.models.GeoJsonPolygon")
-                .addImport("com.azure.maps.search.implementation.models.GeoJsonMultiPolygon")
-                .addImport("com.azure.maps.search.implementation.models.GeoJsonGeometryCollection");
+            ast.addImport("com.azure.maps.search.implementation.models.GeoJsonPoint");
+            ast.addImport("com.azure.maps.search.implementation.models.GeoJsonMultiPoint");
+            ast.addImport("com.azure.maps.search.implementation.models.GeoJsonLineString");
+            ast.addImport("com.azure.maps.search.implementation.models.GeoJsonMultiLineString");
+            ast.addImport("com.azure.maps.search.implementation.models.GeoJsonPolygon");
+            ast.addImport("com.azure.maps.search.implementation.models.GeoJsonMultiPolygon");
+            ast.addImport("com.azure.maps.search.implementation.models.GeoJsonGeometryCollection");
         });
     }
 
     private void customizeBoundary(PackageCustomization models) {
         models.getClass("Boundary").customizeAst(ast -> {
-            ast.getClassByName("Boundary").ifPresent(clazz -> clazz.getMethodsByName("getCopyrightURL").get(0)
-                .setName("getCopyrightUrl"));
+            ast.addImport("com.azure.core.models.GeoBoundingBox");
 
-            ast.getClassByName("Boundary").ifPresent(clazz -> clazz.getMethodsByName("setCopyrightURL").get(0)
-                .setName("setCopyrightUrl"));
+            ast.getClassByName("Boundary").ifPresent(clazz -> {
+                clazz.getFieldByName("type").ifPresent(field -> field.getVariable(0)
+                    .setInitializer(StaticJavaParser.parseExpression("GeoJsonObjectType.fromString(\"Boundary\")")));
+                clazz.getMethodsByName("getCopyrightURL").forEach(method -> method.setName("getCopyrightUrl"));
+                clazz.getMethodsByName("setCopyrightURL").forEach(method -> method.setName("setCopyrightUrl"));
+                clazz.getMethodsByName("setBbox").forEach(method -> {
+                    method.getAnnotationByName("Override").ifPresent(Node::remove);
+                    method.setParameters(new NodeList<>(new Parameter().setName("bbox").setType("GeoBoundingBox")))
+                        .setBody(StaticJavaParser.parseBlock(
+                            "{ List<Double> bboxList = new ArrayList<>(); bboxList.add(bbox.getNorth());"
+                                + "bboxList.add(bbox.getWest()); bboxList.add(bbox.getSouth()); bboxList.add(bbox.getEast());"
+                                + "super.setBbox(bboxList); return this; }"))
+                        .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                            "Sets the bounding box of this feature using a {@link GeoBoundingBox}."))
+                            .addBlockTag("param", "bbox", "The bounding box to set.")
+                            .addBlockTag("return", "The updated Boundary object."));
+                });
+            });
         });
     }
 
     private void customizeBoundaryProperties(PackageCustomization models) {
-        models.getClass("BoundaryProperties").customizeAst(ast -> {
-            ast.getClassByName("BoundaryProperties").ifPresent(clazz -> clazz.getMethodsByName("getCopyrightURL").get(0)
-                .setName("getCopyrightUrl"));
-
-            ast.getClassByName("BoundaryProperties").ifPresent(clazz -> clazz.getMethodsByName("setCopyrightURL").get(0)
-                .setName("setCopyrightUrl"));
-        });
-    }
-
-    private void customizeGeoJsonGeometry(PackageCustomization models) {
-        models.getClass("GeoJsonGeometry").customizeAst(ast -> {
-            ast.getClassByName("GeoJsonGeometry").ifPresent(clazz -> clazz.getMethodsByName("fromJsonKnownDiscriminator").get(0)
-                .setJavadocComment(new Javadoc(JavadocDescription.parseText("Reads an instance of GeoJsonGeometry from the JsonReader.")))
-                .setModifiers(Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC));
-        });
-    }
-
-    private void customizeGeoJsonFeature(PackageCustomization models) {
-        models.getClass("GeoJsonFeature").customizeAst(ast -> {
-            ast.getClassByName("GeoJsonFeature").ifPresent(clazz -> clazz.getMethodsByName("fromJsonKnownDiscriminator").get(0)
-                .setJavadocComment(new Javadoc(JavadocDescription.parseText("Copy string literal text to the clipboard")))
-                .setModifiers(Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC));
-        });
+        models.getClass("BoundaryProperties").customizeAst(ast -> ast.getClassByName("BoundaryProperties").ifPresent(clazz -> {
+            clazz.getMethodsByName("getCopyrightURL").forEach(method -> method.setName("getCopyrightUrl"));
+            clazz.getMethodsByName("setCopyrightURL").forEach(method -> method.setName("setCopyrightUrl"));
+        }));
     }
 
     private void customizeReverseGeocodingBatchRequestItem(PackageCustomization models) {
         models.getClass("ReverseGeocodingBatchRequestItem").customizeAst(ast -> {
                 ast.addImport("com.azure.core.models.GeoPosition");
 
-                ast.getClassByName("ReverseGeocodingBatchRequestItem").ifPresent(clazz -> clazz.getMethodsByName("getCoordinates").get(0)
-                    .setType("GeoPosition")
-                    .setBody(StaticJavaParser.parseBlock("{ return com.azure.maps.search.implementation.helpers.Utility.fromDoubleList(this.coordinates); }")));
-
-                ast.getClassByName("ReverseGeocodingBatchRequestItem").ifPresent(clazz -> clazz.getMethodsByName("setCoordinates").get(0)
-                    .setParameters(new NodeList<>(new Parameter().setName("coordinates").setType("GeoPosition")))
-                    .setBody(StaticJavaParser.parseBlock(
-                        "{ this.coordinates = new ArrayList<>(); this.coordinates.add(coordinates.getLongitude()); this.coordinates.add(coordinates.getLatitude()); return this; }")));
+                ast.getClassByName("ReverseGeocodingBatchRequestItem").ifPresent(clazz -> {
+                    clazz.getMethodsByName("getCoordinates").forEach(method -> method.setType("GeoPosition")
+                        .setBody(StaticJavaParser.parseBlock("{ return com.azure.maps.search.implementation.helpers.Utility.fromDoubleList(this.coordinates); }")));
+                    clazz.getMethodsByName("setCoordinates").forEach(method ->
+                        method.setParameters(new NodeList<>(new Parameter().setName("coordinates").setType("GeoPosition")))
+                        .setBody(StaticJavaParser.parseBlock(
+                            "{ this.coordinates = new ArrayList<>(); this.coordinates.add(coordinates.getLongitude()); this.coordinates.add(coordinates.getLatitude()); return this; }")));
+                });
         });
     }
 

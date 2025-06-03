@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,16 +24,19 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
     /*
      * The number of documents in the index.
      */
+    @Generated
     private final long documentCount;
 
     /*
      * The amount of storage in bytes consumed by the index.
      */
+    @Generated
     private final long storageSize;
 
     /*
      * The amount of memory in bytes consumed by vectors in the index.
      */
+    @Generated
     private Long vectorIndexSize;
 
     /**
@@ -41,6 +45,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
      * @param documentCount the documentCount value to set.
      * @param storageSize the storageSize value to set.
      */
+    @Generated
     public SearchIndexStatistics(long documentCount, long storageSize) {
         this.documentCount = documentCount;
         this.storageSize = storageSize;
@@ -51,6 +56,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
      * 
      * @return the documentCount value.
      */
+    @Generated
     public long getDocumentCount() {
         return this.documentCount;
     }
@@ -60,6 +66,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
      * 
      * @return the storageSize value.
      */
+    @Generated
     public long getStorageSize() {
         return this.storageSize;
     }
@@ -69,6 +76,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
      * 
      * @return the vectorIndexSize value.
      */
+    @Generated
     public Long getVectorIndexSize() {
         return this.vectorIndexSize;
     }
@@ -76,6 +84,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexStatistics.
      */
+    @Generated
     public static SearchIndexStatistics fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean documentCountFound = false;

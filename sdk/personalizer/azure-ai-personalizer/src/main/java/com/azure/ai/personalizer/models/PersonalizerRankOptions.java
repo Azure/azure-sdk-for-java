@@ -4,6 +4,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -26,6 +27,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * Features should not include personally identifiable information (PII),
      * unique UserIDs, or precise timestamps.
      */
+    @Generated
     private List<BinaryData> contextFeatures;
 
     /*
@@ -35,6 +37,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * should match the sequence your application would have used to display them.
      * The first item in the array will be used as Baseline item in Offline Evaluations.
      */
+    @Generated
     private List<PersonalizerRankableAction> actions;
 
     /*
@@ -42,6 +45,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * Personalizer will consider the first non-excluded item in the array as the Baseline action when performing
      * Offline Evaluations.
      */
+    @Generated
     private List<String> excludedActions;
 
     /*
@@ -50,6 +54,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * associating this request with its reward, as well as seeding the pseudo-random
      * generator when making a Personalizer call.
      */
+    @Generated
     private String eventId;
 
     /*
@@ -59,11 +64,13 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * (e.g. because the page is rendering later, or the Rank results may be overridden by code further downstream).
      * You must call the Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
      */
+    @Generated
     private Boolean deferActivation;
 
     /**
      * Creates an instance of PersonalizerRankOptions class.
      */
+    @Generated
     public PersonalizerRankOptions() {
     }
 
@@ -77,6 +84,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      *
      * @return the contextFeatures value.
      */
+    @Generated
     public List<BinaryData> getContextFeatures() {
         return this.contextFeatures;
     }
@@ -92,6 +100,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * @param contextFeatures the contextFeatures value to set.
      * @return the PersonalizerRankOptions object itself.
      */
+    @Generated
     public PersonalizerRankOptions setContextFeatures(List<BinaryData> contextFeatures) {
         this.contextFeatures = contextFeatures;
         return this;
@@ -106,6 +115,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      *
      * @return the actions value.
      */
+    @Generated
     public List<PersonalizerRankableAction> getActions() {
         return this.actions;
     }
@@ -120,6 +130,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * @param actions the actions value to set.
      * @return the PersonalizerRankOptions object itself.
      */
+    @Generated
     public PersonalizerRankOptions setActions(List<PersonalizerRankableAction> actions) {
         this.actions = actions;
         return this;
@@ -132,6 +143,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      *
      * @return the excludedActions value.
      */
+    @Generated
     public List<String> getExcludedActions() {
         return this.excludedActions;
     }
@@ -144,6 +156,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * @param excludedActions the excludedActions value to set.
      * @return the PersonalizerRankOptions object itself.
      */
+    @Generated
     public PersonalizerRankOptions setExcludedActions(List<String> excludedActions) {
         this.excludedActions = excludedActions;
         return this;
@@ -157,6 +170,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      *
      * @return the eventId value.
      */
+    @Generated
     public String getEventId() {
         return this.eventId;
     }
@@ -170,6 +184,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * @param eventId the eventId value to set.
      * @return the PersonalizerRankOptions object itself.
      */
+    @Generated
     public PersonalizerRankOptions setEventId(String eventId) {
         this.eventId = eventId;
         return this;
@@ -185,6 +200,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      *
      * @return the deferActivation value.
      */
+    @Generated
     public Boolean isDeferActivation() {
         return this.deferActivation;
     }
@@ -200,6 +216,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * @param deferActivation the deferActivation value to set.
      * @return the PersonalizerRankOptions object itself.
      */
+    @Generated
     public PersonalizerRankOptions setDeferActivation(Boolean deferActivation) {
         this.deferActivation = deferActivation;
         return this;
@@ -208,6 +225,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -230,6 +248,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PersonalizerRankOptions.
      */
+    @Generated
     public static PersonalizerRankOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerRankOptions deserializedPersonalizerRankOptions = new PersonalizerRankOptions();

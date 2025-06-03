@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class StorageLifecyclePolicyRunSummary implements JsonSerializable<
     /*
      * Policy status can be Completed/CompletedWithError/Incomplete.
      */
+    @Generated
     private StorageLifecycleCompletionStatus completionStatus;
 
     /**
      * Creates an instance of StorageLifecyclePolicyRunSummary class.
      */
+    @Generated
     public StorageLifecyclePolicyRunSummary() {
     }
 
@@ -32,6 +35,7 @@ public final class StorageLifecyclePolicyRunSummary implements JsonSerializable<
      * 
      * @return the completionStatus value.
      */
+    @Generated
     public StorageLifecycleCompletionStatus getCompletionStatus() {
         return this.completionStatus;
     }
@@ -42,6 +46,7 @@ public final class StorageLifecyclePolicyRunSummary implements JsonSerializable<
      * @param completionStatus the completionStatus value to set.
      * @return the StorageLifecyclePolicyRunSummary object itself.
      */
+    @Generated
     public StorageLifecyclePolicyRunSummary setCompletionStatus(StorageLifecycleCompletionStatus completionStatus) {
         this.completionStatus = completionStatus;
         return this;
@@ -50,6 +55,7 @@ public final class StorageLifecyclePolicyRunSummary implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +73,7 @@ public final class StorageLifecyclePolicyRunSummary implements JsonSerializable<
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StorageLifecyclePolicyRunSummary.
      */
+    @Generated
     public static StorageLifecyclePolicyRunSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StorageLifecyclePolicyRunSummary deserializedStorageLifecyclePolicyRunSummary

@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ResponseFormat extends ExpandableStringEnum<ResponseFormat> {
     /**
      * [The JavaScript Object Notation Data Interchange Format](https://tools.ietf.org/html/rfc8259).
      */
+    @Generated
     public static final ResponseFormat JSON = fromString("json");
 
     /**
      * [The Extensible Markup Language](https://www.w3.org/TR/xml/).
      */
+    @Generated
     public static final ResponseFormat XML = fromString("xml");
 
     /**
@@ -26,6 +29,7 @@ public final class ResponseFormat extends ExpandableStringEnum<ResponseFormat> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ResponseFormat() {
     }
@@ -36,6 +40,7 @@ public final class ResponseFormat extends ExpandableStringEnum<ResponseFormat> {
      * @param name a name to look for.
      * @return the corresponding ResponseFormat.
      */
+    @Generated
     public static ResponseFormat fromString(String name) {
         return fromString(name, ResponseFormat.class);
     }
@@ -45,6 +50,7 @@ public final class ResponseFormat extends ExpandableStringEnum<ResponseFormat> {
      * 
      * @return known ResponseFormat values.
      */
+    @Generated
     public static Collection<ResponseFormat> values() {
         return values(ResponseFormat.class);
     }

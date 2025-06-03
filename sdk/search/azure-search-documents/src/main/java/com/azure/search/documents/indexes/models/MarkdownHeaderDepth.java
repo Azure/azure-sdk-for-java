@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,32 +17,38 @@ public final class MarkdownHeaderDepth extends ExpandableStringEnum<MarkdownHead
     /**
      * Indicates that headers up to a level of h1 will be considered while grouping markdown content.
      */
+    @Generated
     public static final MarkdownHeaderDepth H1 = fromString("h1");
 
     /**
      * Indicates that headers up to a level of h2 will be considered while grouping markdown content.
      */
+    @Generated
     public static final MarkdownHeaderDepth H2 = fromString("h2");
 
     /**
      * Indicates that headers up to a level of h3 will be considered while grouping markdown content.
      */
+    @Generated
     public static final MarkdownHeaderDepth H3 = fromString("h3");
 
     /**
      * Indicates that headers up to a level of h4 will be considered while grouping markdown content.
      */
+    @Generated
     public static final MarkdownHeaderDepth H4 = fromString("h4");
 
     /**
      * Indicates that headers up to a level of h5 will be considered while grouping markdown content.
      */
+    @Generated
     public static final MarkdownHeaderDepth H5 = fromString("h5");
 
     /**
      * Indicates that headers up to a level of h6 will be considered while grouping markdown content. This is the
      * default.
      */
+    @Generated
     public static final MarkdownHeaderDepth H6 = fromString("h6");
 
     /**
@@ -49,6 +56,7 @@ public final class MarkdownHeaderDepth extends ExpandableStringEnum<MarkdownHead
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MarkdownHeaderDepth() {
     }
@@ -59,6 +67,7 @@ public final class MarkdownHeaderDepth extends ExpandableStringEnum<MarkdownHead
      * @param name a name to look for.
      * @return the corresponding MarkdownHeaderDepth.
      */
+    @Generated
     public static MarkdownHeaderDepth fromString(String name) {
         return fromString(name, MarkdownHeaderDepth.class);
     }
@@ -68,6 +77,7 @@ public final class MarkdownHeaderDepth extends ExpandableStringEnum<MarkdownHead
      * 
      * @return known MarkdownHeaderDepth values.
      */
+    @Generated
     public static Collection<MarkdownHeaderDepth> values() {
         return values(MarkdownHeaderDepth.class);
     }

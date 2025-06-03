@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class DeviceTwinProperties implements JsonSerializable<DeviceTwinPr
     /*
      * Metadata information for the properties JSON document.
      */
+    @Generated
     private DeviceTwinMetadata metadata;
 
     /*
      * Version of device twin properties.
      */
+    @Generated
     private Float version;
 
     /**
      * Creates an instance of DeviceTwinProperties class.
      */
+    @Generated
     public DeviceTwinProperties() {
     }
 
@@ -37,6 +41,7 @@ public final class DeviceTwinProperties implements JsonSerializable<DeviceTwinPr
      * 
      * @return the metadata value.
      */
+    @Generated
     public DeviceTwinMetadata getMetadata() {
         return this.metadata;
     }
@@ -47,6 +52,7 @@ public final class DeviceTwinProperties implements JsonSerializable<DeviceTwinPr
      * @param metadata the metadata value to set.
      * @return the DeviceTwinProperties object itself.
      */
+    @Generated
     public DeviceTwinProperties setMetadata(DeviceTwinMetadata metadata) {
         this.metadata = metadata;
         return this;
@@ -57,6 +63,7 @@ public final class DeviceTwinProperties implements JsonSerializable<DeviceTwinPr
      * 
      * @return the version value.
      */
+    @Generated
     public Float getVersion() {
         return this.version;
     }
@@ -67,6 +74,7 @@ public final class DeviceTwinProperties implements JsonSerializable<DeviceTwinPr
      * @param version the version value to set.
      * @return the DeviceTwinProperties object itself.
      */
+    @Generated
     public DeviceTwinProperties setVersion(Float version) {
         this.version = version;
         return this;
@@ -75,6 +83,7 @@ public final class DeviceTwinProperties implements JsonSerializable<DeviceTwinPr
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class DeviceTwinProperties implements JsonSerializable<DeviceTwinPr
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeviceTwinProperties.
      */
+    @Generated
     public static DeviceTwinProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeviceTwinProperties deserializedDeviceTwinProperties = new DeviceTwinProperties();

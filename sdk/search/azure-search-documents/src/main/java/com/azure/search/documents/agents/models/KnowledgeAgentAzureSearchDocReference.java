@@ -7,6 +7,7 @@
 package com.azure.search.documents.agents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,16 +24,19 @@ public final class KnowledgeAgentAzureSearchDocReference extends KnowledgeAgentR
     /*
      * The type of the reference.
      */
+    @Generated
     private String type = "AzureSearchDoc";
 
     /*
      * The document key for the reference.
      */
+    @Generated
     private String docKey;
 
     /*
      * Dictionary of <any>
      */
+    @Generated
     private Map<String, Object> sourceData;
 
     /**
@@ -41,6 +45,7 @@ public final class KnowledgeAgentAzureSearchDocReference extends KnowledgeAgentR
      * @param id the id value to set.
      * @param activitySource the activitySource value to set.
      */
+    @Generated
     public KnowledgeAgentAzureSearchDocReference(String id, int activitySource) {
         super(id, activitySource);
     }
@@ -50,6 +55,7 @@ public final class KnowledgeAgentAzureSearchDocReference extends KnowledgeAgentR
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -60,6 +66,7 @@ public final class KnowledgeAgentAzureSearchDocReference extends KnowledgeAgentR
      * 
      * @return the docKey value.
      */
+    @Generated
     public String getDocKey() {
         return this.docKey;
     }
@@ -70,6 +77,7 @@ public final class KnowledgeAgentAzureSearchDocReference extends KnowledgeAgentR
      * @param docKey the docKey value to set.
      * @return the KnowledgeAgentAzureSearchDocReference object itself.
      */
+    @Generated
     public KnowledgeAgentAzureSearchDocReference setDocKey(String docKey) {
         this.docKey = docKey;
         return this;
@@ -80,6 +88,7 @@ public final class KnowledgeAgentAzureSearchDocReference extends KnowledgeAgentR
      * 
      * @return the sourceData value.
      */
+    @Generated
     public Map<String, Object> getSourceData() {
         return this.sourceData;
     }
@@ -90,6 +99,7 @@ public final class KnowledgeAgentAzureSearchDocReference extends KnowledgeAgentR
      * @param sourceData the sourceData value to set.
      * @return the KnowledgeAgentAzureSearchDocReference object itself.
      */
+    @Generated
     public KnowledgeAgentAzureSearchDocReference setSourceData(Map<String, Object> sourceData) {
         this.sourceData = sourceData;
         return this;
@@ -98,6 +108,7 @@ public final class KnowledgeAgentAzureSearchDocReference extends KnowledgeAgentR
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +129,7 @@ public final class KnowledgeAgentAzureSearchDocReference extends KnowledgeAgentR
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KnowledgeAgentAzureSearchDocReference.
      */
+    @Generated
     public static KnowledgeAgentAzureSearchDocReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

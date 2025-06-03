@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,16 +24,19 @@ public final class QueryResultDocumentInnerHit implements JsonSerializable<Query
     /*
      * Position of this specific matching element within it's original collection. Position starts at 0.
      */
+    @Generated
     private Long ordinal;
 
     /*
      * Detailed scoring information for an individual element of a complex collection that matched a vector query.
      */
+    @Generated
     private List<Map<String, SingleVectorFieldResult>> vectors;
 
     /**
      * Creates an instance of QueryResultDocumentInnerHit class.
      */
+    @Generated
     public QueryResultDocumentInnerHit() {
     }
 
@@ -42,6 +46,7 @@ public final class QueryResultDocumentInnerHit implements JsonSerializable<Query
      * 
      * @return the ordinal value.
      */
+    @Generated
     public Long getOrdinal() {
         return this.ordinal;
     }
@@ -52,6 +57,7 @@ public final class QueryResultDocumentInnerHit implements JsonSerializable<Query
      * 
      * @return the vectors value.
      */
+    @Generated
     public List<Map<String, SingleVectorFieldResult>> getVectors() {
         return this.vectors;
     }
@@ -59,6 +65,7 @@ public final class QueryResultDocumentInnerHit implements JsonSerializable<Query
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -73,6 +80,7 @@ public final class QueryResultDocumentInnerHit implements JsonSerializable<Query
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the QueryResultDocumentInnerHit.
      */
+    @Generated
     public static QueryResultDocumentInnerHit fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             QueryResultDocumentInnerHit deserializedQueryResultDocumentInnerHit = new QueryResultDocumentInnerHit();

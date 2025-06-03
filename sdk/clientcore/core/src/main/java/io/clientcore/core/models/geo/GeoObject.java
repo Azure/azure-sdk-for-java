@@ -5,6 +5,7 @@ package io.clientcore.core.models.geo;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -35,6 +36,7 @@ import java.util.Objects;
  */
 @Metadata(properties = MetadataProperties.IMMUTABLE)
 public abstract class GeoObject implements JsonSerializable<GeoObject> {
+    private static final ClientLogger LOGGER = new ClientLogger(GeoObject.class);
     private final GeoBoundingBox boundingBox;
     private final Map<String, Object> customProperties;
 
@@ -159,9 +161,11 @@ public abstract class GeoObject implements JsonSerializable<GeoObject> {
             } else if ("GeometryCollection".equals(discriminatorValue)) {
                 return GeoCollection.fromJson(readerToUse);
             } else {
-                throw new IllegalStateException("Discriminator field 'type' didn't match one of the expected values "
-                    + "'Point', 'MultiPoint', 'Polygon', 'MultiPolygon', 'LineString', 'MultiLineString', or "
-                    + "'GeometryCollection'. It was: '" + discriminatorValue + "'.");
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("expectedTypes",
+                        "one of: 'Point', 'MultiPoint', 'Polygon', 'MultiPolygon', 'LineString', 'MultiLineString', or 'GeometryCollection'")
+                    .addKeyValue("actualType", discriminatorValue)
+                    .log("Deserialization failed, unknown 'type' value", IllegalStateException::new);
             }
         });
     }

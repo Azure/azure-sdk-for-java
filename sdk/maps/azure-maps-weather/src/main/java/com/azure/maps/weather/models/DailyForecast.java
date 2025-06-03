@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,56 +24,67 @@ public final class DailyForecast implements JsonSerializable<DailyForecast> {
     /*
      * Date and time of the current observation displayed in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00.
      */
+    @Generated
     private OffsetDateTime dateTime;
 
     /*
      * Temperature values for the day.
      */
+    @Generated
     private WeatherValueRange temperature;
 
     /*
      * RealFeel™ Temperature being returned.
      */
+    @Generated
     private WeatherValueRange realFeelTemperature;
 
     /*
      * RealFeel™ Temperature being returned. Describes what the temperature really feels like in the shade.
      */
+    @Generated
     private WeatherValueRange realFeelTemperatureShade;
 
     /*
      * Hours of sun.
      */
+    @Generated
     private Float hoursOfSun;
 
     /*
      * Summary for mean temperature of Heating Degree Day or Cooling Degree Day information
      */
+    @Generated
     private DegreeDaySummary meanTemperatureDeviation;
 
     /*
      * Air quality
      */
+    @Generated
     private List<AirAndPollen> airQuality;
 
     /*
      * Day forecast detail
      */
+    @Generated
     private DailyForecastDetail daytimeForecast;
 
     /*
      * Night forecast detail
      */
+    @Generated
     private DailyForecastDetail nighttimeForecast;
 
     /*
      * Source(s) of the forecast data.
      */
+    @Generated
     private List<String> sources;
 
     /**
      * Set default DailyForecast constructor to private
      */
+    @Generated
     private DailyForecast() {
     }
 
@@ -82,6 +94,7 @@ public final class DailyForecast implements JsonSerializable<DailyForecast> {
      *
      * @return the dateTime value.
      */
+    @Generated
     public OffsetDateTime getDateTime() {
         return this.dateTime;
     }
@@ -91,6 +104,7 @@ public final class DailyForecast implements JsonSerializable<DailyForecast> {
      *
      * @return the temperature value.
      */
+    @Generated
     public WeatherValueRange getTemperature() {
         return this.temperature;
     }
@@ -100,6 +114,7 @@ public final class DailyForecast implements JsonSerializable<DailyForecast> {
      *
      * @return the realFeelTemperature value.
      */
+    @Generated
     public WeatherValueRange getRealFeelTemperature() {
         return this.realFeelTemperature;
     }
@@ -110,6 +125,7 @@ public final class DailyForecast implements JsonSerializable<DailyForecast> {
      *
      * @return the realFeelTemperatureShade value.
      */
+    @Generated
     public WeatherValueRange getRealFeelTemperatureShade() {
         return this.realFeelTemperatureShade;
     }
@@ -119,6 +135,7 @@ public final class DailyForecast implements JsonSerializable<DailyForecast> {
      *
      * @return the hoursOfSun value.
      */
+    @Generated
     public Float getHoursOfSun() {
         return this.hoursOfSun;
     }
@@ -129,6 +146,7 @@ public final class DailyForecast implements JsonSerializable<DailyForecast> {
      *
      * @return the meanTemperatureDeviation value.
      */
+    @Generated
     public DegreeDaySummary getMeanTemperatureDeviation() {
         return this.meanTemperatureDeviation;
     }
@@ -138,6 +156,7 @@ public final class DailyForecast implements JsonSerializable<DailyForecast> {
      *
      * @return the airQuality value.
      */
+    @Generated
     public List<AirAndPollen> getAirQuality() {
         return this.airQuality;
     }
@@ -147,6 +166,7 @@ public final class DailyForecast implements JsonSerializable<DailyForecast> {
      *
      * @return the daytimeForecast value.
      */
+    @Generated
     public DailyForecastDetail getDaytimeForecast() {
         return this.daytimeForecast;
     }
@@ -156,6 +176,7 @@ public final class DailyForecast implements JsonSerializable<DailyForecast> {
      *
      * @return the nighttimeForecast value.
      */
+    @Generated
     public DailyForecastDetail getNighttimeForecast() {
         return this.nighttimeForecast;
     }
@@ -165,6 +186,7 @@ public final class DailyForecast implements JsonSerializable<DailyForecast> {
      *
      * @return the sources value.
      */
+    @Generated
     public List<String> getSources() {
         return this.sources;
     }
@@ -172,6 +194,7 @@ public final class DailyForecast implements JsonSerializable<DailyForecast> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -197,6 +220,7 @@ public final class DailyForecast implements JsonSerializable<DailyForecast> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DailyForecast.
      */
+    @Generated
     public static DailyForecast fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DailyForecast deserializedDailyForecast = new DailyForecast();

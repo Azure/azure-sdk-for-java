@@ -8,6 +8,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.ReadConsistencyStrategy;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -76,6 +77,14 @@ public abstract class FeedOperationState {
         this.samplingRate = new AtomicReference<>(null);
         this.isSampledOut = new AtomicBoolean(false);
 
+        ReadConsistencyStrategy requestLevelReadConsistencyStrategy = requestOptions != null
+            ? requestOptions.getReadConsistencyStrategy()
+            : null;
+
+        ReadConsistencyStrategy effectiveReadConsistencyStrategy = clientAccessor
+            .getEffectiveReadConsistencyStrategy(
+                cosmosAsyncClient, resourceType, operationType, requestLevelReadConsistencyStrategy);
+
         CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
             checkNotNull(spanName, "Argument 'spanName' must not be null." ),
             clientAccessor.getAccountTagValue(cosmosAsyncClient),
@@ -86,6 +95,7 @@ public abstract class FeedOperationState {
             checkNotNull(operationType, "Argument 'operationType' must not be null." ),
             operationId,
             checkNotNull(effectiveConsistencyLevel, "Argument 'effectiveConsistencyLevel' must not be null." ),
+            effectiveReadConsistencyStrategy,
             initialMaxItemCount != null ? initialMaxItemCount : Constants.Properties.DEFAULT_MAX_PAGE_SIZE,
             this.thresholds,
             null,
@@ -165,6 +175,7 @@ public abstract class FeedOperationState {
             ctxAccessor.getOperationType(snapshot),
             snapshot.getOperationId(),
             snapshot.getEffectiveConsistencyLevel(),
+            snapshot.getEffectiveReadConsistencyStrategy(),
             this.maxItemCount.get(),
             this.thresholds,
             snapshot.getTrackingId(),

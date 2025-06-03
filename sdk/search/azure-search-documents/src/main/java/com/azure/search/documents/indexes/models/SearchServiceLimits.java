@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,32 +22,38 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
     /*
      * The maximum allowed fields per index.
      */
+    @Generated
     private Integer maxFieldsPerIndex;
 
     /*
      * The maximum depth which you can nest sub-fields in an index, including the top-level complex field. For example,
      * a/b/c has a nesting depth of 3.
      */
+    @Generated
     private Integer maxFieldNestingDepthPerIndex;
 
     /*
      * The maximum number of fields of type Collection(Edm.ComplexType) allowed in an index.
      */
+    @Generated
     private Integer maxComplexCollectionFieldsPerIndex;
 
     /*
      * The maximum number of objects in complex collections allowed per document.
      */
+    @Generated
     private Integer maxComplexObjectsInCollectionsPerDocument;
 
     /*
      * The maximum amount of storage in bytes allowed per index.
      */
+    @Generated
     private Long maxStoragePerIndexInBytes;
 
     /**
      * Creates an instance of SearchServiceLimits class.
      */
+    @Generated
     public SearchServiceLimits() {
     }
 
@@ -55,6 +62,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
      * 
      * @return the maxFieldsPerIndex value.
      */
+    @Generated
     public Integer getMaxFieldsPerIndex() {
         return this.maxFieldsPerIndex;
     }
@@ -65,6 +73,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
      * @param maxFieldsPerIndex the maxFieldsPerIndex value to set.
      * @return the SearchServiceLimits object itself.
      */
+    @Generated
     public SearchServiceLimits setMaxFieldsPerIndex(Integer maxFieldsPerIndex) {
         this.maxFieldsPerIndex = maxFieldsPerIndex;
         return this;
@@ -76,6 +85,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
      * 
      * @return the maxFieldNestingDepthPerIndex value.
      */
+    @Generated
     public Integer getMaxFieldNestingDepthPerIndex() {
         return this.maxFieldNestingDepthPerIndex;
     }
@@ -87,6 +97,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
      * @param maxFieldNestingDepthPerIndex the maxFieldNestingDepthPerIndex value to set.
      * @return the SearchServiceLimits object itself.
      */
+    @Generated
     public SearchServiceLimits setMaxFieldNestingDepthPerIndex(Integer maxFieldNestingDepthPerIndex) {
         this.maxFieldNestingDepthPerIndex = maxFieldNestingDepthPerIndex;
         return this;
@@ -98,6 +109,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
      * 
      * @return the maxComplexCollectionFieldsPerIndex value.
      */
+    @Generated
     public Integer getMaxComplexCollectionFieldsPerIndex() {
         return this.maxComplexCollectionFieldsPerIndex;
     }
@@ -109,6 +121,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
      * @param maxComplexCollectionFieldsPerIndex the maxComplexCollectionFieldsPerIndex value to set.
      * @return the SearchServiceLimits object itself.
      */
+    @Generated
     public SearchServiceLimits setMaxComplexCollectionFieldsPerIndex(Integer maxComplexCollectionFieldsPerIndex) {
         this.maxComplexCollectionFieldsPerIndex = maxComplexCollectionFieldsPerIndex;
         return this;
@@ -120,6 +133,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
      * 
      * @return the maxComplexObjectsInCollectionsPerDocument value.
      */
+    @Generated
     public Integer getMaxComplexObjectsInCollectionsPerDocument() {
         return this.maxComplexObjectsInCollectionsPerDocument;
     }
@@ -131,6 +145,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
      * @param maxComplexObjectsInCollectionsPerDocument the maxComplexObjectsInCollectionsPerDocument value to set.
      * @return the SearchServiceLimits object itself.
      */
+    @Generated
     public SearchServiceLimits
         setMaxComplexObjectsInCollectionsPerDocument(Integer maxComplexObjectsInCollectionsPerDocument) {
         this.maxComplexObjectsInCollectionsPerDocument = maxComplexObjectsInCollectionsPerDocument;
@@ -142,6 +157,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
      * 
      * @return the maxStoragePerIndexInBytes value.
      */
+    @Generated
     public Long getMaxStoragePerIndexInBytes() {
         return this.maxStoragePerIndexInBytes;
     }
@@ -152,6 +168,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
      * @param maxStoragePerIndexInBytes the maxStoragePerIndexInBytes value to set.
      * @return the SearchServiceLimits object itself.
      */
+    @Generated
     public SearchServiceLimits setMaxStoragePerIndexInBytes(Long maxStoragePerIndexInBytes) {
         this.maxStoragePerIndexInBytes = maxStoragePerIndexInBytes;
         return this;
@@ -160,6 +177,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -180,6 +198,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchServiceLimits.
      */
+    @Generated
     public static SearchServiceLimits fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SearchServiceLimits deserializedSearchServiceLimits = new SearchServiceLimits();

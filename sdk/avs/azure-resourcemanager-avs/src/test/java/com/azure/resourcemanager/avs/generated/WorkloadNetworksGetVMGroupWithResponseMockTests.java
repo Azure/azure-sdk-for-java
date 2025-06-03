@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroup;
@@ -21,21 +21,21 @@ public final class WorkloadNetworksGetVMGroupWithResponseMockTests {
     @Test
     public void testGetVMGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"vjfn\",\"members\":[\"vlwyzg\"],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":7387831702993633483},\"id\":\"fojuidjpuuyj\",\"name\":\"c\",\"type\":\"jikzoeovvtzej\"}";
+            = "{\"properties\":{\"displayName\":\"ljdjuskbrreqy\",\"members\":[\"eysfaqegplw\",\"ysh\",\"ddkvbxgkqu\"],\"status\":\"FAILURE\",\"provisioningState\":\"Canceled\",\"revision\":4493367874703479410},\"id\":\"arvvlfnt\",\"name\":\"mt\",\"type\":\"oiwenazerohzrsq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkVMGroup response = manager.workloadNetworks()
-            .getVMGroupWithResponse("sfuztlvtmv", "gbwidqlvh", "koveof", com.azure.core.util.Context.NONE)
+            .getVMGroupWithResponse("x", "faoytehqpuv", "mvqmtdwckygroej", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vjfn", response.displayName());
-        Assertions.assertEquals("vlwyzg", response.members().get(0));
-        Assertions.assertEquals(7387831702993633483L, response.revision());
+        Assertions.assertEquals("ljdjuskbrreqy", response.displayName());
+        Assertions.assertEquals("eysfaqegplw", response.members().get(0));
+        Assertions.assertEquals(4493367874703479410L, response.revision());
     }
 }

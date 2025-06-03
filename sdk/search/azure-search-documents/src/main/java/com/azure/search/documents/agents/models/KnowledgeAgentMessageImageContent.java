@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.agents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class KnowledgeAgentMessageImageContent extends KnowledgeAgentMessa
     /*
      * The type of the message
      */
+    @Generated
     private KnowledgeAgentMessageContentType type = KnowledgeAgentMessageContentType.IMAGE;
 
     /*
      * The image property.
      */
+    @Generated
     private final KnowledgeAgentMessageImageContentImage image;
 
     /**
@@ -32,6 +35,7 @@ public final class KnowledgeAgentMessageImageContent extends KnowledgeAgentMessa
      * 
      * @param image the image value to set.
      */
+    @Generated
     public KnowledgeAgentMessageImageContent(KnowledgeAgentMessageImageContentImage image) {
         this.image = image;
     }
@@ -41,6 +45,7 @@ public final class KnowledgeAgentMessageImageContent extends KnowledgeAgentMessa
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public KnowledgeAgentMessageContentType getType() {
         return this.type;
@@ -51,6 +56,7 @@ public final class KnowledgeAgentMessageImageContent extends KnowledgeAgentMessa
      * 
      * @return the image value.
      */
+    @Generated
     public KnowledgeAgentMessageImageContentImage getImage() {
         return this.image;
     }
@@ -58,6 +64,7 @@ public final class KnowledgeAgentMessageImageContent extends KnowledgeAgentMessa
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,6 +82,7 @@ public final class KnowledgeAgentMessageImageContent extends KnowledgeAgentMessa
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KnowledgeAgentMessageImageContent.
      */
+    @Generated
     public static KnowledgeAgentMessageImageContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean imageFound = false;

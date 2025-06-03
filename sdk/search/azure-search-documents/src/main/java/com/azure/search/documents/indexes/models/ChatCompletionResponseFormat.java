@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class ChatCompletionResponseFormat implements JsonSerializable<Chat
      * Specifies how the LLM should format the response. Possible values: 'text' (plain string), 'json_object'
      * (arbitrary JSON), or 'json_schema' (adheres to provided schema).
      */
+    @Generated
     private ChatCompletionResponseFormatType type;
 
     /*
      * An open dictionary for extended properties. Required if 'type' == 'json_schema'
      */
+    @Generated
     private ChatCompletionResponseFormatJsonSchemaProperties chatCompletionSchemaProperties;
 
     /**
      * Creates an instance of ChatCompletionResponseFormat class.
      */
+    @Generated
     public ChatCompletionResponseFormat() {
     }
 
@@ -41,6 +45,7 @@ public final class ChatCompletionResponseFormat implements JsonSerializable<Chat
      * 
      * @return the type value.
      */
+    @Generated
     public ChatCompletionResponseFormatType getType() {
         return this.type;
     }
@@ -52,6 +57,7 @@ public final class ChatCompletionResponseFormat implements JsonSerializable<Chat
      * @param type the type value to set.
      * @return the ChatCompletionResponseFormat object itself.
      */
+    @Generated
     public ChatCompletionResponseFormat setType(ChatCompletionResponseFormatType type) {
         this.type = type;
         return this;
@@ -63,6 +69,7 @@ public final class ChatCompletionResponseFormat implements JsonSerializable<Chat
      * 
      * @return the chatCompletionSchemaProperties value.
      */
+    @Generated
     public ChatCompletionResponseFormatJsonSchemaProperties getChatCompletionSchemaProperties() {
         return this.chatCompletionSchemaProperties;
     }
@@ -74,6 +81,7 @@ public final class ChatCompletionResponseFormat implements JsonSerializable<Chat
      * @param chatCompletionSchemaProperties the chatCompletionSchemaProperties value to set.
      * @return the ChatCompletionResponseFormat object itself.
      */
+    @Generated
     public ChatCompletionResponseFormat setChatCompletionSchemaProperties(
         ChatCompletionResponseFormatJsonSchemaProperties chatCompletionSchemaProperties) {
         this.chatCompletionSchemaProperties = chatCompletionSchemaProperties;
@@ -83,6 +91,7 @@ public final class ChatCompletionResponseFormat implements JsonSerializable<Chat
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -99,6 +108,7 @@ public final class ChatCompletionResponseFormat implements JsonSerializable<Chat
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ChatCompletionResponseFormat.
      */
+    @Generated
     public static ChatCompletionResponseFormat fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ChatCompletionResponseFormat deserializedChatCompletionResponseFormat = new ChatCompletionResponseFormat();

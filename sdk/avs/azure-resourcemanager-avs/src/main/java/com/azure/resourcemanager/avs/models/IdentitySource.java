@@ -27,7 +27,7 @@ public final class IdentitySource implements JsonSerializable<IdentitySource> {
     private String alias;
 
     /*
-     * The domain's dns name
+     * The domain's DNS name
      */
     private String domain;
 
@@ -115,7 +115,7 @@ public final class IdentitySource implements JsonSerializable<IdentitySource> {
     }
 
     /**
-     * Get the domain property: The domain's dns name.
+     * Get the domain property: The domain's DNS name.
      * 
      * @return the domain value.
      */
@@ -124,7 +124,7 @@ public final class IdentitySource implements JsonSerializable<IdentitySource> {
     }
 
     /**
-     * Set the domain property: The domain's dns name.
+     * Set the domain property: The domain's DNS name.
      * 
      * @param domain the domain value to set.
      * @return the IdentitySource object itself.

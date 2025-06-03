@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,6 +20,7 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
     /*
      * Unique document model name.
      */
+    @Generated
     private final String modelId;
 
     /**
@@ -26,6 +28,7 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
      * 
      * @param modelId the modelId value to set.
      */
+    @Generated
     public ComponentDocumentModelDetails(String modelId) {
         this.modelId = modelId;
     }
@@ -35,6 +38,7 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
      * 
      * @return the modelId value.
      */
+    @Generated
     public String getModelId() {
         return this.modelId;
     }
@@ -42,6 +46,7 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -58,6 +63,7 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ComponentDocumentModelDetails.
      */
+    @Generated
     public static ComponentDocumentModelDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean modelIdFound = false;

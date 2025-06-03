@@ -47,7 +47,6 @@ import java.util.UUID;
  * with the Radiology Insights service. It will initialize a synchronous
  * RadiologyInsightsClient, build a Radiology Insights job request with the sample document, submit it to the client
  * and display the Critical Results extracted by the Radiology Insights service.
- *
  */
 public class SampleCriticalResultInferenceSync {
 

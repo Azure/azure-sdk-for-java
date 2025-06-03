@@ -25,11 +25,6 @@ public final class AddonSrmProperties extends AddonProperties {
      */
     private String licenseKey;
 
-    /*
-     * The state of the addon provisioning
-     */
-    private AddonProvisioningState provisioningState;
-
     /**
      * Creates an instance of AddonSrmProperties class.
      */
@@ -64,16 +59,6 @@ public final class AddonSrmProperties extends AddonProperties {
     public AddonSrmProperties withLicenseKey(String licenseKey) {
         this.licenseKey = licenseKey;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: The state of the addon provisioning.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public AddonProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -112,8 +97,8 @@ public final class AddonSrmProperties extends AddonProperties {
                 reader.nextToken();
 
                 if ("provisioningState".equals(fieldName)) {
-                    deserializedAddonSrmProperties.provisioningState
-                        = AddonProvisioningState.fromString(reader.getString());
+                    deserializedAddonSrmProperties
+                        .withProvisioningState(AddonProvisioningState.fromString(reader.getString()));
                 } else if ("addonType".equals(fieldName)) {
                     deserializedAddonSrmProperties.addonType = AddonType.fromString(reader.getString());
                 } else if ("licenseKey".equals(fieldName)) {

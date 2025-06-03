@@ -31,16 +31,6 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
      */
     private Long leaseTime;
 
-    /*
-     * The provisioning state
-     */
-    private WorkloadNetworkDhcpProvisioningState provisioningState;
-
-    /*
-     * NSX Segments consuming DHCP.
-     */
-    private List<String> segments;
-
     /**
      * Creates an instance of WorkloadNetworkDhcpServer class.
      */
@@ -95,26 +85,6 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
     public WorkloadNetworkDhcpServer withLeaseTime(Long leaseTime) {
         this.leaseTime = leaseTime;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public WorkloadNetworkDhcpProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the segments property: NSX Segments consuming DHCP.
-     * 
-     * @return the segments value.
-     */
-    @Override
-    public List<String> segments() {
-        return this.segments;
     }
 
     /**
@@ -177,10 +147,10 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
                     deserializedWorkloadNetworkDhcpServer.withDisplayName(reader.getString());
                 } else if ("segments".equals(fieldName)) {
                     List<String> segments = reader.readArray(reader1 -> reader1.getString());
-                    deserializedWorkloadNetworkDhcpServer.segments = segments;
+                    deserializedWorkloadNetworkDhcpServer.withSegments(segments);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedWorkloadNetworkDhcpServer.provisioningState
-                        = WorkloadNetworkDhcpProvisioningState.fromString(reader.getString());
+                    deserializedWorkloadNetworkDhcpServer
+                        .withProvisioningState(WorkloadNetworkDhcpProvisioningState.fromString(reader.getString()));
                 } else if ("revision".equals(fieldName)) {
                     deserializedWorkloadNetworkDhcpServer.withRevision(reader.getNullable(JsonReader::getLong));
                 } else if ("dhcpType".equals(fieldName)) {

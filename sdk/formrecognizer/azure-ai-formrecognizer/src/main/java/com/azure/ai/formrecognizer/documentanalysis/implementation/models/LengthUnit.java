@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,11 +16,13 @@ public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
     /**
      * Length unit for image files.
      */
+    @Generated
     public static final LengthUnit PIXEL = fromString("pixel");
 
     /**
      * Length unit for PDF files.
      */
+    @Generated
     public static final LengthUnit INCH = fromString("inch");
 
     /**
@@ -27,6 +30,7 @@ public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public LengthUnit() {
     }
@@ -37,6 +41,7 @@ public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
      * @param name a name to look for.
      * @return the corresponding LengthUnit.
      */
+    @Generated
     public static LengthUnit fromString(String name) {
         return fromString(name, LengthUnit.class);
     }
@@ -46,6 +51,7 @@ public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
      * 
      * @return known LengthUnit values.
      */
+    @Generated
     public static Collection<LengthUnit> values() {
         return values(LengthUnit.class);
     }

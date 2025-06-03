@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class AcsMessageInteractiveListReplyContent
     /*
      * The ID of the selected list item
      */
+    @Generated
     private String listItemId;
 
     /*
      * The title of the selected list item
      */
+    @Generated
     private String title;
 
     /*
      * The description of the selected row
      */
+    @Generated
     private String description;
 
     /**
      * Creates an instance of AcsMessageInteractiveListReplyContent class.
      */
+    @Generated
     public AcsMessageInteractiveListReplyContent() {
     }
 
@@ -43,6 +48,7 @@ public final class AcsMessageInteractiveListReplyContent
      * 
      * @return the listItemId value.
      */
+    @Generated
     public String getListItemId() {
         return this.listItemId;
     }
@@ -53,6 +59,7 @@ public final class AcsMessageInteractiveListReplyContent
      * @param listItemId the listItemId value to set.
      * @return the AcsMessageInteractiveListReplyContent object itself.
      */
+    @Generated
     public AcsMessageInteractiveListReplyContent setListItemId(String listItemId) {
         this.listItemId = listItemId;
         return this;
@@ -63,6 +70,7 @@ public final class AcsMessageInteractiveListReplyContent
      * 
      * @return the title value.
      */
+    @Generated
     public String getTitle() {
         return this.title;
     }
@@ -73,6 +81,7 @@ public final class AcsMessageInteractiveListReplyContent
      * @param title the title value to set.
      * @return the AcsMessageInteractiveListReplyContent object itself.
      */
+    @Generated
     public AcsMessageInteractiveListReplyContent setTitle(String title) {
         this.title = title;
         return this;
@@ -83,6 +92,7 @@ public final class AcsMessageInteractiveListReplyContent
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -93,6 +103,7 @@ public final class AcsMessageInteractiveListReplyContent
      * @param description the description value to set.
      * @return the AcsMessageInteractiveListReplyContent object itself.
      */
+    @Generated
     public AcsMessageInteractiveListReplyContent setDescription(String description) {
         this.description = description;
         return this;
@@ -101,6 +112,7 @@ public final class AcsMessageInteractiveListReplyContent
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +130,7 @@ public final class AcsMessageInteractiveListReplyContent
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsMessageInteractiveListReplyContent.
      */
+    @Generated
     public static AcsMessageInteractiveListReplyContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsMessageInteractiveListReplyContent deserializedAcsMessageInteractiveListReplyContent

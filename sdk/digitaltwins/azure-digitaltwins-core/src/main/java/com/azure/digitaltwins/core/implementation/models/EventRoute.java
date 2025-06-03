@@ -4,6 +4,7 @@
 
 package com.azure.digitaltwins.core.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,16 +23,19 @@ public final class EventRoute implements JsonSerializable<EventRoute> {
     /*
      * The id of the event route.
      */
+    @Generated
     private String id;
 
     /*
      * The name of the endpoint this event route is bound to.
      */
+    @Generated
     private final String endpointName;
 
     /*
      * An expression which describes the events which are routed to the endpoint.
      */
+    @Generated
     private final String filter;
 
     /**
@@ -40,6 +44,7 @@ public final class EventRoute implements JsonSerializable<EventRoute> {
      * @param endpointName the endpointName value to set.
      * @param filter the filter value to set.
      */
+    @Generated
     public EventRoute(String endpointName, String filter) {
         this.endpointName = endpointName;
         this.filter = filter;
@@ -50,6 +55,7 @@ public final class EventRoute implements JsonSerializable<EventRoute> {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -59,6 +65,7 @@ public final class EventRoute implements JsonSerializable<EventRoute> {
      * 
      * @return the endpointName value.
      */
+    @Generated
     public String getEndpointName() {
         return this.endpointName;
     }
@@ -68,6 +75,7 @@ public final class EventRoute implements JsonSerializable<EventRoute> {
      * 
      * @return the filter value.
      */
+    @Generated
     public String getFilter() {
         return this.filter;
     }
@@ -75,6 +83,7 @@ public final class EventRoute implements JsonSerializable<EventRoute> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class EventRoute implements JsonSerializable<EventRoute> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EventRoute.
      */
+    @Generated
     public static EventRoute fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean endpointNameFound = false;

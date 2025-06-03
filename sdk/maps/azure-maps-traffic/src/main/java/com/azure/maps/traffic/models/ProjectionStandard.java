@@ -4,6 +4,7 @@
 
 package com.azure.maps.traffic.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ProjectionStandard extends ExpandableStringEnum<ProjectionSta
     /**
      * [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html).
      */
+    @Generated
     public static final ProjectionStandard EPSG900913 = fromString("EPSG900913");
 
     /**
      * [EPSG4326](http://spatialreference.org/ref/epsg/4326/).
      */
+    @Generated
     public static final ProjectionStandard EPSG4326 = fromString("EPSG4326");
 
     /**
@@ -26,6 +29,7 @@ public final class ProjectionStandard extends ExpandableStringEnum<ProjectionSta
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ProjectionStandard() {
     }
@@ -36,6 +40,7 @@ public final class ProjectionStandard extends ExpandableStringEnum<ProjectionSta
      * @param name a name to look for.
      * @return the corresponding ProjectionStandard.
      */
+    @Generated
     public static ProjectionStandard fromString(String name) {
         return fromString(name, ProjectionStandard.class);
     }
@@ -45,6 +50,7 @@ public final class ProjectionStandard extends ExpandableStringEnum<ProjectionSta
      * 
      * @return known ProjectionStandard values.
      */
+    @Generated
     public static Collection<ProjectionStandard> values() {
         return values(ProjectionStandard.class);
     }

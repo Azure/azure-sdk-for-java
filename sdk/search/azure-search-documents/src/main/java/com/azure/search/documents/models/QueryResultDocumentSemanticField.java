@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class QueryResultDocumentSemanticField implements JsonSerializable<
     /*
      * The name of the field that was sent to the semantic enrichment process
      */
+    @Generated
     private String name;
 
     /*
      * The way the field was used for the semantic enrichment process (fully used, partially used, or unused)
      */
+    @Generated
     private SemanticFieldState state;
 
     /**
      * Creates an instance of QueryResultDocumentSemanticField class.
      */
+    @Generated
     public QueryResultDocumentSemanticField() {
     }
 
@@ -39,6 +43,7 @@ public final class QueryResultDocumentSemanticField implements JsonSerializable<
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -49,6 +54,7 @@ public final class QueryResultDocumentSemanticField implements JsonSerializable<
      * 
      * @return the state value.
      */
+    @Generated
     public SemanticFieldState getState() {
         return this.state;
     }
@@ -56,6 +62,7 @@ public final class QueryResultDocumentSemanticField implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -70,6 +77,7 @@ public final class QueryResultDocumentSemanticField implements JsonSerializable<
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the QueryResultDocumentSemanticField.
      */
+    @Generated
     public static QueryResultDocumentSemanticField fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             QueryResultDocumentSemanticField deserializedQueryResultDocumentSemanticField

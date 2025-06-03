@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkVirtualMachine;
@@ -21,19 +21,20 @@ public final class WorkloadNetworksGetVirtualMachineWithResponseMockTests {
     @Test
     public void testGetVirtualMachineWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"tjewlpxuzzj\",\"vmType\":\"SERVICE\"},\"id\":\"fqyhqoto\",\"name\":\"hiqakydiwfbrk\",\"type\":\"pzdqtvhcspod\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"kschgcgqyhle\",\"vmType\":\"SERVICE\"},\"id\":\"rhvyeld\",\"name\":\"tj\",\"type\":\"dkwisw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkVirtualMachine response = manager.workloadNetworks()
-            .getVirtualMachineWithResponse("jk", "mykyujxsglhs", "rryejylmbkzudnig", com.azure.core.util.Context.NONE)
+            .getVirtualMachineWithResponse("kzzltafhbzf", "ovwmbjlzqsczpgvd", "napfdqwowftpt",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tjewlpxuzzj", response.displayName());
+        Assertions.assertEquals("kschgcgqyhle", response.displayName());
     }
 }

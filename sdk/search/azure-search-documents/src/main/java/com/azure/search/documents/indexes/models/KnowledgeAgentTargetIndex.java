@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class KnowledgeAgentTargetIndex implements JsonSerializable<Knowled
     /*
      * The name of the target index.
      */
+    @Generated
     private final String indexName;
 
     /*
      * A threshold for reranking results (range: 0-4).
      */
+    @Generated
     private Float defaultRerankerThreshold;
 
     /*
      * Indicates whether reference source data should be included.
      */
+    @Generated
     private Boolean defaultIncludeReferenceSourceData;
 
     /*
      * Limits the number of documents considered for ranking.
      */
+    @Generated
     private Integer defaultMaxDocsForReranker;
 
     /**
@@ -43,6 +48,7 @@ public final class KnowledgeAgentTargetIndex implements JsonSerializable<Knowled
      * 
      * @param indexName the indexName value to set.
      */
+    @Generated
     public KnowledgeAgentTargetIndex(String indexName) {
         this.indexName = indexName;
     }
@@ -52,6 +58,7 @@ public final class KnowledgeAgentTargetIndex implements JsonSerializable<Knowled
      * 
      * @return the indexName value.
      */
+    @Generated
     public String getIndexName() {
         return this.indexName;
     }
@@ -61,6 +68,7 @@ public final class KnowledgeAgentTargetIndex implements JsonSerializable<Knowled
      * 
      * @return the defaultRerankerThreshold value.
      */
+    @Generated
     public Float getDefaultRerankerThreshold() {
         return this.defaultRerankerThreshold;
     }
@@ -71,6 +79,7 @@ public final class KnowledgeAgentTargetIndex implements JsonSerializable<Knowled
      * @param defaultRerankerThreshold the defaultRerankerThreshold value to set.
      * @return the KnowledgeAgentTargetIndex object itself.
      */
+    @Generated
     public KnowledgeAgentTargetIndex setDefaultRerankerThreshold(Float defaultRerankerThreshold) {
         this.defaultRerankerThreshold = defaultRerankerThreshold;
         return this;
@@ -81,6 +90,7 @@ public final class KnowledgeAgentTargetIndex implements JsonSerializable<Knowled
      * 
      * @return the defaultIncludeReferenceSourceData value.
      */
+    @Generated
     public Boolean isDefaultIncludeReferenceSourceData() {
         return this.defaultIncludeReferenceSourceData;
     }
@@ -91,6 +101,7 @@ public final class KnowledgeAgentTargetIndex implements JsonSerializable<Knowled
      * @param defaultIncludeReferenceSourceData the defaultIncludeReferenceSourceData value to set.
      * @return the KnowledgeAgentTargetIndex object itself.
      */
+    @Generated
     public KnowledgeAgentTargetIndex setDefaultIncludeReferenceSourceData(Boolean defaultIncludeReferenceSourceData) {
         this.defaultIncludeReferenceSourceData = defaultIncludeReferenceSourceData;
         return this;
@@ -101,6 +112,7 @@ public final class KnowledgeAgentTargetIndex implements JsonSerializable<Knowled
      * 
      * @return the defaultMaxDocsForReranker value.
      */
+    @Generated
     public Integer getDefaultMaxDocsForReranker() {
         return this.defaultMaxDocsForReranker;
     }
@@ -111,6 +123,7 @@ public final class KnowledgeAgentTargetIndex implements JsonSerializable<Knowled
      * @param defaultMaxDocsForReranker the defaultMaxDocsForReranker value to set.
      * @return the KnowledgeAgentTargetIndex object itself.
      */
+    @Generated
     public KnowledgeAgentTargetIndex setDefaultMaxDocsForReranker(Integer defaultMaxDocsForReranker) {
         this.defaultMaxDocsForReranker = defaultMaxDocsForReranker;
         return this;
@@ -119,6 +132,7 @@ public final class KnowledgeAgentTargetIndex implements JsonSerializable<Knowled
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -138,6 +152,7 @@ public final class KnowledgeAgentTargetIndex implements JsonSerializable<Knowled
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KnowledgeAgentTargetIndex.
      */
+    @Generated
     public static KnowledgeAgentTargetIndex fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean indexNameFound = false;

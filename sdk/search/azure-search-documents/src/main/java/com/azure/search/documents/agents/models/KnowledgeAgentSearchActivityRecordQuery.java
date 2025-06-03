@@ -7,6 +7,7 @@
 package com.azure.search.documents.agents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class KnowledgeAgentSearchActivityRecordQuery
     /*
      * The search string.
      */
+    @Generated
     private String search;
 
     /*
      * The filter string.
      */
+    @Generated
     private String filter;
 
     /**
      * Creates an instance of KnowledgeAgentSearchActivityRecordQuery class.
      */
+    @Generated
     public KnowledgeAgentSearchActivityRecordQuery() {
     }
 
@@ -40,6 +44,7 @@ public final class KnowledgeAgentSearchActivityRecordQuery
      * 
      * @return the search value.
      */
+    @Generated
     public String getSearch() {
         return this.search;
     }
@@ -50,6 +55,7 @@ public final class KnowledgeAgentSearchActivityRecordQuery
      * @param search the search value to set.
      * @return the KnowledgeAgentSearchActivityRecordQuery object itself.
      */
+    @Generated
     public KnowledgeAgentSearchActivityRecordQuery setSearch(String search) {
         this.search = search;
         return this;
@@ -60,6 +66,7 @@ public final class KnowledgeAgentSearchActivityRecordQuery
      * 
      * @return the filter value.
      */
+    @Generated
     public String getFilter() {
         return this.filter;
     }
@@ -70,6 +77,7 @@ public final class KnowledgeAgentSearchActivityRecordQuery
      * @param filter the filter value to set.
      * @return the KnowledgeAgentSearchActivityRecordQuery object itself.
      */
+    @Generated
     public KnowledgeAgentSearchActivityRecordQuery setFilter(String filter) {
         this.filter = filter;
         return this;
@@ -78,6 +86,7 @@ public final class KnowledgeAgentSearchActivityRecordQuery
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +103,7 @@ public final class KnowledgeAgentSearchActivityRecordQuery
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the KnowledgeAgentSearchActivityRecordQuery.
      */
+    @Generated
     public static KnowledgeAgentSearchActivityRecordQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KnowledgeAgentSearchActivityRecordQuery deserializedKnowledgeAgentSearchActivityRecordQuery

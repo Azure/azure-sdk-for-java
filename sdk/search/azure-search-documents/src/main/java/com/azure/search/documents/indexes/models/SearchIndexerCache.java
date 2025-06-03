@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
     /*
      * A guid for the SearchIndexerCache.
      */
+    @Generated
     private String id;
 
     /*
      * The connection string to the storage account where the cache data will be persisted.
      */
+    @Generated
     private String storageConnectionString;
 
     /*
      * Specifies whether incremental reprocessing is enabled.
      */
+    @Generated
     private Boolean enableReprocessing;
 
     /*
@@ -39,11 +43,13 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
      * updates to the indexer, if the identity is unspecified, the value remains unchanged. If set to "none", the value
      * of this property is cleared.
      */
+    @Generated
     private SearchIndexerDataIdentity identity;
 
     /**
      * Creates an instance of SearchIndexerCache class.
      */
+    @Generated
     public SearchIndexerCache() {
     }
 
@@ -52,6 +58,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -62,6 +69,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
      * @param id the id value to set.
      * @return the SearchIndexerCache object itself.
      */
+    @Generated
     public SearchIndexerCache setId(String id) {
         this.id = id;
         return this;
@@ -73,6 +81,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
      * 
      * @return the storageConnectionString value.
      */
+    @Generated
     public String getStorageConnectionString() {
         return this.storageConnectionString;
     }
@@ -84,6 +93,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
      * @param storageConnectionString the storageConnectionString value to set.
      * @return the SearchIndexerCache object itself.
      */
+    @Generated
     public SearchIndexerCache setStorageConnectionString(String storageConnectionString) {
         this.storageConnectionString = storageConnectionString;
         return this;
@@ -94,6 +104,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
      * 
      * @return the enableReprocessing value.
      */
+    @Generated
     public Boolean isEnableReprocessing() {
         return this.enableReprocessing;
     }
@@ -104,6 +115,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
      * @param enableReprocessing the enableReprocessing value to set.
      * @return the SearchIndexerCache object itself.
      */
+    @Generated
     public SearchIndexerCache setEnableReprocessing(Boolean enableReprocessing) {
         this.enableReprocessing = enableReprocessing;
         return this;
@@ -117,6 +129,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
      * 
      * @return the identity value.
      */
+    @Generated
     public SearchIndexerDataIdentity getIdentity() {
         return this.identity;
     }
@@ -130,6 +143,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
      * @param identity the identity value to set.
      * @return the SearchIndexerCache object itself.
      */
+    @Generated
     public SearchIndexerCache setIdentity(SearchIndexerDataIdentity identity) {
         this.identity = identity;
         return this;
@@ -138,6 +152,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -156,6 +171,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchIndexerCache.
      */
+    @Generated
     public static SearchIndexerCache fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SearchIndexerCache deserializedSearchIndexerCache = new SearchIndexerCache();

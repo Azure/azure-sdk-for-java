@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,21 +24,25 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "#Microsoft.Skills.Vision.ImageAnalysisSkill";
 
     /*
      * A value indicating which language code to use. Default is `en`.
      */
+    @Generated
     private ImageAnalysisSkillLanguage defaultLanguageCode;
 
     /*
      * A list of visual features.
      */
+    @Generated
     private List<VisualFeature> visualFeatures;
 
     /*
      * A string indicating which domain-specific details to return.
      */
+    @Generated
     private List<ImageDetail> details;
 
     /**
@@ -46,6 +51,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
+    @Generated
     public ImageAnalysisSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -55,6 +61,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      *
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -65,6 +72,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      *
      * @return the defaultLanguageCode value.
      */
+    @Generated
     public ImageAnalysisSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
@@ -75,6 +83,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the ImageAnalysisSkill object itself.
      */
+    @Generated
     public ImageAnalysisSkill setDefaultLanguageCode(ImageAnalysisSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
@@ -85,6 +94,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      *
      * @return the visualFeatures value.
      */
+    @Generated
     public List<VisualFeature> getVisualFeatures() {
         return this.visualFeatures;
     }
@@ -95,6 +105,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      * @param visualFeatures the visualFeatures value to set.
      * @return the ImageAnalysisSkill object itself.
      */
+    @Generated
     public ImageAnalysisSkill setVisualFeatures(List<VisualFeature> visualFeatures) {
         this.visualFeatures = visualFeatures;
         return this;
@@ -105,6 +116,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      *
      * @return the details value.
      */
+    @Generated
     public List<ImageDetail> getDetails() {
         return this.details;
     }
@@ -115,6 +127,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      * @param details the details value to set.
      * @return the ImageAnalysisSkill object itself.
      */
+    @Generated
     public ImageAnalysisSkill setDetails(List<ImageDetail> details) {
         this.details = details;
         return this;
@@ -123,6 +136,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ImageAnalysisSkill setName(String name) {
         super.setName(name);
@@ -132,6 +146,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ImageAnalysisSkill setDescription(String description) {
         super.setDescription(description);
@@ -141,6 +156,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ImageAnalysisSkill setContext(String context) {
         super.setContext(context);
@@ -150,6 +166,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -177,6 +194,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ImageAnalysisSkill.
      */
+    @Generated
     public static ImageAnalysisSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

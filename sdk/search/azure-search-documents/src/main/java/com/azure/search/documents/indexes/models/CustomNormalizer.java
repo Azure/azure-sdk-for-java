@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,18 +24,21 @@ public final class CustomNormalizer extends LexicalNormalizer {
     /*
      * A URI fragment specifying the type of normalizer.
      */
+    @Generated
     private String odataType = "#Microsoft.Azure.Search.CustomNormalizer";
 
     /*
      * A list of token filters used to filter out or modify the input token. For example, you can specify a lowercase
      * filter that converts all characters to lowercase. The filters are run in the order in which they are listed.
      */
+    @Generated
     private List<TokenFilterName> tokenFilters;
 
     /*
      * A list of character filters used to prepare input text before it is processed. For instance, they can replace
      * certain characters or symbols. The filters are run in the order in which they are listed.
      */
+    @Generated
     private List<CharFilterName> charFilters;
 
     /**
@@ -42,6 +46,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
      * 
      * @param name the name value to set.
      */
+    @Generated
     public CustomNormalizer(String name) {
         super(name);
     }
@@ -51,6 +56,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -63,6 +69,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
      * 
      * @return the tokenFilters value.
      */
+    @Generated
     public List<TokenFilterName> getTokenFilters() {
         return this.tokenFilters;
     }
@@ -75,6 +82,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
      * @param tokenFilters the tokenFilters value to set.
      * @return the CustomNormalizer object itself.
      */
+    @Generated
     public CustomNormalizer setTokenFilters(List<TokenFilterName> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
@@ -87,6 +95,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
      * 
      * @return the charFilters value.
      */
+    @Generated
     public List<CharFilterName> getCharFilters() {
         return this.charFilters;
     }
@@ -99,6 +108,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
      * @param charFilters the charFilters value to set.
      * @return the CustomNormalizer object itself.
      */
+    @Generated
     public CustomNormalizer setCharFilters(List<CharFilterName> charFilters) {
         this.charFilters = charFilters;
         return this;
@@ -107,6 +117,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -128,6 +139,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomNormalizer.
      */
+    @Generated
     public static CustomNormalizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

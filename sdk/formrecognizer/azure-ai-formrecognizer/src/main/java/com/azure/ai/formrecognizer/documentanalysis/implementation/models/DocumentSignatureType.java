@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSi
     /**
      * A signature is detected.
      */
+    @Generated
     public static final DocumentSignatureType SIGNED = fromString("signed");
 
     /**
      * No signatures are detected.
      */
+    @Generated
     public static final DocumentSignatureType UNSIGNED = fromString("unsigned");
 
     /**
@@ -26,6 +29,7 @@ public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSi
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DocumentSignatureType() {
     }
@@ -36,6 +40,7 @@ public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSi
      * @param name a name to look for.
      * @return the corresponding DocumentSignatureType.
      */
+    @Generated
     public static DocumentSignatureType fromString(String name) {
         return fromString(name, DocumentSignatureType.class);
     }
@@ -45,6 +50,7 @@ public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSi
      * 
      * @return known DocumentSignatureType values.
      */
+    @Generated
     public static Collection<DocumentSignatureType> values() {
         return values(DocumentSignatureType.class);
     }

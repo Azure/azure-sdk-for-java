@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,16 +17,19 @@ public final class IndexerPermissionOption extends ExpandableStringEnum<IndexerP
     /**
      * Indexer to ingest ACL userIds from data source to index.
      */
+    @Generated
     public static final IndexerPermissionOption USER_IDS = fromString("userIds");
 
     /**
      * Indexer to ingest ACL groupIds from data source to index.
      */
+    @Generated
     public static final IndexerPermissionOption GROUP_IDS = fromString("groupIds");
 
     /**
      * Indexer to ingest Azure RBAC scope from data source to index.
      */
+    @Generated
     public static final IndexerPermissionOption RBAC_SCOPE = fromString("rbacScope");
 
     /**
@@ -33,6 +37,7 @@ public final class IndexerPermissionOption extends ExpandableStringEnum<IndexerP
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IndexerPermissionOption() {
     }
@@ -43,6 +48,7 @@ public final class IndexerPermissionOption extends ExpandableStringEnum<IndexerP
      * @param name a name to look for.
      * @return the corresponding IndexerPermissionOption.
      */
+    @Generated
     public static IndexerPermissionOption fromString(String name) {
         return fromString(name, IndexerPermissionOption.class);
     }
@@ -52,6 +58,7 @@ public final class IndexerPermissionOption extends ExpandableStringEnum<IndexerP
      * 
      * @return known IndexerPermissionOption values.
      */
+    @Generated
     public static Collection<IndexerPermissionOption> values() {
         return values(IndexerPermissionOption.class);
     }

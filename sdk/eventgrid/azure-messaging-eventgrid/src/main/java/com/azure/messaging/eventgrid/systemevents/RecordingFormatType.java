@@ -4,6 +4,7 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class RecordingFormatType extends ExpandableStringEnum<RecordingFor
     /**
      * Static value Wav for RecordingFormatType.
      */
+    @Generated
     public static final RecordingFormatType WAV = fromString("Wav");
 
     /**
      * Static value Mp3 for RecordingFormatType.
      */
+    @Generated
     public static final RecordingFormatType MP3 = fromString("Mp3");
 
     /**
      * Static value Mp4 for RecordingFormatType.
      */
+    @Generated
     public static final RecordingFormatType MP4 = fromString("Mp4");
 
     /**
@@ -31,6 +35,7 @@ public final class RecordingFormatType extends ExpandableStringEnum<RecordingFor
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RecordingFormatType() {
     }
@@ -41,6 +46,7 @@ public final class RecordingFormatType extends ExpandableStringEnum<RecordingFor
      * @param name a name to look for.
      * @return the corresponding RecordingFormatType.
      */
+    @Generated
     public static RecordingFormatType fromString(String name) {
         return fromString(name, RecordingFormatType.class);
     }
@@ -50,6 +56,7 @@ public final class RecordingFormatType extends ExpandableStringEnum<RecordingFor
      * 
      * @return known RecordingFormatType values.
      */
+    @Generated
     public static Collection<RecordingFormatType> values() {
         return values(RecordingFormatType.class);
     }

@@ -5,6 +5,7 @@
 package com.azure.maps.route.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,13 +19,16 @@ import java.util.List;
 @Fluent
 public class GeoJsonMultiPolygonData implements JsonSerializable<GeoJsonMultiPolygonData> {
     /*
-     * Contains a list of valid `GeoJSON Polygon` objects. **Note** that coordinates in GeoJSON are in x, y order (longitude, latitude).
+     * Contains a list of valid `GeoJSON Polygon` objects. **Note** that coordinates in GeoJSON are in x, y order
+     * (longitude, latitude).
      */
+    @Generated
     private List<List<List<List<Double>>>> coordinates;
 
     /**
      * Creates an instance of GeoJsonMultiPolygonData class.
      */
+    @Generated
     public GeoJsonMultiPolygonData() {
     }
 
@@ -34,6 +38,7 @@ public class GeoJsonMultiPolygonData implements JsonSerializable<GeoJsonMultiPol
      * 
      * @return the coordinates value.
      */
+    @Generated
     public List<List<List<List<Double>>>> getCoordinates() {
         return this.coordinates;
     }
@@ -45,6 +50,7 @@ public class GeoJsonMultiPolygonData implements JsonSerializable<GeoJsonMultiPol
      * @param coordinates the coordinates value to set.
      * @return the GeoJsonMultiPolygonData object itself.
      */
+    @Generated
     public GeoJsonMultiPolygonData setCoordinates(List<List<List<List<Double>>>> coordinates) {
         this.coordinates = coordinates;
         return this;
@@ -53,6 +59,7 @@ public class GeoJsonMultiPolygonData implements JsonSerializable<GeoJsonMultiPol
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -72,6 +79,7 @@ public class GeoJsonMultiPolygonData implements JsonSerializable<GeoJsonMultiPol
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GeoJsonMultiPolygonData.
      */
+    @Generated
     public static GeoJsonMultiPolygonData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonMultiPolygonData deserializedGeoJsonMultiPolygonData = new GeoJsonMultiPolygonData();

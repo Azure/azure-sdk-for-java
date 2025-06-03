@@ -24,6 +24,7 @@ import com.azure.storage.file.share.implementation.accesshelpers.ShareDirectoryP
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileInfoHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFilePropertiesHelper;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareFileSymbolicLinkInfoHelper;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesHeaders;
@@ -649,7 +650,7 @@ public class ModelHelper {
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         String linkText = response.getDeserializedHeaders().getXMsLinkText();
         ShareFileSymbolicLinkInfo shareFileSymbolicLinkInfo
-            = new ShareFileSymbolicLinkInfo(eTag, lastModified, linkText);
+            = ShareFileSymbolicLinkInfoHelper.create(eTag, lastModified, linkText);
         return new SimpleResponse<>(response, shareFileSymbolicLinkInfo);
     }
 

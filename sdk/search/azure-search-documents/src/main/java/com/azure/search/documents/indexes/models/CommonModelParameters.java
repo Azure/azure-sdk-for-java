@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,41 +23,49 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
     /*
      * The name of the model to use (e.g., 'gpt-4o', etc.). Default is null if not specified.
      */
+    @Generated
     private String model;
 
     /*
      * A float in the range [-2,2] that reduces or increases likelihood of repeated tokens. Default is 0.
      */
+    @Generated
     private Float frequencyPenalty;
 
     /*
      * A float in the range [-2,2] that penalizes new tokens based on their existing presence. Default is 0.
      */
+    @Generated
     private Float presencePenalty;
 
     /*
      * Maximum number of tokens to generate.
      */
+    @Generated
     private Integer maxTokens;
 
     /*
      * Sampling temperature. Default is 0.7.
      */
+    @Generated
     private Float temperature;
 
     /*
      * Random seed for controlling deterministic outputs. If omitted, randomization is used.
      */
+    @Generated
     private Integer seed;
 
     /*
      * List of stop sequences that will cut off text generation. Default is none.
      */
+    @Generated
     private List<String> stop;
 
     /**
      * Creates an instance of CommonModelParameters class.
      */
+    @Generated
     public CommonModelParameters() {
     }
 
@@ -65,6 +74,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * 
      * @return the model value.
      */
+    @Generated
     public String getModel() {
         return this.model;
     }
@@ -75,6 +85,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * @param model the model value to set.
      * @return the CommonModelParameters object itself.
      */
+    @Generated
     public CommonModelParameters setModel(String model) {
         this.model = model;
         return this;
@@ -86,6 +97,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * 
      * @return the frequencyPenalty value.
      */
+    @Generated
     public Float getFrequencyPenalty() {
         return this.frequencyPenalty;
     }
@@ -97,6 +109,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * @param frequencyPenalty the frequencyPenalty value to set.
      * @return the CommonModelParameters object itself.
      */
+    @Generated
     public CommonModelParameters setFrequencyPenalty(Float frequencyPenalty) {
         this.frequencyPenalty = frequencyPenalty;
         return this;
@@ -108,6 +121,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * 
      * @return the presencePenalty value.
      */
+    @Generated
     public Float getPresencePenalty() {
         return this.presencePenalty;
     }
@@ -119,6 +133,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * @param presencePenalty the presencePenalty value to set.
      * @return the CommonModelParameters object itself.
      */
+    @Generated
     public CommonModelParameters setPresencePenalty(Float presencePenalty) {
         this.presencePenalty = presencePenalty;
         return this;
@@ -129,6 +144,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * 
      * @return the maxTokens value.
      */
+    @Generated
     public Integer getMaxTokens() {
         return this.maxTokens;
     }
@@ -139,6 +155,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * @param maxTokens the maxTokens value to set.
      * @return the CommonModelParameters object itself.
      */
+    @Generated
     public CommonModelParameters setMaxTokens(Integer maxTokens) {
         this.maxTokens = maxTokens;
         return this;
@@ -149,6 +166,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * 
      * @return the temperature value.
      */
+    @Generated
     public Float getTemperature() {
         return this.temperature;
     }
@@ -159,6 +177,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * @param temperature the temperature value to set.
      * @return the CommonModelParameters object itself.
      */
+    @Generated
     public CommonModelParameters setTemperature(Float temperature) {
         this.temperature = temperature;
         return this;
@@ -169,6 +188,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * 
      * @return the seed value.
      */
+    @Generated
     public Integer getSeed() {
         return this.seed;
     }
@@ -179,6 +199,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * @param seed the seed value to set.
      * @return the CommonModelParameters object itself.
      */
+    @Generated
     public CommonModelParameters setSeed(Integer seed) {
         this.seed = seed;
         return this;
@@ -189,6 +210,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * 
      * @return the stop value.
      */
+    @Generated
     public List<String> getStop() {
         return this.stop;
     }
@@ -199,6 +221,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * @param stop the stop value to set.
      * @return the CommonModelParameters object itself.
      */
+    @Generated
     public CommonModelParameters setStop(List<String> stop) {
         this.stop = stop;
         return this;
@@ -207,6 +230,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -228,6 +252,7 @@ public final class CommonModelParameters implements JsonSerializable<CommonModel
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CommonModelParameters.
      */
+    @Generated
     public static CommonModelParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CommonModelParameters deserializedCommonModelParameters = new CommonModelParameters();

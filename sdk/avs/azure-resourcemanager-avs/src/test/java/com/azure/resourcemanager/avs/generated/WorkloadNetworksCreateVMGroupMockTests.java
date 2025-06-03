@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroup;
@@ -22,25 +22,25 @@ public final class WorkloadNetworksCreateVMGroupMockTests {
     @Test
     public void testCreateVMGroup() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"iidlop\",\"members\":[\"wdpyq\",\"ybxubmdna\",\"cbq\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":1864803261739962895},\"id\":\"acigel\",\"name\":\"ohdbvqvwzkj\",\"type\":\"pwbeonr\"}";
+            = "{\"properties\":{\"displayName\":\"vcpwnkwy\",\"members\":[\"ofalickduoiqtam\",\"yvsk\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":3103416770960569276},\"id\":\"sbc\",\"name\":\"hzagxnvhycvdimw\",\"type\":\"zregzgyufutrwpw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkVMGroup response = manager.workloadNetworks()
-            .defineVMGroup("sgl")
-            .withExistingPrivateCloud("bqqqagwwrxa", "mz")
-            .withDisplayName("zezkhhltnjadh")
-            .withMembers(Arrays.asList("wjqo"))
-            .withRevision(5714887426369504206L)
+            .defineVMGroup("xjeaoqaqbzgyh")
+            .withExistingPrivateCloud("lxiutgjcyzyzjdnr", "jb")
+            .withDisplayName("v")
+            .withMembers(Arrays.asList("bwbqamt", "uliyslpkcv", "w"))
+            .withRevision(2039620424045659199L)
             .create();
 
-        Assertions.assertEquals("iidlop", response.displayName());
-        Assertions.assertEquals("wdpyq", response.members().get(0));
-        Assertions.assertEquals(1864803261739962895L, response.revision());
+        Assertions.assertEquals("vcpwnkwy", response.displayName());
+        Assertions.assertEquals("ofalickduoiqtam", response.members().get(0));
+        Assertions.assertEquals(3103416770960569276L, response.revision());
     }
 }

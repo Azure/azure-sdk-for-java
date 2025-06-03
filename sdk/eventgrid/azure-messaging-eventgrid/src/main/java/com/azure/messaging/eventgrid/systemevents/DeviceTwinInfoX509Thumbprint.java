@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class DeviceTwinInfoX509Thumbprint implements JsonSerializable<Devi
     /*
      * Primary thumbprint for the x509 certificate.
      */
+    @Generated
     private String primaryThumbprint;
 
     /*
      * Secondary thumbprint for the x509 certificate.
      */
+    @Generated
     private String secondaryThumbprint;
 
     /**
      * Creates an instance of DeviceTwinInfoX509Thumbprint class.
      */
+    @Generated
     public DeviceTwinInfoX509Thumbprint() {
     }
 
@@ -39,6 +43,7 @@ public final class DeviceTwinInfoX509Thumbprint implements JsonSerializable<Devi
      * 
      * @return the primaryThumbprint value.
      */
+    @Generated
     public String getPrimaryThumbprint() {
         return this.primaryThumbprint;
     }
@@ -49,6 +54,7 @@ public final class DeviceTwinInfoX509Thumbprint implements JsonSerializable<Devi
      * @param primaryThumbprint the primaryThumbprint value to set.
      * @return the DeviceTwinInfoX509Thumbprint object itself.
      */
+    @Generated
     public DeviceTwinInfoX509Thumbprint setPrimaryThumbprint(String primaryThumbprint) {
         this.primaryThumbprint = primaryThumbprint;
         return this;
@@ -59,6 +65,7 @@ public final class DeviceTwinInfoX509Thumbprint implements JsonSerializable<Devi
      * 
      * @return the secondaryThumbprint value.
      */
+    @Generated
     public String getSecondaryThumbprint() {
         return this.secondaryThumbprint;
     }
@@ -69,6 +76,7 @@ public final class DeviceTwinInfoX509Thumbprint implements JsonSerializable<Devi
      * @param secondaryThumbprint the secondaryThumbprint value to set.
      * @return the DeviceTwinInfoX509Thumbprint object itself.
      */
+    @Generated
     public DeviceTwinInfoX509Thumbprint setSecondaryThumbprint(String secondaryThumbprint) {
         this.secondaryThumbprint = secondaryThumbprint;
         return this;
@@ -77,6 +85,7 @@ public final class DeviceTwinInfoX509Thumbprint implements JsonSerializable<Devi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class DeviceTwinInfoX509Thumbprint implements JsonSerializable<Devi
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeviceTwinInfoX509Thumbprint.
      */
+    @Generated
     public static DeviceTwinInfoX509Thumbprint fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeviceTwinInfoX509Thumbprint deserializedDeviceTwinInfoX509Thumbprint = new DeviceTwinInfoX509Thumbprint();

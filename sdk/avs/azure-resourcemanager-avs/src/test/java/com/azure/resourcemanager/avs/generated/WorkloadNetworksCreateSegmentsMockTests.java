@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegment;
@@ -23,30 +23,30 @@ public final class WorkloadNetworksCreateSegmentsMockTests {
     @Test
     public void testCreateSegments() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"zydmxzjijpvuaurk\",\"connectedGateway\":\"ci\",\"subnet\":{\"dhcpRanges\":[\"fx\",\"dcoxnbk\",\"ja\"],\"gatewayAddress\":\"rnnqb\"},\"portVif\":[{\"portName\":\"izxqltgrd\"},{\"portName\":\"ypxrx\"},{\"portName\":\"fihwu\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":277871752472439784},\"id\":\"xrblmliowxihs\",\"name\":\"nxw\",\"type\":\"agnepzwaklsb\"}";
+            = "{\"properties\":{\"displayName\":\"gttmvmmagoaqyl\",\"connectedGateway\":\"ztj\",\"subnet\":{\"dhcpRanges\":[\"jcg\"],\"gatewayAddress\":\"itpfinzcpdl\"},\"portVif\":[{\"portName\":\"gjmtbdrvcqguefzh\"},{\"portName\":\"p\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":5442242837114254993},\"id\":\"ujlfyoumpcky\",\"name\":\"clcdigptajbrzmq\",\"type\":\"ucycijo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkSegment response = manager.workloadNetworks()
-            .defineSegments("l")
-            .withExistingPrivateCloud("psmgo", "guamlj")
-            .withDisplayName("splzga")
-            .withConnectedGateway("cshhv")
+            .defineSegments("rtudawlpjfel")
+            .withExistingPrivateCloud("yeji", "iuxegth")
+            .withDisplayName("pptcbgqnzmnhii")
+            .withConnectedGateway("alwcjgckbb")
             .withSubnet(new WorkloadNetworkSegmentSubnet()
-                .withDhcpRanges(Arrays.asList("nxkympqanxrjk", "xtwbta", "ypnyghshxc"))
-                .withGatewayAddress("hkgmnsg"))
-            .withRevision(4535170373281810468L)
+                .withDhcpRanges(Arrays.asList("zpraoxn", "uffatsgftipwc", "byubhiqdxyurnpn", "hza"))
+                .withGatewayAddress("cnuhiigbylbuigv"))
+            .withRevision(4905778208552045689L)
             .create();
 
-        Assertions.assertEquals("zydmxzjijpvuaurk", response.displayName());
-        Assertions.assertEquals("ci", response.connectedGateway());
-        Assertions.assertEquals("fx", response.subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("rnnqb", response.subnet().gatewayAddress());
-        Assertions.assertEquals(277871752472439784L, response.revision());
+        Assertions.assertEquals("gttmvmmagoaqyl", response.displayName());
+        Assertions.assertEquals("ztj", response.connectedGateway());
+        Assertions.assertEquals("jcg", response.subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("itpfinzcpdl", response.subnet().gatewayAddress());
+        Assertions.assertEquals(5442242837114254993L, response.revision());
     }
 }

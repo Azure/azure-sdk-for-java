@@ -3,6 +3,9 @@
 
 package io.clientcore.core.http.models;
 
+import java.util.Objects;
+import java.util.function.Consumer;
+
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.annotations.QueryParam;
@@ -11,9 +14,6 @@ import io.clientcore.core.implementation.utils.InternalContext;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-
-import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * This class contains the request metadata that flows along with the {@link HttpRequest} as it goes through HTTP pipeline,
@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  * <!-- src_embed io.clientcore.core.http.rest.requestcontext.instantiation -->
  * <pre>
  * RequestContext context = new RequestContext.Builder&#40;&#41;
- *     .addHeader&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;
+ *     .setHeader&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestcontext.instantiation -->
@@ -289,10 +289,10 @@ public final class RequestContext {
         }
 
         /**
-         * Adds a header to the {@link HttpRequest}.
+         * Sets a header on the {@link HttpRequest}.
          *
-         * <p>If a header with the given name exists, the {@code value} is added to the existing header (comma-separated),
-         * otherwise a new header will be created.</p>
+         * If a header with the given name exists, the {@code value} overwrites the existing header value.
+         * Otherwise a new header will be created with the given value.
          *
          * @param name The header name.
          * @param value The header value.
@@ -300,11 +300,11 @@ public final class RequestContext {
          * @return The updated {@link Builder} object.
          * @throws NullPointerException If {@code header} is null.
          */
-        public Builder addHeader(HttpHeaderName name, String value) {
+        public Builder setHeader(HttpHeaderName name, String value) {
             Objects.requireNonNull(name, "'name' cannot be null.");
             Objects.requireNonNull(value, "'value' cannot be null.");
 
-            this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(name, value));
+            this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(name, value));
             return this;
         }
 

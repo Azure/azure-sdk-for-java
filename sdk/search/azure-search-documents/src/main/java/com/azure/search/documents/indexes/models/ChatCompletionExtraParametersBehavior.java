@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,16 +18,19 @@ public final class ChatCompletionExtraParametersBehavior
     /**
      * Passes any extra parameters directly to the model.
      */
+    @Generated
     public static final ChatCompletionExtraParametersBehavior PASS_THROUGH = fromString("passThrough");
 
     /**
      * Drops all extra parameters.
      */
+    @Generated
     public static final ChatCompletionExtraParametersBehavior DROP = fromString("drop");
 
     /**
      * Raises an error if any extra parameter is present.
      */
+    @Generated
     public static final ChatCompletionExtraParametersBehavior ERROR = fromString("error");
 
     /**
@@ -34,6 +38,7 @@ public final class ChatCompletionExtraParametersBehavior
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ChatCompletionExtraParametersBehavior() {
     }
@@ -44,6 +49,7 @@ public final class ChatCompletionExtraParametersBehavior
      * @param name a name to look for.
      * @return the corresponding ChatCompletionExtraParametersBehavior.
      */
+    @Generated
     public static ChatCompletionExtraParametersBehavior fromString(String name) {
         return fromString(name, ChatCompletionExtraParametersBehavior.class);
     }
@@ -53,6 +59,7 @@ public final class ChatCompletionExtraParametersBehavior
      * 
      * @return known ChatCompletionExtraParametersBehavior values.
      */
+    @Generated
     public static Collection<ChatCompletionExtraParametersBehavior> values() {
         return values(ChatCompletionExtraParametersBehavior.class);
     }

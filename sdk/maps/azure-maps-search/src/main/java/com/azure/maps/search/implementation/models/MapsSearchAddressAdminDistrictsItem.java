@@ -5,6 +5,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,22 +19,25 @@ import java.io.IOException;
 public final class MapsSearchAddressAdminDistrictsItem
     implements JsonSerializable<MapsSearchAddressAdminDistrictsItem> {
     /*
-     * The name for the corresponding adminDistrict field, 
-     * For adminDistrict[0], this could be full name of state such as Washington, 
+     * The name for the corresponding adminDistrict field,
+     * For adminDistrict[0], this could be full name of state such as Washington,
      * For adminDistrict[1], this could be the full name of the county
      */
+    @Generated
     private String name;
 
     /*
-     * The short name for the corresponding adminDistrict field, 
-     * For adminDistrict[0], this could be short name of state such as WA, 
+     * The short name for the corresponding adminDistrict field,
+     * For adminDistrict[0], this could be short name of state such as WA,
      * For adminDistrict[1], this could be the short name of the county
      */
+    @Generated
     private String shortName;
 
     /**
      * Creates an instance of MapsSearchAddressAdminDistrictsItem class.
      */
+    @Generated
     public MapsSearchAddressAdminDistrictsItem() {
     }
 
@@ -44,6 +48,7 @@ public final class MapsSearchAddressAdminDistrictsItem
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -56,6 +61,7 @@ public final class MapsSearchAddressAdminDistrictsItem
      * @param name the name value to set.
      * @return the MapsSearchAddressAdminDistrictsItem object itself.
      */
+    @Generated
     public MapsSearchAddressAdminDistrictsItem setName(String name) {
         this.name = name;
         return this;
@@ -68,6 +74,7 @@ public final class MapsSearchAddressAdminDistrictsItem
      * 
      * @return the shortName value.
      */
+    @Generated
     public String getShortName() {
         return this.shortName;
     }
@@ -80,6 +87,7 @@ public final class MapsSearchAddressAdminDistrictsItem
      * @param shortName the shortName value to set.
      * @return the MapsSearchAddressAdminDistrictsItem object itself.
      */
+    @Generated
     public MapsSearchAddressAdminDistrictsItem setShortName(String shortName) {
         this.shortName = shortName;
         return this;
@@ -88,6 +96,7 @@ public final class MapsSearchAddressAdminDistrictsItem
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -104,6 +113,7 @@ public final class MapsSearchAddressAdminDistrictsItem
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MapsSearchAddressAdminDistrictsItem.
      */
+    @Generated
     public static MapsSearchAddressAdminDistrictsItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MapsSearchAddressAdminDistrictsItem deserializedMapsSearchAddressAdminDistrictsItem

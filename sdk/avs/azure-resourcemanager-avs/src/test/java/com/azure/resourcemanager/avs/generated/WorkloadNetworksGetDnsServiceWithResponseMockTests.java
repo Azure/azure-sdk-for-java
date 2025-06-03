@@ -6,8 +6,8 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.DnsServiceLogLevelEnum;
@@ -22,24 +22,24 @@ public final class WorkloadNetworksGetDnsServiceWithResponseMockTests {
     @Test
     public void testGetDnsServiceWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"myccx\",\"dnsServiceIp\":\"hcoxov\",\"defaultDnsZone\":\"khenlus\",\"fqdnZones\":[\"dtjxtxrdcqt\"],\"logLevel\":\"ERROR\",\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":7902462386564610802},\"id\":\"lvyjtcvuwkas\",\"name\":\"zies\",\"type\":\"uughtuqfecjxeyg\"}";
+            = "{\"properties\":{\"displayName\":\"ksrf\",\"dnsServiceIp\":\"v\",\"defaultDnsZone\":\"mknbnxwcdommpv\",\"fqdnZones\":[\"wzfgbrttuiaclkie\"],\"logLevel\":\"ERROR\",\"status\":\"FAILURE\",\"provisioningState\":\"Failed\",\"revision\":3380169612516312887},\"id\":\"fyut\",\"name\":\"diygbpvnwswmtxky\",\"type\":\"twwgzwx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AvsManager manager = AvsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkDnsService response = manager.workloadNetworks()
-            .getDnsServiceWithResponse("nszonwpngaj", "n", "ixjawrtm", com.azure.core.util.Context.NONE)
+            .getDnsServiceWithResponse("wvqsgny", "uuzivensrpmeyyvp", "patlbijp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("myccx", response.displayName());
-        Assertions.assertEquals("hcoxov", response.dnsServiceIp());
-        Assertions.assertEquals("khenlus", response.defaultDnsZone());
-        Assertions.assertEquals("dtjxtxrdcqt", response.fqdnZones().get(0));
+        Assertions.assertEquals("ksrf", response.displayName());
+        Assertions.assertEquals("v", response.dnsServiceIp());
+        Assertions.assertEquals("mknbnxwcdommpv", response.defaultDnsZone());
+        Assertions.assertEquals("wzfgbrttuiaclkie", response.fqdnZones().get(0));
         Assertions.assertEquals(DnsServiceLogLevelEnum.ERROR, response.logLevel());
-        Assertions.assertEquals(7902462386564610802L, response.revision());
+        Assertions.assertEquals(3380169612516312887L, response.revision());
     }
 }

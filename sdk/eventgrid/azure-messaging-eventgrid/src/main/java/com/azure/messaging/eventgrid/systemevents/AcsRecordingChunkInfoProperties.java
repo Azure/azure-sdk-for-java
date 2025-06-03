@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,36 +20,43 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
     /*
      * The documentId of the recording chunk
      */
+    @Generated
     private String documentId;
 
     /*
      * The index of the recording chunk
      */
+    @Generated
     private Long index;
 
     /*
      * The reason for ending the recording chunk
      */
+    @Generated
     private String endReason;
 
     /*
      * The location of the metadata for this chunk
      */
+    @Generated
     private String metadataLocation;
 
     /*
      * The location of the content for this chunk
      */
+    @Generated
     private String contentLocation;
 
     /*
      * The location to delete all chunk storage
      */
+    @Generated
     private String deleteLocation;
 
     /**
      * Creates an instance of AcsRecordingChunkInfoProperties class.
      */
+    @Generated
     public AcsRecordingChunkInfoProperties() {
     }
 
@@ -57,6 +65,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
      * 
      * @return the documentId value.
      */
+    @Generated
     public String getDocumentId() {
         return this.documentId;
     }
@@ -67,6 +76,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
      * @param documentId the documentId value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
+    @Generated
     public AcsRecordingChunkInfoProperties setDocumentId(String documentId) {
         this.documentId = documentId;
         return this;
@@ -77,6 +87,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
      * 
      * @return the index value.
      */
+    @Generated
     public Long getIndex() {
         return this.index;
     }
@@ -87,6 +98,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
      * @param index the index value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
+    @Generated
     public AcsRecordingChunkInfoProperties setIndex(Long index) {
         this.index = index;
         return this;
@@ -97,6 +109,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
      * 
      * @return the endReason value.
      */
+    @Generated
     public String getEndReason() {
         return this.endReason;
     }
@@ -107,6 +120,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
      * @param endReason the endReason value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
+    @Generated
     public AcsRecordingChunkInfoProperties setEndReason(String endReason) {
         this.endReason = endReason;
         return this;
@@ -117,6 +131,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
      * 
      * @return the metadataLocation value.
      */
+    @Generated
     public String getMetadataLocation() {
         return this.metadataLocation;
     }
@@ -127,6 +142,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
      * @param metadataLocation the metadataLocation value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
+    @Generated
     public AcsRecordingChunkInfoProperties setMetadataLocation(String metadataLocation) {
         this.metadataLocation = metadataLocation;
         return this;
@@ -137,6 +153,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
      * 
      * @return the contentLocation value.
      */
+    @Generated
     public String getContentLocation() {
         return this.contentLocation;
     }
@@ -147,6 +164,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
      * @param contentLocation the contentLocation value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
+    @Generated
     public AcsRecordingChunkInfoProperties setContentLocation(String contentLocation) {
         this.contentLocation = contentLocation;
         return this;
@@ -157,6 +175,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
      * 
      * @return the deleteLocation value.
      */
+    @Generated
     public String getDeleteLocation() {
         return this.deleteLocation;
     }
@@ -167,6 +186,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
      * @param deleteLocation the deleteLocation value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
+    @Generated
     public AcsRecordingChunkInfoProperties setDeleteLocation(String deleteLocation) {
         this.deleteLocation = deleteLocation;
         return this;
@@ -175,6 +195,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -195,6 +216,7 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsRecordingChunkInfoProperties.
      */
+    @Generated
     public static AcsRecordingChunkInfoProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsRecordingChunkInfoProperties deserializedAcsRecordingChunkInfoProperties

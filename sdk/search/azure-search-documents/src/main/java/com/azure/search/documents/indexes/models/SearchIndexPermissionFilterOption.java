@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,11 +17,13 @@ public final class SearchIndexPermissionFilterOption extends ExpandableStringEnu
     /**
      * Static value enabled for SearchIndexPermissionFilterOption.
      */
+    @Generated
     public static final SearchIndexPermissionFilterOption ENABLED = fromString("enabled");
 
     /**
      * Static value disabled for SearchIndexPermissionFilterOption.
      */
+    @Generated
     public static final SearchIndexPermissionFilterOption DISABLED = fromString("disabled");
 
     /**
@@ -28,6 +31,7 @@ public final class SearchIndexPermissionFilterOption extends ExpandableStringEnu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SearchIndexPermissionFilterOption() {
     }
@@ -38,6 +42,7 @@ public final class SearchIndexPermissionFilterOption extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding SearchIndexPermissionFilterOption.
      */
+    @Generated
     public static SearchIndexPermissionFilterOption fromString(String name) {
         return fromString(name, SearchIndexPermissionFilterOption.class);
     }
@@ -47,6 +52,7 @@ public final class SearchIndexPermissionFilterOption extends ExpandableStringEnu
      * 
      * @return known SearchIndexPermissionFilterOption values.
      */
+    @Generated
     public static Collection<SearchIndexPermissionFilterOption> values() {
         return values(SearchIndexPermissionFilterOption.class);
     }

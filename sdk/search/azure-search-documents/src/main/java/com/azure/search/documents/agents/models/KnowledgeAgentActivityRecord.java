@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.agents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
     /*
      * The type of the activity record.
      */
+    @Generated
     private String type = "KnowledgeAgentActivityRecord";
 
     /*
      * The ID of the activity record.
      */
+    @Generated
     private final int id;
 
     /**
@@ -33,6 +36,7 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
      * 
      * @param id the id value to set.
      */
+    @Generated
     public KnowledgeAgentActivityRecord(int id) {
         this.id = id;
     }
@@ -42,6 +46,7 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -51,6 +56,7 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
      * 
      * @return the id value.
      */
+    @Generated
     public int getId() {
         return this.id;
     }
@@ -58,6 +64,7 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,6 +82,7 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KnowledgeAgentActivityRecord.
      */
+    @Generated
     public static KnowledgeAgentActivityRecord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -104,6 +112,7 @@ public class KnowledgeAgentActivityRecord implements JsonSerializable<KnowledgeA
         });
     }
 
+    @Generated
     static KnowledgeAgentActivityRecord fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

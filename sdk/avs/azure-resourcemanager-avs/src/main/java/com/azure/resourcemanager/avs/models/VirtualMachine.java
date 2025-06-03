@@ -54,7 +54,7 @@ public interface VirtualMachine {
     String displayName();
 
     /**
-     * Gets the moRefId property: Virtual machine managed object reference id.
+     * Gets the moRefId property: vCenter managed object reference ID of the virtual machine.
      * 
      * @return the moRefId value.
      */

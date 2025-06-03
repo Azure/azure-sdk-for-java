@@ -679,7 +679,7 @@ public final class KnowledgeAgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KnowledgeAgent> list(RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listSinglePage(requestOptions, Context.NONE));
+        return new PagedIterable<>(() -> listSinglePage(requestOptions));
     }
 
     /**

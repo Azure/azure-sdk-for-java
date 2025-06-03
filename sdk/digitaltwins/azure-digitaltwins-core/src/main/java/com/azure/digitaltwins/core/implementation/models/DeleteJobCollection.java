@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class DeleteJobCollection implements JsonSerializable<DeleteJobColl
     /*
      * The list of delete job objects.
      */
+    @Generated
     private final List<DeleteJob> value;
 
     /*
      * A URI to retrieve the next page of results.
      */
+    @Generated
     private String nextLink;
 
     /**
@@ -32,6 +35,7 @@ public final class DeleteJobCollection implements JsonSerializable<DeleteJobColl
      * 
      * @param value the value value to set.
      */
+    @Generated
     public DeleteJobCollection(List<DeleteJob> value) {
         this.value = value;
     }
@@ -41,6 +45,7 @@ public final class DeleteJobCollection implements JsonSerializable<DeleteJobColl
      * 
      * @return the value value.
      */
+    @Generated
     public List<DeleteJob> getValue() {
         return this.value;
     }
@@ -50,6 +55,7 @@ public final class DeleteJobCollection implements JsonSerializable<DeleteJobColl
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -60,6 +66,7 @@ public final class DeleteJobCollection implements JsonSerializable<DeleteJobColl
      * @param nextLink the nextLink value to set.
      * @return the DeleteJobCollection object itself.
      */
+    @Generated
     public DeleteJobCollection setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -68,6 +75,7 @@ public final class DeleteJobCollection implements JsonSerializable<DeleteJobColl
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -85,6 +93,7 @@ public final class DeleteJobCollection implements JsonSerializable<DeleteJobColl
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DeleteJobCollection.
      */
+    @Generated
     public static DeleteJobCollection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean valueFound = false;

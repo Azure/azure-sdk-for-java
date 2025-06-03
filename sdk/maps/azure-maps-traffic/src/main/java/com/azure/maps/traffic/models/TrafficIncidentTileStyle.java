@@ -4,6 +4,7 @@
 
 package com.azure.maps.traffic.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class TrafficIncidentTileStyle extends ExpandableStringEnum<Traffic
     /**
      * Creates traffic lines with colored chevrons indicating severity.
      */
+    @Generated
     public static final TrafficIncidentTileStyle S1 = fromString("s1");
 
     /**
      * Creates plain lines with certain degree of glow.
      */
+    @Generated
     public static final TrafficIncidentTileStyle S2 = fromString("s2");
 
     /**
      * Creates plain lines with certain degree of glow, different from the s2 style.
      */
+    @Generated
     public static final TrafficIncidentTileStyle S3 = fromString("s3");
 
     /**
      * Night style.
      */
+    @Generated
     public static final TrafficIncidentTileStyle NIGHT = fromString("night");
 
     /**
@@ -36,6 +41,7 @@ public final class TrafficIncidentTileStyle extends ExpandableStringEnum<Traffic
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TrafficIncidentTileStyle() {
     }
@@ -46,6 +52,7 @@ public final class TrafficIncidentTileStyle extends ExpandableStringEnum<Traffic
      * @param name a name to look for.
      * @return the corresponding TrafficIncidentTileStyle.
      */
+    @Generated
     public static TrafficIncidentTileStyle fromString(String name) {
         return fromString(name, TrafficIncidentTileStyle.class);
     }
@@ -55,6 +62,7 @@ public final class TrafficIncidentTileStyle extends ExpandableStringEnum<Traffic
      * 
      * @return known TrafficIncidentTileStyle values.
      */
+    @Generated
     public static Collection<TrafficIncidentTileStyle> values() {
         return values(TrafficIncidentTileStyle.class);
     }

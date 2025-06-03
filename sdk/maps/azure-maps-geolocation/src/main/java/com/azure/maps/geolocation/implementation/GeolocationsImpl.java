@@ -84,9 +84,7 @@ public final class GeolocationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IpAddressToLocationResult>> getLocationWithResponseAsync(JsonFormat format, String ipAddress) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getLocation(this.client.getHost(), this.client.getClientId(),
-            this.client.getApiVersion(), format, ipAddress, accept, context));
+        return FluxUtil.withContext(context -> getLocationWithResponseAsync(format, ipAddress, context));
     }
 
     /**

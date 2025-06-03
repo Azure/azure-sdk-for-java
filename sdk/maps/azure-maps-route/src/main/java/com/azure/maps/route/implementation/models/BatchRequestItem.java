@@ -5,6 +5,7 @@
 package com.azure.maps.route.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,13 +18,16 @@ import java.io.IOException;
 @Fluent
 public final class BatchRequestItem implements JsonSerializable<BatchRequestItem> {
     /*
-     * This parameter contains a query string used to perform an unstructured geocoding operation. The query string will be passed verbatim to the search API for processing.
+     * This parameter contains a query string used to perform an unstructured geocoding operation. The query string will
+     * be passed verbatim to the search API for processing.
      */
+    @Generated
     private String query;
 
     /**
      * Creates an instance of BatchRequestItem class.
      */
+    @Generated
     public BatchRequestItem() {
     }
 
@@ -33,6 +37,7 @@ public final class BatchRequestItem implements JsonSerializable<BatchRequestItem
      * 
      * @return the query value.
      */
+    @Generated
     public String getQuery() {
         return this.query;
     }
@@ -44,6 +49,7 @@ public final class BatchRequestItem implements JsonSerializable<BatchRequestItem
      * @param query the query value to set.
      * @return the BatchRequestItem object itself.
      */
+    @Generated
     public BatchRequestItem setQuery(String query) {
         this.query = query;
         return this;
@@ -52,6 +58,7 @@ public final class BatchRequestItem implements JsonSerializable<BatchRequestItem
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +74,7 @@ public final class BatchRequestItem implements JsonSerializable<BatchRequestItem
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the BatchRequestItem.
      */
+    @Generated
     public static BatchRequestItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BatchRequestItem deserializedBatchRequestItem = new BatchRequestItem();
