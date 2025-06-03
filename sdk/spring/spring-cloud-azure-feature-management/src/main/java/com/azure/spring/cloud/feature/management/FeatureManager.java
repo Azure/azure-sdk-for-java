@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.feature.management.filters.ContextualFeatureFilter;
@@ -50,8 +49,9 @@ import reactor.core.publisher.Mono;
  * Used to evaluate the enabled state of a feature and/or get the assigned variant of a feature, if any.
  */
 public class FeatureManager {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureManager.class);
+
+    private static final double PERCENTILE_MAXIMUM = 100.0;
 
     private transient ApplicationContext context;
 
@@ -205,29 +205,32 @@ public class FeatureManager {
         if (!featureFlag.isEnabled()) {
             this.assignDefaultDisabledReason(event);
             event.setEnabled(false);
-            if (telemetryPublisher != null && featureFlag.getTelemetry() != null
-                && featureFlag.getTelemetry().isEnabled()) {
-                telemetryPublisher.publishTelemetry(event);
-            }
+            publishTelemetryIfEnabled(event);
 
             // If a feature flag is disabled and override can't enable it
             return Mono.just(event);
         }
 
         Mono<EvaluationEvent> result = this.checkFeatureFilters(event, featureContext);
-
         result = assignAllocation(result);
-        result = result.doOnSuccess(resultEvent -> {
-            if (telemetryPublisher != null && featureFlag.getTelemetry() != null
-                && featureFlag.getTelemetry().isEnabled()) {
-                telemetryPublisher.publishTelemetry(resultEvent);
-            }
-        });
+        result = result.doOnSuccess(resultEvent -> publishTelemetryIfEnabled(resultEvent));
         return result;
     }
 
-    private Mono<EvaluationEvent> assignAllocation(Mono<EvaluationEvent> monoEvent) {
+    /**
+     * Publishes telemetry if enabled for the feature.
+     * 
+     * @param event Evaluation event
+     */
+    private void publishTelemetryIfEnabled(EvaluationEvent event) {
+        if (telemetryPublisher != null && event.getFeature() != null
+            && event.getFeature().getTelemetry() != null
+            && event.getFeature().getTelemetry().isEnabled()) {
+            telemetryPublisher.publishTelemetry(event);
+        }
+    }
 
+    private Mono<EvaluationEvent> assignAllocation(Mono<EvaluationEvent> monoEvent) {
         return monoEvent.map(event -> {
             Feature featureFlag = event.getFeature();
 
@@ -333,7 +336,8 @@ public class FeatureManager {
             double box = FeatureFilterUtils.isTargetedPercentage(contextId);
             for (PercentileAllocation percentileAllocation : allocation.getPercentile()) {
                 Double to = percentileAllocation.getTo();
-                if ((box == 100 && to == 100) || (percentileAllocation.getFrom() <= box && box < to)) {
+                if ((box == PERCENTILE_MAXIMUM && to == PERCENTILE_MAXIMUM)
+                    || (percentileAllocation.getFrom() <= box && box < to)) {
                     event.setReason(VariantAssignmentReason.PERCENTILE);
                     variantName = percentileAllocation.getVariant();
                     break;
@@ -385,28 +389,7 @@ public class FeatureManager {
         for (FeatureFilterEvaluationContext featureFilter : featureFilters) {
             String filterName = featureFilter.getName();
 
-            try {
-                Object filter = context.getBean(filterName);
-                featureFilter.setFeatureName(featureFlag.getId());
-                if (filter instanceof FeatureFilter) {
-                    filterResults.add(Mono.just(((FeatureFilter) filter).evaluate(featureFilter)));
-                } else if (filter instanceof ContextualFeatureFilter) {
-                    filterResults
-                        .add(Mono.just(((ContextualFeatureFilter) filter).evaluate(featureFilter, featureContext)));
-                } else if (filter instanceof FeatureFilterAsync) {
-                    filterResults.add(((FeatureFilterAsync) filter).evaluateAsync(featureFilter));
-                } else if (filter instanceof ContextualFeatureFilterAsync) {
-                    filterResults
-                        .add(((ContextualFeatureFilterAsync) filter).evaluateAsync(featureFilter, featureContext));
-                }
-            } catch (NoSuchBeanDefinitionException e) {
-                LOGGER.error("Was unable to find Filter {}. Does the class exist and set as an @Component?",
-                    filterName);
-                if (properties.isFailFast()) {
-                    String message = "Fail fast is set and a Filter was unable to be found";
-                    ReflectionUtils.rethrowRuntimeException(new FilterNotFoundException(message, e, featureFilter));
-                }
-            }
+            filterResults.add(evaluateFilter(featureFilter, featureContext, filterName));
         }
 
         if (ALL_REQUIREMENT_TYPE.equals(featureFlag.getConditions().getRequirementType())) {
@@ -448,4 +431,40 @@ public class FeatureManager {
         return new HashSet<String>(
             featureManagementConfigurations.getFeatureFlags().stream().map(feature -> feature.getId()).toList());
     }
+
+    /**
+     * Enhanced filter evaluation with better error handling and logging.
+     * 
+     * @param featureFilter Feature filter evaluation context
+     * @param featureContext Feature context
+     * @param filterName Name of the filter for logging
+     * @return Mono<Boolean> result of filter evaluation
+     */
+    private Mono<Boolean> evaluateFilter(FeatureFilterEvaluationContext featureFilter, Object featureContext,
+        String filterName) {
+        try {
+            Object filter = context.getBean(filterName);
+            featureFilter.setFeatureName(featureFilter.getFeatureName());
+            if (filter instanceof FeatureFilter) {
+                return Mono.just(((FeatureFilter) filter).evaluate(featureFilter));
+            } else if (filter instanceof ContextualFeatureFilter) {
+                return Mono.just(((ContextualFeatureFilter) filter).evaluate(featureFilter, featureContext));
+            } else if (filter instanceof FeatureFilterAsync) {
+                return ((FeatureFilterAsync) filter).evaluateAsync(featureFilter);
+            } else if (filter instanceof ContextualFeatureFilterAsync) {
+                return ((ContextualFeatureFilterAsync) filter).evaluateAsync(featureFilter, featureContext);
+            } else {
+                LOGGER.warn("Filter {} does not implement any known filter interface", filterName);
+                return Mono.just(false);
+            }
+        } catch (NoSuchBeanDefinitionException e) {
+            LOGGER.error("Was unable to find Filter {}. Does the class exist and set as an @Component?", filterName, e);
+            if (properties.isFailFast()) {
+                String message = "Fail fast is set and a Filter was unable to be found";
+                return Mono.error(new FilterNotFoundException(message, e, featureFilter));
+            }
+            return Mono.just(false);
+        }
+    }
+
 }

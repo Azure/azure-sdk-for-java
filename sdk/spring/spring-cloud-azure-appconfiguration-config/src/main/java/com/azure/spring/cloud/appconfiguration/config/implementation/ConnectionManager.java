@@ -160,6 +160,8 @@ class ConnectionManager {
         } else if (clients.size() > 0) {
             this.health = AppConfigurationStoreHealth.UP;
         }
+
+        return availableClients;
     }
 
     /**
