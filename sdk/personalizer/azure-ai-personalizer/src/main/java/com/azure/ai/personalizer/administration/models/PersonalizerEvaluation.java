@@ -6,6 +6,7 @@ package com.azure.ai.personalizer.administration.models;
 import com.azure.ai.personalizer.models.EvaluationJobStatus;
 import com.azure.ai.personalizer.models.EvaluationType;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -25,61 +26,73 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
     /*
      * The ID of the evaluation.
      */
+    @Generated
     private String id;
 
     /*
      * The name of the evaluation.
      */
+    @Generated
     private String name;
 
     /*
      * The start time of the evaluation.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * The end time of the evaluation.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * The ID of the job processing the evaluation.
      */
+    @Generated
     private String jobId;
 
     /*
      * The status of the job processing the evaluation.
      */
+    @Generated
     private EvaluationJobStatus status;
 
     /*
      * The results of the evaluation.
      */
+    @Generated
     private List<PersonalizerPolicyResult> policyResults;
 
     /*
      * Feature Importance.
      */
+    @Generated
     private List<List<String>> featureImportance;
 
     /*
      * Evaluation type (manual or through Automatic Optimization).
      */
+    @Generated
     private EvaluationType evaluationType;
 
     /*
      * Thr optimal policy.
      */
+    @Generated
     private String optimalPolicy;
 
     /*
      * Creation time.
      */
+    @Generated
     private OffsetDateTime creationTime;
 
     /**
      * Creates an instance of PersonalizerEvaluation class.
      */
+    @Generated
     public PersonalizerEvaluation() {
     }
 
@@ -88,6 +101,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -97,6 +111,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -106,6 +121,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      *
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -115,6 +131,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      *
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -124,6 +141,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      *
      * @return the jobId value.
      */
+    @Generated
     String getJobId() {
         return this.jobId;
     }
@@ -133,6 +151,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      *
      * @return the status value.
      */
+    @Generated
     public EvaluationJobStatus getStatus() {
         return this.status;
     }
@@ -142,6 +161,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      *
      * @return the policyResults value.
      */
+    @Generated
     public List<PersonalizerPolicyResult> getPolicyResults() {
         return this.policyResults;
     }
@@ -152,6 +172,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      * @param policyResults the policyResults value to set.
      * @return the PersonalizerEvaluation object itself.
      */
+    @Generated
     PersonalizerEvaluation setPolicyResults(List<PersonalizerPolicyResult> policyResults) {
         this.policyResults = policyResults;
         return this;
@@ -162,6 +183,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      *
      * @return the featureImportance value.
      */
+    @Generated
     public List<List<String>> getFeatureImportance() {
         return this.featureImportance;
     }
@@ -172,6 +194,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      * @param featureImportance the featureImportance value to set.
      * @return the PersonalizerEvaluation object itself.
      */
+    @Generated
     PersonalizerEvaluation setFeatureImportance(List<List<String>> featureImportance) {
         this.featureImportance = featureImportance;
         return this;
@@ -182,6 +205,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      *
      * @return the evaluationType value.
      */
+    @Generated
     public EvaluationType getEvaluationType() {
         return this.evaluationType;
     }
@@ -192,6 +216,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      * @param evaluationType the evaluationType value to set.
      * @return the PersonalizerEvaluation object itself.
      */
+    @Generated
     PersonalizerEvaluation setEvaluationType(EvaluationType evaluationType) {
         this.evaluationType = evaluationType;
         return this;
@@ -202,6 +227,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      *
      * @return the optimalPolicy value.
      */
+    @Generated
     public String getOptimalPolicy() {
         return this.optimalPolicy;
     }
@@ -212,6 +238,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      * @param optimalPolicy the optimalPolicy value to set.
      * @return the PersonalizerEvaluation object itself.
      */
+    @Generated
     PersonalizerEvaluation setOptimalPolicy(String optimalPolicy) {
         this.optimalPolicy = optimalPolicy;
         return this;
@@ -222,6 +249,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      *
      * @return the creationTime value.
      */
+    @Generated
     public OffsetDateTime getCreationTime() {
         return this.creationTime;
     }
@@ -232,6 +260,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      * @param creationTime the creationTime value to set.
      * @return the PersonalizerEvaluation object itself.
      */
+    @Generated
     PersonalizerEvaluation setCreationTime(OffsetDateTime creationTime) {
         this.creationTime = creationTime;
         return this;
@@ -240,6 +269,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -262,6 +292,7 @@ public final class PersonalizerEvaluation implements JsonSerializable<Personaliz
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PersonalizerEvaluation.
      */
+    @Generated
     public static PersonalizerEvaluation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerEvaluation deserializedPersonalizerEvaluation = new PersonalizerEvaluation();

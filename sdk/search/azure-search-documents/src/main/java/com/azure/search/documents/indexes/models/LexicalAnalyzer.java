@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,12 +22,14 @@ public class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
     /*
      * A URI fragment specifying the type of analyzer.
      */
+    @Generated
     private String odataType = "LexicalAnalyzer";
 
     /*
      * The name of the analyzer. It must only contain letters, digits, spaces, dashes or underscores, can only start and
      * end with alphanumeric characters, and is limited to 128 characters.
      */
+    @Generated
     private final String name;
 
     /**
@@ -34,6 +37,7 @@ public class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
      * 
      * @param name the name value to set.
      */
+    @Generated
     public LexicalAnalyzer(String name) {
         this.name = name;
     }
@@ -43,6 +47,7 @@ public class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
      * 
      * @return the odataType value.
      */
+    @Generated
     public String getOdataType() {
         return this.odataType;
     }
@@ -53,6 +58,7 @@ public class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -60,6 +66,7 @@ public class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -77,6 +84,7 @@ public class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LexicalAnalyzer.
      */
+    @Generated
     public static LexicalAnalyzer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -108,6 +116,7 @@ public class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
         });
     }
 
+    @Generated
     static LexicalAnalyzer fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

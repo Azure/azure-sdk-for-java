@@ -255,7 +255,7 @@ public final class SecretsModelsUtils {
             }
         } catch (URISyntaxException e) {
             // Should never come here.
-            LOGGER.atError().log("Received malformed secret id URL from Key Vault Service.");
+            LOGGER.atError().setThrowable(e).log("Received malformed secret id URL from Key Vault Service.");
         }
     }
 

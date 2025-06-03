@@ -5,9 +5,9 @@
 # --------------------------------------------------------------------
 #
 type: specs.openrewrite.org/v1beta/recipe
-name: com.azure.openrewrite.migrateToVNext # name to be changed
+name: com.azure.openrewrite
 displayName: Migrate Azure SDKs to Next-Generation Library Stack
 description: This recipe migrates the Azure SDKs to the next-generation library stack.
 recipeList:
-  - com.azure.openrewrite.recipes.migrateAzureCore
-  - com.azure.openrewrite.recipes.migrateAzureStorageBlob
+  - com.azure.openrewrite.migration.core
+

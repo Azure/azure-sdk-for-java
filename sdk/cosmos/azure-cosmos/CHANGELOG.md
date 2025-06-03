@@ -3,12 +3,15 @@
 ### 4.71.0-beta.2 (Unreleased)
 
 #### Features Added
+* Added `GetEffectiveReadConsistencyLevel` method on the `CosmosDiagnosticsContext`. - [PR 45414](https://github.com/Azure/azure-sdk-for-java/pull/45414)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue ignoring client-level diagnostic thresholds for point read operations in some cases - [PR 45488](https://github.com/Azure/azure-sdk-for-java/pull/45488)
 
 #### Other Changes
+* Improved throughput for benchmarks with high concurrency by avoiding blocking `UUID.randomUUID` calls in the hot path. - [PR 45495](https://github.com/Azure/azure-sdk-for-java/pull/45495)
 
 ### 4.71.0-beta.1 (2025-05-19)
 

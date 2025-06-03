@@ -168,6 +168,17 @@ public class AnnotationProcessor extends AbstractProcessor {
         method.setExpectedStatusCodes(httpRequestInfo.expectedStatusCodes());
         method.addStaticHeaders(httpRequestInfo.headers());
         method.addStaticQueryParams(httpRequestInfo.queryParams());
+        TypeMirror returnValueWireType = null;
+        try {
+            // This will throw MirroredTypeException at compile time
+            // The assignment to clazz is only there to trigger the exception and use the TypeMirror from the exception.
+            Class<?> clazz = httpRequestInfo.returnValueWireType();
+        } catch (MirroredTypeException mte) {
+            TypeMirror typeMirror = mte.getTypeMirror();
+            returnValueWireType = typeMirror;
+
+        }
+        method.setReturnValueWireType(returnValueWireType);
         templateInput.addImport(requestMethod.getReturnType());
         method.setMethodReturnType(requestMethod.getReturnType());
         List<UnexpectedResponseExceptionDetail> details = getUnexpectedResponseExceptionDetails(requestMethod);

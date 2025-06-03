@@ -4,7 +4,6 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.CoreException;
@@ -497,25 +496,6 @@ public final class CoreUtils {
         } catch (IOException e) {
             throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
-    }
-
-    /**
-     * Instantiates an {@link HttpResponseException} for unexpected responses.
-     *
-     * @param exceptionMessage The error message to use for the exception.
-     * @param response The HTTP response.
-     * @param decodedValue The decoded value, typically the declared exception type (e.g., ErrorValue).
-     * @return An {@link HttpResponseException} for unexpected responses.
-     */
-    public static HttpResponseException instantiateUnexpectedException(String exceptionMessage,
-        Response<BinaryData> response, Object decodedValue) {
-
-        // The decodedValue should be the declared exception type (e.g., ErrorValue), not a Throwable.
-        // Only wrap as cause if decodedValue is a Throwable.
-        if (decodedValue instanceof Throwable) {
-            return new HttpResponseException(exceptionMessage, response, (Throwable) decodedValue);
-        }
-        return new HttpResponseException(exceptionMessage, response, decodedValue);
     }
 
     private CoreUtils() {

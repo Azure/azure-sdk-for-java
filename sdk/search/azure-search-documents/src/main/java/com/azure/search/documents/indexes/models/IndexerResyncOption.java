@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,6 +17,7 @@ public final class IndexerResyncOption extends ExpandableStringEnum<IndexerResyn
     /**
      * Indexer to re-ingest pre-selected permissions data from data source to index.
      */
+    @Generated
     public static final IndexerResyncOption PERMISSIONS = fromString("permissions");
 
     /**
@@ -23,6 +25,7 @@ public final class IndexerResyncOption extends ExpandableStringEnum<IndexerResyn
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IndexerResyncOption() {
     }
@@ -33,6 +36,7 @@ public final class IndexerResyncOption extends ExpandableStringEnum<IndexerResyn
      * @param name a name to look for.
      * @return the corresponding IndexerResyncOption.
      */
+    @Generated
     public static IndexerResyncOption fromString(String name) {
         return fromString(name, IndexerResyncOption.class);
     }
@@ -42,6 +46,7 @@ public final class IndexerResyncOption extends ExpandableStringEnum<IndexerResyn
      * 
      * @return known IndexerResyncOption values.
      */
+    @Generated
     public static Collection<IndexerResyncOption> values() {
         return values(IndexerResyncOption.class);
     }

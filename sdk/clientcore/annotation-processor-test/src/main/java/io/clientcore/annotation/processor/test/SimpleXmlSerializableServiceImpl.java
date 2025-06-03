@@ -17,7 +17,6 @@ import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.GeneratedCodeUtils;
-import io.clientcore.core.http.models.HttpHeader;
 import java.lang.reflect.ParameterizedType;
 
 /**
@@ -53,8 +52,8 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
     public void sendApplicationXml(SimpleXmlSerializable simpleXmlSerializable) {
         // Create the HttpRequest.
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri("http://localhost/sendApplicationXml");
-        httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
         if (simpleXmlSerializable != null) {
+            httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
             SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
             if (xmlSerializer.supportsFormat(serializationFormat)) {
                 httpRequest.setBody(BinaryData.fromObject(simpleXmlSerializable, xmlSerializer));
@@ -68,7 +67,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             networkResponse.close();
         }
         networkResponse.close();
@@ -79,8 +78,8 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
     public void sendTextXml(SimpleXmlSerializable simpleXmlSerializable) {
         // Create the HttpRequest.
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri("http://localhost/sendTextXml");
-        httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/xml");
         if (simpleXmlSerializable != null) {
+            httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/xml");
             SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
             if (xmlSerializer.supportsFormat(serializationFormat)) {
                 httpRequest.setBody(BinaryData.fromObject(simpleXmlSerializable, xmlSerializer));
@@ -94,7 +93,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             networkResponse.close();
         }
         networkResponse.close();
@@ -105,16 +104,13 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
     public SimpleXmlSerializable getXml(String contentType) {
         // Create the HttpRequest.
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/getXml");
-        if (contentType != null) {
-            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, contentType));
-        }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             networkResponse.close();
         }
         SimpleXmlSerializable deserializedResult;
@@ -125,7 +121,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
+            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
         }
         return deserializedResult;
     }
@@ -135,16 +131,13 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
     public SimpleXmlSerializable getInvalidXml(String contentType) {
         // Create the HttpRequest.
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/getInvalidXml");
-        if (contentType != null) {
-            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, contentType));
-        }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
             // Handle unexpected response
-            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             networkResponse.close();
         }
         SimpleXmlSerializable deserializedResult;
@@ -155,7 +148,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
-            throw new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + ".");
+            throw LOGGER.throwableAtError().addKeyValue("serializationFormat", serializationFormat.name()).log("None of the provided serializers support the format.", UnsupportedOperationException::new);
         }
         return deserializedResult;
     }

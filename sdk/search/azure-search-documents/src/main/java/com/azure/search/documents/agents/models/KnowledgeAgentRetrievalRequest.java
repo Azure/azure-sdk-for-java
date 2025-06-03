@@ -7,6 +7,7 @@
 package com.azure.search.documents.agents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,11 +23,13 @@ public final class KnowledgeAgentRetrievalRequest implements JsonSerializable<Kn
     /*
      * The messages property.
      */
+    @Generated
     private final List<KnowledgeAgentMessage> messages;
 
     /*
      * The targetIndexParams property.
      */
+    @Generated
     private List<KnowledgeAgentIndexParams> targetIndexParams;
 
     /**
@@ -34,6 +37,7 @@ public final class KnowledgeAgentRetrievalRequest implements JsonSerializable<Kn
      * 
      * @param messages the messages value to set.
      */
+    @Generated
     public KnowledgeAgentRetrievalRequest(List<KnowledgeAgentMessage> messages) {
         this.messages = messages;
     }
@@ -43,6 +47,7 @@ public final class KnowledgeAgentRetrievalRequest implements JsonSerializable<Kn
      * 
      * @return the messages value.
      */
+    @Generated
     public List<KnowledgeAgentMessage> getMessages() {
         return this.messages;
     }
@@ -52,6 +57,7 @@ public final class KnowledgeAgentRetrievalRequest implements JsonSerializable<Kn
      * 
      * @return the targetIndexParams value.
      */
+    @Generated
     public List<KnowledgeAgentIndexParams> getTargetIndexParams() {
         return this.targetIndexParams;
     }
@@ -62,6 +68,7 @@ public final class KnowledgeAgentRetrievalRequest implements JsonSerializable<Kn
      * @param targetIndexParams the targetIndexParams value to set.
      * @return the KnowledgeAgentRetrievalRequest object itself.
      */
+    @Generated
     public KnowledgeAgentRetrievalRequest setTargetIndexParams(List<KnowledgeAgentIndexParams> targetIndexParams) {
         this.targetIndexParams = targetIndexParams;
         return this;
@@ -70,6 +77,7 @@ public final class KnowledgeAgentRetrievalRequest implements JsonSerializable<Kn
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -88,6 +96,7 @@ public final class KnowledgeAgentRetrievalRequest implements JsonSerializable<Kn
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KnowledgeAgentRetrievalRequest.
      */
+    @Generated
     public static KnowledgeAgentRetrievalRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean messagesFound = false;

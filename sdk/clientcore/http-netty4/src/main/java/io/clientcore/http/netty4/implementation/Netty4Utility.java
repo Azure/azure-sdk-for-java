@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.utils.CoreUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelPipeline;
@@ -33,6 +34,8 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public final class Netty4Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Netty4Utility.class);
+
+    private static final HttpHeadersFactory HTTP_HEADERS_FACTORY = new WrappedHttpHeadersFactory();
 
     static final String PROPERTIES_FILE_NAME = "http-netty.properties";
     static final String NETTY_VERSION_PROPERTY = "netty-version";
@@ -86,7 +89,7 @@ public final class Netty4Utility {
             latch.await();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for latch", e);
+            throw LOGGER.throwableAtError().log("Interrupted while waiting for latch", e, CoreException::from);
         }
     }
 
@@ -121,20 +124,28 @@ public final class Netty4Utility {
      * @return A new {@link HttpClientCodec} instance.
      */
     public static HttpClientCodec createCodec() {
-        return new HttpClientCodec(new HttpDecoderConfig().setHeadersFactory(new HttpHeadersFactory() {
-            // Override newHeaders and newEmptyHeaders to return a new instance of WrappedHttpHeaders.
-            // This is a performance optimization to remove converting Netty's HttpHeaders to ClientCore's HttpHeaders
-            // and vice versa.
-            @Override
-            public io.netty.handler.codec.http.HttpHeaders newHeaders() {
-                return new WrappedHttpHeaders(new io.clientcore.core.http.models.HttpHeaders());
-            }
+        return new HttpClientCodec(new HttpDecoderConfig().setHeadersFactory(HTTP_HEADERS_FACTORY)
+            // For now, set the max header size to 256 KB. Follow up to see if this should be configurable.
+            .setMaxHeaderSize(256 * 1024), HttpClientCodec.DEFAULT_PARSE_HTTP_AFTER_CONNECT_REQUEST,
+            HttpClientCodec.DEFAULT_FAIL_ON_MISSING_RESPONSE);
+    }
 
-            @Override
-            public io.netty.handler.codec.http.HttpHeaders newEmptyHeaders() {
-                return new WrappedHttpHeaders(new io.clientcore.core.http.models.HttpHeaders());
-            }
-        }), HttpClientCodec.DEFAULT_PARSE_HTTP_AFTER_CONNECT_REQUEST, HttpClientCodec.DEFAULT_FAIL_ON_MISSING_RESPONSE);
+    /**
+     * Custom implementation of {@link HttpHeadersFactory} that creates {@link WrappedHttpHeaders}.
+     * <p>
+     * Using {@link WrappedHttpHeaders} is a performance optimization to remove converting Netty's HttpHeaders to
+     * ClientCore's HttpHeaders and vice versa.
+     */
+    private static final class WrappedHttpHeadersFactory implements HttpHeadersFactory {
+        @Override
+        public io.netty.handler.codec.http.HttpHeaders newHeaders() {
+            return new WrappedHttpHeaders(new io.clientcore.core.http.models.HttpHeaders());
+        }
+
+        @Override
+        public io.netty.handler.codec.http.HttpHeaders newEmptyHeaders() {
+            return new WrappedHttpHeaders(new io.clientcore.core.http.models.HttpHeaders());
+        }
     }
 
     /**

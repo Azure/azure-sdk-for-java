@@ -3,8 +3,6 @@
 
 package com.azure.v2.security.keyvault.keys.cryptography.implementation;
 
-import static io.clientcore.core.utils.CoreUtils.bytesToHexString;
-
 final class SignatureEncoding {
     private SignatureEncoding() {
     }
@@ -17,11 +15,7 @@ final class SignatureEncoding {
      * @return The raw format of the given ASN.1 DER encoded signature in the form R|S.
      */
     static byte[] fromAsn1Der(byte[] asn1DerSignature, Ecdsa algorithm) {
-        try {
-            return Asn1DerSignatureEncoding.decode(asn1DerSignature, algorithm);
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException(ex.getMessage() + " " + bytesToHexString(asn1DerSignature), ex);
-        }
+        return Asn1DerSignatureEncoding.decode(asn1DerSignature, algorithm);
     }
 
     /**
@@ -32,10 +26,6 @@ final class SignatureEncoding {
      * @return The ASN.1 DER encoded signature of the given signature.
      */
     static byte[] toAsn1Der(byte[] signature, Ecdsa algorithm) {
-        try {
-            return Asn1DerSignatureEncoding.encode(signature, algorithm);
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException(ex.getMessage() + " " + bytesToHexString(signature), ex);
-        }
+        return Asn1DerSignatureEncoding.encode(signature, algorithm);
     }
 }

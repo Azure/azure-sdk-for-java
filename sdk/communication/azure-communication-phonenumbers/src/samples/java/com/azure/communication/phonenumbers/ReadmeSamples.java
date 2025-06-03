@@ -3,6 +3,13 @@
 
 package com.azure.communication.phonenumbers;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
+import com.azure.communication.phonenumbers.models.BrowsePhoneNumbersOptions;
+import com.azure.communication.phonenumbers.models.CreateOrUpdateReservationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
@@ -10,6 +17,8 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
+import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -85,6 +94,39 @@ public class ReadmeSamples {
         // END: readme-sample-getPurchasedPhoneNumber
 
         return phoneNumber;
+    }
+
+    /**
+     * Sample code for browsing and reserving available phone numbers and purchasing
+     * the reservation.
+     *
+     */
+    public void browseAndReservePhoneNumbers() {
+        // BEGIN: readme-sample-browseAndReservePhoneNumbers
+        PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
+        String reservationId = UUID.randomUUID().toString();
+
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("US", PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+                .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+
+        PhoneNumbersBrowseResult result = phoneNumberClient.browseAvailableNumbers(browseRequest);
+
+        List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
+
+        numbersToAdd.add(result.getPhoneNumbers().get(0));
+
+        PhoneNumbersReservation reservationResponse = phoneNumberClient.createOrUpdateReservation(
+                new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToAdd(numbersToAdd));
+        System.out.println("Reservation ID: " + reservationResponse.getId());
+        // END: readme-sample-browseAndReservePhoneNumbers
+
+        // BEGIN: readme-sample-purchaseReservation
+        PollResponse<PhoneNumberOperation> purchaseResponse =
+            phoneNumberClient.beginReservationPurchase(reservationId, Context.NONE).waitForCompletion();
+        System.out.println("Purchase reservation is complete: " + purchaseResponse.getStatus());
+        // END: readme-sample-purchaseReservation
     }
 
     /**
